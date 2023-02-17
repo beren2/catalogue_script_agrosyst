@@ -2,8 +2,12 @@
 
 Catalogue des pré-traitements usuels déjà réalisés sur les données d'Agrosyst afin d'en faire bénéficier la communauté de chercheurs.
 
+
 ## Contribuer
 Le catalogue des pré-traitements agrosyst est libre et collaboratif. Si vous souhaitez participer en ajoutant des scripts de prétraitements, il vous suffit d'effectuer les étapes suivantes. 
+Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d'être proposés sur l'interface du magasin de données 0.
+ 
+
 
 ### Créer une branche
 
