@@ -8,14 +8,12 @@ import pandas as pd
 
 def correction_melange(data):
     """"
-    	data : dictionnaire avec au moins 4 clés : ["culture", "domaine", "composant", "espece"]
+    	data : dictionnaire avec au moins 3 clés : ["culture", "composant", "espece"]
         data['culture'] 	  : 	df de 3 colonnes ["culture_id", "melange_especes"]
-        data['domaine'] 	  : 	df de 2 colonnes ["domaine_id, "nom"]
         data['composant'] 	:	  df de 3 colonnes ["composant_id", "culture_id", "espece_id"]
         data['espece'] 		  : 	df de 2 colonnes ["espece_id", "nom"]
     """
     df_culture = data['culture']
-    df_domaine = data['domaine']
     df_composant = data['composant']
     
     #on groupe le composants par culture et on compte le nombre de composant par culture. 
@@ -32,7 +30,6 @@ def correction_melange(data):
     df_culture[["culture_id", "melange_especes"]] = merge[["culture_id", "melange_especes"]]
     
     data['culture'] = df_culture
-    data['domaine'] = df_domaine
 
     return data
 
