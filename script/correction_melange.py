@@ -33,6 +33,7 @@ def correction_melange(data):
 
     df_culture[["culture_id", "melange_especes"]] = merge[["culture_id", "melange_especes"]]
 
+    #stockage du dataframe dans le dictionnaire final
     data['culture'] = df_culture
 
     return data
