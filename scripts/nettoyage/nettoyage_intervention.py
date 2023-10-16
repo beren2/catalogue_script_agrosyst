@@ -8,7 +8,7 @@ Pour le synthétisé :
     - 
 """
 import pandas as pd
-import fonctions_tests as ft
+import fonctions_tests as ft        # pylint: disable=import-error
 import numpy as np
 
 def nettoyage_intervention(donnees, params=None, verbose=False):
