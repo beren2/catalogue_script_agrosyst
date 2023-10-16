@@ -63,29 +63,6 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
 
         # stockage des résultats
         codes_tests.append(code_test)
-        codes_tests.append(code_test)
-
-    #df_intervention_realise = donnees['intervention_realise']
-    #df_intervention_synthetise = donnees['intervention_synthetise']
-
-    # DURÉES D'INTERVENTION
-    # obtention de la durée de l'intervention
-    #date_debut = df_intervention_realise['date_debut']
-    #date_fin = df_intervention_realise['date_fin']
-    #date_debut = pd.to_datetime(date_debut, format="%Y-%m-%d", errors='coerce')
-    #date_fin = pd.to_datetime(date_fin, format="%Y-%m-%d", errors='coerce')
-    #duree_intervention = date_fin - date_debut
-
-    # filtration des interventions qui durent au moins 0 jours
-    #df_intervention_realise = df_intervention_realise.loc[
-    #    duree_intervention.dt.days >= 0
-    #]
-
-    # filtrer les interventions qui ont un débit de chantier trop important
-
-    #filtered_data = {
-    #    'intervention_realise' : df_intervention_realise
-    #}
 
     return codes_tests
             
