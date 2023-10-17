@@ -8,8 +8,8 @@ Pour le synthétisé :
     - 
 """
 import pandas as pd
-import fonctions_tests as ft        # pylint: disable=import-error
 import numpy as np
+import scripts.nettoyage.fonctions_tests as ft
 
 def nettoyage_intervention(donnees, params=None, verbose=False):
     """
@@ -24,11 +24,11 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
                         maximum)
             
                 Retourne:
-                    code_test (Serie) : série binaire de taille n indiquant si le test est passé
+                    res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
     # lecture des fichiers de métadonnées
-    df_metadonnees_seuils = pd.read_csv('../data/metadonnees_seuils.csv', index_col='id')
-    df_metadonnees_tests = pd.read_csv('../data/metadonnees_tests.csv', index_col='id')
+    df_metadonnees_seuils = pd.read_csv('../../data/metadonnees_seuils.csv', index_col='id')
+    df_metadonnees_tests = pd.read_csv('../../data/metadonnees_tests.csv', index_col='id')
 
     # selection des données pertinentes et conversion en dictionnaires
     metadata_seuils = df_metadonnees_seuils
@@ -64,5 +64,8 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
         # stockage des résultats
         codes_tests.append(code_test)
 
-    return codes_tests
+    df = pd.DataFrame(np.transpose(codes_tests)).astype('str')
+    res = df.apply(lambda x : ''+''.join(x), axis=1)
+
+    return res
             

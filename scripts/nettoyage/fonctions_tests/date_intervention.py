@@ -18,20 +18,22 @@ def date_intervention(donnees, metadata_seuils):
                 Retourne:
                     code_test (Serie) : série binaire de taille n indiquant si le test est passé
     """
+    # copie des données en local
+    donnees_local = donnees.copy()
 
     # durée de l'intervention
-    date_debut = donnees['date_debut']
-    date_fin = donnees['date_fin']
+    date_debut = donnees_local['date_debut']
+    date_fin = donnees_local['date_fin']
     date_debut = pd.to_datetime(date_debut, format="%Y-%m-%d", errors='coerce')
     date_fin = pd.to_datetime(date_fin, format="%Y-%m-%d", errors='coerce')
-    donnees['duree'] = date_fin - date_debut
+    donnees_local['duree'] = date_fin - date_debut
 
     # obtention dans les métadonnées du seuil approprié
     seuil_duree_min = metadata_seuils['duree_intervention_min']['seuil']
 
     # filtration des interventions qui durent au moins seuil_duree_min
-    code_test_duree_min = (donnees['duree'].dt.days > seuil_duree_min).astype(int)
-    donnees.loc[donnees.index, 'code_test'] = code_test_duree_min
+    code_test_duree_min = (donnees_local['duree'].dt.days >= seuil_duree_min).astype(int)
+    donnees_local['code_test'] = code_test_duree_min
 
-    return donnees['code_test']
+    return donnees_local['code_test']
     
