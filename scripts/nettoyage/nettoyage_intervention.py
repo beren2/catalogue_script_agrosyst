@@ -9,7 +9,7 @@ Pour le synthétisé :
 """
 import pandas as pd
 import numpy as np
-import scripts.nettoyage.fonctions_tests as ft
+import scripts.nettoyage.fonctions_tests as ft # pylint: disable=import-error
 
 def nettoyage_intervention(donnees, params=None, verbose=False):
     """
