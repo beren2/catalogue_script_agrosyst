@@ -42,7 +42,8 @@ def debit_chantier_intervention(donnees, metadata_seuils):
         code_test_min = (donnees_courant['debit_de_chantier'] > seuil_courant_min).astype(int)
 
         # si la ligne échoue à l'un des deux tests, on garde échec (0)
-        donnees_local.loc[donnees_courant.index, 'code_test'] = np.minimum(code_test_min, code_test_max)
+        code_min = np.minimum(code_test_min, code_test_max)
+        donnees_local.loc[donnees_courant.index, 'code_test'] = code_min
 
     return donnees_local['code_test']
     
