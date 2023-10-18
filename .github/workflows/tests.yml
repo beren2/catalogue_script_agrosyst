@@ -13,7 +13,7 @@ jobs:
 
     - name: Decode keystore file
       run: |
-        echo -n "$KEY_CSV_FILE" | gpg --import
+        echo -n "${{ secrets.KEY_CSV_FILE }}" | gpg --import
         TEMP_DIR="20230927"
         mkdir -p data/"$TEMP_DIR"
         gpg --decrypt --output data/"$TEMP_DIR"/intervention_realise.csv data/20230927_encrypted/intervention_realise.csv.gpg
