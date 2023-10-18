@@ -15,7 +15,9 @@ jobs:
       env: 
         DECRYPTION_KEY : ${{ secrets.KEY_CSV_FILE}}
       run: |
-         gpg --decrypt --output data/20230927/intervention_realise.csv data/20230927/intervention_realise.csv.gpg
+        TEMP_DIR="data"
+        mkdir -p "$TEMP_DIR"
+        gpg --decrypt --output data/intervention_realise.csv data/20230927/intervention_realise.csv.gpg
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -30,3 +32,6 @@ jobs:
     - name: Run unit tests
       run: |
         python -m pytest --import-mode=append tests/
+    - name: Cleanup 
+      run: |
+        rm -r "$TEMP_DIR"
