@@ -18,6 +18,7 @@ jobs:
     - name: Decode keystore file
       run: |
         echo -n "${{ secrets.KEY_CSV_FILE }}" | gpg --import
+        head -10 data/20230927_encrypted/intervention_realise.csv.gpg
         gpg --output data/"$TEMP_DIR"/intervention_realise.csv --decrypt data/20230927_encrypted/intervention_realise.csv.gpg
     - uses: actions/upload-artifact@v2
       if: failure()
