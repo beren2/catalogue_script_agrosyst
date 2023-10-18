@@ -12,10 +12,10 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Decrypt CSV Files
-      run: |
-    	gpg --decrypt --output data/20230927/intervention_realise.csv data/20230927/intervention_realise.csv.gpg
       env: 
-      	DECRYPTION_KEY : ${{ secrets.KEY_CSV_FILE}}
+        DECRYPTION_KEY : ${{ secrets.KEY_CSV_FILE}}
+      run: |
+         gpg --decrypt --output \"data/20230927/intervention_realise.csv\" \"data/20230927/intervention_realise.csv.gpg\"
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
