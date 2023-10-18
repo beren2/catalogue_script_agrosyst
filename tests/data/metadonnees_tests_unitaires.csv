@@ -1,0 +1,7 @@
+"identifiant_test","id_ligne","valeur_attendue","colonne_id"
+"test_debit_chantier_intervention_realise","fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_ca60e863-58b6-4a3a-86be-a75b2d499e91",0,"intervention_id"
+"test_debit_chantier_intervention_realise","fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_001c31aa-7bdc-477d-8fb2-4e7b97f0023a",0,"intervention_id"
+"test_debit_chantier_intervention_realise","fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_07367c2f-df2a-4915-99c8-de6b540629dd",0,"intervention_id"
+"test_debit_chantier_intervention_realise","fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_000078c8-6f9e-4e4b-abb1-cf732ebe672f",1,"intervention_id"
+"test_debit_chantier_intervention_realise","fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0000aea4-bd9a-40b7-ad45-4f95d53fd166",1,"intervention_id"
+"test_debit_chantier_intervention_realise","fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0003243b-f2dc-4079-8031-12de94ea5f53",1,"intervention_id"
