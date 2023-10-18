@@ -1,13 +1,11 @@
 import pandas as pd
 #from nettoyage import nettoyage
-from scripts.nettoyage import nettoyage
-
+from scripts.nettoyage_global import nettoyage
 
 def test_debit_chantier_intervention_realise():
     """
         Test du débit de chantier des interventions en réalisé
     """
-
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_debit_chantier_intervention_realise']
