@@ -38,5 +38,4 @@ def test_debit_chantier_intervention_realise():
     
     assert res_problem
     assert res_ok
-
-    return 0
+    
