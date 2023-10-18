@@ -11,16 +11,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name : Configuring gpg passphrase
-      env:
-        GPG_SIGNING_KEY: ${{ secrets.KEY_CSV_FILE }}
+    - name: Decode keystore file
       run: |
-        echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
-    - name: Decrypt CSV Files
-      run: |
-        TEMP_DIR="data"
-        mkdir -p "$TEMP_DIR"
-        gpg --decrypt --output data/intervention_realise.csv data/20230927_encrypted/intervention_realise.csv.gpg
+        echo "${{ secrets.KEY_CSV_FILE }}" > release.keystore.asc
+        gpg -d --passphrase "${{ secrets.KEY_CSV_FILE }}" --batch release.keystore.asc > signing-key.jks
+    - uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: release.keystore.asc
+        path: release.keystore.asc
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
