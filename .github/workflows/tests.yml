@@ -13,10 +13,10 @@ jobs:
 
     - name: Decode keystore file
       run: |
-        echo -n "$KEY_CSV_FILE" | base64 --decode | gpg --import
+        echo -n "$KEY_CSV_FILE" | gpg --import
         TEMP_DIR="20230927"
         mkdir -p data/"$TEMP_DIR"
-        gpg --passphrase "${{ secrets.KEY_CSV_FILE_PASSPHRASE }}" --decrypt --output data/"$TEMP_DIR"/intervention_realise.csv data/20230927_encrypted/intervention_realise.csv.gpg
+        gpg --decrypt --output data/"$TEMP_DIR"/intervention_realise.csv data/20230927_encrypted/intervention_realise.csv.gpg
     - uses: actions/upload-artifact@v2
       if: failure()
       with:
