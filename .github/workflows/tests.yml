@@ -11,19 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Creation fichier temporaire 
-      run: |
-        TEMP_DIR="20230927"
-        mkdir -p data/"$TEMP_DIR"
-    - name: Decode keystore file
-      run: |
-        echo -n "${{ secrets.KEY_CSV_FILE }}" | gpg --import
-        gpg --output data/"$TEMP_DIR"/intervention_realise.csv --decrypt data/20230927_encrypted/intervention_realise.csv.gpg
-    - uses: actions/upload-artifact@v2
-      if: failure()
-      with:
-        name: release.keystore.asc
-        path: release.keystore.asc
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -38,6 +25,3 @@ jobs:
     - name: Run unit tests
       run: |
         python -m pytest --import-mode=append tests/
-    - name: Cleanup 
-      run: |
-        rm -r "$TEMP_DIR"
