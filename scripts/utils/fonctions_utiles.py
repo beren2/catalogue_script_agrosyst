@@ -400,7 +400,19 @@ def get_dose_ref(
         df_utilisation_intrant_complet
     ):
     """
-        Obtention de la dose de référence (POUR L'IFT À LA CIBLE NON MILLÉSIMÉ)
+        Retourne un dataframe qui contient les doses de références pour chaque utilisation d'intrants
+        Paramètres :
+                df_utilisation_intrant_complet (df) : Dataframe contenant les valeurs suivantes : 
+                    'id' : identifiant de l'utilisation de l'intrant
+                    'code_amm': code_amm du produit
+                    'code_traitement_maa' : code du traitement du produit 
+                    'code_culture_maa' : code maa de la culture sur laquelle le produit est utilisé
+                    
+        Retourne :
+                final_result (df) : Dataframe contenant les valeurs suivantes : 
+                    'id' : identifiant de l'utilisation de l'intrant (attention : non unique)
+                    'dose_ref_maa' : dose de référence à la cible non millésimé de l'utilisation d'intrant
+                    'unit_dose_ref_maa' :  unité de la dose de référence de l'utilisation d'intrant
     """
     # Déclaration des chemins des données 
     path_dose_ref_cible = 'data/referentiels/dose_ref_cible.csv'
