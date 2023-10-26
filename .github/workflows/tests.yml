@@ -21,7 +21,7 @@ jobs:
           mkdir -p "$TEMP_DIR"
           
           # Use the decryption key stored in GitHub secrets to decrypt the CSV files
-          gpg --decrypt --output "$TEMP_DIR/decrypted_data.csv" data/encrypted_data.csv
+          gpg --decrypt --output "$TEMP_DIR/decrypted_data.csv" data/ref_adventice.csv.gpg
 
       env:
           DECRYPTION_KEY: ${{ secrets.decrypt_key }}
