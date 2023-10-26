@@ -403,7 +403,7 @@ def get_dose_ref(
         Obtention de la dose de référence (POUR L'IFT À LA CIBLE NON MILLÉSIMÉ)
     """
     # Déclaration des chemins des données 
-    path_dose_ref_cible = 'data/dose_ref_cible.csv'
+    path_dose_ref_cible = 'data/referentiels/dose_ref_cible.csv'
 
     # Import des données utiles
     df_dose_ref_cible = pd.read_csv(path_dose_ref_cible, sep=',')
