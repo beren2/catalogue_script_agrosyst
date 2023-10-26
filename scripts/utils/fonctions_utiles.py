@@ -25,7 +25,7 @@ def get_infos_traitement(df_utilisation_intrant, df_intrant):
             Pour l'instant, cette fonction ne permet pas d'obtenir le code amm d'un traitement de semence et retournera : null
     """
     # Déclaration des chemins des données 
-    path_ref_acta_traitement_produit = 'data/ref_acta_traitement_produit.csv'
+    path_ref_acta_traitement_produit = 'data/referentiels/ref_acta_traitement_produit.csv'
 
     # Import des données utiles
     df_ref_acta_traitement_produit = pd.read_csv(path_ref_acta_traitement_produit)
@@ -68,7 +68,7 @@ def get_infos_culture_realise(
                     'code_culture_maa' :  code culture de l'espèce en question
     """
     # Déclaration des chemins des données 
-    path_culture_maa = 'data/ref_culture_maa.csv'
+    path_culture_maa = 'data/referentiels/ref_culture_maa.csv'
 
     # Import des données utiles
     df_ref_culture_maa = pd.read_csv(path_culture_maa)
@@ -182,7 +182,7 @@ def get_infos_culture_synthetise(
                     'code_culture_maa' :  code culture de l'espèce en question
     """
     # Déclaration des chemins des données 
-    path_culture_maa = 'data/ref_culture_maa.csv'
+    path_culture_maa = 'data/referentiels/ref_culture_maa.csv'
 
     # Import des données utiles
     df_ref_culture_maa = pd.read_csv(path_culture_maa)
@@ -305,9 +305,9 @@ def get_infos_cible(
                     'code_culture_maa' :  code culture de l'espèce en question
     """
     # Déclaration des chemins des données 
-    path_ref_nuisible_edi = 'data/ref_nuisible_edi.csv'
-    path_ref_correspondance_groupe_cible = 'data/ref_correspondance_groupe_cible.csv'
-    path_ref_adventice = 'data/ref_adventice.csv'
+    path_ref_nuisible_edi = 'data/referentiels/ref_nuisible_edi.csv'
+    path_ref_correspondance_groupe_cible = 'data/referentiels/ref_correspondance_groupe_cible.csv'
+    path_ref_adventice = 'data/referentiels/ref_adventice.csv'
 
     # Import des données utiles
     df_ref_nuisible_edi = pd.read_csv(path_ref_nuisible_edi, sep=',')
@@ -358,7 +358,7 @@ def get_infos_cible(
     df_utilisation_intrant_cible_without_code_groupe = df_utilisation_intrant_cible.loc[
         df_utilisation_intrant_cible['code_groupe_cible_maa'].isna()
     ]
-    # Certaines des cibles ont déjà une catégorie (identifié à dès la saisie)
+    # Certaines des cibles ont déjà une catégorie (identifiée dès la saisie)
     df_with_categorie = df_utilisation_intrant_cible_without_code_groupe.loc[
         ~df_utilisation_intrant_cible_without_code_groupe['categorie'].isna()
     ] 
