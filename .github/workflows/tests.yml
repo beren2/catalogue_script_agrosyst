@@ -13,7 +13,7 @@ jobs:
 
 
     - name: Decrypt CSV Files
-        run: |
+      run: |
           # Specify a custom name for the temporary directory
           TEMP_DIR="tmp"
           
@@ -23,7 +23,7 @@ jobs:
           # Use the decryption key stored in GitHub secrets to decrypt the CSV files
           gpg --decrypt --output "$TEMP_DIR/decrypted_data.csv" data/encrypted_data.csv
 
-        env:
+      env:
           DECRYPTION_KEY: ${{ secrets.decrypt_key }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
