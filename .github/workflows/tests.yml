@@ -17,9 +17,9 @@ jobs:
           mkdir data/referentiels/
           echo -n "$DECRYPTION_KEY" | gpg --import
           # Use the decryption key stored in GitHub secrets to decrypt the CSV files
-          gpg --decrypt-files *.gpg
+          gpg --decrypt-files data/encrypted_ref_test/*.gpg
           # On déplace les référentiels 
-          cp *.csv ../referentiels/
+          cp data/encrypted_ref_test/*.csv data/referentiels/
       env:
           DECRYPTION_KEY: ${{ secrets.decrypt_key }}
     - name: Set up Python ${{ matrix.python-version }}
