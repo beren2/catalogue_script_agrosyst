@@ -15,8 +15,8 @@ jobs:
       run: |
           echo -n "$DECRYPTION_KEY" | gpg --import
           # Use the decryption key stored in GitHub secrets to decrypt the CSV files
-          gpg --decrypt --output data/ref_adventice.csv data/ref_adventice.csv.gpg
-
+          gpg --decrypt --output data/ref_adventice.csv data/encrypted_ref_test/ref_adventice.csv.gpg
+          gpg --decrypt --output data/ref_adventice.csv data/encrypted_ref_test/ref_acta_traitement_produit.csv.gpg
       env:
           DECRYPTION_KEY: ${{ secrets.decrypt_key }}
     - name: Set up Python ${{ matrix.python-version }}
