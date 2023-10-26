@@ -11,6 +11,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+
+    - name: Decrypt CSV Files
+        run: |
+          # Specify a custom name for the temporary directory
+          TEMP_DIR="tmp"
+          
+          # Create the custom-named temporary directory
+          mkdir -p "$TEMP_DIR"
+          
+          # Use the decryption key stored in GitHub secrets to decrypt the CSV files
+          gpg --decrypt --output "$TEMP_DIR/decrypted_data.csv" data/encrypted_data.csv
+
+        env:
+          DECRYPTION_KEY: ${{ secrets.decrypt_key }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
