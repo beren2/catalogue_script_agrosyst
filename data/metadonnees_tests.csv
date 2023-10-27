@@ -1,3 +1,4 @@
 "id","script","position","fichier","description"
 "debit_chantier","nettoyage_intervention",0,"debit_chantier_intervention","Test pour vérifier que les débits de chantiers ne dépassent pas certains seuils maximaux"
 "date_intervention","nettoyage_intervention",1,"date_intervention","Test pour vérifier que les dates de débuts et de fins de l’intervention sont cohérents"
+"dose_ref","nettoyage_intrant",0,"dose_utilisation_intrant","Test pour vérifier que les doses de références ne sont pas trop supérieures à la dose de référence"

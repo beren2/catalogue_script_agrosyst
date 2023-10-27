@@ -7,7 +7,7 @@ import scripts.nettoyage_global.fonctions_tests as ft
 
 
 
-def nettoyage_intrant(donnees, params=None, verbose=False):
+def nettoyage_utilisation_intrant(donnees, params=None, verbose=False):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i

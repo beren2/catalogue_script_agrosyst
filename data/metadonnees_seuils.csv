@@ -10,3 +10,4 @@
 "debit_chantier_min_BAL_H","nettoyage_intervention",0,-1,"Débit de chantier minimal en balles / h"
 "debit_chantier_min_T_H","nettoyage_intervention",0,-1,"Débit de chantier minimal en t / h"
 "duree_intervention_min","nettoyage_intervention",0,-1,"Durée de l’intervention minimale en jours"
+"multiple_dose_ref","nettoyage_intrant",10,,"Nombre de fois au dessus duquel une dose d’intrant est considérée comme une erreur de saisie"
