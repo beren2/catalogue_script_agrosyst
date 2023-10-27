@@ -29,7 +29,9 @@ Certains des tests requièrent aussi l'utilisation de référentiels. Comme ces 
 - Étape 2 : Création du test de la fonction
 - Étape 3 : Génération des données pour le tests
 - Étape 4 : Génération et chiffrement des référentiels pour le test. Utiliser le fichier [data/encrypted_ref_test/generation_ref_test.ipynb](../data/encrypted_ref_test/generation_ref_test.ipynb). La clé publique utilisée pour le chiffrement des données est diponible dans le fichier. 
-- Étape 6 : Push
+- Étape 6 : Push. 
+
+Les tests ne sont réalisés que lorsqu'on push sur la branche principal. Il est donc pertinent de créer une nouvelle branche de travail pour tout nouveau développement. Une fois que le travail est terminé, le merge avec la branche principal enclenchera l'exécution des tests.
 
 
 ### Précisison(s)
