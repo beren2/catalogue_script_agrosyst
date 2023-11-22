@@ -24,7 +24,7 @@ def debit_chantier_intervention(donnees, metadata_seuils):
 
     # liste de toutes les unités disponibles
     list_debit_de_chantier_unite = ['HA_H', 'H_HA', 'VOY_H', 'BAL_H', 'T_H']
-    donnees_local['code_test'] = 0 # par défaut, toutes les données passent le test
+    donnees_local['code_test'] = 1 # par défaut, toutes les données passent le test
 
     for debit_de_chantier_unite in list_debit_de_chantier_unite:
         # selection des lignes dans la bonne unité
