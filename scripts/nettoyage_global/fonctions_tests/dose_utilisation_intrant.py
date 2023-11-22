@@ -3,9 +3,8 @@
     Permet de s'assurer que : 
         - la dose d'utilisation de l'intrant est inférieur à x fois la dose de référence. 
 """
-import numpy as np
-from scripts.utils import fonctions_utiles
 import pandas as pd
+from scripts.utils import fonctions_utiles
 
 def dose_utilisation_intrant(donnees, metadata_seuils, saisie):
     """
