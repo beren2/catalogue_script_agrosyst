@@ -6,7 +6,7 @@ L'objectif de ce repertoire est de proposer quelques exemples de prise en main d
 
 ## Prérequis
 
-* Les scripts sont rédigés en Python et suppose une bonne maîtrise de **pandas**.
+* Les scripts sont rédigés en Python et supposent une bonne maîtrise de **pandas**.
 * Les données doivent préalablement être téléchargées sur la plateforme datagrosyst (https://agrosyst.fr/datagrosyst/)
 
 ## Liste des exemples 
