@@ -396,12 +396,80 @@ def get_infos_cible(
 
     return df_utilisation_intrant_cible
 
+def get_dose_ref(
+        df_utilisation_intrant_complet
+    ):
+    """
+        Retourne un dataframe qui contient les doses de références pour chaque utilisation d'intrants
+        Paramètres :
+                df_utilisation_intrant_complet (df) : Dataframe contenant les valeurs suivantes : 
+                    'id' : identifiant de l'utilisation de l'intrant
+                    'code_amm': code_amm du produit
+                    'code_traitement_maa' : code du traitement du produit 
+                    'code_culture_maa' : code maa de la culture sur laquelle le produit est utilisé
+                    
+        Retourne :
+                final_result (df) : Dataframe contenant les valeurs suivantes : 
+                    'id' : identifiant de l'utilisation de l'intrant (attention : non unique)
+                    'dose_ref_maa' : dose de référence à la cible non millésimé de l'utilisation d'intrant
+                    'unit_dose_ref_maa' :  unité de la dose de référence de l'utilisation d'intrant
+    """
+    # Déclaration des chemins des données 
+    path_dose_ref_cible = 'data/referentiels/dose_ref_cible.csv'
+
+    # Import des données utiles
+    df_dose_ref_cible = pd.read_csv(path_dose_ref_cible, sep=',')
+    df_dose_ref_cible['code_amm'] = df_dose_ref_cible['code_amm'].astype('str')
+
+    # Nettoyage des référentiels
+    df_dose_ref_cible = df_dose_ref_cible.loc[df_dose_ref_cible['active']]
+
+    # Obtention des utilisations d'intrants dans lesquelles on a au moins un code amm de déclaré
+    df_utilisation_intrant_complet = df_utilisation_intrant_complet.loc[~df_utilisation_intrant_complet['code_amm'].isna()]
+    df_utilisation_intrant_complet['code_amm'] = df_utilisation_intrant_complet['code_amm'].astype('str')
+
+    # Séparation entres les utilisations où on a un groupe cible de retrouvé et les autres
+    total_merge_3_without_cible = df_utilisation_intrant_complet.loc[df_utilisation_intrant_complet['code_groupe_cible_maa'].isna()]
+    total_merge_3_with_cible = df_utilisation_intrant_complet.loc[~df_utilisation_intrant_complet['code_groupe_cible_maa'].isna()]
+
+    # Séparation
+    total_merge_3_with_cible = total_merge_3_with_cible.loc[total_merge_3_with_cible['code_groupe_cible_maa'] !=  '#N/D']
+    total_merge_3_with_cible['code_groupe_cible_maa'] = total_merge_3_with_cible['code_groupe_cible_maa'].astype('int')
+
+    # fusion pour celles qui n'ont pas de cibles trouvées :
+    left = total_merge_3_without_cible
+    right = df_dose_ref_cible[['code_amm', 'code_culture_maa', 'code_traitement_maa', 'dose_ref_maa', 'unit_dose_ref_maa']].drop_duplicates()
+    total_merge_without_cible = pd.merge(left, right, on = ['code_amm', 'code_traitement_maa', 'code_culture_maa'], how='left')
+    total_merge_without_cible = total_merge_without_cible.loc[~total_merge_without_cible['dose_ref_maa'].isna()]
+
+    # fusion pour celles qui ont une cible 
+    left = total_merge_3_with_cible
+    right = df_dose_ref_cible[['code_amm', 'code_culture_maa', 'code_traitement_maa', 'dose_ref_maa', 'unit_dose_ref_maa', 'code_groupe_cible_maa']]
+    total_merge_with_cible = pd.merge(left, right, on = ['code_amm', 'code_traitement_maa', 'code_groupe_cible_maa', 'code_culture_maa'], how='left')
+    total_merge_with_cible = total_merge_with_cible.loc[~total_merge_with_cible['dose_ref_maa'].isna()]
+
+    # On garde les doses minimales trouvées pour chaque utilisation d'intrants
+    final_result_with_cible = total_merge_with_cible.loc[total_merge_with_cible.groupby('id')['dose_ref_maa'].idxmax()]
+    final_result_without_cible = total_merge_without_cible.loc[total_merge_without_cible.groupby('id')['dose_ref_maa'].idxmin()]
+
+    # On créé le dataframe final
+    final_result = pd.concat([final_result_with_cible, final_result_without_cible], axis=0)
+
+    # On a certaines dupplications (ex : fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_ed7545bf-ad2c-4953-97fd-47ede7233cc0)
+    # --> correspond à des données historiques de saisie, on drop. 
+
+    final_result = final_result.drop_duplicates(subset=['id'])
+
+    return final_result
+
+
+
 def get_infos_all_utilisation_intrant(
         df_utilisation_intrant,
         saisie = 'realise'
     ):
     """
-        Retourne un dataframe qui contient toutes les informations requises pour obtenir la dose de référence
+        Retourne un dataframe qui contient toutes les informations sur les produits et les doses de références associées
     """
 
     # déclaration des chemins des données
@@ -516,70 +584,3 @@ def get_infos_all_utilisation_intrant(
     )
 
     return final_get_dose_ref
-
-
-def get_dose_ref(
-        df_utilisation_intrant_complet
-    ):
-    """
-        Retourne un dataframe qui contient les doses de références pour chaque utilisation d'intrants
-        Paramètres :
-                df_utilisation_intrant_complet (df) : Dataframe contenant les valeurs suivantes : 
-                    'id' : identifiant de l'utilisation de l'intrant
-                    'code_amm': code_amm du produit
-                    'code_traitement_maa' : code du traitement du produit 
-                    'code_culture_maa' : code maa de la culture sur laquelle le produit est utilisé
-                    
-        Retourne :
-                final_result (df) : Dataframe contenant les valeurs suivantes : 
-                    'id' : identifiant de l'utilisation de l'intrant (attention : non unique)
-                    'dose_ref_maa' : dose de référence à la cible non millésimé de l'utilisation d'intrant
-                    'unit_dose_ref_maa' :  unité de la dose de référence de l'utilisation d'intrant
-    """
-    # Déclaration des chemins des données 
-    path_dose_ref_cible = 'data/referentiels/dose_ref_cible.csv'
-
-    # Import des données utiles
-    df_dose_ref_cible = pd.read_csv(path_dose_ref_cible, sep=',')
-    df_dose_ref_cible['code_amm'] = df_dose_ref_cible['code_amm'].astype('str')
-
-    # Nettoyage des référentiels
-    df_dose_ref_cible = df_dose_ref_cible.loc[df_dose_ref_cible['active']]
-
-    # Obtention des utilisations d'intrants dans lesquelles on a au moins un code amm de déclaré
-    df_utilisation_intrant_complet = df_utilisation_intrant_complet.loc[~df_utilisation_intrant_complet['code_amm'].isna()]
-    df_utilisation_intrant_complet['code_amm'] = df_utilisation_intrant_complet['code_amm'].astype('str')
-
-    # Séparation entres les utilisations où on a un groupe cible de retrouvé et les autres
-    total_merge_3_without_cible = df_utilisation_intrant_complet.loc[df_utilisation_intrant_complet['code_groupe_cible_maa'].isna()]
-    total_merge_3_with_cible = df_utilisation_intrant_complet.loc[~df_utilisation_intrant_complet['code_groupe_cible_maa'].isna()]
-
-    # Séparation
-    total_merge_3_with_cible = total_merge_3_with_cible.loc[total_merge_3_with_cible['code_groupe_cible_maa'] !=  '#N/D']
-    total_merge_3_with_cible['code_groupe_cible_maa'] = total_merge_3_with_cible['code_groupe_cible_maa'].astype('int')
-
-    # fusion pour celles qui n'ont pas de cibles trouvées :
-    left = total_merge_3_without_cible
-    right = df_dose_ref_cible[['code_amm', 'code_culture_maa', 'code_traitement_maa', 'dose_ref_maa', 'unit_dose_ref_maa']].drop_duplicates()
-    total_merge_without_cible = pd.merge(left, right, on = ['code_amm', 'code_traitement_maa', 'code_culture_maa'], how='left')
-    total_merge_without_cible = total_merge_without_cible.loc[~total_merge_without_cible['dose_ref_maa'].isna()]
-
-    # fusion pour celles qui ont une cible 
-    left = total_merge_3_with_cible
-    right = df_dose_ref_cible[['code_amm', 'code_culture_maa', 'code_traitement_maa', 'dose_ref_maa', 'unit_dose_ref_maa', 'code_groupe_cible_maa']]
-    total_merge_with_cible = pd.merge(left, right, on = ['code_amm', 'code_traitement_maa', 'code_groupe_cible_maa', 'code_culture_maa'], how='left')
-    total_merge_with_cible = total_merge_with_cible.loc[~total_merge_with_cible['dose_ref_maa'].isna()]
-
-    # On garde les doses minimales trouvées pour chaque utilisation d'intrants
-    final_result_with_cible = total_merge_with_cible.loc[total_merge_with_cible.groupby('id')['dose_ref_maa'].idxmax()]
-    final_result_without_cible = total_merge_without_cible.loc[total_merge_without_cible.groupby('id')['dose_ref_maa'].idxmin()]
-
-    # On créé le dataframe final
-    final_result = pd.concat([final_result_with_cible, final_result_without_cible], axis=0)
-
-    # On a certaines dupplications (ex : fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_ed7545bf-ad2c-4953-97fd-47ede7233cc0)
-    # --> correspond à des données historiques de saisie, on drop. 
-
-    final_result = final_result.drop_duplicates(subset=['id'])
-
-    return final_result
