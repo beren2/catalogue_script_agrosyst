@@ -466,14 +466,14 @@ def get_dose_ref(
 
 def get_infos_all_utilisation_intrant(
         df_utilisation_intrant,
-        saisie = 'realise'
+        saisie = 'realise',
+        path_data = 'data/20230927/'
     ):
     """
         Retourne un dataframe qui contient toutes les informations sur les produits et les doses de références associées
     """
 
     # déclaration des chemins des données
-    path_data = 'data/20230927/'
     path_intrant = path_data+'intrant.csv'
     path_culture = path_data+'culture.csv'
     path_composant_culture = path_data+'composant_culture.csv'
