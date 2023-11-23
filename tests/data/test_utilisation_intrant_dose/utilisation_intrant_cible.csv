@@ -1,0 +1,3 @@
+,Unnamed: 0,id,utilisation_intrant_id,ref_cible_id,intrant_id,categorie,code_groupe_cible_maa
+0,629530,fr.inra.agrosyst.api.entities.action.PhytoProductTarget_e1988878-29d8-4765-8354-4252fbdef042,fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_5475b0eb-36f6-4a97-b0fa-abd0e95d8b75,fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_3da61bee-1c67-47f6-91a2-9ed8437126b8,,RAVAGEUR,
+2,1071127,fr.inra.agrosyst.api.entities.action.PhytoProductTarget_5412bd57-d386-4646-b95a-0f7a78fca8af,fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_fff51c03-06c8-4445-8cfb-38c6eb385b1a,fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_daeb0939-7268-48c6-8c23-91963c74a4f5,,RAVAGEUR,123.0

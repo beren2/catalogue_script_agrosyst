@@ -1,0 +1,6 @@
+,Unnamed: 0,id,rang,fin_cycle,culture_code,memecampagne_noeudprecedent,fq_initial_noeud,synthetise_id
+0,3566,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_6d3b6db8-38c6-4daf-9f7c-02f1ff1a74e3,0,f,31c26ea0-7251-480e-b62a-917c0e18309d,f,100.0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f4cdf140-bd26-4acd-8bc3-a5e78d92d033
+1,4336,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_fcff901c-55ba-4793-b726-7571bfbf0651,0,f,5cd91b90-250b-404b-9e31-a3a4b3ea8910,f,100.0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_90a1f8a1-f389-4e70-a9ff-539c10cbcaba
+2,50774,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_7d6417fd-725e-4746-bb99-ace83fda7c74,2,f,57b94685-86db-4c29-9da7-923bf8f733d3,f,,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_23891905-e2ec-4f53-86ef-3c48675cd2f6
+3,61784,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_2740d30d-c65f-4b3e-9e48-f59f1a46575f,8,f,8d4d56b0-2a80-4856-9a9c-27e98bb10f10,f,,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae8f524d-8b98-4ecf-a52c-850bffef1ca4
+4,62199,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_d66d67a5-3056-416d-9e97-06a83c78a41e,3,f,6a32bc56-2a58-422d-a141-7c3886c23ec6,f,,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2dbbbf52-f420-450b-9290-01171bf9f9b7
