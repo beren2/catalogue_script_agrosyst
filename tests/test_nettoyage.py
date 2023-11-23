@@ -42,7 +42,7 @@ def test_debit_chantier_intervention_realise():
     
 def test_utilisation_intrant_dose_realise():
     """
-        Test de la détection de dose trop hautes utilisées
+        Test de la détection de dose trop hautes utilisées en réalisé
     """
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
@@ -55,19 +55,19 @@ def test_utilisation_intrant_dose_realise():
     id_utilisation_intrant_dose_ok_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '1']['id_ligne'])
 
     # obtention des données
-    path_data = 'tests/data/test_utilisation_intrant_dose_realise/'
+    path_data = 'tests/data/test_utilisation_intrant_dose/'
     path_utilisation_intrant_realise = path_data+'utilisation_intrant_realise.csv'
     df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep =',')
 
     # filtration pour les données problématiques
     index_problem_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_problem_realise)
     # application de la fonction d'erreur aux lignes problématiques (elles doivent être signalées (0))
-    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise])
+    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise], saisie='realise')
     
     # filtration pour les données non-problématiques
     index_ok_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_ok_realise)
     # application de la fonction d'erreur aux lignes non problématiques (elles doivent passées (1))
-    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise])
+    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='realise')
     
     # toutes les lignes de problèmes doivent valoir 0
     res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()[0]
@@ -76,6 +76,44 @@ def test_utilisation_intrant_dose_realise():
 
     assert res_problem
     assert res_ok
+
+def test_utilisation_intrant_dose_synthetise():
+    """
+        Test de la détection de dose trop hautes utilisées en synthétisé
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_utilisation_intrant_dose_synthetise']
+
+    # définition des lignes qui posent problème pour les débits de chantier en réalisé
+    id_utilisation_intrant_dose_problem_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '0']['id_ligne'])
+
+    # définition des lignes qui ne posent pas problème pour les débits de chantier en réalisé et qui doivent par conséquent, passer le test
+    id_utilisation_intrant_dose_ok_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '1']['id_ligne'])
+
+    # obtention des données
+    path_data = 'tests/data/test_utilisation_intrant_dose/'
+    path_utilisation_intrant_realise = path_data+'utilisation_intrant_synthetise.csv'
+    df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep =',')
+
+    # filtration pour les données problématiques
+    index_problem_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_problem_realise)
+    # application de la fonction d'erreur aux lignes problématiques (elles doivent être signalées (0))
+    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise], saisie='synthetise')
+    
+    # filtration pour les données non-problématiques
+    index_ok_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_ok_realise)
+    # application de la fonction d'erreur aux lignes non problématiques (elles doivent passées (1))
+    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='synthetise')
+    
+    # toutes les lignes de problèmes doivent valoir 0
+    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()[0]
+    # toutes les lignes sans problèmes doivent valoir 1 
+    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()[0]
+
+    assert res_problem
+    assert res_ok
+
 
 
 def test_get_infos_traitement():
