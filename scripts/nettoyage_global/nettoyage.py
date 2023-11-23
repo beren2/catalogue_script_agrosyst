@@ -7,7 +7,7 @@ import scripts.nettoyage_global.fonctions_tests as ft
 
 
 
-def nettoyage_utilisation_intrant(donnees, params=None, verbose=False):
+def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
@@ -28,11 +28,11 @@ def nettoyage_utilisation_intrant(donnees, params=None, verbose=False):
 
     # selection des données pertinentes et conversion en dictionnaires
     metadata_seuils = df_metadonnees_seuils
-    metadata_seuils = metadata_seuils.loc[metadata_seuils['script'] == 'nettoyage_intrant']
+    metadata_seuils = metadata_seuils.loc[metadata_seuils['script'] == 'nettoyage_utilisation_intrant']
     metadata_seuils = metadata_seuils.T.to_dict()
 
     metadata_tests = df_metadonnees_tests
-    metadata_tests = metadata_tests.loc[metadata_tests['script'] == 'nettoyage_intrant']
+    metadata_tests = metadata_tests.loc[metadata_tests['script'] == 'nettoyage_utilisation_intrant']
     metadata_tests = metadata_tests.T.to_dict()
 
     # modification des paramètres par l'utilisateur
@@ -48,14 +48,16 @@ def nettoyage_utilisation_intrant(donnees, params=None, verbose=False):
     # application des tests pour obtention du "code_test"
     for test_index, test_key in enumerate(metadata_tests.keys()):
         test = metadata_tests[test_key]
+        #print(test)
+        
         if verbose :
             print("Application du test :", test_index, test_key)
 
         # obtention de la fonction associée au test
         fonction_test = getattr(ft, test['fichier'])
-
+        
         # application de la fonction
-        code_test = np.array(fonction_test(donnees, metadata_seuils))
+        code_test = np.array(fonction_test(donnees, metadata_seuils, saisie))
 
         # stockage des résultats
         codes_tests.append(code_test)
@@ -66,7 +68,7 @@ def nettoyage_utilisation_intrant(donnees, params=None, verbose=False):
     return res
 
 
-def nettoyage_intervention(donnees, params=None, verbose=False):
+def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
@@ -114,7 +116,7 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
         fonction_test = getattr(ft, test['fichier'])
 
         # application de la fonction
-        code_test = np.array(fonction_test(donnees, metadata_seuils))
+        code_test = np.array(fonction_test(donnees, metadata_seuils, donnees_aux=donnees_aux))
 
         # stockage des résultats
         codes_tests.append(code_test)
