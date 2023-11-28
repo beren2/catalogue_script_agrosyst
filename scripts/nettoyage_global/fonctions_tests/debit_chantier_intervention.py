@@ -6,7 +6,7 @@
 """
 import numpy as np
 
-def debit_chantier_intervention(donnees, metadata_seuils):
+def debit_chantier_intervention(donnees, metadata_seuils, donnees_aux=None):
     """
         Retourne une série binaire de taille n. 
         La ligne i de cette série contient 1 si le test est passé pour la ligne, 0 sinon.
