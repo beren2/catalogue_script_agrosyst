@@ -6,7 +6,7 @@
 import pandas as pd
 from scripts.utils import fonctions_utiles
 
-def dose_utilisation_intrant(donnees, metadata_seuils, saisie):
+def dose_utilisation_intrant(donnees, metadata_seuils, saisie, path_data='data/20230927/'):
     """
         Retourne une série binaire de taille n. 
         La ligne i de cette série contient 1 si le test est passé pour la ligne, 0 sinon.
@@ -27,7 +27,8 @@ def dose_utilisation_intrant(donnees, metadata_seuils, saisie):
 
     df_utilisation_complet = fonctions_utiles.get_infos_all_utilisation_intrant(
         donnees_local.copy(), 
-        saisie=saisie
+        saisie=saisie,
+        path_data=path_data
     )
     
     index_same_unit = df_utilisation_complet.loc[(df_utilisation_complet['unite'] == df_utilisation_complet['unit_dose_ref_maa'])].index

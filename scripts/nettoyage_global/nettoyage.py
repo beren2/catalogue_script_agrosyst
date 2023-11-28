@@ -7,7 +7,7 @@ import scripts.nettoyage_global.fonctions_tests as ft
 
 
 
-def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False):
+def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False, path_data='data/20230927/'):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
@@ -48,7 +48,6 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
     # application des tests pour obtention du "code_test"
     for test_index, test_key in enumerate(metadata_tests.keys()):
         test = metadata_tests[test_key]
-        #print(test)
         
         if verbose :
             print("Application du test :", test_index, test_key)
@@ -57,7 +56,7 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
         fonction_test = getattr(ft, test['fichier'])
         
         # application de la fonction
-        code_test = np.array(fonction_test(donnees, metadata_seuils, saisie))
+        code_test = np.array(fonction_test(donnees, metadata_seuils, saisie, path_data=path_data))
 
         # stockage des résultats
         codes_tests.append(code_test)

@@ -62,12 +62,12 @@ def test_utilisation_intrant_dose_realise():
     # filtration pour les données problématiques
     index_problem_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_problem_realise)
     # application de la fonction d'erreur aux lignes problématiques (elles doivent être signalées (0))
-    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise], saisie='realise')
+    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise], saisie='realise', verbose=True, path_data=path_data)
     
     # filtration pour les données non-problématiques
     index_ok_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_ok_realise)
     # application de la fonction d'erreur aux lignes non problématiques (elles doivent passées (1))
-    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='realise')
+    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='realise', verbose=True, path_data=path_data)
     
     # toutes les lignes de problèmes doivent valoir 0
     res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()[0]
