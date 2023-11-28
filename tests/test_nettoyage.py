@@ -70,9 +70,9 @@ def test_utilisation_intrant_dose_realise():
     code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='realise', verbose=True, path_data=path_data)
     
     # toutes les lignes de problèmes doivent valoir 0
-    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()[0]
+    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()
     # toutes les lignes sans problèmes doivent valoir 1 
-    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()[0]
+    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()
 
     assert res_problem
     assert res_ok
@@ -107,9 +107,9 @@ def test_utilisation_intrant_dose_synthetise():
     code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='synthetise', path_data=path_data)
     
     # toutes les lignes de problèmes doivent valoir 0
-    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()[0]
+    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()
     # toutes les lignes sans problèmes doivent valoir 1 
-    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()[0]
+    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()
 
     assert res_problem
     assert res_ok
