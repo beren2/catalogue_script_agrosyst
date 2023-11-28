@@ -5,7 +5,7 @@
 """
 import pandas as pd
 
-def date_intervention(donnees, metadata_seuils):
+def date_intervention(donnees, metadata_seuils, donnees_aux=None):
     """
         Retourne une série binaire de taille n. 
         La ligne i de cette série contient 1 si le test est passé pour la ligne, 0 sinon.
@@ -20,6 +20,8 @@ def date_intervention(donnees, metadata_seuils):
     """
     # copie des données en local
     donnees_local = donnees.copy()
+
+    print(donnees_aux is None)
 
     # durée de l'intervention
     date_debut = donnees_local['date_debut']
