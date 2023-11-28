@@ -43,6 +43,6 @@ def dose_utilisation_intrant(donnees, metadata_seuils, saisie, path_data='data/2
     donnees_local = pd.merge(left, right, on = 'id', how='left')
 
     # les utilisations d'intrants qui n'ont pas de dose de références remontées passent le test par défaut.
-    donnees_local['code_test'] = donnees_local['code_test'].fillna(1)
+    donnees_local['code_test'] = donnees_local['code_test'].fillna(1).astype(int)
 
     return donnees_local['code_test']

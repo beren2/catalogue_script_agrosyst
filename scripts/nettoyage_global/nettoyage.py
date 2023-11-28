@@ -116,10 +116,12 @@ def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False
 
         # application de la fonction
         code_test = np.array(fonction_test(donnees, metadata_seuils, donnees_aux=donnees_aux))
+        
 
         # stockage des résultats
         codes_tests.append(code_test)
 
+        
     df = pd.DataFrame(np.transpose(codes_tests)).astype('str')
     res = df.apply(lambda x : ''+''.join(x), axis=1)
 
