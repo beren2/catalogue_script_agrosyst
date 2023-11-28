@@ -63,11 +63,11 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
 
     df = pd.DataFrame(np.transpose(codes_tests)).astype('str')
     res = df.apply(lambda x : ''+''.join(x), axis=1)
-    
+
     ids = donnees['id'].reset_index()['id']
     res_2 = pd.concat([ids, res], axis=1).set_index('id')[0]
 
-    return res
+    return res_2
 
 
 def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False):
