@@ -26,10 +26,10 @@ def dose_utilisation_intrant(donnees, metadata_seuils, saisie, path_data='data/2
     multiple_dose_ref = float(metadata_seuils['multiple_dose_ref']['seuil'])
 
     df_utilisation_complet = fonctions_utiles.get_infos_all_utilisation_intrant(
-        donnees_local.copy(), 
-        saisie=saisie,
-        path_data=path_data
+        donnees_local,
+        saisie=saisie
     )
+
     
     index_same_unit = df_utilisation_complet.loc[(df_utilisation_complet['unite'] == df_utilisation_complet['unit_dose_ref_maa'])].index
 
@@ -38,11 +38,11 @@ def dose_utilisation_intrant(donnees, metadata_seuils, saisie, path_data='data/2
         (df_utilisation_complet.loc[index_same_unit, 'dose'] < multiple_dose_ref*df_utilisation_complet.loc[index_same_unit, 'dose_ref_maa']) 
     ).astype('int')
 
-    left = donnees_local
+    left = donnees_local['utilisation_intrant_'+saisie]
     right = df_utilisation_complet[['id', 'code_test']]
-    donnees_local = pd.merge(left, right, on = 'id', how='left')
+    res = pd.merge(left, right, on = 'id', how='left')
 
     # les utilisations d'intrants qui n'ont pas de dose de références remontées passent le test par défaut.
-    donnees_local['code_test'] = donnees_local['code_test'].fillna(1).astype(int)
+    res['code_test'] = res['code_test'].fillna(1).astype(int)
 
-    return donnees_local['code_test']
+    return res['code_test']
