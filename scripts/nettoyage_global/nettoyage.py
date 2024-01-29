@@ -7,15 +7,21 @@ import scripts.nettoyage_global.fonctions_tests as ft
 
 
 
-def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False, path_data='data/20230927/'):
+def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
 
                 Paramètres:
-                    donnees (df) : dataframe contenant les données d'intrants
+                    donnees (dict) : dictionnaire contenant les données utiles : 
+                        clés avec les dataframes correspondants : 
+                            'composant_culture', 'connection_synthetise', 'culture', 'intervention_realise', 
+                            'intervention_synthetise', 'intrant', 'noeuds_realise', 'noeuds_synhtetise', 
+                            'plantation_perenne_phases_realise', 'plantation_perenne_phases_synthetise', 
+                            'plantation_perenne_realise', 'plantation_perenne_synthetise', 'utilisation_intrant_cible',
+                            'utilisation_intrant_realise', 'utilisation_intrant_synthetise'
                     params (dict): dictionnaire contenant les métadonnées que l'utilisateur 
-                        souhaite modifié.
+                        souhaite modifié. (cf data/metadonnees_seuils.csv avec le script "nettoyage_utilisation_intrant")
                     verbose (booleen) : booléen indiquant le niveau de détail (True = details 
                         maximum)
             
@@ -41,10 +47,10 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
         for key_params in params.keys():
             if key_params in metadata_seuils.keys():
                 # on remplace la valeur du paramètre par celles de l'utilisateurs
-                metadata_seuils[key_params] = params[key_params]
+                metadata_seuils[key_params]['seuil'] = params[key_params]
 
     # initialisation de la variable contenant les flags pour l'ensembles des tests
-    codes_tests = []
+    codes_tests = {}
     # application des tests pour obtention du "code_test"
     for test_index, test_key in enumerate(metadata_tests.keys()):
         test = metadata_tests[test_key]
@@ -56,32 +62,28 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
         fonction_test = getattr(ft, test['fichier'])
         
         # application de la fonction
-        code_test = np.array(fonction_test(donnees, metadata_seuils, saisie, path_data=path_data))
-
-        # stockage des résultats
-        codes_tests.append(code_test)
-
-    df = pd.DataFrame(np.transpose(codes_tests)).astype('str')
-    res = df.apply(lambda x : ''+''.join(x), axis=1)
-
-    ids = donnees['id'].reset_index()['id']
-    res_2 = pd.concat([ids, res], axis=1).set_index('id')[0]
+        # application de la fonction
+        codes_tests[test_key]= np.array(fonction_test(donnees, metadata_seuils, saisie))
+    
+    df = pd.DataFrame.from_dict(codes_tests)
+    ids = donnees['utilisation_intrant_'+saisie].reset_index()['id']
+    res_2 = pd.concat([ids, df], axis=1).set_index('id')
 
     return res_2
 
 
-def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False):
+def nettoyage_intervention(donnees, params=None, verbose=False):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
 
                 Paramètres:
-                    donnees (df) : dataframe contenant les données d'interventions
+                    donnees (dict) : dictionnaire contenant les données utiles :
+                        intervention_realise : df des intervention en réalisé
                     params (dict): dictionnaire contenant les métadonnées que l'utilisateur 
                         souhaite modifié.
                     verbose (booleen) : booléen indiquant le niveau de détail (True = details 
                         maximum)
-            
                 Retourne:
                     res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
@@ -104,10 +106,10 @@ def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False
         for key_params in params.keys():
             if key_params in metadata_seuils.keys():
                 # on remplace la valeur du paramètre par celles de l'utilisateurs
-                metadata_seuils[key_params] = params[key_params]
+                metadata_seuils[key_params]['seuil'] = params[key_params]
 
     # initialisation de la variable contenant les flags pour l'ensembles des tests
-    codes_tests = []
+    codes_tests = {}
     # application des tests pour obtention du "code_test"
     for test_index, test_key in enumerate(metadata_tests.keys()):
         test = metadata_tests[test_key]
@@ -117,18 +119,14 @@ def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False
         # obtention de la fonction associée au test
         fonction_test = getattr(ft, test['fichier'])
 
+        print(test['fichier'])
+
         # application de la fonction
-        code_test = np.array(fonction_test(donnees, metadata_seuils, donnees_aux=donnees_aux))
-        
+        codes_tests[test_key]= np.array(fonction_test(donnees, metadata_seuils))
 
-        # stockage des résultats
-        codes_tests.append(code_test)
-
-        
-    df = pd.DataFrame(np.transpose(codes_tests)).astype('str')
-    res = df.apply(lambda x : ''+''.join(x), axis=1)
-    ids = donnees['id'].reset_index()['id']
-    res_2 = pd.concat([ids, res], axis=1).set_index('id')[0]
-
+    df = pd.DataFrame.from_dict(codes_tests)
+    ids = donnees['intervention_realise'].reset_index()['id']
+    res_2 = pd.concat([ids, df], axis=1).set_index('id')
+    
     return res_2
             

@@ -3,6 +3,19 @@ import pandas as pd
 from scripts.nettoyage_global import nettoyage
 from scripts.utils import fonctions_utiles
 
+
+
+def import_df(df_name, path_data, sep, df):
+    df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep)
+
+def import_dfs(df_names, path_data,  df, sep = ','):
+    for df_name in df_names : 
+        import_df(df_name, path_data, sep, df)
+
+    return df
+
+        
+
 def test_debit_chantier_intervention_realise():
     """
         Test du débit de chantier des interventions en réalisé
@@ -18,24 +31,33 @@ def test_debit_chantier_intervention_realise():
     intervention_id_debit_chantier_ok_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '1']['id_ligne'])
 
     # obtention des données
+    df_names = ['intervention_realise']
     path_data = 'tests/data/test_debit_chantier_intervention_realise/'
-    path_intervention_realise = path_data+'intervention_realise.csv'
-    df_intervention_realise = pd.read_csv(path_intervention_realise, sep = ',')
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    print(donnees.keys())
+    df_intervention_realise = donnees['intervention_realise']
 
     # filtration pour les données problématiques
     index_problem_realise = df_intervention_realise['id'].isin(intervention_id_debit_chantier_problem_realise)
+    # données qui posent problème
+    donnees_problem = donnees.copy()
+    donnees_problem['intervention_realise'] = donnees_problem['intervention_realise'].loc[index_problem_realise]
     # application de la fonction d'erreur aux lignes problématiques (elles doivent être signalées (0))
-    code_test_problem = nettoyage.nettoyage_intervention(df_intervention_realise.loc[index_problem_realise])
-    
+    code_test_problem = nettoyage.nettoyage_intervention(donnees_problem)
+
     # filtration pour les données non-problématiques
     index_ok_realise = df_intervention_realise['id'].isin(intervention_id_debit_chantier_ok_realise)
+    # données qui ne posent pas de problème
+    donnees_ok = donnees.copy()
+    donnees_ok['intervention_realise'] = donnees_ok['intervention_realise'].loc[index_ok_realise]
     # application de la fonction d'erreur aux lignes non problématiques (elles doivent passées (1))
-    code_test_ok = nettoyage.nettoyage_intervention(df_intervention_realise.loc[index_ok_realise])
+    code_test_ok = nettoyage.nettoyage_intervention(donnees_ok)
+    
 
     # toutes les lignes de problèmes doivent valoir 0
-    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()
+    res_problem = (code_test_problem['debit_chantier'] == 0).all()
     # toutes les lignes sans problèmes doivent valoir 1 
-    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()
+    res_ok = (code_test_ok['debit_chantier'] == 1).all()
 
     assert res_problem
     assert res_ok
@@ -55,24 +77,47 @@ def test_utilisation_intrant_dose_realise():
     id_utilisation_intrant_dose_ok_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '1']['id_ligne'])
 
     # obtention des données
-    path_data = 'tests/data/test_utilisation_intrant_dose/'
-    path_utilisation_intrant_realise = path_data+'utilisation_intrant_realise.csv'
-    df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep =',')
+    df_names = [    
+                    'composant_culture', 'culture', 'intervention_realise', 'intrant', 'noeuds_realise',
+                    'plantation_perenne_phases_realise', 
+                    'plantation_perenne_realise', 'utilisation_intrant_cible',
+                    'utilisation_intrant_realise'        
+                ]
+    path_data = 'tests/data/test_utilisation_intrant_dose_realise/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    # obtention des référentiels
+    path_ref = 'data/referentiels/'
+    refs_names = [
+        'ref_nuisible_edi',
+        'ref_correspondance_groupe_cible', 
+        'ref_adventice',
+        'dose_ref_cible'
+    ]
+
+    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    df_utilisation_intrant_realise = donnees['utilisation_intrant_realise']
 
     # filtration pour les données problématiques
     index_problem_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_problem_realise)
+    # données qui posent problème
+    donnees_problem = donnees.copy()
+    donnees_problem['utilisation_intrant_realise'] = donnees_problem['utilisation_intrant_realise'].loc[index_problem_realise]
     # application de la fonction d'erreur aux lignes problématiques (elles doivent être signalées (0))
-    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise], saisie='realise', verbose=True, path_data=path_data)
+    code_test_problem = nettoyage.nettoyage_utilisation_intrant(donnees_problem, saisie='realise', verbose=True)
     
     # filtration pour les données non-problématiques
     index_ok_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_ok_realise)
+    # données qui ne posent pas de problème
+    donnees_ok = donnees.copy()
+    donnees_ok['utilisation_intrant_realise'] = donnees_ok['utilisation_intrant_realise'].loc[index_ok_realise]
     # application de la fonction d'erreur aux lignes non problématiques (elles doivent passées (1))
-    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='realise', verbose=True, path_data=path_data)
+    code_test_ok = nettoyage.nettoyage_utilisation_intrant(donnees_ok, saisie='realise', verbose=True)
     
     # toutes les lignes de problèmes doivent valoir 0
-    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()
+    res_problem = (code_test_problem['dose_ref'] == 0).all()
     # toutes les lignes sans problèmes doivent valoir 1 
-    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()
+    res_ok = (code_test_ok['dose_ref'] == 1).all()
 
     assert res_problem
     assert res_ok
@@ -86,30 +131,55 @@ def test_utilisation_intrant_dose_synthetise():
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_utilisation_intrant_dose_synthetise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
-    id_utilisation_intrant_dose_problem_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '0']['id_ligne'])
+    id_utilisation_intrant_dose_problem_synthetise= list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '0']['id_ligne'])
 
     # définition des lignes qui ne posent pas problème pour les débits de chantier en réalisé et qui doivent par conséquent, passer le test
-    id_utilisation_intrant_dose_ok_realise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '1']['id_ligne'])
+    id_utilisation_intrant_dose_ok_synthetise = list(df_metadonnees.loc[df_metadonnees['valeur_attendue'] == '1']['id_ligne'])
+
 
     # obtention des données
+    df_names = [    
+                    'composant_culture', 'connection_synthetise', 'culture', 'intervention_synthetise', 'intrant', 'noeuds_synthetise',
+                    'plantation_perenne_phases_synthetise', 
+                    'plantation_perenne_synthetise', 'utilisation_intrant_cible',
+                    'utilisation_intrant_synthetise'        
+                ]
     path_data = 'tests/data/test_utilisation_intrant_dose/'
-    path_utilisation_intrant_realise = path_data+'utilisation_intrant_synthetise.csv'
-    df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep =',')
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    # obtention des référentiels
+    path_ref = 'data/referentiels/'
+    refs_names = [
+        'ref_nuisible_edi',
+        'ref_correspondance_groupe_cible', 
+        'ref_adventice',
+        'dose_ref_cible'
+    ]
+
+    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise']
+
 
     # filtration pour les données problématiques
-    index_problem_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_problem_realise)
+    index_problem_synthetise = df_utilisation_intrant_synthetise['id'].isin(id_utilisation_intrant_dose_problem_synthetise)
+    # données qui posent problème
+    donnees_problem = donnees.copy()
+    donnees_problem['utilisation_intrant_synthetise'] = donnees_problem['utilisation_intrant_synthetise'].loc[index_problem_synthetise]
     # application de la fonction d'erreur aux lignes problématiques (elles doivent être signalées (0))
-    code_test_problem = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_problem_realise], saisie='synthetise', path_data=path_data)
+    code_test_problem = nettoyage.nettoyage_utilisation_intrant(donnees_problem, saisie='synthetise')
     
     # filtration pour les données non-problématiques
-    index_ok_realise = df_utilisation_intrant_realise['id'].isin(id_utilisation_intrant_dose_ok_realise)
+    index_ok_synthetise = df_utilisation_intrant_synthetise['id'].isin(id_utilisation_intrant_dose_ok_synthetise)
+     # données qui ne posent pas de problème
+    donnees_ok = donnees.copy()
+    donnees_ok['utilisation_intrant_synthetise'] = donnees_ok['utilisation_intrant_synthetise'].loc[index_ok_synthetise]
     # application de la fonction d'erreur aux lignes non problématiques (elles doivent passées (1))
-    code_test_ok = nettoyage.nettoyage_utilisation_intrant(df_utilisation_intrant_realise.loc[index_ok_realise], saisie='synthetise', path_data=path_data)
+    code_test_ok = nettoyage.nettoyage_utilisation_intrant(donnees_ok, saisie='synthetise')
     
     # toutes les lignes de problèmes doivent valoir 0
-    res_problem = (code_test_problem.apply(lambda x : x[0]) == '0').all()
+    res_problem = (code_test_problem['dose_ref'] == 0).all()
     # toutes les lignes sans problèmes doivent valoir 1 
-    res_ok = (code_test_ok.apply(lambda x : x[0]) == '1').all()
+    res_ok = (code_test_ok['dose_ref'] == 1).all()
 
     assert res_problem
     assert res_ok
@@ -156,16 +226,38 @@ def test_get_dose_ref():
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_dose_ref']
 
     # obtention des données
-    path_data = 'tests/data/test_get_dose_ref/'
-    path_utilisation_intrant_realise = path_data+'utilisation_intrant_realise.csv'
-    path_utilisation_intrant_synthetise = path_data+'utilisation_intrant_synthetise.csv'
+    df_names = [    
+                    'utilisation_intrant_realise',
+                    'utilisation_intrant_synthetise',
+                    'intrant',
+                    'composant_culture',
+                    'utilisation_intrant_cible', 
+                    'culture',
+                    'intervention_realise', 
+                    'intervention_synthetise',
+                    'plantation_perenne_realise', 
+                    'plantation_perenne_synthetise',
+                    'plantation_perenne_phases_realise',
+                    'plantation_perenne_phases_synthetise',
+                    'noeuds_realise', 'noeuds_synthetise',
+                    'connection_synthetise'
+                ]
+    path_data = 'tests/data/test_utilisation_intrant_dose/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
-    df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep = ',') 
-    df_utilisation_intrant_synthetise = pd.read_csv(path_utilisation_intrant_synthetise, sep = ',')
+    # obtention des référentiels
+    path_ref = 'data/referentiels/'
+    refs_names = [
+        'ref_nuisible_edi',
+        'ref_correspondance_groupe_cible', 
+        'ref_adventice',
+        'dose_ref_cible'
+    ]
+    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
 
     # obtention de la dose de référence à partir de la fonction get_infos_all_utilisation_intrant
-    df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(df_utilisation_intrant_realise, saisie = 'realise', path_data=path_data)
-    df_utilisation_intrant_synthetise = fonctions_utiles.get_infos_all_utilisation_intrant(df_utilisation_intrant_synthetise, saisie = 'synthetise', path_data=path_data)
+    df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(donnees, saisie = 'realise')
+    df_utilisation_intrant_synthetise = fonctions_utiles.get_infos_all_utilisation_intrant(donnees, saisie = 'synthetise')
     
     test_get_dose_ref_ = pd.concat([df_utilisation_intrant_realise, df_utilisation_intrant_synthetise], axis=0)
 
