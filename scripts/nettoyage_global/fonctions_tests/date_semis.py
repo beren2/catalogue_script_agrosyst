@@ -6,7 +6,7 @@
 """
 import pandas as pd
 
-def date_semis(donnees, metadata_seuils, donnees_aux=None):
+def date_semis(donnees, metadata_seuils):
     """
         Retourne une série binaire de taille n. 
         La ligne i de cette série contient 1 si le test est passé pour la ligne, 0 sinon.
@@ -20,20 +20,19 @@ def date_semis(donnees, metadata_seuils, donnees_aux=None):
                 Retourne:
                     code_test (Serie) : série binaire de taille n indiquant si le test est passé
     """
-
-
-
+    date_debut = 10 # todo
+    date_fin = 10   # todo
 
     date_debut = pd.to_datetime(date_debut, format="%Y-%m-%d", errors='coerce')
     date_fin = pd.to_datetime(date_fin, format="%Y-%m-%d", errors='coerce')
-    donnees_local['duree'] = date_fin - date_debut
+    donnees['duree'] = date_fin - date_debut
 
     # obtention dans les métadonnées du seuil approprié
     seuil_duree_min = metadata_seuils['duree_intervention_min']['seuil']
 
     # filtration des interventions qui durent au moins seuil_duree_min
-    code_test_duree_min = (donnees_local['duree'].dt.days >= seuil_duree_min).astype(int)
-    donnees_local['code_test'] = code_test_duree_min
+    code_test_duree_min = (donnees['duree'].dt.days >= seuil_duree_min).astype(int)
+    donnees['code_test'] = code_test_duree_min
 
-    return donnees_local['code_test']
+    return donnees['code_test']
     
