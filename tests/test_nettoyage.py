@@ -1,3 +1,7 @@
+"""
+    Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
+"""
+
 import pandas as pd
 #from nettoyage import nettoyage
 from scripts.nettoyage_global import nettoyage
@@ -6,9 +10,15 @@ from scripts.utils import fonctions_utiles
 
 
 def import_df(df_name, path_data, sep, df):
+    """
+        importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
+    """
     df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep)
 
 def import_dfs(df_names, path_data,  df, sep = ','):
+    """
+        stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
+    """
     for df_name in df_names : 
         import_df(df_name, path_data, sep, df)
 
@@ -183,8 +193,6 @@ def test_utilisation_intrant_dose_synthetise():
 
     assert res_problem
     assert res_ok
-
-
 
 def test_get_infos_traitement():
     """

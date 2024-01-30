@@ -139,9 +139,8 @@ def get_culture_id_FROM_culture_code_AND_campagne(df_culture, df_domaine):
             # on vérifie qu'aucune culture n'était renseigné pour la même campagne
             if campagne in culture_id_FROM_culture_code_AND_campagne[culture_code]:
                 raise ValueError('Doublon')
-            else:
-                # on ajoute la culture de la campagne à la liste pour ce code
-                culture_id_FROM_culture_code_AND_campagne[culture_code][campagne] = culture.Index
+            # on ajoute la culture de la campagne à la liste pour ce code
+            culture_id_FROM_culture_code_AND_campagne[culture_code][campagne] = culture.Index
 
     return culture_id_FROM_culture_code_AND_campagne
 
@@ -426,7 +425,7 @@ def correct_rang0_and_compute_importances(noeuds, aretes):
     noeuds, aretes = correct_rang0_freq_init(noeuds, aretes)
 
     # on attribue les fréquences totales aux noeuds et aretes
-    noeuds, aretes, convergence, n_steps = compute_importance(noeuds=noeuds, aretes=aretes)
+    noeuds, aretes, convergence, _ = compute_importance(noeuds=noeuds, aretes=aretes)
     
     assert convergence == "ok"
 

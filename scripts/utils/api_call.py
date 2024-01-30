@@ -92,7 +92,7 @@ def download_dfs_async(df_names, auth, verbose=False):
     rs = (grequests.get(
                             URL+'table_zip/'+df_name, 
                             auth=auth,
-                            hooks=dict(response=store_response)
+                            hooks={"response":store_response}
                         )
             for df_name in df_names)
     
