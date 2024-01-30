@@ -1,6 +1,6 @@
+# pylint: disable-all
+
 import pandas as pd
-
-
 
 def get_aggreged_from_utilisation_intrant_synthetise(
     donnees
