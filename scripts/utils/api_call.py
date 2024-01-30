@@ -2,15 +2,16 @@
     Ce script contient les fonctions utiles pour l'appel à l'api Datagrosyst : 
     (obtention des métadonnées de l'entrepôt, mise à jour des données...)
 """
+
 import json
-from datetime import datetime, date
+from datetime import datetime
 from io import StringIO
 import os
 import configparser
-from requests.auth import HTTPBasicAuth
+import grequests
 import requests
+from requests.auth import HTTPBasicAuth
 import pandas as pd
-
 
 # Obtention des données de configurations pour l'API et la mise à jour des données
 config = configparser.ConfigParser()
@@ -18,13 +19,14 @@ config.read(r'config/datagrosyst.ini')
 
 # Informations générales pour l'API 
 URL = config.get('api_info', 'url')
-LAST_UPDATE_DATE_FILE = config.get('api_info', 'last_update_date_file')
+DATAPATH = config.get('api_info', 'data_path')
+LAST_UPDATE_DATE_FILE = DATAPATH+'last_import_date.txt'
 
 # Informations d'authentification pour l'API
 DATAGROSYST_MAIL = config.get('api_info', 'mail')
 DATAGROSYST_PASSWORD = config.get('api_info', 'password')
 BASIC = HTTPBasicAuth(DATAGROSYST_MAIL, DATAGROSYST_PASSWORD)
-TIMEOUT = 100
+TIMEOUT = 1000
 
 def get_metadata(metadata_name):
     """ 
@@ -52,6 +54,7 @@ def download_df(df_name, verbose=False):
     r = requests.get(end_point, auth=BASIC, timeout=TIMEOUT)  
     return pd.read_csv(StringIO(r.text), sep=',')
 
+
 def download_dfs(df_names, data_path_out='./data/', verbose=False):
     """ 
         Chargement d'un ensemble de tables par appel à l'api 
@@ -59,6 +62,41 @@ def download_dfs(df_names, data_path_out='./data/', verbose=False):
     for df_name in df_names :
         df = download_df(df_name, verbose=verbose)
         df.to_csv(data_path_out+df_name+".csv")
+        
+# pylint: disable=unused-argument
+def store_response(r, *args, **kwargs):
+        """ 
+            Stockage de la réponse en paramètre
+        """
+        if r.status_code == 200:
+            try:
+                df_name = str(r.url).rsplit('/', maxsplit=1)[-1]
+                df_path = DATAPATH+df_name+".csv"
+
+                # Write the CSV data directly to the file
+                print("Écriture de ", df_name, " commencé...")
+                with open(df_path, 'w', encoding='utf-8') as file:
+                    file.write(r.text)
+                print("Écriture de ", df_name, " terminé !")
+            except Exception as e:
+                print(f"Error processing response for {df_name}: {str(e)}")
+        else:
+            print(f"Request for {df_name} failed with status code: {r.status_code}")
+
+def download_dfs_async(df_names, auth, verbose=False):
+    """
+        Chargement d'un ensemble de tables par appel à l'api avec écriture asynchrone en local
+    """
+    if(verbose):
+        print(df_names)
+    rs = (grequests.get(
+                            URL+'table_zip/'+df_name, 
+                            auth=auth,
+                            hooks=dict(response=store_response)
+                        )
+            for df_name in df_names)
+    
+    _ = list(grequests.imap(rs, size=5))
 
 def load_df(df_name, data_path_in, verbose=False):
     """ 
@@ -78,10 +116,11 @@ def loads_dfs(df_names, data_path_in='./data/', verbose=False):
     return dfs
 
 
-def refresh_last_data(data_path):
+def refresh_last_data(df_names=None):
     """
         Permet de mettre à jour les données du répertoire si un export + récent s'y trouve
     """
+    print("refresh_last_data")
     # récupération de la date des exports disponibles sur Datagrosyst
     current_export_date = datetime.strptime(get_metadata('date_current_export')['value'], "%Y-%m-%d")
     need_refresh = True
@@ -99,12 +138,21 @@ def refresh_last_data(data_path):
         
         # téléchargement des données
         print("Téléchargement [peut prendre plusieurs dizaines de minutes]...")
-        df_names = get_table_names()
-        download_dfs(df_names, data_path_out=data_path, verbose=True)
-        print("Téléchargement terminé !")
+        if (df_names is None):
+            df_names = get_table_names()
+
+        print("Téléchargement des tables ", df_names)
+        # Travailler dans une session est une piste pour gagner en performance, 
+        # mais cause plusieurs bugs (à l'interruption volontaire du programme, la session est conservée...)
+        #with requests.Session() as s:
+        # Adding basic authentication to the session
+        #s.auth = (DATAGROSYST_MAIL, DATAGROSYST_PASSWORD)
+        #s.config['keep_alive'] = False
+        auth = (DATAGROSYST_MAIL, DATAGROSYST_PASSWORD)
+        download_dfs_async(df_names, auth)
 
         # mise à jour des données locales : aujourd'hui
-        with open(LAST_UPDATE_DATE_FILE, "w+", encoding="utf8") as file:
-            file.write(str(date.today()))
+        #with open(LAST_UPDATE_DATE_FILE, "w+", encoding="utf8") as file:
+        #    file.write(str(date.today()))
     else :
         print("Vos données sont à jour !")
