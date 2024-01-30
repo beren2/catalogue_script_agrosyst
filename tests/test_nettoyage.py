@@ -164,8 +164,8 @@ def test_get_dose_ref():
     df_utilisation_intrant_synthetise = pd.read_csv(path_utilisation_intrant_synthetise, sep = ',')
 
     # obtention de la dose de référence à partir de la fonction get_infos_all_utilisation_intrant
-    df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(df_utilisation_intrant_realise, saisie = 'realise', path_data=path_data)
-    df_utilisation_intrant_synthetise = fonctions_utiles.get_infos_all_utilisation_intrant(df_utilisation_intrant_synthetise, saisie = 'synthetise', path_data=path_data)
+    df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(df_utilisation_intrant_realise, saisie = 'realise')
+    df_utilisation_intrant_synthetise = fonctions_utiles.get_infos_all_utilisation_intrant(df_utilisation_intrant_synthetise, saisie = 'synthetise')
     
     test_get_dose_ref_ = pd.concat([df_utilisation_intrant_realise, df_utilisation_intrant_synthetise], axis=0)
 
