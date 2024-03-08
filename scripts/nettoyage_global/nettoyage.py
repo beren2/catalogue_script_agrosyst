@@ -133,7 +133,7 @@ def nettoyage_intervention(donnees, donnees_aux=None, params=None, verbose=False
     return res_2
             
 
-def nettoyage_identification_pz0_realise(donnees, path_data='data/20230927/'):
+def nettoyage_zone(donnees, path_data='data/20230927/'):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i

@@ -196,4 +196,3 @@ def test_get_dose_ref():
 
     assert res_valeur_ok
     assert res_unit_ok
-
