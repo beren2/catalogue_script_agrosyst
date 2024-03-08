@@ -577,18 +577,19 @@ def get_infos_all_utilisation_intrant(
     # PZ0 |
     #-----#
 
-def get_itk_with_crops(df,path_data = './data/'):
+def get_itk_with_crops(df,donnees):
     """
     Identifie les zones ou synthetise ayant au moins une culture
 
     Paramètres :
-                df : Dataframe issu de l'entrepot : zone ou synthetise
+                df (df) : Dataframe issu de l'entrepot : zone ou synthetise
+                donnees (dict) : Dictionnaire de dataframe bruts
     Retourne : Retourne une liste d'id de zone ou synthetise ayant ont au moins une culture
     """
     
     if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
-        e_noeuds_real = pd.read_csv(path_data + "noeuds_realise.csv", delimiter=',')
-        e_perene_real = pd.read_csv(path_data + "plantation_perenne_realise.csv", delimiter=',')
+        e_noeuds_real = donnees['noeuds_realise'].copy()
+        e_perene_real = donnees['plantation_perenne_realise'].copy()
 
         id_with_crops = (
             pd.merge(df, e_noeuds_real[['id','zone_id']], left_on='id', right_on='zone_id',suffixes=('', '_sdc'))['id'].to_list()
@@ -596,8 +597,8 @@ def get_itk_with_crops(df,path_data = './data/'):
             )
 
     if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
-        e_noeuds_synt = pd.read_csv(path_data + "noeuds_synthetise.csv", delimiter=',')
-        e_perene_synt = pd.read_csv(path_data + "plantation_perenne_synthetise.csv", delimiter=',')
+        e_noeuds_synt = donnees['noeuds_synthetise'].copy()
+        e_perene_synt = donnees['plantation_perenne_synthetise'].copy()
 
         id_with_crops = (
             pd.merge(df, e_noeuds_synt[['id','synthetise_id']], left_on='id', right_on='synthetise_id',suffixes=('', '_sdc'))['id'].to_list()
@@ -606,20 +607,21 @@ def get_itk_with_crops(df,path_data = './data/'):
         
     return(list(np.unique(id_with_crops)))
 
-def get_num_dephy(df,path_data = 'data/'):
+def get_num_dephy(df,donnees):
     """
         Associe une zone ou synthetise à son numero dephy, déclaré au niveau du systeme de culture (sdc)
         Homogénéise (espaces, tabulations, majuscules) les numeros dephy
 
         Paramètres :
                 df : Dataframe issu de l'entrepot : zone ou synthetise
+                donnees (dict) : Dictionnaire de dataframe bruts
         Retourne : le dataframe zone ou synthetise avec le numero dephy du sdc auquel il est attaché
                     les numeros dephy son homogénéisés (espaces, tabulations, majuscules)
     """
-    sdc = pd.read_csv(path_data + "sdc.csv", delimiter=',')
+    sdc = donnees['sdc'].copy()
 
     if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
-        parcelle = pd.read_csv(path_data + "parcelle.csv", delimiter=',')
+        parcelle = donnees['parcelle'].copy()
     
         # Jointure avec la table sdc pour récuperer le code_dephy
         parcelle = pd.merge(parcelle, sdc[['id','code_dephy','campagne']], left_on='sdc_id', right_on='id',suffixes=('', '_sdc'))

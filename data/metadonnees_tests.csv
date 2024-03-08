@@ -3,4 +3,4 @@
 "date_intervention","nettoyage_intervention",1,"date_intervention","Test pour vérifier que les dates de débuts et de fins de l’intervention sont cohérents"
 "dose_ref","nettoyage_utilisation_intrant",0,"dose_utilisation_intrant","Test pour vérifier que les doses de références ne sont pas trop supérieures à la dose de référence"
 "pz0_realise","nettoyage_identification_pz0_realise",0,"identification_pz0_realise","identification des realises points zero"
-"pz0_synthetise","nettoyage_identification_pz0_synthetise",0,"identification des synthetises points zero",""
+"pz0_synthetise","nettoyage_identification_pz0_synthetise",0,"identification_pz0_realise","identification des synthetises points zero"

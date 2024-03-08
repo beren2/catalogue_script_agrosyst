@@ -296,3 +296,38 @@ def test_get_dose_ref():
 
     assert res_valeur_ok
     assert res_unit_ok
+
+
+def test_identification_pz0():
+    """
+        Test de l'identification d'un pz0
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_identification_pz0_realise']
+
+    # obtention des données
+    df_names = [    
+                    'noeuds_realise',
+                    'noeuds_synthetise',
+                    'parcelle',
+                    'plantation_perenne_realise',
+                    'plantation_perenne_synthetise', 
+                    'sdc',
+                    'synthetise', 
+                    'zone'
+                ]
+    path_data = 'tests/data/test_identification_pz0/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    # application de la fonction d'identification des pz0
+    code_test = nettoyage.nettoyage_zone(donnees)
+    
+    df_metadonnees.set_index('id_ligne',inplace = True)
+    comparaison = pd.merge(code_test,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
+    print(comparaison)
+    print(comparaison['valeur_attendue'])
+    print(comparaison['pz0_realise'])
+    res_test = (comparaison['valeur_attendue'] == comparaison['pz0_realise']).all()
+    print(res_test)
+    assert res_test

@@ -1,24 +1,21 @@
 """
-    Fichier de test pour l'identification des pz0
+    Fichier pour l'identification des pz0
     Permet d attribuer 1 : si c'est un pz0 ou 0 si ca n'en est pas un pour :
     - chaque ligne de entrepot_zone
     - chaque ligne de entrepot_synthetise
 """
 import pandas as pd
 import numpy as np
-import fonctions_utiles
+from scripts.utils import fonctions_utiles 
 
-# Pour pouvoir utiliser des .query('id == @variable), on deactive les unused-variable 
-# pylint: disable=unused-variable 
-
-def identification_pz0_realise(path_data='./data/'):
+def identification_pz0_realise(donnees):
     """
         Retourne une série binaire de taille n  
         La ligne i de cette série contient 1 si la ligne est identifié comme pz0, 
             0 si c'est un post-pz0 ou bien si la ligne n'a pas été prise en compte dans l'analyse.
 
                 Paramètres:
-                    path_data (chr) : chemin d acces aux donnees
+                    donnees (dict) : dictionnaire de dataframe
 
                 Retourne:
                     pz0 (Serie) : série binaire de taille n indiquant si la ligne est un pz0
@@ -28,8 +25,8 @@ def identification_pz0_realise(path_data='./data/'):
     zone_pz0_vf = pd.DataFrame()
 
     # Les deux data frames principaux
-    e_zone = pd.read_csv(path_data+"zone.csv", delimiter=',')
-    e_synthetise = pd.read_csv(path_data+"synthetise.csv", delimiter=',')
+    e_zone = donnees['zone'].copy()
+    e_synthetise = donnees['synthetise'].copy()
     
     # Data frame recapitulatif des attributions des pz0
     df_pz0_recap = pd.DataFrame({'Etape':[],
@@ -39,11 +36,11 @@ def identification_pz0_realise(path_data='./data/'):
     
 
     #### 1. Nettoyage des données 
-    # ne garder que itk sur lesquels il a au moins une culture pour l indentification
-    id_zone_with_crops = fonctions_utiles.get_itk_with_crops(e_zone,path_data)
+    # pour l indentification, ne garder que itk sur lesquels il a au moins une culture
+    id_zone_with_crops = fonctions_utiles.get_itk_with_crops(e_zone,donnees)
     zone = e_zone.query('id == @id_zone_with_crops') 
 
-    id_synthe_with_crops = fonctions_utiles.get_itk_with_crops(e_synthetise,path_data)
+    id_synthe_with_crops = fonctions_utiles.get_itk_with_crops(e_synthetise,donnees)
     synthetise = e_synthetise.query('id == @id_synthe_with_crops')
 
     zone_sansculture = e_zone.query('id != @id_zone_with_crops')
@@ -51,9 +48,9 @@ def identification_pz0_realise(path_data='./data/'):
 
     df_pz0_recap.loc[len(df_pz0_recap)] = ["0.2 : nombre de realise et synthetise ayant au moins une culture",len(zone),len(synthetise)]
 
-    # codes dephy, ne garder que les itk qui ont un numero dephy pour l indentification
-    zone = fonctions_utiles.get_num_dephy(zone,path_data)
-    synthetise = fonctions_utiles.get_num_dephy(synthetise,path_data)
+    # pour l indentification, ne garder que les itk qui ont un numero dephy
+    zone = fonctions_utiles.get_num_dephy(zone,donnees)
+    synthetise = fonctions_utiles.get_num_dephy(synthetise,donnees)
     print("synthetise")
     print(synthetise)
     zone_sanscodedephy = zone.query('code_dephy.isnull()')
@@ -79,8 +76,8 @@ def identification_pz0_realise(path_data='./data/'):
                     0 : [2011,2016,2021], 
                     4 : [2012,2017,2022]}
 
-    def get_key(val_search,dict):
-        for key,value in dict.items():
+    def get_key(val_search,_dict):
+        for key,value in _dict.items():
             if val_search in value:
                 return key
 
@@ -227,14 +224,14 @@ def identification_pz0_realise(path_data='./data/'):
     zone_pz0_vf.set_index('id',inplace = True)
     return zone_pz0_vf['pz0']
 
-def identification_pz0_synthetise(path_data='./data/'):
+def identification_pz0_synthetise(donnees):
     """
-                Retourne une série binaire de taille n  
+        Retourne une série binaire de taille n  
         La ligne i de cette série contient 1 si la ligne est identifié comme pz0, 
             0 si c'est un post-pz0 ou bien si la ligne n'a pas été prise en compte dans l'analyse.
 
                 Paramètres:
-                    path_data (chr) : chemin d acces aux donnees
+                    donnees (dict) : dictionnaire de dataframe
 
                 Retourne:
                     pz0 (Serie) : série binaire de taille n indiquant si la ligne est un pz0
@@ -244,9 +241,9 @@ def identification_pz0_synthetise(path_data='./data/'):
     zone_pz0_vf = pd.DataFrame()
 
     # Les deux data frames principaux
-    e_zone = pd.read_csv(path_data+"zone.csv", delimiter=',')
-    e_synthetise = pd.read_csv(path_data+"synthetise.csv", delimiter=',')
-    
+    e_zone = donnees['zone'].copy()
+    e_synthetise = donnees['synthetise'].copy()
+
     # Data frame recapitulatif des attributions des pz0
     df_pz0_recap = pd.DataFrame({'Etape':[],
                                     'cumul_reali_status_attribues':[],
@@ -256,10 +253,10 @@ def identification_pz0_synthetise(path_data='./data/'):
 
     #### 1. Nettoyage des données 
     # ne garder que itk sur lesquels il a au moins une culture pour l indentification
-    id_zone_with_crops = fonctions_utiles.get_itk_with_crops(e_zone,path_data)
+    id_zone_with_crops = fonctions_utiles.get_itk_with_crops(e_zone,donnees)
     zone = e_zone.query('id == @id_zone_with_crops') 
 
-    id_synthe_with_crops = fonctions_utiles.get_itk_with_crops(e_synthetise,path_data)
+    id_synthe_with_crops = fonctions_utiles.get_itk_with_crops(e_synthetise,donnees)
     synthetise = e_synthetise.query('id == @id_synthe_with_crops')
 
     zone_sansculture = e_zone.query('id != @id_zone_with_crops')
@@ -268,8 +265,8 @@ def identification_pz0_synthetise(path_data='./data/'):
     df_pz0_recap.loc[len(df_pz0_recap)] = ["0.2 : nombre de realise et synthetise ayant au moins une culture",len(zone),len(synthetise)]
 
     # codes dephy, ne garder que les itk qui ont un numero dephy pour l indentification
-    zone = fonctions_utiles.get_num_dephy(zone,path_data)
-    synthetise = fonctions_utiles.get_num_dephy(synthetise,path_data)
+    zone = fonctions_utiles.get_num_dephy(zone,donnees)
+    synthetise = fonctions_utiles.get_num_dephy(synthetise,donnees)
 
     zone_sanscodedephy = zone.query('code_dephy.isnull()')
     synthetise_sanscodedephy = synthetise.query('code_dephy.isnull()')
@@ -294,8 +291,8 @@ def identification_pz0_synthetise(path_data='./data/'):
                     0 : [2011,2016,2021], 
                     4 : [2012,2017,2022]}
 
-    def get_key(val_search,dict):
-        for key,value in dict.items():
+    def get_key(val_search,_dict):
+        for key,value in _dict.items():
             if val_search in value:
                 return key
 
@@ -440,5 +437,3 @@ def identification_pz0_synthetise(path_data='./data/'):
 
     synthetise_pz0_vf.set_index('id',inplace = True)
     return synthetise_pz0_vf['pz0']
-
-print(identification_pz0_synthetise("C:/Users/lubaude/Documents/Datagrosyst/catalogue_script/catalogue_script_agrosyst/tests/data/test_identification_pz0/"))
