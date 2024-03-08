@@ -30,11 +30,22 @@ Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d
 ### Scripts
 Les scripts sont disponibles dans le répetoire [scripts](scripts/). 
 
-##### Nettoyage global
+#### Nettoyage global
 Les scripts disponibles dans le repertoire [scripts/nettoyage_global](scripts/nettoyage_global/) proposent des fonctions permettant d'obtenir des scores de conformité pour chaque entité d'Agrosyst. Plus d'information dans le README.md du répertoire. 
 
-##### Utils
-Les scripts disponibles dans le repertoire [scripts/utils](scripts/utils/) proposent des fonctions utiles permettant par exemple d'obtenir des informatiosn supplémentaires sur les données.
+#### Utils
+
+##### Général
+Les scripts disponibles dans le repertoire [scripts/utils](scripts/utils/) proposent des fonctions utiles permettant par exemple d'obtenir des informatiosn supplémentaires sur les données ou de mettre à jour les données via l'appel à l'api. 
+
+##### Mise à jour ou téléchargement des données via l'API
+1) Modifier le fichier de configuration avec vos informations [config/datagrosyst.ini](config/database.ini) 
+> Le chemin last_update_date_file sert de stockage pour l'historique de vos mise à jours des données, il est conseillé de le stocker au même endroit que ces dernières
+2) Servez-vous de la fonction principale dans [api_call.py](scripts/utils/api_call.py) :
+
+> `refresh_last_data(data_path)`
+
+
 
 ### Tests
 Les tests sont disponibles dans le repetoire [tests](tests/). Plus d'information dans le README.md du répertoire. 
