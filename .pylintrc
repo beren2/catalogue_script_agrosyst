@@ -107,6 +107,8 @@ disable=
     fixme,
     cyclic-import,
     import-error,
+    unused-argument,
+    unused-variable,
 
 
 [REPORTS]
