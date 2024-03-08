@@ -130,3 +130,25 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
     
     return res_2
             
+
+def nettoyage_identification_pz0_realise(donnees, path_data='data/20230927/'):
+    """
+        Retourne une série de vecteurs binaire.
+        La ligne i de cette série contient le vecteur test associé à la ligne i
+
+                Paramètres:
+                    donnees (df) : dataframe contenant les données d'intrants
+                    params (dict): dictionnaire contenant les métadonnées que l'utilisateur 
+                        souhaite modifié.
+                    verbose (booleen) : booléen indiquant le niveau de détail (True = details 
+                        maximum)
+            
+                Retourne:
+                    res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
+    """
+    # lecture du fichier de métadonnées
+    df_metadonnees_tests = pd.read_csv('data/metadonnees_tests.csv', index_col='id')
+
+    metadata_tests = df_metadonnees_tests
+    metadata_tests = metadata_tests.loc[metadata_tests['script'] == 'nettoyage_identification_pz0_realise']
+    metadata_tests = metadata_tests.T.to_dict()

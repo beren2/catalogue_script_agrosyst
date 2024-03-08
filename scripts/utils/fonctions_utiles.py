@@ -2,6 +2,7 @@
     Ce script contient les fonctions utiles dans les scripts principaux
 """
 import pandas as pd
+import numpy as np 
 
 
 def get_infos_traitement(df_utilisation_intrant, df_intrant):
@@ -570,3 +571,155 @@ def get_infos_all_utilisation_intrant(
     )
 
     return final_get_dose_ref
+
+
+    #-----#
+    # PZ0 |
+    #-----#
+
+def get_itk_with_crops(df,path_data = './data/'):
+    """
+    Identifie les zones ou synthetise ayant au moins une culture
+
+    Paramètres :
+                df : Dataframe issu de l'entrepot : zone ou synthetise
+    Retourne : Retourne une liste d'id de zone ou synthetise ayant ont au moins une culture
+    """
+    
+    if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
+        e_noeuds_real = pd.read_csv(path_data + "noeuds_realise.csv", delimiter=',')
+        e_perene_real = pd.read_csv(path_data + "plantation_perenne_realise.csv", delimiter=',')
+
+        id_with_crops = (
+            pd.merge(df, e_noeuds_real[['id','zone_id']], left_on='id', right_on='zone_id',suffixes=('', '_sdc'))['id'].to_list()
+            + pd.merge(df, e_perene_real[['id','zone_id']], left_on='id', right_on='zone_id',suffixes=('', '_sdc'))['id'].to_list()
+            )
+
+    if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
+        e_noeuds_synt = pd.read_csv(path_data + "noeuds_synthetise.csv", delimiter=',')
+        e_perene_synt = pd.read_csv(path_data + "plantation_perenne_synthetise.csv", delimiter=',')
+
+        id_with_crops = (
+            pd.merge(df, e_noeuds_synt[['id','synthetise_id']], left_on='id', right_on='synthetise_id',suffixes=('', '_sdc'))['id'].to_list()
+            + pd.merge(df, e_perene_synt[['id','synthetise_id']], left_on='id', right_on='synthetise_id',suffixes=('', '_sdc'))['id'].to_list()
+        )
+        
+    return(list(np.unique(id_with_crops)))
+
+def get_num_dephy(df,path_data = 'data/'):
+    """
+        Associe une zone ou synthetise à son numero dephy, déclaré au niveau du systeme de culture (sdc)
+        Homogénéise (espaces, tabulations, majuscules) les numeros dephy
+
+        Paramètres :
+                df : Dataframe issu de l'entrepot : zone ou synthetise
+        Retourne : le dataframe zone ou synthetise avec le numero dephy du sdc auquel il est attaché
+                    les numeros dephy son homogénéisés (espaces, tabulations, majuscules)
+    """
+    sdc = pd.read_csv(path_data + "sdc.csv", delimiter=',')
+
+    if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
+        parcelle = pd.read_csv(path_data + "parcelle.csv", delimiter=',')
+    
+        # Jointure avec la table sdc pour récuperer le code_dephy
+        parcelle = pd.merge(parcelle, sdc[['id','code_dephy','campagne']], left_on='sdc_id', right_on='id',suffixes=('', '_sdc'))
+        
+        df = (pd.merge(df[['id','campagne','parcelle_id']], 
+                    parcelle[['id','id_sdc','code_dephy','campagne_sdc']],
+                    left_on='parcelle_id', right_on='id',suffixes=('', '_parcelle'))
+            .filter(['id','campagne','campagne_sdc','code_dephy'])
+            )
+        
+    if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
+        df = pd.merge(df[['id','campagnes','nom','sdc_id']],
+                        sdc[['id','campagne', 'code_dephy']], 
+                        left_on='sdc_id', right_on='id',suffixes=('', '_sdc'),how="left").rename(columns = {'campagne':'campagne_sdc'})
+        
+        df.drop(['id_sdc'],inplace=True, axis=1)
+
+    # clean code_dephy :
+    df['code_dephy'] = df['code_dephy'].str.replace('\t','') # tabulations        
+    df['code_dephy'] = df['code_dephy'].str.replace(' ','') # retirer les espaces        
+    df['code_dephy'] = df['code_dephy'].str.replace('_','') # retirer les _        
+    df['code_dephy'] = df['code_dephy'].str.upper() # homogeneiser majuscules et minuscules
+
+    return(df)
+
+
+def get_min_year_bydephy(df):
+    """
+        Cree un dataframe associant un numero dephy avec sa campagne minimale pour les realises et synthetises separement
+
+        Paramètres :
+                df : Dataframe issu de l'entrepot : zone ou synthetise
+        Retourne : le dataframe zone ou synthetise avec le numero dephy du sdc auquel il est attaché
+                    les numeros dephy son homogénéisés (espaces, tabulations, majuscules)
+    """
+    # Pour les synthetise, split des campagnes pour les series pluriannuelles
+    if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
+        df['campagnes'] = df['campagnes'].str.split(', ')
+        df['min_serie_campagne'] = [int(min(x)) for x in df['campagnes']]
+        df = df.assign(pluriannuel = lambda df : np.where((df.campagnes.str.len() > 1), True, False))
+
+        min_campagne = (df.loc[df.groupby(['code_dephy'])['min_serie_campagne'].idxmin()]
+                  .rename(columns = {'min_serie_campagne':'min_codedephy','pluriannuel':'min_pluriannuel'})
+                  .filter(['code_dephy','min_codedephy','min_pluriannuel']))
+        
+    if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
+        min_campagne = (df.groupby('code_dephy')['campagne_sdc'].agg(['min'])
+                        .reset_index()
+                        .rename(columns = {'min':'min_codedephy'}))
+
+    return(min_campagne)
+
+
+def cross_realise_synthetise(zone_pz0,synthetise_pz0):
+    """ 
+        Concatene les deux data frames zone et synthetise issus de la 1ere identification des pz0
+
+        Parametres : 
+            zone_pz0 : issus de la 1ere identification des pz0 de la table synthetise de l'entrepot
+            synthetise_pz0 : issu de la 1ere identification des pz0 de la table synthetise de l'entrepot
+
+        Return : 
+            summary : df groupe par code_dephy resumant le nombre de zones et synthetise par status pz0
+    """
+    df_cross = (pd.concat([zone_pz0[['code_dephy','id','campagne_sdc','pz0']].rename(columns = {'id':'zone_id'}), 
+                   synthetise_pz0[['code_dephy','id','campagnes','pz0']].rename(columns = {'id':'synthetise_id'})])
+                .assign(itk_mode = lambda df : np.where(pd.notnull(df.zone_id), 'realise', 'synthetise'))
+                .assign(pluriannuel = lambda df: np.where((df.campagnes.str.len() > 1), True, False))
+                .assign(campagne = lambda df : np.where(pd.notnull(df.zone_id), df.campagne_sdc, df.campagnes)))
+
+    summary = df_cross.groupby(['code_dephy','pz0','itk_mode','pluriannuel']
+        )['code_dephy'].agg(['count']).reset_index()
+    
+    return(summary)
+
+
+def save_pz0_OK(df_pz0_vf,df_pz0_v1,codes_dephy_ok,status_post_pz0 = False):
+    """ 
+        Sauvegarde les lignes de zones ou synthetises identifiés comme valides
+        
+        Parametres : 
+            df_pz0_vf : version finale du dataframe zone ou synthetise d'identification de pz0
+            df_pz0_v1 : version 1 du dataframe zone ou synthetise d'identification de pz0 : identification zones et synthetise separees
+            codes_dephy_ok : list de code dephy identifiés comme valide
+            status_post_pz0 : bool. True : le status pz0 = 0 
+
+        Return : Les deux data frames modifies
+            df_pz0_vf : version finale du dataframe zone ou synthetise d'identification de pz0 
+            df_pz0_v1 : version 1 du dataframe zone ou synthetise d'identification de pz0 : identification zones et synthetise separees
+            
+    """
+    if status_post_pz0 is False :
+        df_pz0_vf = pd.concat([df_pz0_vf,
+                               df_pz0_v1.query('code_dephy == @codes_dephy_ok')])
+
+    if status_post_pz0 is True :
+        df_pz0_vf = pd.concat([df_pz0_vf,
+                               df_pz0_v1.query('code_dephy == @codes_dephy_ok').assign(pz0 = 0)])
+
+    # retirer les zones qui ont un status deja attribué
+    df_pz0_v1 = df_pz0_v1.query('code_dephy != @codes_dephy_ok')
+       
+    return(df_pz0_vf,df_pz0_v1)
