@@ -98,7 +98,7 @@ enable=
 disable=
     attribute-defined-outside-init,
     invalid-name,
-    missing-docstring,
+    ; missing-docstring,
     protected-access,
     too-few-public-methods,
     # handled by black

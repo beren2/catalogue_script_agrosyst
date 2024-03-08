@@ -83,10 +83,11 @@ def get_infos_culture_realise(
     df_intervention_realise_assolee = df_intervention_realise[~df_intervention_realise['noeuds_realise_id'].isna()]
 
     # obtention de l'intervention
-    left = df_utilisation_intrant_realise
+    left = df_utilisation_intrant_realise.rename(columns={'intervention_id' : 'intervention_realise_id'})
     right = df_intervention_realise_assolee[['id', 'noeuds_realise_id']].rename(columns={
         'id' : 'intervention_realise_id'
     }) 
+    print(left.columns, right.columns)
     df_utilisation_intrant_realise_assolee = pd.merge(left, right, on = 'intervention_realise_id')
 
     # obtention du noeuds
@@ -102,7 +103,7 @@ def get_infos_culture_realise(
     df_intervention_realise_perenne = df_intervention_realise.loc[~df_intervention_realise['plantation_perenne_phases_realise_id'].isna()]
 
     # obtention de l'intervention
-    left = df_utilisation_intrant_realise
+    left = df_utilisation_intrant_realise.rename(columns={'intervention_id' : 'intervention_realise_id'})
     right = df_intervention_realise_perenne[['id', 'plantation_perenne_phases_realise_id']].rename(columns={
         'id' : 'intervention_realise_id'
     }) 
@@ -197,7 +198,7 @@ def get_infos_culture_synthetise(
     df_intervention_synthetise_assolee = df_intervention_synthetise[~df_intervention_synthetise['connection_synthetise_id'].isna()]
 
     # obtention de l'intervention
-    left = df_utilisation_intrant_synthetise
+    left = df_utilisation_intrant_synthetise.rename(columns={'intervention_id' : 'intervention_synthetise_id'})
     right = df_intervention_synthetise_assolee[['id', 'connection_synthetise_id']].rename(columns={
         'id' : 'intervention_synthetise_id'
     }) 
@@ -223,7 +224,7 @@ def get_infos_culture_synthetise(
     df_intervention_synthetise_perenne = df_intervention_synthetise.loc[~df_intervention_synthetise['plantation_perenne_phases_synthetise_id'].isna()]
 
     # obtention de l'intervention
-    left = df_utilisation_intrant_synthetise
+    left = df_utilisation_intrant_synthetise.rename(columns={'intervention_id' : 'intervention_synthetise_id'})
     right = df_intervention_synthetise_perenne[['id', 'plantation_perenne_phases_synthetise_id']].rename(columns={
         'id' : 'intervention_synthetise_id'
     }) 
@@ -289,7 +290,8 @@ def get_infos_culture_synthetise(
 
 
 def get_infos_cible(
-        df_utilisation_intrant_cible
+        df_utilisation_intrant_cible, 
+        donnees
     ):
     """
         Retourne un dataframe qui contient une ligne pour la clé (utilisation_id * code_culture_maa * espece_id)
@@ -305,15 +307,10 @@ def get_infos_cible(
                     'espece_id' : identifiant de l'espèce contenue dans la culture où est appliquée l'intervention
                     'code_culture_maa' :  code culture de l'espèce en question
     """
-    # Déclaration des chemins des données 
-    path_ref_nuisible_edi = 'data/referentiels/ref_nuisible_edi.csv'
-    path_ref_correspondance_groupe_cible = 'data/referentiels/ref_correspondance_groupe_cible.csv'
-    path_ref_adventice = 'data/referentiels/ref_adventice.csv'
-
     # Import des données utiles
-    df_ref_nuisible_edi = pd.read_csv(path_ref_nuisible_edi, sep=',')
-    df_ref_correspondance_groupe_cible = pd.read_csv(path_ref_correspondance_groupe_cible, sep=',')
-    df_ref_adventice = pd.read_csv(path_ref_adventice, sep=',')
+    df_ref_nuisible_edi = donnees['ref_nuisible_edi']
+    df_ref_correspondance_groupe_cible = donnees['ref_correspondance_groupe_cible']
+    df_ref_adventice = donnees['ref_adventice']
 
     # Nettoyage des référentiels
     df_ref_adventice = df_ref_adventice.loc[df_ref_adventice['active']]
@@ -398,7 +395,8 @@ def get_infos_cible(
     return df_utilisation_intrant_cible
 
 def get_dose_ref(
-        df_utilisation_intrant_complet
+        df_utilisation_intrant_complet,
+        donnees
     ):
     """
         Retourne un dataframe qui contient les doses de références pour chaque utilisation d'intrants
@@ -415,11 +413,9 @@ def get_dose_ref(
                     'dose_ref_maa' : dose de référence à la cible non millésimé de l'utilisation d'intrant
                     'unit_dose_ref_maa' :  unité de la dose de référence de l'utilisation d'intrant
     """
-    # Déclaration des chemins des données 
-    path_dose_ref_cible = 'data/referentiels/dose_ref_cible.csv'
 
     # Import des données utiles
-    df_dose_ref_cible = pd.read_csv(path_dose_ref_cible, sep=',')
+    df_dose_ref_cible = donnees['dose_ref_cible']
     df_dose_ref_cible['code_amm'] = df_dose_ref_cible['code_amm'].astype('str')
 
     # Nettoyage des référentiels
@@ -466,38 +462,29 @@ def get_dose_ref(
 
 
 def get_infos_all_utilisation_intrant(
-        df_utilisation_intrant,
+        donnees,
         saisie = 'realise',
-        path_data = 'data/20230927/'
     ):
     """
         Retourne un dataframe qui contient toutes les informations sur les produits et les doses de références associées
     """
 
-    # déclaration des chemins des données
-    path_intrant = path_data+'intrant.csv'
-    path_culture = path_data+'culture.csv'
-    path_composant_culture = path_data+'composant_culture.csv'
-    path_utilisation_intrant_cible = path_data+'utilisation_intrant_cible.csv'
+
+    df_utilisation_intrant = donnees['utilisation_intrant_'+saisie];
 
     # obtention des données
-    df_intrant = pd.read_csv(path_intrant, sep = ',') 
-    df_composant_culture = pd.read_csv(path_composant_culture, sep = ',')
-    df_utilisation_intrant_cible = pd.read_csv(path_utilisation_intrant_cible, sep = ',')
-    df_culture = pd.read_csv(path_culture, sep =',')
+    df_intrant = donnees['intrant']
+    df_composant_culture = donnees['composant_culture']
+    df_utilisation_intrant_cible = donnees['utilisation_intrant_cible']
+    df_culture = donnees['culture']
 
     if(saisie == 'realise'):
-        # déclaration des chemins des données
-        path_intervention_realise = path_data+'intervention_realise.csv'
-        path_plantation_perenne_realise = path_data+'plantation_perenne_realise.csv'
-        path_plantation_perenne_phase_realise = path_data+'plantation_perenne_phases_realise.csv'
-        path_noeuds_realise = path_data+'noeuds_realise.csv'
-        
-        # import de tous les dataframes utiles 
-        df_intervention_realise = pd.read_csv(path_intervention_realise, sep = ',') 
-        df_plantation_perenne_realise = pd.read_csv(path_plantation_perenne_realise, sep =',') 
-        df_plantation_perenne_phase_realise = pd.read_csv(path_plantation_perenne_phase_realise, sep =',') 
-        df_noeuds_realise = pd.read_csv(path_noeuds_realise, sep = ',')
+
+        # stockage de tous les dataframes utiles 
+        df_intervention_realise = donnees['intervention_realise']
+        df_plantation_perenne_realise = donnees['plantation_perenne_realise']
+        df_plantation_perenne_phase_realise = donnees['plantation_perenne_phases_realise']
+        df_noeuds_realise = donnees['noeuds_realise']
     
         # test de l'affectation des informations du traitement
         test_get_infos_traitement = get_infos_traitement(df_utilisation_intrant[['id', 'intrant_id']], df_intrant)
@@ -514,21 +501,18 @@ def get_infos_all_utilisation_intrant(
 
         # test de l'affectation des informations de la cible
         test_get_infos_cible = get_infos_cible(
-            df_utilisation_intrant_cible
+            df_utilisation_intrant_cible, 
+            donnees
         )
     
     elif(saisie == 'synthetise'):
-        path_intervention_synthetise = path_data+'intervention_synthetise.csv'
-        path_plantation_perenne_phase_synthetise = path_data+'plantation_perenne_phases_synthetise.csv'
-        path_plantation_perenne_synthetise = path_data+'plantation_perenne_synthetise.csv'
-        path_noeuds_synthetise = path_data+'noeuds_synthetise.csv'
-        path_connection_synthetise = path_data+'connection_synthetise.csv'
 
-        df_intervention_synthetise = pd.read_csv(path_intervention_synthetise, sep = ',')
-        df_plantation_perenne_phase_synthetise = pd.read_csv(path_plantation_perenne_phase_synthetise, sep = ',')
-        df_plantation_perenne_synthetise = pd.read_csv(path_plantation_perenne_synthetise, sep = ',')
-        df_noeuds_synthetise = pd.read_csv(path_noeuds_synthetise, sep = ',')
-        df_connection_synthetise = pd.read_csv(path_connection_synthetise, sep = ',')
+        # stockage de tous les dataframes utiles
+        df_intervention_synthetise = donnees['intervention_synthetise']
+        df_plantation_perenne_phase_synthetise = donnees['plantation_perenne_phases_synthetise']
+        df_plantation_perenne_synthetise = donnees['plantation_perenne_synthetise']
+        df_noeuds_synthetise = donnees['noeuds_synthetise']
+        df_connection_synthetise = donnees['connection_synthetise']
     
         # test de l'affectation des informations du traitement
         test_get_infos_traitement = get_infos_traitement(df_utilisation_intrant[['id', 'intrant_id']], df_intrant)
@@ -547,7 +531,8 @@ def get_infos_all_utilisation_intrant(
 
         # test de l'affectation des informations de la cible
         test_get_infos_cible = get_infos_cible(
-            df_utilisation_intrant_cible
+            df_utilisation_intrant_cible, 
+            donnees
         )
 
     # Obtention des informations des traitements
@@ -581,7 +566,8 @@ def get_infos_all_utilisation_intrant(
 
     # test de l'obtention de la dose de référence
     final_get_dose_ref = get_dose_ref(
-        total_merge_3
+        total_merge_3, 
+        donnees
     )
 
     return final_get_dose_ref
