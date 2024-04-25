@@ -302,6 +302,7 @@ def test_identification_pz0_realise():
     """
         Test de l'identification d'un pz0 realise (zone)
     """
+    print("test unitaire pz0 realise")
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_identification_pz0_realise']
@@ -317,7 +318,7 @@ def test_identification_pz0_realise():
                     'synthetise', 
                     'zone'
                 ]
-    path_data = 'tests/data/test_identification_pz0_entier/'
+    path_data = 'tests/data/test_identification_pz0/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     # application de la fonction d'identification des pz0

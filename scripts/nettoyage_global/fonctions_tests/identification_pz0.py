@@ -102,16 +102,11 @@ def identification_pz0(donnees,saisie):
     # series de campagnes d'arrivee : 
     # en valeur les campagnes minimales possibles
     # en clé le nb d'années a ajouter pour avoir la fin du pz0 , selon les campagnes minimales
-    #serie_campagne = {3 : [2008,2013,2018], 
-    #                2 : [2009,2014,2019], 
-    #                1 : [2010,2015,2020], 
-    #                0 : [2011,2016,2021], 
-    #                4 : [2012,2017,2022]}
-    serie_campagne = {4 : [2008,2013,2018], 
-                    3 : [2009,2014,2019], 
-                    2 : [2010,2015,2020], 
-                    1 : [2011,2016,2021], 
-                    0 : [2012,2017,2022]}
+    serie_campagne = {3 : [2008,2013,2018], 
+                    2 : [2009,2014,2019], 
+                    1 : [2010,2015,2020], 
+                    0 : [2011,2016,2021], 
+                    4 : [2012,2017,2022]}
 
     def get_key(val_search,_dict):
         for key,value in _dict.items():
@@ -272,10 +267,6 @@ def identification_pz0(donnees,saisie):
 
     zone_pz0_vf.set_index('id',inplace = True)
     synthetise_pz0_vf.set_index('id',inplace = True)
-
-    zone.to_csv('~/zone_with_codedephy.csv', sep =';')  
-    zone_pz0_vf.to_csv('~/zone_pz0_vf.csv', sep =';')  
-    synthetise_pz0_vf.to_csv('~/synthetise_pz0_vf.csv', sep =';')  
 
     if saisie == "realise" :
         return zone_pz0_vf['pz0']
