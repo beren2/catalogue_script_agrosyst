@@ -661,7 +661,7 @@ def get_min_year_bydephy(df):
     if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
         df['campagnes'] = df['campagnes'].str.split(', ')
         df['min_serie_campagne'] = [int(min(x)) for x in df['campagnes']]
-        df = df.assign(pluriannuel = lambda df : np.where((df.campagnes.str.len() > 1), True, False))
+        df['pluriannuel'] = np.where((df['campagnes'].str.len() > 1), True, False)
 
         min_campagne = (df.loc[df.groupby(['code_dephy'])['min_serie_campagne'].idxmin()]
                   .rename(columns = {'min_serie_campagne':'min_codedephy','pluriannuel':'min_pluriannuel'})
@@ -673,55 +673,3 @@ def get_min_year_bydephy(df):
                         .rename(columns = {'min':'min_codedephy'}))
 
     return(min_campagne)
-
-
-def cross_realise_synthetise(zone_pz0,synthetise_pz0):
-    """ 
-        Concatene les deux data frames zone et synthetise issus de la 1ere identification des pz0
-
-        Parametres : 
-            zone_pz0 : issus de la 1ere identification des pz0 de la table synthetise de l'entrepot
-            synthetise_pz0 : issu de la 1ere identification des pz0 de la table synthetise de l'entrepot
-
-        Return : 
-            summary : df groupe par code_dephy resumant le nombre de zones et synthetise par status pz0
-    """
-    df_cross = (pd.concat([zone_pz0[['code_dephy','id','campagne_sdc','pz0']].rename(columns = {'id':'zone_id'}), 
-                   synthetise_pz0[['code_dephy','id','campagnes','pz0']].rename(columns = {'id':'synthetise_id'})])
-                .assign(itk_mode = lambda df : np.where(pd.notnull(df.zone_id), 'realise', 'synthetise'))
-                .assign(pluriannuel = lambda df: np.where((df.campagnes.str.len() > 1), True, False))
-                .assign(campagne = lambda df : np.where(pd.notnull(df.zone_id), df.campagne_sdc, df.campagnes)))
-
-    summary = df_cross.groupby(['code_dephy','pz0','itk_mode','pluriannuel']
-        )['code_dephy'].agg(['count']).reset_index()
-    
-    return(summary)
-
-
-def save_pz0_OK(df_pz0_vf,df_pz0_v1,codes_dephy_ok,status_post_pz0 = False):
-    """ 
-        Sauvegarde les lignes de zones ou synthetises identifiés comme valides
-        
-        Parametres : 
-            df_pz0_vf : version finale du dataframe zone ou synthetise d'identification de pz0
-            df_pz0_v1 : version 1 du dataframe zone ou synthetise d'identification de pz0 : identification zones et synthetise separees
-            codes_dephy_ok : list de code dephy identifiés comme valide
-            status_post_pz0 : bool. True : le status pz0 = 0 
-
-        Return : Les deux data frames modifies
-            df_pz0_vf : version finale du dataframe zone ou synthetise d'identification de pz0 
-            df_pz0_v1 : version 1 du dataframe zone ou synthetise d'identification de pz0 : identification zones et synthetise separees
-            
-    """
-    if status_post_pz0 is False :
-        df_pz0_vf = pd.concat([df_pz0_vf,
-                               df_pz0_v1.query('code_dephy == @codes_dephy_ok')])
-
-    if status_post_pz0 is True :
-        df_pz0_vf = pd.concat([df_pz0_vf,
-                               df_pz0_v1.query('code_dephy == @codes_dephy_ok').assign(pz0 = 0)])
-
-    # retirer les zones qui ont un status deja attribué
-    df_pz0_v1 = df_pz0_v1.query('code_dephy != @codes_dephy_ok')
-       
-    return(df_pz0_vf,df_pz0_v1)
