@@ -5,6 +5,7 @@
 import pandas as pd
 #from nettoyage import nettoyage
 from scripts.nettoyage_global import nettoyage
+from scripts.nettoyage_global import restructuration
 from scripts.utils import fonctions_utiles
 
 
@@ -362,3 +363,70 @@ def test_identification_pz0_synthetise():
     print(comparaison)
     res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['pz0'].astype('int')).all()
     assert res_test
+
+def test_noeuds_synthetise_restructured():
+    """
+        Test de l'obtention des noeuds synthetises restructures
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_noeuds_synthetise_restructured']
+
+    # obtention des données
+    df_names = [    
+                    'noeuds_synthetise', 
+                    'synthetise', 
+                    'sdc', 
+                    'domaine',
+                    'culture'
+                ]
+    path_data = 'tests/data/test_noeuds_synthetise_restructured/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    noeuds_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'culture_id'][['id_ligne', 'valeur_attendue']]
+    noeuds_synthetise = restructuration.restructuration_noeuds_synthetise(donnees)
+
+    left = noeuds_synthetise_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'noeuds_synthetise_id', 'valeur_attendue' : 'culture_id_expected'})
+    right = noeuds_synthetise.reset_index()[['id', 'culture_id']].rename(columns={'id' : 'noeuds_synthetise_id'})
+    merge = pd.merge(left, right, on='noeuds_synthetise_id', how='left')
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['culture_id_expected'] == merge['culture_id']).all()
+
+    assert res_valeur_ok
+
+
+def test_connection_synthetise_restructured():
+    """
+        Test de l'obtention des connexions synthétisés restructurées
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_connection_synthetise_restructured']
+
+    # obtention des données
+    df_names = [   
+                    'connection_synthetise', 
+                    'noeuds_synthetise', 
+                    'synthetise', 
+                    'sdc', 
+                    'domaine',
+                    'culture'
+                ]
+    path_data = 'tests/data/test_connection_synthetise_restructured/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    connection_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'culture_intermediaire_id'][['id_ligne', 'valeur_attendue']]
+    connection_synthetise = restructuration.restructuration_connection_synthetise(donnees)
+
+    left = connection_synthetise_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'connection_synthetise_id', 'valeur_attendue' : 'culture_intermediaire_id_expected'})
+    right = connection_synthetise.reset_index()[['id', 'culture_intermediaire_id']].rename(columns={'id' : 'connection_synthetise_id'})
+    merge = pd.merge(left, right, on='connection_synthetise_id', how='left')
+
+    # on enlève ceux pour lesquelles on est sensé trouver "NaN" 
+    merge = merge.dropna()
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['culture_intermediaire_id_expected'] == merge['culture_intermediaire_id']).all()
+
+    assert res_valeur_ok
