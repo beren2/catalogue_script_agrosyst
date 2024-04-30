@@ -131,18 +131,18 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
     return res_2
             
 
-def nettoyage_identification_pz0_realise(donnees, path_data='data/20230927/'):
+def nettoyage_zone(donnees, verbose=False):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
 
                 Paramètres:
-                    donnees (df) : dataframe contenant les données d'intrants
+                    donnees (dict) : dictionnaire contenant les données utiles :
+                        intervention_realise : df des intervention en réalisé
                     params (dict): dictionnaire contenant les métadonnées que l'utilisateur 
                         souhaite modifié.
                     verbose (booleen) : booléen indiquant le niveau de détail (True = details 
                         maximum)
-            
                 Retourne:
                     res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
@@ -152,3 +152,62 @@ def nettoyage_identification_pz0_realise(donnees, path_data='data/20230927/'):
     metadata_tests = df_metadonnees_tests
     metadata_tests = metadata_tests.loc[metadata_tests['script'] == 'nettoyage_identification_pz0_realise']
     metadata_tests = metadata_tests.T.to_dict()
+
+    # initialisation de la variable contenant les flags pour l'ensembles des tests
+    df_result_tests = pd.DataFrame(donnees['zone']['id']).set_index('id')
+    # application des tests pour obtention du "code_test"
+    for test_index, test_key in enumerate(metadata_tests.keys()):
+        test = metadata_tests[test_key]
+        if verbose :
+            print("Application du test :", test_index, test_key)
+
+        # obtention de la fonction associée au test
+        fonction_test = getattr(ft, test['fichier'])
+
+        print(test['fichier'])
+
+        # application de la fonction et ajout du resultat du df
+        df_result_tests = pd.merge(df_result_tests,fonction_test(donnees, saisie = "realise"), left_index=True, right_index=True)
+
+    return df_result_tests
+
+
+def nettoyage_synthetise(donnees, verbose=False):
+    """
+        Retourne une série de vecteurs binaire.
+        La ligne i de cette série contient le vecteur test associé à la ligne i
+
+                Paramètres:
+                    donnees (dict) : dictionnaire contenant les données utiles :
+                        intervention_realise : df des intervention en réalisé
+                    params (dict): dictionnaire contenant les métadonnées que l'utilisateur 
+                        souhaite modifié.
+                    verbose (booleen) : booléen indiquant le niveau de détail (True = details 
+                        maximum)
+                Retourne:
+                    res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
+    """
+    # lecture du fichier de métadonnées
+    df_metadonnees_tests = pd.read_csv('data/metadonnees_tests.csv', index_col='id')
+
+    metadata_tests = df_metadonnees_tests
+    metadata_tests = metadata_tests.loc[metadata_tests['script'] == 'nettoyage_identification_pz0_realise']
+    metadata_tests = metadata_tests.T.to_dict()
+
+    # initialisation de la variable contenant les flags pour l'ensembles des tests
+    df_result_tests = pd.DataFrame(donnees['synthetise']['id']).set_index('id')
+    # application des tests pour obtention du "code_test"
+    for test_index, test_key in enumerate(metadata_tests.keys()):
+        test = metadata_tests[test_key]
+        if verbose :
+            print("Application du test :", test_index, test_key)
+
+        # obtention de la fonction associée au test
+        fonction_test = getattr(ft, test['fichier'])
+
+        print(test['fichier'])
+
+        # application de la fonction et ajout du resultat du df
+        df_result_tests = pd.merge(df_result_tests,fonction_test(donnees, saisie = "synthetise"), left_index=True, right_index=True)
+
+    return df_result_tests
