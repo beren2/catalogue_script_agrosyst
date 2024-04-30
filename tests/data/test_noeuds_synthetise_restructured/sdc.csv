@@ -1,0 +1,6 @@
+id,code,filiere,campagne,date_debut_pratique,date_fin_pratique
+fr.inra.agrosyst.api.entities.GrowingSystem_8f746058-d219-4513-9609-049b0bb60da6,544d3030-0087-48e8-9310-722c798ed920,GRANDES_CULTURES,2009,2009-01-01,
+fr.inra.agrosyst.api.entities.GrowingSystem_b57f9a04-af86-4730-aac6-3f27365f2242,a86163f0-3de8-4b81-b1a1-aabf459583fe,GRANDES_CULTURES,2022,2014-09-01,2022-06-29
+fr.inra.agrosyst.api.entities.GrowingSystem_3b749ea2-69aa-48d7-9657-a01e3aa996c3,df42c68b-2fd5-43c5-b69c-71d7f18c4f6b,POLYCULTURE_ELEVAGE,2012,2004-01-01,
+fr.inra.agrosyst.api.entities.GrowingSystem_66bdc2b5-2fac-4e78-a443-2afd8e006434,f8cb19d6-5c98-453a-813d-a96b82db5ac7,MARAICHAGE,2016,2016-01-01,
+fr.inra.agrosyst.api.entities.GrowingSystem_7004ecd6-4df8-4e4a-9ffa-1077bd3cd839,543b25fa-ca74-4ba1-8809-47d12f45f953,GRANDES_CULTURES,2018,2013-08-19,

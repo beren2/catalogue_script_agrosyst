@@ -1,0 +1,7 @@
+id,code,filiere,campagne,date_debut_pratique,date_fin_pratique
+fr.inra.agrosyst.api.entities.GrowingSystem_424fe0fe-eb61-4f28-a5fa-b9cdda4c2e78,0c00620d-be40-4bc1-be1f-7f16b965e6c1,GRANDES_CULTURES,2022,2013-06-15,
+fr.inra.agrosyst.api.entities.GrowingSystem_ce9c127b-8c8c-4aef-988e-0badbc34dc66,1051f277-4f13-45e5-87bc-31aa5d13b513,POLYCULTURE_ELEVAGE,2011,2009-01-01,
+fr.inra.agrosyst.api.entities.GrowingSystem_7f9f6298-6529-4572-9fcf-637d40b20df1,357241f1-0258-4047-a987-5f58be3c2bf9,GRANDES_CULTURES,2010,2002-01-01,2019-01-21
+fr.inra.agrosyst.api.entities.GrowingSystem_232d82ff-3b7a-4628-994c-7c5dadab91b2,e8967cff-16fc-4a11-ba03-6e5d72a7e4fe,POLYCULTURE_ELEVAGE,2022,2016-01-01,
+fr.inra.agrosyst.api.entities.GrowingSystem_5ec129b9-27ea-4eef-91ec-2243aa874326,c10461e4-edff-4c33-8874-ef21453900d5,GRANDES_CULTURES,2011,2009-01-01,
+fr.inra.agrosyst.api.entities.GrowingSystem_3618656f-2e20-472e-b5a7-61d1fdfffa13,af0e9991-e738-4162-94af-aee9aade89a1,POLYCULTURE_ELEVAGE,2017,2017-01-01,
