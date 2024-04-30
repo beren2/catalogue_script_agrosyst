@@ -1,0 +1,10 @@
+id,code,nom,campagne,surface,latitude,type,parcelle_id,longitude
+fr.inra.agrosyst.api.entities.Zone_35946ba5-a793-44da-ae0f-f3a04819cb59,bd8fa8a4-41c8-4dcc-b894-9a3f298a5876,Zone principale,2015,5.8,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_b2beb1ef-4d06-41e0-b591-f9c32e3f5397,
+fr.inra.agrosyst.api.entities.Zone_e8e90c72-b459-4301-928a-49b75e786535,8de3b4e4-0f50-4f78-9fec-8912295a7e9a,Zone principale,2014,2.5,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_16796e74-51d9-44f1-bc35-5715a97f011c,
+fr.inra.agrosyst.api.entities.Zone_86d144b9-9e71-4db7-a5fa-c1b784dc007d,55ee23ec-a14e-4c12-8581-c30029baf1fe,P2,2013,1.5,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_1312cfac-0b30-433a-9cf7-2e25b8853e82,
+fr.inra.agrosyst.api.entities.Zone_f8820571-7d2e-44b8-b6b0-267046db3222,8c12c7dc-923c-4429-9ab9-9b32a4cf76f5,Zone principale,2015,1.14,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_b9646a8d-d279-415d-925f-e3f36198179b,
+fr.inra.agrosyst.api.entities.Zone_37c16bb2-8506-40a3-914b-f6ee75101e4d,fc9ea268-696a-4ee0-86b1-9b5fd443b529,Zone principale,2017,1.15,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_3400dceb-019e-4bae-ace2-b54edadbd012,
+fr.inra.agrosyst.api.entities.Zone_8082ca8f-e734-4260-ad95-55a53de32b00,b6669f71-6959-4087-934a-b997e6f87de4,Zone principale,2016,4.28,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_774ec4e7-434e-4857-9efc-f327b68cecaa,
+fr.inra.agrosyst.api.entities.Zone_6577e95c-63ee-43e2-835a-b942207a4169,41e9ab7c-f6cc-43b5-995b-100f2b3afb8e,Zone principale,2011,59.64,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_de00c794-ede6-4e0e-9905-7d8df09a548b,
+fr.inra.agrosyst.api.entities.Zone_d5804d9c-1573-4946-b41a-90c09d9828cc,38eb1238-5405-4642-a36b-4313a36f61ca,Zone principale,2012,6.78,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_3141184b-1fb7-4412-b844-b0e65e2d0b55,
+fr.inra.agrosyst.api.entities.Zone_223008da-d3cc-44c5-9958-2af96d23e174,69642d32-67ee-4152-90c8-9993553f6075,Zone principale,2013,0.56,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_34e03d75-ec4b-4054-be40-058eb496c0fa,
