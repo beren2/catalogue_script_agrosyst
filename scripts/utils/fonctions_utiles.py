@@ -673,3 +673,35 @@ def get_min_year_bydephy(df):
                         .rename(columns = {'min':'min_codedephy'}))
 
     return(min_campagne)
+
+
+def convert(group, target_unit, df_converter):
+    """ permet de convertir un df group dans une même unité en une unité target_unit retourne 3 columns : id, dose, unite"""
+    current_unit = group['unite'].values[0]
+    if(current_unit != target_unit) :
+        current_donnees = df_converter.loc[
+            (df_converter['from'] == current_unit) & (df_converter['to '] == target_unit)
+        ]
+        if(len(current_donnees) > 0):
+            taux_conversion = current_donnees['taux'].values[0]
+            group['new_dose'] = group['dose']*taux_conversion
+            group['new_unite'] = target_unit
+            return group[['id', 'new_dose', 'new_unite']]
+    return None
+
+def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
+    """permet de convertir toutes les unites d'utilisation d'intrant en une unité recherchée"""
+
+    # Déclaration des chemins des données
+    path_converter = 'data/referentiels/conversion_utilisation_intrant.csv'
+
+    # Import des données utiles
+    df_converter = pd.read_csv(path_converter, sep=';')
+
+    res = donnees['utilisation_intrant'].groupby('unite').apply(lambda x :
+        convert(x, target_unit, df_converter)
+    ).reset_index()[
+        ['id', 'new_dose', 'new_unite']
+    ].rename(columns={'new_dose' : 'dose_unite_standardise', 'new_unite' : 'unite_standardise'})
+
+    return res

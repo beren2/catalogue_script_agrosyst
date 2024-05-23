@@ -166,7 +166,7 @@ def get_leaking_aggreged_from_action_realise(
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
-    df_noeud_realise = donnees['noeud_realise']
+    df_noeud_realise = donnees['noeuds_realise']
     df_plantation_perenne_phases_realise = donnees['plantation_perenne_phases_realise']
     df_plantation_perenne_realise = donnees['plantation_perenne_realise']
     df_zone = donnees['zone']
@@ -245,7 +245,7 @@ def get_leaking_aggreged_from_intervention_realise(
         Permet d'obtenir toutes les interventions qui ne sont pas déjà dans les utilisations d'intrants agrégées.
     """
     df_intervention_realise = donnees['intervention_realise']
-    df_noeud_realise = donnees['noeud_realise']
+    df_noeud_realise = donnees['noeuds_realise']
     df_plantation_perenne_phases_realise = donnees['plantation_perenne_phases_realise']
     df_plantation_perenne_realise = donnees['plantation_perenne_realise']
     df_zone = donnees['zone']
@@ -319,7 +319,7 @@ def get_leaking_aggreged_from_action_synthetise(
     df_action_synthetise = donnees['action_synthetise']
     df_intervention_synthetise = donnees['intervention_synthetise']
     df_connection_synthetise = donnees['connection_synthetise']
-    df_noeud_synthetise = donnees['noeud_synthetise']
+    df_noeud_synthetise = donnees['noeuds_synthetise']
     df_plantation_perenne_phases_synthetise = donnees['plantation_perenne_phases_synthetise']
     df_plantation_perenne_synthetise = donnees['plantation_perenne_synthetise']
     df_synthetise = donnees['synthetise']
@@ -394,7 +394,7 @@ def get_leaking_aggreged_from_intervention_synthetise(
     """
     df_intervention_synthetise = donnees['intervention_synthetise']
     df_connection_synthetise = donnees['connection_synthetise']
-    df_noeud_synthetise = donnees['noeud_synthetise']
+    df_noeud_synthetise = donnees['noeuds_synthetise']
     df_plantation_perenne_phases_synthetise = donnees['plantation_perenne_phases_synthetise']
     df_plantation_perenne_synthetise = donnees['plantation_perenne_synthetise']
     df_synthetise = donnees['synthetise']

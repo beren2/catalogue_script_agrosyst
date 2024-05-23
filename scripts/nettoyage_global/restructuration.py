@@ -29,9 +29,9 @@ def restructuration_noeuds_synthetise(donnees):
 
     left = donnees['noeuds_synthetise_extanded']
     right = donnees['culture_extanded'].reset_index()[['id', 'code', 'campagne']].rename(columns={'id' : 'culture_id'})
-    donnees['noeuds_synthetise_restructured'] = pd.merge(left, right, left_on=['culture_code', 'campagne'], right_on=['code', 'campagne'])
+    donnees['noeuds_synthetise_restructure'] = pd.merge(left, right, left_on=['culture_code', 'campagne'], right_on=['code', 'campagne'])
 
-    return donnees['noeuds_synthetise_restructured'].set_index('id')[['culture_id']]
+    return donnees['noeuds_synthetise_restructure'].set_index('id')[['culture_id']]
 
 
 def restructuration_connection_synthetise(donnees):
@@ -62,9 +62,9 @@ def restructuration_connection_synthetise(donnees):
 
     left = donnees['connection_synthetise_extanded'].reset_index()
     right = donnees['culture_extanded'].reset_index()[['id', 'code', 'campagne']].rename(columns={'id' : 'culture_intermediaire_id'})
-    donnees['connection_synthetise_restructured'] = pd.merge(left, right, left_on=['culture_intermediaire_code', 'campagne'], right_on=['code', 'campagne'])
+    donnees['connection_synthetise_restructure'] = pd.merge(left, right, left_on=['culture_intermediaire_code', 'campagne'], right_on=['code', 'campagne'])
 
-    return donnees['connection_synthetise_restructured'].set_index('id')[['culture_intermediaire_id']]
+    return donnees['connection_synthetise_restructure'].set_index('id')[['culture_intermediaire_id']]
 
 def restructuration_intervention_synthetise(donnees):
     """

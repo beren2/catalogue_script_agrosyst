@@ -62,7 +62,6 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
         fonction_test = getattr(ft, test['fichier'])
         
         # application de la fonction
-        # application de la fonction
         codes_tests[test_key]= np.array(fonction_test(donnees, metadata_seuils, saisie))
     
     df = pd.DataFrame.from_dict(codes_tests)
