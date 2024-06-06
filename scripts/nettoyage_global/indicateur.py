@@ -2,9 +2,7 @@
 	Regroupe les fonctions qui consistent en des calculs d'indicateurs 
 """
 import pandas as pd
-import numpy as np
-import scripts.utils.fonctions_utiles as fonctions_utiles
-
+from scripts.utils import fonctions_utiles
 
 def indicateur_utilisation_intrant(donnees):
     """ 

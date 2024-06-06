@@ -1,0 +1,6 @@
+id,rang,culture_id,zone_id
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_828e7e7e-1480-4315-a1e2-57bd522a3707,0,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0e2f7f21-3d16-4a68-9323-636c02826de1,fr.inra.agrosyst.api.entities.Zone_5bd952c1-7e77-4b29-b9d5-85ae53cd1050
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_f3e6276f-5290-4edc-b589-2f12f162f612,0,fr.inra.agrosyst.api.entities.CroppingPlanEntry_5007412f-8589-4c99-8ff9-c2e1bccaabb4,fr.inra.agrosyst.api.entities.Zone_f0b83f39-1826-463f-b685-301da3be72df
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_a2fa0abb-578c-40a0-bb7e-3bc2db33380e,0,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ecad0e0d-2483-45b8-b097-72ebf95d3925,fr.inra.agrosyst.api.entities.Zone_459fea3a-4572-44b6-b899-278438987514
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_0172732f-f49e-4939-aaf7-cc314d278d3a,0,fr.inra.agrosyst.api.entities.CroppingPlanEntry_dd99da53-5b09-46ac-8171-0c12d8985323,fr.inra.agrosyst.api.entities.Zone_42b70332-2531-4e54-ae85-6376825dcea3
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_03340ff0-db8d-4728-883e-0d0f8c8c5fb8,0,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ae2f5df8-dc73-45b9-a691-cd210b41b903,fr.inra.agrosyst.api.entities.Zone_fe536132-f6a8-4d26-8da3-591c7284e964

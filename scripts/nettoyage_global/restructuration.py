@@ -2,8 +2,6 @@
 	Regroupe les fonctions qui constituent en des restructuration des fichiers initiaux afin de faciliter leur utilisation
 """
 import pandas as pd
-import numpy as np
-
 
 def restructuration_noeuds_synthetise(donnees):
     """ 
@@ -79,3 +77,94 @@ def restructuration_intervention_synthetise(donnees):
     donnees['synthetise'] = donnees['synthetise'].set_index('id')
 
     # obtention de la campagne pour l'intervention en synthétisé --> à cette échelle, on peut utiliser les fichier d'agrégation
+
+
+def restructuration_noeuds_realise(donnees):
+    """
+        fonction permettant d'obtenir pour un noeuds en réalisé, le noeuds précédent si celui-ci existe. 
+        C'est à dire qu'on obtient le noeuds précédent si il existe sur la même zone, ou qu'on obtient le 
+        dernier noeuds de la zone précédent si le noeuds et le premier et que la zone précédente 
+        (liée avec le zone_code) existe.
+    """
+    donnees = donnees.copy()
+    donnees['noeuds_realise'] = donnees['noeuds_realise'].set_index('id')
+    donnees['zone'] = donnees['zone'].set_index('id')
+
+    # ÉTAPE 1 : 
+
+    # On considère tous les noeuds pour lesquels on a d'autres noeuds dans la zone et qui ne sont pas les premiers dans leurs zones
+    # On leur affecte en précédent le noeuds au rang maximal situé juste avant eux.
+
+    donnees['noeuds_realise_extanded'] = donnees['noeuds_realise'].reset_index().rename(columns={'id' : 'noeuds_realise_id'})
+
+    # Auto-jointure sur le DataFrame
+    merged_df = donnees['noeuds_realise_extanded'].merge(donnees['noeuds_realise_extanded'], on='zone_id', suffixes=('', '_comp'))
+
+    # Filtrage des paires où le rang du nœud comparé est inférieur
+    condition = (merged_df['rang_comp'] < merged_df['rang']) & (merged_df['noeuds_realise_id'] != merged_df['noeuds_realise_id_comp'])
+
+    filtered_df = merged_df[condition]
+
+    # Sélectionner le rang_id le plus élevé parmi les nœuds ayant un rang inférieur
+    idx_max = filtered_df.groupby('noeuds_realise_id')['rang_comp'].idxmax()
+    max_rang_df = filtered_df.loc[idx_max, ['noeuds_realise_id', 'noeuds_realise_id_comp', 'rang_comp']].rename(
+        columns={'noeuds_realise_id_comp' : 'precedent_noeuds_realise_id'}
+    )
+
+    # Comptage des nœuds répondant à la condition pour chaque nœud
+    count = filtered_df.groupby('noeuds_realise_id').size().reset_index(name='nb_noeuds_inferieurs')
+
+    # Fusionner avec le DataFrame original pour obtenir le résultat final
+    df_etape_1 = donnees['noeuds_realise_extanded'].merge(max_rang_df, on='noeuds_realise_id', how='left')
+    df_etape_1 = df_etape_1.merge(count, on='noeuds_realise_id', how='left')
+    df_etape_1['nb_noeuds_inferieurs']= df_etape_1['nb_noeuds_inferieurs'].fillna(0)
+
+    df_etape_1_save = df_etape_1.set_index('noeuds_realise_id')
+
+    # derniers nettoyages 
+    df_etape_1 = df_etape_1_save.loc[~df_etape_1_save['precedent_noeuds_realise_id'].isna()][['precedent_noeuds_realise_id']]
+
+
+    # ÉTAPE 2 : 
+
+    # On considère tous les autres noeuds, ceux pour lesquelles il faut aller chercher si possible le dernier noeud du zone_id précédent dans le zone_code.
+
+    # 1ère étape : affectation de la zone_id sur la campagne d'avant si possible
+    left = donnees['noeuds_realise'].loc[~donnees['noeuds_realise'].index.isin(list(df_etape_1.index))]
+    right = donnees['zone'][['code', 'campagne']].rename(columns={'campagne' : 'campagne_courante'})
+    merge = pd.merge(left, right, left_on='zone_id', right_index=True)
+
+    left = merge.reset_index()
+    right = donnees['zone'][['campagne', 'code']].reset_index().rename(columns={'id' : 'zone_id_before', 'campagne' : 'campagne_before'})
+    merge = pd.merge(left, right, left_on='code', right_on='code', how='left')
+
+    zone_before = (merge['campagne_courante'] == merge['campagne_before'] + 1)
+    zone_before_idx = zone_before[zone_before].index
+
+    donnees['noeuds_realise_extanded'] = merge.loc[zone_before_idx].set_index('id')
+
+    # 2ème étape : affectation aux zones du dernier noeuds
+    left = donnees['noeuds_realise'][['rang', 'zone_id']] 
+    right = donnees['zone']
+    merge = pd.merge(left, right, left_on='zone_id', right_index=True, how='left')
+
+    idx_rang_max = merge.groupby('zone_id')['rang'].idxmax()
+
+    left = donnees['zone']
+    right = donnees['noeuds_realise'].loc[idx_rang_max.values][['zone_id']].reset_index().rename(columns={'id' : 'precedent_noeuds_realise_id'})
+    donnees['zone_extanded'] = pd.merge(left, right, left_index=True, right_on='zone_id', how='left').set_index('zone_id')[['precedent_noeuds_realise_id']]
+
+    # 3 ème étape fusion des informations
+    left = donnees['noeuds_realise_extanded']
+    left.index = left.index.rename('noeuds_realise_id')
+    right = donnees['zone_extanded']
+    df_etape_2 = pd.merge(left, right, left_on='zone_id_before', right_index=True, how='left') 
+
+    # derniers nettoyages 
+    df_etape_2 = df_etape_2.loc[~df_etape_2['precedent_noeuds_realise_id'].isna()][['precedent_noeuds_realise_id']]
+
+    final = pd.concat([df_etape_1, df_etape_2])
+
+    final.index.rename('id', inplace=True)
+
+    return final

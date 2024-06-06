@@ -430,3 +430,35 @@ def test_connection_synthetise_restructured():
     res_valeur_ok = (merge['culture_intermediaire_id_expected'] == merge['culture_intermediaire_id']).all()
 
     assert res_valeur_ok
+
+
+
+def test_restructuration_noeuds_realise():
+    """
+        Test de l'obtention des noeuds realises restructures
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_noeuds_realise_restructured']
+
+    # obtention des données
+    df_names = [   
+                    'noeuds_realise', 'zone'
+                ]
+    path_data = 'tests/data/test_noeuds_realise_restructured/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    noeuds_realise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'precedent_noeuds_realise_id'][['id_ligne', 'valeur_attendue']]
+    noeuds_realise = restructuration.restructuration_noeuds_realise(donnees)
+
+    left = noeuds_realise_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'noeuds_realise_id', 'valeur_attendue' : 'precedent_noeuds_realise_id_expected'})
+    right = noeuds_realise.reset_index()[['id', 'precedent_noeuds_realise_id']].rename(columns={'id' : 'noeuds_realise_id'})
+    merge = pd.merge(left, right, on='noeuds_realise_id', how='left')
+
+    # on enlève ceux pour lesquelles on est sensé trouver "NaN" 
+    merge = merge.dropna()
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['precedent_noeuds_realise_id_expected'] == merge['precedent_noeuds_realise_id']).all()
+
+    assert res_valeur_ok

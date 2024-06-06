@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 """
     Fichier pour l'identification des pz0
     Permet d attribuer 1 : si c'est un pz0 ou 0 si ca n'en est pas un pour :
