@@ -478,6 +478,11 @@ def get_infos_all_utilisation_intrant(
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible']
     df_culture = donnees['culture']
 
+    test_get_infos_traitement = None
+    test_get_infos_culture = None
+    test_get_infos_cible = None
+
+
     if(saisie == 'realise'):
 
         # stockage de tous les dataframes utiles 
@@ -586,6 +591,8 @@ def get_itk_with_crops(df,donnees):
                 donnees (dict) : Dictionnaire de dataframe bruts
     Retourne : Retourne une liste d'id de zone ou synthetise ayant ont au moins une culture
     """
+
+    id_with_crops = None
     
     if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
         e_noeuds_real = donnees['noeuds_realise'].copy()
@@ -657,6 +664,8 @@ def get_min_year_bydephy(df):
         Retourne : le dataframe zone ou synthetise avec le numero dephy du sdc auquel il est attaché
                     les numeros dephy son homogénéisés (espaces, tabulations, majuscules)
     """
+    min_campagne = None
+    
     # Pour les synthetise, split des campagnes pour les series pluriannuelles
     if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
         df['campagnes'] = df['campagnes'].str.split(', ')
