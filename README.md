@@ -40,8 +40,8 @@ Les scripts disponibles dans le repertoire [scripts/nettoyage_global](scripts/ne
 #### Utils
 Les scripts jugés d'interêt général pour les magasins de données peuvent être stockés dans le répertoire [scripts/utils](scripts/utils/). 
 
-##### Général
-Les scripts disponibles dans le repertoire [scripts/utils](scripts/utils/) proposent des fonctions utiles permettant par exemple d'obtenir des informatiosn supplémentaires sur les données ou de mettre à jour les données via l'appel à l'api. 
+#### Prise en main
+Les scripts disponibles dans le répertoire [scripts/prise_en_main](scripts/prise_en_main/) proposent des exemples basiques de traitement sur les données.
 
 ### Tests
 Les tests sont disponibles dans le repetoire [tests](tests/). Plus d'information dans le README.md du répertoire. 
