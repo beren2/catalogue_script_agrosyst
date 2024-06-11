@@ -3,6 +3,7 @@
 ## Objectif
 
 L'objectif de ce repertoire est de proposer quelques exemples de prise en main de l'architecture de l'entrepôt de données. 
+Cette notice de prise en main est un bon complément à la notice de valorisation, disponible sur datagrosyst dans l'onglet "Exports personnalisés"
 
 ## Prérequis
 
