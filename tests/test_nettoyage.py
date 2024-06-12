@@ -462,3 +462,36 @@ def test_restructuration_noeuds_realise():
     res_valeur_ok = (merge['precedent_noeuds_realise_id_expected'] == merge['precedent_noeuds_realise_id']).all()
 
     assert res_valeur_ok
+
+def test_restructuration_recolte_rendement_prix():
+    """
+        Test de l'obtention des recoltes rendement prix restructurés
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_recolte_rendement_prix_restructured']
+
+    # obtention des données
+    df_names = [   
+                    'action_realise_agrege', 'action_synthetise_agrege', 
+                    'recolte_rendement_prix', 'composant_culture', 
+                    'domaine', 'culture'
+                ]
+
+    path_data = 'tests/data/test_recolte_rendement_prix_restructured/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][['id_ligne', 'valeur_attendue']]
+    recolte_rendement_prix = restructuration.restructuration_recolte_rendement_prix(donnees)
+
+    left = recolte_rendement_prix_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'recolte_rendement_prix_id', 'valeur_attendue' : 'composant_culture_id_expected'})
+    right = recolte_rendement_prix.reset_index()[['id', 'composant_culture_id']].rename(columns={'id' : 'recolte_rendement_prix_id'})
+    merge = pd.merge(left, right, on='recolte_rendement_prix_id', how='left')
+
+    # on enlève ceux pour lesquelles on est sensé trouver "NaN" 
+    merge = merge.dropna()
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['composant_culture_id'] == merge['composant_culture_id_expected']).all()
+
+    assert res_valeur_ok

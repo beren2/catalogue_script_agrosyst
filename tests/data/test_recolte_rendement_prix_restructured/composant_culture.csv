@@ -1,0 +1,4 @@
+id,code,espece_id,surface_relative,variete_id,culture_id
+fr.inra.agrosyst.api.entities.CroppingPlanSpecies_70ebcd4b-4558-4c26-b48f-faa6a4501b17,7bc4ca6d-bdc5-43b4-bd96-86f3ed8884e3,fr.inra.agrosyst.api.entities.referential.RefEspece_6993926f-cf9d-49bd-a8ae-116ae687bb42,,,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3fc05260-241b-483f-8ef8-3d24e6fcbc00
+fr.inra.agrosyst.api.entities.CroppingPlanSpecies_66e9a500-26c0-4916-987b-c16dc5111929,63e8f5bc-c443-47fc-a326-95f8e9f4be20,fr.inra.agrosyst.api.entities.referential.RefEspece_6893af38-dd9f-4f9e-9cc6-a57a5d46ca9f,,,fr.inra.agrosyst.api.entities.CroppingPlanEntry_358d2ebf-a02c-45bf-922d-b0038d426e01
+fr.inra.agrosyst.api.entities.CroppingPlanSpecies_c5c5c033-cf2a-49b5-8a7d-ed783a3ff57b,63e8f5bc-c443-47fc-a326-95f8e9f4be20,fr.inra.agrosyst.api.entities.referential.RefEspece_6893af38-dd9f-4f9e-9cc6-a57a5d46ca9f,,,fr.inra.agrosyst.api.entities.CroppingPlanEntry_97f16a0d-aa9b-4f83-8e8c-6476f8980de3

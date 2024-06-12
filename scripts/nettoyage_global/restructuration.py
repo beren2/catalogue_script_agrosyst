@@ -78,6 +78,45 @@ def restructuration_intervention_synthetise(donnees):
 
     # obtention de la campagne pour l'intervention en synthétisé --> à cette échelle, on peut utiliser les fichier d'agrégation
 
+def restructuration_recolte_rendement_prix(donnees):
+    """
+        fonction permettant de remplacer le composant_culture_code dans la table recolte_rendement_prix par un composant_culture_id,
+    """
+    donnees = donnees.copy()
+
+    donnees['action_realise_agrege'] = donnees['action_realise_agrege'].set_index('id')
+    donnees['action_synthetise_agrege'] = donnees['action_synthetise_agrege'].set_index('id')
+    donnees['recolte_rendement_prix'] = donnees['recolte_rendement_prix'].set_index('id')
+    donnees['composant_culture'] = donnees['composant_culture'].set_index('id')
+    donnees['domaine'] = donnees['domaine'].set_index('id')
+    donnees['culture'] = donnees['culture'].set_index('id')
+
+    # obtention d'un seul dataframe pour toutes les actions agrégées
+    donnees['action_agrege'] = pd.concat([donnees['action_realise_agrege'], donnees['action_synthetise_agrege']])
+
+    # on récupère la campagne sur laquelle a lieu l'action
+    left = donnees['recolte_rendement_prix'][['action_id', 'composant_culture_code']]
+    right = donnees['action_agrege'][['sdc_campagne']].rename(columns={'sdc_campagne' : 'campagne'})
+    donnees['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
+
+    # on récupère la campagne associé à chaque composant de culture
+    left = donnees['composant_culture'][['culture_id', 'code']].rename(columns={'code' : 'composant_culture_code'})
+    right = donnees['culture'][['domaine_id']]
+    donnees['composant_culture_extanded'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+
+    left = donnees['composant_culture_extanded']
+    right = donnees['domaine'][['campagne']]
+    donnees['composant_culture_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    # attention, certains composants cultures sont associés à une culture absente du df['culture'] --> il s'agit des cultures appartenant à un domaine inactivé.
+    donnees['composant_culture_extanded'] = donnees['composant_culture_extanded'].dropna()
+
+    # à présent, on a toutes les informations de l'intervention de récolte et des composants de culture pour choisir le bon composant_culture_id parmis ceux disponibles avec le code
+    left = donnees['recolte_rendement_prix_extanded'].reset_index()
+    right = donnees['composant_culture_extanded'].reset_index().rename(columns={'id' : 'composant_culture_id'})
+    final = pd.merge(left, right, on=['composant_culture_code', 'campagne'], how='inner').set_index('id')
+
+    return final[['composant_culture_id']]
 
 def restructuration_noeuds_realise(donnees):
     """
