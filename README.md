@@ -14,38 +14,34 @@ Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d
 
 #### Faire les changements
 
-1. Créer un nouveau script dans le repertoire scripts/ avec un nom approprié.
-2. Le nouveau script doit respecter les contraintes imposées par pylint (https://pylint.pycqa.org/en/latest/tutorial.html)
+1. Créer un nouveau script dans le repertoire scripts/mon_magasin. Si vous pensez que des fonctions peuvent être utiles à plusieurs magasins, alors les ajouters dans le dossier [scripts/utils](scripts/utils/)
+1. Créer une ou plusieurs fonction qui créent vos nouveaux dataframes (prendre pour exemple : indicateur_utilisation_intrant dans [scripts/nettoyage_global/indicateur.py](scripts/nettoyage_global/indicateur.py)) 
+1. Le nouveau script doit respecter les contraintes imposées par pylint (https://pylint.pycqa.org/en/latest/tutorial.html)
 
 #### Push les changement
 
 1. `git add -A && git commit -m "Mon message"` (en remplaçant Mon message par un message de commit, tel que "Ajout du script de filtration des mélanges d'espèce réel.") pour ajouter et valider vos modifications.
 1. `git push my-fork-name nom-de-ma-branche`
 1. Allez sur le [dépôt catalogue_script_agrosyst](https://github.com/beren2/catalogue_script_agrosyst) et vous devriez voir les branches récemment poussées.
-1. Suivez les instructions de GitHub.
+1. Si vous considérez que votre travail peut intéresser la communauté des utilisateurs des données Agrosyst, créer une pull request vers le main. Celle-ci sera analysée par l'équipe Agrosyst.
 
+### Mettre en place des tests unitaires
+Les tests unitaires sont des exemples permettant d'assurer que les fonctions crées ont le comportement attendu. Une fois votre pull request réalisée, l'équipe Agrosyst vous contactera pour obtenir des tests unitaires propres à votre fonction.
 
 ## Organisation du répertoire
 
 ### Scripts
-Les scripts sont disponibles dans le répetoire [scripts](scripts/). 
+Les scripts sont disponibles dans le répetoire [scripts](scripts/).
+Chacun des dossiers contenu dans ce répertoire sert à la constitution d'un magasin de données. Par exemple, le dossier [nettoyage_global](scripts/nettoyage_global) contient l'ensemble des fichiers permettant de constituer le magasin de donnée "nettoyage", disponible sur Datagrosyst. Chaque magasin de donnée doit disposer d'un README.md qui explique son objectif et sa méthodologie.
 
 #### Nettoyage global
 Les scripts disponibles dans le repertoire [scripts/nettoyage_global](scripts/nettoyage_global/) proposent des fonctions permettant d'obtenir des scores de conformité pour chaque entité d'Agrosyst. Plus d'information dans le README.md du répertoire. 
 
 #### Utils
+Les scripts jugés d'interêt général pour les magasins de données peuvent être stockés dans le répertoire [scripts/utils](scripts/utils/). 
 
-##### Général
-Les scripts disponibles dans le repertoire [scripts/utils](scripts/utils/) proposent des fonctions utiles permettant par exemple d'obtenir des informatiosn supplémentaires sur les données ou de mettre à jour les données via l'appel à l'api. 
-
-##### Mise à jour ou téléchargement des données via l'API
-1) Modifier le fichier de configuration avec vos informations [config/datagrosyst.ini](config/database.ini) 
-> Le chemin last_update_date_file sert de stockage pour l'historique de vos mise à jours des données, il est conseillé de le stocker au même endroit que ces dernières
-2) Servez-vous de la fonction principale dans [api_call.py](scripts/utils/api_call.py) :
-
-> `refresh_last_data(data_path)`
-
-
+#### Prise en main
+Les scripts disponibles dans le répertoire [scripts/prise_en_main](scripts/prise_en_main/) proposent des exemples basiques de traitement sur les données.
 
 ### Tests
 Les tests sont disponibles dans le repetoire [tests](tests/). Plus d'information dans le README.md du répertoire. 

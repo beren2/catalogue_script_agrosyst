@@ -1,0 +1,6 @@
+id,nom,campagnes,source,commentaire,parcelle_type_id,sdc_id
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_093f9b98-9fe8-4d3e-bf1c-79689a9f7dd4,PPZ-GCF11042,2009,ENTRETIEN,,fr.inra.agrosyst.api.entities.practiced.PracticedPlot_087af10f-5194-4a7e-b49b-c1854b2f52fb,fr.inra.agrosyst.api.entities.GrowingSystem_8f746058-d219-4513-9609-049b0bb60da6
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_9977d98d-2652-4d5d-aa0f-afdc64e65a97,PPZ BORSENBERGER_2022,"2020, 2021, 2022",ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_b57f9a04-af86-4730-aac6-3f27365f2242
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3beb676b-033f-4679-8d5d-99c0c13be67c,SSYNTH-GCF10307-2012,2012,ENTRETIEN_ENREGISTREMENT,,fr.inra.agrosyst.api.entities.practiced.PracticedPlot_a28be7bd-5985-4ce4-b236-d5c0da1d86c2,fr.inra.agrosyst.api.entities.GrowingSystem_3b749ea2-69aa-48d7-9657-a01e3aa996c3
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_1a3d48ff-d40a-4ed0-9ae0-8939c4a2900e,PZ0 LGF32601,2016,,,,fr.inra.agrosyst.api.entities.GrowingSystem_66bdc2b5-2fac-4e78-a443-2afd8e006434
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_da67bab3-4619-4590-ab90-ea5ccb3a8729,GCF31949_2018,2018,ENTRETIEN_ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_7004ecd6-4df8-4e4a-9ffa-1077bd3cd839

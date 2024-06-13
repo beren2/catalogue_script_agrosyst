@@ -180,7 +180,7 @@ def add_column_sau(df_synthetise, df_sdc, df_dispositif, df_domaine):
     # on ajoute l'info de SAU au SdC
     df_sdc = df_sdc.merge(right=df_dispositif['sau_totale'], left_on='dispositif_id', right_index=True, how='left')
     # on modifie la colonne en multipliant par la part utilisées dans le SdC
-    df_sdc['sau_(Ha)'] = df_sdc['sau_totale'] * df_sdc['part_sau_domaine'] / 100
+    df_sdc['sau_(Ha)'] = df_sdc['sau_totale'] * df_sdc['part_sau_domaine'].fillna(100) / 100
     # on ajoute sau_(Ha) à la table synthetise
     df_synthetise = df_synthetise.merge(right=df_sdc['sau_(Ha)'], left_on='sdc_id', right_index=True, how='left')
     return df_synthetise

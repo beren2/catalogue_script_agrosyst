@@ -1,0 +1,6 @@
+id,code,nom,campagne,surface,latitude,longitude,type,parcelle_id
+fr.inra.agrosyst.api.entities.Zone_5bd952c1-7e77-4b29-b9d5-85ae53cd1050,1b5aeb4f-673d-4c97-8d0a-06ac2e88a597,Zone principale,2021,1.72,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_34704280-8778-46d9-af91-4d33c39e93a3
+fr.inra.agrosyst.api.entities.Zone_f0b83f39-1826-463f-b685-301da3be72df,9815bfaa-9a31-4c95-a688-cb73ebbd6e74,Zone principale,2020,2.5,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_8b41a8e0-c116-485e-ab76-7d9fb33dd4ba
+fr.inra.agrosyst.api.entities.Zone_459fea3a-4572-44b6-b899-278438987514,b8ef9bf8-a05f-46cd-90be-1d23729d6409,Zone principale,2018,9.77,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_1bfe8a93-280b-4a56-aa4f-b00854e08768
+fr.inra.agrosyst.api.entities.Zone_42b70332-2531-4e54-ae85-6376825dcea3,579836ba-bebd-469e-9fb0-09d0bd452422,Zone principale,2018,27.95,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_0146a4e9-76e5-4aa4-9a93-b556cee662e1
+fr.inra.agrosyst.api.entities.Zone_fe536132-f6a8-4d26-8da3-591c7284e964,a4be6c4b-05e1-4b7d-958d-2b48899ed8ce,Zone principale,2016,1.0,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_ebb540e6-2d17-4909-9520-840e3c5c79f1

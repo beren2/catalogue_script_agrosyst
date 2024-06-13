@@ -2,6 +2,7 @@
     Ce script contient les fonctions utiles dans les scripts principaux
 """
 import pandas as pd
+import numpy as np 
 
 
 def get_infos_traitement(df_utilisation_intrant, df_intrant):
@@ -477,6 +478,11 @@ def get_infos_all_utilisation_intrant(
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible']
     df_culture = donnees['culture']
 
+    test_get_infos_traitement = None
+    test_get_infos_culture = None
+    test_get_infos_cible = None
+
+
     if(saisie == 'realise'):
 
         # stockage de tous les dataframes utiles 
@@ -570,3 +576,141 @@ def get_infos_all_utilisation_intrant(
     )
 
     return final_get_dose_ref
+
+
+    #-----#
+    # PZ0 |
+    #-----#
+
+def get_itk_with_crops(df,donnees):
+    """
+    Identifie les zones ou synthetise ayant au moins une culture
+
+    Paramètres :
+                df (df) : Dataframe issu de l'entrepot : zone ou synthetise
+                donnees (dict) : Dictionnaire de dataframe bruts
+    Retourne : Retourne une liste d'id de zone ou synthetise ayant ont au moins une culture
+    """
+
+    id_with_crops = None
+    
+    if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
+        e_noeuds_real = donnees['noeuds_realise'].copy()
+        e_perene_real = donnees['plantation_perenne_realise'].copy()
+
+        id_with_crops = (
+            pd.merge(df, e_noeuds_real[['id','zone_id']], left_on='id', right_on='zone_id',suffixes=('', '_sdc'))['id'].to_list()
+            + pd.merge(df, e_perene_real[['id','zone_id']], left_on='id', right_on='zone_id',suffixes=('', '_sdc'))['id'].to_list()
+            )
+
+    if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
+        e_noeuds_synt = donnees['noeuds_synthetise'].copy()
+        e_perene_synt = donnees['plantation_perenne_synthetise'].copy()
+
+        id_with_crops = (
+            pd.merge(df, e_noeuds_synt[['id','synthetise_id']], left_on='id', right_on='synthetise_id',suffixes=('', '_sdc'))['id'].to_list()
+            + pd.merge(df, e_perene_synt[['id','synthetise_id']], left_on='id', right_on='synthetise_id',suffixes=('', '_sdc'))['id'].to_list()
+        )
+        
+    return(list(np.unique(id_with_crops)))
+
+def get_num_dephy(df,donnees):
+    """
+        Associe une zone ou synthetise à son numero dephy, déclaré au niveau du systeme de culture (sdc)
+        Homogénéise (espaces, tabulations, majuscules) les numeros dephy
+
+        Paramètres :
+                df : Dataframe issu de l'entrepot : zone ou synthetise
+                donnees (dict) : Dictionnaire de dataframe bruts
+        Retourne : le dataframe zone ou synthetise avec le numero dephy du sdc auquel il est attaché
+                    les numeros dephy son homogénéisés (espaces, tabulations, majuscules)
+    """
+    sdc = donnees['sdc'].copy()
+
+    if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
+        parcelle = donnees['parcelle'].copy()
+    
+        # Jointure avec la table sdc pour récuperer le code_dephy
+        parcelle = pd.merge(parcelle, sdc[['id','code_dephy','campagne']], left_on='sdc_id', right_on='id',suffixes=('', '_sdc'))
+        
+        df = (pd.merge(df[['id','campagne','parcelle_id']], 
+                    parcelle[['id','id_sdc','code_dephy','campagne_sdc']],
+                    left_on='parcelle_id', right_on='id',suffixes=('', '_parcelle'))
+            .filter(['id','campagne','campagne_sdc','code_dephy'])
+            )
+        
+    if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
+        df = pd.merge(df[['id','campagnes','nom','sdc_id']],
+                        sdc[['id','campagne', 'code_dephy']], 
+                        left_on='sdc_id', right_on='id',suffixes=('', '_sdc'),how="left").rename(columns = {'campagne':'campagne_sdc'})
+        
+        df.drop(['id_sdc'],inplace=True, axis=1)
+
+    # clean code_dephy :
+    df['code_dephy'] = df['code_dephy'].str.replace('\t','') # tabulations        
+    df['code_dephy'] = df['code_dephy'].str.replace(' ','') # retirer les espaces        
+    df['code_dephy'] = df['code_dephy'].str.replace('_','') # retirer les _        
+    df['code_dephy'] = df['code_dephy'].str.upper() # homogeneiser majuscules et minuscules
+
+    return(df)
+
+
+def get_min_year_bydephy(df):
+    """
+        Cree un dataframe associant un numero dephy avec sa campagne minimale pour les realises et synthetises separement
+
+        Paramètres :
+                df : Dataframe issu de l'entrepot : zone ou synthetise
+        Retourne : le dataframe zone ou synthetise avec le numero dephy du sdc auquel il est attaché
+                    les numeros dephy son homogénéisés (espaces, tabulations, majuscules)
+    """
+    min_campagne = None
+    
+    # Pour les synthetise, split des campagnes pour les series pluriannuelles
+    if len(df[df['id'].str.match(r'(.*PracticedSystem.*)')]) > 0 :
+        df['campagnes'] = df['campagnes'].str.split(', ')
+        df['min_serie_campagne'] = [int(min(x)) for x in df['campagnes']]
+        df['pluriannuel'] = np.where((df['campagnes'].str.len() > 1), True, False)
+
+        min_campagne = (df.loc[df.groupby(['code_dephy'])['min_serie_campagne'].idxmin()]
+                  .rename(columns = {'min_serie_campagne':'min_codedephy','pluriannuel':'min_pluriannuel'})
+                  .filter(['code_dephy','min_codedephy','min_pluriannuel']))
+        
+    if len(df[df['id'].str.match(r'(.*Zone.*)')]) > 0 :
+        min_campagne = (df.groupby('code_dephy')['campagne_sdc'].agg(['min'])
+                        .reset_index()
+                        .rename(columns = {'min':'min_codedephy'}))
+
+    return(min_campagne)
+
+
+def convert(group, target_unit, df_converter):
+    """ permet de convertir un df group dans une même unité en une unité target_unit retourne 3 columns : id, dose, unite"""
+    current_unit = group['unite'].values[0]
+    if(current_unit != target_unit) :
+        current_donnees = df_converter.loc[
+            (df_converter['from'] == current_unit) & (df_converter['to '] == target_unit)
+        ]
+        if(len(current_donnees) > 0):
+            taux_conversion = current_donnees['taux'].values[0]
+            group['new_dose'] = group['dose']*taux_conversion
+            group['new_unite'] = target_unit
+            return group[['id', 'new_dose', 'new_unite']]
+    return None
+
+def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
+    """permet de convertir toutes les unites d'utilisation d'intrant en une unité recherchée"""
+
+    # Déclaration des chemins des données
+    path_converter = 'data/referentiels/conversion_utilisation_intrant.csv'
+
+    # Import des données utiles
+    df_converter = pd.read_csv(path_converter, sep=';')
+
+    res = donnees['utilisation_intrant'].groupby('unite').apply(lambda x :
+        convert(x, target_unit, df_converter)
+    ).reset_index()[
+        ['id', 'new_dose', 'new_unite']
+    ].rename(columns={'new_dose' : 'dose_unite_standardise', 'new_unite' : 'unite_standardise'})
+
+    return res
