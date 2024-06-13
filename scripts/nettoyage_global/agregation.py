@@ -36,13 +36,13 @@ def get_aggreged_from_utilisation_intrant_synthetise(
     #----------#
     # obtention de la connection sur laquelle a lieu l'action
     left = merge_assolee
-    right = df_connection_synthetise[['id', 'source_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
+    right = df_connection_synthetise[['id', 'cible_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'connection_synthetise_id', how='left')
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
     left = merge_assolee
-    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'source_noeuds_synthetise_id'})
-    merge_assolee = pd.merge(left, right, on = 'source_noeuds_synthetise_id', how='left')
+    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
 
     #----------#
     # PERENNES #
@@ -343,13 +343,13 @@ def get_leaking_aggreged_from_action_synthetise(
     #----------#
     # obtention de la connection sur laquelle a lieu l'action
     left = merge_assolee
-    right = df_connection_synthetise[['id', 'source_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
+    right = df_connection_synthetise[['id', 'cible_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'connection_synthetise_id', how='left')
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
     left = merge_assolee
-    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'source_noeuds_synthetise_id'})
-    merge_assolee = pd.merge(left, right, on = 'source_noeuds_synthetise_id', how='left')
+    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
 
     #----------#
     # PERENNES #
@@ -412,13 +412,13 @@ def get_leaking_aggreged_from_intervention_synthetise(
     #----------#
     # obtention de la connection sur laquelle a lieu l'action
     left = merge_assolee
-    right = df_connection_synthetise[['id', 'source_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
+    right = df_connection_synthetise[['id', 'cible_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'connection_synthetise_id', how='left')
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
     left = merge_assolee
-    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'source_noeuds_synthetise_id'})
-    merge_assolee = pd.merge(left, right, on = 'source_noeuds_synthetise_id', how='left')
+    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
 
     #----------#
     # PERENNES #
