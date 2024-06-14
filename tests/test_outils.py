@@ -4,8 +4,8 @@
 
 import pandas as pd
 #from nettoyage import nettoyage
-from scripts.nettoyage_global import nettoyage
-from scripts.nettoyage_global import restructuration
+from scripts.outils import nettoyage
+from scripts.outils import restructuration
 from scripts.utils import fonctions_utiles
 
 
