@@ -11,7 +11,8 @@ jobs:
       matrix:
         python-version: ["3.10"]
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
     - name: Decrypt CSV Files
       run: |
           # Création des 
@@ -52,4 +53,4 @@ jobs:
         username: ${{ secrets.USERNAME_TEST }}
         password: ${{ secrets.PASSWORD_TEST }}
         port: ${{ secrets.PORT }}
-        script: docker cp scripts/magasins/ datagrosyst-tests-datagrosyst-1:/app/
+        script: docker cp /scripts/magasins/ datagrosyst-tests-datagrosyst-1:/app/
