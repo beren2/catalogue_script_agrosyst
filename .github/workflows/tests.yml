@@ -54,7 +54,7 @@ jobs:
         password: ${{ secrets.PASSWORD_TEST }}
         port: ${{ secrets.PORT }}
         source: "scripts/"
-        target: "/home/${{ secrets.USERNAME_TEST }}/scripts"
+        target: "/home/${{ secrets.USERNAME_TEST }}"
     - name: Add new magasins scripts in test
       uses: appleboy/ssh-action@v1.0.3
       with:
