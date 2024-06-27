@@ -63,3 +63,11 @@ jobs:
         password: ${{ secrets.PASSWORD_TEST }}
         port: ${{ secrets.PORT }}
         script: docker cp /home/${{ secrets.USERNAME_TEST }}/scripts/magasins/ datagrosyst-tests-datagrosyst-1:/app/
+    - name: Add new magasins scripts in prod
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST_TEST }}
+        username: ${{ secrets.USERNAME_TEST }}
+        password: ${{ secrets.PASSWORD_TEST }}
+        port: ${{ secrets.PORT }}
+        script: docker cp /home/${{ secrets.USERNAME_TEST }}/scripts/magasins/ datagrosyst-datagrosyst-1:/app/
