@@ -4,6 +4,8 @@ on:
   push:
     branches:
         - 'main'
+    paths-ignore:
+        - scripts/magasins/**
 jobs:
   build:
     runs-on: ubuntu-latest
