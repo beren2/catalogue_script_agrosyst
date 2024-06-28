@@ -1,0 +1,43 @@
+name: Tests
+
+on:
+  push:
+    branches:
+        - 'main'
+    paths:
+        - scripts/magasins/**
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Connect to VPN
+      env:
+        VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
+        VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
+      run: |
+        echo "$VPN_PASSWORD" | sudo openconnect --protocol=gp acces.intranet.inra.fr -u $VPN_USERNAME --csd-wrapper=/usr/libexec/openconnect/hipreport.sh --passwd-on-stdin --background --authgroup=gateway_pad-dc-idf     
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.HOST_TEST }}
+        username: ${{ secrets.USERNAME_TEST }}
+        password: ${{ secrets.PASSWORD_TEST }}
+        port: ${{ secrets.PORT }}
+        source: "scripts/"
+        target: "/home/${{ secrets.USERNAME_TEST }}"
+    - name: Add new magasins scripts in test
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST_TEST }}
+        username: ${{ secrets.USERNAME_TEST }}
+        password: ${{ secrets.PASSWORD_TEST }}
+        port: ${{ secrets.PORT }}
+        script: docker cp /home/${{ secrets.USERNAME_TEST }}/scripts/magasins/ datagrosyst-tests-datagrosyst-1:/app/
+    - name: Add new magasins scripts in prod
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST_TEST }}
+        username: ${{ secrets.USERNAME_TEST }}
+        password: ${{ secrets.PASSWORD_TEST }}
+        port: ${{ secrets.PORT }}
+        script: docker cp /home/${{ secrets.USERNAME_TEST }}/scripts/magasins/ datagrosyst-datagrosyst-1:/app/
