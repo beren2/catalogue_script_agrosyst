@@ -4,7 +4,7 @@
 
 import pandas as pd
 
-def get_intervention_realise_culture_info(
+def get_intervention_realise_outils_can(
     donnees
 ):
     """
