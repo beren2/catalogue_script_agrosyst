@@ -7,7 +7,7 @@ import pandas as pd
 from scripts.outils import nettoyage
 from scripts.outils import restructuration
 from scripts.utils import fonctions_utiles
-
+from scripts.outils import outils_can
 
 
 def import_df(df_name, path_data, sep, df):
@@ -481,11 +481,17 @@ def test_restructuration_recolte_rendement_prix():
     path_data = 'tests/data/test_recolte_rendement_prix_restructured/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
-    recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][['id_ligne', 'valeur_attendue']]
+    recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][
+        ['id_ligne', 'valeur_attendue']
+    ]
     recolte_rendement_prix = restructuration.restructuration_recolte_rendement_prix(donnees)
 
-    left = recolte_rendement_prix_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'recolte_rendement_prix_id', 'valeur_attendue' : 'composant_culture_id_expected'})
-    right = recolte_rendement_prix.reset_index()[['id', 'composant_culture_id']].rename(columns={'id' : 'recolte_rendement_prix_id'})
+    left = recolte_rendement_prix_expected[['id_ligne', 'valeur_attendue']].rename(columns={
+        'id_ligne' : 'recolte_rendement_prix_id', 'valeur_attendue' : 'composant_culture_id_expected'
+    })
+    right = recolte_rendement_prix.reset_index()[['id', 'composant_culture_id']].rename(columns={
+        'id' : 'recolte_rendement_prix_id'
+    })
     merge = pd.merge(left, right, on='recolte_rendement_prix_id', how='left')
 
     # on enlève ceux pour lesquelles on est sensé trouver "NaN" 
@@ -493,5 +499,45 @@ def test_restructuration_recolte_rendement_prix():
 
     # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
     res_valeur_ok = (merge['composant_culture_id'] == merge['composant_culture_id_expected']).all()
+
+    assert res_valeur_ok
+
+
+def test_get_intervention_realise_outils_can():
+    """
+        Test de l'obtention de l'outil pour le traitement des intervention realise pour la CAN
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_culture_info']
+
+    # obtention des données
+    df_names = [   
+                    'composant_culture_concerne_intervention_realise', 'espece', 
+                    'variete', 'composant_culture'
+                ]
+
+    path_data = 'tests/data/test_get_intervention_realise_culture_info/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    especes_de_l_intervention_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'especes_de_l_intervention'][
+        ['id_ligne', 'valeur_attendue']
+    ]
+    
+    espece_de_l_intervention = outils_can.get_intervention_realise_outils_can(donnees).reset_index()
+
+    left = especes_de_l_intervention_expected[['id_ligne', 'valeur_attendue']].rename(columns={
+        'id_ligne' : 'intervention_id', 'valeur_attendue' : 'espece_de_l_intervention_expected'
+    })
+    right = espece_de_l_intervention.reset_index()[['intervention_realise_id', 'description']].rename(columns={
+        'intervention_realise_id' : 'intervention_id', 'description' : 'espece_de_l_intervention'
+    })
+    merge = pd.merge(left, right, on='intervention_id', how='left')
+
+    # on enlève ceux pour lesquelles on est sensé trouver "NaN"
+    merge = merge.dropna()
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['espece_de_l_intervention'] == merge['espece_de_l_intervention_expected']).all()
 
     assert res_valeur_ok

@@ -13,7 +13,6 @@ def get_intervention_realise_outils_can(
     df_composant_culture_concerne_intervention_realise = donnees['composant_culture_concerne_intervention_realise']
     df_espece = donnees['espece']
     df_variete = donnees['variete']
-    df_culture = donnees['culture']
     df_composant_culture = donnees['composant_culture']
 
     # Ajout des informations "espèces / variétés" au composant de culture
@@ -31,15 +30,23 @@ def get_intervention_realise_outils_can(
     df_composant_culture_extanded = pd.merge(left, right, on='variete_id', how='left')
 
     # Ajout des informations dans le dataframe principal 
-    left = df_composant_culture_concerne_intervention_realise[['id', 'composant_culture_id']]
-    right = df_composant_culture_extanded.rename(columns={'id' : 'composant_culutre_id'})
+    left = df_composant_culture_concerne_intervention_realise[
+        ['id', 'composant_culture_id', 'intervention_realise_id']
+    ]
+    right = df_composant_culture_extanded.rename(columns={'id' : 'composant_culture_id'})
     df_studied = pd.merge(left, right, on='composant_culture_id', how='left')
 
     df_studied = df_studied.fillna('')
     df_studied['description'] = df_studied[[
         'libelle_espece_botanique', 'libelle_qualifiant_aee', 
         'libelle_type_saisonnier_aee', 'libelle_destination_aee', 
-        'denomination'
-    ]]
+    ]].agg(' '.join, axis=1).str.split().str.join(' ')
 
-    return df_studied
+    df_studied.loc[
+        df_studied['denomination'] !=  '', 'denomination'
+    ] = ' - '+ df_studied.loc[df_studied['denomination'] !=  '']['denomination']
+
+    df_studied['description'] = (df_studied['description'] +  df_studied['denomination']).str.split().str.join(' ')
+    res = df_studied.groupby('intervention_realise_id')['description'].agg(' ; '.join)
+
+    return res
