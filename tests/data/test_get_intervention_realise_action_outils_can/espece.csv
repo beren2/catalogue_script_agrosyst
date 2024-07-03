@@ -1,0 +1,6 @@
+id,code_espece_botanique,code_qualifiant_aee,code_type_saisonnier_aee,code_destination_aee,code_categorie_culture,libelle_categorie_culture,commentaire,libelle_espece_botanique,libelle_qualifiant_aee,libelle_type_saisonnier_aee,libelle_destination_aee,code_cipan_aee,libelle_cipan_aee,libelle_destination_bbch,commentaires,genre,espece,code_gnis,num_groupe_gnis,nom_gnis,nom_latin_gnis,nom_culture_acta,remarque_culture_acta
+fr.inra.agrosyst.api.entities.referential.RefEspece_a61a6ebc-5fe6-4e58-82e8-e567421ee4fb,ZDO,ZLF,ZFB,,J10,Grandes cultures,,Pois,Fourrager / Fourrage,Hiver,,,,Fourrage,,Pisum,sativum,71,5,POIS FOURRAGERS,PISUM SATIVUM L. PARTIM,pois protéagineux d'hiver,
+fr.inra.agrosyst.api.entities.referential.RefEspece_40d638d6-855d-4ccc-afe5-50e7e5f555e7,H69,H70,,,J05,Divers,,Mélange,"enherbement 
+non fourrager",,,,,,,,,TEMP_H69,,,,graminées porte-graine,
+fr.inra.agrosyst.api.entities.referential.RefEspece_4b86ffcf-139a-4f40-a7c0-9617416cbdd6,ZAM,ZLN,ZFB,,J10,Grandes cultures,,Avoine,Blanche,Hiver,,ZAMZLNZFB,Avoine blanche d'hiver,,,Avena,sativa,510,3,AVOINE,AVENA SATIVA L.,avoine d'hiver,
+fr.inra.agrosyst.api.entities.referential.RefEspece_cc77b784-0fe3-4ed3-b00c-359660985586,ZMI,,,,J10,Grandes cultures,,Triticale,,,,,,,,Triticosecale,hybrids,39,3,TRITICALE,TRITICOSECALE WITTM.,triticale,
