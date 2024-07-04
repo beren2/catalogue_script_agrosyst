@@ -503,13 +503,13 @@ def test_restructuration_recolte_rendement_prix():
     assert res_valeur_ok
 
 
-def test_get_intervention_realise_outils_can():
+def test_get_intervention_realise_especes_concernes_outils_can():
     """
         Test de l'obtention de l'outil pour le traitement des intervention realise pour la CAN
     """
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_culture_info']
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_especes_concernes_outils_can']
 
     # obtention des données
     df_names = [   
@@ -517,27 +517,73 @@ def test_get_intervention_realise_outils_can():
                     'variete', 'composant_culture'
                 ]
 
-    path_data = 'tests/data/test_get_intervention_realise_culture_info/'
+    path_data = 'tests/data/test_get_intervention_realise_especes_concernes_outils_can/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     especes_de_l_intervention_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'especes_de_l_intervention'][
         ['id_ligne', 'valeur_attendue']
     ]
     
-    espece_de_l_intervention = outils_can.get_intervention_realise_outils_can(donnees).reset_index()
+    espece_de_l_intervention = outils_can.get_intervention_realise_especes_concernes_outils_can(donnees).reset_index()
 
     left = especes_de_l_intervention_expected[['id_ligne', 'valeur_attendue']].rename(columns={
         'id_ligne' : 'intervention_id', 'valeur_attendue' : 'espece_de_l_intervention_expected'
     })
-    right = espece_de_l_intervention.reset_index()[['intervention_realise_id', 'description']].rename(columns={
-        'intervention_realise_id' : 'intervention_id', 'description' : 'espece_de_l_intervention'
+    right = espece_de_l_intervention.reset_index()[['intervention_realise_id', 'espece_de_l_intervention']].rename(columns={
+        'intervention_realise_id' : 'intervention_id'
     })
     merge = pd.merge(left, right, on='intervention_id', how='left')
 
     # on enlève ceux pour lesquelles on est sensé trouver "NaN"
-    merge = merge.dropna()
+    merge = merge.dropna(subset=['espece_de_l_intervention_expected'])
 
     # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
     res_valeur_ok = (merge['espece_de_l_intervention'] == merge['espece_de_l_intervention_expected']).all()
 
     assert res_valeur_ok
+
+def test_get_intervention_realise_outils_can_context():
+    """
+        Test de l'obtention de l'outil pour le traitement des intervention realise pour la CAN
+    """
+     # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_action_outils_can']
+
+    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    # obtention des données
+    df_names = [   
+                    'action_realise', 'intervention_realise', 'composant_action_semis', 
+                    'semence', 'utilisation_intrant_realise', 'espece', 'composant_culture'
+                ]
+
+    path_data = 'tests/data/test_get_intervention_realise_action_outils_can/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    donnees_intervention = outils_can.get_intervention_realise_outils_can_context(donnees).reset_index()
+
+    res = []
+    for intervention_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+
+        # valeur trouvée :
+        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
+        output = output[colonnes_to_test]
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+
+        for colonne_to_test in colonnes_to_test:
+            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+                res.append(False)
+            else:
+                res.append(True)
+    
+    assert all(res)
+
+
