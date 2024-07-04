@@ -52,10 +52,12 @@ def get_intervention_realise_especes_concernes_outils_can(
     return res_especes_concernees
 
 def map_boolean(values, sep='; '):
+    """ permet de transformer les booléen en string """
     mapping = {'f': 'non', 't': 'oui'}
     return ', '.join(mapping[val] for val in values)
 
 def convert_to_int(x):
+    """ permet de convertir une colonne en int"""
     try:
         # Convert to float first, then to int
         return str(int(float(x)))
