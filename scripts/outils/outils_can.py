@@ -224,18 +224,23 @@ def get_intervention_realise_combinaison_outils_can(
     """
         Permet d'obtenir le dataframe avec les informations sur les combinaisons d'outils
     """
+    df_intervention_realise = donnees['intervention_realise']
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
     df_materiel = donnees['materiel'].set_index('id')
     df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
     left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'type_materiel']].rename(columns={'nom' : 'nom_tracteur', 'type_materiel' : 'tracteur_ou_automoteur'})
+    right = df_materiel[['nom', 'type_materiel']].rename(
+        columns={'nom' : 'nom_tracteur', 'type_materiel' : 'tracteur_ou_automoteur'}
+    )
     df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
 
     # Ajout des inforations sur le materiel à la combinaison d'outils
     left = df_combinaison_outil_materiel
-    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(columns={'nom' : 'combinaison_outils_nom', 'type_materiel' : 'outils'})
+    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
+        columns={'nom' : 'combinaison_outils_nom', 'type_materiel' : 'outils'}
+    )
     df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
 
     # On considère que si plusieurs matériels ont les mêmes caractéristiques (materiel_caracteristique1)
@@ -256,9 +261,15 @@ def get_intervention_realise_combinaison_outils_can(
     right = df_combinaison_outil_materiel_grouped
     df_combinaison_outil_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    return df_combinaison_outil_extanded.rename(columns={'nom' : 'combinaison_outils_nom'})[
+    # On agrège les informations au dataframe des interventions
+    left = df_intervention_realise[['id', 'combinaison_outil_id']]
+    right = df_combinaison_outil_extanded.rename(columns={'nom' : 'combinaison_outils_nom'})[
         ['combinaison_outils_nom', 'tracteur_ou_automoteur', 'outils']
-    ].reset_index()
+    ]
+
+    merge = pd.merge(left, right, left_on='combinaison_outil_id', right_index=True, how='left')
+
+    return merge
 
 def get_intervention_realise_outils_can(
     donnees
@@ -272,6 +283,13 @@ def get_intervention_realise_outils_can(
     right = get_intervention_realise_especes_concernes_outils_can(donnees).reset_index().rename(
         columns={'id' : 'intervention_realise_id'}
     )
+    merge = pd.merge(left, right, on='intervention_realise_id', how='left')
+
+    left = merge
+    right = get_intervention_realise_combinaison_outils_can(donnees).rename(
+        columns={'id' : 'intervention_realise_id'}
+    )
+
     merge = pd.merge(left, right, on='intervention_realise_id', how='left')
 
     return merge
