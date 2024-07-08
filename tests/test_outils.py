@@ -587,3 +587,45 @@ def test_get_intervention_realise_outils_can_context():
     assert all(res)
 
 
+def test_get_intervention_realise_combinaison_outils_can():
+    """
+        Test de l'obtention des informations sur les combinaison d'outils en realise pour le magasin CAN 
+    """
+     # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_combinaison_outils_can']
+
+    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    # obtention des données
+    df_names = [   
+                    'combinaison_outil', 'materiel', 'combinaison_outil_materiel'
+                ]
+
+    path_data = '~/Bureau/utils/data/'# 'tests/data/test_get_intervention_realise_combinaison_outils_can/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    donnees_intervention = outils_can.get_intervention_realise_combinaison_outils_can(donnees).reset_index()
+
+    res = []
+    for intervention_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+
+        # valeur trouvée :
+        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
+        output = output[colonnes_to_test]
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+
+        for colonne_to_test in colonnes_to_test:
+            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+                res.append(False)
+            else:
+                res.append(True)
+    
+    assert all(res)

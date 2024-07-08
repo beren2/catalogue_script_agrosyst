@@ -1,0 +1,5 @@
+,combinaison_outil_id,materiel_id
+199608,fr.inra.agrosyst.api.entities.ToolsCoupling_c98e4e59-4c46-4eef-b18f-1ff4a5ab25dc,fr.inra.agrosyst.api.entities.Equipment_66b728c9-63e8-4433-a934-bcd0cbf9a16e
+207153,fr.inra.agrosyst.api.entities.ToolsCoupling_6f642f5b-2c3b-46d6-a53c-bbbbff0b00b9,fr.inra.agrosyst.api.entities.Equipment_c3d18ebf-556f-4626-82f1-99a250ea84c0
+280999,fr.inra.agrosyst.api.entities.ToolsCoupling_517ee018-e044-49d3-9d18-56f5db7a3c36,fr.inra.agrosyst.api.entities.Equipment_3469279b-8642-4be7-8fa1-c30bb117ae99
+281015,fr.inra.agrosyst.api.entities.ToolsCoupling_517ee018-e044-49d3-9d18-56f5db7a3c36,fr.inra.agrosyst.api.entities.Equipment_77ffdd94-6ea3-48e6-ba70-305c4f26f8d3

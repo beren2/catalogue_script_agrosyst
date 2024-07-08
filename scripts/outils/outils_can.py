@@ -55,7 +55,7 @@ def map_boolean(values, sep='; '):
     """ permet de transformer les booléen en string """
     mapping = {'f': 'non', 't': 'oui'}
     return ', '.join(mapping[val] for val in values)
-
+ 
 def convert_to_int(x):
     """ permet de convertir une colonne en int"""
     try:
@@ -73,47 +73,69 @@ def get_intervention_realise_action_outils_can(
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
 
-
     left =  df_action_realise
     right = df_intervention_realise[['id', 'freq_spatiale', 'nombre_de_passage', 'psci_intervention']].rename(columns={'id' : 'intervention_realise_id'})
     df_action_realise_extanded = pd.merge(left, right, on='intervention_realise_id', how='left')
 
     # Pour les applications de produits phytosanitaires :
-    df_action_realise_extanded.loc[
-        df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES', 'proportion_surface_traitee_phyto'
-    ] = df_action_realise_extanded['proportion_surface_traitee']
-
-    df_action_realise_extanded.loc[
-        df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES', 'psci_phyto'
-    ] = df_action_realise_extanded['proportion_surface_traitee'] *  df_action_realise_extanded['freq_spatiale'] * df_action_realise_extanded['nombre_de_passage']
+    df_action_produit_phyto = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
+    df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
+    df_action_produit_phyto.loc[: ,'psci_phyto'] = df_action_produit_phyto['proportion_surface_traitee'] * \
+          df_action_produit_phyto['freq_spatiale'] * df_action_produit_phyto['nombre_de_passage']
 
     # Pour la lutte biologique :
-    df_action_realise_extanded.loc[
-        df_action_realise_extanded['type'] == 'LUTTE_BIOLOGIQUE', 'proportion_surface_traitee_lutte_bio'
-    ] = df_action_realise_extanded['proportion_surface_traitee']
+    df_action_lutte_bio = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'LUTTE_BIOLOGIQUE']
+    df_action_lutte_bio.loc[: ,'proportion_surface_traitee_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee']
+    df_action_lutte_bio.loc[: ,'psci_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee'] * \
+          df_action_lutte_bio['freq_spatiale'] * df_action_lutte_bio['nombre_de_passage']
 
-    df_action_realise_extanded.loc[
-        df_action_realise_extanded['type'] == 'LUTTE_BIOLOGIQUE', 'psci_lutte_bio'
-    ] = df_action_realise_extanded['proportion_surface_traitee'] *  df_action_realise_extanded['freq_spatiale'] * df_action_realise_extanded['nombre_de_passage']
+    # Pour l'irrigation :
+    df_action_irrigation = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'IRRIGATION']
+    df_action_irrigation.loc[: ,'quantite_eau_mm'] = df_action_irrigation['eau_qte_moy_mm'] 
 
-    # Pour l'irrigation : 
-    df_action_realise_extanded.loc[
-        df_action_realise_extanded['type'] == 'IRRIGATION', 'quantite_eau_mm'
-    ] = df_action_realise_extanded['eau_qte_moy_mm']
+    # Pour les autres :
+    df_action_autres = df_action_realise_extanded.loc[
+        (df_action_realise_extanded['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
+        (df_action_realise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
+        (df_action_realise_extanded['type'] != 'IRRIGATION')
+    ].groupby(['intervention_realise_id']).agg({
+        'label' : ' ; '.join
+    }).reset_index()
+    
+    keeped_column_produit_phyto = ['proportion_surface_traitee_phyto', 'psci_phyto']
+    keeped_column_lutte_bio = ['proportion_surface_traitee_lutte_bio', 'psci_lutte_bio']
+    keeped_column_irrigation = ['quantite_eau_mm']
+    merge = pd.merge(df_action_produit_phyto[keeped_column_produit_phyto+['intervention_realise_id', 'label']], 
+                     df_action_lutte_bio[keeped_column_lutte_bio+['intervention_realise_id', 'label']], 
+                     on='intervention_realise_id', how='outer', suffixes = ('', '_lutte_bio'))
 
-    intervention_actions_indicateurs = df_action_realise_extanded.groupby(['label', 'intervention_realise_id']).agg({
-        'proportion_surface_traitee_phyto' : np.mean,
-        'psci_phyto' : np.mean, 
-        'proportion_surface_traitee_lutte_bio' : np.mean, 
-        'psci_lutte_bio' : np.mean,
-        'quantite_eau_mm' : np.mean
-    })
+    merge = pd.merge(merge.set_index('intervention_realise_id'), 
+                     df_action_autres[['intervention_realise_id', 'label']], 
+                     left_index=True, suffixes = ('', '_autre'),
+                     right_on='intervention_realise_id', how='outer').drop_duplicates(subset=['intervention_realise_id'])
+    
+    merge = pd.merge(merge.set_index('intervention_realise_id'), 
+                     df_action_irrigation[keeped_column_irrigation+['intervention_realise_id', 'label']], 
+                     left_index=True, suffixes = ('', '_irrigation'),
+                     right_on='intervention_realise_id', how='outer').drop_duplicates(subset=['intervention_realise_id'])
 
-    intervention_actions_indicateurs[
+    merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
+        lambda x: x.str.cat(sep=' ; '), axis=1
+    )
+
+    merge[
         ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
-    ] = intervention_actions_indicateurs[
+    ] = merge[
         ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
     ].applymap(convert_to_int)
+
+
+    # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
+    # à chaque fois la valeur non nulle pour les colonnes
+    intervention_actions_indicateurs = merge[[
+        'intervention_realise_id', 'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm' 
+    ]]
 
     return intervention_actions_indicateurs
 
@@ -187,14 +209,13 @@ def get_intervention_realise_outils_can_context(
 
     # ajout des informations sur les différents indicateurs
     left = df_intervention_realise
-    right = get_intervention_realise_action_outils_can(donnees).reset_index().rename(columns={'intervention_realise_id': 'id', 'label' : 'interventions_actions'} )
+    right = get_intervention_realise_action_outils_can(donnees).reset_index().rename(columns={'intervention_realise_id': 'id'} )
     merge = pd.merge(left, right, on='id', how='left')
-
+    
     # ajout des informations sur la table semis
     left = merge 
     right = get_intervention_realise_semence_outils_can(donnees).reset_index().rename(columns={'intervention_realise_id': 'id'})
     merge = pd.merge(left, right, on='id', how='left')
-
 
     columns = ['id', 'interventions_actions', 'especes_semees', 'densite_semis', 'unite_semis', 'traitement_chimique_semis', 
                'inoculation_biologique_semis', 'type_semence', 'proportion_surface_traitee_phyto', 'psci_phyto', 
@@ -203,6 +224,47 @@ def get_intervention_realise_outils_can_context(
     #get_intervention_realise_especes_concernes_outils_can 
     return merge[columns]
 
+def get_intervention_realise_combinaison_outils_can(
+    donnees
+):
+    """
+        Permet d'obtenir le dataframe avec les informations sur les combinaisons d'outils
+    """
+    df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
+    df_materiel = donnees['materiel'].set_index('id')
+    df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
+
+    # Ajout des informations sur le tracteur à la combinaison d'outils 
+    left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
+    right = df_materiel[['nom', 'type_materiel']].rename(columns={'nom' : 'nom_tracteur', 'type_materiel' : 'tracteur_ou_automoteur'})
+    df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
+
+    # Ajout des inforations sur le materiel à la combinaison d'outils
+    left = df_combinaison_outil_materiel
+    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(columns={'nom' : 'combinaison_outils_nom', 'type_materiel' : 'outils'})
+    df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+
+    # On considère que si plusieurs matériels ont les mêmes caractéristiques (materiel_caracteristique1)
+    # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
+    # (Correction par rapport aux exports en masse historiques)
+    df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
+        subset=['combinaison_outil_id', 'materiel_caracteristique1']
+    )
+
+    # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
+    df_combinaison_outil_materiel['outils'] = df_combinaison_outil_materiel['outils'].fillna('')
+    df_combinaison_outil_materiel_grouped = df_combinaison_outil_materiel.groupby('combinaison_outil_id').agg({
+        'outils' : ' ; '.join, # delete NaN
+    })
+
+    # On mets toutes les informations dans le même dataframe
+    left = df_combinaison_outil_extanded
+    right = df_combinaison_outil_materiel_grouped
+    df_combinaison_outil_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    return df_combinaison_outil_extanded.rename(columns={'nom' : 'combinaison_outils_nom'})[
+        ['combinaison_outils_nom', 'tracteur_ou_automoteur', 'outils']
+    ].reset_index()
 
 def get_intervention_realise_outils_can(
     donnees

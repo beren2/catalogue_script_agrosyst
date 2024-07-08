@@ -141,3 +141,16 @@ test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.ef
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,"20.0 , 40.0 , 130.0",,densite_semis
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,"KG_PAR_HA, KG_PAR_HA, KG_PAR_HA",,unite_semis
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,Pois Fourrager / Fourrage Hiver ; Triticale ; Avoine Blanche Hiver,,especes_semees
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,"Fertilisation minérale ; Travail de surface (binage, hersage, griffage, ...)",,interventions_actions
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_6f642f5b-2c3b-46d6-a53c-bbbbff0b00b9,TRAITEMENTS PHYTO/N LIQUIDE,,combinaison_outils_nom
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_6f642f5b-2c3b-46d6-a53c-bbbbff0b00b9,TRACTEURS CLASSIQUES,,tracteur_ou_automoteur
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_6f642f5b-2c3b-46d6-a53c-bbbbff0b00b9,PULVERISATEURS,,outils
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_517ee018-e044-49d3-9d18-56f5db7a3c36,"Travail de surface (binage, hersage, griffage, ...)",,combinaison_outils_nom
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_517ee018-e044-49d3-9d18-56f5db7a3c36,TRACTEURS CLASSIQUES,,tracteur_ou_automoteur
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_517ee018-e044-49d3-9d18-56f5db7a3c36,FRAISES-HERSES ANIMEES ; CULTIVATEURS,,outils
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_c98e4e59-4c46-4eef-b18f-1ff4a5ab25dc,Cuve 10 à 12 hl  - Bidisques 15 à 18 m  - Porté  Catégorie B = Catégorie A + suspension du pont avant de série  - 116 a 125 ch - 120 ch ,,combinaison_outils_nom
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_c98e4e59-4c46-4eef-b18f-1ff4a5ab25dc,TRACTEURS CLASSIQUES,,tracteur_ou_automoteur
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_c98e4e59-4c46-4eef-b18f-1ff4a5ab25dc,DISTRIBUTEUR ENGRAIS,,outils
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_3896301e-eec7-422e-86cb-d043178cb951,Désherbage en plein,,combinaison_outils_nom
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_3896301e-eec7-422e-86cb-d043178cb951,TRACTEURS SPECIALISES 4RM VIGNE,,tracteur_ou_automoteur
+test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.ToolsCoupling_3896301e-eec7-422e-86cb-d043178cb951,Pulvérisateur Accessoire,,outils
