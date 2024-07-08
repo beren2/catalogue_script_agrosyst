@@ -1,7 +1,6 @@
 """
 	Regroupe les fonctions permettant de générer les outils utiles lors de la génération du magasin "CAN".
 """
-import numpy as np
 import pandas as pd
 
 def get_intervention_realise_especes_concernes_outils_can(
