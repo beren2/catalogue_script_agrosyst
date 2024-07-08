@@ -132,7 +132,7 @@ def get_intervention_realise_action_outils_can(
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
     intervention_actions_indicateurs = merge[[
-        'intervention_realise_id', 'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
         'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm' 
     ]]
 
@@ -144,13 +144,9 @@ def get_intervention_realise_semence_outils_can(
     """
         TODO
     """
-    #df_action_realise = donnees['action_realise']
-    #df_intervention_realise = donnees['intervention_realise']
-    #df_composant_action_semis = donnees['composant_action_semis']
     df_semence = donnees['semence']
     df_composant_culture = donnees['composant_culture']
     df_espece = donnees['espece']
-    #df_variete = donnees['variete']
     df_utilisation_intrant_realise = donnees['utilisation_intrant_realise']
 
     # OBTENTION DES INFORMATIONS POUR LES INTERVENTIONS DE TYPE SEMENCES.
@@ -220,7 +216,6 @@ def get_intervention_realise_outils_can_context(
                'inoculation_biologique_semis', 'type_semence', 'proportion_surface_traitee_phyto', 'psci_phyto', 
                'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
     # ajout des informations sur les espèces concernées
-    #get_intervention_realise_especes_concernes_outils_can 
     return merge[columns]
 
 def get_intervention_realise_combinaison_outils_can(
@@ -277,5 +272,6 @@ def get_intervention_realise_outils_can(
     right = get_intervention_realise_especes_concernes_outils_can(donnees).reset_index().rename(
         columns={'id' : 'intervention_realise_id'}
     )
-    merge = pd.merge(left, right, on='intervention_realise_id', how='left') 
+    merge = pd.merge(left, right, on='intervention_realise_id', how='left')
+
     return merge
