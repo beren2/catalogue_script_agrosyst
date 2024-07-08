@@ -602,7 +602,7 @@ def test_get_intervention_realise_combinaison_outils_can():
 
     # obtention des données
     df_names = [   
-                    'combinaison_outil', 'materiel', 'combinaison_outil_materiel'
+                    'combinaison_outil', 'materiel', 'combinaison_outil_materiel', 'intervention_realise'
                 ]
 
     path_data = 'tests/data/test_get_intervention_realise_combinaison_outils_can/'
