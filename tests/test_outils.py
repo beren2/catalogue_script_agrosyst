@@ -605,7 +605,7 @@ def test_get_intervention_realise_combinaison_outils_can():
                     'combinaison_outil', 'materiel', 'combinaison_outil_materiel'
                 ]
 
-    path_data = '~/Bureau/utils/data/'# 'tests/data/test_get_intervention_realise_combinaison_outils_can/'
+    path_data = 'tests/data/test_get_intervention_realise_combinaison_outils_can/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     donnees_intervention = outils_can.get_intervention_realise_combinaison_outils_can(donnees).reset_index()
