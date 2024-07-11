@@ -64,6 +64,87 @@ def restructuration_connection_synthetise(donnees):
 
     return donnees['connection_synthetise_restructure'].set_index('id')[['culture_intermediaire_id']]
 
+
+def restructuration_plantation_perenne_synthetise(donnees):
+    """
+        fonction permettant d'obtenir, pour chaque plantation perenne en synthétisé
+        un culture_id plutôt qu'un culture_code
+    """
+    donnees = donnees.copy()
+    donnees['plantation_perenne_synthetise'] = donnees['plantation_perenne_synthetise'].set_index('id')
+    donnees['synthetise'] = donnees['synthetise'].set_index('id')
+    donnees['sdc'] = donnees['sdc'].set_index('id')
+    donnees['dispositif'] = donnees['dispositif'].set_index('id')
+    donnees['domaine'] = donnees['domaine'].set_index('id')
+    donnees['culture'] = donnees['culture'].set_index('id')
+
+    left = donnees['plantation_perenne_synthetise'][['synthetise_id', 'culture_code']]
+    right = donnees['synthetise'][['sdc_id']]
+    donnees['plantation_perenne_synthetise_extanded'] = pd.merge(left, right, left_on='synthetise_id', right_index=True, how='left')
+
+    left = donnees['plantation_perenne_synthetise_extanded']
+    right = donnees['sdc']['dispositif_id']
+    donnees['plantation_perenne_synthetise_extanded'] = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
+
+    left = donnees['plantation_perenne_synthetise_extanded']
+    right = donnees['dispositif']['domaine_id']
+    donnees['plantation_perenne_synthetise_extanded'] = pd.merge(left, right, left_on='dispositif_id', right_index=True, how='left')
+
+    left = donnees['plantation_perenne_synthetise_extanded']
+    right = donnees['domaine']['campagne']
+    donnees['plantation_perenne_synthetise_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    left = donnees['culture'][['code', 'domaine_id']]
+    right = donnees['domaine'][['campagne']]
+    donnees['culture_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    left = donnees['plantation_perenne_synthetise_extanded'][['culture_code', 'campagne']].reset_index()
+    right = donnees['culture_extanded'].reset_index().rename(columns={'code' : 'culture_code', 'id' : 'culture_id'})
+    final = pd.merge(left, right, on=['culture_code', 'campagne'], how='inner')[['id', 'culture_id']]
+
+    return final.set_index('id')
+
+def restructuration_composant_culture_concerne_intervention_synthetise(donnees):
+    """
+        fonction permettant d'obtenir, pour chaque composant de culture concerné par une intervention en synthétisé
+        un culture_id plutôt qu'un culture_code
+    """
+    donnees = donnees.copy()
+
+
+    donnees['composant_culture_concerne_intervention_synthetise'] = \
+        donnees['composant_culture_concerne_intervention_synthetise'].set_index('id')
+    donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].set_index('id')
+    donnees['culture'] = donnees['culture'].set_index('id')
+    donnees['domaine'] = donnees['domaine'].set_index('id')
+    donnees['composant_culture'] = donnees['composant_culture'].set_index('id')
+
+    left = donnees['composant_culture_concerne_intervention_synthetise'][['composant_culture_code', 'intervention_synthetise_id']]
+    right = donnees['intervention_synthetise_agrege'][['domaine_id']]
+    donnees['studied_extanded'] = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
+
+    left = donnees['studied_extanded']
+    right = donnees['domaine'][['campagne']]
+    donnees['studied_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    left = donnees['composant_culture'][['code', 'culture_id']]
+    right = donnees['culture'][['domaine_id']]
+    donnees['composant_culture_extanded'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+
+
+    left = donnees['composant_culture_extanded']
+    right = donnees['domaine'][['campagne']]
+    donnees['composant_culture_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    left = donnees['studied_extanded'][['composant_culture_code', 'campagne']].reset_index()
+    right = donnees['composant_culture_extanded'].reset_index().rename(
+        columns={'code' : 'composant_culture_code', 'id' : 'composant_culture_id'}
+    )
+    final = pd.merge(left, right, on=['composant_culture_code', 'campagne'], how='inner')[['id', 'composant_culture_id']]
+
+    return final.set_index('id')
+
+
 def restructuration_intervention_synthetise(donnees):
     """
         fonction permettant de remplacer le combinaison_outil_code par un combinaison_outil_id dans les intervention en synthétisé
