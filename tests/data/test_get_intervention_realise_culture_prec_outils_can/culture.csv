@@ -1,0 +1,7 @@
+,id,nom,melange_especes,melange_varietes,prairie_paturee,prairie_temporaire,prairie_fauchee,code,type,domaine_id
+103458,fr.inra.agrosyst.api.entities.CroppingPlanEntry_32ab3854-136c-4981-9484-0d77eaec2eb1,Blettes,f,f,f,,f,400814fd-fd52-4add-906f-a1f7c53ae3d9,MAIN,fr.inra.agrosyst.api.entities.Domain_3c88ccb5-5f50-4b3f-ad62-b702cd8d182c
+103459,fr.inra.agrosyst.api.entities.CroppingPlanEntry_84370d1d-3ea4-4514-92eb-98deaaa0b546,Carotte,t,f,f,,f,d045d069-cede-438a-8f1a-43d7528ca785,MAIN,fr.inra.agrosyst.api.entities.Domain_3c88ccb5-5f50-4b3f-ad62-b702cd8d182c
+169962,fr.inra.agrosyst.api.entities.CroppingPlanEntry_4cb70bdd-3bd8-4a69-a79b-63dade839bd0,triticale pur,f,f,f,,f,9f4e8bff-1d52-4548-83a3-161c2787dbfa,MAIN,fr.inra.agrosyst.api.entities.Domain_0246556a-6cc0-40c7-97cb-15f440f5686a
+169965,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fb457631-8646-4dd3-bc71-c76f3cd27ac2,Mélange de fond de sac,t,f,f,,f,1b529831-8d73-4150-9ecd-fc6e6d65b7bd,MAIN,fr.inra.agrosyst.api.entities.Domain_0246556a-6cc0-40c7-97cb-15f440f5686a
+195255,fr.inra.agrosyst.api.entities.CroppingPlanEntry_4101b0b2-8adb-458a-a8c6-aa6b59b4b9e8,prairie de fauche à foin,t,f,f,,f,ee98f9e1-bc39-4312-baa9-2acce884817a,MAIN,fr.inra.agrosyst.api.entities.Domain_ab49da1a-35e6-4022-93fa-be36b9c17a9f
+195258,fr.inra.agrosyst.api.entities.CroppingPlanEntry_454cfa2a-d59a-482a-bfe6-bb527ca56081,maïs,f,f,f,,f,9076b534-dfcb-4581-9e43-1642bc540ab8,MAIN,fr.inra.agrosyst.api.entities.Domain_ab49da1a-35e6-4022-93fa-be36b9c17a9f

@@ -7,7 +7,7 @@ import pandas as pd
 from scripts.outils import nettoyage
 from scripts.outils import restructuration
 from scripts.utils import fonctions_utiles
-
+from scripts.outils import outils_can
 
 
 def import_df(df_name, path_data, sep, df):
@@ -481,11 +481,17 @@ def test_restructuration_recolte_rendement_prix():
     path_data = 'tests/data/test_recolte_rendement_prix_restructured/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
-    recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][['id_ligne', 'valeur_attendue']]
+    recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][
+        ['id_ligne', 'valeur_attendue']
+    ]
     recolte_rendement_prix = restructuration.restructuration_recolte_rendement_prix(donnees)
 
-    left = recolte_rendement_prix_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'recolte_rendement_prix_id', 'valeur_attendue' : 'composant_culture_id_expected'})
-    right = recolte_rendement_prix.reset_index()[['id', 'composant_culture_id']].rename(columns={'id' : 'recolte_rendement_prix_id'})
+    left = recolte_rendement_prix_expected[['id_ligne', 'valeur_attendue']].rename(columns={
+        'id_ligne' : 'recolte_rendement_prix_id', 'valeur_attendue' : 'composant_culture_id_expected'
+    })
+    right = recolte_rendement_prix.reset_index()[['id', 'composant_culture_id']].rename(columns={
+        'id' : 'recolte_rendement_prix_id'
+    })
     merge = pd.merge(left, right, on='recolte_rendement_prix_id', how='left')
 
     # on enlève ceux pour lesquelles on est sensé trouver "NaN" 
@@ -495,3 +501,182 @@ def test_restructuration_recolte_rendement_prix():
     res_valeur_ok = (merge['composant_culture_id'] == merge['composant_culture_id_expected']).all()
 
     assert res_valeur_ok
+
+def test_get_intervention_realise_outils_can_context():
+    """
+        Test de l'obtention de l'outil pour le traitement des intervention realise pour la CAN
+    """
+     # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_action_outils_can']
+
+    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    # obtention des données
+    df_names = [   
+                    'action_realise', 'intervention_realise', 'composant_action_semis', 
+                    'semence', 'utilisation_intrant_realise', 'espece', 'composant_culture'
+                ]
+
+    path_data = 'tests/data/test_get_intervention_realise_action_outils_can/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    donnees_intervention = outils_can.get_intervention_realise_outils_can_context(donnees)
+
+    res = []
+    for intervention_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+
+        # valeur trouvée :
+        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
+        output = output[colonnes_to_test]
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+
+        for colonne_to_test in colonnes_to_test:
+            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+                res.append(False)
+            else:
+                res.append(True)
+    
+    assert all(res)
+
+
+def test_get_intervention_realise_combinaison_outils_can():
+    """
+        Test de l'obtention des informations sur les combinaison d'outils en realise pour le magasin CAN 
+    """
+     # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_combinaison_outils_can']
+
+    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    # obtention des données
+    df_names = [   
+                    'combinaison_outil', 'materiel', 'combinaison_outil_materiel', 'intervention_realise'
+                ]
+
+    path_data = 'tests/data/test_get_intervention_realise_combinaison_outils_can/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    donnees_intervention = outils_can.get_intervention_realise_combinaison_outils_can(donnees).reset_index()
+
+    res = []
+    for intervention_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+
+        # valeur trouvée :
+        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
+        output = output[colonnes_to_test]
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+
+        for colonne_to_test in colonnes_to_test:
+            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+                res.append(False)
+            else:
+                res.append(True)
+    
+    assert all(res)
+
+def test_get_intervention_realise_culture_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures en realise pour le magasin CAN 
+    """
+     # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_culture_outils_can']
+
+    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    # obtention des données
+    df_names = [   
+                    'composant_culture', 'espece', 'variete', 'intervention_realise', 
+                    'noeuds_realise', 'plantation_perenne_phases_realise',
+                    'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise'
+                ]
+
+
+    path_data = 'tests/data/test_get_intervention_realise_culture_outils_can/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    donnees_intervention = outils_can.get_intervention_realise_culture_outils_can(donnees).reset_index()
+
+    res = []
+    for intervention_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+
+        # valeur trouvée :
+        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
+        output = output[colonnes_to_test]
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+
+        for colonne_to_test in colonnes_to_test:
+            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+                res.append(False)
+            else:
+                res.append(True)
+    
+    assert all(res)
+
+def test_get_intervention_realise_culture_prec_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures en realise pour le magasin CAN 
+    """
+     # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_intervention_realise_culture_prec_outils_can']
+
+    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    # obtention des données
+    df_names = [   
+                    'composant_culture', 'espece', 'variete', 'intervention_realise', 
+                    'noeuds_realise', 'connection_realise', 'culture'
+                ]
+
+
+    path_data = 'tests/data/test_get_intervention_realise_culture_prec_outils_can/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    donnees_intervention = outils_can.get_intervention_realise_culture_prec_outils_can(donnees).reset_index()
+
+    res = []
+    for intervention_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+
+        # valeur trouvée :
+        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
+        output = output[colonnes_to_test]
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+
+        for colonne_to_test in colonnes_to_test:
+            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+                res.append(False)
+            else:
+                res.append(True)
+    
+    assert all(res)

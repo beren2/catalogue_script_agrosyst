@@ -1,0 +1,6 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_86375fd7-561e-4463-9ce7-b206e10dab76,Carotte,203 A070,Plantes Potagères et Maraîchères,Daucus carota L.,Attilio,VAC 55,a,DCP,potagère,DH,déclaré hybride,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_613dce31-2ecb-4160-970d-bae6b501c3f9,Carotte,2031001,Plantes Potagères et Maraîchères,Daucus carota L.,Almaro,Almaro,a,DCP,potagère,DH,déclaré hybride,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_223d1555-5fb1-401f-aefe-c029aab126df,Cardon,1541006,Plantes Potagères et Maraîchères,Cynara cardunculus L.,Epineux Argenté de Plainpalais,--,d,,,NH,déclaré non hybride,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_522760bb-6669-4bd8-8175-35393118e0e0,Triticale,390120,Céréales à paille,×Triticosecale Wittm. ex A. Camus,Bienvenu,LD 86-13,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_fb3a054b-9178-4da1-96fb-14cf21247d09,Triticale,390166,Céréales à paille,×Triticosecale Wittm. ex A. Camus,Grandval,DI 00-4,A,,,LI,lignée,,
