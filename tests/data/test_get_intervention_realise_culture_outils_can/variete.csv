@@ -1,0 +1,16 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_a6975961-5d8f-4503-91ce-15b80879351c,Orge de printemps à 2 rangs,515B725,Céréales à paille,Hordeum vulgare L.,Henley,NSL 01-4505,A,OB,Orientation Brassicole,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_80d378d3-5fb2-4afe-ad27-a828d3984f63,Soja,27,"Tournesol, Soja et Ricin",Glycine max (L.) Merr.,Essor,KSX 3943,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_4412ac45-941b-4296-86c8-3dcceb93cb2e,Maïs,570,Maïs et Sorgho,Zea mays L.,LG 2289,L_ZM343/09,A,G+F,Grain et fourrage,HTV,hybride 3 voies,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0be73d4b-1e51-47e6-b402-bc9e005c72d4,Abricotier,499,Arbres fruitiers,Prunus armeniaca L.,Magic Cot,a99 r2 t39,1,,,CLO,clone,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_2a38e102-b5ba-4870-8b36-3750322f7da1,Maïs,570 W652,Maïs et Sorgho,Zea mays L.,DKC4814,EH4812,A,GRN,Grain,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_96f16e76-aa7e-42c1-81ff-bfdd6a97cd21,,,,,Merlot N,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_9bb3a2dd-7ebd-493d-9be6-b22a8a4bfb97,Pois de  Proteagineux,101 0535,,,ROCKET,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_bcf0d79f-5463-4b83-a415-156572f1b033,Trèfle blanc,630111,Plantes fourragères et à gazon,Trifolium repens L.,Aber dai,AC 42,A,,,0,Inconnu,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_da1efc8d-893e-4330-8a94-381d8d7d3f5c,Orge de printemps à 2 rangs,515C626,Céréales à paille,Hordeum vulgare L.,RGT Planet,LSB 0769-3306,A,OB,Orientation Brassicole,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_4b875fd1-ec51-4b14-b9b2-096338637ea2,Maïs,570BA36,Maïs et Sorgho,Zea mays L.,P9900,X00C205,A,GRN,Grain,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_b4e50e1b-1693-42b8-a9d9-1e793171ccc0,Tournesol,024B420,"Tournesol, Soja et Ricin",Helianthus annuus L.,Extrasol,MH 5203,A,HTO,Variété à haute teneur en acide oléique,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_5b941aeb-c92e-4dad-beaf-85d0ad3383cc,Maïs,570AT80,Maïs et Sorgho,Zea mays L.,DKC5141,EM5019,A,GRN,Grain,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_fcf408da-4d93-483e-bca2-243cf00bb653,Ray-grass anglais fourrage,560455,Plantes fourragères et à gazon,Lolium perenne L.,Aberavon,Ba 12151,A,,,SY,synthétique,2n,Diploïde
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_476a8268-2939-47c1-8f32-4f11e2fd96e3,Betterave fourragère,62076,Betteraves et Chicorée Industrielle,Beta vulgaris L. ssp. vulgaris var. alba DC,Corindon,FD 13 FR 032,A,RZM,Rhizomanie,DH,déclaré hybride,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_ef2553f8-211a-4298-8071-4a9c810df951,Colza d'Hiver Oléagineux,580 B085,,,CATALINA,,,,,,,,
