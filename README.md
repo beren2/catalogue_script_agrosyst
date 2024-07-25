@@ -30,8 +30,16 @@ Cependant pour que votre pré traiment soit traduit en python et intégré à da
 1. `git checkout -b nom-de-ma-branche` (en remplaçant nom-de-ma-branche par un nom approprié) pour créer une branche
 
 ### Faire les changements
-1. Créer un nouveau script dans le repertoire scripts/mon_magasin. Si vous pensez que des fonctions peuvent être utiles à plusieurs magasins, alors les ajouters dans le dossier [scripts/utils](scripts/utils/)
-1. Créer une ou plusieurs fonction qui créent vos nouveaux dataframes (prendre pour exemple : indicateur_utilisation_intrant dans [scripts/nettoyage_global/indicateur.py](scripts/nettoyage_global/indicateur.py)) 
+Vous pouvez soit ajouter un prétraitement dans outils ou bien creer un nouveau magasin.
+Pour créer un magasin, il faut créer un nouveau repertoire dans [scripts/magasins/] et y deposer tous vos scripts. 
+
+> [!NOTE]  
+> Si vous pensez que des fonctions peuvent être utiles à plusieurs magasins, alors les ajouter en tant qu'outils au dossier [scripts/outils](scripts/outils/)
+> Si vous avez besoin de fonctions intermédiaires ne donnant pas lieu à une sortie de test, alors les ajout au dossier [scripts/utils](scripts/utils/)
+
+Si vous souhaitez ajouter un outil:
+1. Vous pouvez utiliser les fonctions existantes : par exemple ajouter une fonction test dans [scripts/outils/fonctions_tests] et l'utiliser dans [scripts/outils/nettoyage.py]
+1. Créer une ou plusieurs fonction qui créent de nouveaux dataframes (prendre pour exemple : indicateur_utilisation_intrant dans [scripts/outils/indicateur.py])
 
 > [!WARNING]  
 > Le nouveau script doit respecter les contraintes imposées par pylint (https://pylint.pycqa.org/en/latest/tutorial.html)
