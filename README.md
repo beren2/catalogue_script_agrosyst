@@ -5,8 +5,7 @@ Catalogue des pré-traitements des données issues du système d'information Agr
 ## Organisation du répertoire
 
 ### Scripts
-Les scripts sont disponibles dans le répetoire [scripts](scripts/).
-Chacun des dossiers contenu dans ce répertoire sert à la constitution d'un magasin de données. Par exemple, le dossier [nettoyage_global](scripts/nettoyage_global) contient l'ensemble des fichiers permettant de constituer le magasin de donnée "nettoyage", disponible sur Datagrosyst. Chaque magasin de donnée doit disposer d'un README.md qui explique son objectif et sa méthodologie.
+L'ensemble des scripts générant les magasins de données disponibles sur datagrosyst ou bien les outils d'aide à la valorisation sont disponibles dans le répetoire [scripts](scripts/).
 
 Afin de comprendre comment sont réalisés les prétraitements, ou bien les réaliser nous même (ex : avec d'autres seuils), plus d'informations sont disponibles dans le README.md du répertoire.
 
@@ -24,13 +23,13 @@ Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d
 > **L'ensemble des scripts sont en python.** Nous avons conscience que beaucoup de valorisateurs utilisent le langage R. **Un répertoire de dépôt des script R** est disponible. D'autres utilisateurs pourrons être aidés par votre proposition de pré traitement le temps que nous fassions le travail de traduction de R vers python. 
 Cependant pour que votre pré traiment soit traduit en python et intégré à datagrosyst, une condition est necessaire : **fournir un jeu de test complet (cf [Mettre en place des tests unitaires](#mettre-en-place-des-tests-unitaires))** 
 
-#### Créer une branche
+### Créer une branche
 
 1. `git checkout main` depuis n'importe quel dossier de votre dépôt local `catalogue_script_agrosyst`.
 1. `git pull origin main` pour vous assurer que vous avez le dernier code principal.
 1. `git checkout -b nom-de-ma-branche` (en remplaçant nom-de-ma-branche par un nom approprié) pour créer une branche
 
-#### Faire les changements
+### Faire les changements
 1. Créer un nouveau script dans le repertoire scripts/mon_magasin. Si vous pensez que des fonctions peuvent être utiles à plusieurs magasins, alors les ajouters dans le dossier [scripts/utils](scripts/utils/)
 1. Créer une ou plusieurs fonction qui créent vos nouveaux dataframes (prendre pour exemple : indicateur_utilisation_intrant dans [scripts/nettoyage_global/indicateur.py](scripts/nettoyage_global/indicateur.py)) 
 
@@ -48,7 +47,7 @@ Les tests unitaires nécessitent :
 > [!CAUTION]  
 > Si votre fonction integre des données de référentiels (catégorie reférentiel sur datagrosyst) veuillez contacter l'équipe datagrosyst puisque les référentiels ne peuvent être rendus publiques sur ce git
 
-#### Push les changement
+### Push les changement
 
 1. `git add -A && git commit -m "Mon message"` (en remplaçant Mon message par un message de commit, tel que "Ajout du script de filtration des mélanges d'espèce réel.") pour ajouter et valider vos modifications.
 1. `git push nom-de-ma-branche`
