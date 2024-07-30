@@ -2,6 +2,7 @@ id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,list
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_a6975961-5d8f-4503-91ce-15b80879351c,Orge de printemps à 2 rangs,515B725,Céréales à paille,Hordeum vulgare L.,Henley,NSL 01-4505,A,OB,Orientation Brassicole,LI,lignée,,
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_80d378d3-5fb2-4afe-ad27-a828d3984f63,Soja,27,"Tournesol, Soja et Ricin",Glycine max (L.) Merr.,Essor,KSX 3943,A,,,LI,lignée,,
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_4412ac45-941b-4296-86c8-3dcceb93cb2e,Maïs,570,Maïs et Sorgho,Zea mays L.,LG 2289,L_ZM343/09,A,G+F,Grain et fourrage,HTV,hybride 3 voies,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_f89383c9-b6ab-48e3-954a-80d828831b3c,Chanvre,170014,Lin et Chanvre,Cannabis sativa L.,Fedora 17,S 202,A,,,PP,population,,
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0be73d4b-1e51-47e6-b402-bc9e005c72d4,Abricotier,499,Arbres fruitiers,Prunus armeniaca L.,Magic Cot,a99 r2 t39,1,,,CLO,clone,,
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_2a38e102-b5ba-4870-8b36-3750322f7da1,Maïs,570 W652,Maïs et Sorgho,Zea mays L.,DKC4814,EH4812,A,GRN,Grain,HS,hybride simple,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_96f16e76-aa7e-42c1-81ff-bfdd6a97cd21,,,,,Merlot N,,,,,,,,

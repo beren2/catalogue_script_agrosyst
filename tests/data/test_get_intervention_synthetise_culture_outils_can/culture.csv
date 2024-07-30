@@ -1,0 +1,11 @@
+id,nom,melange_especes,melange_varietes,prairie_paturee,prairie_temporaire,prairie_fauchee,code,type,domaine_id
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_a69138dc-22f3-45a3-b35e-8e46b3bd9b09,Escourgeon,f,f,f,,f,4ecb3274-32c4-4ae7-8662-f70fea50e4ad,MAIN,fr.inra.agrosyst.api.entities.Domain_39706371-f7dc-45e5-82cf-52b6accee486
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_1ab5b364-6f65-4d54-bdf7-fc6408cdb2da,Maïs ensilé,f,f,f,,f,8c5151c6-68cc-4890-b099-72c301b30bd2,MAIN,fr.inra.agrosyst.api.entities.Domain_39706371-f7dc-45e5-82cf-52b6accee486
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c18c2994-7ba1-402c-8b80-6c6bafccb363,Avoine - Féverole -Trèfle,f,f,f,,f,53c5b13c-0d10-4a2e-90a8-61e698b0e400,INTERMEDIATE,fr.inra.agrosyst.api.entities.Domain_39706371-f7dc-45e5-82cf-52b6accee486
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c757f609-7650-4e49-8cbc-d6e350719536,mélange protéagineux,t,f,f,,f,fe10903c-ec9c-424d-9039-d89b4047ed97,MAIN,fr.inra.agrosyst.api.entities.Domain_e0036313-574a-4307-b2f9-660671a955de
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_50a99ab8-59c0-46bf-9903-5690e93b89b2,prairie temporaire,t,f,f,,f,c39c8ae7-9008-4413-a203-cde8bd9af854,MAIN,fr.inra.agrosyst.api.entities.Domain_e0036313-574a-4307-b2f9-660671a955de
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ba04d277-0c21-42e6-b2e1-c7ac5d10214f,Cultures d'été,f,f,f,,f,5a7a9578-8662-d26e-69cd-c2cea25cf386,MAIN,fr.inra.agrosyst.api.entities.Domain_000ae795-463a-4e31-bdb3-82ec72afcf9d
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f4496b9f-3ec6-4bed-ae31-931722b6dd9f,Vigne,f,f,f,,f,81120885-ef1d-4ba0-b9c3-8b13b261db6b,MAIN,fr.inra.agrosyst.api.entities.Domain_8d0416e8-4c0b-4be0-a777-63255662f202
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ee7b27f1-2e5b-4d8c-9d11-f8d9c69c3788,VigneCabernet franc N,f,f,f,,f,5630faa1-a1fc-4168-9c46-1379072d322a,MAIN,fr.inra.agrosyst.api.entities.Domain_cb9f1fb2-05e9-4a74-9ef1-08b4a5c251b6
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_3d3e8371-48fb-426b-ad67-498df54ae5e1,Poivron,f,f,f,,f,740a448a-7b16-4247-90b2-596438d3f064,MAIN,fr.inra.agrosyst.api.entities.Domain_b5360c4e-df1b-4259-b5cf-a23204769514
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8d466b8c-4628-46c8-8fa9-b5a20f69cd7e,Pak Choi,f,f,f,,f,6189e76a-35a2-4693-910e-78a90faa28cf,MAIN,fr.inra.agrosyst.api.entities.Domain_b5360c4e-df1b-4259-b5cf-a23204769514

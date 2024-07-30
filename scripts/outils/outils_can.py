@@ -4,6 +4,7 @@
 import pandas as pd
 
 
+# FONCTIONS GÉNÉRALES 
 
 def map_boolean(values, sep='; '):
     """ permet de transformer les booléen en string """
@@ -16,8 +17,56 @@ def convert_to_int(x):
         # Convert to float first, then to int
         return str(int(float(x)))
     except (ValueError, TypeError):
-        return x
+        return x    
 
+def get_composant_culture_outils_can(donnees, info_variete=True):
+    """ permet d'obtenir toutes les informations sur le composant culture, dans le format attendu par la CAN"""
+    # Ajout des informations sur le composant de culture
+    df_composant_culture = donnees['composant_culture'].set_index('id')
+    df_espece = donnees['espece'].set_index('id')
+    df_variete = donnees['variete'].set_index('id')
+
+    left = df_composant_culture
+    right = df_espece[
+        ['libelle_espece_botanique', 'libelle_qualifiant_aee', 
+         'libelle_type_saisonnier_aee', 'libelle_destination_aee']
+    ]
+    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+
+    left = df_composant_culture_extanded
+    right = df_variete[
+        ['denomination']
+    ]
+    df_composant_culture_extanded = pd.merge(left, right, left_on='variete_id', right_index=True, how='left')
+
+    # On fill les NaN avec ''
+    df_composant_culture_extanded= df_composant_culture_extanded.fillna('')
+
+    # On créé la chaîne correspondant à la description complète du composant de culture
+    df_composant_culture_extanded['esp_var'] = df_composant_culture_extanded[[
+        'libelle_espece_botanique', 
+        'libelle_qualifiant_aee', 
+        'libelle_type_saisonnier_aee', 
+        'libelle_destination_aee'
+    ]].agg(' '.join, axis=1).str.split().str.join(' ')
+
+    if(info_variete):
+        # On ajoute l'information de la variété
+        df_composant_culture_extanded.loc[
+            df_composant_culture_extanded['denomination'] !=  '', 'denomination'
+        ] = ' - '+ df_composant_culture_extanded.loc[df_composant_culture_extanded['denomination'] !=  '']['denomination']
+        df_composant_culture_extanded['denomination'] = df_composant_culture_extanded['denomination'].fillna('')
+        df_composant_culture_extanded['esp_var'] = df_composant_culture_extanded['esp_var'] + \
+            df_composant_culture_extanded['denomination']
+
+    # On supprime les dupplications pour ne pas avoir plusieurs fois la même information
+    df_composant_culture_extanded = df_composant_culture_extanded[
+        ['culture_id', 'esp_var']
+    ].drop_duplicates(subset=['esp_var', 'culture_id'], keep='first')
+
+    return df_composant_culture_extanded
+
+# FONCTIONS POUR LES INTERVENTIONS EN RÉALISÉS
 def get_intervention_realise_action_outils_can(
         donnees
 ):
@@ -147,8 +196,6 @@ def get_intervention_realise_semence_outils_can(
         'inoculation_biologique' : 'inoculation_biologique_semis'
     })
 
-
-
 def get_intervention_realise_outils_can_context(
     donnees
 ):
@@ -235,10 +282,6 @@ def get_intervention_realise_culture_outils_can(
         l'agrégation des informations
         sur la culture
     """
-
-    df_composant_culture = donnees['composant_culture'].set_index('id')
-    df_espece = donnees['espece'].set_index('id')
-    df_variete = donnees['variete'].set_index('id')
     df_intervention_realise = donnees['intervention_realise'].set_index('id')
     df_noeuds_realise = donnees['noeuds_realise'].set_index('id')
     df_plantation_perenne_phases_realise = donnees['plantation_perenne_phases_realise'].set_index('id')
@@ -246,49 +289,24 @@ def get_intervention_realise_culture_outils_can(
     df_composant_culture_concerne_intervention_realise = donnees[
         'composant_culture_concerne_intervention_realise'
     ].set_index('id')
+    df_connection_realise = donnees['connection_realise'].set_index('id')
 
+    # informations sur le composants cultures, dans le format attendu
+    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
 
-    # Ajout des informations sur le composant de culture
-    left = df_composant_culture
-    right = df_espece[
-        ['libelle_espece_botanique', 'libelle_qualifiant_aee', 
-         'libelle_type_saisonnier_aee', 'libelle_destination_aee']
-    ]
-    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+    # on ajoute aussi l'information de la culture intermédiaire si il y en a une
+    left = df_noeuds_realise.reset_index()
+    right = df_connection_realise.reset_index().rename(columns={'id' : 'connection_realise_id'})
+    df_noeuds_realise_extanded = pd.merge(left, right, left_on='id', right_on='cible_noeuds_realise_id', how='left').set_index('id')
 
-    left = df_composant_culture_extanded
-    right = df_variete[
-        ['denomination']
-    ]
-    df_composant_culture_extanded = pd.merge(left, right, left_on='variete_id', right_index=True, how='left')
-
-    # On fill les NaN avec ''
-    df_composant_culture_extanded= df_composant_culture_extanded.fillna('')
-
-    # On créé la chaîne correspondant à la description complète du composant de culture
-    df_composant_culture_extanded['esp_var'] = df_composant_culture_extanded[[
-        'libelle_espece_botanique', 
-        'libelle_qualifiant_aee', 
-        'libelle_type_saisonnier_aee', 
-        'libelle_destination_aee'
-    ]].agg(' '.join, axis=1).str.split().str.join(' ')
-
-    # On ajoute l'information de la variété
-    df_composant_culture_extanded.loc[
-        df_composant_culture_extanded['denomination'] !=  '', 'denomination'
-    ] = ' - '+ df_composant_culture_extanded.loc[df_composant_culture_extanded['denomination'] !=  '']['denomination']
-    df_composant_culture_extanded['denomination'] = df_composant_culture_extanded['denomination'].fillna('')
-    df_composant_culture_extanded['esp_var'] = df_composant_culture_extanded['esp_var'] + \
-        df_composant_culture_extanded['denomination']
-
-    # On supprime les dupplications pour ne pas avoir plusieurs fois la même information
-    df_composant_culture_extanded = df_composant_culture_extanded[
-        ['culture_id', 'esp_var']
-    ].drop_duplicates(subset=['esp_var', 'culture_id'], keep='first')
-
+    left = df_noeuds_realise_extanded.reset_index()
+    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
+    df_noeuds_realise_extanded_ci = pd.merge(left, right, left_on='culture_intermediaire_id', right_on='culture_id', how='left').set_index(
+        ['id', 'composant_culture_id']
+    )
 
     # informations assolée
-    left = df_noeuds_realise.reset_index()
+    left = df_noeuds_realise_extanded.reset_index()
     right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
     df_noeuds_realise_extanded = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left').set_index(
         ['id', 'composant_culture_id']
@@ -306,7 +324,7 @@ def get_intervention_realise_culture_outils_can(
     right = df_plantation_perenne_realise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_realise_id'})
     df_plantation_perenne_phases_realise_extanded = pd.merge(
         left, right, on='plantation_perenne_realise_id', how='left').set_index('id')
-    
+
     # on ajoute l'information du noeuds où porte l'intervention
     left = df_composant_culture_concerne_intervention_realise
     right = df_intervention_realise[['noeuds_realise_id', 'plantation_perenne_phases_realise_id']]
@@ -322,6 +340,18 @@ def get_intervention_realise_culture_outils_can(
         how='inner'
     )
 
+    left = df_composant_culture_concerne_intervention_extanded
+    right = df_noeuds_realise_extanded_ci
+    df_composant_culture_concerne_intervention_extanded_assolee_ci = pd.merge(left, right, 
+        left_on=['noeuds_realise_id', 'composant_culture_id'],
+        right_index=True,
+        how='inner'
+    )
+
+    df_composant_culture_concerne_intervention_extanded_assolee = pd.concat([
+        df_composant_culture_concerne_intervention_extanded_assolee,
+        df_composant_culture_concerne_intervention_extanded_assolee_ci
+    ])
 
     # pour le perenne :
     left = df_composant_culture_concerne_intervention_extanded.reset_index()
@@ -330,7 +360,6 @@ def get_intervention_realise_culture_outils_can(
         on=['plantation_perenne_phases_realise_id', 'composant_culture_id'],
         how='inner'
     )
-
 
 
     df_final_perenne = df_composant_culture_concerne_intervention_extanded_perenne.groupby([
@@ -353,55 +382,13 @@ def get_intervention_realise_culture_prec_outils_can(
 ):
     """Permet d'obtenir le dataframe des informations sur les cultures précédentes pour les interventions pour la CAN"""
     
-    df_composant_culture = donnees['composant_culture'].set_index('id')
-    df_espece = donnees['espece'].set_index('id')
-    df_variete = donnees['variete'].set_index('id')
     df_intervention_realise = donnees['intervention_realise'].set_index('id')
     df_noeuds_realise = donnees['noeuds_realise'].set_index('id')
     df_connection_realise = donnees['connection_realise'].set_index('id')
     df_culture = donnees['culture'].set_index('id')
 
-    # Ajout des informations sur le composant de culture
-    left = df_composant_culture
-    right = df_espece[
-        ['libelle_espece_botanique', 'libelle_qualifiant_aee', 
-         'libelle_type_saisonnier_aee', 'libelle_destination_aee']
-    ]
-    df_composant_culture_extanded = pd.merge(
-        left, right, left_on='espece_id', right_index=True, how='left'
-    )
-
-    left = df_composant_culture_extanded
-    right = df_variete[
-        ['denomination']
-    ]
-    df_composant_culture_extanded = pd.merge(
-        left, right, left_on='variete_id', right_index=True, how='left'
-    )
-
-    # On fill les NaN avec ''
-    df_composant_culture_extanded= df_composant_culture_extanded.fillna('')
-
-    # On créé la chaîne correspondant à la description complète du composant de culture
-    df_composant_culture_extanded['esp_var'] = df_composant_culture_extanded[[
-        'libelle_espece_botanique', 
-        'libelle_qualifiant_aee', 
-        'libelle_type_saisonnier_aee', 
-        'libelle_destination_aee'
-    ]].agg(' '.join, axis=1).str.split().str.join(' ')
-
-    # On ajoute l'information de la variété
-    df_composant_culture_extanded.loc[
-        df_composant_culture_extanded['denomination'] !=  '', 'denomination'
-    ] = ' - '+ df_composant_culture_extanded.loc[df_composant_culture_extanded['denomination'] !=  '']['denomination']
-    df_composant_culture_extanded['denomination'] = df_composant_culture_extanded['denomination'].fillna('')
-    df_composant_culture_extanded['esp_var'] = df_composant_culture_extanded['esp_var'] + \
-        df_composant_culture_extanded['denomination']
-
-    # On supprime les dupplications pour ne pas avoir plusieurs fois la même information
-    df_composant_culture_extanded = df_composant_culture_extanded[
-        ['culture_id', 'esp_var']
-    ].drop_duplicates(subset=['esp_var', 'culture_id'], keep='first')
+    # Obtention des informations sur le composant culture, dans le format attendu par la CAN
+    df_composant_culture_extanded = get_composant_culture_outils_can(donnees, info_variete=False)
 
     df_culture_grouped = df_composant_culture_extanded.groupby('culture_id').agg({
         'esp_var' : ' ; '.join
@@ -471,3 +458,145 @@ def get_intervention_realise_outils_can(
     merge = pd.merge(left, right, on='intervention_realise_id', how='left')
 
     return merge
+
+# FONCTIONS POUR LES INTERVENTIONS EN SYNTHÉTISÉ
+
+def get_intervention_synthetise_culture_outils_can(
+      donnees  
+):
+    """
+        Permet d'obtenir le dataframe avec les informations sur les cultures précédentes
+        retourne un dataframe avec pour index culture_id et pour colonne esp_var contenant 
+        l'agrégation des informations
+        sur la culture
+    """
+    # on obtient un dataframe où composant_culture_id x intervention_synthetise_id est unique
+    # chaque ligne correspond à l'affectation d'un composant de culture à une intervention_synthetise
+
+    # dans un autre temps, 
+
+    df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
+    df_noeuds_synthetise = donnees['noeuds_synthetise'].set_index('id')
+    df_connection_synthetise = donnees['connection_synthetise'].set_index('id')
+    df_plantation_perenne_phases_synthetise = donnees['plantation_perenne_phases_synthetise'].set_index('id')
+    df_plantation_perenne_synthetise = donnees['plantation_perenne_synthetise'].set_index('id')
+    df_composant_culture_concerne_intervention_synthetise = donnees[
+        'composant_culture_concerne_intervention_synthetise'
+    ].set_index('id')
+    df_noeuds_synthetise_restructure = donnees['noeuds_synthetise_restructure'].set_index('id')
+    df_plantation_perenne_synthetise_restructure = donnees['plantation_perenne_synthetise_restructure'].set_index('id')
+    df_composant_culture_concerne_intervention_synthetise_restructure = donnees[
+        'composant_culture_concerne_intervention_synthetise_restructure'
+    ].set_index('id')
+    df_connection_synthetise_restructure = donnees['connection_synthetise_restructure'].set_index('id')
+
+    left = df_connection_synthetise
+    right = df_connection_synthetise_restructure
+    df_connection_synthetise_extanded_prim = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # informations sur les composants cultures, dans le format attendu par la CAN
+    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
+
+    # reconstitution du culture_id pour le synthétisé
+    left = df_noeuds_synthetise
+    right = df_noeuds_synthetise_restructure
+    df_noeuds_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # informations assolée
+    left = df_noeuds_synthetise_extanded.reset_index()
+    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
+    df_noeuds_synthetise_extanded = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left')
+
+    left = df_connection_synthetise_extanded_prim.reset_index()
+    right = df_noeuds_synthetise_extanded.rename(columns={'id' : 'noeuds_synthetise_id'})
+    df_connection_synthetise_extanded = pd.merge(
+        left, right, left_on='cible_noeuds_synthetise_id', right_on='noeuds_synthetise_id', how='left'
+    ).set_index(
+        ['id', 'composant_culture_id']
+    )
+
+    left = df_plantation_perenne_synthetise
+    right = df_plantation_perenne_synthetise_restructure
+    df_plantation_perenne_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # informations perennes
+    left = df_plantation_perenne_synthetise_extanded.reset_index()
+    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
+    df_plantation_perenne_synthetise_extanded = pd.merge(
+        left, right, left_on='culture_id', right_on='culture_id', how='left').set_index(
+        ['id', 'composant_culture_id']
+    )
+
+    left = df_plantation_perenne_phases_synthetise.reset_index()
+    right = df_plantation_perenne_synthetise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_synthetise_id'})
+    df_plantation_perenne_phases_synthetise_extanded = pd.merge(
+        left, right, on='plantation_perenne_synthetise_id', how='left'
+    ).set_index('id')
+
+
+    # on ajoute l'information de la connection où porte l'intervention
+    left = df_composant_culture_concerne_intervention_synthetise
+    right = df_composant_culture_concerne_intervention_synthetise_restructure
+    df_composant_culture_intervention_synthetise_restructure = pd.merge(
+        left, right, left_index=True, right_index=True, how='left'
+    )
+
+    left = df_composant_culture_intervention_synthetise_restructure
+    right = df_intervention_synthetise[['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
+    df_composant_culture_concerne_intervention_extanded = pd.merge(
+        left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
+
+    # pour les cultures intermédiaires, on est obligé de faire un traitement spécifique : 
+    left = df_connection_synthetise_extanded_prim.reset_index()
+    right = df_composant_culture_extanded[['culture_id', 'esp_var']].reset_index().rename(columns={'id': 'composant_culture_id'})
+    df_connection_synthetise_extanded_ci = pd.merge(
+        left, right, left_on='culture_intermediaire_id', right_on='culture_id', how='inner'
+    ).set_index(['id', 'composant_culture_id'])
+
+    
+    # maintenant qu'on a tout, pour l'assolée :
+    left = df_composant_culture_concerne_intervention_extanded
+    right = df_connection_synthetise_extanded
+    df_composant_culture_concerne_intervention_extanded_assolee = pd.merge(left, right, 
+        left_on=['connection_synthetise_id', 'composant_culture_id'],
+        right_index=True,
+        how='inner'
+    )
+
+    left = df_composant_culture_concerne_intervention_extanded
+    right = df_connection_synthetise_extanded_ci
+    df_composant_culture_concerne_intervention_extanded_assolee_ci = pd.merge(left, right, 
+        left_on=['connection_synthetise_id', 'composant_culture_id'],
+        right_index=True,
+        how='inner'
+    )
+
+    df_composant_culture_concerne_intervention_extanded_assolee = pd.concat([
+        df_composant_culture_concerne_intervention_extanded_assolee,
+        df_composant_culture_concerne_intervention_extanded_assolee_ci
+    ])
+
+    # pour le perenne :
+    left = df_composant_culture_concerne_intervention_extanded.reset_index()
+    right = df_plantation_perenne_phases_synthetise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_phases_synthetise_id'})
+    df_composant_culture_concerne_intervention_extanded_perenne = pd.merge(left, right,
+        on=['plantation_perenne_phases_synthetise_id', 'composant_culture_id'],
+        how='inner'
+    )
+
+    df_final_perenne = df_composant_culture_concerne_intervention_extanded_perenne.groupby([
+        'intervention_synthetise_id'
+    ]).agg({
+        'esp_var' : ' ; '.join
+    })
+    df_final_assolee = df_composant_culture_concerne_intervention_extanded_assolee.groupby([
+        'intervention_synthetise_id'
+    ]).agg({
+        'esp_var' : ' ; '.join
+    })
+
+    df_intervention_synthetise_final = pd.concat([df_final_assolee, df_final_perenne])
+
+    return df_intervention_synthetise_final.reset_index().rename(
+        columns={'intervention_synthetise_id' : 'id'}
+    )

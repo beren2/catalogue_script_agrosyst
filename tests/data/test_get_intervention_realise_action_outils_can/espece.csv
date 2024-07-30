@@ -4,3 +4,7 @@ fr.inra.agrosyst.api.entities.referential.RefEspece_40d638d6-855d-4ccc-afe5-50e7
 non fourrager",,,,,,,,,TEMP_H69,,,,graminées porte-graine,
 fr.inra.agrosyst.api.entities.referential.RefEspece_4b86ffcf-139a-4f40-a7c0-9617416cbdd6,ZAM,ZLN,ZFB,,J10,Grandes cultures,,Avoine,Blanche,Hiver,,ZAMZLNZFB,Avoine blanche d'hiver,,,Avena,sativa,510,3,AVOINE,AVENA SATIVA L.,avoine d'hiver,
 fr.inra.agrosyst.api.entities.referential.RefEspece_cc77b784-0fe3-4ed3-b00c-359660985586,ZMI,,,,J10,Grandes cultures,,Triticale,,,,,,,,Triticosecale,hybrids,39,3,TRITICALE,TRITICOSECALE WITTM.,triticale,
+fr.inra.agrosyst.api.entities.referential.RefEspece_d39e7071-7c64-4e32-85c3-48f78d6028ba,ZAR,,ZFB,ZLH,J10,Grandes cultures,,Blé tendre,,Hiver,Meunier,,,,,Triticum,aestivum,512,1,BLE TENDRE,TRITICUM AESTIVUM L.,blé tendre d'hiver,
+fr.inra.agrosyst.api.entities.referential.RefEspece_89ffe644-a85c-4f20-9ee2-a40db7789234,ZDH,ZMU,ZFA,,J10,Grandes cultures,Orge - Escourgeon,Orge,6 rangs,Printemps,,,,,,Hordeum,vulgare,515,3,ORGE,HORDEUM VULGARE L.,orge de printemps,
+fr.inra.agrosyst.api.entities.referential.RefEspece_ea5a6f8a-3473-4955-b91f-3031aab260cd,ZDH,ZMU,ZFB,,J10,Grandes cultures,Orge - Escourgeon,Orge,6 rangs,Hiver,,,,,,Hordeum,vulgare,515,3,ORGE,HORDEUM VULGARE L.,orge d'hiver,
+fr.inra.agrosyst.api.entities.referential.RefEspece_c082a14d-6b1f-4633-97b0-07cf92053e86,ZDN,,,ZMP,J02,Cultures légumières,,Poireau,,,Potager,,,Aromatique,liste APCA,Allium,Porrum,231,,,,poireau,

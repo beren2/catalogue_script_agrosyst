@@ -25,8 +25,6 @@ def import_dfs(df_names, path_data,  df, sep = ','):
 
     return df
 
-        
-
 def test_debit_chantier_intervention_realise():
     """
         Test du débit de chantier des interventions en réalisé
@@ -298,7 +296,6 @@ def test_get_dose_ref():
     assert res_valeur_ok
     assert res_unit_ok
 
-
 def test_identification_pz0_realise():
     """
         Test de l'identification d'un pz0 realise (zone)
@@ -330,9 +327,7 @@ def test_identification_pz0_realise():
     print(comparaison)
     res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['pz0'].astype('int')).all()
     assert res_test
-
-
-    
+  
 def test_identification_pz0_synthetise():
     """
         Test de l'identification d'un pz0 synthetise
@@ -395,7 +390,6 @@ def test_noeuds_synthetise_restructured():
 
     assert res_valeur_ok
 
-
 def test_connection_synthetise_restructured():
     """
         Test de l'obtention des connexions synthétisés restructurées
@@ -430,8 +424,6 @@ def test_connection_synthetise_restructured():
     res_valeur_ok = (merge['culture_intermediaire_id_expected'] == merge['culture_intermediaire_id']).all()
 
     assert res_valeur_ok
-
-
 
 def test_restructuration_noeuds_realise():
     """
@@ -502,7 +494,6 @@ def test_restructuration_recolte_rendement_prix():
 
     assert res_valeur_ok
 
-
 def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv'):
     """
         Fonction qui permet de tester 
@@ -532,7 +523,9 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
         expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
 
         for colonne_to_test in colonnes_to_test:
-            if(output[colonne_to_test].values != expected_output[colonne_to_test].values):
+            print(output[colonne_to_test].values)
+            print(expected_output[colonne_to_test].values)
+            if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or len(output[colonne_to_test].values) == 0):
                 res.append(False)
             else:
                 res.append(True)
@@ -554,7 +547,6 @@ def test_get_intervention_realise_outils_can_context():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
-
 
 def test_get_intervention_realise_combinaison_outils_can():
     """
@@ -578,7 +570,8 @@ def test_get_intervention_realise_culture_outils_can():
     df_names = [   
         'composant_culture', 'espece', 'variete', 'intervention_realise', 
         'noeuds_realise', 'plantation_perenne_phases_realise',
-        'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise'
+        'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise',
+        'connection_realise'
     ]
     path_data = 'tests/data/test_get_intervention_realise_culture_outils_can/'
     fonction_to_apply = outils_can.get_intervention_realise_culture_outils_can
@@ -600,4 +593,24 @@ def test_get_intervention_realise_culture_prec_outils_can():
     fonction_to_apply = outils_can.get_intervention_realise_culture_prec_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
     
+    assert all(res)
+
+def test_get_intervention_synthetise_culture_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures en realise pour le magasin CAN 
+    """
+
+    identifiant_test = 'test_get_intervention_synthetise_culture_outils_can'
+    df_names = [   
+        'intervention_synthetise', 'noeuds_synthetise', 'connection_synthetise', 
+        'plantation_perenne_phases_synthetise', 
+        'plantation_perenne_synthetise', 'composant_culture_concerne_intervention_synthetise', 
+        'noeuds_synthetise_restructure', 'plantation_perenne_synthetise_restructure',
+        'composant_culture_concerne_intervention_synthetise_restructure', 'composant_culture',
+        'espece', 'variete', 'connection_synthetise_restructure'
+    ]
+    path_data = 'tests/data/test_get_intervention_synthetise_culture_outils_can/'
+    fonction_to_apply = outils_can.get_intervention_synthetise_culture_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
     assert all(res)
