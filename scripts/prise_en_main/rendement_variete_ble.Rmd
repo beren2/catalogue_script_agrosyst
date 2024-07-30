@@ -1,0 +1,141 @@
+## Exemple pratique 1 : rendements des variétés de blé
+
+
+### Problématique :
+On s'intéresse ici à la problématique suivante : 
+- Quelles sont les variétés de blés les plus performantes au sein d'Agrosyst ?
+
+On retiendra notamment le rendement comme indicateur de performance
+
+Ce script propose une façon de mener à bien cet exercice en utilisant l'architecture de l'entrepôt de données. 
+
+### Prérequis :
+* Le script suppose d'avoir télécharger les données issues de l'entrepôt sur la plateforme datagrosyt (https://agrosyst.fr/datagrosyst/)
+
+* Le script est rédigé en **R**
+
+#### Import des libraries
+```{r}
+library(dplyr)
+```
+
+```{r}
+rm(list = ls())
+
+# déclaration des chemins de données brutes
+data_path <- "C:/Users/lubaude/Desktop/utils/data/"
+
+# ------------------ #
+# IMPORT DES DONNÉES #
+# ------------------ #
+
+import_df <- function(df_name, path_data, sep){
+  path <- paste(path_data, df_name, ".csv", sep = "")
+  assign(df_name, read.csv(path, sep = sep), envir = .GlobalEnv) # assign : donne un nom automatic au dataframe
+}
+
+import_dfs <- function(df_names, path_data, sep = ",", verbose = FALSE){
+  for (df_name in df_names){
+    if (verbose) {print(df_name)}
+    import_df(df_name, path_data, sep)
+  }
+}
+
+tables_entrepot <- c("espece", "variete", "culture", "composant_culture",
+"recolte_rendement_prix", "recolte_rendement_prix_restructure")
+
+tables_magasin <- c("utilisation_intrant_realise_agrege","utilisation_intrant_synthetise_agrege",
+"intervention_realise_agrege", "intervention_synthetise_agrege",
+"action_realise_agrege", "action_synthetise_agrege")
+
+# import des données de l'entrepôt avec la colonne 'id' en index
+import_dfs(tables_entrepot, data_path, sep = ",", verbose = TRUE)
+
+# import des données du magasin
+import_dfs(tables_magasin, data_path, sep = ",", verbose = TRUE)
+
+recolte_rendement_prix$rendement_moy <- as.numeric(recolte_rendement_prix$rendement_moy)
+```
+
+#### Pré-traitement des données
+
+```{r}
+# Définition de la culture étudiée
+studied_culture_acta <- "blé tendre d'hiver"
+studied_unit <- "TONNE_MS_HA"
+
+# Ajout du nom de la culture acta aux composant de culture
+composant_culture_extanded <- merge(composant_culture, espece[c("id", "nom_culture_acta")],
+    by.x = "espece_id", by.y = "id", all.x = TRUE, all.y = FALSE)
+
+# Ajout du nom de la variete acta aux composant de culture
+composant_culture_extanded <- merge(composant_culture_extanded, variete[c("id", "code_gnis")],
+    by.x = "variete_id", by.y = "id", all.x = TRUE, all.y = FALSE)
+
+composant_culture_extanded <- composant_culture_extanded %>%
+  rename(code_gnis_variete = code_gnis)
+  
+# Ajout de toutes les informations des composants de cultures à la table de récolte
+recolte_rendement_prix_extanded <- merge(
+    recolte_rendement_prix, recolte_rendement_prix_restructure, by = "id",
+    all.x = TRUE, all.y = FALSE)
+
+left <- recolte_rendement_prix_extanded[c("commercialisation_pct","autoconsommation_pct",
+                                         "rendement_moy", "rendement_unite",
+                                         "composant_culture_id", "prixref", "prixref_unite")]
+
+right <- composant_culture_extanded[c("id","nom_culture_acta", "code_gnis_variete")]
+recolte_rendement_prix_extanded <- merge(left, right, by.x = "composant_culture_id",
+                                         by.y = 'id', all.x = TRUE, all.y = FALSE) 
+```
+
+#### Selection des données
+
+```{r}
+# On sélectionne toutes les données qui sont du blé tendre d'hiver et qui ont une variété
+df_studied <- recolte_rendement_prix_extanded %>%
+  filter(nom_culture_acta == studied_culture_acta)
+```
+
+```{r}
+# Environ 80% des blés récoltés ont une variété saisie
+prop.table(table(is.na(df_studied["code_gnis_variete"])))
+```
+
+```{r}
+# On sélectionne uniquement les récoltes avec l'unité étudiée et qui ont une variété de déclaré
+df_studied_rendement <- df_studied %>%
+  filter(rendement_unite == studied_unit & is.na(code_gnis_variete) == FALSE)
+```
+
+#### Filtres statistiques outlier
+```{r}
+# on filtre le derniers percentiles car erreurs de saisies
+percentiles <- quantile(df_studied_rendement$rendement_moy, probs = c(0, 0.99))
+df_studied_rendement <- df_studied_rendement %>%
+  filter(between(rendement_moy, percentiles[1], percentiles[2]))
+  
+# on filtre toutes les variétés qui n'ont pas assez de saisie
+variete_count <- as.data.frame(table(df_studied_rendement["code_gnis_variete"]))
+
+df_studied_rendement <- df_studied_rendement %>%
+  filter(code_gnis_variete %in% (variete_count[variete_count["Freq"] > 100, "code_gnis_variete"]))
+```
+
+#### Visualisation
+```{r}
+hist(df_studied_rendement$rendement_moy,
+     breaks = 30, col = rgb(1, 0, 0, 0.5),
+     xlab = paste("rendement (", studied_unit, ")"),
+     ylab = "occurences")
+```
+
+```{r,fig.width=15,fig.height=10} 
+df_studied_rendement <- droplevels(df_studied_rendement)
+
+boxplot(df_studied_rendement$rendement_moy ~ df_studied_rendement$code_gnis_variete,
+        col = rgb(1, 0, 0, 0.5),
+        xlab = "Code gnis variété",
+        ylab = "Rendement moyen (Tonne de matière sèche /ha)"
+)
+```
