@@ -3,6 +3,7 @@
 """
 
 import pandas as pd
+import math
 #from nettoyage import nettoyage
 from scripts.outils import nettoyage
 from scripts.outils import restructuration
@@ -516,15 +517,17 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
 
         # valeur trouvée :
         output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
-        output = output[colonnes_to_test]
+        output = output[colonnes_to_test].fillna('')
 
         # valeur attendue :
         expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
-        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne')
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
 
         for colonne_to_test in colonnes_to_test:
             print(output[colonne_to_test].values)
             print(expected_output[colonne_to_test].values)
+            print(expected_output[colonne_to_test].values[0])
+
             if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or len(output[colonne_to_test].values) == 0):
                 res.append(False)
             else:
@@ -597,7 +600,7 @@ def test_get_intervention_realise_culture_prec_outils_can():
 
 def test_get_intervention_synthetise_culture_outils_can():
     """
-        Test de l'obtention des informations sur les cultures en realise pour le magasin CAN 
+        Test de l'obtention des informations sur les cultures en synthétisé pour le magasin CAN 
     """
 
     identifiant_test = 'test_get_intervention_synthetise_culture_outils_can'
@@ -611,6 +614,24 @@ def test_get_intervention_synthetise_culture_outils_can():
     ]
     path_data = 'tests/data/test_get_intervention_synthetise_culture_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_culture_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+
+def test_get_intervention_synthetise_culture_prec_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
+    """
+
+    identifiant_test = 'test_get_intervention_synthetise_culture_prec_outils_can'
+    df_names = [   
+        'composant_culture', 'espece', 'variete', 'intervention_synthetise', 
+        'noeuds_synthetise', 'connection_synthetise', 'culture', 
+        'noeuds_synthetise_restructure'
+    ]
+    path_data = 'tests/data/test_get_intervention_synthetise_culture_prec_outils_can/'
+    fonction_to_apply = outils_can.get_intervention_synthetise_culture_prec_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
