@@ -1,0 +1,10 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_d7660567-8840-41e6-9402-cb1750fa4331,Triticale,390228,Céréales à paille,×Triticosecale Wittm. ex A. Camus,Amarillo 105,UNH 105-01,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_f0fc7e5d-3b1d-4d76-a8d3-73ed518c0c6b,Féverole de printemps,700156,Plantes protéagineuses,Vicia faba L.,Betty,SR 1056,A,CVC,Fleurs colorées à faible teneur en vicine convicine,0,Inconnu,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_11228234-2fe3-4b99-8540-770e4513b5c6,Blé tendre d'hiver,512C579,Céréales à paille,Triticum aestivum L.,Oxebo,SCHW 378-98 H 11,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_4b2d9ad9-ab75-4c6d-aa58-4065dbe93d08,Avoine de printemps,510A010,Céréales à paille,Avena sativa L.,AUTEUIL,S 13646,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_516ab8f9-0399-429b-84fb-5274937a8eba,Blé tendre d'hiver,512C408,Céréales à paille,Triticum aestivum L.,Barok,EM 03008,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_4a1da193-cae3-46b3-b0d9-fe71778c2b96,Epinard,2211017,Plantes Potagères et Maraîchères,Spinacia oleracea L.,Parys,Parys,a,,,DH,déclaré hybride,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0c2161a9-5100-4adf-9e80-85f468a380fe,Blé tendre d'hiver,512B909,Céréales à paille,Triticum aestivum L.,Sankara,01 ST 2015,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_75427dcf-e911-4704-a241-f65b8f8252f6,Vesce commune de printemps,730171,Plantes fourragères et à gazon,Vicia sativa L.,Cali,CAR 15-03,A,,,PP,population,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_5064cf1c-802a-4577-a301-1560b4d87f29,Pois potager,1021252,Plantes Potagères et Maraîchères,Pisum sativum L.,Agami,BL 320,a,POR,ridé,NH,déclaré non hybride,,
