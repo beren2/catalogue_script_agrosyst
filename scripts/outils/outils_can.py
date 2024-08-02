@@ -600,3 +600,64 @@ def get_intervention_synthetise_culture_outils_can(
     return df_intervention_synthetise_final.reset_index().rename(
         columns={'intervention_synthetise_id' : 'id'}
     )
+
+
+def get_intervention_synthetise_culture_prec_outils_can(
+        donnees
+):
+    """Permet d'obtenir le dataframe des informations sur les cultures précédentes pour les interventions synthétisé pour la CAN"""
+    
+    df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
+    df_noeuds_synthetise = donnees['noeuds_synthetise'].set_index('id')
+    df_connection_synthetise = donnees['connection_synthetise'].set_index('id')
+    df_culture = donnees['culture'].set_index('id')
+    df_noeuds_synthetise_restructure = donnees['noeuds_synthetise_restructure'].set_index('id')
+
+    # Obtention des informations sur le composant culture, dans le format attendu par la CAN
+    df_composant_culture_extanded = get_composant_culture_outils_can(donnees, info_variete=False)
+
+    df_culture_grouped = df_composant_culture_extanded.groupby('culture_id').agg({
+        'esp_var' : ' ; '.join
+    })
+
+    # ajout des infos sur la culture
+    left = df_culture
+    right = df_culture_grouped
+    df_culture_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # ajout du composant_culture_id pour ne pas avoir à travailler avec le composant_culture_code
+    left = df_noeuds_synthetise
+    right = df_noeuds_synthetise_restructure
+    df_noeuds_synthetise = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # ajout des informations de la culture au noeud
+    left = df_noeuds_synthetise
+    right = df_culture_extanded[['nom', 'esp_var']]
+    df_noeuds_synthetise_extanded = pd.merge(
+        left, right, left_on='culture_id', right_index=True, how='left'
+    )
+
+    # ajout des informations du noeud précédent à la connexion
+    left = df_connection_synthetise
+    right = df_noeuds_synthetise_extanded.rename(
+        columns={
+            'culture_code' : 'precedent_code', 
+            'esp_var' : 'precedent_especes_edi', 
+            'nom': 'precedent_nom'
+        }
+    )
+    df_connection_synthetise_extanded = pd.merge(
+        left, right, left_on='source_noeuds_synthetise_id', right_index=True, how='left'
+    )
+
+    # ajout des informations de la connexion sur laquelle porte l'intervention
+    left = df_intervention_synthetise.reset_index()
+    right = df_connection_synthetise_extanded
+    df_intervention_synthetise_extanded = pd.merge(
+        left, right, left_on='connection_synthetise_id', right_index=True, how='inner'
+    ).set_index('id')
+
+    final = df_intervention_synthetise_extanded[
+        ['precedent_code', 'precedent_nom', 'precedent_especes_edi']
+    ]
+    return final.reset_index()
