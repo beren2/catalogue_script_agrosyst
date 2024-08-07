@@ -58,7 +58,7 @@ SELECT
     ir.date_fin,
     ir.freq_spatiale, 
     ir.nombre_de_passage nombre_de_passage,
-    ir.psci_intervention as psci
+    ir.psci_intervention as psci,
     iroc.proportion_surface_traitee_phyto,
     iroc.psci_phyto, 
     iroc.proportion_surface_traitee_lutte_bio,
