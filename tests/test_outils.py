@@ -1,9 +1,7 @@
 """
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
-
 import pandas as pd
-import math
 #from nettoyage import nettoyage
 from scripts.outils import nettoyage
 from scripts.outils import restructuration
