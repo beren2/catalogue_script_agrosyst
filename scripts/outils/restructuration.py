@@ -156,8 +156,35 @@ def restructuration_intervention_synthetise(donnees):
     donnees['noeuds_synthetise'] = donnees['noeuds_synthetise'].set_index('id')
     donnees['sdc'] = donnees['sdc'].set_index('id')
     donnees['synthetise'] = donnees['synthetise'].set_index('id')
+    donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].set_index('id')
+    donnees['combinaison_outil'] = donnees['combinaison_outil'].set_index('id')
+    donnees['domaine'] = donnees['domaine'].set_index('id')
 
-    # obtention de la campagne pour l'intervention en synthétisé --> à cette échelle, on peut utiliser les fichier d'agrégation
+    # obtention de la campagne informations grace au dataframe agrégé. 
+    left = donnees['intervention_synthetise'][['combinaison_outil_code']]
+    right = donnees['intervention_synthetise_agrege'][['sdc_campagne']]
+    donnees['intervention_synthetise_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # obtention des infos sur toutes les combinaisons d'outils
+    left = donnees['combinaison_outil'][['code', 'domaine_id']]
+    right = donnees['domaine'][['campagne']]
+    donnees['combinaison_outil_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    # on fusionne les deux en s'assurant d'avoir à la fois la bonne campagne et le bon combinaison_outil_code.
+    left = donnees['intervention_synthetise_extanded'].reset_index()
+    right = donnees['combinaison_outil_extanded'].reset_index().rename(columns={'id' : 'combinaison_outil_id'})
+    donnees['intervention_synthetise_extanded'] = pd.merge(
+        left, 
+        right, 
+        left_on=['combinaison_outil_code', 'sdc_campagne'], right_on=['code', 'campagne'], how='inner'
+    ).set_index('id')
+
+    # Étape nécessaire (cf ticket : TODO : remplir le nom du ticket)
+    donnees['intervention_synthetise_extanded'] = donnees['intervention_synthetise_extanded'].reset_index(
+    ).drop_duplicates(subset=['id']).set_index('id')
+
+    # on ne sélectionne que les données souhaitées 
+    return donnees['intervention_synthetise_extanded'][['combinaison_outil_id']]
 
 def restructuration_recolte_rendement_prix(donnees):
     """
@@ -288,3 +315,4 @@ def restructuration_noeuds_realise(donnees):
     final.index.rename('id', inplace=True)
 
     return final
+

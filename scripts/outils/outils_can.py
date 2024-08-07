@@ -431,7 +431,7 @@ def get_intervention_realise_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe final des interventions pour la CAN
+        Permet d'obtenir le dataframe final des interventions réalisés pour la CAN
     """
     # ajout des informations de contexte sur l'intervention
     left = get_intervention_realise_outils_can_context(donnees).rename(
@@ -465,10 +465,9 @@ def get_intervention_synthetise_culture_outils_can(
       donnees  
 ):
     """
-        Permet d'obtenir le dataframe avec les informations sur les cultures précédentes
-        retourne un dataframe avec pour index culture_id et pour colonne esp_var contenant 
-        l'agrégation des informations
-        sur la culture
+        Permet d'obtenir le dataframe avec les informations sur les cultures 
+        
+        esp_var contenant l'agrégation des informations sur la culture
     """
     # on obtient un dataframe où composant_culture_id x intervention_synthetise_id est unique
     # chaque ligne correspond à l'affectation d'un composant de culture à une intervention_synthetise
@@ -486,7 +485,7 @@ def get_intervention_synthetise_culture_outils_can(
     df_noeuds_synthetise_restructure = donnees['noeuds_synthetise_restructure'].set_index('id')
     df_plantation_perenne_synthetise_restructure = donnees['plantation_perenne_synthetise_restructure'].set_index('id')
     df_composant_culture_concerne_intervention_synthetise_restructure = donnees[
-        'composant_culture_concerne_intervention_synthetise_restructure'
+        'ccc_intervention_synthetise_restructure'
     ].set_index('id')
     df_connection_synthetise_restructure = donnees['connection_synthetise_restructure'].set_index('id')
 
@@ -601,7 +600,6 @@ def get_intervention_synthetise_culture_outils_can(
         columns={'intervention_synthetise_id' : 'id'}
     )
 
-
 def get_intervention_synthetise_culture_prec_outils_can(
         donnees
 ):
@@ -661,3 +659,255 @@ def get_intervention_synthetise_culture_prec_outils_can(
         ['precedent_code', 'precedent_nom', 'precedent_especes_edi']
     ]
     return final.reset_index()
+
+def get_intervention_synthetise_action_outils_can(
+        donnees
+):
+    """
+        Permet d'obtenir le dataframe des informations sur les actions pour les interventions synthétisé pour la CAN
+        (colonnes : )
+    """
+    df_action_synthetise = donnees['action_synthetise']
+    df_intervention_synthetise = donnees['intervention_synthetise']
+
+    left =  df_action_synthetise
+    right = df_intervention_synthetise[['id', 'freq_spatiale', 'freq_temporelle', 'psci_intervention']].rename(columns={'id' : 'intervention_synthetise_id'})
+    df_action_synthetise_extanded = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+
+    # Pour les applications de produits phytosanitaires :
+    df_action_produit_phyto = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
+    df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
+    df_action_produit_phyto.loc[: ,'psci_phyto'] = df_action_produit_phyto['proportion_surface_traitee'] * \
+          df_action_produit_phyto['freq_spatiale'] * df_action_produit_phyto['freq_temporelle']
+
+    # Pour la lutte biologique :
+    df_action_lutte_bio = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'LUTTE_BIOLOGIQUE']
+    df_action_lutte_bio.loc[: ,'proportion_surface_traitee_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee']
+    df_action_lutte_bio.loc[: ,'psci_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee'] * \
+          df_action_lutte_bio['freq_spatiale'] * df_action_lutte_bio['freq_temporelle']
+
+    # Pour l'irrigation :
+    df_action_irrigation = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'IRRIGATION']
+    df_action_irrigation.loc[: ,'quantite_eau_mm'] = df_action_irrigation['eau_qte_moy_mm'] 
+
+    # Pour les autres :
+    df_action_autres = df_action_synthetise_extanded.loc[
+        (df_action_synthetise_extanded['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
+        (df_action_synthetise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
+        (df_action_synthetise_extanded['type'] != 'IRRIGATION')
+    ].groupby(['intervention_synthetise_id']).agg({
+        'label' : ' ; '.join
+    }).reset_index()
+    
+    keeped_column_produit_phyto = ['proportion_surface_traitee_phyto', 'psci_phyto']
+    keeped_column_lutte_bio = ['proportion_surface_traitee_lutte_bio', 'psci_lutte_bio']
+    keeped_column_irrigation = ['quantite_eau_mm']
+    merge = pd.merge(df_action_produit_phyto[keeped_column_produit_phyto+['intervention_synthetise_id', 'label']],
+    df_action_lutte_bio[keeped_column_lutte_bio+['intervention_synthetise_id', 'label']],
+    on='intervention_synthetise_id', how='outer', suffixes = ('', '_lutte_bio'))
+
+    merge = pd.merge(merge.set_index('intervention_synthetise_id'),
+                     df_action_autres[['intervention_synthetise_id', 'label']],
+                     left_index=True, suffixes = ('', '_autre'),
+                     right_on='intervention_synthetise_id', how='outer').drop_duplicates(subset=['intervention_synthetise_id'])
+    
+    merge = pd.merge(merge.set_index('intervention_synthetise_id'), 
+                     df_action_irrigation[keeped_column_irrigation+['intervention_synthetise_id', 'label']],
+                     left_index=True, suffixes = ('', '_irrigation'),
+                     right_on='intervention_synthetise_id', how='outer').drop_duplicates(subset=['intervention_synthetise_id'])
+
+    merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
+        lambda x: x.str.cat(sep=' ; '), axis=1
+    )
+
+    merge[
+        ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
+    ] = merge[
+        ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
+    ].applymap(convert_to_int)
+
+
+    # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
+    # à chaque fois la valeur non nulle pour les colonnes
+    intervention_actions_indicateurs = merge[[
+        'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm',
+        'intervention_synthetise_id'
+    ]].rename(columns={'intervention_synthetise_id' : 'id'})
+
+    return intervention_actions_indicateurs
+
+def get_intervention_synthetise_semence_outils_can(
+        donnees
+    ):
+    """
+        permet d'obtenir les informations sur les interventions de type "SEMIS" en synthétisé.
+    """
+    df_semence = donnees['semence']
+    df_composant_culture = donnees['composant_culture']
+    df_espece = donnees['espece']
+    df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise']
+
+    # OBTENTION DES INFORMATIONS POUR LES INTERVENTIONS DE TYPE SEMENCES.
+    left = df_semence.rename(columns={'espece_id':'composant_culture_id'}) # attention, on est obligé de corriger car il y a une erreur dans le nom de la colonne sur Datagrosyst.
+    right = df_composant_culture[['id', 'espece_id', 'variete_id']].rename(columns={'id' : 'composant_culture_id'})
+    df_semence_extanded = pd.merge(left, right, on='composant_culture_id', how='left')
+
+    left = df_semence_extanded
+    right = df_espece[['id', 'libelle_espece_botanique', 'libelle_qualifiant_aee', 'libelle_type_saisonnier_aee', 'libelle_destination_aee']].rename(columns={'id' : 'espece_id'})
+    df_semence_extanded = pd.merge(left, right, on='espece_id', how='left')
+
+    df_semence_extanded = df_semence_extanded.fillna('')
+
+    df_semence_extanded['description'] = df_semence_extanded[[
+        'libelle_espece_botanique', 'libelle_qualifiant_aee', 
+        'libelle_type_saisonnier_aee', 'libelle_destination_aee', 
+    ]].agg(' '.join, axis=1).str.split().str.join(' ')
+
+    # ajout des informations des semences sur les utilisations d'intrants
+    left = df_utilisation_intrant_synthetise[['intervention_synthetise_id', 'intrant_id', 'dose', 'unite', 'semence_id']]
+    right = df_semence_extanded.rename(columns={'id' : 'semence_id'})
+    df_utilisation_intrant_synthetise_extanded = pd.merge(left, right, on='semence_id', how='inner')
+
+    df_utilisation_intrant_synthetise_extanded['dose'] = df_utilisation_intrant_synthetise_extanded['dose'].astype('str')
+
+    # on groupe par intervention
+    df_intervention_semence = df_utilisation_intrant_synthetise_extanded.fillna('').groupby([
+        'intervention_synthetise_id'
+    ]).agg({
+        'description' :  ' ; '.join,
+        'type_semence' :  ', '.join,
+        'dose' : ', '.join,
+        'unite' : ', '.join, 
+        'inoculation_biologique' : lambda x: map_boolean(x, sep=', '),
+        'traitement_chimique' : lambda x: map_boolean(x, sep=', ')
+    })
+
+    df_intervention_semence['dose'] = df_intervention_semence[['dose']].applymap(convert_to_int)
+
+    return df_intervention_semence.reset_index().rename(columns={
+        'intervention_synthetise_id' : 'id',
+        'description' : 'especes_semees', 
+        'dose' : 'densite_semis', 
+        'unite' : 'unite_semis', 
+        'traitement_chimique' : 'traitement_chimique_semis',
+        'inoculation_biologique' : 'inoculation_biologique_semis'
+    })
+
+def get_intervention_synthetise_outils_can_context(
+    donnees
+):
+    """
+        Permet d'obtenir un dataframe intermédiaire des interventions pour la CAN
+    """
+    df_intervention_synthetise = donnees['intervention_synthetise']
+
+    # ajout des informations sur les différents indicateurs
+    left = df_intervention_synthetise
+    right = get_intervention_synthetise_action_outils_can(donnees)
+    print(right.columns, right.index)
+    merge = pd.merge(left, right, on='id', how='left')
+    
+    # ajout des informations sur la table semis
+    left = merge
+    right = get_intervention_synthetise_semence_outils_can(donnees).reset_index()
+    merge = pd.merge(left, right, on='id', how='left')
+
+
+
+    columns = ['id', 'interventions_actions', 'especes_semees', 'densite_semis', 'unite_semis', 'traitement_chimique_semis', 
+               'inoculation_biologique_semis', 'type_semence', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+               'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
+    # ajout des informations sur les espèces concernées
+    return merge[columns]
+
+def get_intervention_synthetise_combinaison_outils_can(
+    donnees
+):
+    """
+        Permet d'obtenir le dataframe avec les informations sur les combinaisons d'outils
+    """
+    df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
+    df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
+    df_materiel = donnees['materiel'].set_index('id')
+    df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
+    df_intervention_synthetise_restructure = donnees['intervention_synthetise_restructure'].set_index('id')
+
+    # Ajout du combinaison_outil_id pour ne pas avoir à travailler avec combinaison_outil_code
+    left = df_intervention_synthetise
+    right = df_intervention_synthetise_restructure
+    df_intervention_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # Ajout des informations sur le tracteur à la combinaison d'outils 
+    left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
+    right = df_materiel[['nom', 'type_materiel']].rename(
+        columns={'nom' : 'nom_tracteur', 'type_materiel' : 'tracteur_ou_automoteur'}
+    )
+    df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
+
+    # Ajout des informations sur le materiel à la combinaison d'outils
+    left = df_combinaison_outil_materiel
+    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
+        columns={'nom' : 'combinaison_outils_nom', 'type_materiel' : 'outils'}
+    )
+    df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+
+    # On considère que si plusieurs matériels ont les mêmes caractéristiques (materiel_caracteristique1)
+    # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
+    # (Correction par rapport aux exports en masse historiques)
+    df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
+        subset=['combinaison_outil_id', 'materiel_caracteristique1']
+    )
+
+    # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
+    df_combinaison_outil_materiel['outils'] = df_combinaison_outil_materiel['outils'].fillna('')
+    df_combinaison_outil_materiel_grouped = df_combinaison_outil_materiel.groupby('combinaison_outil_id').agg({
+        'outils' : ' ; '.join, # delete NaN
+    })
+
+    # On mets toutes les informations dans le même dataframe
+    left = df_combinaison_outil_extanded
+    right = df_combinaison_outil_materiel_grouped
+    df_combinaison_outil_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # On agrège les informations au dataframe des interventions
+    left = df_intervention_synthetise_extanded[['combinaison_outil_id']]
+    right = df_combinaison_outil_extanded.rename(columns={'nom' : 'combinaison_outils_nom'})[
+        ['combinaison_outils_nom', 'tracteur_ou_automoteur', 'outils']
+    ]
+
+    merge = pd.merge(left, right, left_on='combinaison_outil_id', right_index=True, how='left')
+
+    return merge.reset_index()
+
+def get_intervention_synthetise_outils_can(
+    donnees
+):
+    """
+        Permet d'obtenir le dataframe final des interventions synthétisés pour la CAN
+    """
+    # ajout des informations de contexte sur l'intervention
+    left = get_intervention_synthetise_outils_can_context(donnees).rename(
+        columns={'id' : 'intervention_synthetise_id'}
+    )
+    right = get_intervention_synthetise_combinaison_outils_can(donnees).rename(
+        columns={'id' : 'intervention_synthetise_id'}
+    )
+    merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+
+    # ajout des informations sur la culture concernée par l'intervention
+    left = merge
+    right = get_intervention_synthetise_culture_outils_can(donnees).rename(
+        columns={'id' : 'intervention_synthetise_id'}
+    )
+    merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+
+
+    # ajout des informations sur la culture précédente
+    left = merge
+    right = get_intervention_synthetise_culture_prec_outils_can(donnees).rename(
+        columns={'id' : 'intervention_synthetise_id'}
+    )
+    merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+
+    return merge
