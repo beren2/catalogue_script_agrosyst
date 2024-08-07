@@ -509,7 +509,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
 
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
-    donnees_intervention = fonction_to_apply(donnees) #outils_can.get_intervention_realise_outils_can_context(donnees)
+    donnees_intervention = fonction_to_apply(donnees)
 
     res = []
     for intervention_id in list(colonne_to_test_for_ligne.keys()):
@@ -526,9 +526,10 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
         for colonne_to_test in colonnes_to_test:
             print(output[colonne_to_test].values)
             print(expected_output[colonne_to_test].values)
-            print(expected_output[colonne_to_test].values[0])
+            if(len(expected_output[colonne_to_test].values) > 0):
+                is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
 
-            if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or len(output[colonne_to_test].values) == 0):
+            if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
                 res.append(False)
             else:
                 res.append(True)
@@ -609,7 +610,7 @@ def test_get_intervention_synthetise_culture_outils_can():
         'plantation_perenne_phases_synthetise', 
         'plantation_perenne_synthetise', 'composant_culture_concerne_intervention_synthetise', 
         'noeuds_synthetise_restructure', 'plantation_perenne_synthetise_restructure',
-        'composant_culture_concerne_intervention_synthetise_restructure', 'composant_culture',
+        'ccc_intervention_synthetise_restructure', 'composant_culture',
         'espece', 'variete', 'connection_synthetise_restructure'
     ]
     path_data = 'tests/data/test_get_intervention_synthetise_culture_outils_can/'
@@ -617,7 +618,6 @@ def test_get_intervention_synthetise_culture_outils_can():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
-
 
 def test_get_intervention_synthetise_culture_prec_outils_can():
     """
@@ -632,6 +632,53 @@ def test_get_intervention_synthetise_culture_prec_outils_can():
     ]
     path_data = 'tests/data/test_get_intervention_synthetise_culture_prec_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_culture_prec_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+def test_get_intervention_synthetise_action_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
+    """
+
+    identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
+    df_names = [   
+        'intervention_synthetise', 'action_synthetise'
+    ]
+    path_data = 'tests/data/test_get_intervention_synthetise_action_outils_can/'
+    fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+def test_get_intervention_synthetise_semence_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
+    """
+
+    identifiant_test = 'test_get_intervention_synthetise_semence_outils_can'
+    df_names = [
+        'semence', 'composant_culture', 'espece', 'utilisation_intrant_synthetise'
+    ]
+    path_data = 'tests/data/test_get_intervention_synthetise_semence_outils_can/'
+    fonction_to_apply = outils_can.get_intervention_synthetise_semence_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+
+def test_get_intervention_synthetise_combinaison_outils_can():
+    """
+        Test de l'obtention des informations sur la combinaison d'outils
+    """
+
+    identifiant_test = 'test_get_intervention_synthetise_combinaison_outils_can'
+    df_names = [
+        'intervention_synthetise', 'intervention_synthetise_restructure', 
+        'combinaison_outil', 'materiel', 'combinaison_outil_materiel'
+    ]
+    path_data = 'tests/data/test_get_intervention_synthetise_combinaison_outils_can/'
+    fonction_to_apply = outils_can.get_intervention_synthetise_combinaison_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
