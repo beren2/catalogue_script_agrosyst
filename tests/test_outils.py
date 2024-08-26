@@ -493,32 +493,37 @@ def test_restructuration_recolte_rendement_prix():
 
     assert res_valeur_ok
 
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv'):
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv', df_ref_names = [], path_ref = 'data/referentiels/'):
     """
         Fonction qui permet de tester 
     """
     df_metadonnees = pd.read_csv(metadonnee_file)
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == identifiant_test]
 
-    # dictionnaire donnant pour chaque identifiant d'intervention, les colonnes à tester
+    # dictionnaire donnant pour chaque identifiant d'entité (par exemple intervention_id), les colonnes à tester
     colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
     for (key, value) in colonne_to_test_for_ligne.items():
         colonne_to_test_for_ligne[key] = value.split(',')
 
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
-
-    donnees_intervention = fonction_to_apply(donnees)
+    donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees_ref = {}
+    if(len(df_ref_names) > 0):
+        # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
+        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+    donnees = donnees_ | donnees_ref
+    
+    donnees_computed = fonction_to_apply(donnees)
 
     res = []
-    for intervention_id in list(colonne_to_test_for_ligne.keys()):
-        colonnes_to_test = colonne_to_test_for_ligne[intervention_id]
+    for entite_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[entite_id]
 
         # valeur trouvée :
-        output = donnees_intervention.loc[donnees_intervention['id'] == intervention_id]
-        output = output[colonnes_to_test].fillna('')
+        output = donnees_computed.loc[donnees_computed['id'] == entite_id]
+        output = output[colonnes_to_test].fillna('').astype('str')
 
         # valeur attendue :
-        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == intervention_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
         expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
 
         for colonne_to_test in colonnes_to_test:
@@ -664,7 +669,6 @@ def test_get_intervention_synthetise_semence_outils_can():
 
     assert all(res)
 
-
 def test_get_intervention_synthetise_combinaison_outils_can():
     """
         Test de l'obtention des informations sur la combinaison d'outils
@@ -678,5 +682,25 @@ def test_get_intervention_synthetise_combinaison_outils_can():
     path_data = 'tests/data/test_get_intervention_synthetise_combinaison_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_combinaison_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+def test_get_parcellle_rattache_outils_can():
+    """
+        Test de l'obtention des informations sur la combinaison d'outils
+    """
+
+    identifiant_test = 'test_get_parcelles_non_rattachees_outils_can'
+    df_names = [
+        'dispositif', 'sdc', 'parcelle', 'liaison_reseaux', 'liaison_sdc_reseau'
+    ]
+    df_ref_names = [
+        'reseau'
+    ]
+
+    path_data = 'tests/data/test_get_parcelles_non_rattachees_outils_can/'
+
+    fonction_to_apply = outils_can.get_parcelles_non_rattachees_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = df_ref_names)
 
     assert all(res)

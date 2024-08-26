@@ -1,0 +1,7 @@
+id,code,nom,type,campagne,domaine_id
+fr.inra.agrosyst.api.entities.GrowingPlan_a4b653a9-5b59-4060-a51d-99308922a105,ff30d043-3156-4df7-a77b-bdd745cfc190,DISP_DOMAINE_DENA,DEPHY_FERME,2017,fr.inra.agrosyst.api.entities.Domain_e87a7c0c-f743-4a6b-a7a4-45f32c0dbb3a
+fr.inra.agrosyst.api.entities.GrowingPlan_18a3b0e2-bb1a-4989-8972-3b6b1e4793ef,04af9707-7101-4358-9776-731768f0a880,DISP_DOMAINE_VEILEX,DEPHY_FERME,2013,fr.inra.agrosyst.api.entities.Domain_0c482108-2711-43fe-9eed-ff2b8a545223
+fr.inra.agrosyst.api.entities.GrowingPlan_3f18b55f-70da-4c71-9f07-61574b5013e9,821dfba2-2450-4c1a-b403-3e63038dc7e4,Plateforme CA-SYS,DEPHY_EXPE,2020,fr.inra.agrosyst.api.entities.Domain_6f9b9100-7d39-4980-a117-9b01dd0538f5
+fr.inra.agrosyst.api.entities.GrowingPlan_d95ee624-8b79-401b-a3e4-6fc57471e2d1,3ce94161-fd80-4491-adba-0ad395b34444,A04BRE_Rés0Pest Bretenière (21),DEPHY_EXPE,2020,fr.inra.agrosyst.api.entities.Domain_6f9b9100-7d39-4980-a117-9b01dd0538f5
+fr.inra.agrosyst.api.entities.GrowingPlan_7f03bcb9-6735-41ee-94b3-a23d7ebbe4e2,58b89d5b-ba19-4db7-83f1-c82d55bfad73,GCF39393,DEPHY_FERME,2023,fr.inra.agrosyst.api.entities.Domain_6b95065a-ecb3-4b83-8b2e-f5f4aa73030d
+fr.inra.agrosyst.api.entities.GrowingPlan_38c6710b-bad9-42b9-b4e1-d7c19df1332e,c0bba3d3-8415-4f5e-8794-0159dbd74b87,DISP_DOMAINE_EARL FERRET,DEPHY_FERME,2018,fr.inra.agrosyst.api.entities.Domain_f63e841c-0db6-4c4f-800e-62e09ab096f8
