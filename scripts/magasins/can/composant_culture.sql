@@ -32,4 +32,5 @@ from entrepot_composant_culture ecc
 inner join entrepot_culture ec on ecc.culture_id  = ec.id
 left join entrepot_espece ee on ecc.espece_id = ee.id 
 left join entrepot_variete ev on ecc.variete_id = ev.id
-left join entrepot_domaine ed on ec.domaine_id = ed.id;
+left join entrepot_domaine ed on ec.domaine_id = ed.id
+join domaine_filtre df on ed.id = df.domaine_id;

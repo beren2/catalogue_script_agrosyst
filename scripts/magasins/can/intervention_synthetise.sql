@@ -110,4 +110,5 @@ LEFT JOIN entrepot_domaine d ON irae.domaine_id = d.id
 left join entrepot_culture c on irae.culture_id = c.id
 left join entrepot_culture c_i on irae.culture_intermediaire_id = c_i.id
 LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON irae.plantation_perenne_phases_synthetise_id = pppr.id
-LEFT JOIN entrepot_combinaison_outil co ON iroc.combinaison_outil_id = co.id;
+LEFT JOIN entrepot_combinaison_outil co ON iroc.combinaison_outil_id = co.id
+JOIN domaine_filtre df on df.domaine_id = d.id;

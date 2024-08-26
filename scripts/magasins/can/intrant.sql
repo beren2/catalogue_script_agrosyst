@@ -47,4 +47,5 @@ select
 	ei.prix_ref_bio,
 	ei.prix_ref_bio_unite
 from entrepot_intrant ei
-left join entrepot_domaine ed on ei.domaine_id = ed.id;
+left join entrepot_domaine ed on ei.domaine_id = ed.id
+JOIN domaine_filtre df on df.domaine_id = ed.id;

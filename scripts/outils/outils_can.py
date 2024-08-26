@@ -66,6 +66,20 @@ def get_composant_culture_outils_can(donnees, info_variete=True):
 
     return df_composant_culture_extanded
 
+# FONCTIONS POUR LES FILTRES (ACTIF + DEPHY)
+def get_domaines_filtres_CAN(
+        donnees
+):
+    """
+        permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
+        c'est à dire ceux qui sont actifs, ceux qui ne contiennent que des dispositifs et des sdc actifs,
+        ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
+    """
+
+    # dans l'entrepôT, les filtrations sur les actifs sont déjà réalisés ()
+
+
+
 # FONCTIONS POUR LES INTERVENTIONS EN RÉALISÉS
 def get_intervention_realise_action_outils_can(
         donnees
@@ -911,3 +925,73 @@ def get_intervention_synthetise_outils_can(
     merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
     return merge
+
+
+# FONCTIONS POUR LES PARCELLES NON-RATTACHÉES
+
+def get_parcelles_non_rattachees_outils_can(
+    donnees
+):
+    """
+        Permet d'obtenir le dataframe final des parcelles non rattachées pour la CAN
+    """
+    df_parcelle = donnees['parcelle'].set_index('id')
+    df_reseau = donnees['reseau'].set_index('id')
+    df_liaison_reseaux = donnees['liaison_reseaux']
+    df_liaison_sdc_reseau = donnees['liaison_sdc_reseau']
+    df_sdc = donnees['sdc'].set_index('id')
+    df_dispositif = donnees['dispositif'].set_index('id')
+
+    df_parcelles_non_rattachees = df_parcelle.loc[
+        df_parcelle['sdc_id'].isna()
+    ]
+
+    # pour chaque liaison, on obtient l'information complète
+    left = df_liaison_sdc_reseau
+    right = df_sdc[['dispositif_id']]
+    merge = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
+
+    # pour chaque laison, on ajoute les infomrations sur le réseau
+    left = merge 
+    right = df_reseau[['nom', 'code_convention_dephy']]
+    merge = pd.merge(left, right, left_on='reseau_id', right_index=True, how='left')
+
+    # il faut obtenir l'ensemble des réseaux
+    left = merge
+    right = df_dispositif[['domaine_id']]
+    merge = pd.merge(left, right, left_on='dispositif_id', right_index=True, how='left')
+
+    # on obtient aussi le parent du réseau
+    left = merge
+    right = df_liaison_reseaux
+    merge = pd.merge(left, right, on='reseau_id', how='left')
+
+    left = merge
+    right = df_reseau.rename(columns={'nom' : 'nom_reseau_parent', 'code_convention_dephy' : 'code_convention_dephy_reseau_parent'})
+    merge = pd.merge(left, right, left_on='reseau_parent_id', right_index=True).dropna(subset=['nom', 'nom_reseau_parent']).fillna('')
+
+    res_reseaux_domaine = merge.groupby('domaine_id').agg({
+        'nom' : lambda x: '|'.join(x.unique()),
+        'nom_reseau_parent' : lambda x: '|'.join(x.unique()),
+        'code_convention_dephy' : lambda x: '|'.join(x.unique())
+    }).rename(columns={
+        'nom' : 'reseaux_ir',
+        'nom_reseau_parent' : 'reseaux_it',
+        'code_convention_dephy' : 'codes_convention_dephy'
+    })
+
+    df_parcelles_non_rattachees = df_parcelles_non_rattachees.reset_index().groupby('domaine_id').agg({
+        'id' : 'count', 
+        'edaplos_utilisateur_id' : 'count'
+    }).reset_index().rename(columns={
+        'id' : 'nb_parcelles_sans_sdc', 
+        'edaplos_utilisateur_id':'nb_parcelles_avec_id_edaplos',
+        'domaine_id' : 'id'
+    }).set_index('id')
+
+    left = df_parcelles_non_rattachees
+    right = res_reseaux_domaine
+    final = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+
+    return final.reset_index()

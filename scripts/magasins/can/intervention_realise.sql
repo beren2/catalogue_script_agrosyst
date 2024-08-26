@@ -40,7 +40,7 @@ SELECT
     cr.culture_intermediaire_id as ci_id,
     replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>') as ci_nom,
     CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
-    iroc.espece_de_l_intervention as especes_de_l_intervention,
+    --iroc.especes_semees as especes_de_l_intervention, non, remplacé par espece de l'interveton ! 
 	iroc.precedent_id,
     replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>'),
 	iroc.precedent_especes_edi,
@@ -81,8 +81,9 @@ LEFT JOIN entrepot_parcelle p ON ira.parcelle_id = p.id
 LEFT JOIN entrepot_sdc sdc ON ira.sdc_id = sdc.id
 LEFT JOIN entrepot_domaine d ON ira.domaine_id = d.id
 LEFT JOIN entrepot_noeuds_realise nr ON ira.noeuds_realise_id = nr.id
-LEFT JOIN entrepot_connection_realise cr ON nr.cible_noeuds_realise_id = nr.id
+LEFT JOIN entrepot_connection_realise cr ON cr.cible_noeuds_realise_id = nr.id
 LEFT JOIN entrepot_culture c ON nr.culture_id = c.id
 LEFT JOIN entrepot_culture c_intermediaire ON cr.culture_intermediaire_id = c_intermediaire.id
-LEFT JOIN entrepot_plantation_perenne_phases_realise pppr ON ira.plantation_perenne_phases_realise_id = pppr.id;
+LEFT JOIN entrepot_plantation_perenne_phases_realise pppr ON ira.plantation_perenne_phases_realise_id = pppr.id
+JOIN domaine_filtre df on df.domaine_id = d.id;
 

@@ -8,4 +8,5 @@ select
 	ed.nom as dispositif_nom, 
 	ed.type as dispositif_type
 from entrepot_dispositif ed
-left join entrepot_domaine d on d.id = ed.domaine_id;
+join entrepot_domaine d on d.id = ed.domaine_id
+join dispositif_filtre df on ed.id = df.dispositif_id;
