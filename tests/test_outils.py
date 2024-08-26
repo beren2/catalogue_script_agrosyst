@@ -493,7 +493,7 @@ def test_restructuration_recolte_rendement_prix():
 
     assert res_valeur_ok
 
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv', df_ref_names = [], path_ref = 'data/referentiels/'):
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = 'data/referentiels/'):
     """
         Fonction qui permet de tester 
     """
@@ -507,7 +507,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
 
     donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
     donnees_ref = {}
-    if(len(df_ref_names) > 0):
+    if(not df_ref_names is None):
         # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
         donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
     donnees = donnees_ | donnees_ref
