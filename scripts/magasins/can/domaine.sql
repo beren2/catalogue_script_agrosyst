@@ -1,6 +1,5 @@
 
 -- filtres exigés par le magasin DEPHY
-drop table if exists dispositif_filtre;
 CREATE TABLE dispositif_filtre as
     SELECT
         d.id domaine_id,
