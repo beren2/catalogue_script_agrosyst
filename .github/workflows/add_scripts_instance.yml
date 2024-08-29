@@ -20,6 +20,8 @@ jobs:
         VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
       run: |
         echo "$VPN_PASSWORD" | sudo openconnect --protocol=gp acces.intranet.inra.fr -u $VPN_USERNAME --csd-wrapper=/usr/libexec/openconnect/hipreport.sh --passwd-on-stdin --background --authgroup=gateway_pad-dc-idf     
+    - name: Checkout repository
+      uses: actions/checkout@v3
     - name: copy file via ssh password
       uses: appleboy/scp-action@v0.1.7
       with:
