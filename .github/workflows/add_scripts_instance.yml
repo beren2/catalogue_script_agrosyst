@@ -27,6 +27,7 @@ jobs:
         username: ${{ secrets.USERNAME_TEST }}
         password: ${{ secrets.PASSWORD_TEST }}
         port: ${{ secrets.PORT }}
+        overwrite: true
         source: "scripts/"
         target: "/home/${{ secrets.USERNAME_TEST }}"
     - name: Add new magasins scripts in test
