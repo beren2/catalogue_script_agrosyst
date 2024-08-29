@@ -5,4 +5,4 @@ select
 	ecgd.longitude,
 	ecgd.latitude
 from entrepot_coordonees_gps_domaine ecgd
-join domaine_filtre df on df.domaine_id = ecgd.domaine_id;
+join domaine_filtre df on df.domaine_id = ecgd.domaine_id
