@@ -1,20 +1,20 @@
 
 -- filtres exigés par le magasin DEPHY
-CREATE TABLE dispositif_filtre as
-    SELECT
-        d.id domaine_id,
-        ed.id dispositif_id
-    FROM entrepot_dispositif ed
-    JOIN entrepot_domaine d ON ed.domaine_id = d.id
-    AND ed.type !='NOT_DEPHY'
-    AND d.campagne >1999
-    AND d.campagne <2026;
+-- CREATE TABLE dispositif_filtre as
+--     SELECT
+--         d.id domaine_id,
+--         ed.id dispositif_id
+--     FROM entrepot_dispositif ed
+--     JOIN entrepot_domaine d ON ed.domaine_id = d.id
+--     AND ed.type !='NOT_DEPHY'
+--     AND d.campagne >1999
+--     AND d.campagne <2026;
 
-drop table if exists domaine_filtre;
-CREATE TABLE domaine_filtre as 
-    SELECT 
-        distinct domaine_id 
-    FROM dispositif_filtre 
+-- drop table if exists domaine_filtre;
+-- CREATE TABLE domaine_filtre as 
+--     SELECT 
+--         distinct domaine_id 
+--     FROM dispositif_filtre 
 
 SELECT 
     code as domaine_code, 
