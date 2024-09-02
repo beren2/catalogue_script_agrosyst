@@ -55,4 +55,4 @@ SELECT
     otex_commentaire,
     responsables_domaine
 from entrepot_domaine d
-join domaine_filtre df on df.domaine_id = d.id; -- on filtre pour ne garder que les domaines souhaités
+join entrepot_domaine_filtres_outils_can edifoc on d.id = edifoc.id

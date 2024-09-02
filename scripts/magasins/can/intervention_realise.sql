@@ -1,25 +1,3 @@
--- On génère d'abord la table agrégée complète
-CREATE TEMPORARY TABLE entrepot_intervention_realise_agrege AS
-SELECT DISTINCT 
-    nuirac.intervention_realise_id AS id, 
-    nuirac.plantation_perenne_realise_id, 
-    nuirac.zone_id, 
-    nuirac.noeuds_realise_id, 
-    nuirac.plantation_perenne_phases_realise_id, 
-    nuirac.parcelle_id, 
-    nuirac.sdc_campagne, 
-    nuirac.sdc_id, 
-    nuirac.domaine_id, 
-    nuirac.dispositif_id
-FROM
-    entrepot_intervention_realise eir 
-LEFT JOIN "entrepot_utilisation_intrant_realise_agrege" nuirac on eir.id = nuirac.intervention_realise_id
-UNION 
-SELECT 
-    id, 
-    plantation_perenne_realise_id, zone_id, noeuds_realise_id, plantation_perenne_phases_realise_id, parcelle_id, sdc_campagne, sdc_id, domaine_id, dispositif_id
-FROM entrepot_intervention_realise_manquant_agrege;
-
 SELECT 
     d.code as domaine_code,
     d.id as domaine_id,
@@ -36,22 +14,22 @@ SELECT
     pppr.id as phase_id, 
     pppr.type as phase,
     c.id as culture_id, 
-    replace(replace(c.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>') as culture_nom,
+    (replace(replace(c.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as culture_nom,
     cr.culture_intermediaire_id as ci_id,
-    replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>') as ci_nom,
+    (replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as ci_nom,
     CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
     --iroc.especes_semees as especes_de_l_intervention, non, remplacé par espece de l'interveton ! 
 	iroc.precedent_id,
-    replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>'),
+    (replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as precedent_nom,
 	iroc.precedent_especes_edi,
     nr.rang+1 as culture_rang,
     ir.id as intervention_id,
     ir.type as intervention_type,
     iroc.interventions_actions,
-    ir.nom as intevention_nom,
-    replace(replace(ir.commentaire,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>') as intervention_comment,
+    ir.nom as intervention_nom,
+    (replace(replace(ir.commentaire,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as intervention_comment,
     iroc.combinaison_outil_id as combinaison_outils_id,
-    replace(replace(iroc.combinaison_outils_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>'),
+    (replace(replace(iroc.combinaison_outils_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as combinaison_outils_nom,
     iroc.tracteur_ou_automoteur,
     iroc.outils,
     ir.date_debut,
@@ -85,5 +63,4 @@ LEFT JOIN entrepot_connection_realise cr ON cr.cible_noeuds_realise_id = nr.id
 LEFT JOIN entrepot_culture c ON nr.culture_id = c.id
 LEFT JOIN entrepot_culture c_intermediaire ON cr.culture_intermediaire_id = c_intermediaire.id
 LEFT JOIN entrepot_plantation_perenne_phases_realise pppr ON ira.plantation_perenne_phases_realise_id = pppr.id
-JOIN domaine_filtre df on df.domaine_id = d.id;
-
+join entrepot_domaine_filtres_outils_can edifoc on d.id = edifoc.id;

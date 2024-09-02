@@ -1,52 +1,3 @@
-CREATE TEMPORARY TABLE entrepot_intervention_synthetise_agrege AS
-SELECT DISTINCT 
-    nuirac.intervention_synthetise_id AS id, 
-    nuirac.plantation_perenne_synthetise_id, 
-    nuirac.cible_noeuds_synthetise_id,
-    nuirac.connection_synthetise_id,
-    nuirac.plantation_perenne_phases_synthetise_id, 
-    nuirac.synthetise_id,
-    nuirac.sdc_id, 
-    nuirac.sdc_campagne, 
-    nuirac.domaine_id, 
-    nuirac.dispositif_id
-FROM
-    entrepot_intervention_synthetise eir 
-LEFT JOIN "entrepot_utilisation_intrant_synthetise_agrege" nuirac on eir.id = nuirac.intervention_synthetise_id
-UNION 
-SELECT 
-    id, 
-    plantation_perenne_synthetise_id, 
-    cible_noeuds_synthetise_id,
-    connection_synthetise_id, 
-    plantation_perenne_phases_synthetise_id, 
-    synthetise_id, 
-    sdc_id, 
-    sdc_campagne, 
-    domaine_id, 
-    dispositif_id
-FROM entrepot_intervention_synthetise_manquant_agrege;
-
-
--- on rajoute les informations sur les culture_id et culture intermediaire_id...
-CREATE TEMPORARY TABLE entrepot_intervention_synthetise_agrege_extanded AS 
-SELECT 
-    eisa.id, 
-    eisa.plantation_perenne_synthetise_id, 
-    eisa.cible_noeuds_synthetise_id,
-    eisa.connection_synthetise_id, 
-    eisa.plantation_perenne_phases_synthetise_id, 
-    eisa.synthetise_id, 
-    eisa.sdc_id, 
-    eisa.sdc_campagne, 
-    eisa.domaine_id, 
-    eisa.dispositif_id,
-    coalesce(nsr.culture_id, '') || coalesce(eppsr.culture_id, '') as culture_id,
-    csr.culture_intermediaire_id
-FROM entrepot_intervention_synthetise_agrege eisa
-LEFT JOIN entrepot_noeuds_synthetise_restructure nsr ON nsr.id = eisa.cible_noeuds_synthetise_id
-LEFT JOIN entrepot_connection_synthetise_restructure csr ON csr.id = eisa.connection_synthetise_id
-LEFT JOIN entrepot_plantation_perenne_synthetise_restructure eppsr ON eppsr.id = eisa.plantation_perenne_synthetise_id;
 
 
 SELECT 
@@ -111,4 +62,4 @@ left join entrepot_culture c on irae.culture_id = c.id
 left join entrepot_culture c_i on irae.culture_intermediaire_id = c_i.id
 LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON irae.plantation_perenne_phases_synthetise_id = pppr.id
 LEFT JOIN entrepot_combinaison_outil co ON iroc.combinaison_outil_id = co.id
-JOIN domaine_filtre df on df.domaine_id = d.id;
+join entrepot_domaine_filtres_outils_can edifoc on d.id = edifoc.id;

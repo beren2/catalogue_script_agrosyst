@@ -6,4 +6,4 @@ select
 	eae.taille_elevage_unite as atelier_elevage_unite
 from entrepot_atelier_elevage eae
 left join entrepot_domaine ed on ed.id = eae.domaine_id
-join domaine_filtre df on ed.id = df.domaine_id
+join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id; -- vérifier qu'on a pas de dupplication !

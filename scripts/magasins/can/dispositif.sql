@@ -9,4 +9,4 @@ select
 	ed.type as dispositif_type
 from entrepot_dispositif ed
 join entrepot_domaine d on d.id = ed.domaine_id
-join dispositif_filtre df on ed.id = df.dispositif_id;
+join entrepot_dispositif_filtres_outils_can edifoc on ed.id = edifoc.id;

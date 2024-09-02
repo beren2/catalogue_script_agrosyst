@@ -169,4 +169,4 @@ select
 from entrepot_sdc es	
 left join entrepot_dispositif edi on es.dispositif_id = edi.id
 left join entrepot_domaine ed on edi.domaine_id = ed.id
-JOIN domaine_filtre df on df.domaine_id = ed.id;
+join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
