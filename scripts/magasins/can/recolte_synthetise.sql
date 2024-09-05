@@ -1,3 +1,4 @@
+-- préalablement, on a exécuté le script action_synthetise_agrege dans le répertoire de dépendances.
 select 
 	ed.code as domaine_code,
 	earma.domaine_id,
