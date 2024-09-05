@@ -4,7 +4,7 @@ select
 	edo.nom as domaine_nom,
 	edo.campagne as domaine_campagne,
 	esdc.id as sdc_id,
-	es.id as systeme_syntehtise_id, 
+	es.id as systeme_synthetise_id, 
 	es.nom as systeme_synthetise_nom, 
 	es.campagnes as systeme_synthetise_campagnes,
 	ept.id as parcelle_type_id, 

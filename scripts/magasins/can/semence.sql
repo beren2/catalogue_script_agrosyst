@@ -4,7 +4,6 @@ select
 	es.traitement_chimique,
 	es.bio,
 	es.traitement_semence_id,
-	es.inoculation_biologique,
 	es.espece_id,
 	es.type_semence,
 	es.prix_saisi,

@@ -1,6 +1,6 @@
 select 
 	ed.code as domaine_code, 
-	ed.id as domaine_di, 
+	ed.id as domaine_id, 
 	ed.nom as domaine_nom, 
 	ed.campagne as domaine_campagne,
 	esdc.id as sdc_id, 
