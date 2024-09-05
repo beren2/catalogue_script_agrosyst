@@ -12,7 +12,7 @@ select
 	ept.surface as parcelle_type_surface,
 	ept.commentaire as parcelle_type_commentaire,
 	ept.hors_zonage as parcelle_type_hors_zonage,
-	ept.equipement_commentaire as esquipement_commentaire,
+	ept.equipement_commentaire as equipement_commentaire,
 	ept.drainage as drainage,
 	ept.drainage_annee_realisation as drainage_annee_realisation,
 	ept.protection_antigel as protection_anti_gel,
