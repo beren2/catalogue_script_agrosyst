@@ -17,9 +17,9 @@
 --     FROM dispositif_filtre 
 
 SELECT 
-    code as domaine_code, 
-    id as domaine_id,
-    nom as domaine_nom, 
+    d.code as domaine_code, 
+    d.id as domaine_id,
+    d.nom as domaine_nom, 
     siret, 
     campagne as domaine_campagne, 
     type_ferme as type, 
