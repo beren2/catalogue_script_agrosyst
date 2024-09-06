@@ -14,15 +14,15 @@ select
 	ec.commune as commune,
 	ep.commentaire as parcelle_commentaire,
 	ep.nombre_de_zones,
-	ep.hors_zonage as parcelle_hors_zonage,
+	CASE ep.hors_zonage WHEN true THEN 'oui' WHEN false THEN 'non' END parcelle_hors_zonage,
 	ep.equip_commentaire as equipement_commentaire,
-	ep.drainage,
+	CASE ep.drainage WHEN true THEN 'oui' WHEN false THEN 'non' END drainage,
 	ep.drainage_annee_realisation,
-	ep.protection_antigel,
+	CASE ep.protection_antigel WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antigel,
 	ep.protection_antigel_type,
-	ep.protection_antigrele as protection_anti_grele,
-	ep.protection_antipluie,
-	ep.protection_antiinsecte as protection_anti_insectes,
+	CASE ep.protection_antigrele WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_grele,
+	CASE ep.protection_antipluie WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antipluie,
+	CASE ep.protection_antiinsecte WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_insectes,
 	ep.equip_autre as autre_equipement
 from entrepot_parcelle ep
 left join entrepot_domaine ed on ep.domaine_id = ed.id
