@@ -28,4 +28,4 @@ from entrepot_parcelle ep
 left join entrepot_domaine ed on ep.domaine_id = ed.id
 left join entrepot_sdc es on ep.sdc_id = es.id
 left join entrepot_commune ec on ep.commune_id = ec.id
-join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
+join entrepot_dispositif_filtres_outils_can edfoc on es.dispositif_id = edfoc.id;
