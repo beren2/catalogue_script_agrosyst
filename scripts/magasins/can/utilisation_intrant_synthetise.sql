@@ -49,5 +49,5 @@ left join entrepot_domaine ed on ed.id = euira.domaine_id
 left join entrepot_sdc esdc on esdc.id = euira.sdc_id
 left join entrepot_synthetise es on es.id = euira.synthetise_id
 left join entrepot_intervention_synthetise eir on eir.id = euir.intervention_synthetise_id
-left join entrepot_intrant ei on euir.intrant_id = ei.id;
+left join entrepot_intrant ei on euir.intrant_id = ei.id
 join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
