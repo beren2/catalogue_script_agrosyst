@@ -36,4 +36,4 @@ left join entrepot_sdc esdc on esdc.id = ep.sdc_id
 left join entrepot_domaine ed on ed.id = ep.domaine_id
 left join entrepot_culture ec on ec.id = eppr.culture_id
 left join entrepot_culture_outils_can ecoc on ecoc.id = ec.id
-join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
+join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
