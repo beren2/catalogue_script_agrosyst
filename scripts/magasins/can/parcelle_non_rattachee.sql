@@ -11,5 +11,5 @@ select
 from 
 	entrepot_parcelle_non_rattachee_outils_can epnroc
 left join entrepot_domaine ed on ed.id = epnroc.id
-join entrepot_domaine_filtres_outils_can edfoc on ed.id = edfoc.id;
+join entrepot_domaine_filtres_outils_can edfoc on ed.id = edfoc.id
 where epnroc.reseaux_ir is not null;
