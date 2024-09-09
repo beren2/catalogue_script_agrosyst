@@ -25,7 +25,8 @@ select
 from entrepot_materiel em
 left join entrepot_combinaison_outil eco on eco.tracteur_materiel_id = em.id 
 left join entrepot_domaine ed on ed.id = em.domaine_id
-where em.categorie_materiel in ('Automateur', 'Tracteur')
+join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id
+where em.categorie_materiel in ('Automoteur', 'Tracteur')
 union all
 -- cas 2 : on sélectionne les materiels classiques
 select 
