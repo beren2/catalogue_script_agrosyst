@@ -63,4 +63,4 @@ LEFT JOIN entrepot_connection_realise cr ON cr.cible_noeuds_realise_id = nr.id
 LEFT JOIN entrepot_culture c ON nr.culture_id = c.id
 LEFT JOIN entrepot_culture c_intermediaire ON cr.culture_intermediaire_id = c_intermediaire.id
 LEFT JOIN entrepot_plantation_perenne_phases_realise pppr ON ira.plantation_perenne_phases_realise_id = pppr.id
-join entrepot_domaine_filtres_outils_can edifoc on d.id = edifoc.id;
+join entrepot_dispositif_filtres_outils_can edifoc on sdc.dispositif_id = edifoc.id;
