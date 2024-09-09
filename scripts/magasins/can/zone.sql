@@ -11,6 +11,7 @@ select
 	ez.longitude,
 	ez."type" as zone_type
 from entrepot_zone ez
-left join entrepot_parcelle ep on ez.parcelle_id = ep.id 
-join entrepot_domaine ed on ep.domaine_id = ed.id
-join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
+left join entrepot_parcelle ep on ez.parcelle_id = ep.id
+left join entrepot_sdc esdc on esdc.id = ep.sdc_id 
+left join entrepot_domaine ed on ep.domaine_id = ed.id
+join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
