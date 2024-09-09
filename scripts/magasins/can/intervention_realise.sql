@@ -18,7 +18,7 @@ SELECT
     cr.culture_intermediaire_id as ci_id,
     (replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as ci_nom,
     CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
-    --iroc.especes_semees as especes_de_l_intervention, non, remplacé par espece de l'interveton ! 
+    iroc.esp_var as especes_de_l_intervention,
 	iroc.precedent_id,
     (replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as precedent_nom,
 	iroc.precedent_especes_edi,
