@@ -67,7 +67,7 @@ def get_composant_culture_outils_can(donnees, info_variete=True):
     return df_composant_culture_extanded
 
 # FONCTIONS POUR LES FILTRES (ACTIF + DEPHY)
-def get_domaines_filtres_CAN(
+def dispositif_filtres_outils_can(
         donnees
 ):
     """
@@ -76,8 +76,48 @@ def get_domaines_filtres_CAN(
         ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
     """
 
-    # dans l'entrepôT, les filtrations sur les actifs sont déjà réalisés ()
+    # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
+    df_dispositif = donnees['dispositif'].set_index('id')
+    df_domaine = donnees['domaine'].set_index('id')
 
+    left = df_dispositif
+    right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
+    df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
+
+    df_dispositif = df_dispositif.loc[
+        (df_dispositif['domaine_campagne'] > 1999) & (df_dispositif['domaine_campagne'] < 2026) & 
+        (df_dispositif['type'] != 'NOT_DEPHY')
+    ]
+
+    return  df_dispositif.reset_index()[['id']]
+
+def domaine_filtres_outils_can(
+        donnees
+):
+    """
+        permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
+        c'est à dire ceux qui sont actifs, ceux qui ne contiennent que des dispositifs et des sdc actifs,
+        ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
+    """
+
+    # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
+    df_dispositif = donnees['dispositif'].set_index('id')
+    df_domaine = donnees['domaine'].set_index('id')
+
+    left = df_dispositif
+    right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
+    df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
+
+    df_dispositif = df_dispositif.loc[
+        (df_dispositif['domaine_campagne'] > 1999) & (df_dispositif['domaine_campagne'] < 2026) & 
+        (df_dispositif['type'] != 'NOT_DEPHY')
+    ]
+
+    df_domaine = df_domaine.loc[
+        df_domaine.index.isin(list(df_dispositif['domaine_id']))
+    ]
+
+    return  df_domaine.reset_index()[['id']]
 
 
 # FONCTIONS POUR LES INTERVENTIONS EN RÉALISÉS
@@ -927,13 +967,19 @@ def get_intervention_synthetise_outils_can(
     return merge
 
 
+
+
 # FONCTIONS POUR LES PARCELLES NON-RATTACHÉES
 
 def get_parcelles_non_rattachees_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe final des parcelles non rattachées pour la CAN
+        Permet d'obtenir des informations sur les parcelles non-rattachées
+        On agrège toutes les informations au niveau du domaine auquel elles appartiennent.
+        On ne considère : 
+            - que les parcelles qui contiennent des interventions
+            - que les parcelles qui ont une surface > 0
     """
     df_parcelle = donnees['parcelle'].set_index('id')
     df_reseau = donnees['reseau'].set_index('id')
@@ -941,31 +987,37 @@ def get_parcelles_non_rattachees_outils_can(
     df_liaison_sdc_reseau = donnees['liaison_sdc_reseau']
     df_sdc = donnees['sdc'].set_index('id')
     df_dispositif = donnees['dispositif'].set_index('id')
+    df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
 
+
+    # on ne garde que les parcelles non rattachées
     df_parcelles_non_rattachees = df_parcelle.loc[
-        df_parcelle['sdc_id'].isna()
+        (df_parcelle['sdc_id'].isna()) &
+        (df_parcelle.index.isin(df_intervention_realise_agrege['parcelle_id'])) &
+        (df_parcelle['surface'] > 0)
     ]
 
-    # pour chaque liaison, on obtient l'information complète
+    # pour chaque liaison de réseau, on obtient l'information complète
     left = df_liaison_sdc_reseau
     right = df_sdc[['dispositif_id']]
     merge = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
 
-    # pour chaque laison, on ajoute les infomrations sur le réseau
+    # pour chaque laison, on ajoute les informations sur le réseau
     left = merge 
     right = df_reseau[['nom', 'code_convention_dephy']]
     merge = pd.merge(left, right, left_on='reseau_id', right_index=True, how='left')
 
-    # il faut obtenir l'ensemble des réseaux
+    # on obtient le domaine associé au sdc
     left = merge
     right = df_dispositif[['domaine_id']]
     merge = pd.merge(left, right, left_on='dispositif_id', right_index=True, how='left')
 
-    # on obtient aussi le parent du réseau
+    # on obtient aussi le lien vers le parent du réseau
     left = merge
     right = df_liaison_reseaux
     merge = pd.merge(left, right, on='reseau_id', how='left')
 
+    # on ajoute les informations sur le réseau parent
     left = merge
     right = df_reseau.rename(columns={'nom' : 'nom_reseau_parent', 'code_convention_dephy' : 'code_convention_dephy_reseau_parent'})
     merge = pd.merge(left, right, left_on='reseau_parent_id', right_index=True).dropna(subset=['nom', 'nom_reseau_parent']).fillna('')
@@ -993,5 +1045,98 @@ def get_parcelles_non_rattachees_outils_can(
     right = res_reseaux_domaine
     final = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-
     return final.reset_index()
+
+
+# FONCTIONS POUR LES CULTURES
+def get_culture_outils_can(
+    donnees
+):
+    """
+        Permet d'obtenir des informations agrégées sur les cultures (sous le format désiré par la CAN)
+    """
+    df_culture = donnees['culture'].set_index('id')
+    df_composant_culture = donnees['composant_culture'].set_index('id')
+    df_espece = donnees['espece'].set_index('id')
+
+    df_espece = df_espece.fillna('')
+    df_espece['complet_espece_edi'] = (
+        df_espece['libelle_espece_botanique']
+        +' '
+        +df_espece['libelle_qualifiant_aee']
+        +' '
+        +df_espece['libelle_destination_aee']
+    ).str.replace('\n', '<br>').str.replace('  ', ' ').str.strip()
+
+    # ajout des informations utiles sur la variété et sur l'espèce au composant de culture
+    left = df_composant_culture
+    right = df_espece['complet_espece_edi']
+    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+
+    res = df_composant_culture_extanded.groupby('culture_id').agg({
+        'complet_espece_edi' : ' ; '.join
+    })
+
+    return res.reset_index().rename(columns={'culture_id' : 'id'})
+
+
+# FONCTION POUR RECOLTE_REALISE
+def get_recolte_realise_outils_can(
+    donnees
+):
+    df_culture = donnees['culture'].set_index('id')
+    df_composant_culture = donnees['composant_culture'].set_index('id')
+    df_recolte_rendement_prix = donnees['recolte_rendement_prix'].set_index('id')
+    df_recolte_rendement_prix_restructure = donnees['recolte_rendement_prix_restructure'].set_index('id')
+
+    left = df_recolte_rendement_prix
+    right = df_recolte_rendement_prix_restructure
+    merge = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    left = merge
+    right = df_composant_culture[['culture_id']]
+    merge = pd.merge(left, right, left_on='composant_culture_id', right_index=True, how='left')
+
+    left = merge 
+    right = df_culture[['melange_especes']]
+    merge = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+
+    merge_melange_espece = merge.loc[merge['melange_especes'] == 't'] 
+    merge_not_melange_espece = merge.loc[merge['melange_especes'] != 't'] 
+
+    final_melange_espece = merge_melange_espece.groupby(['action_id', 'destination_id', 'rendement_unite']).agg({
+        'rendement_moy' : 'sum', 
+        'rendement_max' : 'sum', 
+        'rendement_min' : 'sum', 
+        'rendement_median' : 'sum',
+        'autoconsommation_pct' : 'sum', 
+        'commercialisation_pct' : 'sum',
+        'nonvalorisation_pct' : 'sum'
+    })
+
+    final_not_melange_espece = merge_not_melange_espece.groupby(['action_id', 'destination_id', 'rendement_unite']).agg({
+        'rendement_moy' : 'mean', 
+        'rendement_max' : 'mean', 
+        'rendement_min' : 'mean', 
+        'rendement_median' : 'mean',
+        'autoconsommation_pct' : 'mean', 
+        'commercialisation_pct' : 'mean',
+        'nonvalorisation_pct' : 'mean'
+    })
+
+    final = pd.concat([final_melange_espece, final_not_melange_espece])
+    
+    return final.reset_index()
+
+# FONCTION POUR ASSOLEES_SYNTHETISE 
+def get_culture_indicateur_branche(
+    donnees
+):
+    """
+        Permet d'obtenir L'information (d'après moi inexploitable) de culture_indicateur_branche telle
+        qu'on la trouve dans les exports en masse
+    """
+    df_noeuds_synthetise = donnees['noeuds_synthetise'].set_index('id')
+    
+
+    return 0
