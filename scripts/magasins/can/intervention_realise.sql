@@ -18,7 +18,7 @@ SELECT
     cr.culture_intermediaire_id as ci_id,
     (replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as ci_nom,
     CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
-    --iroc.especes_semees as especes_de_l_intervention, non, remplacé par espece de l'interveton ! 
+    iroc.esp_var as especes_de_l_intervention,
 	iroc.precedent_id,
     (replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as precedent_nom,
 	iroc.precedent_especes_edi,
@@ -63,4 +63,4 @@ LEFT JOIN entrepot_connection_realise cr ON cr.cible_noeuds_realise_id = nr.id
 LEFT JOIN entrepot_culture c ON nr.culture_id = c.id
 LEFT JOIN entrepot_culture c_intermediaire ON cr.culture_intermediaire_id = c_intermediaire.id
 LEFT JOIN entrepot_plantation_perenne_phases_realise pppr ON ira.plantation_perenne_phases_realise_id = pppr.id
-join entrepot_domaine_filtres_outils_can edifoc on d.id = edifoc.id;
+join entrepot_dispositif_filtres_outils_can edifoc on sdc.dispositif_id = edifoc.id;
