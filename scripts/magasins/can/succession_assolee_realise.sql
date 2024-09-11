@@ -10,7 +10,7 @@ select
 	ep.nom as parcelle_nom,
 	ez.id as zone_id, 
 	ez.nom as zone_nom, 
-	enr.rang as culture_rang,
+	enr.rang+1 as culture_rang,
 	ec.id as culture_id,
 	ec.nom as culture_nom,
 	ecoc.complet_espece_edi as culture_especes_edi,
