@@ -188,12 +188,12 @@ def restructuration_intervention_synthetise(donnees):
 
     # Join les campagnes possibles des combinaisons outils et de campagnes_synthetise
     missing = donnees['intervention_synthetise_extanded'][~donnees['intervention_synthetise_extanded']['id'].isin(intervention_synthetise_extanded_1['id'])]
-    left = missing[missing['combinaison_outil_code'].isna() == False]
+    left = missing[~ missing['combinaison_outil_code'].isna()]
     right = donnees['combinaison_outil_extanded'].groupby('code')['campagne'].apply(list).reset_index().rename(columns={'code' : 'combinaison_outil_code', 'campagne' : 'domaine_campagne'})
     missing_extanded = pd.merge(left, right, on='combinaison_outil_code', how='left')
 
     missing_extanded['campagne_commune'] = missing_extanded.apply(
-        lambda x: [value for value in x['campagnes_synthetise'] if int(value) in x['domaine_campagne']] if type(x['domaine_campagne']) == list else [], axis=1)
+        lambda x: [value for value in x['campagnes_synthetise'] if int(value) in x['domaine_campagne']] if isinstance(x['domaine_campagne'], list)  else [], axis=1)
 
     missing_extanded['campagne_max'] = missing_extanded.apply(
         lambda x: int(max(x['campagne_commune'])) if len(x['campagne_commune']) > 0 else 0, axis=1
