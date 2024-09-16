@@ -424,6 +424,36 @@ def test_connection_synthetise_restructured():
 
     assert res_valeur_ok
 
+def test_intervention_synthetise_restructured():
+    """
+        Test de l'obtention des combinaisons outils d intervention synthetise restructuree
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_intervention_synthetise_restructured']
+
+    # obtention des données
+    df_names = ['intervention_synthetise',
+                'synthetise',
+                'intervention_synthetise_agrege',
+                'combinaison_outil',
+                'domaine']
+
+    path_data = 'tests/data/test_intervention_synthetise_restructured/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    intervention_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'combinaison_outil_id'][['id_ligne', 'valeur_attendue']]
+    intervention_synthetise = restructuration.restructuration_intervention_synthetise(donnees)
+
+    left = intervention_synthetise_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'intervention_synthetise_id', 'valeur_attendue' : 'combinaison_outil_id_expected'})
+    right = intervention_synthetise.reset_index().rename(columns={'id' : 'intervention_synthetise_id'})
+    merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['combinaison_outil_id_expected'] == merge['combinaison_outil_id']).all()
+
+    assert res_valeur_ok
+
 def test_restructuration_noeuds_realise():
     """
         Test de l'obtention des noeuds realises restructures
