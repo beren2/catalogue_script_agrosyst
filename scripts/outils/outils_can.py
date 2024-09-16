@@ -2,6 +2,7 @@
 	Regroupe les fonctions permettant de générer les outils utiles lors de la génération du magasin "CAN".
 """
 import pandas as pd
+import numpy as np
 
 
 # FONCTIONS GÉNÉRALES 
@@ -67,7 +68,7 @@ def get_composant_culture_outils_can(donnees, info_variete=True):
     return df_composant_culture_extanded
 
 # FONCTIONS POUR LES FILTRES (ACTIF + DEPHY)
-def get_domaines_filtres_CAN(
+def dispositif_filtres_outils_can(
         donnees
 ):
     """
@@ -76,8 +77,48 @@ def get_domaines_filtres_CAN(
         ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
     """
 
-    # dans l'entrepôT, les filtrations sur les actifs sont déjà réalisés ()
+    # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
+    df_dispositif = donnees['dispositif'].set_index('id')
+    df_domaine = donnees['domaine'].set_index('id')
 
+    left = df_dispositif
+    right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
+    df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
+
+    df_dispositif = df_dispositif.loc[
+        (df_dispositif['domaine_campagne'] > 1999) & (df_dispositif['domaine_campagne'] < 2026) & 
+        (df_dispositif['type'] != 'NOT_DEPHY')
+    ]
+
+    return  df_dispositif.reset_index()[['id']]
+
+def domaine_filtres_outils_can(
+        donnees
+):
+    """
+        permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
+        c'est à dire ceux qui sont actifs, ceux qui ne contiennent que des dispositifs et des sdc actifs,
+        ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
+    """
+
+    # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
+    df_dispositif = donnees['dispositif'].set_index('id')
+    df_domaine = donnees['domaine'].set_index('id')
+
+    left = df_dispositif
+    right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
+    df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
+
+    df_dispositif = df_dispositif.loc[
+        (df_dispositif['domaine_campagne'] > 1999) & (df_dispositif['domaine_campagne'] < 2026) & 
+        (df_dispositif['type'] != 'NOT_DEPHY')
+    ]
+
+    df_domaine = df_domaine.loc[
+        df_domaine.index.isin(list(df_dispositif['domaine_id']))
+    ]
+
+    return  df_domaine.reset_index()[['id']]
 
 
 # FONCTIONS POUR LES INTERVENTIONS EN RÉALISÉS
@@ -927,13 +968,19 @@ def get_intervention_synthetise_outils_can(
     return merge
 
 
+
+
 # FONCTIONS POUR LES PARCELLES NON-RATTACHÉES
 
 def get_parcelles_non_rattachees_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe final des parcelles non rattachées pour la CAN
+        Permet d'obtenir des informations sur les parcelles non-rattachées
+        On agrège toutes les informations au niveau du domaine auquel elles appartiennent.
+        On ne considère : 
+            - que les parcelles qui contiennent des interventions
+            - que les parcelles qui ont une surface > 0
     """
     df_parcelle = donnees['parcelle'].set_index('id')
     df_reseau = donnees['reseau'].set_index('id')
@@ -941,31 +988,37 @@ def get_parcelles_non_rattachees_outils_can(
     df_liaison_sdc_reseau = donnees['liaison_sdc_reseau']
     df_sdc = donnees['sdc'].set_index('id')
     df_dispositif = donnees['dispositif'].set_index('id')
+    df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
 
+
+    # on ne garde que les parcelles non rattachées
     df_parcelles_non_rattachees = df_parcelle.loc[
-        df_parcelle['sdc_id'].isna()
+        (df_parcelle['sdc_id'].isna()) &
+        (df_parcelle.index.isin(df_intervention_realise_agrege['parcelle_id'])) &
+        (df_parcelle['surface'] > 0)
     ]
 
-    # pour chaque liaison, on obtient l'information complète
+    # pour chaque liaison de réseau, on obtient l'information complète
     left = df_liaison_sdc_reseau
     right = df_sdc[['dispositif_id']]
     merge = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
 
-    # pour chaque laison, on ajoute les infomrations sur le réseau
+    # pour chaque laison, on ajoute les informations sur le réseau
     left = merge 
     right = df_reseau[['nom', 'code_convention_dephy']]
     merge = pd.merge(left, right, left_on='reseau_id', right_index=True, how='left')
 
-    # il faut obtenir l'ensemble des réseaux
+    # on obtient le domaine associé au sdc
     left = merge
     right = df_dispositif[['domaine_id']]
     merge = pd.merge(left, right, left_on='dispositif_id', right_index=True, how='left')
 
-    # on obtient aussi le parent du réseau
+    # on obtient aussi le lien vers le parent du réseau
     left = merge
     right = df_liaison_reseaux
     merge = pd.merge(left, right, on='reseau_id', how='left')
 
+    # on ajoute les informations sur le réseau parent
     left = merge
     right = df_reseau.rename(columns={'nom' : 'nom_reseau_parent', 'code_convention_dephy' : 'code_convention_dephy_reseau_parent'})
     merge = pd.merge(left, right, left_on='reseau_parent_id', right_index=True).dropna(subset=['nom', 'nom_reseau_parent']).fillna('')
@@ -993,5 +1046,286 @@ def get_parcelles_non_rattachees_outils_can(
     right = res_reseaux_domaine
     final = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-
     return final.reset_index()
+
+
+# FONCTIONS POUR LES CULTURES
+def get_culture_outils_can(
+    donnees
+):
+    """
+        Permet d'obtenir des informations agrégées sur les cultures (sous le format désiré par la CAN)
+    """
+    df_culture = donnees['culture'].set_index('id')
+    df_composant_culture = donnees['composant_culture'].set_index('id')
+    df_espece = donnees['espece'].set_index('id')
+
+    df_espece = df_espece.fillna('')
+    df_espece['complet_espece_edi'] = (
+        df_espece['libelle_espece_botanique']
+        +' '
+        +df_espece['libelle_qualifiant_aee']
+        +' '
+        +df_espece['libelle_destination_aee']
+    ).str.replace('\n', '<br>').str.replace('  ', ' ').str.strip()
+
+    # ajout des informations utiles sur la variété et sur l'espèce au composant de culture
+    left = df_composant_culture
+    right = df_espece['complet_espece_edi']
+    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+
+    res = df_composant_culture_extanded.groupby('culture_id').agg({
+        'complet_espece_edi' : ' ; '.join
+    })
+
+    return res.reset_index().rename(columns={'culture_id' : 'id'})
+
+
+def get_recolte_realise_outils_can(
+        donnees
+):
+    """ permet d'obtenir les informations sur les récoltes en réalisé (cf get_recolte_outils_can)"""
+    df = donnees.copy()
+    df['composant_culture'] = df['composant_culture'].set_index('id')
+    df['culture'] = df['culture'].set_index('id')
+    df['composant_culture_concerne_intervention_realise'] = df['composant_culture_concerne_intervention_realise'].set_index('id')
+    df['recolte_rendement_prix'] = df['recolte_rendement_prix'].set_index('id')
+    df['recolte_rendement_prix_restructure'] = df['recolte_rendement_prix_restructure'].set_index('id')
+    df['action_realise'] = df['action_realise'].set_index('id')
+
+    # on veut savoir pour chaque composant culture si celui-ci appartient à une culture "melange espece" / "melange variété"
+    left = df['composant_culture']
+    right = df['culture'][['melange_especes', 'melange_varietes']]
+    df['composant_culture_extanded'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+
+    left = df['composant_culture_concerne_intervention_realise']
+    right = df['composant_culture_extanded'][['surface_relative', 'melange_especes', 'melange_varietes']]
+    merge = pd.merge(left, right, left_on='composant_culture_id', right_index=True)
+
+    # on commence par compter le nombre de composants de culture concernés par l'intervention
+    nombre_composant_culture_concerne_intervention = pd.DataFrame(merge.groupby('intervention_realise_id').size()).rename(columns={0:'nombre'})
+
+    # on fusionne ce résultat avec notre merge
+    left = merge
+    right = nombre_composant_culture_concerne_intervention
+    merge = pd.merge(left, right, left_on='intervention_realise_id', right_index=True )
+
+    # Attention, pour tout ceux qui ont déjà une surface relative, on doit recalculer la VRAIE surface relative...
+    surface_totale = merge.loc[~merge['surface_relative'].isna()].groupby('intervention_realise_id')['surface_relative'].sum()
+
+    left = merge
+    right = surface_totale.rename('surface_relative_totale')
+    merge = pd.merge(left, right, left_on='intervention_realise_id', right_index=True, how='left')
+
+
+    # calcul de la surface relative corrigée dans les cas historiques qui posent problème
+    merge.loc[merge['surface_relative_totale']>100, 'surface_relative_corrigee'] = (
+        merge.loc[merge['surface_relative_totale']>100]['surface_relative'] / merge.loc[merge['surface_relative_totale']>100]['surface_relative_totale']
+    )*100
+
+    # affectation de la surface relative pour les cas qui ne posent pas problème 
+    merge.loc[merge['surface_relative_totale']<=100, 'surface_relative_corrigee'] = merge.loc[merge['surface_relative_totale']<=100]['surface_relative']
+
+    # affectation des surfaces relatives pour ceux qui ne sont pas saisis du tout
+    merge.loc[merge['surface_relative_corrigee'].isna(), 'surface_relative_corrigee'] = (100 / merge.loc[merge['surface_relative_corrigee'].isna()]['nombre'])
+
+    # on rajoute toutes les informations qu'on doit avoir pour fusionner avec le dataframe merge qu'on vient d'obtenir
+    left = df['recolte_rendement_prix']
+    right = df['recolte_rendement_prix_restructure']
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_realise'][['intervention_realise_id']]
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
+
+    left = df['recolte_rendement_prix_extanded'].reset_index()
+    right = merge
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, on = ['composant_culture_id', 'intervention_realise_id'], how='left').set_index('id')
+
+    # on remplace les données manquantes
+    df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']].fillna('t')
+    df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']].fillna('t')
+
+
+    left = df['recolte_rendement_prix_extanded']
+    right = merge.groupby('intervention_realise_id')['surface_relative_corrigee'].sum().rename('surface_relative_corrigee_totale')
+    final_realise = pd.merge(left, right, left_on='intervention_realise_id', right_index=True, how='left')
+
+    # Attention, on ne doit corriger que si ce n'est pas un mélange de variété / ou d'espèce !
+    final_realise_1 = final_realise.loc[(final_realise['melange_especes']=='f') & (final_realise['melange_varietes'] == 'f')]
+    final_realise_2 = final_realise.loc[(final_realise['melange_especes']=='t') | (final_realise['melange_varietes'] == 't')]
+
+    # pour ceux qui ne sont pas des mélanges d'espèces : 
+    final_realise.loc[final_realise_1.index, 'rendement_moy_corr'] = final_realise_1['rendement_moy'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+    final_realise.loc[final_realise_1.index, 'rendement_median_corr'] = final_realise_1['rendement_median'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+    final_realise.loc[final_realise_1.index, 'rendement_max_corr'] = final_realise_1['rendement_max'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+    final_realise.loc[final_realise_1.index,'rendement_min_corr'] = final_realise_1['rendement_min'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+    final_realise.loc[final_realise_1.index, 'commercialisation_pct_corr'] = final_realise_1['commercialisation_pct'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+    final_realise.loc[final_realise_1.index, 'autoconsommation_pct_corr'] = final_realise_1['autoconsommation_pct'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+    final_realise.loc[final_realise_1.index, 'nonvalorisation_pct_corr'] = final_realise_1['nonvalorisation_pct'] * (final_realise_1['surface_relative_corrigee']) / final_realise_1['surface_relative_corrigee_totale']
+
+    # pour ceux qui sont des mélanges d'espèces : 
+    final_realise.loc[final_realise_2.index, 'rendement_moy_corr'] = final_realise_2['rendement_moy']
+    final_realise.loc[final_realise_2.index, 'rendement_median_corr'] = final_realise_2['rendement_median']
+    final_realise.loc[final_realise_2.index, 'rendement_max_corr'] = final_realise_2['rendement_max']
+    final_realise.loc[final_realise_2.index,'rendement_min_corr'] = final_realise_2['rendement_min']
+    final_realise.loc[final_realise_2.index, 'commercialisation_pct_corr'] = final_realise_2['commercialisation_pct']
+    final_realise.loc[final_realise_2.index, 'autoconsommation_pct_corr'] = final_realise_2['autoconsommation_pct']
+    final_realise.loc[final_realise_2.index, 'nonvalorisation_pct_corr'] = final_realise_2['nonvalorisation_pct']
+
+    # on groupe pour obtenir un seul résultat par action / destination / rendement unite
+    final_realise = final_realise.groupby(['destination_id', 'rendement_unite', 'action_id']).agg({
+        'rendement_moy_corr' : 'sum',
+        'rendement_median_corr' : 'sum',
+        'rendement_max_corr' : 'sum',
+        'rendement_min_corr' : 'sum', 
+        'commercialisation_pct_corr' : 'sum',
+        'autoconsommation_pct_corr' :'sum',
+        'nonvalorisation_pct_corr' : 'sum'
+    }).reset_index().replace(0, np.NaN).round(2)
+
+    return final_realise
+
+def get_recolte_synthetise_outils_can(
+        donnees
+):
+    """ permet d'obtenir les informations sur les recoltes en synthétisé (cf get_recolte_outils_can)"""
+    df = donnees.copy()
+    df['composant_culture'] = df['composant_culture'].set_index('id')
+    df['culture'] = df['culture'].set_index('id')
+    df['composant_culture_concerne_intervention_synthetise'] = df['composant_culture_concerne_intervention_synthetise'].set_index('id')
+    df['ccc_intervention_synthetise_restructure'] = df['ccc_intervention_synthetise_restructure'].set_index('id')
+    df['recolte_rendement_prix'] = df['recolte_rendement_prix'].set_index('id')
+    df['recolte_rendement_prix_restructure'] = df['recolte_rendement_prix_restructure'].set_index('id')
+    df['action_synthetise'] = df['action_synthetise'].set_index('id')
+
+    # on veut savoir pour chaque composant culture si celui-ci appartient à une culture "melange espece" / "melange variété"
+    left = df['composant_culture']
+    right = df['culture'][['melange_especes', 'melange_varietes']]
+    df['composant_culture_extanded'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+
+    left = df['composant_culture_concerne_intervention_synthetise']
+    right = df['ccc_intervention_synthetise_restructure']
+    df['composant_culture_concerne_intervention_synthetise_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    left = df['composant_culture_concerne_intervention_synthetise_extanded'] 
+    right = df['composant_culture_extanded'][['surface_relative', 'melange_especes', 'melange_varietes']]
+    merge = pd.merge(left, right, left_on='composant_culture_id', right_index=True)
+
+    # on commence par compter le nombre de composants de culture concernés par l'intervention
+    nombre_composant_culture_concerne_intervention = pd.DataFrame(merge.groupby('intervention_synthetise_id').size()).rename(columns={0:'nombre'})
+
+    # on fusionne ce résultat avec notre merge
+    left = merge
+    right = nombre_composant_culture_concerne_intervention
+    merge = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True )
+
+    # Attention, pour tout ceux qui ont déjà une surface relative, on doit recalculer la VRAIE surface relative...
+    surface_totale = merge.loc[~merge['surface_relative'].isna()].groupby('intervention_synthetise_id')['surface_relative'].sum()
+
+    left = merge
+    right = surface_totale.rename('surface_relative_totale')
+    merge = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
+
+
+    # calcul de la surface relative corrigée dans les cas historiques qui posent problème
+    merge.loc[merge['surface_relative_totale']>100, 'surface_relative_corrigee'] = (
+        merge.loc[merge['surface_relative_totale']>100]['surface_relative'] / merge.loc[merge['surface_relative_totale']>100]['surface_relative_totale']
+    )*100
+
+    # affectation de la surface relative pour les cas qui ne posent pas problème 
+    merge.loc[merge['surface_relative_totale']<=100, 'surface_relative_corrigee'] = merge.loc[merge['surface_relative_totale']<=100]['surface_relative']
+
+    # affectation des surfaces relatives pour ceux qui ne sont pas saisis du tout
+    merge.loc[merge['surface_relative_corrigee'].isna(), 'surface_relative_corrigee'] = (100 / merge.loc[merge['surface_relative_corrigee'].isna()]['nombre'])
+
+    # on rajoute toutes les informations qu'on doit avoir pour fusionner avec le dataframe merge qu'on vient d'obtenir
+    left = df['recolte_rendement_prix']
+    right = df['recolte_rendement_prix_restructure']
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_synthetise'][['intervention_synthetise_id']]
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
+
+
+    left = df['recolte_rendement_prix_extanded'].reset_index()
+    right = merge
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, on = ['composant_culture_id', 'intervention_synthetise_id'], how='left').set_index('id')
+
+    # on remplace les données manquantes
+    df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']].fillna('t')
+    df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']].fillna('t')
+
+
+    left = df['recolte_rendement_prix_extanded']
+    right = merge.groupby('intervention_synthetise_id')['surface_relative_corrigee'].sum().rename('surface_relative_corrigee_totale')
+    final_synthetise = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
+
+    # attention, il y a un problème dans les données historique (juste 2 actions qui posent problème...)
+    final_synthetise = final_synthetise.reset_index().drop_duplicates(subset='id').set_index('id')
+
+    # Attention, on ne doit corriger que si ce n'est pas un mélange de variété / ou d'espèce !
+    final_synthetise_1 = final_synthetise.loc[(final_synthetise['melange_especes']=='f') & (final_synthetise['melange_varietes'] == 'f')]
+    final_synthetise_2 = final_synthetise.loc[(final_synthetise['melange_especes']=='t') | (final_synthetise['melange_varietes'] == 't')]
+
+    final_synthetise.loc[final_synthetise_1.index, 'rendement_moy_corr'] = final_synthetise_1['rendement_moy'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+    final_synthetise.loc[final_synthetise_1.index, 'rendement_median_corr'] = final_synthetise_1['rendement_median'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+    final_synthetise.loc[final_synthetise_1.index, 'rendement_max_corr'] = final_synthetise_1['rendement_max'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+    final_synthetise.loc[final_synthetise_1.index,'rendement_min_corr'] = final_synthetise_1['rendement_min'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+    final_synthetise.loc[final_synthetise_1.index, 'commercialisation_pct_corr'] = final_synthetise_1['commercialisation_pct'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+    final_synthetise.loc[final_synthetise_1.index, 'autoconsommation_pct_corr'] = final_synthetise_1['autoconsommation_pct'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+    final_synthetise.loc[final_synthetise_1.index, 'nonvalorisation_pct_corr'] = final_synthetise_1['nonvalorisation_pct'] * (final_synthetise_1['surface_relative_corrigee']) / final_synthetise_1['surface_relative_corrigee_totale']
+
+    final_synthetise.loc[final_synthetise_2.index, 'rendement_moy_corr'] = final_synthetise_2['rendement_moy']
+    final_synthetise.loc[final_synthetise_2.index, 'rendement_median_corr'] = final_synthetise_2['rendement_median']
+    final_synthetise.loc[final_synthetise_2.index, 'rendement_max_corr'] = final_synthetise_2['rendement_max']
+    final_synthetise.loc[final_synthetise_2.index,'rendement_min_corr'] = final_synthetise_2['rendement_min']
+    final_synthetise.loc[final_synthetise_2.index, 'commercialisation_pct_corr'] = final_synthetise_2['commercialisation_pct']
+    final_synthetise.loc[final_synthetise_2.index, 'autoconsommation_pct_corr'] = final_synthetise_2['autoconsommation_pct']
+    final_synthetise.loc[final_synthetise_2.index, 'nonvalorisation_pct_corr'] = final_synthetise_2['nonvalorisation_pct']
+
+    final_synthetise = final_synthetise.groupby(['destination_id', 'rendement_unite', 'action_id']).agg({
+        'rendement_moy_corr' : 'sum',
+        'rendement_median_corr' : 'sum',
+        'rendement_max_corr' : 'sum',
+        'rendement_min_corr' : 'sum', 
+        'commercialisation_pct_corr' : 'sum',
+        'autoconsommation_pct_corr' :'sum',
+        'nonvalorisation_pct_corr' : 'sum'
+    }).reset_index().replace(0, np.NaN).round(2)
+
+    return final_synthetise
+
+# FONCTION POUR LES RECOLTES
+def get_recolte_outils_can(
+    donnees
+):
+    """ 
+        permet d'obtenir les informations sur les récoltes en réalisé
+        Attention : 
+        - on veut un seul résultat par action de récolte (pas par action de valorisation)
+        - le résultat diffère en fonction de s'il s'agit d'un mélange d'espèce ou non (soit on fait la moyenne pondérée, soit on fait la somme)
+        - il y a plusieurs problèmes historiques sur les données (répartition des espèces absentes, mélanges d'especes non renseigné...)
+
+        à la fin, la clé unique est : 
+            - 'destination_id', 'rendement_unite', 'action_id'
+    """
+    resultat_realise = get_recolte_realise_outils_can(donnees)
+    resultat_synthetise = get_recolte_synthetise_outils_can(donnees)
+    final = pd.concat([resultat_realise, resultat_synthetise])
+
+    return final
+
+# FONCTION POUR ASSOLEES_SYNTHETISE 
+def get_culture_indicateur_branche(
+    donnees
+):
+    """
+        Permet d'obtenir L'information (d'après moi inexploitable) de culture_indicateur_branche telle
+        qu'on la trouve dans les exports en masse
+    """
+    df_noeuds_synthetise = donnees['noeuds_synthetise'].set_index('id')
+    
+
+    return 0
