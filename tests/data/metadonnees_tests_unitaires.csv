@@ -371,13 +371,44 @@ test_get_utilisation_intrant_realise_cible_outils_can,fr.inra.agrosyst.api.entit
 test_get_utilisation_intrant_realise_cible_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_63fb3fd8-729a-4e2f-a9c3-7c5d2ffbbb9a,Adventices vivaces,,intrant_phyto_cible_nom
 test_get_utilisation_intrant_realise_cible_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_d3cd85c9-9c53-42bd-a68f-72ff2ef2cc3d,Adventices toutes espèces,,intrant_phyto_cible_nom
 test_get_utilisation_intrant_realise_cible_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_a1b7460b-d522-45d7-9928-f42be3964c6d,Fusariose,,intrant_phyto_cible_nom
-test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_0c482108-2711-43fe-9eed-ff2b8a545223,3,,nb_parcelles_sans_sdc
+test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_0c482108-2711-43fe-9eed-ff2b8a545223,2,,nb_parcelles_sans_sdc
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_0c482108-2711-43fe-9eed-ff2b8a545223,0,,nb_parcelles_avec_id_edaplos
-test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_6b95065a-ecb3-4b83-8b2e-f5f4aa73030d,3,,nb_parcelles_sans_sdc
-test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_6b95065a-ecb3-4b83-8b2e-f5f4aa73030d,3,,nb_parcelles_avec_id_edaplos
+test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_6b95065a-ecb3-4b83-8b2e-f5f4aa73030d,2,,nb_parcelles_sans_sdc
+test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_6b95065a-ecb3-4b83-8b2e-f5f4aa73030d,2,,nb_parcelles_avec_id_edaplos
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_f63e841c-0db6-4c4f-800e-62e09ab096f8,13,,nb_parcelles_sans_sdc
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_f63e841c-0db6-4c4f-800e-62e09ab096f8,0,,nb_parcelles_avec_id_edaplos
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_6f9b9100-7d39-4980-a117-9b01dd0538f5,DEPHY_EXPE_II|EXPE,,reseaux_it
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_6f9b9100-7d39-4980-a117-9b01dd0538f5,"A05_ABC_INRA, Bourgogne Franche Comté|1-45_Rés0Pest_A04_Rés0Pest_INRA, Unité Expérimentale du domaine d'Epoisses",,reseaux_ir
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_e87a7c0c-f743-4a6b-a7a4-45f32c0dbb3a,EF_TROPIK|IT_GUYOT,,reseaux_it
 test_get_parcelles_non_rattachees_outils_can,fr.inra.agrosyst.api.entities.Domain_e87a7c0c-f743-4a6b-a7a4-45f32c0dbb3a,IR_VANHUFFEL,,reseaux_ir
+test_get_culture_outils_can,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e4270bf3-2f34-453d-8425-d68a393b6e25,Pommier Pommes de table,,complet_espece_edi
+test_get_culture_outils_can,fr.inra.agrosyst.api.entities.CroppingPlanEntry_7f872fc8-aae3-4712-b385-9d5bb6949c39,Pêcher à nectarines ou brugnons Frais,,complet_espece_edi
+test_get_culture_outils_can,fr.inra.agrosyst.api.entities.CroppingPlanEntry_4d57c5b9-aa7d-4f5a-8c08-faa0ad5809dd,Vigne Cuve ; Vigne Cuve,,complet_espece_edi
+test_get_culture_outils_can,fr.inra.agrosyst.api.entities.CroppingPlanEntry_09371fd4-b56e-4d4b-bdd4-d6478555ae49,Mélange enherbement <br>non fourrager ; Olivier,,complet_espece_edi
+test_get_culture_outils_can,fr.inra.agrosyst.api.entities.CroppingPlanEntry_5949d16c-6ee3-4f33-bdc6-a8eb06d88cea,Pommier Pommes de table,,complet_espece_edi
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_2e24edc1-10b7-42bf-a3b2-ccbe158f9bfb,,,
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_2e24edc1-10b7-42bf-a3b2-ccbe158f9bfb,5,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_d92a9f3a-fdb8-4124-b806-cba359ac9687,1,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_a22a5ecf-9692-46fd-a822-07e88ba60f9e,11,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_a54e318e-8fcf-49b1-a994-d2eea279a8e2,6,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_403c6378-baaa-44c5-991b-2ef8eb21802a,1,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_b42d53ce-0f05-4316-92f1-098aebdd2d51,2,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_2e9318fc-89c7-447a-aa8e-ed201df1a156,2,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_190b3386-95df-440b-aef3-9f9764c7b35c,1,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_c6630c1a-86d9-44e0-b45e-3f45317906b6,1,,culture_indicateur_branche
+test_get_culture_indicateur_branche,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_f4a29150-837a-4599-b8a0-cdc84a6043db,7,,culture_indicateur_branche
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,1.0,,rendement_moy
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,6.31,,rendement_moy
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,0.69,,rendement_moy
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,0.0,,rendement_max
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,,,rendement_max
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,,,rendement_max
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,0.0,,autoconsommation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,0.0,,autoconsommation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,100.0,,autoconsommation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,200.0,,commercialisation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,100.0,,commercialisation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,0.0,,commercialisation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,0.0,,nonvalorisation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,0.0,,nonvalorisation_pct
+test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,0.0,,nonvalorisation_pct
