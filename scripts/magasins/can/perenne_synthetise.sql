@@ -9,7 +9,7 @@ select
 	es.id as systeme_synthetise_id,
 	es.nom as systeme_synthetise_nom,
 	es.campagnes as systeme_synthetise_campagnes,
-	es.valide as systeme_synthetise_validation,
+	CASE es.valide WHEN true THEN 'oui' WHEN false THEN 'non' END systeme_synthetise_validation,
 	ec.code as culture_code, 
 	ec.nom as culture_nom,
 	eppps.id as phase_id, 
