@@ -523,7 +523,7 @@ def test_restructuration_recolte_rendement_prix():
 
     assert res_valeur_ok
 
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = 'data/referentiels/'):
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = 'data/referentiels/', key_name='id'):
     """
         Fonction qui permet de tester 
     """
@@ -549,7 +549,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
         colonnes_to_test = colonne_to_test_for_ligne[entite_id]
 
         # valeur trouvée :
-        output = donnees_computed.loc[donnees_computed['id'] == entite_id]
+        output = donnees_computed.loc[donnees_computed[key_name] == entite_id]
         output = output[colonnes_to_test].fillna('').astype('str')
 
         # valeur attendue :
@@ -715,14 +715,14 @@ def test_get_intervention_synthetise_combinaison_outils_can():
 
     assert all(res)
 
-def test_get_parcellle_rattache_outils_can():
+def test_get_parcelle_rattache_outils_can():
     """
         Test de l'obtention des informations sur la combinaison d'outils
     """
 
     identifiant_test = 'test_get_parcelles_non_rattachees_outils_can'
     df_names = [
-        'dispositif', 'sdc', 'parcelle', 'liaison_reseaux', 'liaison_sdc_reseau'
+        'dispositif', 'sdc', 'parcelle', 'liaison_reseaux', 'liaison_sdc_reseau', 'intervention_realise_agrege'
     ]
     df_ref_names = [
         'reseau'
@@ -734,3 +734,64 @@ def test_get_parcellle_rattache_outils_can():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = df_ref_names)
 
     assert all(res)
+
+# def test_get_culture_outils_can():
+#     """
+#         Test de l'obtention des informations sur les cultures
+#     """
+
+#     identifiant_test = 'test_get_culture_outils_can'
+#     df_names = [
+#         'culture', 'composant_culture', 'espece', 'variete'
+#     ]
+
+#     path_data = 'tests/data/test_get_culture_outils_can/'
+
+#     fonction_to_apply = outils_can.get_culture_outils_can
+#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+#     assert all(res)
+
+# def test_get_culture_indicateur_branche():
+#     """
+#         Test de l'obtention de "culture_indicateur_branche" tel qu'il est attendu dans les exports en masse de la CAN
+#         TODO : non jugée d'interêt prioritaire.
+#     """
+
+#     identifiant_test = 'test_get_culture_indicateur_branche'
+#     df_names = [
+#         'noeuds_synthetise'
+#     ]
+
+#     path_data = 'tests/data/test_get_culture_indicateur_branche/'
+
+#     fonction_to_apply = outils_can.get_culture_indicateur_branche
+#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+#     assert all(res)
+
+# def test_get_recolte_realise_outils_can():
+#     """
+#         Attention, pour le magasin can, les rendements / pct autoconsommé... sont groupés sous certaines conditions (mélanges...)
+#         Cette fonction se propose donc de mettre en place ce groupby sous condition. 
+
+#         On doit donc retourner :
+#         - rendement_moyen
+#         - rendement_median
+#         - rendement_min
+#         - rendement_max
+#         - perc_commercialise
+#         - perc_autoconsomme
+#         - perc_non_valorise
+#     """
+#     identifiant_test = 'test_get_recolte_realise_outils_can'
+#     df_names = [
+#         'recolte_rendement_prix', 'culture', 'composant_culture', 'recolte_rendement_prix_restructure'
+#     ]
+
+#     path_data = 'tests/data/test_get_recolte_realise_outils_can/'
+
+#     fonction_to_apply = outils_can.get_recolte_realise_outils_can
+#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='action_id')
+
+#     assert all(res)
