@@ -21,8 +21,8 @@ select
 	CASE ept.protection_antiinsecte WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_insectes,
 	ept.equipement_autre as autre_equipement,
 	ept.commentaire_sol as sol_commentaire,
-	ept.texture_surface as texture_surface, --attention, on ne veut pas un référentiel !
-	ept.texture_sous_sol, 					--attention, on ne veut pas un référentiel ! 
+	ets_surface.id as texture_surface, --attention, on ne veut pas un référentiel !
+	ets_profondeur.id as texture_sous_sol, 					--attention, on ne veut pas un référentiel ! 
 	ept.ph as sol_ph,
 	ept.pierrosite_moyenne,
 	ept.sol_profondeur_max_enracinement as sol_profondeur_max,
@@ -45,5 +45,6 @@ join entrepot_parcelle_type ept on es.parcelle_type_id = ept.id
 left join entrepot_sdc esdc on es.sdc_id = esdc.id 
 left join entrepot_dispositif ed on ed.id = esdc.dispositif_id
 left join entrepot_domaine edo on edo.id = ed.domaine_id
+left join entrepot_texture_sol ets_surface on ets_surface.classe_indigo = ept.texture_surface
+left join entrepot_texture_sol ets_profondeur on ets_profondeur.classe_indigo = ept.texture_sous_sol 
 join entrepot_dispositif_filtres_outils_can edifoc on ed.id = edifoc.id;
--- attention, il manque calcaire actif ET profondeur.
