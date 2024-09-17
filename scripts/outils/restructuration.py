@@ -152,20 +152,17 @@ def restructuration_intervention_synthetise(donnees):
     donnees = donnees.copy()
 
     donnees['intervention_synthetise'] = donnees['intervention_synthetise'].set_index('id')
-    donnees['connection_synthetise'] = donnees['connection_synthetise'].set_index('id')
-    donnees['noeuds_synthetise'] = donnees['noeuds_synthetise'].set_index('id')
-    donnees['sdc'] = donnees['sdc'].set_index('id')
     donnees['synthetise'] = donnees['synthetise'].set_index('id')
     donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].set_index('id')
     donnees['combinaison_outil'] = donnees['combinaison_outil'].set_index('id')
     donnees['domaine'] = donnees['domaine'].set_index('id')
 
-    # obtention de la campagne informations grace au dataframe agrégé. 
+    # obtention de la campagne du sdc
     left = donnees['intervention_synthetise'][['combinaison_outil_code']]
-    right = donnees['intervention_synthetise_agrege'][['sdc_campagne']]
+    right = donnees['intervention_synthetise_agrege'][['sdc_campagne','synthetise_id']]
     donnees['intervention_synthetise_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    # obtention des infos sur toutes les combinaisons d'outils
+    # obtention de la campagne du domaine auquel sont attachees les combinaisons d'outils
     left = donnees['combinaison_outil'][['code', 'domaine_id']]
     right = donnees['domaine'][['campagne']]
     donnees['combinaison_outil_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
@@ -173,12 +170,61 @@ def restructuration_intervention_synthetise(donnees):
     # on fusionne les deux en s'assurant d'avoir à la fois la bonne campagne et le bon combinaison_outil_code.
     left = donnees['intervention_synthetise_extanded'].reset_index()
     right = donnees['combinaison_outil_extanded'].reset_index().rename(columns={'id' : 'combinaison_outil_id'})
-    donnees['intervention_synthetise_extanded'] = pd.merge(
+    intervention_synthetise_extanded_1 = pd.merge(
         left, 
         right, 
-        left_on=['combinaison_outil_code', 'sdc_campagne'], right_on=['code', 'campagne'], how='inner'
-    ).set_index('id')
+        left_on=['combinaison_outil_code', 'sdc_campagne'], right_on=['code', 'campagne'], how='inner')
 
+    # Cas manquants : combinaisons outils disponibles d'un meme code qui ne matchent pas avec la campagne du sdc
+    # ancienne saisie : les combinaisons d outils proposees sont celles des campagnes du synthetisee
+    # ex : campagnes de outils possible : 2022,2023 ; campagne sdc 2021; campagnes synthetise 2020,2021,2022
+    # on prend la combinaison d outils de la campagne la plus recente pour un meme code
+
+    # obtention de la serie de campagne du synthetise
+    left = donnees['intervention_synthetise_extanded'].reset_index()
+    right = donnees['synthetise'][['campagnes']].rename(columns={'campagnes' : 'campagnes_synthetise'})
+    right['campagnes_synthetise'] = right['campagnes_synthetise'].str.split(', ')
+    donnees['intervention_synthetise_extanded'] = pd.merge(left, right, left_on='synthetise_id', right_index=True, how='left')
+
+    # Join les campagnes possibles des combinaisons outils et de campagnes_synthetise
+    missing = donnees['intervention_synthetise_extanded'][~donnees['intervention_synthetise_extanded']['id'].isin(intervention_synthetise_extanded_1['id'])]
+    left = missing[~ missing['combinaison_outil_code'].isna()]
+    right = donnees['combinaison_outil_extanded'].groupby('code')['campagne'].apply(list).reset_index().rename(columns={'code' : 'combinaison_outil_code', 'campagne' : 'domaine_campagne'})
+    missing_extanded = pd.merge(left, right, on='combinaison_outil_code', how='left')
+
+    missing_extanded['campagne_commune'] = missing_extanded.apply(
+        lambda x: [value for value in x['campagnes_synthetise'] if int(value) in x['domaine_campagne']] if isinstance(x['domaine_campagne'], list)  else [], axis=1)
+
+    missing_extanded['campagne_max'] = missing_extanded.apply(
+        lambda x: int(max(x['campagne_commune'])) if len(x['campagne_commune']) > 0 else 0, axis=1
+    )
+
+    left = missing_extanded
+    right = donnees['combinaison_outil_extanded'].reset_index().rename(columns={'id' : 'combinaison_outil_id'})
+    intervention_synthetise_extanded_2 = pd.merge(
+        left, 
+        right, 
+        left_on=['combinaison_outil_code', 'campagne_max'], right_on=['code', 'campagne'], how='inner')[intervention_synthetise_extanded_1.columns]
+
+    intervention_synthetise_extanded_1 = pd.concat([intervention_synthetise_extanded_1,intervention_synthetise_extanded_2])
+
+    # Il reste encore des Cas manquants : 
+    # ex : campagnes de outils possible : 2015 ; campagnes synthetise 2012, campagne sdc 2012
+    # on prend la combinaison d outils de la campagne la plus recente pour un meme code
+    
+    comboutils_maxcampagne = donnees['combinaison_outil_extanded'].groupby('code')['campagne'].max()
+    
+    left = donnees['intervention_synthetise_extanded'][~donnees['intervention_synthetise_extanded']['id'].isin(intervention_synthetise_extanded_1['id'])]
+    right = pd.merge(donnees['combinaison_outil_extanded'].reset_index(), comboutils_maxcampagne, 
+                    on=['code', 'campagne'], how='inner').rename(columns={'id' : 'combinaison_outil_id'})
+    
+    intervention_synthetise_extanded_3 = pd.merge(
+        left, 
+        right, 
+        left_on=['combinaison_outil_code'], right_on=['code'], how='inner')[intervention_synthetise_extanded_1.columns]
+
+    donnees['intervention_synthetise_extanded'] = pd.concat([intervention_synthetise_extanded_1,intervention_synthetise_extanded_3])
+       
     # Étape nécessaire (cf ticket : TODO : remplir le nom du ticket)
     donnees['intervention_synthetise_extanded'] = donnees['intervention_synthetise_extanded'].reset_index(
     ).drop_duplicates(subset=['id']).set_index('id')
