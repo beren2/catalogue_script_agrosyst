@@ -1056,7 +1056,6 @@ def get_culture_outils_can(
     """
         Permet d'obtenir des informations agrégées sur les cultures (sous le format désiré par la CAN)
     """
-    df_culture = donnees['culture'].set_index('id')
     df_composant_culture = donnees['composant_culture'].set_index('id')
     df_espece = donnees['espece'].set_index('id')
 
@@ -1065,6 +1064,8 @@ def get_culture_outils_can(
         df_espece['libelle_espece_botanique']
         +' '
         +df_espece['libelle_qualifiant_aee']
+        +' '
+        +df_espece['libelle_type_saisonnier_aee']
         +' '
         +df_espece['libelle_destination_aee']
     ).str.replace('\n', '<br>').str.replace('  ', ' ').str.strip()
