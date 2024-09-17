@@ -28,7 +28,7 @@ select
 	epps.taux_mortalite_pct as taux_mortalite_plantation, 
 	epps.taux_mortalite_annee_mesure as annee_mesure_taux_mortalite,
 	epps.type_enherbement,
-	CASE epps.pollinisateurs, WHEN true THEN 'oui' WHEN false THEN 'non' END pollinisateurs,
+	CASE epps.pollinisateurs WHEN true THEN 'oui' WHEN false THEN 'non' END pollinisateurs,
 	epps.pollinisateurs_pct as pourcentage_de_pollinisateurs,
 	epps.mode_repartition_pollinisateurs,
 	epps.autre_caracteristiques_couvert_vegetal as couvert_vegetal_commentaire
