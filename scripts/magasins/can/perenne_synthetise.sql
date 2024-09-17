@@ -9,7 +9,7 @@ select
 	es.id as systeme_synthetise_id,
 	es.nom as systeme_synthetise_nom,
 	es.campagnes as systeme_synthetise_campagnes,
-	--es.validation as systeme_synthetise_validation (attention, rajouter validation dans l'entrepôt)
+	es.valide as systeme_synthetise_validation,
 	ec.code as culture_code, 
 	ec.nom as culture_nom,
 	eppps.id as phase_id, 
@@ -18,6 +18,7 @@ select
 	epps.plantation_annee as annee_plantation,
 	epps.plantation_espacement_interrang_cm as inter_rang,
 	epps.plantation_espacement_intrarang_cm as espacement_sur_le_rang,
+	epps.pct_occupation_sol as pourcentage_sole_sdc,
 	epps.plantation_densite_p_ha as densite_plantation, 
 	epps.verger_forme_fruitiere as forme_fruitiere_verger,
 	epps.feuillage_hauteur_cm as hauteur_frondaison, 
@@ -27,6 +28,9 @@ select
 	epps.taux_mortalite_pct as taux_mortalite_plantation, 
 	epps.taux_mortalite_annee_mesure as annee_mesure_taux_mortalite,
 	epps.type_enherbement,
+	CASE epps.pollinisateurs, WHEN true THEN 'oui' WHEN false THEN 'non' END pollinisateurs,
+	epps.pollinisateurs_pct as pourcentage_de_pollinisateurs,
+	epps.mode_repartition_pollinisateurs,
 	epps.autre_caracteristiques_couvert_vegetal as couvert_vegetal_commentaire
 from entrepot_plantation_perenne_phases_synthetise eppps
 left join entrepot_plantation_perenne_synthetise epps on eppps.plantation_perenne_synthetise_id = epps.id 
