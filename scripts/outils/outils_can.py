@@ -181,13 +181,6 @@ def get_intervention_realise_action_outils_can(
         lambda x: x.str.cat(sep=' ; '), axis=1
     )
 
-    merge[
-        ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
-    ] = merge[
-        ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
-    ].applymap(convert_to_int)
-
-
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
     intervention_actions_indicateurs = merge[[
@@ -774,13 +767,6 @@ def get_intervention_synthetise_action_outils_can(
     merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
         lambda x: x.str.cat(sep=' ; '), axis=1
     )
-
-    merge[
-        ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
-    ] = merge[
-        ['proportion_surface_traitee_phyto', 'psci_phyto', 'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm']
-    ].applymap(convert_to_int)
-
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
