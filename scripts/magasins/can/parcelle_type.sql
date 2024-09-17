@@ -22,7 +22,7 @@ select
 	ept.equipement_autre as autre_equipement,
 	ept.commentaire_sol as sol_commentaire,
 	ept.texture_surface_id as texture_surface, --attention, on ne veut pas un référentiel !
-	ept.texture_profondeur_id as texture_sous_sol, 					--attention, on ne veut pas un référentiel ! 
+	ept.texture_sous_sol_id as texture_sous_sol, 					--attention, on ne veut pas un référentiel ! 
 	ept.ph as sol_ph,
 	ept.pierrosite_moyenne,
 	ept.sol_profondeur_max_enracinement as sol_profondeur_max,
