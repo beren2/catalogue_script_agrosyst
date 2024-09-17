@@ -23,7 +23,7 @@ select
 	eppr.feuillage_hauteur_cm as hauteur_frondaison, 
 	eppr.feuillage_epaisseur_cm as epaisseur_frondaison,
 	eppr.vigne_forme_fruitiere as forme_fruitiere_vigne,
-	eppr.orientation_rang as orientation_rangs,
+	eppr.orientation_rang_id as orientation_rangs,
 	eppr.taux_mortalite_pct as taux_mortalite_plantation, 
 	eppr.taux_mortalite_annee_mesure as annees_mesure_taux_mortalite,
 	eppr.type_enherbement,
