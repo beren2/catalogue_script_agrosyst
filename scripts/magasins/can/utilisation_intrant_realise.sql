@@ -40,8 +40,8 @@ select
 	ei.zinc,
 	ei.unite_teneur_fert as unite_teneur_ferti_orga,
 	--attention ferti_effet_phyto_attendu --> kesako ?
-	ei.prix_saisi as prix,
-	ei.prix_saisi_unite as prix_unite,
+	COALESCE(ei.prix_saisi, es.prix_saisi) as prix,
+	COALESCE(ei.prix_saisi_unite, es.prix_saisi_unite) as prix_unite,
 	ei.cao,
 	ei.s
 from entrepot_utilisation_intrant_realise euir
@@ -59,3 +59,9 @@ left join entrepot_semence es on es.id = euir.semence_id
 left join entrepot_composant_culture ecc on ecc.id = es.composant_culture_id
 left join entrepot_espece ee on ecc.espece_id = ee.id
 join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
+
+
+
+
+
+
