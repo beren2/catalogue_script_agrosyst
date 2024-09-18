@@ -281,23 +281,23 @@ def get_intervention_realise_combinaison_outils_can(
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
     left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'type_materiel']].rename(
-        columns={'nom' : 'nom_tracteur', 'type_materiel' : 'tracteur_ou_automoteur'}
+    right = df_materiel[['nom', 'materiel_caracteristique1']].rename(
+        columns={'nom' : 'nom_tracteur', 'materiel_caracteristique1' : 'tracteur_ou_automoteur'}
     )
     df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
 
     # Ajout des inforations sur le materiel à la combinaison d'outils
     left = df_combinaison_outil_materiel
     right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'combinaison_outils_nom', 'type_materiel' : 'outils'}
+        columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
     )
     df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
 
-    # On considère que si plusieurs matériels ont les mêmes caractéristiques (materiel_caracteristique1)
+    # On considère que si plusieurs matériels ont les mêmes caractéristiques (outils)
     # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
     # (Correction par rapport aux exports en masse historiques)
     df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
-        subset=['combinaison_outil_id', 'materiel_caracteristique1']
+        subset=['combinaison_outil_id', 'outils']
     )
 
     # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
@@ -881,23 +881,23 @@ def get_intervention_synthetise_combinaison_outils_can(
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
     left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'type_materiel']].rename(
-        columns={'nom' : 'nom_tracteur', 'type_materiel' : 'tracteur_ou_automoteur'}
+    right = df_materiel[['nom', 'materiel_caracteristique1']].rename(
+        columns={'nom' : 'nom_tracteur', 'materiel_caracteristique1' : 'tracteur_ou_automoteur'}
     )
     df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
 
     # Ajout des informations sur le materiel à la combinaison d'outils
     left = df_combinaison_outil_materiel
     right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'combinaison_outils_nom', 'type_materiel' : 'outils'}
+        columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
     )
     df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
 
-    # On considère que si plusieurs matériels ont les mêmes caractéristiques (materiel_caracteristique1)
+    # On considère que si plusieurs matériels ont les mêmes caractéristiques (outils)
     # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
     # (Correction par rapport aux exports en masse historiques)
     df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
-        subset=['combinaison_outil_id', 'materiel_caracteristique1']
+        subset=['combinaison_outil_id', 'outils']
     )
 
     # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
