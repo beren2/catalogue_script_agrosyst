@@ -21,7 +21,7 @@ select
 	euir.profondeur_semis_cm,
 	euir.volume_bouillie_hl,
 	euir.unite,
-	ei.biocontrole,
+	CASE ei.biocontrole WHEN true THEN 'oui' WHEN false THEN 'non' END biocontrole,
 	ei.type_produit as intrant_phyto_type,
 	euir.intrant_phyto_cible_nom,
 	ei.forme_fert_min as forme_ferti_min,
@@ -40,8 +40,8 @@ select
 	ei.zinc,
 	ei.unite_teneur_fert as unite_teneur_ferti_orga,
 	--attention ferti_effet_phyto_attendu --> kesako ?
-	ei.prix_ref as prix,
-	ei.prix_ref_unite as prix_unite,
+	ei.prix_saisi as prix,
+	ei.prix_saisi_unite as prix_unite,
 	ei.cao,
 	ei.s
 from entrepot_utilisation_intrant_realise euir
