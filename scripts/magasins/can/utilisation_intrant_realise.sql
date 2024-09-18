@@ -54,8 +54,8 @@ left join entrepot_intervention_realise eir on eir.id = euir.intervention_realis
 left join entrepot_intrant ei on euir.intrant_id = ei.id
 left join entrepot_fertilisation_minerale efm on ei.ref_id = efm.id
 left join entrepot_fertilisation_organique efo on ei.ref_id = efo.id
-left join entrepot_espece ee on ei.ref_id = ee.id
 left join entrepot_acta_traitement_produit eatp on ei.ref_id = eatp.id
+left join entrepot_semence es on ei.semence_id = es.id
+left join entrepot_composant_culture ecc on ecc.id = es.composant_culture_id
+left join entrepot_espece ee on ecc.espece_id = ee.id
 join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
-
-
