@@ -14,14 +14,14 @@ select
 	eir.id as intervention_id,
 	ei.id as intrant_id,
 	ei."type" as intrant_type,
-	ei.ref_id as intrant_ref_id,
-	ei.ref_nom as intrant_ref_nom,
+	COALESCE(ei.ref_id, es.id) as intrant_ref_id,
+	COALESCE(ei.ref_nom , efm.type_produit, efo.libelle, ee.libelle_espece_botanique, eatp.nom_produit) as intrant_ref_nom,
 	ei.nom_utilisateur as intrant_nom_utilisateur,
 	euir.dose,
 	euir.profondeur_semis_cm,
 	euir.volume_bouillie_hl,
 	euir.unite,
-	ei.biocontrole,
+	CASE ei.biocontrole WHEN true THEN 'oui' WHEN false THEN 'non' END biocontrole,
 	ei.type_produit as intrant_phyto_type,
 	euir.intrant_phyto_cible_nom,
 	ei.forme_fert_min as forme_ferti_min,
@@ -40,8 +40,8 @@ select
 	ei.zinc,
 	ei.unite_teneur_fert as unite_teneur_ferti_orga,
 	--attention ferti_effet_phyto_attendu --> kesako ?
-	ei.prix_ref as prix,
-	ei.prix_ref_unite as prix_unite,
+	COALESCE(ei.prix_saisi, es.prix_saisi) as prix,
+	COALESCE(ei.prix_saisi_unite, es.prix_saisi_unite) as prix_unite,
 	ei.cao,
 	ei.s
 from entrepot_utilisation_intrant_realise euir
@@ -52,4 +52,16 @@ left join entrepot_parcelle ep on ep.id = euira.parcelle_id
 left join entrepot_zone ez on ez.id = euira.zone_id
 left join entrepot_intervention_realise eir on eir.id = euir.intervention_realise_id
 left join entrepot_intrant ei on euir.intrant_id = ei.id
+left join entrepot_fertilisation_minerale efm on ei.ref_id = efm.id
+left join entrepot_fertilisation_organique efo on ei.ref_id = efo.id
+left join entrepot_acta_traitement_produit eatp on ei.ref_id = eatp.id
+left join entrepot_semence es on es.id = euir.semence_id
+left join entrepot_composant_culture ecc on ecc.id = es.composant_culture_id
+left join entrepot_espece ee on ecc.espece_id = ee.id
 join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
+
+
+
+
+
+
