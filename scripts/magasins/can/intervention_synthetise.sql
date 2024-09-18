@@ -60,7 +60,7 @@ LEFT JOIN entrepot_plantation_perenne_realise eppr on pppr.plantation_perenne_sy
 LEFT JOIN entrepot_synthetise s ON nr.synthetise_id = s.id
 LEFT JOIN entrepot_sdc sdc ON irae.sdc_id = sdc.id
 LEFT JOIN entrepot_domaine d ON irae.domaine_id = d.id
-left join entrepot_culture c on irae.culture_id = c.id or or eppr.culture_id = c.id 
+left join entrepot_culture c on irae.culture_id = c.id or eppr.culture_id = c.id 
 left join entrepot_culture c_i on irae.culture_intermediaire_id = c_i.id
 LEFT JOIN entrepot_combinaison_outil co ON iroc.combinaison_outil_id = co.id
 join entrepot_dispositif_filtres_outils_can edifoc on sdc.dispositif_id = edifoc.id;
