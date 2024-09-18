@@ -11,7 +11,7 @@ SELECT
     s.id as systeme_synthetise_id,
     s.nom as systeme_synthetise_nom,
     s.campagnes as systeme_synthetise_campagnes,
-    s.valide as systeme_synthetise_validation,
+    CASE s.valide WHEN true then 'oui' WHEN false then 'non' END systeme_synthetise_validation,
     pppr.id as phase_id, 
     pppr.type as phase,
     c.code as culture_code, 
@@ -55,13 +55,13 @@ SELECT
     iroc.inoculation_biologique_semis,
     iroc.type_semence
 FROM  entrepot_intervention_synthetise ir
+LEFT JOIN entrepot_connection_synthetise ecs ON ecs.id = ir.connection_synthetise_id  
 LEFT JOIN entrepot_intervention_synthetise_agrege_extanded irae ON ir.id = irae.id
 LEFT JOIN entrepot_intervention_synthetise_outils_can iroc ON irae.id = iroc.intervention_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise nr ON irae.cible_noeuds_synthetise_id = nr.id
-LEFT JOIN entrepot_connection_synthetise ecs ON ecs.source_noeuds_synthetise_id = nr.id
 LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON irae.plantation_perenne_phases_synthetise_id = pppr.id
 LEFT JOIN entrepot_plantation_perenne_realise eppr on pppr.plantation_perenne_synthetise_id = eppr.id 
-LEFT JOIN entrepot_synthetise s ON nr.synthetise_id = s.id
+LEFT JOIN entrepot_synthetise s ON nr.synthetise_id = s.id or eppr.synthetise_id
 LEFT JOIN entrepot_sdc sdc ON irae.sdc_id = sdc.id
 LEFT JOIN entrepot_domaine d ON irae.domaine_id = d.id
 left join entrepot_culture c on irae.culture_id = c.id or eppr.culture_id = c.id 
