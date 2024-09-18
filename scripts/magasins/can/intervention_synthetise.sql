@@ -61,7 +61,7 @@ LEFT JOIN entrepot_intervention_synthetise_outils_can iroc ON irae.id = iroc.int
 LEFT JOIN entrepot_noeuds_synthetise nr ON irae.cible_noeuds_synthetise_id = nr.id
 LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON irae.plantation_perenne_phases_synthetise_id = pppr.id
 LEFT JOIN entrepot_plantation_perenne_realise eppr on pppr.plantation_perenne_synthetise_id = eppr.id 
-LEFT JOIN entrepot_synthetise s ON nr.synthetise_id = s.id or eppr.synthetise_id
+LEFT JOIN entrepot_synthetise s ON nr.synthetise_id = s.id or eppr.synthetise_id = s.id
 LEFT JOIN entrepot_sdc sdc ON irae.sdc_id = sdc.id
 LEFT JOIN entrepot_domaine d ON irae.domaine_id = d.id
 left join entrepot_culture c on irae.culture_id = c.id or eppr.culture_id = c.id 
