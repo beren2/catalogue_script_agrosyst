@@ -52,4 +52,4 @@ left join entrepot_parcelle ep on ep.id = euira.parcelle_id
 left join entrepot_zone ez on ez.id = euira.zone_id
 left join entrepot_intervention_realise eir on eir.id = euir.intervention_realise_id
 left join entrepot_intrant ei on euir.intrant_id = ei.id
-join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
+join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
