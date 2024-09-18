@@ -19,7 +19,7 @@ select
 	ecc.id as espece_id, 
 	ecc.code as espece_code, 
 	ecc.surface_relative,
-	ee.code_espece_botanique,
+	ee.code_espece_botanique as code_edi_espece_botanique,
 	ee.code_qualifiant_aee as code_edi_qualifiant,
 	ee.code_type_saisonnier_aee as code_edi_type_saisonnier,
 	ee.code_destination_aee as code_edi_destination,
@@ -27,7 +27,7 @@ select
 	ee.libelle_qualifiant_aee as espece_edi_qualifiant,
 	ee.libelle_type_saisonnier_aee as espece_edi_type_saisonnier,
 	ee.libelle_destination_aee as espece_edi_destination,
-	ev.nom
+	ev.nom as variete_nom
 from entrepot_composant_culture ecc
 inner join entrepot_culture ec on ecc.culture_id  = ec.id
 left join entrepot_espece ee on ecc.espece_id = ee.id 
