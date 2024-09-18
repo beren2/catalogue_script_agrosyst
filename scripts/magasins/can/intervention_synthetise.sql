@@ -1,7 +1,6 @@
 
 
 SELECT 
-    d.code as domaine_code,
     d.id as domaine_id,
     d.nom as domaine_nom,
     d.code as domaine_code,
