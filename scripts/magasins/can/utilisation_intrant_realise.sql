@@ -15,7 +15,7 @@ select
 	ei.id as intrant_id,
 	ei."type" as intrant_type,
 	ei.ref_id as intrant_ref_id,
-	ei.ref_nom as intrant_ref_nom,
+	COALESCE(ei.ref_nom , efm.type_produit, efo.libelle, ee.libelle_espece_botanique, eatp.nom_produit) as intrant_ref_nom,
 	ei.nom_utilisateur as intrant_nom_utilisateur,
 	euir.dose,
 	euir.profondeur_semis_cm,
@@ -52,4 +52,10 @@ left join entrepot_parcelle ep on ep.id = euira.parcelle_id
 left join entrepot_zone ez on ez.id = euira.zone_id
 left join entrepot_intervention_realise eir on eir.id = euir.intervention_realise_id
 left join entrepot_intrant ei on euir.intrant_id = ei.id
+left join entrepot_fertilisation_minerale efm on ei.ref_id = efm.id
+left join entrepot_fertilisation_organique efo on ei.ref_id = efo.id
+left join entrepot_espece ee on ei.ref_id = ee.id
+left join entrepot_acta_traitement_produit eatp on ei.ref_id = eatp.id
 join entrepot_dispositif_filtres_outils_can edfoc on esdc.dispositif_id = edfoc.id;
+
+
