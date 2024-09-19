@@ -314,7 +314,7 @@ def test_sdc_donnee_attendue():
     
     external_data_path = 'tests/data/test_sdc_donnee_attendue/'
     
-    import_df('BDD_donnees_attendues', external_data_path, sep = ',', df = donnees)
+    import_df('BDD_donnees_attendues_CAN', external_data_path, sep = ',', df = donnees)
 
     # application de la fonction d'identification des pz0
     result_function = indicateur.sdc_donnee_attendue(donnees)
