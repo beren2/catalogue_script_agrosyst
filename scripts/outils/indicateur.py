@@ -36,6 +36,8 @@ def indicateur_utilisation_intrant(donnees):
 
 
 def str_replace_code_dephy(df,regex_pattern,pattern_replace):
+    ''' Remplace un pattern dans la colonne code_dephy
+    '''
     df = df.replace(to_replace={'code_dephy': regex_pattern},value=pattern_replace,regex=True)
     return(df)
 
