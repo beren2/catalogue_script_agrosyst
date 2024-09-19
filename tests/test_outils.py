@@ -7,6 +7,7 @@ from scripts.outils import nettoyage
 from scripts.outils import restructuration
 from scripts.utils import fonctions_utiles
 from scripts.outils import outils_can
+from scripts.outils import indicateur
 
 
 def import_df(df_name, path_data, sep, df):
@@ -295,100 +296,35 @@ def test_get_dose_ref():
     assert res_valeur_ok
     assert res_unit_ok
 
-def test_identification_pz0_realise():
+def test_sdc_donnee_attendue():
     """
-        Test de l'identification d'un pz0 realise (zone)
+        Test du tag des sdc par le type de donnees attendue
     """
-    print("test unitaire pz0 realise")
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_identification_pz0_realise']
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_sdc_donnee_attendue']
 
     # obtention des données
     df_names = [    
-                    'noeuds_realise',
-                    'noeuds_synthetise',
-                    'parcelle',
-                    'plantation_perenne_realise',
-                    'plantation_perenne_synthetise', 
-                    'sdc',
-                    'synthetise', 
-                    'zone'
+                    'dispositif',
+                    'sdc'
                 ]
-    path_data = 'tests/data/test_identification_pz0/'
+    path_data = 'tests/data/test_sdc_donnee_attendue/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    
+    external_data_path = 'tests/data/test_sdc_donnee_attendue/'
+    
+    import_df('BDD_donnees_attendues', external_data_path, sep = ',', df = donnees)
 
     # application de la fonction d'identification des pz0
-    code_test = nettoyage.nettoyage_zone(donnees)
+    result_function = indicateur.sdc_donnee_attendue(donnees)
     
     df_metadonnees.set_index('id_ligne',inplace = True)
-    comparaison = pd.merge(code_test,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
-    print(comparaison)
-    res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['pz0'].astype('int')).all()
+    comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
+    
+    res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['donnee_attendue'].astype('int')).all()
     assert res_test
   
-def test_identification_pz0_synthetise():
-    """
-        Test de l'identification d'un pz0 synthetise
-    """
-    # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_identification_pz0_synthetise']
-
-    # obtention des données
-    df_names = [    
-                    'noeuds_realise',
-                    'noeuds_synthetise',
-                    'parcelle',
-                    'plantation_perenne_realise',
-                    'plantation_perenne_synthetise', 
-                    'sdc',
-                    'synthetise', 
-                    'zone'
-                ]
-    path_data = 'tests/data/test_identification_pz0/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
-
-    # application de la fonction d'identification des pz0
-    code_test = nettoyage.nettoyage_synthetise(donnees)
-    
-    df_metadonnees.set_index('id_ligne',inplace = True)
-    comparaison = pd.merge(code_test,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
-    print(comparaison)
-    res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['pz0'].astype('int')).all()
-    assert res_test
-
-def test_noeuds_synthetise_restructured():
-    """
-        Test de l'obtention des noeuds synthetises restructures
-    """
-    # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_noeuds_synthetise_restructured']
-
-    # obtention des données
-    df_names = [    
-                    'noeuds_synthetise', 
-                    'synthetise', 
-                    'sdc', 
-                    'domaine',
-                    'culture'
-                ]
-    path_data = 'tests/data/test_noeuds_synthetise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
-
-    noeuds_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'culture_id'][['id_ligne', 'valeur_attendue']]
-    noeuds_synthetise = restructuration.restructuration_noeuds_synthetise(donnees)
-
-    left = noeuds_synthetise_expected[['id_ligne', 'valeur_attendue']].rename(columns={'id_ligne' : 'noeuds_synthetise_id', 'valeur_attendue' : 'culture_id_expected'})
-    right = noeuds_synthetise.reset_index()[['id', 'culture_id']].rename(columns={'id' : 'noeuds_synthetise_id'})
-    merge = pd.merge(left, right, on='noeuds_synthetise_id', how='left')
-
-    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
-    res_valeur_ok = (merge['culture_id_expected'] == merge['culture_id']).all()
-
-    assert res_valeur_ok
-
 def test_connection_synthetise_restructured():
     """
         Test de l'obtention des connexions synthétisés restructurées

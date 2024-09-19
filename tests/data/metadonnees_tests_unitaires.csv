@@ -77,26 +77,10 @@ test_utilisation_intrant_dose_synthetise,fr.inra.agrosyst.api.entities.action.Pe
 test_utilisation_intrant_dose_synthetise,fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_28b735c0-28ba-4ae6-a965-9baf83c70a64,1,utilisation_intrant_id,
 test_utilisation_intrant_dose_synthetise,fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_45a2ed38-c6af-4930-a7ca-c06ef85f13c2,1,utilisation_intrant_id,
 test_utilisation_intrant_dose_synthetise,fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_331277c0-1506-40df-ad94-288bfa8ae925,1,utilisation_intrant_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_e8e90c72-b459-4301-928a-49b75e786535,0,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_35946ba5-a793-44da-ae0f-f3a04819cb59,0,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_37c16bb2-8506-40a3-914b-f6ee75101e4d,0,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_86d144b9-9e71-4db7-a5fa-c1b784dc007d,1,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_f8820571-7d2e-44b8-b6b0-267046db3222,1,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_8082ca8f-e734-4260-ad95-55a53de32b00,1,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_6577e95c-63ee-43e2-835a-b942207a4169,1,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_d5804d9c-1573-4946-b41a-90c09d9828cc,0,zone_id,
-test_identification_pz0_realise,fr.inra.agrosyst.api.entities.Zone_223008da-d3cc-44c5-9958-2af96d23e174,0,zone_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3b236709-9b1a-410a-982f-d172a91b6df5,0,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_30518d4f-3d97-4fe2-9c51-976f95d2b412,0,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ef6a97d9-1da3-4c34-b9c2-99a08066b1c9,1,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3ac55d73-eb6e-4c75-919c-40d2c446108f,0,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_57bbdd2c-5e6f-4c81-b117-2b6aae5f59ba,1,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_01472805-020a-4777-8cb5-8e0650e2c64f,0,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ac43ccec-f558-447a-8c6a-9e50dc2020e8,1,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c17a4492-ce90-4797-a219-7c4287e77b72,1,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_8a45546b-de74-4960-9b4a-4d5f1fe05f3f,1,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_68c84b21-dc0d-4ae8-9835-60835f0ab3d0,1,synthetise_id,
-test_identification_pz0_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_da9efb21-e252-4ba9-9d70-e644356f4b15,1,synthetise_id,
+test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_b7a6d23b-b663-47b3-a87f-7dd9b07fe565,PZ0 attendu,sdc_id,donnee_attendue
+test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_0bd6c89b-34ca-43d6-9220-9fc593dc2a5e,donnees annuelles attendues,sdc_id,donnee_attendue
+test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_0fddb05c-50cf-424c-b3c5-2b9e919526b9,Pas de donnees attendues,sdc_id,donnee_attendue
+test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_c54e8625-a9da-4d98-b632-99cf0f4a5cd9,inconnue : hors dephy ferme ou suivi non detaille,sdc_id,donnee_attendue
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_2b85c593-764d-4fb8-9c5e-cf5b7e4ce007,fr.inra.agrosyst.api.entities.CroppingPlanEntry_6070cc5d-4fac-46fa-8623-71bdc8c57869,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_b458d315-fb5d-4484-9511-2c235f445fc4,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0ee04d75-a71c-4f00-8a5c-69c3e020104f,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_f6a81255-cf9e-4e0e-8622-ec07facd07df,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e9b9c498-1815-49d9-9376-2d3e04db2532,,culture_id

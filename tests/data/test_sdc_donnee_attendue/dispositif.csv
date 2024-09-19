@@ -1,0 +1,5 @@
+id,code,type,campagne,domaine_id
+fr.inra.agrosyst.api.entities.GrowingPlan_21633108-709b-4001-b19e-6b4efac0337a,f3754390-5da0-4168-b073-1629076ae739,DEPHY_EXPE,2018,fr.inra.agrosyst.api.entities.Domain_4e2c2edb-d15e-47f3-afce-9738232ff3f5
+fr.inra.agrosyst.api.entities.GrowingPlan_69048eae-3f36-405b-a06b-6ab3247a67ea,844bc2c7-257e-46ce-abef-b86f0e79f26d,DEPHY_FERME,2014,fr.inra.agrosyst.api.entities.Domain_97cac0e1-f0e8-4c6d-8877-6ee2450d0543
+fr.inra.agrosyst.api.entities.GrowingPlan_cc5e1e5f-9661-4eeb-8dff-3ae50dfb471b,9262d449-c8d8-4eae-9311-1db2e7ae8bb4,DEPHY_FERME,2020,fr.inra.agrosyst.api.entities.Domain_aa4311b9-8036-4f59-b503-dd0ae21e1014
+fr.inra.agrosyst.api.entities.GrowingPlan_3650a74e-dbb8-462c-bb00-9e0a604bb383,0f2a649e-71ab-4e5a-84d0-8831405aa63e,DEPHY_FERME,2019,fr.inra.agrosyst.api.entities.Domain_79160835-2e49-4602-b850-f677811f3771
