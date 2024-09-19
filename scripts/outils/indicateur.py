@@ -91,7 +91,7 @@ def sdc_donnee_attendue(donnees):
     df_sdc = str_replace_code_dephy(df_sdc,'PY27671','PYF27671')
     df_sdc = str_replace_code_dephy(df_sdc,'VI28987','VIF28987')
 
-    df_sdc = str_replace_code_dephy(df_sdc,'',np.NaN)
+    df_sdc = str_replace_code_dephy(df_sdc,'',np.nan)
 
     # Merge 'left' entre les donnees saisies sur agrosyst et le referentiel des donnees attendues par la CAN    
     merge = pd.merge(df_sdc, saisies_attendues_melt, left_on=['code_dephy','campagne'],right_on=['code_dephy','campagne'], how = 'left')

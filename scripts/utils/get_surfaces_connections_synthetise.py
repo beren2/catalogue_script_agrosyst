@@ -194,7 +194,7 @@ def add_columns_campagne_cultureID_fictif(df_noeuds_synthetise, df_culture, df_s
     # on ajoute culture_id à la table noeuds_synthetise
     # on load le dictionnaire (culture_code, campagne) --> culture_id
     culture_id_FROM_culture_code_AND_campagne = get_culture_id_FROM_culture_code_AND_campagne(df_culture=df_culture, df_domaine=df_domaine)
-    df_noeuds_synthetise.loc[:, ['culture_id']] = df_noeuds_synthetise.apply(lambda x: culture_id_FROM_culture_code_AND_campagne[x['culture_code']].get(x['campagne_sdc'], np.NaN), axis=1)
+    df_noeuds_synthetise.loc[:, ['culture_id']] = df_noeuds_synthetise.apply(lambda x: culture_id_FROM_culture_code_AND_campagne[x['culture_code']].get(x['campagne_sdc'], np.nan), axis=1)
     invalid_culture_nodes = df_noeuds_synthetise['culture_id'].isna()
     # on ajoute fictif à la table noeuds_synthetise
     df_noeuds_synthetise.loc[:, ['fictif']] = True
@@ -343,7 +343,7 @@ def correct_rang0_freq_init(noeuds, aretes):
             noeuds.loc[noeuds['rang']==0, 'fq_initial_noeud'] = 100 / len(noeuds_0)
     
     # Certains noeuds avec fq_init ne sont pas de rang 0. on ignore ces veleurs surement reliquats de déplacements depuis le rang 0 vers un autre rang mais les fleches existent forcément et font foi
-    noeuds.loc[noeuds['rang']!=0, 'fq_initial_noeud'] = np.NaN
+    noeuds.loc[noeuds['rang']!=0, 'fq_initial_noeud'] = np.nan
     
     # Maintenant normalement les noeuds de rang 0 sont exactement ceux avec des frequences initiales renseignées
     assert set(noeuds[noeuds['rang']==0].index) == set(noeuds[~noeuds['fq_initial_noeud'].isna()].index)
