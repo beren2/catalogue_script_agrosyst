@@ -4,7 +4,7 @@ select
 	es.traitement_chimique,
 	es.bio,
 	es.traitement_semence_id,
-	es.espece_id,
+	es.composant_culture_id,
 	es.type_semence,
 	es.prix_saisi,
 	es.prix_saisi_unite,
