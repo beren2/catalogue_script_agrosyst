@@ -15,7 +15,8 @@ Les données issues de cette source correspondent à un remaniement des tables d
 
 ### 02_outils
 Permet la génération des outils d'aide à la valorisation. <br> 
-Ces outils sont produits à partir des données de l'entrepot, ou bien font intervenir des données extérieures. 
+Ces outils sont produits à partir des données de l'entrepot, ou bien font intervenir des données extérieures. <br> 
+Ces outils correspondent à des tables stockées avec les données de l'entrepot.
 
 Plus d'informations sont disponibles dans le README.md du répertoire.
 
