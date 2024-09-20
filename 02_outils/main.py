@@ -7,22 +7,16 @@
     2) Exécution des scripts de pré-traitement (nettoyage)
     3) Enregistrement des résultats dans la base entrepôt (mais avec un suffixe propre aux bases considérées)
 """
-
-import numpy as np
-import pandas as pd
-import sys
-sys.path.append('catalogue_script_agrosyst')
-sys.path.append('../..')
-import scripts.nettoyage as nettoyage
-import scripts.restructuration as restructuration
-import scripts.indicateur as indicateur
-import scripts.agregation as agregation
-import scripts.outils_can as outils_can
-from sqlalchemy import create_engine, MetaData, text
 import configparser
 import urllib
 import psycopg2 as psycopg
-
+from scripts import nettoyage
+from scripts import restructuration 
+from scripts import indicateur
+from scripts import agregation
+from scripts import outils_can
+from sqlalchemy import create_engine
+import pandas as pd
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -52,7 +46,6 @@ df_metadata = pd.read_csv(path_metadata)
 
 
 def export_to_entrepot(df, name):
-    global engine
     """ permet d'exporter un dataframe dans une table de l'entrepôt avec """
     df.to_sql(name=name, con=engine, if_exists='replace')
     print("* CRÉATION TABLE ",name, " TERMINEE *")
@@ -64,7 +57,6 @@ def import_df(df_name, path_data, sep):
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     global donnees
-
     # attention : si on importe des noms qui contienennt "manquant", il faut effectuer des opérations --> implique que les autres soient déjà chargés.
     # if(df_name == 'intervention_realise_manquant_agrege'):
     #     first = donnees['utilisation_intrant_realise_agrege'].drop_duplicates(subset=['intervention_realise_id'])
@@ -77,7 +69,7 @@ def import_df(df_name, path_data, sep):
     # else:
     donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
 
-def import_dfs(df_names, DATA_PATH, sep = ',', verbose=False):
+def import_dfs(df_names, data_path, sep = ',', verbose=False):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
@@ -85,15 +77,15 @@ def import_dfs(df_names, DATA_PATH, sep = ',', verbose=False):
     for df_name in df_names:
         if(verbose):
             print("- ", df_name)
-        import_df(df_name, DATA_PATH, sep)
+        import_df(df_name, data_path, sep)
 
 
 def copy_table_to_csv(table_name, csv_path, csv_name):
     """
         Permet de copier une table depuis la base de donnée distance dans un fichier local csv_path+csv_name.csv
     """
-    with psycopg.connect(DATABASE_URI_entrepot) as conn:
-        cursor = conn.cursor()
+    with psycopg.connect(DATABASE_URI_entrepot) as connection:
+        cursor = connection.cursor()
 
         with open(csv_path+csv_name+".csv", "wb") as f:
             cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
@@ -114,11 +106,16 @@ def download_datas(tables, verbose=False):
     copy_tables_to_csv(tables, DATA_PATH, verbose=verbose)
 
 def load_datas(tables, verbose=False, path_data=DATA_PATH):
+    """ permet de chager les tables dans la variable globale donnees"""
     global donnees
     import_dfs(tables, path_data, verbose=True)
 
 
 def generate_leaking_df(df1, df2, id_name, columns_difference):
+    """
+        retourne un dataframe qui contient les lignes entre les df1 et df2 où les colonnes contenues
+        dans columns_difference diffèrent
+    """
     df1 = df1[df1.columns.difference(columns_difference)].drop_duplicates().rename(
         columns={id_name: 'id'}
     ).set_index('id')
@@ -126,6 +123,12 @@ def generate_leaking_df(df1, df2, id_name, columns_difference):
     return pd.concat([df1, df2], axis=0)
 
 def generate_data_agreged(verbose=False):
+    """
+        génère l'ensemble des données agrégées
+        utile car on ne stocke pas en base les jeux de données agrégés
+        on ne stock que les différences à chaque étape pour limiter 
+        la redondance d'informations
+    """
     global donnees
 
     # Génération de action_realise_agrege
@@ -153,6 +156,9 @@ def generate_data_agreged(verbose=False):
     donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
 
 def download_data_agreged(verbose=False):
+    """
+        permet de télécharger en csv les jeux de données agrégés complets
+    """
     global donnees
     donnees['action_realise_agrege'].to_csv(DATA_PATH+'action_realise_agrege.csv')
     donnees['action_synthetise_agrege'].to_csv(DATA_PATH+'action_synthetise_agrege.csv')
@@ -161,6 +167,11 @@ def download_data_agreged(verbose=False):
 
 
 def load_ref(verbose=False):
+    """
+        permet de charger les référentiels
+        ATTENTION : cette fonction est ammenée à disparaître car à terme, 
+        tous les référentiels devront être accessibles sur Datagrosyst.
+    """
     global donnees
     path = 'data/referentiels/'
     refs = [
@@ -168,7 +179,7 @@ def load_ref(verbose=False):
     ]
     import_dfs(refs, path, verbose=True)
 
-def create_category_nettoyage(donnees):
+def create_category_nettoyage():
     """
         Execute les requêtes pour créer le magasin de nettoyage
     """
@@ -199,7 +210,7 @@ def create_category_nettoyage(donnees):
     export_to_entrepot(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
 
-def create_category_agregation(donnees):
+def create_category_agregation():
     """
         Execute les requêtes pour créer le magasin d'agregation
     """
@@ -240,7 +251,7 @@ def create_category_agregation(donnees):
     )
     export_to_entrepot(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
 
-def create_category_restructuration(donnees):
+def create_category_restructuration():
     """
         Execute les requêtes pour créer le magasin de restructuration
     """
@@ -271,14 +282,14 @@ def create_category_restructuration(donnees):
     df_intervention_synthetise_restructure = restructuration.restructuration_intervention_synthetise(donnees)
     export_to_entrepot(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
 
-def create_category_indicateur(donnees):
+def create_category_indicateur():
     """
         Execute les requêtes pour créer le magasin des indicateurs
     """
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_entrepot(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
 
-def create_category_outils_can(donnees):
+def create_category_outils_can():
     """
         Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
     """
@@ -305,7 +316,10 @@ def create_category_outils_can(donnees):
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
 
-def create_category_test(donnees):
+def create_category_test():
+    """ 
+            Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
+    """
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
 
@@ -453,9 +467,8 @@ steps = [
 
 options_categories = {}
 
-for magasin_key in magasin_specs.keys():
-    magasin = magasin_specs[magasin_key]
-    for categorie_key in magasin['categories'].keys():
+for magasin_key, magasin in magasin_specs.items():
+    for categorie_key in magasin['categories']:
         options_categories[categorie_key +' ('+ magasin_key+')'] = {'magasin' : magasin_key, 'categorie' : categorie_key}
         categorie = magasin['categories'][categorie_key]
         dependances = categorie['dependances']
@@ -514,7 +527,7 @@ while True:
                 generate_data_agreged(verbose=False)
                 download_data_agreged(verbose=False)
             else :
-                choosen_function(donnees)
+                choosen_function()
                 download_datas(magasin_specs[current_magasin]['categories'][current_category]['generated'])
                 load_datas(magasin_specs[current_magasin]['categories'][current_category]['generated'])
             print("* FIN GÉNÉRATION ", current_magasin, current_category," *")
@@ -543,7 +556,7 @@ while True:
             for choosen_dependance in choosen_dependances:
                 categorie_dependance = magasin_specs[choosen_dependance['magasin']]['categories'][choosen_dependance['categorie']]
                 if(len(categorie_dependance['generated']) != 0):
-                    if(categorie_dependance['generated'][0] not in donnees.keys()):
+                    if(categorie_dependance['generated'][0] not in donnees):
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
                         load_datas(categorie_dependance['generated'], verbose=False)
                         print("* FIN DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
@@ -576,7 +589,7 @@ while True:
         for choosen_dependance in choosen_dependances:
             categorie_dependance = magasin_specs[choosen_dependance['magasin']]['categories'][choosen_dependance['categorie']]
             if(len(categorie_dependance['generated']) != 0):
-                if(categorie_dependance['generated'][0] not in donnees.keys()):
+                if(categorie_dependance['generated'][0] not in donnees):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
                     load_datas(categorie_dependance['generated'], verbose=False)
                     print("* FIN DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
@@ -591,7 +604,7 @@ while True:
             download_data_agreged(verbose=False)
         else :
             # on vérifie que les données n'ont pas été déjà chargées
-            if('domaine' not in donnees.keys()):
+            if('domaine' not in donnees):
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                 load_datas(entrepot_spec['tables'], verbose=False)
                 load_ref()
@@ -601,13 +614,13 @@ while True:
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
                 
             print("* DÉBUT GÉNÉRATION ", choosen_magasin, choosen_category," *")
-            choosen_function(donnees)
+            choosen_function()
             print("* FIN GÉNÉRATION ", choosen_magasin, choosen_category," *")
 
 
     elif choice_key == "Test":
         print("* DÉBUT DE LA GÉNÉRATION TEST *")
-        create_category_restructuration(donnees)
+        create_category_restructuration()
         print("* FIN DE LA GÉNÉRATION TEST *")
 
 
