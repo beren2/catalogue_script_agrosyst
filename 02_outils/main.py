@@ -45,7 +45,7 @@ engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}
 conn = engine.raw_connection()
 cur = conn.cursor()
 
-DATA_PATH = '/home/bvuittenez/Bureau/utils/data/'
+DATA_PATH = 'C:/Users/lubaude/Desktop/utils/data/'
 EXTERNAL_DATA_PATH = 'data/external_data/'
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
@@ -278,6 +278,9 @@ def create_category_indicateur(donnees):
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_entrepot(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
 
+    df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
+    export_to_entrepot(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
+
 def create_category_outils_can(donnees):
     """
         Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
@@ -333,7 +336,7 @@ entrepot_spec = {
 }
 
 external_data_spec = {
-    'tables' : [
+    'tables' : ['BDD_donnees_attendues_CAN'
     ]
 }
 
@@ -400,6 +403,7 @@ magasin_specs = {
                 'dependances' : [],
                 'generated' : [
                     'utilisation_intrant_indicateur', 
+                    'sdc_donnee_attendue'
                 ]
             },
             'outils_can' : {
