@@ -1,0 +1,21 @@
+CREATE TABLE entrepot_dose_ref_par_groupe_cible AS
+select
+r.topiaid as id, 
+r.traitement_maa as type_traitement,
+r.code_amm ,
+r.code_culture_maa ,
+r.culture_maa ,
+r.code_groupe_cible_maa ,
+r.groupe_cible_maa ,
+r.campagne ,
+r.dose_ref_maa ,
+r.unit_dose_ref_maa ,
+r.volume_max_bouillie ,
+r.date_correction_maa ,
+r.description_correction_maa 
+from refmaadosesrefpargroupecible r 
+where active is true;
+
+alter table entrepot_dose_ref_par_groupe_cible
+add constraint dose_ref_par_groupe_cible_PK
+PRIMARY KEY (id);

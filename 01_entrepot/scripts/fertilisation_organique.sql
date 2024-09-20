@@ -1,0 +1,15 @@
+CREATE TABLE entrepot_fertilisation_organique AS
+select 
+	r.topiaid as id,
+	r.idtypeeffluent as type_effluent,
+	r.libelle,
+	r.teneur_ferti_orga_n_total as n,
+	r.teneur_ferti_orga_p as p,
+	r.teneur_ferti_orga_k as k,
+	r.unite_teneur_ferti_orga as unite_teneur
+from reffertiorga r
+where r.active is true;
+
+alter table entrepot_fertilisation_organique
+add constraint fertilisation_organique_PK
+PRIMARY KEY (id);
