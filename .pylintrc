@@ -111,6 +111,7 @@ disable=
     unused-variable,
     too-complex,
     bad-builtin,
+    global-variable-not-assigned
     
     
 
