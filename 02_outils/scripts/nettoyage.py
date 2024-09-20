@@ -6,7 +6,6 @@ import numpy as np
 import scripts.utils.fonction_nettoyage as ft
 
 
-
 def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False):
     """
         Retourne une série de vecteurs binaire.

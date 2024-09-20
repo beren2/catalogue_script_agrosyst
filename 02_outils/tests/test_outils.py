@@ -3,11 +3,11 @@
 """
 import pandas as pd
 #from nettoyage import nettoyage
-from scripts.outils import nettoyage
-from scripts.outils import restructuration
+from scripts import nettoyage
+from scripts import restructuration
 from scripts.utils import fonctions_utiles
-from scripts.outils import outils_can
-from scripts.outils import indicateur
+from scripts import outils_can
+from scripts import indicateur
 
 
 def import_df(df_name, path_data, sep, df):
@@ -30,7 +30,7 @@ def test_debit_chantier_intervention_realise():
         Test du débit de chantier des interventions en réalisé
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_debit_chantier_intervention_realise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
@@ -76,7 +76,7 @@ def test_utilisation_intrant_dose_realise():
         Test de la détection de dose trop hautes utilisées en réalisé
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_utilisation_intrant_dose_realise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
@@ -136,7 +136,7 @@ def test_utilisation_intrant_dose_synthetise():
         Test de la détection de dose trop hautes utilisées en synthétisé
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_utilisation_intrant_dose_synthetise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
@@ -198,7 +198,7 @@ def test_get_infos_traitement():
         Test de l'obtention du code amm.
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_infos_traitement']
 
     # obtention des données
@@ -229,7 +229,7 @@ def test_get_dose_ref():
         Test de l'obtention de la dose de référence
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_dose_ref']
 
     # obtention des données
@@ -301,7 +301,7 @@ def test_sdc_donnee_attendue():
         Test du tag des sdc par le type de donnees attendue
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_sdc_donnee_attendue']
 
     # obtention des données
@@ -330,7 +330,7 @@ def test_connection_synthetise_restructured():
         Test de l'obtention des connexions synthétisés restructurées
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_connection_synthetise_restructured']
 
     # obtention des données
@@ -365,7 +365,7 @@ def test_intervention_synthetise_restructured():
         Test de l'obtention des combinaisons outils d intervention synthetise restructuree
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_intervention_synthetise_restructured']
 
     # obtention des données
@@ -395,7 +395,7 @@ def test_restructuration_noeuds_realise():
         Test de l'obtention des noeuds realises restructures
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_noeuds_realise_restructured']
 
     # obtention des données
@@ -425,7 +425,7 @@ def test_restructuration_recolte_rendement_prix():
         Test de l'obtention des recoltes rendement prix restructurés
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/data/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_recolte_rendement_prix_restructured']
 
     # obtention des données
@@ -459,7 +459,7 @@ def test_restructuration_recolte_rendement_prix():
 
     assert res_valeur_ok
 
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/data/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = 'data/referentiels/', key_name='id'):
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = 'data/referentiels/', key_name='id'):
     """
         Fonction qui permet de tester 
     """
