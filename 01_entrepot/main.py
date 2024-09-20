@@ -187,12 +187,9 @@ while True:
 
             if('sql' in extract_file):
                 #Get the sql extract file
-                fd_extract = open(extract_file, 'r', encoding="utf-8")
-                sql_extract = fd_extract.read()
-                
-                fd_extract.close()
-    
-            cur.execute(sql_extract)    
+                with open(extract_file, "r", encoding="utf8") as file:
+                    sql_extract = file.read()
+                cur.execute(sql_extract)    
             conn.commit()
             print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
             print(datetime.datetime.now())
@@ -236,12 +233,9 @@ while True:
 
         if('sql' in extract_file):
             #Get the sql extract file
-            fd_extract = open(extract_file, 'r', encoding="utf-8")
-            sql_extract = fd_extract.read()
-            
-            fd_extract.close()
-
-        cur.execute(sql_extract)    
+            with open(extract_file, "r", encoding="utf8") as file:
+                sql_extract = file.read()
+            cur.execute(sql_extract)    
         conn.commit()
         print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
         print(datetime.datetime.now())

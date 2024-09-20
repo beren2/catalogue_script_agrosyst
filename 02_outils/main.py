@@ -501,7 +501,7 @@ while True:
     if choice_key == "Quitter":
         print("Au revoir !")
         break
-    elif choice_key == 'Tout générer':
+    if choice_key == 'Tout générer':
         print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         download_datas(entrepot_spec['tables'], verbose=False)
         print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
