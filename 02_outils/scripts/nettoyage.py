@@ -28,8 +28,8 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
                     res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
     # lecture des fichiers de métadonnées
-    df_metadonnees_seuils = pd.read_csv('data/metadonnees_seuils.csv', index_col='id')
-    df_metadonnees_tests = pd.read_csv('data/metadonnees_tests.csv', index_col='id')
+    df_metadonnees_seuils = pd.read_csv('02_outils/data/metadonnees_seuils.csv', index_col='id')
+    df_metadonnees_tests = pd.read_csv('02_outils/data/metadonnees_tests.csv', index_col='id')
 
     # selection des données pertinentes et conversion en dictionnaires
     metadata_seuils = df_metadonnees_seuils
@@ -86,8 +86,8 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
                     res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
     # lecture des fichiers de métadonnées
-    df_metadonnees_seuils = pd.read_csv('data/metadonnees_seuils.csv', index_col='id')
-    df_metadonnees_tests = pd.read_csv('data/metadonnees_tests.csv', index_col='id')
+    df_metadonnees_seuils = pd.read_csv('02_outils/data/metadonnees_seuils.csv', index_col='id')
+    df_metadonnees_tests = pd.read_csv('02_outils/data/metadonnees_tests.csv', index_col='id')
 
     # selection des données pertinentes et conversion en dictionnaires
     metadata_seuils = df_metadonnees_seuils

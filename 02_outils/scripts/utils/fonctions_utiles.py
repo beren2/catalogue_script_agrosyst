@@ -26,7 +26,7 @@ def get_infos_traitement(df_utilisation_intrant, df_intrant):
             Pour l'instant, cette fonction ne permet pas d'obtenir le code amm d'un traitement de semence et retournera : null
     """
     # Déclaration des chemins des données 
-    path_ref_acta_traitement_produit = 'data/referentiels/ref_acta_traitement_produit.csv'
+    path_ref_acta_traitement_produit = '02_outils/data/referentiels/ref_acta_traitement_produit.csv'
 
     # Import des données utiles
     df_ref_acta_traitement_produit = pd.read_csv(path_ref_acta_traitement_produit)
@@ -69,7 +69,7 @@ def get_infos_culture_realise(
                     'code_culture_maa' :  code culture de l'espèce en question
     """
     # Déclaration des chemins des données 
-    path_culture_maa = 'data/referentiels/ref_culture_maa.csv'
+    path_culture_maa = '02_outils/data/referentiels/ref_culture_maa.csv'
 
     # Import des données utiles
     df_ref_culture_maa = pd.read_csv(path_culture_maa)
@@ -184,7 +184,7 @@ def get_infos_culture_synthetise(
                     'code_culture_maa' :  code culture de l'espèce en question
     """
     # Déclaration des chemins des données 
-    path_culture_maa = 'data/referentiels/ref_culture_maa.csv'
+    path_culture_maa = '02_outils/data/referentiels/ref_culture_maa.csv'
 
     # Import des données utiles
     df_ref_culture_maa = pd.read_csv(path_culture_maa)
@@ -702,7 +702,7 @@ def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
     """permet de convertir toutes les unites d'utilisation d'intrant en une unité recherchée"""
 
     # Déclaration des chemins des données
-    path_converter = 'data/referentiels/conversion_utilisation_intrant.csv'
+    path_converter = '02_outils/data/referentiels/conversion_utilisation_intrant.csv'
 
     # Import des données utiles
     df_converter = pd.read_csv(path_converter, sep=';')
