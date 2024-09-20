@@ -3,7 +3,7 @@
 """
 import pandas as pd
 import numpy as np
-import scripts.outils.fonctions_tests as ft
+import scripts.utils.fonction_nettoyage as ft
 
 
 

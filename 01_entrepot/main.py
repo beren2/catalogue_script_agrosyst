@@ -12,11 +12,11 @@ import subprocess
 import os
 
 #Fetch the sql files 
-path_sql_files = 'sql/'
+path_sql_files = 'scripts/'
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
-config.read(r'config_files/database_source.ini')
+config.read(r'../00_config/config.ini')
 
 name_entrepot_config = "entrepot"
 # La db de l'entrepot
