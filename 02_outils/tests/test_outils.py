@@ -30,7 +30,7 @@ def test_debit_chantier_intervention_realise():
         Test du débit de chantier des interventions en réalisé
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_debit_chantier_intervention_realise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
@@ -41,7 +41,7 @@ def test_debit_chantier_intervention_realise():
 
     # obtention des données
     df_names = ['intervention_realise']
-    path_data = 'tests/data/test_debit_chantier_intervention_realise/'
+    path_data = '02_outils/tests/data/test_debit_chantier_intervention_realise/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
     print(donnees.keys())
     df_intervention_realise = donnees['intervention_realise']
@@ -76,7 +76,7 @@ def test_utilisation_intrant_dose_realise():
         Test de la détection de dose trop hautes utilisées en réalisé
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_utilisation_intrant_dose_realise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
@@ -92,11 +92,11 @@ def test_utilisation_intrant_dose_realise():
                     'plantation_perenne_realise', 'utilisation_intrant_cible',
                     'utilisation_intrant_realise'        
                 ]
-    path_data = 'tests/data/test_utilisation_intrant_dose_realise/'
+    path_data = '02_outils/tests/data/test_utilisation_intrant_dose_realise/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     # obtention des référentiels
-    path_ref = 'data/referentiels/'
+    path_ref = '02_outils/data/referentiels/'
     refs_names = [
         'ref_nuisible_edi',
         'ref_correspondance_groupe_cible', 
@@ -136,7 +136,7 @@ def test_utilisation_intrant_dose_synthetise():
         Test de la détection de dose trop hautes utilisées en synthétisé
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_utilisation_intrant_dose_synthetise']
 
     # définition des lignes qui posent problème pour les débits de chantier en réalisé
@@ -153,11 +153,11 @@ def test_utilisation_intrant_dose_synthetise():
                     'plantation_perenne_synthetise', 'utilisation_intrant_cible',
                     'utilisation_intrant_synthetise'        
                 ]
-    path_data = 'tests/data/test_utilisation_intrant_dose/'
+    path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     # obtention des référentiels
-    path_ref = 'data/referentiels/'
+    path_ref = '02_outils/data/referentiels/'
     refs_names = [
         'ref_nuisible_edi',
         'ref_correspondance_groupe_cible', 
@@ -198,11 +198,11 @@ def test_get_infos_traitement():
         Test de l'obtention du code amm.
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_infos_traitement']
 
     # obtention des données
-    path_data = 'tests/data/test_get_infos_traitement/'
+    path_data = '02_outils/tests/data/test_get_infos_traitement/'
     path_utilisation_intrant_realise = path_data+'utilisation_intrant_realise.csv'
     path_intrant = path_data+'intrant.csv'
     df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep = ',')
@@ -229,7 +229,7 @@ def test_get_dose_ref():
         Test de l'obtention de la dose de référence
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_dose_ref']
 
     # obtention des données
@@ -249,11 +249,11 @@ def test_get_dose_ref():
                     'noeuds_realise', 'noeuds_synthetise',
                     'connection_synthetise'
                 ]
-    path_data = 'tests/data/test_utilisation_intrant_dose/'
+    path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     # obtention des référentiels
-    path_ref = 'data/referentiels/'
+    path_ref = '02_outils/data/referentiels/'
     refs_names = [
         'ref_nuisible_edi',
         'ref_correspondance_groupe_cible', 
@@ -301,7 +301,7 @@ def test_sdc_donnee_attendue():
         Test du tag des sdc par le type de donnees attendue
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_sdc_donnee_attendue']
 
     # obtention des données
@@ -309,10 +309,10 @@ def test_sdc_donnee_attendue():
                     'dispositif',
                     'sdc'
                 ]
-    path_data = 'tests/data/test_sdc_donnee_attendue/'
+    path_data = '02_outils/tests/data/test_sdc_donnee_attendue/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
     
-    external_data_path = 'tests/data/test_sdc_donnee_attendue/'
+    external_data_path = '02_outils/tests/data/test_sdc_donnee_attendue/'
     
     import_df('BDD_donnees_attendues_CAN', external_data_path, sep = ',', df = donnees)
 
@@ -330,7 +330,7 @@ def test_connection_synthetise_restructured():
         Test de l'obtention des connexions synthétisés restructurées
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_connection_synthetise_restructured']
 
     # obtention des données
@@ -342,7 +342,7 @@ def test_connection_synthetise_restructured():
                     'domaine',
                     'culture'
                 ]
-    path_data = 'tests/data/test_connection_synthetise_restructured/'
+    path_data = '02_outils/tests/data/test_connection_synthetise_restructured/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     connection_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'culture_intermediaire_id'][['id_ligne', 'valeur_attendue']]
@@ -365,7 +365,7 @@ def test_intervention_synthetise_restructured():
         Test de l'obtention des combinaisons outils d intervention synthetise restructuree
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_intervention_synthetise_restructured']
 
     # obtention des données
@@ -375,7 +375,7 @@ def test_intervention_synthetise_restructured():
                 'combinaison_outil',
                 'domaine']
 
-    path_data = 'tests/data/test_intervention_synthetise_restructured/'
+    path_data = '02_outils/tests/data/test_intervention_synthetise_restructured/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     intervention_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'combinaison_outil_id'][['id_ligne', 'valeur_attendue']]
@@ -395,14 +395,14 @@ def test_restructuration_noeuds_realise():
         Test de l'obtention des noeuds realises restructures
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_noeuds_realise_restructured']
 
     # obtention des données
     df_names = [   
                     'noeuds_realise', 'zone'
                 ]
-    path_data = 'tests/data/test_noeuds_realise_restructured/'
+    path_data = '02_outils/tests/data/test_noeuds_realise_restructured/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     noeuds_realise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'precedent_noeuds_realise_id'][['id_ligne', 'valeur_attendue']]
@@ -425,7 +425,7 @@ def test_restructuration_recolte_rendement_prix():
         Test de l'obtention des recoltes rendement prix restructurés
     """
     # lecture du fichier de métadonnées sur les tests
-    df_metadonnees = pd.read_csv('tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
     df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_recolte_rendement_prix_restructured']
 
     # obtention des données
@@ -435,7 +435,7 @@ def test_restructuration_recolte_rendement_prix():
                     'domaine', 'culture'
                 ]
 
-    path_data = 'tests/data/test_recolte_rendement_prix_restructured/'
+    path_data = '02_outils/tests/data/test_recolte_rendement_prix_restructured/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
     recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][
@@ -459,7 +459,7 @@ def test_restructuration_recolte_rendement_prix():
 
     assert res_valeur_ok
 
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = 'data/referentiels/', key_name='id'):
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id'):
     """
         Fonction qui permet de tester 
     """
@@ -514,7 +514,7 @@ def test_get_intervention_realise_outils_can_context():
         'action_realise', 'intervention_realise', 'composant_action_semis', 
         'semence', 'utilisation_intrant_realise', 'espece', 'composant_culture'
     ]
-    path_data = 'tests/data/test_get_intervention_realise_action_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_realise_action_outils_can/'
     fonction_to_apply = outils_can.get_intervention_realise_outils_can_context
 
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
@@ -529,7 +529,7 @@ def test_get_intervention_realise_combinaison_outils_can():
     df_names = [   
         'combinaison_outil', 'materiel', 'combinaison_outil_materiel', 'intervention_realise'
     ]
-    path_data = 'tests/data/test_get_intervention_realise_combinaison_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_realise_combinaison_outils_can/'
     fonction_to_apply = outils_can.get_intervention_realise_combinaison_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
@@ -546,7 +546,7 @@ def test_get_intervention_realise_culture_outils_can():
         'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise',
         'connection_realise'
     ]
-    path_data = 'tests/data/test_get_intervention_realise_culture_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_realise_culture_outils_can/'
     fonction_to_apply = outils_can.get_intervention_realise_culture_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
     
@@ -562,7 +562,7 @@ def test_get_intervention_realise_culture_prec_outils_can():
         'composant_culture', 'espece', 'variete', 'intervention_realise', 
         'noeuds_realise', 'connection_realise', 'culture'
     ]
-    path_data = 'tests/data/test_get_intervention_realise_culture_prec_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_realise_culture_prec_outils_can/'
     fonction_to_apply = outils_can.get_intervention_realise_culture_prec_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
     
@@ -582,7 +582,7 @@ def test_get_intervention_synthetise_culture_outils_can():
         'ccc_intervention_synthetise_restructure', 'composant_culture',
         'espece', 'variete', 'connection_synthetise_restructure'
     ]
-    path_data = 'tests/data/test_get_intervention_synthetise_culture_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_synthetise_culture_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_culture_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
@@ -599,7 +599,7 @@ def test_get_intervention_synthetise_culture_prec_outils_can():
         'noeuds_synthetise', 'connection_synthetise', 'culture', 
         'noeuds_synthetise_restructure'
     ]
-    path_data = 'tests/data/test_get_intervention_synthetise_culture_prec_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_synthetise_culture_prec_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_culture_prec_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
@@ -614,7 +614,7 @@ def test_get_intervention_synthetise_action_outils_can():
     df_names = [   
         'intervention_synthetise', 'action_synthetise'
     ]
-    path_data = 'tests/data/test_get_intervention_synthetise_action_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
@@ -629,7 +629,7 @@ def test_get_intervention_synthetise_semence_outils_can():
     df_names = [
         'semence', 'composant_culture', 'espece', 'utilisation_intrant_synthetise'
     ]
-    path_data = 'tests/data/test_get_intervention_synthetise_semence_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_synthetise_semence_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_semence_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
@@ -645,7 +645,7 @@ def test_get_intervention_synthetise_combinaison_outils_can():
         'intervention_synthetise', 'intervention_synthetise_restructure', 
         'combinaison_outil', 'materiel', 'combinaison_outil_materiel'
     ]
-    path_data = 'tests/data/test_get_intervention_synthetise_combinaison_outils_can/'
+    path_data = '02_outils/tests/data/test_get_intervention_synthetise_combinaison_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_combinaison_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
@@ -664,7 +664,7 @@ def test_get_parcelle_rattache_outils_can():
         'reseau'
     ]
 
-    path_data = 'tests/data/test_get_parcelles_non_rattachees_outils_can/'
+    path_data = '02_outils/tests/data/test_get_parcelles_non_rattachees_outils_can/'
 
     fonction_to_apply = outils_can.get_parcelles_non_rattachees_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = df_ref_names)
@@ -681,7 +681,7 @@ def test_get_parcelle_rattache_outils_can():
 #         'culture', 'composant_culture', 'espece', 'variete'
 #     ]
 
-#     path_data = 'tests/data/test_get_culture_outils_can/'
+#     path_data = '02_outils/tests/data/test_get_culture_outils_can/'
 
 #     fonction_to_apply = outils_can.get_culture_outils_can
 #     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
@@ -699,7 +699,7 @@ def test_get_parcelle_rattache_outils_can():
 #         'noeuds_synthetise'
 #     ]
 
-#     path_data = 'tests/data/test_get_culture_indicateur_branche/'
+#     path_data = '02_outils/tests/data/test_get_culture_indicateur_branche/'
 
 #     fonction_to_apply = outils_can.get_culture_indicateur_branche
 #     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
@@ -725,7 +725,7 @@ def test_get_parcelle_rattache_outils_can():
 #         'recolte_rendement_prix', 'culture', 'composant_culture', 'recolte_rendement_prix_restructure'
 #     ]
 
-#     path_data = 'tests/data/test_get_recolte_realise_outils_can/'
+#     path_data = '02_outils/tests/data/test_get_recolte_realise_outils_can/'
 
 #     fonction_to_apply = outils_can.get_recolte_realise_outils_can
 #     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='action_id')

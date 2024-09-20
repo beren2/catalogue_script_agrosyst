@@ -1,15 +1,19 @@
-#!/usr/bin/python
+"""
+    Script permettant la génération de l'entrepôt de données
+"""
 
-from utils.connect import *
-import pandas as pd
-from sqlalchemy import create_engine, MetaData, text
+
+#!/usr/bin/python
 import configparser
 import urllib
-from sqlalchemy import inspect
-from colorama import Fore, Style
 import datetime
 import subprocess 
 import os
+import psycopg2
+import pandas as pd
+from sqlalchemy import create_engine, text
+from sqlalchemy import inspect
+from colorama import Fore, Style
 
 #Fetch the sql files 
 path_sql_files = 'scripts/'
@@ -140,13 +144,17 @@ while True:
     for i, option in enumerate(options.keys()):
         print(f"{i + 1}. {option}")
     
-    choice = int(input("Entrez votre choix (1, 2 ...) : "))
+    try:
+        choice = int(input("Entrez votre choix (1, 2 ...) : "))
+    except ValueError:
+        choice = 6
+
     choice_key = list(options.keys())[choice - 1]
     
     if choice_key == "Quitter":
         print("Au revoir !")
         break
-    elif(choice_key == "Génération de toutes les données de l'entrepôt"):
+    if(choice_key == "Génération de toutes les données de l'entrepôt"):
 
         #Nettoyage de l'environnement de travail (suppression de toutes les tables commençant par entrepot_)
         
@@ -169,8 +177,8 @@ while True:
         print("GÉNÉRATION DES TABLES DE L'ENTREPÔT :")
         print("--")
         #Obtention des fichiers sql
-        for i in range(0, len(ordered_files)):
-            current_file = ordered_files[i]+'.sql'
+        for i, ordered_file in enumerate(ordered_files):
+            current_file = ordered_file+'.sql'
 
             print(f"- Maj entrepôt à partir du fichier: {Fore.YELLOW}"+current_file+f"{Style.RESET_ALL}")           
             print(datetime.datetime.now())
@@ -179,12 +187,9 @@ while True:
 
             if('sql' in extract_file):
                 #Get the sql extract file
-                fd_extract = open(extract_file, 'r', encoding="utf-8")
-                sql_extract = fd_extract.read()
-                
-                fd_extract.close()
-    
-            cur.execute(sql_extract)    
+                with open(extract_file, "r", encoding="utf8") as file:
+                    sql_extract = file.read()
+                cur.execute(sql_extract)    
             conn.commit()
             print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
             print(datetime.datetime.now())
@@ -228,12 +233,9 @@ while True:
 
         if('sql' in extract_file):
             #Get the sql extract file
-            fd_extract = open(extract_file, 'r', encoding="utf-8")
-            sql_extract = fd_extract.read()
-            
-            fd_extract.close()
-
-        cur.execute(sql_extract)    
+            with open(extract_file, "r", encoding="utf8") as file:
+                sql_extract = file.read()
+            cur.execute(sql_extract)    
         conn.commit()
         print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
         print(datetime.datetime.now())
@@ -275,8 +277,8 @@ while True:
 
         for t in range(0,entrepot_columns_fk.shape[0]):
             fk_list = entrepot_columns_fk.loc[t,'foreign_key_table'].split(', ')
-            for i in range(0,len(fk_list)):
-                if "entrepot_"+fk_list[i] not in schema_tables['table_name'].tolist():
+            for i, fk in enumerate(fk_list) :
+                if "entrepot_"+fk not in schema_tables['table_name'].tolist():
                     foreignkey_not_exist = pd.concat([foreignkey_not_exist,entrepot_columns_fk.loc[[t,]]], ignore_index=True)
                 
         if foreignkey_not_exist.shape[0] > 0 :
@@ -336,7 +338,7 @@ while True:
         subprocess.run("""pg_restore -v -Udephygraph_admin -d"""+str(nom_final)+""" -h147.100.179.208 -p5438 """+str(nom_origine)+""".dump""", shell=True, check=True)
         #os.environ['PGPASSWORD'] = 'postgres'
         #subprocess.run("""pg_restore -v -Upostgres -d"""+str(nom_final)+""" -h127.0.0.1 -p5432 """+str(nom_origine)+""".dump""", shell=True, check=True)
-        subprocess.run("""rm """+str(nom_origine)+""".dump""")
+        subprocess.run("""rm """+str(nom_origine)+""".dump""",  check=False)
 
         print("La nouvelle BDD est générée, pensez à mettre à jour le fichier config_files/connection/database_source.ini")
     

@@ -109,6 +109,11 @@ disable=
     import-error,
     unused-argument,
     unused-variable,
+    too-complex,
+    bad-builtin,
+    global-variable-not-assigned
+    
+    
 
 
 [REPORTS]

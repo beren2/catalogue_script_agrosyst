@@ -1,4 +1,6 @@
-#!/usr/bin/python
+"""
+    Fonctions permettant de se connecter à une base de données
+"""
 import psycopg2
 from utils.config import config
 
@@ -27,6 +29,7 @@ def connect(file_name='database_source.ini'):
         return conn
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+        return None
 
 if __name__ == '__main__':
     connect()
