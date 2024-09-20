@@ -1169,7 +1169,7 @@ def get_recolte_realise_outils_can(
         'commercialisation_pct_corr' : 'sum',
         'autoconsommation_pct_corr' :'sum',
         'nonvalorisation_pct_corr' : 'sum'
-    }).reset_index().replace(0, np.NaN).round(2)
+    }).reset_index().replace(0, np.nan).round(2)
 
     return final_realise
 
@@ -1280,7 +1280,7 @@ def get_recolte_synthetise_outils_can(
         'commercialisation_pct_corr' : 'sum',
         'autoconsommation_pct_corr' :'sum',
         'nonvalorisation_pct_corr' : 'sum'
-    }).reset_index().replace(0, np.NaN).round(2)
+    }).reset_index().replace(0, np.nan).round(2)
 
     return final_synthetise
 
