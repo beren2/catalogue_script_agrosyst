@@ -19,3 +19,6 @@ Les tables de restructuration permettent essentiellement de corriger des problè
 
 #### Indicateurs
 Les tables Indicateurs proposent des informations supplémentaires sur des indicateurs non retournés par Agrosyst. 
+
+### Outils_can
+Les tables Outils_can permettent de générer les outils qui permettent de générer le magasin CAN
