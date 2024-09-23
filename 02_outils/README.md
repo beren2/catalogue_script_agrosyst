@@ -1,24 +1,19 @@
 ## Outils
+Ce répertoire permet la génération des tables d'outils d'utilisation des données agrosyst.
 
-### Contexte
-Toutes les tables générés par ce repértoire permettent de manipuler efficacement l'entrepôt de données Agrosyst. Les catégories générées sont décrites ci-dessous.
+L'ensemble des tables outils sont crées par les scripts dans le repertoire [scripts](scripts/).
 
-### Catégories
+### Générer les outils : lancer le programme principal
 
+Les fichiers de configuration sont disponibles dans le répertoire [00_config/config.ini](00_config/config.ini). <br>
+Il suffit de saisir le nom de la BDD de l'entrepôt sur laquelle les outils seront ajoutés en base de données. 
 
-#### Nettoyage
-Les scripts présents dans le répertoire [02_outils/scripts/utils/fonction_nettoyage](02_outils/scripts/utils/fonction_nettoyage) permettent de réaliser ces tests de conformités. Ils attribuent à chaque entité une note de conformité, consistant en un vecteur binaire indiquant les tests passés et les tests échoués (1 pour passé, 0 pour raté). La description de ces tests ainsi que leur position dans le vecteur binaire sont donnés dans le fichier [02_outils/data/metadonnees_tests.csv](02_outils/data/metadonnees_tests.csv). La description des seuils utilisés pour ces tests est disponible dans le fichier [02_outils/data/data/metadonnees_seuils.csv](02_outils/data/metadonnees_seuils.csv).
+```
+	python main.py
+```
+Il suffit ensuite de choisir l'option à executer.
 
-Certains des tests utilisent aussi des fonctions utiles, déclarées dans le fichier [02_outils/scripts/utils/](02_outils/scripts/utils/).
+### Répertoire Tests
+Chaque fonction outils générant une table outils est testée au sein de ce repertoire grâce à des **tests unitaires**.
 
-#### Agregation
-Les tables générées par ce fichier permettent de 'sauter' efficacement d'une échelle à une autre dans les données. Par exemple, elles permettent d'obtenir directement le domaine associé à une utilisation d'intrant sans être obligé d'effectuer toutes les fusions à la main.
-
-#### Restructuration
-Les tables de restructuration permettent essentiellement de corriger des problèmes dans les données issues du synthétisé. Notamment, elles permettent de proposer de travailler avec des identifiants 'id' plutôt qu'avec des 'code'. Les prétraitement consistent bien souvent à aller rechercher l'année du domaine de rattachement et à sélectionner parmis les idenfiants possibles avec le même code, celui de la bonne année.
-
-#### Indicateurs
-Les tables Indicateurs proposent des informations supplémentaires sur des indicateurs non retournés par Agrosyst. 
-
-### Outils_can
-Les tables Outils_can permettent de générer les outils qui permettent de générer le magasin CAN
+Un test unitaire viens confronter une valeur théorique, celle à laquelle on s'attend avec celle qui est calculée par la fonction avec un jeu de données test.

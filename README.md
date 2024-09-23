@@ -4,24 +4,37 @@ Catalogue des pré-traitements des données issues du système d'information Agr
 
 ## Organisation du répertoire
 
-### Scripts
-L'ensemble des scripts générant les magasins de données disponibles sur datagrosyst ou bien les outils d'aide à la valorisation sont disponibles dans le répetoire [scripts](scripts/).
+### 00_config
+Contient : 
+- un fichier requirements.txt listant les libraries python utilisées.
+- un fichier config.ini listant deux connexions : à la BDD de l'entrepot de données, à la BDD opérationnelle de l'application datagrosyst et 
 
-Afin de comprendre comment sont réalisés les prétraitements, ou bien les réaliser nous même (ex : avec d'autres seuils), plus d'informations sont disponibles dans le README.md du répertoire.
+### 01_entrepot
+Permet la génération de l'entrepot de données d'agrosyst. <br> 
+Les données issues de cette source correspondent à un remaniement des tables de la base de données opérationnelle d'Agrosyst. Elles n'ont pas été corrigées ou modifiées.
 
-### Data
-Les données et méta-données concernant les scripts sont disponibles dans le répertoire [data](data/).
+### 02_outils
+Permet la génération des outils d'aide à la valorisation. <br> 
+Ces outils sont produits à partir des données de l'entrepot, ou bien font intervenir des données extérieures. <br> 
+Ces outils correspondent à des tables stockées avec les données de l'entrepot.
 
-### Tests
-Chaque fonction de prétraitement possède un test controlant la sortie de la fonction de prétraitement. Les jeux de tests avec les valeurs attendues sont disponibles dans le repetoire [tests](tests/). Plus d'informations sont disponibles dans le README.md du répertoire.
+Plus d'informations sont disponibles dans le README.md du répertoire.
+
+### 03_magasins
+Permet la génération de magasins de données. <br>
+Chaque repertoire correspond à un magasin. <br>
+Les scripts générant un magasin se basent sur l'entrepot et les outils.
+
+### 04_prise_en_main
+Contient des exemples de script de prise en main des données. 
 
 ## Contribuer
-Le catalogue des pré-traitements agrosyst est libre et collaboratif. Si vous souhaitez participer en ajoutant des scripts de prétraitements, il vous suffit d'effectuer les étapes suivantes. 
-Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d'entrer dans les scripts de pré-traitements officiels.
+Le catalogue des scripts d'agrosyst est libre et collaboratif. Si vous souhaitez participer en ajoutant des scripts générant des outils de prétraitements ou des scripts générant un magasin, il vous suffit d'effectuer les étapes suivantes. 
+Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d'entrer dans les scripts d'outils' officiels.
 
 > [!NOTE]  
 > Pour permettre d'intégrer les nouveaux scripts dans le processus automatisé, ceux-ci doivent être **rédigés en python**.  
-Pour les utilisateurs d'autres langages simplement désireux d'archiver leur code, un **répertoire de dépôt des scripts est disponible dans [scripts/depot/](scripts/depot/).** Si ceux-ci sont jugés d'interêt général pour la communauté de chercheur, alors ils pourront faire l'objet d'une traduction vers python par l'équipe Agrosyst. Dans ce cas, **fournir un jeu de test complet (cf [Mettre en place des tests unitaires](#mettre-en-place-des-tests-unitaires))**  est essentiel. 
+Pour les utilisateurs d'autres langages simplement désireux d'archiver leur code, un **répertoire de dépôt des scripts d'outils est disponible dans [02_outils/depot/](02_outils/depot/).** Si ceux-ci sont jugés d'interêt général pour la communauté de chercheur, alors ils pourront faire l'objet d'une traduction vers python par l'équipe Agrosyst. Dans ce cas, **fournir un jeu de test complet (cf [Mettre en place des tests unitaires](#mettre-en-place-des-tests-unitaires))**  est essentiel. 
 
 ### Créer une branche
 
@@ -31,15 +44,15 @@ Pour les utilisateurs d'autres langages simplement désireux d'archiver leur cod
 
 ### Effectuer des changements
 Vous pouvez soit ajouter un prétraitement dans outils ou bien creer un nouveau magasin.
-Pour créer un magasin, il faut créer un nouveau repertoire dans [scripts/magasins/](scripts/magasins/) et y deposer tous vos scripts. 
+Pour créer un magasin, il faut créer un nouveau repertoire dans [03_magasins/](03_magasins/) et y deposer tous vos scripts. 
 
 > [!NOTE]  
-> Si vous pensez que des fonctions peuvent être utiles à plusieurs magasins, alors les ajouter en tant qu'outils au dossier [scripts/outils](scripts/outils/)
-> Si vous avez besoin de fonctions intermédiaires ne donnant pas lieu à une sortie de test, alors les ajout au dossier [scripts/utils](scripts/utils/)
+> Si vous pensez que des fonctions peuvent être utiles à plusieurs magasins, alors les ajouter en tant qu'outils au dossier [02_outils/scripts](02_outils/scripts)
+> Si vous avez besoin de fonctions intermédiaires ne donnant pas lieu à une sortie de test, alors les ajout au dossier [02_outils/scripts/utils](02_outils/scripts/utils/)
 
 Si vous souhaitez ajouter un outil :
-1. Vous pouvez utiliser les fonctions existantes : par exemple ajouter une fonction test dans [scripts/outils/fonctions_tests](scripts/outils/fonctions_tests) et l'utiliser dans [scripts/outils/nettoyage.py](scripts/outils/nettoyage.py)
-1. Créer une ou plusieurs fonction qui créent de nouveaux dataframes (prendre pour exemple : indicateur_utilisation_intrant dans [scripts/outils/indicateur.py](scripts/outils/indicateur.py)
+1. Vous pouvez utiliser les fonctions existantes : par exemple dans [02_outils/scripts/utils/fonctions_utiles.py](02_outils/scripts/utils/fonctions_utiles.py) et l'utiliser dans [02_outils/scripts/nettoyage.py](02_outils/scripts/nettoyage.py)
+1. Créer une ou plusieurs fonction qui créent de nouveaux dataframes (prendre pour exemple : indicateur_utilisation_intrant dans [02_outils/scripts/indicateur.py](scripts/outils/indicateur.py))
 
 > [!WARNING]  
 > Le nouveau script doit respecter les contraintes imposées par pylint (https://pylint.pycqa.org/en/latest/tutorial.html)
@@ -47,7 +60,7 @@ Si vous souhaitez ajouter un outil :
 
 Si vous souhaitez archiver un script qui ne s'intègre pas dans le processus automatisé :
 
-1. Déposer simplement votre nouveau script dans le répertoire [scripts/depot/](scripts/depot/)
+1. Déposer simplement votre nouveau script dans le répertoire [02_outils/depot/](02_outils/depot/)
 
 ### Mettre en place des tests unitaires
 Les tests unitaires sont des exemples permettant d'assurer que les fonctions crées ont le comportement attendu. 
@@ -57,7 +70,7 @@ Les tests unitaires nécessitent :
 2) l'ensemble des tables nécessaire sous format .csv afin d'executer les fonctions pour retrouver les valeurs attendues
 
 > [!CAUTION]  
-> Si votre fonction integre des données de référentiels (catégorie reférentiel sur datagrosyst), s'en référer à la [documentation](    catalogue_script_agrosyst/tests/README.md).
+> Si votre fonction integre des données de référentiels (catégorie reférentiel sur datagrosyst), s'en référer à la [documentation](02_outils/tests/README.md).
 
 ### Push les changement
 

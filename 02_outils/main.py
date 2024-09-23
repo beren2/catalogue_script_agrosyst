@@ -347,7 +347,7 @@ entrepot_spec = {
 }
 
 external_data_spec = {
-    'tables' : [
+    'tables' : ['BDD_donnees_attendues_CAN'
     ]
 }
 
@@ -414,6 +414,7 @@ magasin_specs = {
                 'dependances' : [],
                 'generated' : [
                     'utilisation_intrant_indicateur', 
+                    'sdc_donnee_attendue'
                 ]
             },
             'outils_can' : {
