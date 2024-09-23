@@ -39,9 +39,9 @@ engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}
 conn = engine.raw_connection()
 cur = conn.cursor()
 
-DATA_PATH = '/home/bvuittenez/Bureau/utils/data/'
-EXTERNAL_DATA_PATH = '02_outils/data/external_data/'
-path_metadata = '02_outils/data/metadonnees_tests.csv'
+DATA_PATH = config.get('entrepot_local', 'data_path') 
+EXTERNAL_DATA_PATH = 'data/external_data/'
+path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
 
 
