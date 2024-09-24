@@ -81,6 +81,7 @@ test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_b7a6d23b-b6
 test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_0bd6c89b-34ca-43d6-9220-9fc593dc2a5e,donnees annuelles attendues,sdc_id,donnee_attendue
 test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_0fddb05c-50cf-424c-b3c5-2b9e919526b9,Pas de donnees attendues,sdc_id,donnee_attendue
 test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_c54e8625-a9da-4d98-b632-99cf0f4a5cd9,inconnue : hors dephy ferme ou suivi non detaille,sdc_id,donnee_attendue
+test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_65157bdd-4fe9-49f5-9cd3-53f2abc28641,inconnue dephy ferme,donnee_attendue
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_2b85c593-764d-4fb8-9c5e-cf5b7e4ce007,fr.inra.agrosyst.api.entities.CroppingPlanEntry_6070cc5d-4fac-46fa-8623-71bdc8c57869,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_b458d315-fb5d-4484-9511-2c235f445fc4,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0ee04d75-a71c-4f00-8a5c-69c3e020104f,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_f6a81255-cf9e-4e0e-8622-ec07facd07df,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e9b9c498-1815-49d9-9376-2d3e04db2532,,culture_id

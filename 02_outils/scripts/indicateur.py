@@ -95,12 +95,19 @@ def sdc_donnee_attendue(donnees):
 
     # Merge 'left' entre les donnees saisies sur agrosyst et le referentiel des donnees attendues par la CAN    
     merge = pd.merge(df_sdc, saisies_attendues_melt, left_on=['code_dephy','campagne'],right_on=['code_dephy','campagne'], how = 'left')
-
+    merge['donnee_attendue'] = merge['donnee_attendue'].fillna('')
+    
     # tag des sdc non dephy ou suivi non detaille
     merge['donnee_attendue'] = merge.apply(
-        lambda x: 'inconnue : hors dephy ferme ou suivi non detaille' if (x['donnee_attendue'] != 'inconnue dephy ferme') & (
+        lambda x: 'inconnue dephy ferme' if (x['donnee_attendue'] == '') & (
+                                             (x['type'] == 'DEPHY_FERME') &
+                                             (x['modalite_suivi_dephy'] == 'DETAILLE')) else x['donnee_attendue'] , axis=1)
+    
+    merge['donnee_attendue'] = merge.apply(
+        lambda x: 'inconnue : hors dephy ferme ou suivi non detaille' if (x['donnee_attendue'] == '') & (
                                                                         (x['type'] != 'DEPHY_FERME') |
                                                                         (x['modalite_suivi_dephy'] != 'DETAILLE')) else x['donnee_attendue'] , axis=1)
+    
     print("Repartition de l'attribution des donnees attendues")
     print(merge.groupby(by='donnee_attendue').size())
     
