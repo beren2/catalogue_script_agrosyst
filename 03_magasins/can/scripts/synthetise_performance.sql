@@ -224,7 +224,6 @@ SELECT
     recours_produits_biotiques_sansamm,
     surf_unite_de_w_humain,
     surf_unite_de_w_humain_tx_comp,
-    synthetise_id,
     tps_travail_manuel,
     tps_travail_manuel_aout,
     tps_travail_manuel_avril,

@@ -158,7 +158,6 @@ SELECT
     ift_histo_i,
     ift_histo_ts,
     ift_histo_tx_comp,
-    intervention_synthetise_id,
     nbre_de_passages,
     nbre_de_passages_aout,
     nbre_de_passages_avril,
