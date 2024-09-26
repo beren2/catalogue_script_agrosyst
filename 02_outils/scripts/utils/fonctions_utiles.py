@@ -454,7 +454,7 @@ def get_infos_all_utilisation_intrant(
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible']
     df_culture = donnees['culture']
     df_ref_culture_maa = donnees['ref_culture_maa'].loc[donnees['ref_culture_maa']['active']]
-    df_ref_acta_traitement_produit = donnees['ref_acta_traitement_produit.csv'].loc[donnees['ref_acta_traitement_produit.csv']['active']]
+    df_ref_acta_traitement_produit = donnees['ref_acta_traitement_produit'].loc[donnees['ref_acta_traitement_produit']['active']]
 
 
     test_get_infos_traitement = None

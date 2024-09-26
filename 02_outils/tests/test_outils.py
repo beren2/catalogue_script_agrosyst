@@ -103,7 +103,7 @@ def test_utilisation_intrant_dose_realise():
         'ref_adventice',
         'dose_ref_cible', 
         'ref_culture_maa', 
-        'ref_acta_traitement_produit.csv'
+        'ref_acta_traitement_produit'
     ]
 
     donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
@@ -166,7 +166,7 @@ def test_utilisation_intrant_dose_synthetise():
         'ref_adventice',
         'dose_ref_cible', 
         'ref_culture_maa',
-        'ref_acta_traitement_produit.csv'
+        'ref_acta_traitement_produit'
     ]
 
     donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
@@ -278,7 +278,7 @@ def test_get_dose_ref():
         'ref_adventice',
         'dose_ref_cible',
         'ref_culture_maa',
-        'ref_acta_traitement_produit.csv'
+        'ref_acta_traitement_produit'
     ]
     donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
     
