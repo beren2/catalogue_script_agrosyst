@@ -101,7 +101,9 @@ def test_utilisation_intrant_dose_realise():
         'ref_nuisible_edi',
         'ref_correspondance_groupe_cible', 
         'ref_adventice',
-        'dose_ref_cible'
+        'dose_ref_cible', 
+        'ref_culture_maa', 
+        'refactatraitementsproduit'
     ]
 
     donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
@@ -162,7 +164,9 @@ def test_utilisation_intrant_dose_synthetise():
         'ref_nuisible_edi',
         'ref_correspondance_groupe_cible', 
         'ref_adventice',
-        'dose_ref_cible'
+        'dose_ref_cible', 
+        'ref_culture_maa',
+        'refactatraitementsproduit'
     ]
 
     donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
@@ -208,9 +212,22 @@ def test_get_infos_traitement():
     df_utilisation_intrant_realise = pd.read_csv(path_utilisation_intrant_realise, sep = ',')
     df_intrant = pd.read_csv(path_intrant, sep = ',')
 
+    # obtention des métadonnées des "fonctions_tests" (attention, rien à voir avec les tests unitaires, juste des fonctions qui viennent
+    # qualifier les données en testant si des valeurs dépassent certaines valeurs seuilles).
+    path_data = '02_outils/data/'
+    path_metadonnes_tests = path_data+'metadonnees_tests.csv'
+    path_metadonnes_seuils = path_data+'metadonnees_seuils.csv'
+    df_metadonnees_tests = pd.read_csv(path_metadonnes_tests, sep = ',')
+    df_metatonnees_seuils = pd.read_csv(path_metadonnes_seuils, sep = ',')
+
+    # obtention des métadonnées des référentiels
+    path_ref_acta_traitement_produit = path_data+'referentiels/ref_acta_traitement_produit.csv'
+    df_ref_acta_traitement_produit = pd.read_csv(path_ref_acta_traitement_produit)
+    df_ref_acta_traitement_produit = df_ref_acta_traitement_produit.loc[df_ref_acta_traitement_produit['active']]
+
     # application de la méthode à tester
     utilisation_intrant_id_code_amm_expected = df_metadonnees[['id_ligne', 'valeur_attendue', 'colonne_testee']]
-    test_get_infos_traitement_realise = fonctions_utiles.get_infos_traitement(df_utilisation_intrant_realise[['id', 'intrant_id']], df_intrant)
+    test_get_infos_traitement_realise = fonctions_utiles.get_infos_traitement(df_utilisation_intrant_realise[['id', 'intrant_id']], df_intrant, df_ref_acta_traitement_produit)
 
     # on merge les dataframe obtenus et attendus
     left = utilisation_intrant_id_code_amm_expected.rename(columns={
@@ -252,16 +269,19 @@ def test_get_dose_ref():
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
 
+
     # obtention des référentiels
     path_ref = '02_outils/data/referentiels/'
     refs_names = [
         'ref_nuisible_edi',
         'ref_correspondance_groupe_cible', 
         'ref_adventice',
-        'dose_ref_cible'
+        'dose_ref_cible',
+        'ref_culture_maa',
+        'refactatraitementsproduit'
     ]
     donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
-
+    
     # obtention de la dose de référence à partir de la fonction get_infos_all_utilisation_intrant
     df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(donnees, saisie = 'realise')
     df_utilisation_intrant_synthetise = fonctions_utiles.get_infos_all_utilisation_intrant(donnees, saisie = 'synthetise')
@@ -616,6 +636,21 @@ def test_get_intervention_synthetise_action_outils_can():
     ]
     path_data = '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+def test_get_intervention_realise_action_outils_can():
+    """
+        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
+    """
+
+    identifiant_test = 'test_get_intervention_realise_action_outils_can'
+    df_names = [   
+        'intervention_realise', 'action_realise'
+    ]
+    path_data = '02_outils/tests/data/test_get_intervention_realise_action_outils_can/'
+    fonction_to_apply = outils_can.get_intervention_realise_action_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)

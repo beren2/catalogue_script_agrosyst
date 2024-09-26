@@ -40,6 +40,7 @@ conn = engine.raw_connection()
 cur = conn.cursor()
 
 DATA_PATH = config.get('entrepot_local', 'data_path') 
+print(DATA_PATH)
 EXTERNAL_DATA_PATH = 'data/external_data/'
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
@@ -175,7 +176,13 @@ def load_ref(verbose=False):
     global donnees
     path = 'data/referentiels/'
     refs = [
-        'ref_nuisible_edi', 'ref_correspondance_groupe_cible', 'ref_adventice', 'dose_ref_cible'
+        'ref_nuisible_edi', 
+        'ref_correspondance_groupe_cible',
+        'ref_adventice', 
+        'dose_ref_cible',
+        'refactatraitementsproduit',
+        'conversion_utilisation_intrant',
+        'ref_culture_maa'
     ]
     import_dfs(refs, path, verbose=True)
 
@@ -189,7 +196,7 @@ def create_category_nettoyage():
     # nettoyage_intervention_realise
     suffixe_table = 'intervention'
     name_table = 'intervention_realise'
-    df_nettoyage_intervention_realise = nettoyage.nettoyage_intervention(donnees)
+    df_nettoyage_intervention_realise = nettoyage.nettoyage_intervention(donnees, path_metadata='data/')
 
     export_to_entrepot(df_nettoyage_intervention_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_intervention_realise.to_csv('entrepot_'+name_table+'_nettoyage.csv')
@@ -197,7 +204,7 @@ def create_category_nettoyage():
     # nettoyage_utilisation_intrant_realise
     suffixe_table = 'utilisation_intrant'
     name_table = 'utilisation_intrant_realise'
-    df_nettoyage_utilisation_intrant_realise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='realise', verbose=False)
+    df_nettoyage_utilisation_intrant_realise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='realise', verbose=False, path_metadata='data/')
 
     export_to_entrepot(df_nettoyage_utilisation_intrant_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_realise.to_csv(prefixe_source+suffixe_table+'_realise.csv')
@@ -205,7 +212,7 @@ def create_category_nettoyage():
     # nettoyage_utilisation_intrant_synthetise
     suffixe_table = 'utilisation_intrant'
     name_table = 'utilisation_intrant_synthetise'
-    df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False)
+    df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False, path_metadata='data/')
 
     export_to_entrepot(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
@@ -347,7 +354,8 @@ entrepot_spec = {
 }
 
 external_data_spec = {
-    'tables' : ['BDD_donnees_attendues_CAN'
+    'tables' : [
+        'BDD_donnees_attendues_CAN'
     ]
 }
 

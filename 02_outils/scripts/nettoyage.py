@@ -6,7 +6,7 @@ import numpy as np
 import scripts.utils.fonction_nettoyage as ft
 
 
-def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False):
+def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbose=False, path_metadata = '02_outils/data/'):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
@@ -28,8 +28,8 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
                     res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
     # lecture des fichiers de métadonnées
-    df_metadonnees_seuils = pd.read_csv('02_outils/data/metadonnees_seuils.csv', index_col='id')
-    df_metadonnees_tests = pd.read_csv('02_outils/data/metadonnees_tests.csv', index_col='id')
+    df_metadonnees_seuils = pd.read_csv(path_metadata+'metadonnees_seuils.csv', index_col='id')
+    df_metadonnees_tests = pd.read_csv(path_metadata+'metadonnees_tests.csv', index_col='id')
 
     # selection des données pertinentes et conversion en dictionnaires
     metadata_seuils = df_metadonnees_seuils
@@ -70,7 +70,7 @@ def nettoyage_utilisation_intrant(donnees, saisie='realise', params=None, verbos
     return res_2
 
 
-def nettoyage_intervention(donnees, params=None, verbose=False):
+def nettoyage_intervention(donnees, params=None, verbose=False, path_metadata='02_outils/data/'):
     """
         Retourne une série de vecteurs binaire.
         La ligne i de cette série contient le vecteur test associé à la ligne i
@@ -86,8 +86,8 @@ def nettoyage_intervention(donnees, params=None, verbose=False):
                     res (Serie) : série binaire de taille n x m indiquant si les tests sont passés
     """
     # lecture des fichiers de métadonnées
-    df_metadonnees_seuils = pd.read_csv('02_outils/data/metadonnees_seuils.csv', index_col='id')
-    df_metadonnees_tests = pd.read_csv('02_outils/data/metadonnees_tests.csv', index_col='id')
+    df_metadonnees_seuils = pd.read_csv(path_metadata+'metadonnees_seuils.csv', index_col='id')
+    df_metadonnees_tests = pd.read_csv(path_metadata+'metadonnees_tests.csv', index_col='id')
 
     # selection des données pertinentes et conversion en dictionnaires
     metadata_seuils = df_metadonnees_seuils

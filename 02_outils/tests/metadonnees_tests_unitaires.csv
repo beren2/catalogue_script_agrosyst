@@ -81,7 +81,7 @@ test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_b7a6d23b-b6
 test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_0bd6c89b-34ca-43d6-9220-9fc593dc2a5e,donnees annuelles attendues,sdc_id,donnee_attendue
 test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_0fddb05c-50cf-424c-b3c5-2b9e919526b9,Pas de donnees attendues,sdc_id,donnee_attendue
 test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_c54e8625-a9da-4d98-b632-99cf0f4a5cd9,inconnue : hors dephy ferme ou suivi non detaille,sdc_id,donnee_attendue
-test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_65157bdd-4fe9-49f5-9cd3-53f2abc28641,inconnue dephy ferme,donnee_attendue
+test_sdc_donnee_attendue,fr.inra.agrosyst.api.entities.GrowingSystem_65157bdd-4fe9-49f5-9cd3-53f2abc28641,inconnue dephy ferme,donnee_attendue,
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_2b85c593-764d-4fb8-9c5e-cf5b7e4ce007,fr.inra.agrosyst.api.entities.CroppingPlanEntry_6070cc5d-4fac-46fa-8623-71bdc8c57869,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_b458d315-fb5d-4484-9511-2c235f445fc4,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0ee04d75-a71c-4f00-8a5c-69c3e020104f,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_f6a81255-cf9e-4e0e-8622-ec07facd07df,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e9b9c498-1815-49d9-9376-2d3e04db2532,,culture_id
@@ -109,24 +109,6 @@ test_get_intervention_realise_culture_outils_can,fr.inra.agrosyst.api.entities.e
 test_get_intervention_realise_culture_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_c290942a-2556-4ed9-b39e-e6af2de3604b,Maïs - DKC4814 ; Maïs - DKC5141 ; Maïs - P9900,,esp_var
 test_get_intervention_realise_culture_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_2a154564-6cc0-4f15-8dc5-c106fd017951,Sarrasin ; Serradelle ; Lin Oléagineux ; Maïs ; Tournesol ; Avoine brésilienne ; Triticale ; Colza Fourrager / Fourrage Hiver ; Vesce commune Hiver ; Trèfle incarnat,,esp_var
 test_get_intervention_realise_culture_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_cc01bf89-d6aa-4ae9-b773-c4acb9c4aad2,Blé tendre Hiver Amidon,,esp_var
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,Semis direct,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,5.666666666666667,,densite_semis
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,KG_PAR_HA,,unite_semis
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,non,,traitement_chimique_semis
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,Mélange enherbement non fourrager,,especes_semees
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,non,,inoculation_biologique_semis
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,Application de produits avec AMM,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,100.0,,proportion_surface_traitee_phyto
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,100.0,,psci_phyto
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,Application de produits sans AMM,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,100.0,,proportion_surface_traitee_lutte_bio
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,100.0,,psci_lutte_bio
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,50.0,,psci_phyto
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,"SEMENCES_DE_FERME, SEMENCES_DE_FERME, SEMENCES_DE_FERME",,type_semence
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,"20.0 , 40.0 , 130.0",,densite_semis
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,"KG_PAR_HA, KG_PAR_HA, KG_PAR_HA",,unite_semis
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,Pois Fourrager / Fourrage Hiver ; Triticale ; Avoine Blanche Hiver,,especes_semees
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,"Fertilisation minérale ; Travail de surface (binage, hersage, griffage, ...)",,interventions_actions
 test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0081a991-49bf-422e-b1bf-c931c307acb9,TRAITEMENTS PHYTO/N LIQUIDE,,combinaison_outils_nom
 test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0081a991-49bf-422e-b1bf-c931c307acb9,TRACTEURS CLASSIQUES,,tracteur_ou_automoteur
 test_get_intervention_realise_combinaison_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0081a991-49bf-422e-b1bf-c931c307acb9,PULVERISATEURS,,outils
@@ -403,3 +385,37 @@ test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.Abstrac
 test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,0.0,,nonvalorisation_pct
 test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,0.0,,nonvalorisation_pct
 test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,0.0,,nonvalorisation_pct
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,Application de produits avec AMM,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,Semis classique,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,Application de produits sans AMM,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,Application de produits avec AMM,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,Semis direct,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,"Fertilisation minérale ; Travail de surface (binage, hersage, griffage, ...)",,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,100.0,,proportion_surface_traitee_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,,,proportion_surface_traitee_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,,,proportion_surface_traitee_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,100.0,,proportion_surface_traitee_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,,,proportion_surface_traitee_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,,,proportion_surface_traitee_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,,,psci_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,,,psci_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,100.0,,psci_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,,,psci_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,,,psci_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,50.0,,psci_phyto
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,,,proportion_surface_traitee_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,100.0,,proportion_surface_traitee_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,,,proportion_surface_traitee_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,,,proportion_surface_traitee_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,,,proportion_surface_traitee_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,,,psci_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,100.0,,psci_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,,,psci_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,,,psci_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,,,psci_lutte_bio
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,,,quantite_eau_mm
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,,,quantite_eau_mm
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,,,quantite_eau_mm
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,,,quantite_eau_mm
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,,,quantite_eau_mm
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,,,quantite_eau_mm

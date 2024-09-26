@@ -188,7 +188,7 @@ def get_intervention_realise_action_outils_can(
         'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm' 
     ]]
 
-    return intervention_actions_indicateurs
+    return intervention_actions_indicateurs.rename(columns={'intervention_realise_id' : 'id'})
 
 def get_intervention_realise_semence_outils_can(
         donnees

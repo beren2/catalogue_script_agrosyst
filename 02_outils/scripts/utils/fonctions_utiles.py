@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np 
 
 
-def get_infos_traitement(df_utilisation_intrant, df_intrant):
+def get_infos_traitement(df_utilisation_intrant, df_intrant, df_ref_acta_traitement_produit):
     """
         Retourne un dataframe où les utilisations d'intrants sont complétées par des méta-informations utiles.
         Paramètres :
@@ -25,14 +25,6 @@ def get_infos_traitement(df_utilisation_intrant, df_intrant):
         ATTENTION : 
             Pour l'instant, cette fonction ne permet pas d'obtenir le code amm d'un traitement de semence et retournera : null
     """
-    # Déclaration des chemins des données 
-    path_ref_acta_traitement_produit = '02_outils/data/referentiels/ref_acta_traitement_produit.csv'
-
-    # Import des données utiles
-    df_ref_acta_traitement_produit = pd.read_csv(path_ref_acta_traitement_produit)
-
-    # Nettoyage des référentiels
-    df_ref_acta_traitement_produit = df_ref_acta_traitement_produit.loc[df_ref_acta_traitement_produit['active']]
 
     # Obtention de l'identifiant de l'intrant de référence
     left = df_utilisation_intrant
@@ -52,7 +44,8 @@ def get_infos_culture_realise(
         df_noeuds_realise,
         df_plantation_perenne_realise,
         df_plantation_perenne_phase_realise,
-        df_composant_culture
+        df_composant_culture,
+        df_ref_culture_maa
     ):
     """
         Retourne un dataframe qui contient une ligne pour la clé (utilisation_id * code_culture_maa * espece_id)
@@ -68,15 +61,6 @@ def get_infos_culture_realise(
                     'espece_id' : identifiant de l'espèce contenue dans la culture où est appliquée l'intervention
                     'code_culture_maa' :  code culture de l'espèce en question
     """
-    # Déclaration des chemins des données 
-    path_culture_maa = '02_outils/data/referentiels/ref_culture_maa.csv'
-
-    # Import des données utiles
-    df_ref_culture_maa = pd.read_csv(path_culture_maa)
-
-    # Nettoyage des référentiels
-    df_ref_culture_maa = df_ref_culture_maa.loc[df_ref_culture_maa['active']]
-    
     #----------------------------------#
     # TRAVAIL POUR LES CYCLES ASSOLÉES |
     #----------------------------------#
@@ -167,7 +151,8 @@ def get_infos_culture_synthetise(
         df_plantation_perenne_synthetise,
         df_plantation_perenne_phase_synthetise,
         df_composant_culture, 
-        df_culture
+        df_culture,
+        df_ref_culture_maa
     ):
     """
         Retourne un dataframe qui contient une ligne pour la clé (utilisation_id * code_culture_maa * espece_id)
@@ -183,15 +168,6 @@ def get_infos_culture_synthetise(
                     'espece_id' : identifiant de l'espèce contenue dans la culture où est appliquée l'intervention
                     'code_culture_maa' :  code culture de l'espèce en question
     """
-    # Déclaration des chemins des données 
-    path_culture_maa = '02_outils/data/referentiels/ref_culture_maa.csv'
-
-    # Import des données utiles
-    df_ref_culture_maa = pd.read_csv(path_culture_maa)
-
-    # Nettoyage des référentiels
-    df_ref_culture_maa = df_ref_culture_maa.loc[df_ref_culture_maa['active']]
-
     #----------------------------------#
     # TRAVAIL POUR LES CYCLES ASSOLÉES |
     #----------------------------------#
@@ -470,13 +446,16 @@ def get_infos_all_utilisation_intrant(
     """
 
 
-    df_utilisation_intrant = donnees['utilisation_intrant_'+saisie];
+    df_utilisation_intrant = donnees['utilisation_intrant_'+saisie]
 
     # obtention des données
     df_intrant = donnees['intrant']
     df_composant_culture = donnees['composant_culture']
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible']
     df_culture = donnees['culture']
+    df_ref_culture_maa = donnees['ref_culture_maa'].loc[donnees['ref_culture_maa']['active']]
+    df_ref_acta_traitement_produit = donnees['refactatraitementsproduit'].loc[donnees['refactatraitementsproduit']['active']]
+
 
     test_get_infos_traitement = None
     test_get_infos_culture = None
@@ -490,9 +469,10 @@ def get_infos_all_utilisation_intrant(
         df_plantation_perenne_realise = donnees['plantation_perenne_realise']
         df_plantation_perenne_phase_realise = donnees['plantation_perenne_phases_realise']
         df_noeuds_realise = donnees['noeuds_realise']
+
     
         # test de l'affectation des informations du traitement
-        test_get_infos_traitement = get_infos_traitement(df_utilisation_intrant[['id', 'intrant_id']], df_intrant)
+        test_get_infos_traitement = get_infos_traitement(df_utilisation_intrant[['id', 'intrant_id']], df_intrant, df_ref_acta_traitement_produit)
 
         # test de l'affectation des informations de la culture
         test_get_infos_culture = get_infos_culture_realise(
@@ -502,6 +482,7 @@ def get_infos_all_utilisation_intrant(
             df_plantation_perenne_realise,
             df_plantation_perenne_phase_realise,
             df_composant_culture,
+            df_ref_culture_maa
         )
 
         # test de l'affectation des informations de la cible
@@ -520,7 +501,7 @@ def get_infos_all_utilisation_intrant(
         df_connection_synthetise = donnees['connection_synthetise']
     
         # test de l'affectation des informations du traitement
-        test_get_infos_traitement = get_infos_traitement(df_utilisation_intrant[['id', 'intrant_id']], df_intrant)
+        test_get_infos_traitement = get_infos_traitement(df_utilisation_intrant[['id', 'intrant_id']], df_intrant, df_ref_acta_traitement_produit)
 
         # test de l'affectation des informations de la culture
         test_get_infos_culture = get_infos_culture_synthetise(
@@ -531,7 +512,8 @@ def get_infos_all_utilisation_intrant(
             df_plantation_perenne_synthetise,
             df_plantation_perenne_phase_synthetise,
             df_composant_culture,
-            df_culture
+            df_culture,
+            df_ref_culture_maa
         )
 
         # test de l'affectation des informations de la cible
@@ -701,11 +683,8 @@ def convert(group, target_unit, df_converter):
 def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
     """permet de convertir toutes les unites d'utilisation d'intrant en une unité recherchée"""
 
-    # Déclaration des chemins des données
-    path_converter = '02_outils/data/referentiels/conversion_utilisation_intrant.csv'
-
     # Import des données utiles
-    df_converter = pd.read_csv(path_converter, sep=';')
+    df_converter = pd.read_csv(donnees['coneversion_utilisation_intrant'], sep=';')
 
     res = donnees['utilisation_intrant'].groupby('unite').apply(lambda x :
         convert(x, target_unit, df_converter)
