@@ -684,7 +684,7 @@ def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
     """permet de convertir toutes les unites d'utilisation d'intrant en une unité recherchée"""
 
     # Import des données utiles
-    df_converter = pd.read_csv(donnees['coneversion_utilisation_intrant'], sep=';')
+    df_converter = donnees['conversion_utilisation_intrant']
 
     res = donnees['utilisation_intrant'].groupby('unite').apply(lambda x :
         convert(x, target_unit, df_converter)
