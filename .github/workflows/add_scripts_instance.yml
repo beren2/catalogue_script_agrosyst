@@ -40,11 +40,21 @@ jobs:
         password: ${{ secrets.PASSWORD_TEST }}
         port: ${{ secrets.PORT }}
         script: docker cp /home/${{ secrets.USERNAME_TEST }}/03_magasins/* datagrosyst-tests-datagrosyst-1:/app/magasins/
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.HOST_PROD }}
+        username: ${{ secrets.USERNAME_PROD }}
+        password: ${{ secrets.PASSWORD_PROD }}
+        port: ${{ secrets.PORT }}
+        overwrite: true
+        source: "03_magasins/"
+        target: "/home/${{ secrets.USERNAME_TEST }}"
     - name: Add new magasins scripts in prod
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.HOST_TEST }}
-        username: ${{ secrets.USERNAME_TEST }}
-        password: ${{ secrets.PASSWORD_TEST }}
+        host: ${{ secrets.HOST_PROD }}
+        username: ${{ secrets.USERNAME_PROD }}
+        password: ${{ secrets.PASSWORD_PROD }}
         port: ${{ secrets.PORT }}
-        script: docker cp /home/${{ secrets.USERNAME_TEST }}/03_magasins/* datagrosyst-datagrosyst-1:/app/magasins/
+        script: docker cp /home/${{ secrets.USERNAME_PROD }}/03_magasins/* datagrosyst-prod-datagrosyst-1:/app/magasins/
