@@ -225,7 +225,7 @@ left join refprixautre rpa on rpa.campaign = d.campaign and roi.caracteristic1 =
 -- 
 
 -- AJOUT DES PRODUITS PHYTOS (INTRANT TYPE = APPLICATION DE PRODUITS PHYTOSANITAIRES / TRAITEMENTS DE SEMENCE / LUTTE BIOLOGIQUE)
-insert into entrepot_intrant (id, type, type_produit, domaine_id, ref_id, nom_utilisateur, 
+insert into entrepot_intrant (id, type, type_produit, domaine_id, ref_id, ref_nom, nom_utilisateur, 
 code_amm, biocontrole, prix_saisi, prix_saisi_unite, prix_ref, prix_ref_unite, unite_application, semence_id)
 select 
 		dppi.topiaid as id,
@@ -233,6 +233,7 @@ select
 		dppi.producttype as type_produit,
 		adisu.domain as domain_id,
 		dppi.refinput as ref_id,
+		ratp.nom_produit as ref_nom,
 		adisu.inputname as nom_utilisateur,
 		ratp.code_amm as code_amm,
 		ratp.nodu biocontrole,
