@@ -7,6 +7,103 @@ import numpy as np
 
 # FONCTIONS GÉNÉRALES 
 
+UNITE_APPLICATION = {
+    'AA_HA': 'Aa/ha',
+    'ADULTES_M2': 'adultes/m²',
+    'ANA_LINE_SEMAINE_HA': 'Ana-line/semaine/ha',
+    'AUXILIAIRES_M2': 'auxiliaires/m²',
+    'CARTONETTES_HA': 'cartonettes/ha',
+    'DIFFUSEURS_HA': 'diffuseurs/ha',
+    'DI_HA': 'Di/ha',
+    'DOSES_200M2': 'doses/200 m²',
+    'DS_HA': 'Ds/ha',
+    'DS_M2': 'Ds/m²',
+    'ELEVAGES_500M2': 'élevages/500 m²',
+    'G': 'g',
+    'G_100KG': 'g/100 kg',
+    'G_100L_D_EAU': "g/100 L d'eau",
+    'G_100M2': 'g/100 m²',
+    'G_10M2': 'g/10 m²',
+    'G_160M2': 'g/160 m²',
+    'G_BOUTURE': 'g/bouture',
+    'G_HA': 'g/ha',
+    'G_HL': 'g/hL',
+    'G_KG': 'g/kg',
+    'G_L': 'g/L',
+    'G_L_10M2': 'g/L/10 m²',
+    'G_M2': 'g/m²',
+    'G_M3': 'g/m³',
+    'G_PALME': 'g/palme',
+    'G_PIED': 'g/pied',
+    'G_PLANT': 'g/plant',
+    'G_Q': 'g/q',
+    'G_T': 'g/t',
+    'G_UNITE_SEMENCES': 'g/unité de semences',
+    'HM_M2': 'hm/m²',
+    'INDIVIDUS_ARBRE': 'individus/arbre',
+    'INDIVIDUS_FOYER': 'individus/foyer',
+    'INDIVIDUS_HA': 'individus/ha',
+    'INDIVIDUS_M2': 'individus/m²',
+    'IND_M2': 'ind/m²',
+    'KG_100M2': 'kg/100 m²',
+    'KG_HA': 'kg/ha',
+    'KG_HL': 'kg/hL',
+    'KG_M2': 'kg/m²',
+    'KG_M3': 'kg/m³',
+    'KG_Q': 'kg/q',
+    'KG_T': 'kg/t',
+    'KG_UNITE': 'kg/unité',
+    'LARVES_50PUCERONS': 'larves/50 pucerons',
+    'LARVES_5_A_10M2': 'larves/5 à 10 m²',
+    'LARVES_D_AB_COLONIE_DE_PUCERONS': "larves d'Ab/colonie de pucerons",
+    'LARVES_M2': 'larves/m²',
+    'L_100000_GRAINES': 'L/100000 graines',
+    'L_1000M2': 'l/1000m²',
+    'L_1000PLANTS': 'L/1000 plants',
+    'L_100M2': 'L/100 m²',
+    'L_100M3': 'L/100 m³',
+    'L_10M2': 'L/10 m²',
+    'L_HA': 'L/ha',
+    'L_HL': 'L/hL',
+    'L_KG': 'L/kg',
+    'L_KG_APPAT': 'L/kg appat',
+    'L_M2': 'L/m²',
+    'L_M3': 'L/m³',
+    'L_OU_KG_KG': 'L ou kg/kg',
+    'L_PALMIER': 'L/palmier',
+    'L_Q': 'L/q',
+    'L_T': 'L/t',
+    'L_UNITE': 'L/unité',
+    'L_UNITE_SEMENCES': 'L/unité de semences',
+    'MG_PLANT': 'mg/plant',
+    'MILLIARDS_HA': 'milliards/ha',
+    'MILLIONS_100M2': 'millions/100 m²',
+    'MILLIONS_ARBRE': 'millions/arbre',
+    'MILLIONS_L_BOUILLIE': 'millions/L de bouillie',
+    'MILLIONS_M2': 'millions/m²',
+    'ML_100M2': 'mL/100 m²',
+    'ML_10M2': 'ml/10 m²',
+    'ML_5000GRAINES': 'mL/5000 graines',
+    'ML_HA': 'mL/ha',
+    'ML_KG': 'mL/kg',
+    'ML_L': 'mL/L',
+    'ML_M2': 'mL/m²',
+    'ML_T': 'mL/t',
+    'ML_UNIT': 'ml/unité',
+    'MOMIES_500M2': 'momies/500 m²',
+    'MOMIES_M2': 'momies/m²',
+    'PERCENT': '%',
+    'PER_M2': '/m²',
+    'PIEGES_HA': 'pièges/ha',
+    'SACHETS_HA': 'sachets/ha',
+    'TABLETTES_HA': 'tablettes/ha',
+    'TA_HA': 'Ta/ha',
+    'T_HA': 't/ha',
+    'UNITE_HA': 'unité/ha',
+    'UNITE_HL': 'unité/hl'
+}
+
+
 def map_boolean(values, sep='; '):
     """ permet de transformer les booléen en string """
     mapping = {'f': 'non', 't': 'oui'}
@@ -505,7 +602,7 @@ def get_intervention_realise_outils_can(
     )
     merge = pd.merge(left, right, on='intervention_realise_id', how='left')
 
-    return merge
+    return merge.set_index('intervention_realise_id')
 
 # FONCTIONS POUR LES INTERVENTIONS EN SYNTHÉTISÉ
 
@@ -787,7 +884,7 @@ def get_intervention_synthetise_semence_outils_can(
     df_semence = donnees['semence']
     df_composant_culture = donnees['composant_culture']
     df_espece = donnees['espece']
-    df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise']
+    df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise'].loc[~donnees['utilisation_intrant_synthetise']['semence_id'].isna()]
 
     # OBTENTION DES INFORMATIONS POUR LES INTERVENTIONS DE TYPE SEMENCES.
     left = df_semence.rename(columns={'espece_id':'composant_culture_id'}) # attention, on est obligé de corriger car il y a une erreur dans le nom de la colonne sur Datagrosyst.
@@ -951,10 +1048,73 @@ def get_intervention_synthetise_outils_can(
     )
     merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
-    return merge
+    # ajout des informations sur les intrants utilisés dans l'intervention :
+    left = merge
+    right = get_intervention_synthetise_intrants_outils_can(donnees).rename(
+        columns={'id' : 'intervention_synthetise_id'}
+    )
+    merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
+    # ajout des informations sur les interventions cible : 
+    left = merge
+    right = get_intervention_synthetise_cibles_outils_can(donnees).rename(
+        columns={'id' : 'intervention_synthetise_id'}
+    )
+    merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+    
+    return merge.rename(columns={'intervention_synthetise_id': 'id'})
 
+def get_intervention_synthetise_intrants_outils_can(
+        donnees
+):
+    """
+        Permet d'obtenir pour chaque intervention synthétisé, la liste des intrants utilisés dans l'intervnetion, 
+        dans le format attendu par la CAN : 
+        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1
+        :  "CUPROXAT SC (0.5 L/ha), CUIVROL (0.5 kg/ha), HELIOSOUFRE S (4.0 L/ha), LAMINAFLOR (2.0 l/ha)"
+    """
+    df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise'].set_index('id')
+    df_intrant = donnees['intrant'].set_index('id')
 
+    df_unite_application = pd.DataFrame.from_records([UNITE_APPLICATION]).melt().rename(
+        columns={'variable' : 'unite_agrosyst', 'value' : 'unite_utilisateur'}
+    )
+
+    left = df_utilisation_intrant_synthetise
+    right = df_intrant
+    merge = pd.merge(left, right, left_on='intrant_id', right_index=True, how='left')
+
+    left = merge
+    right = df_unite_application
+    merge = pd.merge(left, right, left_on='unite', right_on='unite_agrosyst')
+
+    # utiliser le ref_nom ou le nom utilisateur ? --> il semble que ce soit le nom_utilisateur
+    merge.loc[:, 'interventions_intrants'] = (merge['nom_utilisateur']) + ' ('+merge['dose'].astype('str')+ ' '+merge['unite_utilisateur']+')'
+    merge['interventions_intrants'] = merge['interventions_intrants'].fillna('')
+
+    res = merge[['interventions_intrants', 'intervention_synthetise_id']].groupby('intervention_synthetise_id').agg({
+        'interventions_intrants' : lambda x: ', '.join([item for item in x if item.strip()])
+    })
+
+    return res.reset_index().rename(columns={'intervention_synthetise_id' : 'id'})
+
+def get_intervention_synthetise_cibles_outils_can(
+        donnees
+):
+    """
+        Permet d'obtenir pour chaque intervention synthétisé, la liste des cibles concernées par l'intervention, dans le format attendu par la CAN
+        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1
+        :  "Mildiou, Oïdium"
+    """
+    df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise'].set_index('id')
+    df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
+
+    df_utilisation_intrant_synthetise['intrant_phyto_cible_nom'] = df_utilisation_intrant_synthetise['intrant_phyto_cible_nom'].fillna('')
+    res = df_utilisation_intrant_synthetise[['intrant_phyto_cible_nom', 'intervention_synthetise_id']].groupby('intervention_synthetise_id').agg({
+        'intrant_phyto_cible_nom' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
+    }).rename(columns={'intrant_phyto_cible_nom' : 'interventions_cibles_trait'})
+
+    return res.reset_index().rename(columns={'intervnetion_synthetise_id' : 'id'})
 
 # FONCTIONS POUR LES PARCELLES NON-RATTACHÉES
 
@@ -1046,6 +1206,8 @@ def get_culture_outils_can(
     df_espece = donnees['espece'].set_index('id')
 
     df_espece = df_espece.fillna('')
+
+    # on a besoin d'agréger toutes les informations sur les espèces de la culture
     df_espece['complet_espece_edi'] = (
         df_espece['libelle_espece_botanique']
         +' '
@@ -1056,13 +1218,19 @@ def get_culture_outils_can(
         +df_espece['libelle_destination_aee']
     ).str.replace('\n', '<br>').str.replace('  ', ' ').str.strip()
 
+    # on a aussi besoin, pour les performances, de l'information sans toutes les informations
+    df_espece['complet_espece_edi_nettoye'] = (
+        df_espece['libelle_espece_botanique']
+    ).str.replace('\n', '<br>').str.replace('  ', ' ').str.strip()
+
     # ajout des informations utiles sur la variété et sur l'espèce au composant de culture
     left = df_composant_culture
-    right = df_espece['complet_espece_edi']
+    right = df_espece[['complet_espece_edi', 'complet_espece_edi_nettoye']]
     df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
 
     res = df_composant_culture_extanded.groupby('culture_id').agg({
-        'complet_espece_edi' : ' ; '.join
+        'complet_espece_edi' : ' ; '.join,
+        'complet_espece_edi_nettoye' : ';'.join
     })
 
     return res.reset_index().rename(columns={'culture_id' : 'id'})
