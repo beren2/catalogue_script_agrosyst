@@ -39,9 +39,9 @@ def get_aggreged_from_utilisation_intrant_synthetise(
     right = df_connection_synthetise[['id', 'cible_noeuds_synthetise_id']].rename(columns={'id' : 'connection_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'connection_synthetise_id', how='left')
 
-    # obtention du noeud sur lequel a laquelle a lieu l'action
+    # obtention du noeud et de la culture sur lequel a lieu l'action
     left = merge_assolee
-    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    right = df_noeud_synthetise[['id', 'synthetise_id', 'culture_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
 
     #----------#
@@ -52,9 +52,9 @@ def get_aggreged_from_utilisation_intrant_synthetise(
     right = df_plantation_perenne_phases_synthetise[['id', 'plantation_perenne_synthetise_id']].rename(columns={'id' : 'plantation_perenne_phases_synthetise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_phases_synthetise_id', how='left')
 
-    # obtention de la plantation sur perenne sur lequel a laquelle a lieu l'action
+    # obtention de la plantation perenne et du culture_code sur lequel a laquelle a lieu l'action
     left = merge_perenne
-    right = df_plantation_perenne_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'plantation_perenne_synthetise_id'})
+    right = df_plantation_perenne_synthetise[['id', 'synthetise_id', 'culture_code']].rename(columns={'id' : 'plantation_perenne_synthetise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_synthetise_id', how='left')
 
     merge = pd.concat([merge_assolee, merge_perenne], axis=0)
