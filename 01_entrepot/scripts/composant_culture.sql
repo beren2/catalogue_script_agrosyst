@@ -7,7 +7,8 @@ SELECT
 	cps.speciesarea AS surface_relative, -- si non saisie alors on suppose que c'est équiréparti dans la culture (100 / nb d'espèces ou variété dans la culture)
 	cps.variety AS variete_id,
 	cps.croppingplanentry AS culture_id
-FROM croppingplanspecies cps;
+FROM croppingplanspecies cps
+inner join entrepot_culture ec on ec.id = cps.croppingplanentry;
 
 alter table entrepot_composant_culture
 add constraint composant_culture_PK
