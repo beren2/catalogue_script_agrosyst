@@ -180,7 +180,7 @@ def load_ref(verbose=False):
         'ref_correspondance_groupe_cible',
         'ref_adventice', 
         'dose_ref_cible',
-        'refactatraitementsproduit',
+        'ref_acta_traitement_produit',
         'conversion_utilisation_intrant',
         'ref_culture_maa'
     ]
@@ -302,33 +302,56 @@ def create_category_outils_can():
     """
     # création de l'outil permettant de filtrer les entités (dispositifs)
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
+    df_dispositif_filtres_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
 
     # création de l'outil permettant de filtrer les entités (domaine)
     df_domaine_filtres_outils_can = outils_can.domaine_filtres_outils_can(donnees)
+    df_domaine_filtres_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
 
     df_parcelle_non_ratachee_outils_can = outils_can.get_parcelles_non_rattachees_outils_can(donnees)
+    df_parcelle_non_ratachee_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
 
     df_culture_outils_can = outils_can.get_culture_outils_can(donnees)
+    df_culture_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_culture_outils_can, 'entrepot_culture_outils_can')
 
     df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
+    df_intervention_realise_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
 
     df_intervention_synthetise_outils_can = outils_can.get_intervention_synthetise_outils_can(donnees)
+    df_intervention_synthetise_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
+    df_recolte_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+
+    df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
+    df_zone_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+
+    df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
+    df_sdc_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+
+    df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
+    df_parcelle_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
+
 
 def create_category_test():
     """ 
             Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
     """
-    df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
-    export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+    df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
+    df_parcelle_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
+
+    
 
 
 entrepot_spec = {
@@ -349,7 +372,7 @@ entrepot_spec = {
         'utilisation_intrant_cible', 'parcelle_type', 'recolte_rendement_prix', 'itk_realise_performance', 
         'composant_culture_concerne_intervention_realise', 'bilan_campagne_sdc_generalites', 'espece', 
         'intervention_travail_edi', 'variete', 'acta_groupe_culture', 'acta_substance_active', 'acta_traitement_produit',
-        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux'
+        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux', 'nuisible_edi', 'adventice'
     ]
 }
 
