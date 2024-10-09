@@ -1,4 +1,3 @@
-create temporary table utilisation_intrant_performance_test as
 -- SYNTHETISE 
 select 
 	euip.*,
