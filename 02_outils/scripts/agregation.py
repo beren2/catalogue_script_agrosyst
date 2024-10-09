@@ -41,7 +41,7 @@ def get_aggreged_from_utilisation_intrant_synthetise(
 
     # obtention du noeud et de la culture sur lequel a lieu l'action
     left = merge_assolee
-    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    right = df_noeud_synthetise[['id', 'synthetise_id', 'culture_code']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
 
     #----------#
