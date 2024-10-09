@@ -295,6 +295,9 @@ def create_category_indicateur():
     """
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_entrepot(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
+    
+    df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
+    export_to_entrepot(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
 
 def create_category_outils_can():
     """
