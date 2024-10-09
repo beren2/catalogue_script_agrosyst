@@ -41,7 +41,7 @@ def get_aggreged_from_utilisation_intrant_synthetise(
 
     # obtention du noeud et de la culture sur lequel a lieu l'action
     left = merge_assolee
-    right = df_noeud_synthetise[['id', 'synthetise_id', 'culture_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
     merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
 
     #----------#
@@ -114,7 +114,7 @@ def get_aggreged_from_utilisation_intrant_realise(
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
     left = merge_assolee
-    right = df_noeud_realise[['id', 'zone_id']].rename(columns={'id' : 'noeuds_realise_id'})
+    right = df_noeud_realise[['id', 'zone_id', 'culture_id']].rename(columns={'id' : 'noeuds_realise_id'})
     merge_assolee = pd.merge(left, right, on = 'noeuds_realise_id', how='left')
 
     #----------#
@@ -193,7 +193,7 @@ def get_leaking_aggreged_from_action_realise(
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
     left = merge_assolee
-    right = df_noeud_realise[['id', 'zone_id']].rename(columns={'id' : 'noeuds_realise_id'})
+    right = df_noeud_realise[['id', 'zone_id', 'culture_id']].rename(columns={'id' : 'noeuds_realise_id'})
     merge_assolee = pd.merge(left, right, on = 'noeuds_realise_id', how='left')
 
     #----------#
@@ -266,7 +266,7 @@ def get_leaking_aggreged_from_intervention_realise(
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
     left = merge_assolee
-    right = df_noeud_realise[['id', 'zone_id']].rename(columns={'id' : 'noeuds_realise_id'})
+    right = df_noeud_realise[['id', 'zone_id', 'culture_id']].rename(columns={'id' : 'noeuds_realise_id'})
     merge_assolee = pd.merge(left, right, on = 'noeuds_realise_id', how='left')
 
     #----------#
