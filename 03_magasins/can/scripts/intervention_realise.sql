@@ -18,7 +18,7 @@ SELECT
     cr.culture_intermediaire_id as ci_id,
     (replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as ci_nom,
     CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
-    iroc.esp_var as especes_de_l_intervention,
+    iroc.esp_complet_var as especes_de_l_intervention,
 	iroc.precedent_id,
     (replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as precedent_nom,
 	iroc.precedent_especes_edi,
@@ -53,7 +53,7 @@ SELECT
     iroc.type_semence
 FROM  entrepot_intervention_realise ir
 LEFT JOIN entrepot_intervention_realise_agrege ira ON ir.id = ira.id
-LEFT JOIN entrepot_intervention_realise_outils_can iroc ON ira.id = iroc.intervention_realise_id
+LEFT JOIN entrepot_intervention_realise_outils_can iroc ON ira.id = iroc.id
 LEFT JOIN entrepot_zone z ON ira.zone_id = z.id
 LEFT JOIN entrepot_parcelle p ON ira.parcelle_id = p.id
 LEFT JOIN entrepot_sdc sdc ON ira.sdc_id = sdc.id
