@@ -29,5 +29,4 @@ select
 from entrepot_sdc es 
 join reseaux_agg r on r.sdc_id = es.id 
 join entrepot_dispositif ed on ed.id = es.dispositif_id 
-join entrepot_domaine ed2 on ed2.id = ed.domaine_id
-limit 10;
+join entrepot_domaine ed2 on ed2.id = ed.domaine_id;
