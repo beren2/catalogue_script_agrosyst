@@ -330,7 +330,6 @@ def create_category_outils_can():
     export_to_entrepot(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
-    df_recolte_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
 
     df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
@@ -350,11 +349,20 @@ def create_category_test():
     """ 
             Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
     """
+    df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
+    export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+
+    df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
+    df_zone_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+
+    df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
+    df_sdc_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+
     df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
     df_parcelle_realise_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
-
-    
 
 
 entrepot_spec = {

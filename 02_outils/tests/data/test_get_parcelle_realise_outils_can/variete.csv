@@ -1,0 +1,3 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_3ee62779-f3de-4d00-a360-72d4f5d81d22,Pomme de terre de consommation,11019,Pommes de Terre,Solanum tuberosum L.,Franceline,84-91-1,A,CHF,Chair ferme,0,Inconnu,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_8ec8eb04-bf8b-4bc6-a2dc-377a3a6f77be,Maïs,570U483,Maïs et Sorgho,Zea mays L.,Koherens,KXA6336,A,G+F,Grain et fourrage,HS,hybride simple,,

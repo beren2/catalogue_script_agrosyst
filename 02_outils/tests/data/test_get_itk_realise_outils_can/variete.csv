@@ -1,0 +1,6 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_72dacf5d-4726-4104-a980-56b857e7a306,Maïs,570 EQ02,Maïs et Sorgho,Zea mays L.,P9042,EQ02,,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_f3a5237b-7e1c-4530-be11-3230b6a7ca07,Triticale,390424,Céréales à paille,×Triticosecale Wittm. ex A. Camus,RGT Omeac,RT 12032,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_37d393b3-48f7-4639-9f28-6682d9f9269f,Maïs,570 BN69,Maïs et Sorgho,Zea mays L.,DATABAZ,BN69,,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_6af7808d-6725-45ec-8d0d-13b7a29aec42,Maïs,570V326,Maïs et Sorgho,Zea mays L.,Zoom,EG5306,A,GRN,Grain,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_125aa7d9-1176-4dfc-9f97-3fdb336bad87,Artichaut,152,Plantes Potagères et Maraîchères,Cynara scolymus,Castel,Castel,a,,,NH,déclaré non hybride,,

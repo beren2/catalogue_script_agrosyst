@@ -1,0 +1,5 @@
+id,source_noeuds_realise_id,cible_noeuds_realise_id,culture_intermediaire_id
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleConnection_968ac56c-9a5f-4f90-9450-74a2c8656828,,fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_8a6192e1-f087-4b8d-8231-3e3e34dca177,fr.inra.agrosyst.api.entities.CroppingPlanEntry_cc81a271-2e3b-4ff4-bf05-330ae1a74c76
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleConnection_c946d405-ae3c-4a24-902e-eb14fca20dd2,,fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_59eccefe-7a1f-4462-bb6b-d7260e5840b3,
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleConnection_d7ffd39c-3940-4f94-ad46-256511d30860,,fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_fd2b5eb9-3505-47e0-8659-33792a26e91d,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a511eed6-29bd-4fac-8297-34fe4c4695b0
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleConnection_6655aeda-626f-4daf-ad46-973c5264185e,,fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_0a29f80e-dd86-48bf-869d-4adb9fe90b01,fr.inra.agrosyst.api.entities.CroppingPlanEntry_015269ae-4211-4d82-960e-0057aae5f9f5

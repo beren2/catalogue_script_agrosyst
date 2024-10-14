@@ -1,0 +1,14 @@
+id,label,code,famille_de_culture
+fr.inra.agrosyst.api.entities.referential.RefAdventice_71a1f6ab-c72f-4471-b057-82db21bb3097,Amarante blanche,AMAAL,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_a18fee80-8d16-4c33-bef2-b58f3476bf1a,Digitaire sanguine,DIGSA,Général graminées
+fr.inra.agrosyst.api.entities.referential.RefAdventice_e96265af-f911-42b1-9a5c-5e01266ed2f6,Liseron des champs,CONAR,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_51f96b22-9a5b-477b-906f-1a3b4654c756,Matricaire camomille,MATCH,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_f601b1d9-69c3-47dc-97f8-7490b94b0b14,Morelle noire,SOLNI,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_292403bf-5ba3-4a11-9151-11b59acb49a6,Panic pied de coq,ECHCG,Général graminées
+fr.inra.agrosyst.api.entities.referential.RefAdventice_ecb0c9b1-64b0-4562-9bf4-e25d802cc174,Pâturin commun,POATR,Général graminées
+fr.inra.agrosyst.api.entities.referential.RefAdventice_3568b063-778a-4c91-b566-aed66ded42a0,Ray-grass anglais,LOLPE,Général graminées
+fr.inra.agrosyst.api.entities.referential.RefAdventice_a10d1b27-4a46-49d9-b155-cd4c281ddd2d,Renouée des oiseaux,POLAV,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_ae5e6adf-e6c7-4955-bedc-f19ab094d65b,Rumex oseille (grande oseille),RUMAC,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_d17ece88-c7a4-4dc2-aae2-1381deda32a9,Séneçon vulgaire,SENVU,Général dicotylédones
+fr.inra.agrosyst.api.entities.referential.RefAdventice_1e149ec3-c632-4248-8dc7-52ab25216148,Sétaire verte,SETVI,Général graminées
+fr.inra.agrosyst.api.entities.referential.RefAdventice_b123eb0e-1a68-45fa-b1e3-c5569ebcf4cd,Véronique des champs,VERAR,Général dicotylédones

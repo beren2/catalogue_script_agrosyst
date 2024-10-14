@@ -1,0 +1,6 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_886732d5-cfea-4abd-a6c5-921eb6495502,Sorgho fourrager,573A389,Maïs et Sorgho,Sorghum bicolor (L.) Moench,Sydney,KFN M5006 SBF006C,A,MON,Monocoupe,HTV,hybride 3 voies,,
+fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_4e06e9a7-f95d-4108-b4f4-1745d0d8d7f4,,,,,Chardonnay B,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_582e77a2-1f0d-46f3-ba26-42b893efde49,Blé tendre d'hiver,512 C304,Céréales à paille,Triticum aestivum L.,Intérêt,H 03025,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_c97f94b0-f82b-420c-bf58-5bf683f9d723,Féverole d'hiver,700127,Plantes protéagineuses,Vicia faba L.,Diva,HAW,A,COL,Fleurs colorées,PP,population,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_3b297727-16d9-42f7-b3ed-948124630bff,Blé tendre d'hiver,512C086,Céréales à paille,Triticum aestivum L.,Antonius,SZD 2337 B,A,,,LI,lignée,,

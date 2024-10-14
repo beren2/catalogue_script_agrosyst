@@ -2,12 +2,12 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
-#from nettoyage import nettoyage
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
-from scripts import outils_can
 from scripts import indicateur
+
+
 
 
 def import_df(df_name, path_data, sep, df):
@@ -240,6 +240,27 @@ def test_get_infos_traitement():
     res_ok = (merge['valeur_attendue'].astype('int') == merge['code_amm'].astype('int')).all()
 
     assert res_ok
+
+def test_get_utilisation_intrant_in_unit():
+    """ 
+        test de l'obtention de l'utilisation dans la dose souhaitée
+    """
+    # obtention des données
+    path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
+    df_names = [    
+                    'utilisation_intrant_realise'     
+                ]
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    path_ref = '02_outils/data/referentiels/'
+    refs_names = [
+        'conversion_utilisation_intrant'
+    ]
+    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+
+    donnees['utilisation_intrant'] = donnees['utilisation_intrant_realise']
+    fonctions_utiles.get_utilisation_intrant_in_unit(donnees)
+
+    return True
 
 def test_get_dose_ref():
     """
@@ -478,291 +499,3 @@ def test_restructuration_recolte_rendement_prix():
     res_valeur_ok = (merge['composant_culture_id'] == merge['composant_culture_id_expected']).all()
 
     assert res_valeur_ok
-
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id'):
-    """
-        Fonction qui permet de tester 
-    """
-    df_metadonnees = pd.read_csv(metadonnee_file)
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == identifiant_test]
-
-    # dictionnaire donnant pour chaque identifiant d'entité (par exemple intervention_id), les colonnes à tester
-    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
-    for (key, value) in colonne_to_test_for_ligne.items():
-        colonne_to_test_for_ligne[key] = value.split(',')
-
-    donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
-    donnees_ref = {}
-    if(not df_ref_names is None):
-        # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
-        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
-    donnees = donnees_ | donnees_ref
-    
-    donnees_computed = fonction_to_apply(donnees)
-
-    res = []
-    for entite_id in list(colonne_to_test_for_ligne.keys()):
-        colonnes_to_test = colonne_to_test_for_ligne[entite_id]
-
-        # valeur trouvée :
-        output = donnees_computed.loc[donnees_computed[key_name] == entite_id]
-        output = output[colonnes_to_test].fillna('').astype('str')
-
-        # valeur attendue :
-        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
-        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
-
-        for colonne_to_test in colonnes_to_test:
-            print(output[colonne_to_test].values)
-            print(expected_output[colonne_to_test].values)
-            if(len(expected_output[colonne_to_test].values) > 0):
-                is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
-
-            if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
-                res.append(False)
-            else:
-                res.append(True)
-
-    return res
-
-def test_get_intervention_realise_outils_can_context():
-    """
-        Test de l'obtention de l'outil pour le traitement des intervention realise pour la CAN
-    """
-    identifiant_test = 'test_get_intervention_realise_action_outils_can'
-    df_names = [   
-        'action_realise', 'intervention_realise', 'composant_action_semis', 
-        'semence', 'utilisation_intrant_realise', 'espece', 'composant_culture'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_realise_action_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_realise_outils_can_context
-
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_realise_combinaison_outils_can():
-    """
-        Test de l'obtention des informations sur les combinaison d'outils en realise pour le magasin CAN 
-    """
-    identifiant_test = 'test_get_intervention_realise_combinaison_outils_can'
-    df_names = [   
-        'combinaison_outil', 'materiel', 'combinaison_outil_materiel', 'intervention_realise'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_realise_combinaison_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_realise_combinaison_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_realise_culture_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures en realise pour le magasin CAN 
-    """
-    identifiant_test = 'test_get_intervention_realise_culture_outils_can'
-    df_names = [   
-        'composant_culture', 'espece', 'variete', 'intervention_realise', 
-        'noeuds_realise', 'plantation_perenne_phases_realise',
-        'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise',
-        'connection_realise'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_realise_culture_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_realise_culture_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-    
-    assert all(res)
-
-def test_get_intervention_realise_culture_prec_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures en realise pour le magasin CAN 
-    """
-
-    identifiant_test = 'test_get_intervention_realise_culture_prec_outils_can'
-    df_names = [   
-        'composant_culture', 'espece', 'variete', 'intervention_realise', 
-        'noeuds_realise', 'connection_realise', 'culture'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_realise_culture_prec_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_realise_culture_prec_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-    
-    assert all(res)
-
-def test_get_intervention_synthetise_culture_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures en synthétisé pour le magasin CAN 
-    """
-
-    identifiant_test = 'test_get_intervention_synthetise_culture_outils_can'
-    df_names = [   
-        'intervention_synthetise', 'noeuds_synthetise', 'connection_synthetise', 
-        'plantation_perenne_phases_synthetise', 
-        'plantation_perenne_synthetise', 'composant_culture_concerne_intervention_synthetise', 
-        'noeuds_synthetise_restructure', 'plantation_perenne_synthetise_restructure',
-        'ccc_intervention_synthetise_restructure', 'composant_culture',
-        'espece', 'variete', 'connection_synthetise_restructure'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_synthetise_culture_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_culture_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_synthetise_culture_prec_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
-    """
-
-    identifiant_test = 'test_get_intervention_synthetise_culture_prec_outils_can'
-    df_names = [   
-        'composant_culture', 'espece', 'variete', 'intervention_synthetise', 
-        'noeuds_synthetise', 'connection_synthetise', 'culture', 
-        'noeuds_synthetise_restructure'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_synthetise_culture_prec_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_culture_prec_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_synthetise_action_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
-    """
-
-    identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
-    df_names = [   
-        'intervention_synthetise', 'action_synthetise'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_realise_action_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
-    """
-
-    identifiant_test = 'test_get_intervention_realise_action_outils_can'
-    df_names = [   
-        'intervention_realise', 'action_realise'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_realise_action_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_realise_action_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_synthetise_semence_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
-    """
-
-    identifiant_test = 'test_get_intervention_synthetise_semence_outils_can'
-    df_names = [
-        'semence', 'composant_culture', 'espece', 'utilisation_intrant_synthetise'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_synthetise_semence_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_semence_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_intervention_synthetise_combinaison_outils_can():
-    """
-        Test de l'obtention des informations sur la combinaison d'outils
-    """
-
-    identifiant_test = 'test_get_intervention_synthetise_combinaison_outils_can'
-    df_names = [
-        'intervention_synthetise', 'intervention_synthetise_restructure', 
-        'combinaison_outil', 'materiel', 'combinaison_outil_materiel'
-    ]
-    path_data = '02_outils/tests/data/test_get_intervention_synthetise_combinaison_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_combinaison_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-    assert all(res)
-
-def test_get_parcelle_rattache_outils_can():
-    """
-        Test de l'obtention des informations sur la combinaison d'outils
-    """
-
-    identifiant_test = 'test_get_parcelles_non_rattachees_outils_can'
-    df_names = [
-        'dispositif', 'sdc', 'parcelle', 'liaison_reseaux', 'liaison_sdc_reseau', 'intervention_realise_agrege'
-    ]
-    df_ref_names = [
-        'reseau'
-    ]
-
-    path_data = '02_outils/tests/data/test_get_parcelles_non_rattachees_outils_can/'
-
-    fonction_to_apply = outils_can.get_parcelles_non_rattachees_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = df_ref_names)
-
-    assert all(res)
-
-# def test_get_culture_outils_can():
-#     """
-#         Test de l'obtention des informations sur les cultures
-#     """
-
-#     identifiant_test = 'test_get_culture_outils_can'
-#     df_names = [
-#         'culture', 'composant_culture', 'espece', 'variete'
-#     ]
-
-#     path_data = '02_outils/tests/data/test_get_culture_outils_can/'
-
-#     fonction_to_apply = outils_can.get_culture_outils_can
-#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-#     assert all(res)
-
-# def test_get_culture_indicateur_branche():
-#     """
-#         Test de l'obtention de "culture_indicateur_branche" tel qu'il est attendu dans les exports en masse de la CAN
-#         TODO : non jugée d'interêt prioritaire.
-#     """
-
-#     identifiant_test = 'test_get_culture_indicateur_branche'
-#     df_names = [
-#         'noeuds_synthetise'
-#     ]
-
-#     path_data = '02_outils/tests/data/test_get_culture_indicateur_branche/'
-
-#     fonction_to_apply = outils_can.get_culture_indicateur_branche
-#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
-
-#     assert all(res)
-
-# def test_get_recolte_realise_outils_can():
-#     """
-#         Attention, pour le magasin can, les rendements / pct autoconsommé... sont groupés sous certaines conditions (mélanges...)
-#         Cette fonction se propose donc de mettre en place ce groupby sous condition. 
-
-#         On doit donc retourner :
-#         - rendement_moyen
-#         - rendement_median
-#         - rendement_min
-#         - rendement_max
-#         - perc_commercialise
-#         - perc_autoconsomme
-#         - perc_non_valorise
-#     """
-#     identifiant_test = 'test_get_recolte_realise_outils_can'
-#     df_names = [
-#         'recolte_rendement_prix', 'culture', 'composant_culture', 'recolte_rendement_prix_restructure'
-#     ]
-
-#     path_data = '02_outils/tests/data/test_get_recolte_realise_outils_can/'
-
-#     fonction_to_apply = outils_can.get_recolte_realise_outils_can
-#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='action_id')
-
-#     assert all(res)

@@ -1,0 +1,6 @@
+id,nom,melange_especes,melange_varietes,prairie_paturee,prairie_temporaire,prairie_fauchee,code,type,domaine_id
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_7c3edf14-f483-4000-b5d0-3666ef0b70cc,Artichaut de 2ème année variété Castel,f,f,f,,f,6430672e-641b-4207-ac38-9ff8eb892014,MAIN,fr.inra.agrosyst.api.entities.Domain_8930fb72-3abb-470c-ba3a-9a42fde893db
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_68d1e855-e1a5-4a22-b6a9-203e0bb5c8dd,Brocoli,f,f,f,,f,45cfbfa7-939f-24aa-2211-3b9db970f57f,MAIN,fr.inra.agrosyst.api.entities.Domain_8930fb72-3abb-470c-ba3a-9a42fde893db
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_91bede28-49c7-4b15-b4b1-abfaaa5a797c,maïs,f,f,f,,f,f576a2ec-b35e-43df-8140-117b18bcfb02,MAIN,fr.inra.agrosyst.api.entities.Domain_0bf5057d-0b54-47f1-9bf0-315cd783ab7a
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ae97a03e-d072-4ebc-ae0b-1eb6ccf16faf,Triticale hiver,f,f,f,,f,adc8c7b4-77eb-4abb-96d9-d0e0aa480b6f,MAIN,fr.inra.agrosyst.api.entities.Domain_009aae32-d04e-46fa-b0ba-94cc81fbadc3
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_da3d4373-d1a6-43dc-b3c5-95aec1fd7257,Maïs,f,f,f,,f,6cc28910-f104-4f99-9a19-bdc4211be21d,MAIN,fr.inra.agrosyst.api.entities.Domain_af51e439-e933-4169-91c9-5a01777d0710
