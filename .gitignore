@@ -1,2 +1,7 @@
 *.ini
 **/__pycache__/
+02_outils/data/referentiels/*
+02_outils/data/external_data/*
+.vscode/settings.json
+01_entrepot/.Rhistory
+01_entrepot/documentation_manquante.csv
