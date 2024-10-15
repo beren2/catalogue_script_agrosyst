@@ -196,7 +196,7 @@ SELECT
     FROM echelle_intrant ei
     LEFT JOIN entrepot_utilisation_intrant_realise euir on euir.id = ei.id_usage
     LEFT JOIN entrepot_utilisation_intrant_synthetise euis on euis.id = ei.id_usage
-    where (euir.id is not null and euis.id is null) AND (euir.id is null and euis.id is not null);
+    where (euir.id is not null and euis.id is null) OR (euir.id is null and euis.id is not null);
 
 alter table entrepot_utilisation_intrant_performance
 add constraint utilisation_intrant_performance_PK

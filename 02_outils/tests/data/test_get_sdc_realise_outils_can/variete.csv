@@ -1,0 +1,13 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_6560b1d2-b304-49c0-b492-ab462adcf400,Avoine d'hiver,510A273,Céréales à paille,Avena sativa L.,Une de Mai,MH A 99219,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_f37caaf1-9017-4379-90a1-a3306308cabe,Avoine de printemps,510A300,Céréales à paille,Avena sativa L.,Husky,NORD 04-122,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0314b993-8ed6-4e4e-b0aa-0d348b86597b,Tournesol,024 E091,"Tournesol, Soja et Ricin",Helianthus annuus L.,ES Idillic,ESH 3035,A,HTO,Variété à haute teneur en acide oléique,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_bef8ee23-8d1f-4923-8f26-b11c9d48ac6b,Maïs,570S282,Maïs et Sorgho,Zea mays L.,Hendrixx,RH0626,A,FRG,Fourrage,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_33217341-cac1-45f1-8b33-d0afb40475fc,Soja,270433,"Tournesol, Soja et Ricin",Glycine max (L.) Merr.,Solena,S 9094,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_50930fbf-c652-4d7a-b21c-d49cb982967f,Maïs,570V394,Maïs et Sorgho,Zea mays L.,Eliot,LZM158/32,B,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_54c79347-5581-4bac-8c2a-a04579c3d65c,,,,,Muscat à petits grains blancs B,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_f18a0361-b7d1-421b-beff-ae55ae4ea301,Orge d'hiver à 2 rangs,515C154,Céréales à paille,Hordeum vulgare L.,KWS Cassia,CPBT-B 88,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_7335a38b-bcac-4a84-994b-ac22450a53c4,Maïs,570W955,Maïs et Sorgho,Zea mays L.,P0837,,,GRN,Grain,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_516ab8f9-0399-429b-84fb-5274937a8eba,Blé tendre d'hiver,512C408,Céréales à paille,Triticum aestivum L.,Barok,EM 03008,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_6aaad415-1b0f-4cec-8858-53726f8ccb02,Maïs,570R488,Maïs et Sorgho,Zea mays L.,LG3252,LZM254/32,A,FRG,Fourrage,HTV,hybride 3 voies,,
+fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_6e5628f8-f8c6-4c0b-834b-e850f41782b1,,,,,Cabernet franc N,,,,,,,,

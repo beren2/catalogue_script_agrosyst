@@ -40,6 +40,7 @@ conn = engine.raw_connection()
 cur = conn.cursor()
 
 DATA_PATH = config.get('entrepot_local', 'data_path') 
+print(DATA_PATH)
 EXTERNAL_DATA_PATH = 'data/external_data/'
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
@@ -175,7 +176,13 @@ def load_ref(verbose=False):
     global donnees
     path = 'data/referentiels/'
     refs = [
-        'ref_nuisible_edi', 'ref_correspondance_groupe_cible', 'ref_adventice', 'dose_ref_cible'
+        'ref_nuisible_edi', 
+        'ref_correspondance_groupe_cible',
+        'ref_adventice', 
+        'dose_ref_cible',
+        'ref_acta_traitement_produit',
+        'conversion_utilisation_intrant',
+        'ref_culture_maa'
     ]
     import_dfs(refs, path, verbose=True)
 
@@ -189,7 +196,7 @@ def create_category_nettoyage():
     # nettoyage_intervention_realise
     suffixe_table = 'intervention'
     name_table = 'intervention_realise'
-    df_nettoyage_intervention_realise = nettoyage.nettoyage_intervention(donnees)
+    df_nettoyage_intervention_realise = nettoyage.nettoyage_intervention(donnees, path_metadata='data/')
 
     export_to_entrepot(df_nettoyage_intervention_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_intervention_realise.to_csv('entrepot_'+name_table+'_nettoyage.csv')
@@ -197,7 +204,7 @@ def create_category_nettoyage():
     # nettoyage_utilisation_intrant_realise
     suffixe_table = 'utilisation_intrant'
     name_table = 'utilisation_intrant_realise'
-    df_nettoyage_utilisation_intrant_realise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='realise', verbose=False)
+    df_nettoyage_utilisation_intrant_realise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='realise', verbose=False, path_metadata='data/')
 
     export_to_entrepot(df_nettoyage_utilisation_intrant_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_realise.to_csv(prefixe_source+suffixe_table+'_realise.csv')
@@ -205,7 +212,7 @@ def create_category_nettoyage():
     # nettoyage_utilisation_intrant_synthetise
     suffixe_table = 'utilisation_intrant'
     name_table = 'utilisation_intrant_synthetise'
-    df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False)
+    df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False, path_metadata='data/')
 
     export_to_entrepot(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
@@ -288,6 +295,9 @@ def create_category_indicateur():
     """
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_entrepot(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
+    
+    df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
+    export_to_entrepot(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
 
 def create_category_outils_can():
     """
@@ -295,26 +305,45 @@ def create_category_outils_can():
     """
     # création de l'outil permettant de filtrer les entités (dispositifs)
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
+    df_dispositif_filtres_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
 
     # création de l'outil permettant de filtrer les entités (domaine)
     df_domaine_filtres_outils_can = outils_can.domaine_filtres_outils_can(donnees)
+    df_domaine_filtres_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
 
     df_parcelle_non_ratachee_outils_can = outils_can.get_parcelles_non_rattachees_outils_can(donnees)
+    df_parcelle_non_ratachee_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
 
     df_culture_outils_can = outils_can.get_culture_outils_can(donnees)
+    df_culture_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_culture_outils_can, 'entrepot_culture_outils_can')
 
     df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
+    df_intervention_realise_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
 
     df_intervention_synthetise_outils_can = outils_can.get_intervention_synthetise_outils_can(donnees)
+    df_intervention_synthetise_outils_can.set_index('id', inplace=True)
     export_to_entrepot(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+
+    df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
+    df_zone_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+
+    df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
+    df_sdc_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+
+    df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
+    df_parcelle_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
+
 
 def create_category_test():
     """ 
@@ -322,6 +351,18 @@ def create_category_test():
     """
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+
+    df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
+    df_zone_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+
+    df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
+    df_sdc_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+
+    df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
+    df_parcelle_realise_outils_can.set_index('id', inplace=True)
+    export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
 
 
 entrepot_spec = {
@@ -342,12 +383,13 @@ entrepot_spec = {
         'utilisation_intrant_cible', 'parcelle_type', 'recolte_rendement_prix', 'itk_realise_performance', 
         'composant_culture_concerne_intervention_realise', 'bilan_campagne_sdc_generalites', 'espece', 
         'intervention_travail_edi', 'variete', 'acta_groupe_culture', 'acta_substance_active', 'acta_traitement_produit',
-        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux'
+        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux', 'nuisible_edi', 'adventice'
     ]
 }
 
 external_data_spec = {
-    'tables' : ['BDD_donnees_attendues_CAN'
+    'tables' : [
+        'BDD_donnees_attendues_CAN'
     ]
 }
 

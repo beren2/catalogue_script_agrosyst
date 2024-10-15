@@ -13,6 +13,7 @@ SELECT DISTINCT
 FROM
     entrepot_intervention_synthetise eir 
 LEFT JOIN "entrepot_utilisation_intrant_synthetise_agrege" nuirac on eir.id = nuirac.intervention_synthetise_id
+WHERE nuirac.intervention_synthetise_id IS NOT null
 UNION 
 SELECT 
     id, 
@@ -26,6 +27,8 @@ SELECT
     domaine_id, 
     dispositif_id
 FROM entrepot_intervention_synthetise_manquant_agrege;
+
+alter table entrepot_intervention_synthetise_agrege add primary key (id);
 
 
 -- on rajoute les informations sur les culture_id et culture intermediaire_id...
@@ -47,3 +50,6 @@ FROM entrepot_intervention_synthetise_agrege eisa
 LEFT JOIN entrepot_noeuds_synthetise_restructure nsr ON nsr.id = eisa.cible_noeuds_synthetise_id
 LEFT JOIN entrepot_connection_synthetise_restructure csr ON csr.id = eisa.connection_synthetise_id
 LEFT JOIN entrepot_plantation_perenne_synthetise_restructure eppsr ON eppsr.id = eisa.plantation_perenne_synthetise_id;
+
+alter table entrepot_intervention_synthetise_agrege_extanded add primary key (id);
+

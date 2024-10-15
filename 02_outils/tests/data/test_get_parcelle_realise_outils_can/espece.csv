@@ -1,0 +1,6 @@
+id,code_espece_botanique,code_qualifiant_aee,code_type_saisonnier_aee,code_destination_aee,code_categorie_culture,libelle_categorie_culture,commentaire,libelle_espece_botanique,libelle_qualifiant_aee,libelle_type_saisonnier_aee,libelle_destination_aee,code_cipan_aee,libelle_cipan_aee,libelle_destination_bbch,commentaires,genre,espece,code_gnis,num_groupe_gnis,nom_gnis,nom_latin_gnis,nom_culture_acta,remarque_culture_acta
+fr.inra.agrosyst.api.entities.referential.RefEspece_9eecc022-2c30-4b27-974a-36e988c7fd97,ZCS,,,ZLD,J10,Grandes cultures,,Maïs,,,Grain(es),,,Grain,,Zea,mays,570,18,MAIS,ZEA MAYS L.,maïs grain,
+fr.inra.agrosyst.api.entities.referential.RefEspece_b24d4b7a-59be-4caa-a92e-d0bcb3084f4b,ZCL,ZES,,,J10,Grandes cultures,,Lin,Oléagineux,,,,,,,Linum,usitatissimum,16,16,LIN OLEAGINEUX,LINUM USITATISSIMUM L.,lin oléagineux,
+fr.inra.agrosyst.api.entities.referential.RefEspece_4eab135c-c32e-48b4-92f7-c869405bd5ea,ZDS,ZLR,,ZLQ,J02,Cultures légumières,,Pomme de terre,Consommation,,frais,,,"Chair ferme, 
+Primeur, 
+Autres",,Solanum,tuberosum,1,15,POMMES DE TERRE,SOLANUM TUBEROSUM L.,pomme de terre,de consommation

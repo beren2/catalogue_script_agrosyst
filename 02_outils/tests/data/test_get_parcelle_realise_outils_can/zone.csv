@@ -1,0 +1,4 @@
+id,code,nom,campagne,surface,latitude,longitude,type,parcelle_id
+fr.inra.agrosyst.api.entities.Zone_9494286d-168b-4be9-8d79-41e4aea2375a,e6433171-77b2-48f0-890e-45e64fa57887,Zone principale,2012,6.93,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_d0583d18-5a2c-4fa1-86e6-09d9071974b9
+fr.inra.agrosyst.api.entities.Zone_72ddbc8f-57b3-435e-acf1-bd5b2600dae9,f24356b1-7632-428f-b0a9-a6d019976727,Zone principale,2018,5.39,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_b2a65257-aa63-4c05-91b9-558919b4ae0b
+fr.inra.agrosyst.api.entities.Zone_58f8f71a-6282-4d54-b3db-32f25ffa9038,6fd57057-3173-4b78-a9b2-b856661673c6,Zone principale,2014,0.6,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_767b5d1d-3d66-4383-8f58-8863dcdc0c5a

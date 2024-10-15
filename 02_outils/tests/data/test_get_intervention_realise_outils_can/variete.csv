@@ -1,0 +1,12 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_ef70a58e-9fb6-46ec-bb79-90f69bd48a60,Orge d'hiver à 6 rangs,515C251,Céréales à paille,Hordeum vulgare L.,Isocel,SC 1905-2,A,OB,Orientation Brassicole,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_658b6a84-e1e4-4836-a9f1-515dbe1cc672,Féverole d'hiver,700196,Plantes protéagineuses,Vicia faba L.,Axel,3291101,A,COL,Fleurs colorées,PP,population,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_8de7f00b-23a6-4fd0-bc20-d9213da7191b,Sorgho grain,573 A395,Maïs et Sorgho,Sorghum bicolor (L.) Moench,RGT Huggo,RHS 1222,A,GRN,Grain,HS,hybride simple,hybride simple,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_27900650-991a-40cc-8630-b02bd777ced2,Tournesol,024E640,"Tournesol, Soja et Ricin",Helianthus annuus L.,SY ARCO,,,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_da1efc8d-893e-4330-8a94-381d8d7d3f5c,Orge de printemps à 2 rangs,515C626,Céréales à paille,Hordeum vulgare L.,RGT Planet,LSB 0769-3306,A,OB,Orientation Brassicole,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_4e48bbf8-2e47-411f-ba98-138aa1530663,Sorgho grain,573A430,Maïs et Sorgho,Sorghum bicolor (L.) Moench,Armax,EUG 132,A,GRN,Grain,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_8358d981-e89a-4125-b79c-191f1ed04d1b,Colza oléagineux d'hiver,580C209,Colza et autres Crucifères,Brassica napus L.,SY Carlo,RNX3825,A,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_8284dcd1-66b6-4aba-9760-5d6cb488ae1a,Colza oléagineux d'hiver,580C258,Colza et autres Crucifères,Brassica napus L.,Lohana,NSL08167,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_a40da9c6-cfae-4870-aa03-98f8e7ff31aa,Pommier,461,Arbres fruitiers,Malus domestica Borkh.,Golden,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_e6fb7b28-f3a9-402d-b7e2-80e629d6b878,Pois protéagineux d'hiver,1010683,Plantes protéagineuses,Pisum sativum L.,Balltrap,FD 04505-03,A,,,NH,déclaré non hybride,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_b02e5f9c-e4fe-4c74-bfe2-64da6e303fde,Colza oléagineux d'hiver,580D139,Colza et autres Crucifères,Brassica napus L.,Astronom,LE 11-220,A,,,HS,hybride simple,,

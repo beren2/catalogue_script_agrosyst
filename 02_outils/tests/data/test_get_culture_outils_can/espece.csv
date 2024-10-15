@@ -1,0 +1,19 @@
+id,code_espece_botanique,code_qualifiant_aee,code_type_saisonnier_aee,code_destination_aee,code_categorie_culture,libelle_categorie_culture,commentaire,libelle_espece_botanique,libelle_qualifiant_aee,libelle_type_saisonnier_aee,libelle_destination_aee,code_cipan_aee,libelle_cipan_aee,libelle_destination_bbch,commentaires,genre,espece,code_gnis,num_groupe_gnis,nom_gnis,nom_latin_gnis,nom_culture_acta,remarque_culture_acta
+fr.inra.agrosyst.api.entities.referential.RefEspece_26e37743-1763-46fa-9713-667330e67b3a,ZBT,,ZFB,,J10,Grandes cultures,,Fèverole,,Hiver,,,,,,Vicia,faba,70,26,FEVEROLE,VICIA FABA L. PARTIM,féverole d'hiver,
+fr.inra.agrosyst.api.entities.referential.RefEspece_f689a447-9550-4666-8ce6-2936b5a114af,ZBJ,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Dactyle,,,,,,Semence,,Dactylis,glomerata,50,4,DACTYLE,DACTYLIS GLOMERATA L.,dactyle,
+fr.inra.agrosyst.api.entities.referential.RefEspece_624952f9-20ee-46f8-b603-d5c0a6506c3a,F86,,,,J01,Cultures fruitières,,Olivier,,,,,,,,Olea,europaea,TEMP_F86,,,,olivier,
+fr.inra.agrosyst.api.entities.referential.RefEspece_40d638d6-855d-4ccc-afe5-50e7e5f555e7,H69,H70,,,J05,Divers,,Mélange,"enherbement 
+non fourrager",,,,,,,,,TEMP_H69,,,,graminées porte-graine,
+fr.inra.agrosyst.api.entities.referential.RefEspece_7e073f54-07e2-4268-a9a7-77cf0eca374c,G07,G94,,ZLQ,J01,Cultures fruitières,,Pêcher,à nectarines ou brugnons,,Frais,,,Frais,,Prunus,persica,TEMP_G07,,,,nectarinier,
+fr.inra.agrosyst.api.entities.referential.RefEspece_54060f86-e4f2-4918-b4ab-a4556e678386,ZMO,,,H61,J09,Vigne,,Vigne,,,Cuve,,,Cuve,,Vitis,vinifera,TEMP_ZMO,,,,vigne,
+fr.inra.agrosyst.api.entities.referential.RefEspece_cc77b784-0fe3-4ed3-b00c-359660985586,ZMI,,,,J10,Grandes cultures,,Triticale,,,,,,,,Triticosecale,hybrids,39,3,TRITICALE,TRITICOSECALE WITTM.,triticale,
+fr.inra.agrosyst.api.entities.referential.RefEspece_c66e6c6b-8873-408d-a918-066454f0addc,G21,H36,,,J01,Cultures fruitières,,Pommier,Pommes de table,,,,,,,Malus,domestica,461,12,POMMIERS,,pommier,
+fr.inra.agrosyst.api.entities.referential.RefEspece_3966ea06-0627-4c7e-be38-f39c869d2bd9,ZMD,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Trèfle blanc,,,,,,Semence,,Trifolium,repens,63,5,TREFLE BLANC,TRIFOLIUM REPENS L.,trèfle blanc,
+fr.inra.agrosyst.api.entities.referential.RefEspece_a2d8027b-f855-4589-b530-23181093b4f1,ZDY,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Ray-grass hybride,,,,,,Semence / Prairie,MAJavril 2016_Destinations BBCH regroupées,Lolium,x hybridum,57,4,RAY GRASS HYBRIDE,LOLIUM X BOUCHEANUM KUNTH,ray-grass,
+fr.inra.agrosyst.api.entities.referential.RefEspece_958bc0dd-57f0-4dd5-9f24-9a2c72e0213e,ZDX,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Ray-grass anglais,,,,,,Semence / Prairie,MAJavril 2016_Destinations BBCH regroupées,Lolium,perenne,56,4,RAY GRASS ANGLAIS,LOLIUM PERENNE L.,ray-grass anglais,
+fr.inra.agrosyst.api.entities.referential.RefEspece_4eab135c-c32e-48b4-92f7-c869405bd5ea,ZDS,ZLR,,ZLQ,J02,Cultures légumières,,Pomme de terre,Consommation,,frais,,,"Chair ferme, 
+Primeur, 
+Autres",,Solanum,tuberosum,1,15,POMMES DE TERRE,SOLANUM TUBEROSUM L.,pomme de terre,de consommation
+fr.inra.agrosyst.api.entities.referential.RefEspece_c4c9b271-bb42-470f-998f-6ed0e666144a,ZEJ,,ZFB,,J10,Grandes cultures,,Seigle,,Hiver,,ZEJ,Seigle,,,Secale,cereale,TEMP_ZEJ,,,,seigle d'hiver,
+fr.inra.agrosyst.api.entities.referential.RefEspece_2a01d716-9ff3-470d-a917-fe25efd70e98,ZMC,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Trèfle violet,,,,,,Semence,,Trifolium,pratense,64,5,TREFLE VIOLET,TRIFOLIUM PRATENSE L.,trèfle violet,
+fr.inra.agrosyst.api.entities.referential.RefEspece_6993926f-cf9d-49bd-a8ae-116ae687bb42,ZCQ,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Luzerne,,,,ZCQ,Luzerne,Prairie / Déshydraté,MAJavril 2016_Destinations BBCH regroupées,Medicago,x varia,61,5,LUZERNE BIGARREE,Medicago × varia,luzerne,

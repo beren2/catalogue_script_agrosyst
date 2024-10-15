@@ -19,7 +19,7 @@ SELECT
     c_i.code as ci_code,
     (replace(replace(c_i.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as ci_nom,
     CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
-    iroc.esp_var as especes_de_l_intervention,
+    iroc.esp_complet_var as especes_de_l_intervention,
 	iroc.precedent_code,
     (replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as precedent_nom,
 	iroc.precedent_especes_edi,
@@ -57,7 +57,7 @@ SELECT
 FROM  entrepot_intervention_synthetise ir
 LEFT JOIN entrepot_connection_synthetise ecs ON ecs.id = ir.connection_synthetise_id  
 LEFT JOIN entrepot_intervention_synthetise_agrege_extanded irae ON ir.id = irae.id
-LEFT JOIN entrepot_intervention_synthetise_outils_can iroc ON irae.id = iroc.intervention_synthetise_id
+LEFT JOIN entrepot_intervention_synthetise_outils_can iroc ON irae.id = iroc.id
 LEFT JOIN entrepot_noeuds_synthetise nr ON irae.cible_noeuds_synthetise_id = nr.id
 LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON irae.plantation_perenne_phases_synthetise_id = pppr.id
 LEFT JOIN entrepot_plantation_perenne_synthetise epps on pppr.plantation_perenne_synthetise_id = epps.id 

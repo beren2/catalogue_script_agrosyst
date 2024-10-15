@@ -11,8 +11,7 @@ select
 	earma.intervention_synthetise_id, 
 	errp.action_id,
 	ear.label as type_action,
-	errp.destination_id, 
-	dv.libelle as destination_nom, 
+	errp.destination, 
 	errp.rendement_moy_corr as rendement_moyen,
 	errp.rendement_median_corr as rendement_median,
 	errp.rendement_min_corr as rendement_min,
@@ -27,5 +26,4 @@ left join entrepot_action_synthetise_manquant_agrege earma on errp.action_id = e
 left join entrepot_domaine ed on earma.domaine_id = ed.id
 left join entrepot_sdc esdc on earma.sdc_id = esdc.id
 left join entrepot_synthetise es on es.id = earma.synthetise_id
-left join entrepot_destination_valorisation dv on errp.destination_id = dv.id
 join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id;
