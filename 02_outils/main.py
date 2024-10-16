@@ -22,33 +22,40 @@ import pandas as pd
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
-# La db de l'entrepot
-DB_HOST = config.get('entrepot', 'host')
-DB_PORT = config.get('entrepot', 'port')
-DB_NAME_ENTREPOT = config.get('entrepot', 'database')
-DB_USER = config.get('entrepot', 'user')
-DB_PASSWORD = urllib.parse.quote(config.get('entrepot', 'password'))
-DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
-
-print(DB_USER, DB_PASSWORD, DATABASE_URI_entrepot)
-
-#Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
-engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
-
-# Establish a connection to PostgreSQL
-conn = engine.raw_connection()
-cur = conn.cursor()
-
-DATA_PATH = config.get('entrepot_local', 'data_path') 
-print(DATA_PATH)
+DATA_PATH = config.get('metadata', 'data_path') 
+TYPE = config.get('metadata', 'type')
 EXTERNAL_DATA_PATH = 'data/external_data/'
+
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
 
+if(TYPE == 'distant'):
+    # On se connecte à la BDD seulement si l'utilisateur veut déclarer à distance
+    DB_HOST = config.get('entrepot_local', 'host')
+    DB_PORT = config.get('entrepot_local', 'port')
+    DB_NAME_ENTREPOT = config.get('entrepot_local', 'database')
+    DB_USER = config.get('entrepot_local', 'user')
+    DB_PASSWORD = urllib.parse.quote(config.get('entrepot_local', 'password'))
+    DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
-def export_to_entrepot(df, name):
+    print(DB_USER, DB_PASSWORD, DATABASE_URI_entrepot)
+
+    #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
+    engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
+
+    # Establish a connection to PostgreSQL
+    conn = engine.raw_connection()
+    cur = conn.cursor()
+
+
+def export_to_db(df, name):
     """ permet d'exporter un dataframe dans une table de l'entrepôt avec """
-    df.to_sql(name=name, con=engine, if_exists='replace')
+    if(TYPE == 'local'):
+        if('entrepot_' in name):
+            name = name[9:]
+        df.to_csv(DATA_PATH+name+'.csv')
+    else :
+        df.to_sql(name=name, con=engine, if_exists='replace')
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 donnees = {}
@@ -58,16 +65,6 @@ def import_df(df_name, path_data, sep):
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     global donnees
-    # attention : si on importe des noms qui contienennt "manquant", il faut effectuer des opérations --> implique que les autres soient déjà chargés.
-    # if(df_name == 'intervention_realise_manquant_agrege'):
-    #     first = donnees['utilisation_intrant_realise_agrege'].drop_duplicates(subset=['intervention_realise_id'])
-    #     second = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
-    #     donnees[df_name] = pd.concat([first, second], axis=1)
-    # elif(df_name == 'intervention_synthetise_manquant_agrege'):
-    #     first = donnees['utilisation_intrant_synthetise_agrege'].drop_duplicates(subset=['intervention_synthetise_id'])
-    #     second = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
-    #     donnees[df_name] = pd.concat([first, second], axis=1)
-    # else:
     donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
 
 def import_dfs(df_names, data_path, sep = ',', verbose=False):
@@ -198,7 +195,7 @@ def create_category_nettoyage():
     name_table = 'intervention_realise'
     df_nettoyage_intervention_realise = nettoyage.nettoyage_intervention(donnees, path_metadata='data/')
 
-    export_to_entrepot(df_nettoyage_intervention_realise, 'entrepot_'+name_table+'_nettoyage')
+    export_to_db(df_nettoyage_intervention_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_intervention_realise.to_csv('entrepot_'+name_table+'_nettoyage.csv')
 
     # nettoyage_utilisation_intrant_realise
@@ -206,7 +203,7 @@ def create_category_nettoyage():
     name_table = 'utilisation_intrant_realise'
     df_nettoyage_utilisation_intrant_realise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='realise', verbose=False, path_metadata='data/')
 
-    export_to_entrepot(df_nettoyage_utilisation_intrant_realise, 'entrepot_'+name_table+'_nettoyage')
+    export_to_db(df_nettoyage_utilisation_intrant_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_realise.to_csv(prefixe_source+suffixe_table+'_realise.csv')
 
     # nettoyage_utilisation_intrant_synthetise
@@ -214,7 +211,7 @@ def create_category_nettoyage():
     name_table = 'utilisation_intrant_synthetise'
     df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False, path_metadata='data/')
 
-    export_to_entrepot(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
+    export_to_db(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
 
 def create_category_agregation():
@@ -226,78 +223,78 @@ def create_category_agregation():
     aggreged_utilisation_intrant_synthetise = agregation.get_aggreged_from_utilisation_intrant_synthetise(
         donnees
     )
-    export_to_entrepot(aggreged_utilisation_intrant_synthetise, 'entrepot_utilisation_intrant_synthetise_agrege')
+    export_to_db(aggreged_utilisation_intrant_synthetise, 'entrepot_utilisation_intrant_synthetise_agrege')
 
     # permet d'obtenir des tables agrégées pour avoir les niveaux supérieurs depuis les niveaux fins (raccourcis)
     aggreged_utilisation_intrant_realise = agregation.get_aggreged_from_utilisation_intrant_realise(
         donnees
     )
-    export_to_entrepot(aggreged_utilisation_intrant_realise, 'entrepot_utilisation_intrant_realise_agrege')
+    export_to_db(aggreged_utilisation_intrant_realise, 'entrepot_utilisation_intrant_realise_agrege')
 
 
     # toutes les infos manquantes agrégées depuis l'action
     aggreged_leaking_action_realise = agregation.get_leaking_aggreged_from_action_realise(
         aggreged_utilisation_intrant_realise, donnees
     )
-    export_to_entrepot(aggreged_leaking_action_realise, 'entrepot_action_realise_manquant_agrege')
+    export_to_db(aggreged_leaking_action_realise, 'entrepot_action_realise_manquant_agrege')
 
     aggreged_leaking_action_synthetise = agregation.get_leaking_aggreged_from_action_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
-    export_to_entrepot(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
+    export_to_db(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
 
 
     # toutes les infos manquantes agrégées depuis l'intervention 
     aggreged_leaking_intervention_realise = agregation.get_leaking_aggreged_from_intervention_realise(
         aggreged_utilisation_intrant_realise, donnees
     )
-    export_to_entrepot(aggreged_leaking_intervention_realise, 'entrepot_intervention_realise_manquant_agrege')
+    export_to_db(aggreged_leaking_intervention_realise, 'entrepot_intervention_realise_manquant_agrege')
 
     aggreged_leaking_intervention_synthetise = agregation.get_leaking_aggreged_from_intervention_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
-    export_to_entrepot(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
+    export_to_db(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
 
 def create_category_restructuration():
     """
         Execute les requêtes pour créer le magasin de restructuration
     """
     df_noeuds_synthetise_restructured = restructuration.restructuration_noeuds_synthetise(donnees)
-    export_to_entrepot(df_noeuds_synthetise_restructured, 'entrepot_noeuds_synthetise_restructure')
+    export_to_db(df_noeuds_synthetise_restructured, 'entrepot_noeuds_synthetise_restructure')
 
     df_connection_synthetise_restructured = restructuration.restructuration_connection_synthetise(donnees)
-    export_to_entrepot(df_connection_synthetise_restructured, 'entrepot_connection_synthetise_restructure')
+    export_to_db(df_connection_synthetise_restructured, 'entrepot_connection_synthetise_restructure')
 
     df_noeuds_realise_restructured = restructuration.restructuration_noeuds_realise(donnees)
-    export_to_entrepot(df_noeuds_realise_restructured, 'entrepot_noeuds_realise_restructure')
+    export_to_db(df_noeuds_realise_restructured, 'entrepot_noeuds_realise_restructure')
     
     df_noeuds_realise_restructured = restructuration.restructuration_recolte_rendement_prix(donnees)
-    export_to_entrepot(df_noeuds_realise_restructured, 'entrepot_recolte_rendement_prix_restructure')
+    export_to_db(df_noeuds_realise_restructured, 'entrepot_recolte_rendement_prix_restructure')
 
     df_plantation_perenne_synthetise_restructured = restructuration.restructuration_plantation_perenne_synthetise(donnees)
-    export_to_entrepot(df_plantation_perenne_synthetise_restructured, 'entrepot_plantation_perenne_synthetise_restructure')
+    export_to_db(df_plantation_perenne_synthetise_restructured, 'entrepot_plantation_perenne_synthetise_restructure')
 
     # Attention, en suivant parfaitement la convention de nommage, on aboutit à des noms de tables trop longs pour être pris en charge
     # par Postgres en tant que nom de table (taille maximum : 63), on raccourci donc : "composant_culture_concerne" en "ccc"
     df_composant_culture_concerne_intervention_synthetise_restructured = \
         restructuration.restructuration_composant_culture_concerne_intervention_synthetise(donnees)
-    export_to_entrepot(
+    export_to_db(
         df_composant_culture_concerne_intervention_synthetise_restructured,
         'entrepot_ccc_intervention_synthetise_restructure'
     )
 
     df_intervention_synthetise_restructure = restructuration.restructuration_intervention_synthetise(donnees)
-    export_to_entrepot(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
+    export_to_db(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
 
 def create_category_indicateur():
     """
         Execute les requêtes pour créer le magasin des indicateurs
     """
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
-    export_to_entrepot(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
+    export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
     
     df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
-    export_to_entrepot(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
+    export_to_db(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
 
 def create_category_outils_can():
     """
@@ -306,64 +303,52 @@ def create_category_outils_can():
     # création de l'outil permettant de filtrer les entités (dispositifs)
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
     df_dispositif_filtres_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
+    export_to_db(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
 
     # création de l'outil permettant de filtrer les entités (domaine)
     df_domaine_filtres_outils_can = outils_can.domaine_filtres_outils_can(donnees)
     df_domaine_filtres_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
+    export_to_db(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
 
     df_parcelle_non_ratachee_outils_can = outils_can.get_parcelles_non_rattachees_outils_can(donnees)
     df_parcelle_non_ratachee_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
+    export_to_db(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
 
     df_culture_outils_can = outils_can.get_culture_outils_can(donnees)
     df_culture_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_culture_outils_can, 'entrepot_culture_outils_can')
+    export_to_db(df_culture_outils_can, 'entrepot_culture_outils_can')
 
     df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
     df_intervention_realise_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
+    export_to_db(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
 
     df_intervention_synthetise_outils_can = outils_can.get_intervention_synthetise_outils_can(donnees)
     df_intervention_synthetise_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
+    export_to_db(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
-    export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+    export_to_db(df_recolte_outils_can, 'entrepot_recolte_outils_can')
 
     df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
     df_zone_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+    export_to_db(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
 
     df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
     df_sdc_realise_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+    export_to_db(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
 
     df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
     df_parcelle_realise_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
+    export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
 
 
 def create_category_test():
     """ 
             Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
     """
-    df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
-    export_to_entrepot(df_recolte_outils_can, 'entrepot_recolte_outils_can')
-
-    df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
-    df_zone_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
-
     df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
     df_sdc_realise_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
-
-    df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
-    df_parcelle_realise_outils_can.set_index('id', inplace=True)
-    export_to_entrepot(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
-
+    export_to_db(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
 
 entrepot_spec = {
     'tables' : [
@@ -489,12 +474,15 @@ magasin_specs = {
                 }],
                 'generated' : [
                     'recolte_outils_can'
+                ],
+                'entrepot_dependances' : [
+                    'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
+                    'plantation_perenne_phases_realise', 'parcelle'
                 ]
             },
         }
     }
 }
-
 
 
 
@@ -600,9 +588,9 @@ while True:
                 categorie_dependance = magasin_specs[choosen_dependance['magasin']]['categories'][choosen_dependance['categorie']]
                 if(len(categorie_dependance['generated']) != 0):
                     if(categorie_dependance['generated'][0] not in donnees):
-                        print("* DÉBUT DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
                         load_datas(categorie_dependance['generated'], verbose=False)
-                        print("* FIN DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
+                        print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
                             
                 print("* FIN DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES*")
                 print("* DÉBUT GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
@@ -633,11 +621,9 @@ while True:
             categorie_dependance = magasin_specs[choosen_dependance['magasin']]['categories'][choosen_dependance['categorie']]
             if(len(categorie_dependance['generated']) != 0):
                 if(categorie_dependance['generated'][0] not in donnees):
-                    print("* DÉBUT DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
                     load_datas(categorie_dependance['generated'], verbose=False)
-                    print("* FIN DU CHARGEMENT DES DONNÉES DES MAGASINS NÉCESSAIRES *")
-                
-
+                    print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
         print("Import des données de l'entrepôt au besoin")
 
         
@@ -645,6 +631,18 @@ while True:
             # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
             generate_data_agreged(verbose=False)
             download_data_agreged(verbose=False)
+        elif(choosen_category == 'test'):
+            print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            load_datas(magasin_specs['nettoyage']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
+            load_ref()
+            print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
+            load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+            print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
+
+            print("* DÉBUT GÉNÉRATION ", choosen_magasin, choosen_category," *")
+            choosen_function()
+            print("* FIN GÉNÉRATION ", choosen_magasin, choosen_category," *")
         else :
             # on vérifie que les données n'ont pas été déjà chargées
             if('domaine' not in donnees):
