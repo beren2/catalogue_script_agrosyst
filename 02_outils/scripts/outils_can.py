@@ -841,7 +841,6 @@ def get_intervention_synthetise_culture_outils_can(
     ].set_index('id')
     df_connection_synthetise_restructure = donnees['connection_synthetise_restructure'].set_index('id')
     df_culture = donnees['culture'].set_index('id')
-    
 
     left = df_connection_synthetise
     right = df_connection_synthetise_restructure
@@ -946,18 +945,31 @@ def get_intervention_synthetise_culture_outils_can(
         'esp_complet_var' : ' ; '.join, 
         'esp_complet' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'esp': lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'var' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
-    }) 
+        'var' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
+        'culture_id' : lambda x: next(iter(x))
+    })
+
     df_final_assolee = df_composant_culture_concerne_intervention_extanded_assolee.groupby([
         'intervention_synthetise_id'
     ]).agg({
         'esp_complet_var' : ' ; '.join,
         'esp_complet' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'esp': lambda x: ' ; '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'var' : lambda x: '; '.join(dict.fromkeys([item for item in x if item.strip()]))
+        'var' : lambda x: '; '.join(dict.fromkeys([item for item in x if item.strip()])),
+        'culture_id' : lambda x: next(iter(x))
     })
 
-    df_intervention_synthetise_final = pd.concat([df_final_assolee, df_final_perenne])
+    df_intervention_synthetise_v1 = pd.concat([df_final_assolee, df_final_perenne])
+
+    # On merge le nom de la culture ('nom') par la 'culture_id'
+    left = df_intervention_synthetise_v1.reset_index()
+    right = df_culture.reset_index().rename(columns={'id' : 'culture_id', 'nom' : 'culture_nom'})
+    right = right[['culture_id','culture_nom']]
+    df_intervention_synthetise_v2 = pd.merge(left, right,
+        on='culture_id',
+        how='left'
+    )
+    df_intervention_synthetise_final = df_intervention_synthetise_v2.loc[:, df_intervention_synthetise_v2.columns != 'culture_id']
 
     return df_intervention_synthetise_final.reset_index().rename(
         columns={'intervention_synthetise_id' : 'id'}

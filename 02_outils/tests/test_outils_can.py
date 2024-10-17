@@ -40,6 +40,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
     donnees = donnees_ | donnees_ref
     
     donnees_computed = fonction_to_apply(donnees)
+    #donnees_computed.to_csv('~/Bureau/Datagrosyst/catalogue_script_agrosyst/02_outils/tests/'+'TEST_RESULT_'+ identifiant_test +'.csv')
 
     res = []
     for entite_id in list(colonne_to_test_for_ligne.keys()):
@@ -166,6 +167,7 @@ def test_get_intervention_synthetise_culture_outils_can():
         'espece', 'variete', 'connection_synthetise_restructure', 'culture'
     ]
     path_data = '02_outils/tests/data/test_get_intervention_synthetise_culture_outils_can/'
+
     fonction_to_apply = outils_can.get_intervention_synthetise_culture_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 

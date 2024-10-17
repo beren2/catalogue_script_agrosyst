@@ -498,3 +498,9 @@ test_get_itk_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_14645a9d-a3b2
 test_get_itk_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_99961668-f815-47eb-9f74-72739e658588fr.inra.agrosyst.api.entities.CroppingPlanEntry_68d1e855-e1a5-4a22-b6a9-203e0bb5c8dd ,Chou,,culture_especes_edi
 test_get_itk_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_1f7ee661-f25e-469f-85a4-330531d3598ffr.inra.agrosyst.api.entities.CroppingPlanEntry_ae97a03e-d072-4ebc-ae0b-1eb6ccf16faf ,Triticale,,culture_especes_edi
 test_get_itk_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_7b987e8f-eee3-4559-9266-d1e432b7c1fbfr.inra.agrosyst.api.entities.CroppingPlanEntry_da3d4373-d1a6-43dc-b3c5-95aec1fd7257 ,Maïs,,culture_especes_edi
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_219c94d6-6896-4f8a-9e6d-f824600fb127,Pak Choi,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_5250416c-5663-4948-8b32-0967079952b8,prairie temporaire,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_c1599d89-f8c2-45e4-8b06-891d027b66ac,Avoine - Féverole -Trèfle,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_c43e149f-814d-4b0f-aa5e-ad5e30cbb9de,Cultures d'été,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_b5459d45-c9d9-4585-89ec-c72a0403546f,VigneCabernet franc N,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_d9fe126f-02d1-4bc6-8720-8d04956176ad,Vigne,,culture_nom
