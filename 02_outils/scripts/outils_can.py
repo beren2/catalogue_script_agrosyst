@@ -840,6 +840,8 @@ def get_intervention_synthetise_culture_outils_can(
         'ccc_intervention_synthetise_restructure'
     ].set_index('id')
     df_connection_synthetise_restructure = donnees['connection_synthetise_restructure'].set_index('id')
+    df_culture = donnees['culture'].set_index('id')
+    
 
     left = df_connection_synthetise
     right = df_connection_synthetise_restructure
@@ -1256,7 +1258,6 @@ def get_intervention_synthetise_outils_can(
         columns={'id' : 'intervention_synthetise_id'}
     )
     merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
-
 
     # ajout des informations sur la culture précédente
     left = merge
@@ -1991,11 +1992,19 @@ def get_sdc_realise_outils_can(
 
     # on fill les nan avec la chaine de caractère vide : 
     zone_extanded.loc[:, 'culture_especes_edi'] = zone_extanded['culture_especes_edi'].fillna('')
+    zone_extanded.loc[:, 'variete_nom'] = zone_extanded['variete_nom'].fillna('')
 
     # on groupe par sdc_id :
-    sdc_extanded = zone_extanded.groupby('sdc_id').agg({'culture_especes_edi': merge_concat})
+    sdc_extanded = zone_extanded.groupby('sdc_id').agg({
+        'culture_especes_edi': merge_concat, 
+        'variete_nom' : merge_concat
+    })
 
-    return sdc_extanded.reset_index().rename(columns={'sdc_id' : 'id', 'culture_especes_edi' : 'especes'})
+    return sdc_extanded.reset_index().rename(columns={
+        'sdc_id' : 'id', 
+        'culture_especes_edi' : 'especes', 
+        'variete_nom': 'varietes'
+    })
 
 
 def get_noeuds_realise_outils_can(

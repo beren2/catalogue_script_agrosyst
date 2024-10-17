@@ -163,7 +163,7 @@ def test_get_intervention_synthetise_culture_outils_can():
         'plantation_perenne_synthetise', 'composant_culture_concerne_intervention_synthetise', 
         'noeuds_synthetise_restructure', 'plantation_perenne_synthetise_restructure',
         'ccc_intervention_synthetise_restructure', 'composant_culture',
-        'espece', 'variete', 'connection_synthetise_restructure'
+        'espece', 'variete', 'connection_synthetise_restructure', 'culture'
     ]
     path_data = '02_outils/tests/data/test_get_intervention_synthetise_culture_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_culture_outils_can
@@ -289,7 +289,7 @@ def test_get_intervention_synthetise_outils_can():
 
 
 
-def test_get_parcelle_rattache_outils_can():
+def test_get_parcelle_non_rattache_outils_can():
     """
         Test de l'obtention des informations sur la combinaison d'outils
     """
