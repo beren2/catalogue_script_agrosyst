@@ -527,7 +527,7 @@ while True:
     print("")
     print("**** Bienvenue dans notre interface de génération des outils : ****")
     print("")
-    print(""" /!\ Vous êtes actuellement dans le mode """+TYPE+" /!\\")
+    print(""" --- Vous êtes actuellement dans le mode """+TYPE+" --- ")
     print("")
     if(TYPE == 'distant'):
         print("BDD courante : "+DB_NAME_ENTREPOT)
