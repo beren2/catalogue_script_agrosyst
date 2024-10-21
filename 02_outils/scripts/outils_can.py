@@ -1851,26 +1851,26 @@ def get_zone_realise_rendement_outils_can(
     recolte_rendement_prix = donnees['recolte_rendement_prix'].set_index('id')
     action_realise_agrege = donnees['action_realise_agrege'].set_index('id')
 
+    # on ajoute les informations sur les action
+    left = get_recolte_realise_outils_can(donnees)
+    right = donnees['action_realise_agrege'].set_index('id')[['zone_id']]
+    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
 
     unite_rendement = pd.DataFrame.from_records([UNITE_RENDEMENT]).melt().rename(
         columns={'variable' : 'unite_agrosyst', 'value' : 'unite_utilisateur'}
     )
-
-    left = recolte_rendement_prix
-    right = action_realise_agrege[['zone_id']]
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
 
     left = recolte_rendement_prix_extanded
     right = unite_rendement
     recolte_rendement_prix_extanded = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
 
     # on effectue la somme pour ceux où n'y a que le rendement_moy qui diffère :  
-    recolte_rendement_prix_extanded = recolte_rendement_prix_extanded.groupby(['zone_id', 'libelle_culture', 'destination', 'unite_utilisateur']).agg({
-        'rendement_moy' : 'sum'
+    recolte_rendement_prix_extanded = recolte_rendement_prix_extanded.groupby(['zone_id', 'destination', 'unite_utilisateur']).agg({
+        'rendement_moy_corr' : 'sum'
     }).reset_index()
 
     recolte_rendement_prix_extanded['rendement_total'] = '['+recolte_rendement_prix_extanded['destination'].astype('str')+']'+'|'+\
-        recolte_rendement_prix_extanded['rendement_moy'].astype('str')+'|'+\
+        recolte_rendement_prix_extanded['rendement_moy_corr'].astype('str')+'|'+\
             recolte_rendement_prix_extanded['unite_utilisateur'].astype('str')
 
 
