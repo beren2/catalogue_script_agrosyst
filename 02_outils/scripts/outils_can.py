@@ -718,10 +718,15 @@ def get_intervention_realise_intrants_outils_can(
     merge_semis['interventions_intrants'] = merge_semis['interventions_intrants'].fillna('')
 
     merge = pd.concat([merge_application, merge_autre, merge_semis])
+    merge['biocontrole'] = merge['biocontrole'].fillna('f').replace({'t': True, 'f': False})
 
-    res = merge[['interventions_intrants', 'intervention_realise_id']].groupby('intervention_realise_id').agg({
-        'interventions_intrants' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
+    res = merge[['interventions_intrants', 'intervention_realise_id', 'biocontrole']].groupby('intervention_realise_id').agg({
+        'interventions_intrants' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
+        'biocontrole' : 'max'
     })
+
+    res['biocontrole'] = res['biocontrole'].replace({False: 'non', True : 'oui'})
+
 
     return res.reset_index().rename(columns={'intervention_realise_id' : 'id'})
 
@@ -1349,13 +1354,14 @@ def get_intervention_synthetise_intrants_outils_can(
     merge_semis['interventions_intrants'] = merge_semis['interventions_intrants'].fillna('')
 
     merge = pd.concat([merge_application, merge_autre, merge_semis])
+    merge['biocontrole'] = merge['biocontrole'].fillna('f').replace({'t': True, 'f': False})
 
     res = merge[['interventions_intrants', 'intervention_synthetise_id', 'biocontrole']].groupby('intervention_synthetise_id').agg({
-        'interventions_intrants' : lambda x: ', '.join([item for item in x if item.strip()]), 
+        'interventions_intrants' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'biocontrole' : 'max'
     })
 
-    res['biocontrole'] = res['biocontrole'].replace({'f' : 'non', 't' : 'oui'})
+    res['biocontrole'] = res['biocontrole'].replace({False: 'non', True : 'oui'})
 
     return res.reset_index().rename(columns={'intervention_synthetise_id' : 'id'})
 
