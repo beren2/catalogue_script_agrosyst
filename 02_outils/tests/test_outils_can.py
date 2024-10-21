@@ -279,7 +279,7 @@ def test_get_intervention_synthetise_outils_can():
         'noeuds_synthetise_restructure', 'plantation_perenne_synthetise_restructure', 'ccc_intervention_synthetise_restructure', 'composant_culture', 'espece', 'variete', 'connection_synthetise_restructure',
         'composant_culture', 'noeuds_synthetise_restructure', 'culture', 'intervention_synthetise_agrege', 'dispositif',
         'combinaison_outil_materiel', 'semence', 'utilisation_intrant_synthetise', 'intrant', 'recolte_rendement_prix', 
-        'recolte_rendement_prix_restructure', 'utilisation_intrant_cible', 'nuisible_edi', 'adventice'
+        'recolte_rendement_prix_restructure', 'utilisation_intrant_cible', 'nuisible_edi', 'adventice', 'groupe_cible'
     ]
 
     path_data = '02_outils/tests/data/test_get_intervention_synthetise_outils_can/'

@@ -1,0 +1,24 @@
+id,type,cible_generique,cible_edi_ref_id,cible_edi_ref_code,cible_edi_ref_label,code_groupe_cible_maa,groupe_cible_maa
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4ae921dd-84dc-458d-8ca1-c2decdcb1eae,MALADIE,t,19089,000000AEE167,Mildiou,23,Champignons autres que pythiacées
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_ccf47a50-bf2f-4e93-86fc-e4187a7876b5,MALADIE,t,19224,000000AEE174,Oïdium,23,Champignons autres que pythiacées
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4307aed3-e77e-404f-b48f-e85398d73ee6,MALADIE,f,19089,000000AEE167,Mildiou,22,Champignons (pythiacées)
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_6b331046-4971-4ec0-ae58-21b9d4d6c2bf,RAVAGEUR,f,19683,000000AEE132,Tordeuse,33,Chenilles foreuses des fruits
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_0f6fd06b-8509-4477-a151-f9f23dddb31c,RAVAGEUR,f,19693,AEE132LASPMO,Tordeuse orientale du pêcher,33,Chenilles foreuses des fruits
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_47dc51f7-6d77-4668-b2b8-de62e240d2e9,RAVAGEUR,f,19683,000000AEE132,Tordeuse,34,Chenilles phytophages
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_45e8acd3-9792-4250-b585-abd59a733d54,RAVAGEUR,f,19693,AEE132LASPMO,Tordeuse orientale du pêcher,34,Chenilles phytophages
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_d307e099-dad1-4e8e-a60d-e7c97ffdd82f,MALADIE,f,19224,000000AEE174,Oïdium,81,Maladies des tâches brunes
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_394dfd63-cee6-4663-a871-dc15bb66d0bc,MALADIE,f,19224,000000AEE174,Oïdium,82,Maladies des taches foliaires
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_9fe2e95a-2c9b-41b8-8bf0-0de2924a8fe7,MALADIE,t,19089,000000AEE167,Mildiou,84,Maladies diverses
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_8244a9f0-29f5-4ad8-8466-9b7d0363e0bc,MALADIE,t,19224,000000AEE174,Oïdium,84,Maladies diverses
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_1e974ad5-5c8e-4a11-b7e7-40536bec266e,MALADIE,f,19224,000000AEE174,Oïdium,85,Maladies du feuillage
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_7446bd46-20fd-45f5-8428-8ff3bf213601,MALADIE,t,19089,000000AEE167,Mildiou,87,Maladies fongiques
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_3cf72445-e6db-4148-a271-23c421bc38e5,MALADIE,t,19224,000000AEE174,Oïdium,87,Maladies fongiques
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4a61f8ad-32ec-4af3-b0b8-7d22a99ba8a8,MALADIE,f,19089,000000AEE167,Mildiou,91,Mildiou et rouille blanche
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_08c075e1-a552-470d-aa1c-8bd2cfab9042,MALADIE,f,12424,AEE167PLASVI,Mildiou de la vigne Plasmopara viticola,92,Mildiou(s)
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_3f9bb155-cee8-42dc-bd63-afbae80e81a7,MALADIE,f,19089,000000AEE167,Mildiou,92,Mildiou(s)
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_6ee419c4-0516-4565-84a6-bf557f07dbad,MALADIE,f,19089,000000AEE167,Mildiou,106,Oïdium(s)
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_2c4f31bb-e5af-4d23-911b-b05d5be2a33a,MALADIE,f,19224,000000AEE174,Oïdium,106,Oïdium(s)
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_95b4c8d3-1e59-429e-b409-232d91be2f20,MALADIE,f,12424,AEE167PLASVI,Mildiou de la vigne Plasmopara viticola,116,Pourriture grise et sclérotinioses
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_eb51086e-6454-4418-b00c-ee906715d213,RAVAGEUR,t,19683,000000AEE132,Tordeuse,131,Ravageurs divers
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_0efe1fec-2112-4c78-8696-ddbffc810482,RAVAGEUR,t,19693,AEE132LASPMO,Tordeuse orientale du pêcher,131,Ravageurs divers
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_118346cf-a38d-43cd-8f36-c17e62a3faeb,RAVAGEUR,f,19683,000000AEE132,Tordeuse,156,Tordeuses de la grappe

@@ -1350,9 +1350,12 @@ def get_intervention_synthetise_intrants_outils_can(
 
     merge = pd.concat([merge_application, merge_autre, merge_semis])
 
-    res = merge[['interventions_intrants', 'intervention_synthetise_id']].groupby('intervention_synthetise_id').agg({
-        'interventions_intrants' : lambda x: ', '.join([item for item in x if item.strip()])
+    res = merge[['interventions_intrants', 'intervention_synthetise_id', 'biocontrole']].groupby('intervention_synthetise_id').agg({
+        'interventions_intrants' : lambda x: ', '.join([item for item in x if item.strip()]), 
+        'biocontrole' : 'max'
     })
+
+    res['biocontrole'] = res['biocontrole'].replace({'f' : 'non', 't' : 'oui'})
 
     return res.reset_index().rename(columns={'intervention_synthetise_id' : 'id'})
 
@@ -1369,25 +1372,44 @@ def get_intervention_synthetise_cibles_outils_can(
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible'].set_index('id')
     df_nuisible_edi = donnees['nuisible_edi'].set_index('id')
     df_adventice = donnees['adventice'].set_index('id')
+    df_groupe_cible = donnees['groupe_cible'].set_index('id')
 
-    # on associe à chaque cible d'utilisation d'intrants les informations sur la cible
+    # correction des mauvaises interprétations de colonnes
+    df_nuisible_edi['reference_id'] = df_nuisible_edi['reference_id'].astype('str')
+    df_groupe_cible['cible_edi_ref_id'] = df_groupe_cible['cible_edi_ref_id'].astype('str')
+
+
+    # on associe à chaque cible d'utilisation d'intrants les informations sur la cible (adventices ou nuisibles)
     left = df_utilisation_intrant_cible
-    df_nuisible_edi = df_nuisible_edi[['label_nuisible']].rename(columns={'label_nuisible' : 'label'})
+    df_nuisible_edi = df_nuisible_edi[['label_nuisible', 'reference_id']].rename(columns={'label_nuisible' : 'label'})
     right = pd.concat([df_nuisible_edi, df_adventice])
-    merge = pd.merge(left, right, left_on='ref_cible_id', right_index=True, how='left')[['label', 'utilisation_intrant_id']]
+    merge = pd.merge(left, right, left_on='ref_cible_id', right_index=True, how='left')[[
+        'label', 'utilisation_intrant_id', 'code_groupe_cible_maa', 'reference_id'
+    ]]
 
     # on ajoute l'information de l'intervention
     left = merge 
     right = df_utilisation_intrant_synthetise[['intervention_synthetise_id']]
     merge = pd.merge(left, right, left_on='utilisation_intrant_id', right_index=True, how='left')
 
+    # on ajoute l'information du groupe cible
+    left = merge
+    right = df_groupe_cible[['groupe_cible_maa', 'cible_edi_ref_id', 'code_groupe_cible_maa']]
+    merge = pd.merge(left, right, left_on=['reference_id', 'code_groupe_cible_maa'], right_on=['cible_edi_ref_id', 'code_groupe_cible_maa'], how='left')
+
+
     merge['label'] = merge['label'].fillna('')
+    merge['groupe_cible_maa'] = merge['groupe_cible_maa'].fillna('')
     
     res = merge.groupby(['intervention_synthetise_id']).agg({
-        'label' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
+        'label' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])), 
+        'groupe_cible_maa':  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
     }).rename(columns={'label' : 'interventions_cibles_trait'})
 
-    return res.reset_index().rename(columns={'intervention_synthetise_id' : 'id'})
+    return res.reset_index().rename(columns={
+        'intervention_synthetise_id' : 'id',
+        'groupe_cible_maa' : 'interventions_groupe_cible'
+    })
 
 
 
@@ -1848,9 +1870,6 @@ def get_zone_realise_rendement_outils_can(
         Permet d'obtenir les informations des cultures liées aux zones
             - rendement_culture (concaténation de tous les rendements sur la zone)
     """
-    recolte_rendement_prix = donnees['recolte_rendement_prix'].set_index('id')
-    action_realise_agrege = donnees['action_realise_agrege'].set_index('id')
-
     # on ajoute les informations sur les action
     left = get_recolte_realise_outils_can(donnees)
     right = donnees['action_realise_agrege'].set_index('id')[['zone_id']]
