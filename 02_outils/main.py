@@ -17,6 +17,7 @@ from scripts import agregation
 from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
+from typing import NamedTuple
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -455,7 +456,7 @@ source_specs = {
                     'categorie': 'agregation_complet'
                 }],
                 'generated' : [
-                    'dispositif_filtres_CAN'
+                    'dispositif_filtres_outils_can',
                     'intervention_realise_outils_can', 
                     'intervention_synthetise_outils_can',
                     'parcelle_non_rattachee_outils_can',
@@ -506,6 +507,7 @@ for source_key, source in source_specs.items():
 
 history = []
 
+
 options = {
     'local' : {
         "Tout générer" : [],
@@ -527,12 +529,12 @@ while True:
     print("")
     print("**** Bienvenue dans notre interface de génération des outils : ****")
     print("")
-    print(""" --- Vous êtes actuellement dans le mode """+TYPE+" --- ")
+    print(""" - Vous êtes actuellement dans le mode """+TYPE+"")
     print("")
     if(TYPE == 'distant'):
         print("BDD courante : "+DB_NAME_ENTREPOT)
+        print("")
 
-    print("")
     print("Veuillez choisir une option parmi les suivantes :")
     print("")
     for i, option in enumerate(options[TYPE].keys()):
@@ -545,9 +547,10 @@ while True:
         print("Au revoir !")
         break
     if choice_key == 'Tout générer':
-        print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        download_datas(entrepot_spec['tables'], verbose=False)
-        print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+        if(TYPE == 'distant'):
+            print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            download_datas(entrepot_spec['tables'], verbose=False)
+            print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         load_datas(entrepot_spec['tables'], verbose=False)
         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
@@ -571,7 +574,8 @@ while True:
                 download_data_agreged(verbose=False)
             else :
                 choosen_function()
-                download_datas(source_specs[current_source]['categories'][current_category]['generated'])
+                if(TYPE == 'distant'):
+                    download_datas(source_specs[current_source]['categories'][current_category]['generated'])
                 load_datas(source_specs[current_source]['categories'][current_category]['generated'])
             print("* FIN GÉNÉRATION ", current_source, current_category," *")
     elif choice_key == 'Téléchargement de l\'entrepôt':
