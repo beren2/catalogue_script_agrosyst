@@ -385,12 +385,12 @@ test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.Abstrac
 test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_2ddc400c-6c75-47be-a55f-76582a24f9bc,0.0,,nonvalorisation_pct
 test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_4d89ef51-43ff-458f-a15f-e0c1b8837684,0.0,,nonvalorisation_pct
 test_get_recolte_realise_outils_can,fr.inra.agrosyst.api.entities.action.AbstractAction_33bd28f2-8f51-4298-be0f-f1db8d6de000,0.0,,nonvalorisation_pct
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,Application de produits avec AMM,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,Semis classique,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,Application de produits sans AMM,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,Application de produits avec AMM,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,Semis direct,,interventions_actions
-test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,"Fertilisation minérale ; Travail de surface (binage, hersage, griffage, ...)",,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,Traitements phytosanitaires : Lutte chimique et biocontrôle (produits avec AMM),,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,Semis,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,Traitements phytosanitaires : Lutte chimique et biocontrôle (produits avec AMM),,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,Traitements phytosanitaires : Lutte chimique et biocontrôle (produits avec AMM),,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,Semis,,interventions_actions
+test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,Travail du sol,,interventions_actions
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013c63eb-b6a7-4505-8abc-d5aca4ff7f32,100.0,,proportion_surface_traitee_phyto
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013e4bcf-9628-4ae9-9a57-1e63b5eadc8c,,,proportion_surface_traitee_phyto
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_013f3c16-277f-4ec4-a645-0fd139da4967,,,proportion_surface_traitee_phyto

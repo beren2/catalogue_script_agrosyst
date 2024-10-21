@@ -124,6 +124,20 @@ UNITE_RENDEMENT = {
     'UNITE_M2': 'unité/m²'
 }
 
+TYPE_ACTION = {
+    'APPLICATION_DE_PRODUITS_FERTILISANTS_MINERAUX': 'Application de produits minéraux',
+    'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES' : 'Traitements phytosanitaires : Lutte chimique et biocontrôle (produits avec AMM)',
+    'AUTRE' : 'Autre',
+    'ENTRETIEN_TAILLE_VIGNE_ET_VERGER': 'Entretien/Taille de vigne et verger',
+    'EPANDAGES_ORGANIQUES': 'Épandage organique',
+    'IRRIGATION' : 'Irrigation',
+    'LUTTE_BIOLOGIQUE' : 'Traitements phytosanitaires : Produits sans AMM et macroorganismes',
+    'RECOLTE' : 'Récolte',
+    'SEMIS' : 'Semis',
+    'TRANSPORT' :'Transport',
+    'TRAVAIL_DU_SOL' : 'Travail du sol'
+}
+
 
 def map_boolean(values, sep='; '):
     """ permet de transformer les booléen en string """
@@ -260,14 +274,29 @@ def get_intervention_realise_action_outils_can(
         donnees
 ):
     """
-        TODO
+        Permet d'obtenir des informations sur les actions mobilisées dans les interventions en réalisé, dans le format attendu par la CAN.
+
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
 
     left =  df_action_realise
-    right = df_intervention_realise[['id', 'freq_spatiale', 'nombre_de_passage', 'psci_intervention']].rename(columns={'id' : 'intervention_realise_id'})
+    right = df_intervention_realise[['id', 'freq_spatiale', 'nombre_de_passage', 'psci_intervention', 'type']].rename(
+        columns={'id' : 'intervention_realise_id', 'type' : 'type_intervention'}
+    )
     df_action_realise_extanded = pd.merge(left, right, on='intervention_realise_id', how='left')
+
+    # On rajoute l'information des types actions tel qu'attendus
+    df_type_action = pd.DataFrame.from_records([TYPE_ACTION]).melt().rename(
+        columns={'variable' : 'action_agrosyst', 'value' : 'action_str'}
+    )
+
+    left = df_intervention_realise[['id', 'type']].rename(columns={'type' : 'type_intervention'})
+    right = df_type_action
+    df_intervention_realise_extanded = pd.merge(left, right, left_on='type_intervention', right_on='action_agrosyst', how='left').rename(columns={
+        'type_intervention' : 'interventions_actions'
+    })
+
 
     # Pour les applications de produits phytosanitaires :
     df_action_produit_phyto = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
@@ -291,18 +320,20 @@ def get_intervention_realise_action_outils_can(
         (df_action_realise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
         (df_action_realise_extanded['type'] != 'IRRIGATION')
     ].groupby(['intervention_realise_id']).agg({
-        'label' : ' ; '.join
+        'label' : ' ; '.join, 
     }).reset_index()
     
+    # On obtient un dataframe qui contient tous les labels pour le détail des actions
     keeped_column_produit_phyto = ['proportion_surface_traitee_phyto', 'psci_phyto']
     keeped_column_lutte_bio = ['proportion_surface_traitee_lutte_bio', 'psci_lutte_bio']
     keeped_column_irrigation = ['quantite_eau_mm']
+    keeped_column_autre = []
     merge = pd.merge(df_action_produit_phyto[keeped_column_produit_phyto+['intervention_realise_id', 'label']], 
                      df_action_lutte_bio[keeped_column_lutte_bio+['intervention_realise_id', 'label']], 
                      on='intervention_realise_id', how='outer', suffixes = ('', '_lutte_bio'))
 
     merge = pd.merge(merge.set_index('intervention_realise_id'), 
-                     df_action_autres[['intervention_realise_id', 'label']], 
+                     df_action_autres[keeped_column_autre+['intervention_realise_id', 'label']], 
                      left_index=True, suffixes = ('', '_autre'),
                      right_on='intervention_realise_id', how='outer').drop_duplicates(subset=['intervention_realise_id'])
     
@@ -311,14 +342,22 @@ def get_intervention_realise_action_outils_can(
                      left_index=True, suffixes = ('', '_irrigation'),
                      right_on='intervention_realise_id', how='outer').drop_duplicates(subset=['intervention_realise_id'])
 
-    merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
+
+    merge['interventions_actions_detail'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
         lambda x: x.str.cat(sep=' ; '), axis=1
     )
+
+    # on rajoute à ce dataframe l'information du type d'intervention
+    left = merge
+    right = df_intervention_realise_extanded[['action_str', 'id']].rename(columns={
+        'action_str' : 'interventions_actions'
+    })
+    merge = pd.merge(left, right, left_index=True, right_on='id', how='left')
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
     intervention_actions_indicateurs = merge[[
-        'intervention_realise_id', 'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'intervention_realise_id', 'interventions_actions', 'interventions_actions_detail', 'proportion_surface_traitee_phyto', 'psci_phyto', 
         'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm' 
     ]]
 
