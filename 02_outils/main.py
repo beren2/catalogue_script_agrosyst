@@ -17,7 +17,6 @@ from scripts import agregation
 from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
-from typing import NamedTuple
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
