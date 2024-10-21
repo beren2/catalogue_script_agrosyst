@@ -1094,6 +1094,18 @@ def get_intervention_synthetise_action_outils_can(
     right = df_intervention_synthetise[['id', 'freq_spatiale', 'freq_temporelle', 'psci_intervention']].rename(columns={'id' : 'intervention_synthetise_id'})
     df_action_synthetise_extanded = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
+
+    # On rajoute l'information des types actions tel qu'attendus
+    df_type_action = pd.DataFrame.from_records([TYPE_ACTION]).melt().rename(
+        columns={'variable' : 'action_agrosyst', 'value' : 'action_str'}
+    )
+
+    left = df_intervention_synthetise[['id', 'type']].rename(columns={'type' : 'type_intervention'})
+    right = df_type_action
+    df_intervention_synthetise_extanded = pd.merge(left, right, left_on='type_intervention', right_on='action_agrosyst', how='left').rename(columns={
+        'type_intervention' : 'interventions_actions'
+    })
+
     # Pour les applications de produits phytosanitaires :
     df_action_produit_phyto = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
     df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
@@ -1136,14 +1148,23 @@ def get_intervention_synthetise_action_outils_can(
                      left_index=True, suffixes = ('', '_irrigation'),
                      right_on='intervention_synthetise_id', how='outer').drop_duplicates(subset=['intervention_synthetise_id'])
 
-    merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
+    merge['interventions_actions_details'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
         lambda x: x.str.cat(sep=' ; '), axis=1
     )
+
+
+    # on rajoute à ce dataframe l'information du type d'intervention
+    left = merge
+    right = df_intervention_synthetise_extanded[['action_str', 'id']].rename(columns={
+        'action_str' : 'interventions_actions'
+    })
+    merge = pd.merge(left, right, left_index=True, right_on='id', how='left')
+
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
     intervention_actions_indicateurs = merge[[
-        'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'interventions_actions', 'interventions_actions_details', 'proportion_surface_traitee_phyto', 'psci_phyto', 
         'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm',
         'intervention_synthetise_id'
     ]].rename(columns={'intervention_synthetise_id' : 'id'})
