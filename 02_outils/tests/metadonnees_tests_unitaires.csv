@@ -507,3 +507,6 @@ test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entitie
 test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_c43e149f-814d-4b0f-aa5e-ad5e30cbb9de,Cultures d'été,,culture_nom
 test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_b5459d45-c9d9-4585-89ec-c72a0403546f,VigneCabernet franc N,,culture_nom
 test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_d9fe126f-02d1-4bc6-8720-8d04956176ad,Vigne,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_0012f1b8-aa53-488c-8b70-4004aeb68ea7,Avoine - Vesce - Trèfle,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_0017a622-eb9c-496f-a81a-1f7441da0711,Phacélie,,culture_nom
+test_get_intervention_synthetise_culture_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_00324d2b-49b2-43f3-80a7-351450331d07,Interculture,,culture_nom

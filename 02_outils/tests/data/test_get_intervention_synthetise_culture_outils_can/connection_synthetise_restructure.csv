@@ -1,2 +1,5 @@
 id,culture_intermediaire_id
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_5f58c073-a3c4-4705-8e96-263925541e8d,fr.inra.agrosyst.api.entities.CroppingPlanEntry_b3e47fed-47d7-4b51-8691-b9d955506f95
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_99db024f-26a7-4970-b1ce-fb84c7286156,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ae217ee0-1cc4-42e6-ae48-d1380d4837cb
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_c8ecc809-f634-4391-9b9e-a2399f75a1b9,fr.inra.agrosyst.api.entities.CroppingPlanEntry_94e5c305-6b85-4f2e-8232-53908f2618c3
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_d7af7fda-c89e-48ec-8e49-0b2b25394cd2,fr.inra.agrosyst.api.entities.CroppingPlanEntry_c18c2994-7ba1-402c-8b80-6c6bafccb363

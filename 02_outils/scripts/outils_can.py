@@ -938,7 +938,7 @@ def get_intervention_synthetise_culture_outils_can(
     )
 
     left = df_composant_culture_intervention_synthetise_restructure
-    right = df_intervention_synthetise[['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
+    right = df_intervention_synthetise[['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id','concerne_ci']]
     df_composant_culture_concerne_intervention_extanded = pd.merge(
         left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
 
@@ -990,7 +990,7 @@ def get_intervention_synthetise_culture_outils_can(
         'esp_complet' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'esp': lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'var' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'culture_id' : lambda x: next(iter(x))
+        'culture_id' : lambda x: next(iter(x)),
     })
 
     df_final_assolee = df_composant_culture_concerne_intervention_extanded_assolee.groupby([
@@ -1000,8 +1000,14 @@ def get_intervention_synthetise_culture_outils_can(
         'esp_complet' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'esp': lambda x: ' ; '.join(dict.fromkeys([item for item in x if item.strip()])),
         'var' : lambda x: '; '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'culture_id' : lambda x: next(iter(x))
+        'culture_id' : lambda x: next(iter(x)),
+        'concerne_ci' : lambda x: next(iter(x)),
+        'culture_intermediaire_id': lambda x: next(iter(x))
     })
+    df_final_assolee['culture_id'] = np.where(df_final_assolee['concerne_ci'] == 't', df_final_assolee['culture_intermediaire_id'], df_final_assolee['culture_id'])
+    df_final_assolee = df_final_assolee.drop(['concerne_ci'], axis = 1)
+    df_final_assolee = df_final_assolee.drop(['culture_intermediaire_id'], axis = 1)
+
 
     df_intervention_synthetise_v1 = pd.concat([df_final_assolee, df_final_perenne])
 
