@@ -1,0 +1,4 @@
+id,nom,melange_especes,melange_varietes,prairie_paturee,prairie_temporaire,prairie_fauchee,code,type,domaine_id
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_5b46180c-dda9-4ef2-8c41-79a0c092474c,Maïs,f,f,f,,f,8d91c090-30c6-45ef-a60a-8d3a0842aab2,MAIN,fr.inra.agrosyst.api.entities.Domain_10c90227-22c6-4afd-bb12-e2a4842bc691
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_332b445e-12ad-452e-8996-9b32fe94cb75,Blé tendre,f,f,f,,f,03684165-c62b-4c52-bddd-0559a2d694d1,MAIN,fr.inra.agrosyst.api.entities.Domain_6e541a11-4542-4531-bda8-503cb0d2c9aa
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_5b43b156-03bf-4225-b479-8801e60db3bd,Luzerne,f,f,f,,f,227077e7-39c7-46b7-8065-2af5e8c43079,MAIN,fr.inra.agrosyst.api.entities.Domain_198fdb31-f0e8-4147-9a5f-8cf22ea65840

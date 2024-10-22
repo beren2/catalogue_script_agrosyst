@@ -131,7 +131,9 @@ ordered_files = [
             "levier",
             "texture_sol",
             "fertilisation_organique",
-            "fertilisation_minerale"
+            "fertilisation_minerale",
+            "groupe_cible",
+            "adventice"
         ]
 
 while True:

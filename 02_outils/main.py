@@ -1,11 +1,11 @@
 """
-    Fichier principal d'obtention des données des différents magasin de données
-    À exécuter lors d'une mise à jour des données sur Datagrosyst.
+    Fichier principal d'obtention des données des différents source de données
+    À exécuter lors d'une mise à jour des données sur Datagrosyst ou lors de la conception d'outils
     
     Ce script effectue les tâches suivantes  :
-    1) Import des données : téléchargement des données de l'entrepôt en utilisant la connexion POSTGRESSQL (si besoin)
-    2) Exécution des scripts de pré-traitement (nettoyage)
-    3) Enregistrement des résultats dans la base entrepôt (mais avec un suffixe propre aux bases considérées)
+    1) Import des données : téléchargement des données de l'entrepôt en utilisant la connexion POSTGRESQL (si TYPE == "DISTANT")
+    2) Exécution des scripts de génération des outils (en se basant sur une copie locale des données)
+    3) Enregistrement des résultats dans la base entrepôt (si TYPE == "DISTANT")
 """
 import configparser
 import urllib
@@ -185,7 +185,7 @@ def load_ref(verbose=False):
 
 def create_category_nettoyage():
     """
-        Execute les requêtes pour créer le magasin de nettoyage
+        Execute les requêtes pour créer les outils de nettoyage
     """
     prefixe_source = 'nettoyage_'
     tables_nettoyage = []
@@ -216,7 +216,7 @@ def create_category_nettoyage():
 
 def create_category_agregation():
     """
-        Execute les requêtes pour créer le magasin d'agregation
+        Execute les requêtes pour créer les outils d'agregation
     """
 
     # permet d'obtenir des tables agrégées pour avoir les niveaux supérieurs depuis les niveaux fins (raccourcis)
@@ -257,7 +257,7 @@ def create_category_agregation():
 
 def create_category_restructuration():
     """
-        Execute les requêtes pour créer le magasin de restructuration
+        Execute les requêtes pour créer les outils de restructuration
     """
     df_noeuds_synthetise_restructured = restructuration.restructuration_noeuds_synthetise(donnees)
     export_to_db(df_noeuds_synthetise_restructured, 'entrepot_noeuds_synthetise_restructure')
@@ -288,7 +288,7 @@ def create_category_restructuration():
 
 def create_category_indicateur():
     """
-        Execute les requêtes pour créer le magasin des indicateurs
+        Execute les requêtes pour créer les outils des indicateurs
     """
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
@@ -298,7 +298,7 @@ def create_category_indicateur():
 
 def create_category_outils_can():
     """
-        Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
+        Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
     """
     # création de l'outil permettant de filtrer les entités (dispositifs)
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
@@ -344,7 +344,7 @@ def create_category_outils_can():
 
 def create_category_test():
     """ 
-            Execute les requêtes pour créer le magasin des outils utils pour la génération des csv CAN
+            Execute les requêtes pour tester la génération d'outils spécifiques
     """
     df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
     df_sdc_realise_outils_can.set_index('id', inplace=True)
@@ -379,9 +379,9 @@ external_data_spec = {
 }
 
 # déclaration des dépendances entre les différentes catégories
-magasin_specs = {
-    'nettoyage' : {
-        'explication' : "Les données de la source nettoyage permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
+source_specs = {
+    'outils' : {
+        'explication' : "Les données de la source outils permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
         'categories' : {
             'nettoyage' : {
                 'function' : create_category_nettoyage,
@@ -407,7 +407,7 @@ magasin_specs = {
             'agregation_complet' : {
                 'function' : None,
                 'dependances' : [{
-                    'magasin' : 'nettoyage', 
+                    'source' : 'outils', 
                     'categorie': 'agregation'
                 }
                 ],
@@ -423,7 +423,7 @@ magasin_specs = {
             'restructuration' : {
                 'function' : create_category_restructuration,
                 'dependances' : [{
-                    'magasin' : 'nettoyage', 
+                    'source' : 'outils', 
                     'categorie': 'agregation_complet'
                 }],
                 'generated' : [
@@ -447,15 +447,15 @@ magasin_specs = {
             'outils_can' : {
                 'function' : create_category_outils_can,
                 'dependances' : [{
-                    'magasin' : 'nettoyage', 
+                    'source' : 'outils', 
                     'categorie': 'restructuration'
                 },
                 {
-                    'magasin' : 'nettoyage', 
+                    'source' : 'outils', 
                     'categorie': 'agregation_complet'
                 }],
                 'generated' : [
-                    'dispositif_filtres_CAN'
+                    'dispositif_filtres_outils_can',
                     'intervention_realise_outils_can', 
                     'intervention_synthetise_outils_can',
                     'parcelle_non_rattachee_outils_can',
@@ -465,11 +465,11 @@ magasin_specs = {
             'test' : {
                 'function' : create_category_test,
                 'dependances' : [{
-                    'magasin' : 'nettoyage', 
+                    'source' : 'outils', 
                     'categorie': 'restructuration'
                 },
                 {
-                    'magasin' : 'nettoyage', 
+                    'source' : 'outils', 
                     'categorie': 'agregation_complet'
                 }],
                 'generated' : [
@@ -488,54 +488,68 @@ magasin_specs = {
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
-    {'magasin' : 'nettoyage', 'categorie' : 'nettoyage'},
-    {'magasin' : 'nettoyage', 'categorie' : 'agregation'},
-    {'magasin' : 'nettoyage', 'categorie' : 'agregation_complet'},
-    {'magasin' : 'nettoyage', 'categorie' : 'restructuration'},
-    {'magasin' : 'nettoyage', 'categorie' : 'indicateur'},
-    {'magasin' : 'nettoyage', 'categorie' : 'outils_can'}
+    {'source' : 'outils', 'categorie' : 'nettoyage'},
+    {'source' : 'outils', 'categorie' : 'agregation'},
+    {'source' : 'outils', 'categorie' : 'agregation_complet'},
+    {'source' : 'outils', 'categorie' : 'restructuration'},
+    {'source' : 'outils', 'categorie' : 'indicateur'},
+    {'source' : 'outils', 'categorie' : 'outils_can'}
 ]
 
 options_categories = {}
 
-for magasin_key, magasin in magasin_specs.items():
-    for categorie_key in magasin['categories']:
-        options_categories[categorie_key +' ('+ magasin_key+')'] = {'magasin' : magasin_key, 'categorie' : categorie_key}
-        categorie = magasin['categories'][categorie_key]
+for source_key, source in source_specs.items():
+    for categorie_key in source['categories']:
+        options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'categorie' : categorie_key}
+        categorie = source['categories'][categorie_key]
         dependances = categorie['dependances']
 
 history = []
 
 
 options = {
+    'local' : {
+        "Tout générer" : [],
+        "Générer une catégorie" : [],  
+        "Quitter" : []
+    },
+    'distant' : {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Télécharger une catégorie" : [],  
         "Téléchargement de l'entrepôt" : [],
         "Quitter" : []
+    }
 }
 
 donnees = {}
 while True:
     print("")
     print("")
-    print("**** Bienvenue dans notre interface de génération du magasin de données : ****")
+    print("**** Bienvenue dans notre interface de génération des outils : ****")
     print("")
+    print(""" - Vous êtes actuellement dans le mode """+TYPE+"")
+    print("")
+    if(TYPE == 'distant'):
+        print("BDD courante : "+DB_NAME_ENTREPOT)
+        print("")
+
     print("Veuillez choisir une option parmi les suivantes :")
     print("")
-    for i, option in enumerate(options.keys()):
+    for i, option in enumerate(options[TYPE].keys()):
         print(f"{i + 1}. {option}")
     
     choice = int(input("Entrez votre choix (1, 2 ...) : "))
-    choice_key = list(options.keys())[choice - 1]
+    choice_key = list(options[TYPE].keys())[choice - 1]
     
     if choice_key == "Quitter":
         print("Au revoir !")
         break
     if choice_key == 'Tout générer':
-        print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        download_datas(entrepot_spec['tables'], verbose=False)
-        print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+        if(TYPE == 'distant'):
+            print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            download_datas(entrepot_spec['tables'], verbose=False)
+            print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         load_datas(entrepot_spec['tables'], verbose=False)
         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
@@ -548,10 +562,10 @@ while True:
         print("* FIN DU CHARGEMENT DES RÉFÉRENTIELS*")
 
         for step in steps :
-            current_magasin = step['magasin']
+            current_source = step['source']
             current_category = step['categorie']
-            print("* DÉBUT GÉNÉRATION ", current_magasin, current_category," *")
-            choosen_function = magasin_specs[current_magasin]['categories'][current_category]['function']
+            print("* DÉBUT GÉNÉRATION ", current_source, current_category," *")
+            choosen_function = source_specs[current_source]['categories'][current_category]['function']
 
             if(current_category == 'agregation_complet'):
                 # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
@@ -559,9 +573,10 @@ while True:
                 download_data_agreged(verbose=False)
             else :
                 choosen_function()
-                download_datas(magasin_specs[current_magasin]['categories'][current_category]['generated'])
-                load_datas(magasin_specs[current_magasin]['categories'][current_category]['generated'])
-            print("* FIN GÉNÉRATION ", current_magasin, current_category," *")
+                if(TYPE == 'distant'):
+                    download_datas(source_specs[current_source]['categories'][current_category]['generated'])
+                load_datas(source_specs[current_source]['categories'][current_category]['generated'])
+            print("* FIN GÉNÉRATION ", current_source, current_category," *")
     elif choice_key == 'Téléchargement de l\'entrepôt':
         print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         download_datas(entrepot_spec['tables'], verbose=False)
@@ -574,18 +589,18 @@ while True:
                     print(f"{i + 1}. {option_category}")
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_value = list(options_categories.values())[choice - 1]
-        choosen_magasin = choosen_value['magasin']
+        choosen_source = choosen_value['source']
         choosen_category = choosen_value['categorie']
-        choosen_function = magasin_specs[choosen_magasin]['categories'][choosen_category]['function']
-        choosen_generated = magasin_specs[choosen_magasin]['categories'][choosen_category]['generated']
+        choosen_function = source_specs[choosen_source]['categories'][choosen_category]['function']
+        choosen_generated = source_specs[choosen_source]['categories'][choosen_category]['generated']
 
         if(choosen_category == 'agregation_complet'):
             # Attention, dans ce cas les données à télécharger ne sont pas celles stockées, il faut préalablement les reconstituer
             # Chargement de toutes les données incomplètes
             print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
-            choosen_dependances = magasin_specs[choosen_magasin]['categories'][choosen_category]['dependances']
+            choosen_dependances = source_specs[choosen_source]['categories'][choosen_category]['dependances']
             for choosen_dependance in choosen_dependances:
-                categorie_dependance = magasin_specs[choosen_dependance['magasin']]['categories'][choosen_dependance['categorie']]
+                categorie_dependance = source_specs[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
                 if(len(categorie_dependance['generated']) != 0):
                     if(categorie_dependance['generated'][0] not in donnees):
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
@@ -613,12 +628,12 @@ while True:
 
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_value = list(options_categories.values())[choice - 1]
-        choosen_magasin = choosen_value['magasin']
+        choosen_source = choosen_value['source']
         choosen_category = choosen_value['categorie']
-        choosen_function = magasin_specs[choosen_magasin]['categories'][choosen_category]['function']
-        choosen_dependances = magasin_specs[choosen_magasin]['categories'][choosen_category]['dependances']
+        choosen_function = source_specs[choosen_source]['categories'][choosen_category]['function']
+        choosen_dependances = source_specs[choosen_source]['categories'][choosen_category]['dependances']
         for choosen_dependance in choosen_dependances:
-            categorie_dependance = magasin_specs[choosen_dependance['magasin']]['categories'][choosen_dependance['categorie']]
+            categorie_dependance = source_specs[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
             if(len(categorie_dependance['generated']) != 0):
                 if(categorie_dependance['generated'][0] not in donnees):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
@@ -633,16 +648,16 @@ while True:
             download_data_agreged(verbose=False)
         elif(choosen_category == 'test'):
             print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-            load_datas(magasin_specs['nettoyage']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
+            load_datas(source_specs['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
             load_ref()
             print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
             load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
             print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
-            print("* DÉBUT GÉNÉRATION ", choosen_magasin, choosen_category," *")
+            print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
             choosen_function()
-            print("* FIN GÉNÉRATION ", choosen_magasin, choosen_category," *")
+            print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
         else :
             # on vérifie que les données n'ont pas été déjà chargées
             if('domaine' not in donnees):
@@ -654,9 +669,9 @@ while True:
                 load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
                 
-            print("* DÉBUT GÉNÉRATION ", choosen_magasin, choosen_category," *")
+            print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
             choosen_function()
-            print("* FIN GÉNÉRATION ", choosen_magasin, choosen_category," *")
+            print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
 
 
     elif choice_key == "Test":

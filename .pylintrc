@@ -112,7 +112,8 @@ disable=
     too-complex,
     bad-builtin,
     global-variable-not-assigned,
-    too-many-positional-arguments
+    too-many-positional-arguments,
+    consider-using-namedtuple-or-dataclass
     
     
 

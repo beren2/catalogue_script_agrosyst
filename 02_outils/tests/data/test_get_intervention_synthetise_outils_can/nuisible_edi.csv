@@ -1,6 +1,6 @@
-id,categorie_nuisible,label_nuisible,source
-fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_53312bae-b986-41a1-a7f5-b1bb15f138e5,RAVAGEUR,Tordeuse,AgroEDI 2013
-fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_be1b586a-34f0-4fb9-a7c7-066b464c9c6c,RAVAGEUR,Tordeuse orientale du pêcher,AgroEDI 2013
-fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_9b08c2c2-087a-4fdf-a505-2d1b67ba070d,MALADIE,Mildiou de la vigne Plasmopara viticola,AgroEDI 2019
-fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_e291ab7e-e349-4819-a35f-96003146ba99,MALADIE,Mildiou,AgroEDI 2013
-fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_f520996e-c128-40fc-81c2-392dcb59c19e,MALADIE,Oïdium,AgroEDI 2013
+id,categorie_nuisible,label_nuisible,source,reference_id
+fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_53312bae-b986-41a1-a7f5-b1bb15f138e5,RAVAGEUR,Tordeuse,AgroEDI 2013,19683
+fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_be1b586a-34f0-4fb9-a7c7-066b464c9c6c,RAVAGEUR,Tordeuse orientale du pêcher,AgroEDI 2013,19693
+fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_9b08c2c2-087a-4fdf-a505-2d1b67ba070d,MALADIE,Mildiou de la vigne Plasmopara viticola,AgroEDI 2019,12424
+fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_e291ab7e-e349-4819-a35f-96003146ba99,MALADIE,Mildiou,AgroEDI 2013,19089
+fr.inra.agrosyst.api.entities.referential.RefNuisibleEDI_f520996e-c128-40fc-81c2-392dcb59c19e,MALADIE,Oïdium,AgroEDI 2013,19224

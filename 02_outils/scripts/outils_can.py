@@ -124,6 +124,20 @@ UNITE_RENDEMENT = {
     'UNITE_M2': 'unité/m²'
 }
 
+TYPE_ACTION = {
+    'APPLICATION_DE_PRODUITS_FERTILISANTS_MINERAUX': 'Application de produits minéraux',
+    'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES' : 'Traitements phytosanitaires : Lutte chimique et biocontrôle (produits avec AMM)',
+    'AUTRE' : 'Autre',
+    'ENTRETIEN_TAILLE_VIGNE_ET_VERGER': 'Entretien/Taille de vigne et verger',
+    'EPANDAGES_ORGANIQUES': 'Épandage organique',
+    'IRRIGATION' : 'Irrigation',
+    'LUTTE_BIOLOGIQUE' : 'Traitements phytosanitaires : Produits sans AMM et macroorganismes',
+    'RECOLTE' : 'Récolte',
+    'SEMIS' : 'Semis',
+    'TRANSPORT' :'Transport',
+    'TRAVAIL_DU_SOL' : 'Travail du sol'
+}
+
 
 def map_boolean(values, sep='; '):
     """ permet de transformer les booléen en string """
@@ -260,14 +274,29 @@ def get_intervention_realise_action_outils_can(
         donnees
 ):
     """
-        TODO
+        Permet d'obtenir des informations sur les actions mobilisées dans les interventions en réalisé, dans le format attendu par la CAN.
+
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
 
     left =  df_action_realise
-    right = df_intervention_realise[['id', 'freq_spatiale', 'nombre_de_passage', 'psci_intervention']].rename(columns={'id' : 'intervention_realise_id'})
+    right = df_intervention_realise[['id', 'freq_spatiale', 'nombre_de_passage', 'psci_intervention', 'type']].rename(
+        columns={'id' : 'intervention_realise_id', 'type' : 'type_intervention'}
+    )
     df_action_realise_extanded = pd.merge(left, right, on='intervention_realise_id', how='left')
+
+    # On rajoute l'information des types actions tel qu'attendus
+    df_type_action = pd.DataFrame.from_records([TYPE_ACTION]).melt().rename(
+        columns={'variable' : 'action_agrosyst', 'value' : 'action_str'}
+    )
+
+    left = df_intervention_realise[['id', 'type']].rename(columns={'type' : 'type_intervention'})
+    right = df_type_action
+    df_intervention_realise_extanded = pd.merge(left, right, left_on='type_intervention', right_on='action_agrosyst', how='left').rename(columns={
+        'type_intervention' : 'interventions_actions'
+    })
+
 
     # Pour les applications de produits phytosanitaires :
     df_action_produit_phyto = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
@@ -291,18 +320,20 @@ def get_intervention_realise_action_outils_can(
         (df_action_realise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
         (df_action_realise_extanded['type'] != 'IRRIGATION')
     ].groupby(['intervention_realise_id']).agg({
-        'label' : ' ; '.join
+        'label' : ' ; '.join, 
     }).reset_index()
     
+    # On obtient un dataframe qui contient tous les labels pour le détail des actions
     keeped_column_produit_phyto = ['proportion_surface_traitee_phyto', 'psci_phyto']
     keeped_column_lutte_bio = ['proportion_surface_traitee_lutte_bio', 'psci_lutte_bio']
     keeped_column_irrigation = ['quantite_eau_mm']
+    keeped_column_autre = []
     merge = pd.merge(df_action_produit_phyto[keeped_column_produit_phyto+['intervention_realise_id', 'label']], 
                      df_action_lutte_bio[keeped_column_lutte_bio+['intervention_realise_id', 'label']], 
                      on='intervention_realise_id', how='outer', suffixes = ('', '_lutte_bio'))
 
     merge = pd.merge(merge.set_index('intervention_realise_id'), 
-                     df_action_autres[['intervention_realise_id', 'label']], 
+                     df_action_autres[keeped_column_autre+['intervention_realise_id', 'label']], 
                      left_index=True, suffixes = ('', '_autre'),
                      right_on='intervention_realise_id', how='outer').drop_duplicates(subset=['intervention_realise_id'])
     
@@ -311,14 +342,22 @@ def get_intervention_realise_action_outils_can(
                      left_index=True, suffixes = ('', '_irrigation'),
                      right_on='intervention_realise_id', how='outer').drop_duplicates(subset=['intervention_realise_id'])
 
-    merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
+
+    merge['interventions_actions_detail'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
         lambda x: x.str.cat(sep=' ; '), axis=1
     )
+
+    # on rajoute à ce dataframe l'information du type d'intervention
+    left = merge
+    right = df_intervention_realise_extanded[['action_str', 'id']].rename(columns={
+        'action_str' : 'interventions_actions'
+    })
+    merge = pd.merge(left, right, left_index=True, right_on='id', how='left')
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
     intervention_actions_indicateurs = merge[[
-        'intervention_realise_id', 'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'intervention_realise_id', 'interventions_actions', 'interventions_actions_detail', 'proportion_surface_traitee_phyto', 'psci_phyto', 
         'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm' 
     ]]
 
@@ -718,10 +757,15 @@ def get_intervention_realise_intrants_outils_can(
     merge_semis['interventions_intrants'] = merge_semis['interventions_intrants'].fillna('')
 
     merge = pd.concat([merge_application, merge_autre, merge_semis])
+    merge['biocontrole'] = merge['biocontrole'].fillna('f').replace({'t': True, 'f': False})
 
-    res = merge[['interventions_intrants', 'intervention_realise_id']].groupby('intervention_realise_id').agg({
-        'interventions_intrants' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
+    res = merge[['interventions_intrants', 'intervention_realise_id', 'biocontrole']].groupby('intervention_realise_id').agg({
+        'interventions_intrants' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
+        'biocontrole' : 'max'
     })
+
+    res['biocontrole'] = res['biocontrole'].replace({False: 'non', True : 'oui'})
+
 
     return res.reset_index().rename(columns={'intervention_realise_id' : 'id'})
 
@@ -1056,6 +1100,18 @@ def get_intervention_synthetise_action_outils_can(
     right = df_intervention_synthetise[['id', 'freq_spatiale', 'freq_temporelle', 'psci_intervention']].rename(columns={'id' : 'intervention_synthetise_id'})
     df_action_synthetise_extanded = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
+
+    # On rajoute l'information des types actions tel qu'attendus
+    df_type_action = pd.DataFrame.from_records([TYPE_ACTION]).melt().rename(
+        columns={'variable' : 'action_agrosyst', 'value' : 'action_str'}
+    )
+
+    left = df_intervention_synthetise[['id', 'type']].rename(columns={'type' : 'type_intervention'})
+    right = df_type_action
+    df_intervention_synthetise_extanded = pd.merge(left, right, left_on='type_intervention', right_on='action_agrosyst', how='left').rename(columns={
+        'type_intervention' : 'interventions_actions'
+    })
+
     # Pour les applications de produits phytosanitaires :
     df_action_produit_phyto = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
     df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
@@ -1098,14 +1154,23 @@ def get_intervention_synthetise_action_outils_can(
                      left_index=True, suffixes = ('', '_irrigation'),
                      right_on='intervention_synthetise_id', how='outer').drop_duplicates(subset=['intervention_synthetise_id'])
 
-    merge['interventions_actions'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
+    merge['interventions_actions_details'] = merge[['label', 'label_lutte_bio', 'label_autre', 'label_irrigation']].apply(
         lambda x: x.str.cat(sep=' ; '), axis=1
     )
+
+
+    # on rajoute à ce dataframe l'information du type d'intervention
+    left = merge
+    right = df_intervention_synthetise_extanded[['action_str', 'id']].rename(columns={
+        'action_str' : 'interventions_actions'
+    })
+    merge = pd.merge(left, right, left_index=True, right_on='id', how='left')
+
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
     # à chaque fois la valeur non nulle pour les colonnes
     intervention_actions_indicateurs = merge[[
-        'interventions_actions', 'proportion_surface_traitee_phyto', 'psci_phyto', 
+        'interventions_actions', 'interventions_actions_details', 'proportion_surface_traitee_phyto', 'psci_phyto', 
         'proportion_surface_traitee_lutte_bio', 'psci_lutte_bio', 'quantite_eau_mm',
         'intervention_synthetise_id'
     ]].rename(columns={'intervention_synthetise_id' : 'id'})
@@ -1277,7 +1342,6 @@ def get_intervention_synthetise_outils_can(
     )
     merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
-
     # ajout des informations sur la culture précédente
     left = merge
     right = get_intervention_synthetise_culture_prec_outils_can(donnees).rename(
@@ -1356,10 +1420,14 @@ def get_intervention_synthetise_intrants_outils_can(
     merge_semis['interventions_intrants'] = merge_semis['interventions_intrants'].fillna('')
 
     merge = pd.concat([merge_application, merge_autre, merge_semis])
+    merge['biocontrole'] = merge['biocontrole'].fillna('f').replace({'t': True, 'f': False})
 
-    res = merge[['interventions_intrants', 'intervention_synthetise_id']].groupby('intervention_synthetise_id').agg({
-        'interventions_intrants' : lambda x: ', '.join([item for item in x if item.strip()])
+    res = merge[['interventions_intrants', 'intervention_synthetise_id', 'biocontrole']].groupby('intervention_synthetise_id').agg({
+        'interventions_intrants' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
+        'biocontrole' : 'max'
     })
+
+    res['biocontrole'] = res['biocontrole'].replace({False: 'non', True : 'oui'})
 
     return res.reset_index().rename(columns={'intervention_synthetise_id' : 'id'})
 
@@ -1376,25 +1444,44 @@ def get_intervention_synthetise_cibles_outils_can(
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible'].set_index('id')
     df_nuisible_edi = donnees['nuisible_edi'].set_index('id')
     df_adventice = donnees['adventice'].set_index('id')
+    df_groupe_cible = donnees['groupe_cible'].set_index('id')
 
-    # on associe à chaque cible d'utilisation d'intrants les informations sur la cible
+    # correction des mauvaises interprétations de colonnes
+    df_nuisible_edi['reference_id'] = df_nuisible_edi['reference_id'].astype('str')
+    df_groupe_cible['cible_edi_ref_id'] = df_groupe_cible['cible_edi_ref_id'].astype('str')
+
+
+    # on associe à chaque cible d'utilisation d'intrants les informations sur la cible (adventices ou nuisibles)
     left = df_utilisation_intrant_cible
-    df_nuisible_edi = df_nuisible_edi[['label_nuisible']].rename(columns={'label_nuisible' : 'label'})
+    df_nuisible_edi = df_nuisible_edi[['label_nuisible', 'reference_id']].rename(columns={'label_nuisible' : 'label'})
     right = pd.concat([df_nuisible_edi, df_adventice])
-    merge = pd.merge(left, right, left_on='ref_cible_id', right_index=True, how='left')[['label', 'utilisation_intrant_id']]
+    merge = pd.merge(left, right, left_on='ref_cible_id', right_index=True, how='left')[[
+        'label', 'utilisation_intrant_id', 'code_groupe_cible_maa', 'reference_id'
+    ]]
 
     # on ajoute l'information de l'intervention
     left = merge 
     right = df_utilisation_intrant_synthetise[['intervention_synthetise_id']]
     merge = pd.merge(left, right, left_on='utilisation_intrant_id', right_index=True, how='left')
 
+    # on ajoute l'information du groupe cible
+    left = merge
+    right = df_groupe_cible[['groupe_cible_maa', 'cible_edi_ref_id', 'code_groupe_cible_maa']]
+    merge = pd.merge(left, right, left_on=['reference_id', 'code_groupe_cible_maa'], right_on=['cible_edi_ref_id', 'code_groupe_cible_maa'], how='left')
+
+
     merge['label'] = merge['label'].fillna('')
+    merge['groupe_cible_maa'] = merge['groupe_cible_maa'].fillna('')
     
     res = merge.groupby(['intervention_synthetise_id']).agg({
-        'label' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
+        'label' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])), 
+        'groupe_cible_maa':  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
     }).rename(columns={'label' : 'interventions_cibles_trait'})
 
-    return res.reset_index().rename(columns={'intervention_synthetise_id' : 'id'})
+    return res.reset_index().rename(columns={
+        'intervention_synthetise_id' : 'id',
+        'groupe_cible_maa' : 'interventions_groupe_cible'
+    })
 
 
 
@@ -1855,29 +1942,26 @@ def get_zone_realise_rendement_outils_can(
         Permet d'obtenir les informations des cultures liées aux zones
             - rendement_culture (concaténation de tous les rendements sur la zone)
     """
-    recolte_rendement_prix = donnees['recolte_rendement_prix'].set_index('id')
-    action_realise_agrege = donnees['action_realise_agrege'].set_index('id')
-
+    # on ajoute les informations sur les action
+    left = get_recolte_realise_outils_can(donnees)
+    right = donnees['action_realise_agrege'].set_index('id')[['zone_id']]
+    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
 
     unite_rendement = pd.DataFrame.from_records([UNITE_RENDEMENT]).melt().rename(
         columns={'variable' : 'unite_agrosyst', 'value' : 'unite_utilisateur'}
     )
-
-    left = recolte_rendement_prix
-    right = action_realise_agrege[['zone_id']]
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
 
     left = recolte_rendement_prix_extanded
     right = unite_rendement
     recolte_rendement_prix_extanded = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
 
     # on effectue la somme pour ceux où n'y a que le rendement_moy qui diffère :  
-    recolte_rendement_prix_extanded = recolte_rendement_prix_extanded.groupby(['zone_id', 'libelle_culture', 'destination', 'unite_utilisateur']).agg({
-        'rendement_moy' : 'sum'
+    recolte_rendement_prix_extanded = recolte_rendement_prix_extanded.groupby(['zone_id', 'destination', 'unite_utilisateur']).agg({
+        'rendement_moy_corr' : 'sum'
     }).reset_index()
 
     recolte_rendement_prix_extanded['rendement_total'] = '['+recolte_rendement_prix_extanded['destination'].astype('str')+']'+'|'+\
-        recolte_rendement_prix_extanded['rendement_moy'].astype('str')+'|'+\
+        recolte_rendement_prix_extanded['rendement_moy_corr'].astype('str')+'|'+\
             recolte_rendement_prix_extanded['unite_utilisateur'].astype('str')
 
 
@@ -2011,11 +2095,19 @@ def get_sdc_realise_outils_can(
 
     # on fill les nan avec la chaine de caractère vide : 
     zone_extanded.loc[:, 'culture_especes_edi'] = zone_extanded['culture_especes_edi'].fillna('')
+    zone_extanded.loc[:, 'variete_nom'] = zone_extanded['variete_nom'].fillna('')
 
     # on groupe par sdc_id :
-    sdc_extanded = zone_extanded.groupby('sdc_id').agg({'culture_especes_edi': merge_concat})
+    sdc_extanded = zone_extanded.groupby('sdc_id').agg({
+        'culture_especes_edi': merge_concat, 
+        'variete_nom' : merge_concat
+    })
 
-    return sdc_extanded.reset_index().rename(columns={'sdc_id' : 'id', 'culture_especes_edi' : 'especes'})
+    return sdc_extanded.reset_index().rename(columns={
+        'sdc_id' : 'id', 
+        'culture_especes_edi' : 'especes', 
+        'variete_nom': 'varietes'
+    })
 
 
 def get_noeuds_realise_outils_can(

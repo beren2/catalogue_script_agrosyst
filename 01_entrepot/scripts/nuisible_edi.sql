@@ -3,6 +3,7 @@ select
 r.topiaid as id, 
 r.reference_param as categorie_nuisible,
 r.reference_label as label_nuisible,
+r.reference_id as reference_id,
 r."source" 
 from refnuisibleedi r 
 where active is true;
