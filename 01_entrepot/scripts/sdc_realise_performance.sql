@@ -217,8 +217,9 @@ SELECT
     marge_directe_std_mil_avec_autoconso AS MD_std_mil_avec_autoconso,
     marge_directe_std_mil_taux_de_completion AS MD_std_mil_tx_comp,
     -- Performances sociales
-    surface_par_unite_de_travail_humain AS surf_unite_de_w_humain,
-    surface_par_unite_de_travail_humain_taux_de_completion AS surf_unite_de_w_humain_tx_comp,
+    surface_par_unite_de_travail_humain,
+    surface_par_unite_de_travail_humain_taux_de_completion,
+    surface_par_unite_de_travail_humain_detail_champs_non_renseig,
     nombre_uth_necessaires,
     consommation_de_carburant AS conso_carburant,
     consommation_de_carburant_taux_de_completion AS conso_carburant_tx_comp,

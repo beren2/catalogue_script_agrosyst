@@ -22,19 +22,25 @@ path_sql_files = 'scripts/'
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
-name_entrepot_config = "entrepot"
+TYPE = config.get('metadata', 'type')
+
+if(TYPE == 'distant'):
+    name_entrepot_config = "entrepot"
+else :
+    name_entrepot_config = "entrepot_local"
+
 # La db de l'entrepot
-DB_HOST = config.get(name_entrepot_config, 'host')
+DB_HOST_ENTREPOT = config.get(name_entrepot_config, 'host')
 DB_PORT = config.get(name_entrepot_config, 'port')
 DB_NAME_ENTREPOT = config.get(name_entrepot_config, 'database')
 DB_USER = config.get(name_entrepot_config, 'user')
 DB_PASSWORD = urllib.parse.quote(config.get(name_entrepot_config, 'password'))
-DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST_ENTREPOT}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
 #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
 conn = psycopg2.connect(user = DB_USER,
                 password = config.get(name_entrepot_config, 'password'),
-                host = DB_HOST,
+                host = DB_HOST_ENTREPOT,
                 port = DB_PORT,
                 database = DB_NAME_ENTREPOT)
 
@@ -167,7 +173,7 @@ while True:
         schemas = inspector.get_schema_names()
 
         print("")
-        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+") :")
+        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
         print("--")
         for table_name in inspector.get_table_names(schema='public'):
             associated_file_name = "_".join(table_name.split('_')[1:])
@@ -217,7 +223,7 @@ while True:
         schemas = inspector.get_schema_names()
 
         print("")
-        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+") :")
+        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
         print("--")
         print(f"- Suppression de la table : {Fore.RED}entrepot_"+choice_key+f"{Style.RESET_ALL}")           
         drop_request = "DROP TABLE IF EXISTS entrepot_"+choice_key+" CASCADE"

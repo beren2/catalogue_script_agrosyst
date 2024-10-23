@@ -48,8 +48,8 @@ SELECT
     csr.culture_intermediaire_id
 FROM entrepot_intervention_synthetise_agrege eisa
 LEFT JOIN entrepot_noeuds_synthetise_restructure nsr ON nsr.id = eisa.cible_noeuds_synthetise_id
-LEFT JOIN entrepot_connection_synthetise_restructure csr ON csr.id = eisa.connection_synthetise_id
-LEFT JOIN entrepot_plantation_perenne_synthetise_restructure eppsr ON eppsr.id = eisa.plantation_perenne_synthetise_id;
+LEFT JOIN entrepot_connection_synthetise_restructure csr ON csr.id = CAST(eisa.connection_synthetise_id AS VARCHAR)
+LEFT JOIN entrepot_plantation_perenne_synthetise_restructure eppsr ON eppsr.id = CAST(eisa.plantation_perenne_synthetise_id AS VARCHAR);
 
 alter table entrepot_intervention_synthetise_agrege_extanded add primary key (id);
 

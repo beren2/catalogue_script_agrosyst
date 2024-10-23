@@ -1,5 +1,5 @@
 """
-    Fichier principal d'obtention des données des différents source de données
+    Fichier principal d'obtention des données.
     À exécuter lors d'une mise à jour des données sur Datagrosyst ou lors de la conception d'outils
     
     Ce script effectue les tâches suivantes  :
@@ -17,6 +17,8 @@ from scripts import agregation
 from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
+from colorama import Fore, Style
+import os
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -99,7 +101,7 @@ def copy_tables_to_csv(table_names, csv_path, verbose=False):
 
 def download_datas(tables, verbose=False):
     """
-        Télécharge toutes les données de l'entrepôt en local
+        Télécharge toutes les données dans la liste tables en local
     """
     copy_tables_to_csv(tables, DATA_PATH, verbose=verbose)
 
@@ -182,6 +184,17 @@ def load_ref(verbose=False):
         'ref_culture_maa'
     ]
     import_dfs(refs, path, verbose=True)
+
+
+def check_existing_tables(tables):
+    """vérifie que toutes les tables sont présentes"""
+    code_error = 0
+    for table in tables : 
+        file_path = DATA_PATH+table+'.csv'
+        if(not os.path.isfile(file_path)):
+            print(f"- fichier {Fore.RED}"+file_path+f"{Style.RESET_ALL} manquant") 
+            code_error = 1
+    return code_error
 
 def create_category_nettoyage():
     """
@@ -346,9 +359,9 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
-    df_sdc_realise_outils_can.set_index('id', inplace=True)
-    export_to_db(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+    df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
+    df_intervention_realise_outils_can.set_index('id', inplace=True)
+    export_to_db(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
 
 entrepot_spec = {
     'tables' : [
@@ -476,8 +489,11 @@ source_specs = {
                     'recolte_outils_can'
                 ],
                 'entrepot_dependances' : [
-                    'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
-                    'plantation_perenne_phases_realise', 'parcelle'
+                    'intervention_realise', 'action_realise', 'combinaison_outil', 'materiel',
+                    'noeuds_realise', 'connection_realise', 'plantation_perenne_phases_realise', 'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise',
+                    'composant_culture', 'espece', 'variete', 'culture', 'intervention_realise_agrege', 'dispositif',
+                    'combinaison_outil_materiel', 'semence', 'utilisation_intrant_realise', 'intrant', 'recolte_rendement_prix',
+                    'utilisation_intrant_cible', 'nuisible_edi', 'adventice'
                 ]
             },
         }
@@ -578,8 +594,21 @@ while True:
                 load_datas(source_specs[current_source]['categories'][current_category]['generated'])
             print("* FIN GÉNÉRATION ", current_source, current_category," *")
     elif choice_key == 'Téléchargement de l\'entrepôt':
+
+        tables = ['tout']
+        tables += list(entrepot_spec['tables'])
+        print("")
+        print("Veuillez choisir la table à générer")
+        print("")
+        for i, option_table in enumerate(tables):
+                    print(f"{i + 1}. {option_table}")
+        choice = int(input("Entrez votre choix (1, 2 ...) : "))
+        choosen_table = tables[choice - 1]
         print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        download_datas(entrepot_spec['tables'], verbose=False)
+        if(choosen_table == 'tout') :
+            download_datas(entrepot_spec['tables'], verbose=False)
+        else :
+            download_datas([choosen_table], verbose=False)
         print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
     elif choice_key == 'Télécharger une catégorie':
         print("")
@@ -635,6 +664,15 @@ while True:
         for choosen_dependance in choosen_dependances:
             categorie_dependance = source_specs[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
             if(len(categorie_dependance['generated']) != 0):
+
+                # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
+                errors = check_existing_tables(categorie_dependance['generated'])
+                if(errors ==1):
+                    break
+                errors = check_existing_tables(source_specs['outils']['categories'][choosen_category]['entrepot_dependances'])
+                if(errors ==1):
+                    break
+                
                 if(categorie_dependance['generated'][0] not in donnees):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
                     load_datas(categorie_dependance['generated'], verbose=False)

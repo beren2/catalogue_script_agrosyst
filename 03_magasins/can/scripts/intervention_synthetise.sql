@@ -35,8 +35,8 @@ SELECT
     (replace(replace(iroc.combinaison_outils_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as combinaison_outils_nom,
     iroc.tracteur_ou_automoteur,
     iroc.outils,
-    ir.date_debut,
-    ir.date_fin,
+    ir.date_debut as date_debut,
+    ir.date_fin as date_fin,
     ir.freq_spatiale, 
     ir.freq_temporelle as freq_temporelle,
     ir.psci_intervention as psci,
@@ -59,7 +59,7 @@ LEFT JOIN entrepot_connection_synthetise ecs ON ecs.id = ir.connection_synthetis
 LEFT JOIN entrepot_intervention_synthetise_agrege_extanded irae ON ir.id = irae.id
 LEFT JOIN entrepot_intervention_synthetise_outils_can iroc ON irae.id = iroc.id
 LEFT JOIN entrepot_noeuds_synthetise nr ON irae.cible_noeuds_synthetise_id = nr.id
-LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON irae.plantation_perenne_phases_synthetise_id = pppr.id
+LEFT JOIN entrepot_plantation_perenne_phases_synthetise pppr ON CAST(irae.plantation_perenne_phases_synthetise_id AS VARCHAR)= pppr.id
 LEFT JOIN entrepot_plantation_perenne_synthetise epps on pppr.plantation_perenne_synthetise_id = epps.id 
 LEFT JOIN entrepot_synthetise s ON nr.synthetise_id = s.id or epps.synthetise_id = s.id
 LEFT JOIN entrepot_sdc sdc ON irae.sdc_id = sdc.id

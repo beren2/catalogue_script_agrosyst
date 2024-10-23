@@ -306,7 +306,11 @@ SELECT
     qsa_soufre_tot_hts,
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
-    qsa_soufre_ferti
+    qsa_soufre_ferti,
+    -- travail
+    surface_par_unite_de_travail_humain,
+    surface_par_unite_de_travail_humain_detail_champs_non_renseig,
+    surface_par_unite_de_travail_humain_taux_de_completion
 FROM synthetise_echelle_intervention sei
 join entrepot_intervention_synthetise eis on eis.id = sei.intervention_id;
 

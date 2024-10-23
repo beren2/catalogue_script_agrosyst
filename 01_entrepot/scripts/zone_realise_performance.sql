@@ -298,7 +298,10 @@ SELECT
     qsa_soufre_tot_hts,
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
-    qsa_soufre_ferti
+    qsa_soufre_ferti,
+    surface_par_unite_de_travail_humain, 
+    surface_par_unite_de_travail_humain_taux_de_completion, 
+    surface_par_unite_de_travail_humain_detail_champs_non_renseig
 FROM realise_echelle_zone rez
 JOIN entrepot_zone ez on ez.id = rez.zone_id;
 

@@ -40,8 +40,8 @@ select
 	ei.nom_utilisateur as intrant_nom,
 	eis.nom as intervention,
 	eis.id as intervention_id,
-	cast(eis.date_debut as text) as debut_intervention,
-	cast(eis.date_fin as text) as fin_intervention,
+	to_char(eis.date_debut, 'DD/MM/YYYY') as debut_intervention,
+    to_char(eis.date_fin, 'DD/MM/YYYY') as fin_intervention,
 	eisoc.interventions_cibles_trait as cibles_traitement
 from entrepot_utilisation_intrant_performance euip 
 join entrepot_utilisation_intrant_synthetise euis on euis.id = euip.utilisation_intrant_id 
@@ -55,8 +55,8 @@ join entrepot_culture ec on ec.id = eismae.culture_id
 join entrepot_culture_outils_can ecoc on ecoc.id = ec.id
 left join entrepot_intrant ei on euis.intrant_id = ei.id
 left join entrepot_noeuds_synthetise ens on ens.id = eismae.cible_noeuds_synthetise_id
-left join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = eismae.plantation_perenne_phases_synthetise_id
-left join entrepot_plantation_perenne_synthetise epps on eismae.plantation_perenne_synthetise_id = epps.id
+left join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = CAST(eismae.plantation_perenne_phases_synthetise_id AS VARCHAR)
+left join entrepot_plantation_perenne_synthetise epps on CAST(eismae.plantation_perenne_synthetise_id AS VARCHAR) = epps.id
 UNION
 -- REALISE 
 select 
@@ -115,5 +115,5 @@ left join entrepot_parcelle ep on euira.parcelle_id = ep.id
 left join entrepot_zone ez on euira.zone_id = ez.id
 left join entrepot_intrant ei on euir.intrant_id = ei.id
 left join entrepot_noeuds_realise enr on enr.id = euira.noeuds_realise_id
-left join entrepot_plantation_perenne_phases_realise epppr on epppr.id = euira.plantation_perenne_phases_realise_id
-left join entrepot_plantation_perenne_realise eppr on euira.plantation_perenne_realise_id = eppr.id;
+left join entrepot_plantation_perenne_phases_realise epppr on epppr.id = CAST(euira.plantation_perenne_phases_realise_id AS VARCHAR)
+left join entrepot_plantation_perenne_realise eppr on CAST(euira.plantation_perenne_realise_id AS VARCHAR) = eppr.id;

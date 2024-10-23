@@ -12,7 +12,8 @@ create temporary table exports_agronomes_context_input_usages as
 	left join potinputusage pot ON pot.topiaid = a.topiaid 
 	left join substrateinputusage sub ON sub.topiaid = a.topiaid 
 	left join otherproductinputusage other on other.topiaid = a.topiaid 
-	join abstractaction aa on aa.topiaid in (m.mineralfertilizersspreadingaction, b.biologicalcontrolaction, p.pesticidesspreadingaction, o.organicfertilizersspreadingaction, pot.otheraction, sub.otheraction, other.otheraction)
+	join abstractaction aa on aa.topiaid in (m.mineralfertilizersspreadingaction, b.biologicalcontrolaction, p.pesticidesspreadingaction, o.organicfertilizersspreadingaction, pot.otheraction, sub.otheraction, other.otheraction, other.pesticidesspreadingaction, other.biologicalcontrolaction,
+				other.harvestingaction, other.irrigationaction, other.maintenancepruningvinesaction, other.mineralfertilizersspreadingaction, other.organicfertilizersspreadingaction, other.pesticidesspreadingaction, other.seedingaction)
 	union
 	  select a.topiaid usage_id, aa.topiaid action_id 
   from abstractinputusage a

@@ -199,7 +199,7 @@ def test_get_intervention_synthetise_action_outils_can():
     df_names = [   
         'intervention_synthetise', 'action_synthetise'
     ]
-    path_data = '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
+    path_data =  '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
