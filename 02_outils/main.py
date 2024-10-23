@@ -7,6 +7,7 @@
     2) Exécution des scripts de génération des outils (en se basant sur une copie locale des données)
     3) Enregistrement des résultats dans la base entrepôt (si TYPE == "DISTANT")
 """
+import os
 import configparser
 import urllib
 import psycopg2 as psycopg
@@ -18,7 +19,6 @@ from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
 from colorama import Fore, Style
-import os
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -99,16 +99,16 @@ def copy_tables_to_csv(table_names, csv_path, verbose=False):
             print("- ", table_name)
         copy_table_to_csv('entrepot_'+table_name, csv_path, table_name)
 
-def download_datas(tables, verbose=False):
+def download_datas(desired_tables, verbose=False):
     """
         Télécharge toutes les données dans la liste tables en local
     """
-    copy_tables_to_csv(tables, DATA_PATH, verbose=verbose)
+    copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
 
-def load_datas(tables, verbose=False, path_data=DATA_PATH):
+def load_datas(desired_tables, verbose=False, path_data=DATA_PATH):
     """ permet de chager les tables dans la variable globale donnees"""
     global donnees
-    import_dfs(tables, path_data, verbose=True)
+    import_dfs(desired_tables, path_data, verbose=True)
 
 
 def generate_leaking_df(df1, df2, id_name, columns_difference):
@@ -186,10 +186,10 @@ def load_ref(verbose=False):
     import_dfs(refs, path, verbose=True)
 
 
-def check_existing_tables(tables):
+def check_existing_tables(desired_tables):
     """vérifie que toutes les tables sont présentes"""
     code_error = 0
-    for table in tables : 
+    for table in desired_tables : 
         file_path = DATA_PATH+table+'.csv'
         if(not os.path.isfile(file_path)):
             print(f"- fichier {Fore.RED}"+file_path+f"{Style.RESET_ALL} manquant") 
