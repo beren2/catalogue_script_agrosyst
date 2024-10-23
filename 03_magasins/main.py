@@ -132,11 +132,12 @@ def generate_table(current_magasin, current_table, current_dependances=None):
     
     dependances_filtered = []
     tables_dependance = []
-    for dependance in current_dependances:
-        if(dependance not in current_dependances):
-            tables_dependance += dependance_specs[dependance]['tables']
-            # on retire les dépendances qui ont déjà été exexutées
-            dependances_filtered.append(dependance)
+    if(current_dependances is not None):
+        for dependance in current_dependances:
+            if(dependance not in current_dependances):
+                tables_dependance += dependance_specs[dependance]['tables']
+                # on retire les dépendances qui ont déjà été exexutées
+                dependances_filtered.append(dependance)
 
     # récapitulatif des tables à importer
     tables_to_import = list(set(tables_dependance+tables_utiles))
