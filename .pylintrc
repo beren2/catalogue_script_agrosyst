@@ -113,8 +113,8 @@ disable=
     bad-builtin,
     global-variable-not-assigned,
     too-many-positional-arguments,
-    consider-using-namedtuple-or-dataclass
-    
+    consider-using-namedtuple-or-dataclass,
+    min-similarity-lines
     
 
 
