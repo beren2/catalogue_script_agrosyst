@@ -30,6 +30,7 @@ EXTERNAL_DATA_PATH = 'data/external_data/'
 
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
+LIMIT = 100000000
 
 if(TYPE == 'distant'):
     # On se connecte à la BDD seulement si l'utilisateur veut déclarer à distance
@@ -67,7 +68,7 @@ def import_df(df_name, path_data, sep):
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     global donnees
-    donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
+    donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=LIMIT)
 
 def import_dfs(df_names, data_path, sep = ',', verbose=False):
     """
@@ -381,7 +382,7 @@ entrepot_spec = {
         'utilisation_intrant_cible', 'parcelle_type', 'recolte_rendement_prix', 'itk_realise_performance', 
         'composant_culture_concerne_intervention_realise', 'bilan_campagne_sdc_generalites', 'espece', 
         'intervention_travail_edi', 'variete', 'acta_groupe_culture', 'acta_substance_active', 'acta_traitement_produit',
-        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux', 'nuisible_edi', 'adventice'
+        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux', 'nuisible_edi', 'adventice', 'groupe_cible'
     ]
 }
 
@@ -667,18 +668,13 @@ while True:
 
                 # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
                 errors = check_existing_tables(categorie_dependance['generated'])
-                if(errors ==1):
-                    break
-                errors = check_existing_tables(source_specs['outils']['categories'][choosen_category]['entrepot_dependances'])
-                if(errors ==1):
+                if(errors == 1):
                     break
                 
                 if(categorie_dependance['generated'][0] not in donnees):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
                     load_datas(categorie_dependance['generated'], verbose=False)
                     print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-        print("Import des données de l'entrepôt au besoin")
-
         
         if(choosen_category == 'agregation_complet'):
             # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
@@ -695,6 +691,8 @@ while True:
 
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
             choosen_function()
+            if(TYPE == 'distant'):
+                download_datas(source_specs[choosen_source]['categories'][choosen_category]['generated'])
             print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
         else :
             # on vérifie que les données n'ont pas été déjà chargées
@@ -709,6 +707,8 @@ while True:
                 
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
             choosen_function()
+            if(TYPE == 'distant'):
+                download_datas(source_specs[choosen_source]['categories'][choosen_category]['generated'])
             print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
 
 
