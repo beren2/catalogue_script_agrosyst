@@ -5,7 +5,7 @@ on:
     branches:
         - 'main'
     paths:
-        - 03_magasins/**
+        - 03_magasins/can/**
 jobs:
   build:
     runs-on: ubuntu-latest
