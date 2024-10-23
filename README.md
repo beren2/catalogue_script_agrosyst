@@ -7,7 +7,7 @@ Catalogue des pré-traitements des données issues du système d'information Agr
 ### 00_config
 Contient : 
 - un fichier requirements.txt listant les libraries python utilisées.
-- un fichier config.ini listant deux connexions : à la BDD de l'entrepot de données, à la BDD opérationnelle de l'application datagrosyst et 
+- un fichier config.ini listant les connexions aux bases de données ou le chemin de données: 
 
 ### 01_entrepot
 Permet la génération de l'entrepot de données d'agrosyst. <br> 
@@ -36,11 +36,25 @@ Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d
 > Pour permettre d'intégrer les nouveaux scripts dans le processus automatisé, ceux-ci doivent être **rédigés en python**.  
 Pour les utilisateurs d'autres langages simplement désireux d'archiver leur code, un **répertoire de dépôt des scripts d'outils est disponible dans [02_outils/depot/](02_outils/depot/).** Si ceux-ci sont jugés d'interêt général pour la communauté de chercheur, alors ils pourront faire l'objet d'une traduction vers python par l'équipe Agrosyst. Dans ce cas, **fournir un jeu de test complet (cf [Mettre en place des tests unitaires](#mettre-en-place-des-tests-unitaires))**  est essentiel. 
 
+### Télécharger les données de l'entrepot sur datagrosyst et indiquer le chemin des données
+
+Modifier le chemin de localisation des données data_path.
+Garder la configuration type=local.
+
+Cela signifie que l'ensemble des scripts utilisent les données en .csv téléchargées sur la machine dans data_path et les sorties de scripts sont des .csv
+Le mode distant utilise et crée les données stockées en base de données.
+
 ### Créer une branche
 
 1. `git checkout main` depuis n'importe quel dossier de votre dépôt local `catalogue_script_agrosyst`.
 1. `git pull origin main` pour vous assurer que vous avez le dernier code principal.
 1. `git checkout -b nom-de-ma-branche` (en remplaçant nom-de-ma-branche par un nom approprié) pour créer une branche
+
+### Générer l'ensemble des outils
+
+Générer les outils avec `python main.py` dans le repertoire 02_outils/.
+
+Vous pouvez aussi les télécharger via Datagrosyst et les deposer dans data_path.
 
 ### Effectuer des changements
 Vous pouvez soit ajouter un prétraitement dans outils ou bien creer un nouveau magasin.
