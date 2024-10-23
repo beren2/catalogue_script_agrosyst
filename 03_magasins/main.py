@@ -18,7 +18,7 @@ config.read(r'../00_config/config.ini')
 DATA_PATH = config.get('metadata', 'data_path') 
 TYPE = config.get('metadata', 'type')
 df = {}
-LIMIT = 10000000000
+LIMIT = 100
 
 
 if(TYPE == 'local'):
@@ -120,7 +120,7 @@ def preprocess_postgresql_queries(queries):
     return res
 
 
-def generate_table(current_magasin, current_table, current_dependances=None):
+def generate_table(current_magasin, current_table, current_dependances=None, verbose=False):
     """
         permet de générer et de sauvegarder la table "choosen_table" du magasin "choosen_magasin".
     """
@@ -129,15 +129,25 @@ def generate_table(current_magasin, current_table, current_dependances=None):
     
     # récupération des scripts à exécuter préalablement
     dependances = magasin_specs[current_magasin]['tables'][current_table]['dependances']
-    
+
+    if(verbose):
+        print("- tables_utiles :", tables_utiles)
+        print("- dependances :", dependances)
+
     dependances_filtered = []
     tables_dependance = []
-    if(current_dependances is not None):
-        for dependance in current_dependances:
+    for dependance in dependances:
+        if(current_dependances is not None):
             if(dependance not in current_dependances):
                 tables_dependance += dependance_specs[dependance]['tables']
                 # on retire les dépendances qui ont déjà été exexutées
                 dependances_filtered.append(dependance)
+        else :
+            tables_dependance += dependance_specs[dependance]['tables']
+            dependances_filtered.append(dependance)
+    
+    if(verbose):
+        print("- dependances_filtered :", dependances_filtered)
 
     # récapitulatif des tables à importer
     tables_to_import = list(set(tables_dependance+tables_utiles))
@@ -556,7 +566,7 @@ while True:
                 print("- " +table)
                 executed_dependances += generate_table(choosen_magasin, table, current_dependances=executed_dependances)
         else :
-            generate_table(choosen_magasin, choosen_table)
+            generate_table(choosen_magasin, choosen_table, verbose=True)
             
 
 
