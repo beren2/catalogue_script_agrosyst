@@ -19,6 +19,7 @@ from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
 from colorama import Fore, Style
+from tqdm import tqdm
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -26,11 +27,16 @@ config.read(r'../00_config/config.ini')
 
 DATA_PATH = config.get('metadata', 'data_path') 
 TYPE = config.get('metadata', 'type')
+DEBUG = bool(int(config.get('metadata', 'debug')))
+BDD_ENTREPOT=config.get
 EXTERNAL_DATA_PATH = 'data/external_data/'
+
+if(DEBUG):
+    NROWS = int(config.get('debug', 'nrows'))
+    DATA_PATH = config.get('debug', 'data_test_path')
 
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
-LIMIT = 100000000
 
 if(TYPE == 'distant'):
     # On se connecte à la BDD seulement si l'utilisateur veut déclarer à distance
@@ -56,7 +62,10 @@ def export_to_db(df, name):
     if(TYPE == 'local'):
         if('entrepot_' in name):
             name = name[9:]
-        df.to_csv(DATA_PATH+name+'.csv')
+        if(DEBUG):
+            df.iloc[0:NROWS].to_csv(DATA_PATH+name+'.csv')
+        else:
+            df.to_csv(DATA_PATH+name+'.csv')
     else :
         df.to_sql(name=name, con=engine, if_exists='replace')
     print("* CRÉATION TABLE ",name, " TERMINEE *")
@@ -68,16 +77,19 @@ def import_df(df_name, path_data, sep):
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     global donnees
-    donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=LIMIT)
+    if(DEBUG):
+        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=NROWS)
+    else:
+        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
 
 def import_dfs(df_names, data_path, sep = ',', verbose=False):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
     global donnees
-    for df_name in df_names:
-        if(verbose):
-            print("- ", df_name)
+    pbar = tqdm(df_names)
+    for df_name in pbar:
+        pbar.set_description("Import de %s" % df_name)
         import_df(df_name, data_path, sep)
 
 
@@ -89,15 +101,20 @@ def copy_table_to_csv(table_name, csv_path, csv_name):
         cursor = connection.cursor()
 
         with open(csv_path+csv_name+".csv", "wb") as f:
-            cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
+            if(DEBUG):
+                cursor.copy_expert("COPY (SELECT * from "+table_name+" LIMIT "+str(NROWS)+") TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
+            else:
+                cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
 
 def copy_tables_to_csv(table_names, csv_path, verbose=False):
     """
         permet de copier un ensemble de tables depuis la base de données distance dans des fichiers local au csv_path
     """
-    for table_name in table_names : 
+    pbar = tqdm(table_names)
+    for table_name in pbar : 
         if(verbose) :
             print("- ", table_name)
+        pbar.set_description("Téléchargement de %s" % table_name)
         copy_table_to_csv('entrepot_'+table_name, csv_path, table_name)
 
 def download_datas(desired_tables, verbose=False):
@@ -201,11 +218,7 @@ def create_category_nettoyage():
     """
         Execute les requêtes pour créer les outils de nettoyage
     """
-    prefixe_source = 'nettoyage_'
-    tables_nettoyage = []
-
     # nettoyage_intervention_realise
-    suffixe_table = 'intervention'
     name_table = 'intervention_realise'
     df_nettoyage_intervention_realise = nettoyage.nettoyage_intervention(donnees, path_metadata='data/')
 
@@ -213,7 +226,6 @@ def create_category_nettoyage():
     #df_nettoyage_intervention_realise.to_csv('entrepot_'+name_table+'_nettoyage.csv')
 
     # nettoyage_utilisation_intrant_realise
-    suffixe_table = 'utilisation_intrant'
     name_table = 'utilisation_intrant_realise'
     df_nettoyage_utilisation_intrant_realise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='realise', verbose=False, path_metadata='data/')
 
@@ -221,7 +233,6 @@ def create_category_nettoyage():
     #df_nettoyage_utilisation_intrant_realise.to_csv(prefixe_source+suffixe_table+'_realise.csv')
 
     # nettoyage_utilisation_intrant_synthetise
-    suffixe_table = 'utilisation_intrant'
     name_table = 'utilisation_intrant_synthetise'
     df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False, path_metadata='data/')
 
@@ -564,24 +575,20 @@ while True:
         break
     if choice_key == 'Tout générer':
         if(TYPE == 'distant'):
-            print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            print("* TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             download_datas(entrepot_spec['tables'], verbose=False)
-            print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+        print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         load_datas(entrepot_spec['tables'], verbose=False)
-        print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
+        print("* CHARGEMENT DES DONNÉES EXTERNES *")
         load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
-        print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
-        print("* DÉBUT DU CHARGEMENT DES RÉFÉRENTIELS *")
+        print("* CHARGEMENT DES RÉFÉRENTIELS *")
         print("Attention, penser à les mettre à jour manuellement.")
         load_ref()
-        print("* FIN DU CHARGEMENT DES RÉFÉRENTIELS*")
 
         for step in steps :
             current_source = step['source']
             current_category = step['categorie']
-            print("* DÉBUT GÉNÉRATION ", current_source, current_category," *")
+            print("* GÉNÉRATION ", current_source, current_category," *")
             choosen_function = source_specs[current_source]['categories'][current_category]['function']
 
             if(current_category == 'agregation_complet'):
@@ -593,7 +600,7 @@ while True:
                 if(TYPE == 'distant'):
                     download_datas(source_specs[current_source]['categories'][current_category]['generated'])
                 load_datas(source_specs[current_source]['categories'][current_category]['generated'])
-            print("* FIN GÉNÉRATION ", current_source, current_category," *")
+
     elif choice_key == 'Téléchargement de l\'entrepôt':
 
         tables = ['tout']

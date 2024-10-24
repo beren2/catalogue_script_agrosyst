@@ -399,7 +399,7 @@ def get_intervention_realise_semence_outils_can(
     ]].agg(' '.join, axis=1).str.split().str.join(' ')
 
     # ajout des informations des semences sur les utilsiation d'intrants
-    left = df_utilisation_intrant_realise[['intervention_realise_id', 'intrant_id', 'dose', 'unite', 'semence_id']]
+    left = df_utilisation_intrant_realise[['intervention_realise_id', 'intrant_id', 'dose', 'unite', 'semence_id']].dropna(subset=['semence_id'])
     right = df_semence_extanded.rename(columns={'id' : 'semence_id'})
     df_utilisation_intrant_realise_extanded = pd.merge(left, right, on='semence_id', how='inner')
 
@@ -561,7 +561,7 @@ def get_intervention_realise_culture_outils_can(
         left, right, left_on='intervention_realise_id', right_index=True, how='left')
 
     # maintenant qu'on a tout, pour l'assolée :
-    left = df_composant_culture_concerne_intervention_extanded
+    left = df_composant_culture_concerne_intervention_extanded.dropna(subset=['noeuds_realise_id'])
     right = df_noeuds_realise_extanded
     df_composant_culture_concerne_intervention_extanded_assolee = pd.merge(left, right, 
         left_on=['noeuds_realise_id', 'composant_culture_id'],
@@ -569,7 +569,7 @@ def get_intervention_realise_culture_outils_can(
         how='inner'
     )
 
-    left = df_composant_culture_concerne_intervention_extanded
+    left = df_composant_culture_concerne_intervention_extanded.dropna(subset=['noeuds_realise_id'])
     right = df_noeuds_realise_extanded_ci
     df_composant_culture_concerne_intervention_extanded_assolee_ci = pd.merge(left, right, 
         left_on=['noeuds_realise_id', 'composant_culture_id'],
@@ -650,7 +650,7 @@ def get_intervention_realise_culture_prec_outils_can(
         left, right, left_on='source_noeuds_realise_id', right_index=True, how='left'
     )
 
-    left = df_intervention_realise.reset_index()
+    left = df_intervention_realise.reset_index().dropna(subset=['noeuds_realise_id'])
     right = df_connection_realise_extanded
     df_intervention_realise_extanded = pd.merge(
         left, right, left_on='noeuds_realise_id', right_on='cible_noeuds_realise_id', how='inner'
