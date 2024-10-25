@@ -89,7 +89,7 @@ def import_dfs(df_names, data_path, sep = ',', verbose=False):
     global donnees
     pbar = tqdm(df_names)
     for df_name in pbar:
-        pbar.set_description("Import de %s" % df_name)
+        pbar.set_description(f"Import de {df_name}")
         import_df(df_name, data_path, sep)
 
 
@@ -256,7 +256,7 @@ def create_category_agregation():
     )
     export_to_db(aggreged_utilisation_intrant_realise, 'entrepot_utilisation_intrant_realise_agrege')
 
-
+    
     # toutes les infos manquantes agrégées depuis l'action
     aggreged_leaking_action_realise = agregation.get_leaking_aggreged_from_action_realise(
         aggreged_utilisation_intrant_realise, donnees
@@ -484,7 +484,10 @@ source_specs = {
                     'intervention_realise_outils_can', 
                     'intervention_synthetise_outils_can',
                     'parcelle_non_rattachee_outils_can',
-                    'recolte_outils_can'
+                    'recolte_outils_can', 
+                    'culture_outils_can',
+                    'zone_realise_outils_can',
+                    'parcelle_realise_outils_can'
                 ]
             },
             'test' : {
@@ -556,7 +559,11 @@ while True:
     print("")
     print("**** Bienvenue dans notre interface de génération des outils : ****")
     print("")
-    print(""" - Vous êtes actuellement dans le mode """+TYPE+"")
+    print(""" - Vous êtes actuellement dans le type """+TYPE+"")
+    if(DEBUG) :
+        print(""" - Vous êtes actuellement dans le mode DEBUG, les fichiers créés seront crées dans le répertoire : """, DATA_PATH)
+    else:
+        print(""" - Attention, vous n'êtes PAS en mode DEBUG, les fichiers créés se substitueront à ceux existants dans le répertoire : """, DATA_PATH)
     print("")
     if(TYPE == 'distant'):
         print("BDD courante : "+DB_NAME_ENTREPOT)
