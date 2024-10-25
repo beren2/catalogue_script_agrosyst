@@ -114,7 +114,7 @@ disable=
     global-variable-not-assigned,
     too-many-positional-arguments,
     consider-using-namedtuple-or-dataclass,
-    min-similarity-lines
+    min-similarity-lines,
     duplicate-code
 
 
