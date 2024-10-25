@@ -22,8 +22,9 @@ def indicateur_utilisation_intrant(donnees):
 
     # obtention des doses toutes dans la même unité (par défaut : KG_HA)
     donnees['utilisation_intrant'] = res
-    left = res
-    right = fonctions_utiles.get_utilisation_intrant_in_unit(donnees)
+    left = res.dropna(subset=['id'])
+    right = fonctions_utiles.get_utilisation_intrant_in_unit(donnees).dropna(subset=['id'])
+    right['id'] = right['id'].astype('object')
     merge = pd.merge(left, right, left_on='id', right_on='id', how='left')
 
 

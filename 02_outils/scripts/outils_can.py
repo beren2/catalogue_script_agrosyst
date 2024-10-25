@@ -1027,7 +1027,7 @@ def get_intervention_synthetise_culture_outils_can(
         on='culture_id',
         how='left'
     )
-    df_intervention_synthetise_final = df_intervention_synthetise_v2.loc[:, df_intervention_synthetise_v2.columns != 'culture_id']
+    df_intervention_synthetise_final = df_intervention_synthetise_v2
 
     return df_intervention_synthetise_final.reset_index().rename(
         columns={'intervention_synthetise_id' : 'id'}
@@ -1828,7 +1828,7 @@ def get_recolte_synthetise_outils_can(
     # on fusionne ce résultat avec notre merge
     left = merge
     right = nombre_composant_culture_concerne_intervention
-    merge = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True )
+    merge = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True , how='left')
 
     # Attention, pour tout ceux qui ont déjà une surface relative, on doit recalculer la VRAIE surface relative...
     surface_totale = merge.loc[~merge['surface_relative'].isna()].groupby('intervention_synthetise_id')['surface_relative'].sum()

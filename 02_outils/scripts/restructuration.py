@@ -123,7 +123,7 @@ def restructuration_composant_culture_concerne_intervention_synthetise(donnees):
     right = donnees['intervention_synthetise_agrege'][['domaine_id']]
     donnees['studied_extanded'] = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
 
-    left = donnees['studied_extanded']
+    left = donnees['studied_extanded'].dropna(subset=['domaine_id'])
     right = donnees['domaine'][['campagne']]
     donnees['studied_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
 

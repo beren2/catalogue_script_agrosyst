@@ -192,7 +192,7 @@ def get_leaking_aggreged_from_action_realise(
     #----------#
 
     # obtention du noeud sur lequel a laquelle a lieu l'action
-    left = merge_assolee
+    left = merge_assolee.dropna(subset=['noeuds_realise_id'])
     right = df_noeud_realise[['id', 'zone_id', 'culture_id']].rename(columns={'id' : 'noeuds_realise_id'})
     merge_assolee = pd.merge(left, right, on = 'noeuds_realise_id', how='left')
 
