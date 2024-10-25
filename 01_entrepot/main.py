@@ -23,23 +23,19 @@ config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
 TYPE = config.get('metadata', 'type')
-
-if(TYPE == 'distant'):
-    name_entrepot_config = "entrepot"
-else :
-    name_entrepot_config = "entrepot_local"
+BDD_ENTREPOT = config.get('metadata', 'bdd_entrepot')
 
 # La db de l'entrepot
-DB_HOST_ENTREPOT = config.get(name_entrepot_config, 'host')
-DB_PORT = config.get(name_entrepot_config, 'port')
-DB_NAME_ENTREPOT = config.get(name_entrepot_config, 'database')
-DB_USER = config.get(name_entrepot_config, 'user')
-DB_PASSWORD = urllib.parse.quote(config.get(name_entrepot_config, 'password'))
+DB_HOST_ENTREPOT = config.get(BDD_ENTREPOT, 'host')
+DB_PORT = config.get(BDD_ENTREPOT, 'port')
+DB_NAME_ENTREPOT = config.get(BDD_ENTREPOT, 'database')
+DB_USER = config.get(BDD_ENTREPOT, 'user')
+DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
 DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST_ENTREPOT}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
 #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
 conn = psycopg2.connect(user = DB_USER,
-                password = config.get(name_entrepot_config, 'password'),
+                password = config.get(BDD_ENTREPOT, 'password'),
                 host = DB_HOST_ENTREPOT,
                 port = DB_PORT,
                 database = DB_NAME_ENTREPOT)
@@ -82,7 +78,7 @@ ordered_files = [
             "materiel",
             "combinaison_outil",
             "composant_culture",
-            "atelier_elevage", 
+            "atelier_elevage",
             "bilan_campagne_regional",
             "modele_decisionnel",
             "sole_realise",
@@ -97,14 +93,14 @@ ordered_files = [
             "action_synthetise",
             "intrant",
             "semence",
-            "utilisation_intrant_realise", 
+            "utilisation_intrant_realise",
             "utilisation_intrant_synthetise",
             "utilisation_intrant_cible",
             "precision_espece_semis",
             "variete",
             "utilisation_intrant_performance",
             "intervention_realise_performance",
-            "zone_realise_performance", 
+            "zone_realise_performance",
             "parcelle_realise_performance",
             "sdc_realise_performance",
             "itk_realise_performance",
@@ -116,10 +112,10 @@ ordered_files = [
             "acta_traitement_produit",
             "acta_dosage_spc",
             "bilan_campagne_sdc",
-            'composition_substance_active_numero_amm', 
+            'composition_substance_active_numero_amm',
             'composant_action_semis',
             'reseau',
-            'liaison_reseaux', 
+            'liaison_reseaux',
             'liaison_sdc_reseau',
             "critere_qualite_valorisation",
             "destination_valorisation",
