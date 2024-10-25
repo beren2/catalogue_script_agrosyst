@@ -10,6 +10,8 @@ import pandas as pd
 import duckdb
 from tqdm import tqdm
 from colorama import Fore, Style
+from version import __version__
+import json
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -17,7 +19,9 @@ config.read(r'../00_config/config.ini')
 
 DATA_PATH = config.get('metadata', 'data_path') 
 TYPE = config.get('metadata', 'type')
-DEBUG=bool(int(config.get('metadata', 'debug')))
+DEBUG = bool(int(config.get('metadata', 'debug')))
+VERBOSE = DEBUG
+VERSION = __version__
 
 if(DEBUG):
     NROWS = int(config.get('debug', 'nrows'))
@@ -25,18 +29,34 @@ if(DEBUG):
 
 df = {}
 
-VERBOSE = DEBUG
 
-if(TYPE == 'local'):
-    welcome_message = """
-        Bienvenue sur l'interface de génération des magasins de données
+def check_existing_files(file_names):
+    """vérifie que les fichiers sont présent et les créé au besoin."""
+    code_error = 0
+    for file_name in file_names : 
+        file_path = DATA_PATH+file_name+'.txt'
+        if(not os.path.isfile(file_path)):
+            with open(file_path,'w', encoding='utf-8') as version_file:
+                json.dump({}, version_file)
+            return 0 
+    return code_error
+
+check_existing_files(['version'])
+
+def update_local_version_table(table_name):
     """
-else :
-    welcome_message = """
-        Attention, votre configuration est en mode """+TYPE+""" ce qui indique que votre
-        copie locale des données pourrait ne pas être à jour (ce script utilise exclusivement 
-        les données locales).
+        Met à jour la version de la table table_name dans le version.txt des données
     """
+    # lecture du fichier
+    with open(DATA_PATH+'version.txt', encoding='utf-8') as version_file:
+        version_control = json.load(version_file)
+        version_control[table_name] = VERSION
+
+    # ecriture du fichier
+    with open(DATA_PATH+'version.txt','w', encoding='utf-8') as version_file:
+        print("UPDATE")
+        json.dump(version_control, version_file)
+    return 0
 
 def import_df(df_name, path_data, sep, index_col=None):
     """ importe un dataframe df_name dans le dictionnaire global df"""
@@ -196,7 +216,8 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
         res = duckdb.sql(query)
         res.to_csv(file_name)
         print(f"- fichier {Fore.GREEN}"+file_name+f"{Style.RESET_ALL} exporté") 
-
+        # mise à jour du fichier local
+        update_local_version_table(current_table+"_"+current_magasin)
     return dependances
 
 
@@ -531,8 +552,14 @@ executed_dependances = []
 while True:
     print("")
     print("")
-    print(welcome_message)
+    print("**************** Interface de gestion des magasins ****************")
     print("")
+    print("      version :      ("+VERSION+")            ")
+    print("      type :         ("+TYPE+")               ")
+    print("      debug :        ("+str(DEBUG)+")         ")
+    print("      repertoire :   ("+DATA_PATH+")         ")
+    print("")
+    print("*******************************************************************")
     print("")
     print("Veuillez choisir une option parmi les suivantes :")
     print("")

@@ -8,6 +8,7 @@
     3) Enregistrement des résultats dans la base entrepôt (si TYPE == "DISTANT")
 """
 import os
+import json
 import configparser
 import urllib
 import psycopg2 as psycopg
@@ -20,8 +21,9 @@ from sqlalchemy import create_engine
 import pandas as pd
 from colorama import Fore, Style
 from tqdm import tqdm
+from version import __version__
 
-#Obtenir les paramètres de connexion pour psycopg2
+# obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
@@ -30,6 +32,7 @@ TYPE = config.get('metadata', 'type')
 DEBUG = bool(int(config.get('metadata', 'debug')))
 BDD_ENTREPOT=config.get
 EXTERNAL_DATA_PATH = 'data/external_data/'
+VERSION = __version__
 
 if(DEBUG):
     NROWS = int(config.get('debug', 'nrows'))
@@ -56,6 +59,34 @@ if(TYPE == 'distant'):
     conn = engine.raw_connection()
     cur = conn.cursor()
 
+def check_existing_files(file_names):
+    """vérifie que toutes les tables sont présentes"""
+    code_error = 0
+    for file_name in file_names : 
+        file_path = DATA_PATH+file_name+'.txt'
+        if(not os.path.isfile(file_path)):
+            with open(file_path,'w', encoding='utf-8') as version_file:
+                json.dump({}, version_file)
+            return 0 
+    return code_error
+
+check_existing_files(['version'])
+
+def update_local_version_table(table_name):
+    """
+        Met à jour la version de la table table_name dans le version.txt des données
+    """
+    # lecture du fichier
+    with open(DATA_PATH+'version.txt', encoding='utf-8') as version_file:
+        version_control = json.load(version_file)
+        version_control[table_name] = VERSION
+
+    # ecriture du fichier
+    with open(DATA_PATH+'version.txt','w', encoding='utf-8') as version_file:
+        print("UPDATE")
+        json.dump(version_control, version_file)
+
+    return 0
 
 def export_to_db(df, name):
     """ permet d'exporter un dataframe dans une table de l'entrepôt avec """
@@ -64,8 +95,10 @@ def export_to_db(df, name):
             name = name[9:]
         if(DEBUG):
             df.iloc[0:NROWS].to_csv(DATA_PATH+name+'.csv')
+            update_local_version_table(name)
         else:
             df.to_csv(DATA_PATH+name+'.csv')
+            update_local_version_table(name)
     else :
         df.to_sql(name=name, con=engine, if_exists='replace')
     print("* CRÉATION TABLE ",name, " TERMINEE *")
@@ -105,6 +138,7 @@ def copy_table_to_csv(table_name, csv_path, csv_name):
                 cursor.copy_expert("COPY (SELECT * from "+table_name+" LIMIT "+str(NROWS)+") TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
             else:
                 cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
+    update_local_version_table(table_name)
 
 def copy_tables_to_csv(table_names, csv_path, verbose=False):
     """
@@ -548,7 +582,6 @@ options = {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Télécharger une catégorie" : [],  
-        "Téléchargement de l'entrepôt" : [],
         "Quitter" : []
     }
 }
@@ -557,17 +590,18 @@ donnees = {}
 while True:
     print("")
     print("")
-    print("**** Bienvenue dans notre interface de génération des outils : ****")
+    print("**************** Interface de gestion des outils ****************")
     print("")
-    print(""" - Vous êtes actuellement dans le type """+TYPE+"")
-    if(DEBUG) :
-        print(""" - Vous êtes actuellement dans le mode DEBUG, les fichiers créés seront crées dans le répertoire : """, DATA_PATH)
-    else:
-        print(""" - Attention, vous n'êtes PAS en mode DEBUG, les fichiers créés se substitueront à ceux existants dans le répertoire : """, DATA_PATH)
-    print("")
+    print("      version :      ("+VERSION+")            ")
+    print("      type :         ("+TYPE+")               ")
+    print("      debug :        ("+str(DEBUG)+")         ")
+    print("      repertoire :   ("+DATA_PATH+")         ")
     if(TYPE == 'distant'):
-        print("BDD courante : "+DB_NAME_ENTREPOT)
-        print("")
+        print("      BDD :          ("+DB_NAME_ENTREPOT+")         ")
+    print("")
+    print("*****************************************************************")
+    print("")
+    
 
     print("Veuillez choisir une option parmi les suivantes :")
     print("")
@@ -608,23 +642,6 @@ while True:
                     download_datas(source_specs[current_source]['categories'][current_category]['generated'])
                 load_datas(source_specs[current_source]['categories'][current_category]['generated'])
 
-    elif choice_key == 'Téléchargement de l\'entrepôt':
-
-        tables = ['tout']
-        tables += list(entrepot_spec['tables'])
-        print("")
-        print("Veuillez choisir la table à générer")
-        print("")
-        for i, option_table in enumerate(tables):
-                    print(f"{i + 1}. {option_table}")
-        choice = int(input("Entrez votre choix (1, 2 ...) : "))
-        choosen_table = tables[choice - 1]
-        print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        if(choosen_table == 'tout') :
-            download_datas(entrepot_spec['tables'], verbose=False)
-        else :
-            download_datas([choosen_table], verbose=False)
-        print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
     elif choice_key == 'Télécharger une catégorie':
         print("")
         print("Veuillez choisir la catégorie à télécharger")

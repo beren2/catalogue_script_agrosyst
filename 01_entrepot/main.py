@@ -1,29 +1,37 @@
 """
     Script permettant la génération de l'entrepôt de données
 """
-
-
 #!/usr/bin/python
 import configparser
 import urllib
 import datetime
 import subprocess 
 import os
-import psycopg2
+import psycopg2 as psycopg
 import pandas as pd
 from sqlalchemy import create_engine, text
 from sqlalchemy import inspect
 from colorama import Fore, Style
+from version import __version__
+from tqdm import tqdm
+import json
 
 #Fetch the sql files 
 path_sql_files = 'scripts/'
 
-#Obtenir les paramètres de connexion pour psycopg2
+#Obtenir les paramètres de configuration
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
 TYPE = config.get('metadata', 'type')
 BDD_ENTREPOT = config.get('metadata', 'bdd_entrepot')
+VERSION = __version__
+DEBUG = bool(int(config.get('metadata', 'debug')))
+DATA_PATH = config.get('metadata', 'data_path') 
+
+if(DEBUG):
+    NROWS = int(config.get('debug', 'nrows'))
+    DATA_PATH = config.get('debug', 'data_test_path')
 
 # La db de l'entrepot
 DB_HOST_ENTREPOT = config.get(BDD_ENTREPOT, 'host')
@@ -34,7 +42,7 @@ DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
 DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST_ENTREPOT}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
 #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
-conn = psycopg2.connect(user = DB_USER,
+conn = psycopg.connect(user = DB_USER,
                 password = config.get(BDD_ENTREPOT, 'password'),
                 host = DB_HOST_ENTREPOT,
                 port = DB_PORT,
@@ -51,97 +59,169 @@ DB_PASSWORD = urllib.parse.quote(config.get('datagrosyst', 'password'))
 DATABASE_URI_datagrosyst = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
 
-options = {
-            "Génération de toutes les données de l'entrepôt" : [],
-            "Génération de certaines données de l'entrepôt" : [],  
-            "Vérification cohérence colonnes existantes tables et documentation" : [],  
-            "Création d'une nouvelle base de données entrepôt nettoyée" : [],
-            "Mettre à jour les métadonnées de Datagrosyst" : [],
-            "Quitter" : []
-    }
+# On vérifie que le fichier de versionning est initialisé
+def check_existing_files(file_names):
+    """vérifie que toutes les tables sont présentes"""
+    code_error = 0
+    for file_name in file_names : 
+        file_path = DATA_PATH+file_name+'.txt'
+        if(not os.path.isfile(file_path)):
+            with open(file_path,'w', encoding='utf-8') as version_file:
+                json.dump({}, version_file)
+            return 0 
+    return code_error
+
+check_existing_files(['version'])
+
+def update_local_version_table(table_name):
+    """
+        Met à jour la version de la table table_name dans le version.txt des données
+    """
+    # lecture du fichier
+    with open(DATA_PATH+'version.txt', encoding='utf-8') as version_file:
+        version_control = json.load(version_file)
+        version_control[table_name] = VERSION
+
+    # ecriture du fichier
+    with open(DATA_PATH+'version.txt','w', encoding='utf-8') as version_file:
+        json.dump(version_control, version_file)
+
+    return 0
+
+def copy_table_to_csv(table_name, csv_path, csv_name):
+    """
+        Permet de copier une table depuis la base de donnée distance dans un fichier local csv_path+csv_name.csv
+        + Parse le fichier local de contrôle de versions de fichiers et le met à jour en fonction de la version local
+    """
+    with psycopg.connect(DATABASE_URI_entrepot) as connection:
+        cursor = connection.cursor()
+        with open(csv_path+csv_name+".csv", "wb") as f:
+            if(DEBUG):
+                cursor.copy_expert("COPY (SELECT * from "+table_name+" LIMIT "+str(NROWS)+") TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
+            else:
+                cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
+        update_local_version_table(table_name)
+
+def copy_tables_to_csv(table_names, csv_path, verbose=False):
+    """
+        permet de copier un ensemble de tables depuis la base de données distance dans des fichiers local au csv_path
+    """
+    pbar = tqdm(table_names)
+    for table_name in pbar : 
+        if(verbose) :
+            print("- ", table_name)
+        pbar.set_description(f"Téléchargement de {table_name}")
+        copy_table_to_csv('entrepot_'+table_name, csv_path, table_name)
+
+def download_datas(desired_tables, verbose=False):
+    """
+        Télécharge toutes les données dans la liste tables en local
+    """
+    copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
+
 
 ordered_files = [
-            # les tables de referentiels en 1er
-            "commune",
-            "espece",
-            "intervention_travail_edi",
-            "criteres_selection",
-            "domaine",
-            "coordonnees_gps_domaine",
-            "dispositif",
-            "sdc",
-            "parcelle",
-            "zone",
-            "parcelle_type",
-            "synthetise",
-            "culture",
-            "materiel",
-            "combinaison_outil",
-            "composant_culture",
-            "atelier_elevage",
-            "bilan_campagne_regional",
-            "modele_decisionnel",
-            "sole_realise",
-            "cycle_culture_realise",
-            "cycle_culture_synthetise",
-            "plantation_perenne_realise",
-            "plantation_perenne_synthetise",
-            "intervention_realise",
-            "composant_culture_concerne_intervention",
-            "intervention_synthetise",
-            "action_realise",
-            "action_synthetise",
-            "intrant",
-            "semence",
-            "utilisation_intrant_realise",
-            "utilisation_intrant_synthetise",
-            "utilisation_intrant_cible",
-            "precision_espece_semis",
-            "variete",
-            "utilisation_intrant_performance",
-            "intervention_realise_performance",
-            "zone_realise_performance",
-            "parcelle_realise_performance",
-            "sdc_realise_performance",
-            "itk_realise_performance",
-            "intervention_synthetise_performance",
-            "synthetise_synthetise_performance",
-            "recolte",
-            "acta_groupe_culture",
-            "acta_substance_active",
-            "acta_traitement_produit",
-            "acta_dosage_spc",
-            "bilan_campagne_sdc",
-            'composition_substance_active_numero_amm',
-            'composant_action_semis',
-            'reseau',
-            'liaison_reseaux',
-            'liaison_sdc_reseau',
-            "critere_qualite_valorisation",
-            "destination_valorisation",
-            "dose_ref_par_groupe_cible",
-            "groupe_cible",
-            "nuisible_edi",
-            "substances_actives_europeennes",
-            "phrases_de_risque_numero_amm",
-            "composition_substance_active_numero_amm",
-            "prix_intrant_produit_phyto_sanitaire",
-            "prix_carburant",
-            "otex",
-            "variete_plante_grappe",
-            "station_meteo",
-            "levier",
-            "texture_sol",
-            "fertilisation_organique",
-            "fertilisation_minerale",
-            "groupe_cible",
-            "adventice"
-        ]
+    "commune",
+    "espece",
+    "intervention_travail_edi",
+    "criteres_selection",
+    "domaine",
+    "coordonees_gps_domaine",
+    "dispositif",
+    "sdc",
+    "parcelle",
+    "zone",
+    "parcelle_type",
+    "synthetise",
+    "culture",
+    "materiel",
+    "combinaison_outil",
+    "composant_culture",
+    "atelier_elevage",
+    "bilan_campagne_regional",
+    "modele_decisionnel",
+    "sole_realise",
+    "cycle_culture_realise",
+    "cycle_culture_synthetise",
+    "plantation_perenne_realise",
+    "plantation_perenne_synthetise",
+    "intervention_realise",
+    "composant_culture_concerne_intervention",
+    "intervention_synthetise",
+    "action_realise",
+    "action_synthetise",
+    "intrant",
+    "semence",
+    "utilisation_intrant_realise",
+    "utilisation_intrant_synthetise",
+    "utilisation_intrant_cible",
+    "precision_espece_semis",
+    "variete",
+    "utilisation_intrant_performance",
+    "intervention_realise_performance",
+    "zone_realise_performance",
+    "parcelle_realise_performance",
+    "sdc_realise_performance",
+    "itk_realise_performance",
+    "intervention_synthetise_performance",
+    "synthetise_synthetise_performance",
+    "recolte",
+    "acta_groupe_culture",
+    "acta_substance_active",
+    "acta_traitement_produit",
+    "acta_dosage_spc",
+    "bilan_campagne_sdc",
+    'composition_substance_active_numero_amm',
+    'composant_action_semis',
+    'reseau',
+    'liaison_reseaux',
+    'liaison_sdc_reseau',
+    "critere_qualite_valorisation",
+    "destination_valorisation",
+    "dose_ref_par_groupe_cible",
+    "groupe_cible",
+    "nuisible_edi",
+    "substances_actives_europeennes",
+    "phrases_de_risque_numero_amm",
+    "composition_substance_active_numero_amm",
+    "prix_intrant_produit_phyto_sanitaire",
+    "prix_carburant",
+    "otex",
+    "variete_plante_grappe",
+    "station_meteo",
+    "levier",
+    "texture_sol",
+    "fertilisation_organique",
+    "fertilisation_minerale",
+    "groupe_cible",
+    "adventice"
+]
+
+
+options = {
+        "Génération de toutes les données de l'entrepôt" : [],
+        "Génération de certaines données de l'entrepôt" : [],  
+        "Vérification cohérence colonnes existantes tables et documentation" : [],  
+        "Création d'une nouvelle base de données entrepôt nettoyée" : [],
+        "Mettre à jour les métadonnées de Datagrosyst" : [],
+        "Téléchargement de l'entrepôt" : [],
+        "Quitter" : []
+}
+
 
 while True:
     print("")
     print("")
-    print("**** Bienvenue dans notre interface de gestion de l'entrepôt de données : ****")
+    print("**************** Interface de gestion de l'entrepôt ****************")
+    print("")
+    print("      version :      ("+VERSION+")            ")
+    print("      type :         ("+TYPE+")               ")
+    print("      debug :        ("+str(DEBUG)+")         ")
+    print("      repertoire :   ("+DATA_PATH+")         ")
+    print("      nom BDD :      ("+DB_NAME_ENTREPOT+")         ") 
+    print("      serveur BDD :  ("+DB_HOST_ENTREPOT+")         ") 
+    print("")
+    print("********************************************************************")
     print("")
     print("Veuillez choisir une option parmi les suivantes :")
     print("")
@@ -171,11 +251,11 @@ while True:
         print("")
         print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
         print("--")
-        for table_name in inspector.get_table_names(schema='public'):
-            associated_file_name = "_".join(table_name.split('_')[1:])
-            if(table_name.startswith('entrepot_')):
-                print(f"- Suppression de la table : {Fore.RED}"+table_name+f"{Style.RESET_ALL}")           
-                drop_request = "DROP TABLE IF EXISTS "+table_name+" CASCADE"
+        for current_table_name in inspector.get_table_names(schema='public'):
+            associated_file_name = "_".join(current_table_name.split('_')[1:])
+            if(current_table_name.startswith('entrepot_')):
+                print(f"- Suppression de la table : {Fore.RED}"+current_table_name+f"{Style.RESET_ALL}")           
+                drop_request = "DROP TABLE IF EXISTS "+current_table_name+" CASCADE"
                 cur.execute(drop_request)
         print("")
         print("GÉNÉRATION DES TABLES DE L'ENTREPÔT :")
@@ -231,7 +311,6 @@ while True:
         current_file = choice_key+'.sql'
 
         print(f"- Maj entrepôt à partir du fichier: {Fore.YELLOW}"+current_file+f"{Style.RESET_ALL}")           
-
         
         extract_file = path_sql_files+current_file  
 
@@ -361,6 +440,24 @@ while True:
             raise
         
         print("Les métas-données de", DB_NAME, "sont à jour, pensez à mettre à jour le fichier de configuration du serveur (database.ini)")
+
+    elif choice_key == "Téléchargement de l'entrepôt":
+
+        tables = ['tout']
+        tables += list(ordered_files)
+        print("")
+        print("Veuillez choisir la table à générer")
+        print("")
+        for i, option_table in enumerate(tables):
+                    print(f"{i + 1}. {option_table}")
+        choice = int(input("Entrez votre choix (1, 2 ...) : "))
+        choosen_table = tables[choice - 1]
+        print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+        if(choosen_table == 'tout') :
+            download_datas(ordered_files, verbose=False)
+        else :
+            download_datas([choosen_table], verbose=False)
+        print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
 
 
 cur.close()

@@ -112,9 +112,7 @@ disable=
     too-complex,
     bad-builtin,
     global-variable-not-assigned,
-    too-many-positional-arguments,
     consider-using-namedtuple-or-dataclass,
-    min-similarity-lines,
     duplicate-code
 
 
@@ -166,7 +164,7 @@ notes=FIXME,XXX,TODO
 [SIMILARITIES]
 
 # Minimum lines number of a similarity.
-min-similarity-lines=6
+min-similarity-lines=50
 
 # Ignore comments when computing similarities.
 ignore-comments=yes
@@ -464,6 +462,8 @@ max-bool-expr=5
 exclude-too-few-public-methods=
 
 max-complexity=10
+
+max-positional-arguments=30
 
 [CLASSES]
 
