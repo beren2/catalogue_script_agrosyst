@@ -10,10 +10,10 @@ select
       	WHEN 'MAIN' then 'PRINCIPALE'
       	WHEN 'CATCH' then 'DEROBEE'
       	WHEN 'INTERMEDIATE' then 'INTERMEDIAIRE' end culture_type,
-	case ec.melange_especes
+	case CAST(ec.melange_especes AS BOOLEAN) 
 		when true then 'oui'
 		when false then 'non' end culture_melange_especes,
-	case ec.melange_varietes
+	case CAST(ec.melange_varietes AS BOOLEAN)
 		when true then 'oui'
 		when false then 'non' end culture_melange_varietes,
 	ecc.id as espece_id, 

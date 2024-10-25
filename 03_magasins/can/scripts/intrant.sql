@@ -32,7 +32,7 @@ select
 	ei.s,
 	ei.unite_teneur_fert,
 	ei.unite_application,
-	CASE CAST(ei.effet_sdn AS BOOLEAN)WHEN 'true' THEN 'oui' WHEN 'false' THEN 'non' END effet_sdn,
+	CASE CAST(ei.effet_sdn AS BOOLEAN) WHEN 'true' THEN 'oui' WHEN 'false' THEN 'non' END effet_sdn,
 	ei.forme_fert_min,
 	ei.caracteristique_1,
 	ei.caracteristique_2,

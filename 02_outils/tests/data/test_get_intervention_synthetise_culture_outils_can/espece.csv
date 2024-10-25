@@ -1,4 +1,5 @@
 id,code_espece_botanique,code_qualifiant_aee,code_type_saisonnier_aee,code_destination_aee,code_categorie_culture,libelle_categorie_culture,commentaire,libelle_espece_botanique,libelle_qualifiant_aee,libelle_type_saisonnier_aee,libelle_destination_aee,code_cipan_aee,libelle_cipan_aee,libelle_destination_bbch,commentaires,genre,espece,code_gnis,num_groupe_gnis,nom_gnis,nom_latin_gnis,nom_culture_acta,remarque_culture_acta
+fr.inra.agrosyst.api.entities.referential.RefEspece_f13ec1c4-9945-42e7-a71c-ce9c47206fb2,UI7,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Trèfle squarrosum,,,,,,,,Trifolium,squarrosum L.,TEMP_UI7,,,,trèfle,
 fr.inra.agrosyst.api.entities.referential.RefEspece_9b275b76-eebd-4459-b7fa-3a78ca139c36,E28,,,,J10,Grandes cultures,,Avoine brésilienne,,,,,,,,Avena,"Strigosa
 ",TEMP_E28,,,,avoine,
 fr.inra.agrosyst.api.entities.referential.RefEspece_26e37743-1763-46fa-9713-667330e67b3a,ZBT,,ZFB,,J10,Grandes cultures,,Fèverole,,Hiver,,,,,,Vicia,faba,70,26,FEVEROLE,VICIA FABA L. PARTIM,féverole d'hiver,
@@ -10,6 +11,7 @@ fr.inra.agrosyst.api.entities.referential.RefEspece_02966df2-7b93-4f17-a356-2d37
 fr.inra.agrosyst.api.entities.referential.RefEspece_4b86ffcf-139a-4f40-a7c0-9617416cbdd6,ZAM,ZLN,ZFB,,J10,Grandes cultures,,Avoine,Blanche,Hiver,,ZAMZLNZFB,Avoine blanche d'hiver,,,Avena,sativa,510,3,AVOINE,AVENA SATIVA L.,avoine d'hiver,
 fr.inra.agrosyst.api.entities.referential.RefEspece_fae216f6-2e31-402c-807b-787062726997,ZAL,,,,J02,Cultures légumières,,Aubergine,,,,,,,,Solanum,melongena,201,9,AUBERGINE,SOLANUM MELONGENA L.,aubergine,
 fr.inra.agrosyst.api.entities.referential.RefEspece_54060f86-e4f2-4918-b4ab-a4556e678386,ZMO,,,H61,J09,Vigne,,Vigne,,,Cuve,,,Cuve,,Vitis,vinifera,TEMP_ZMO,,,,vigne,
+fr.inra.agrosyst.api.entities.referential.RefEspece_5ecc277f-6803-488b-8108-daadefef8d9d,ZBM,,,,J10,Grandes cultures,,Epeautre,,,,,,,,Triticum,spelta,41,1,EPEAUTRE,TRITICUM SPELTA L.,épeautre,
 fr.inra.agrosyst.api.entities.referential.RefEspece_e4e32052-729f-4b71-848d-d260e1aff8ff,ZMK,,ZFB,,J10,Grandes cultures,,Vesce commune,,Hiver,,,,Semence,,Vicia,sativa,73,5,VESCE COMMUNE,VICIA SATIVA L.,vesce commune,
 fr.inra.agrosyst.api.entities.referential.RefEspece_01104cee-6071-41e1-80cf-355126276a5d,ZMK,,ZFA,,J10,Grandes cultures,,Vesce commune,,Printemps,,,,Semence,,Vicia,sativa,73,5,VESCE COMMUNE,VICIA SATIVA L.,vesce commune,
 fr.inra.agrosyst.api.entities.referential.RefEspece_3966ea06-0627-4c7e-be38-f39c869d2bd9,ZMD,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Trèfle blanc,,,,,,Semence,,Trifolium,repens,63,5,TREFLE BLANC,TRIFOLIUM REPENS L.,trèfle blanc,
@@ -28,3 +30,4 @@ fr.inra.agrosyst.api.entities.referential.RefEspece_958bc0dd-57f0-4dd5-9f24-9a2c
 fr.inra.agrosyst.api.entities.referential.RefEspece_d9c6255b-b5e7-4db4-8a3f-f5ad4da43c46,ZBI,,,,J02,Cultures légumières,,Courgette,,,,,,,,Cucurbita,pepo,220,9,COURGE - COURGETTE,CUCURBITA PEPO L.,courgette,
 fr.inra.agrosyst.api.entities.referential.RefEspece_c4c9b271-bb42-470f-998f-6ed0e666144a,ZEJ,,ZFB,,J10,Grandes cultures,,Seigle,,Hiver,,ZEJ,Seigle,,,Secale,cereale,TEMP_ZEJ,,,,seigle d'hiver,
 fr.inra.agrosyst.api.entities.referential.RefEspece_2a01d716-9ff3-470d-a917-fe25efd70e98,ZMC,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Trèfle violet,,,,,,Semence,,Trifolium,pratense,64,5,TREFLE VIOLET,TRIFOLIUM PRATENSE L.,trèfle violet,
+fr.inra.agrosyst.api.entities.referential.RefEspece_2bbb38a3-2fec-4776-bb36-d297de125ca1,ZEL,,,,J10,Grandes cultures,,Soja,,,,,,,,Glycine,max,27,22,SOJA,GLYCINE MAX L. MERRILL,soja,

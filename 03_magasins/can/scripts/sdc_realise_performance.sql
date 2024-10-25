@@ -130,7 +130,7 @@ select
 	esrp.nbre_de_passages_tcs_tx_comp,
 	esrp.nbre_de_passages_desherbage_meca,
 	esrp.nbre_de_passages_desherbage_meca_tx_comp,
-	CASE esrp.utili_desherbage_meca WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
+	CASE CAST(esrp.utili_desherbage_meca AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
 	esrp.utili_desherbage_meca_tx_comp,
 	esrp.type_de_travail_du_sol,
 	esrp.type_de_travail_du_sol_tx_comp,

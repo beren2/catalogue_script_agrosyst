@@ -14,15 +14,15 @@ select
 	ec.commune as commune,
 	ep.commentaire as parcelle_commentaire,
 	ep.nombre_de_zones,
-	CASE ep.hors_zonage WHEN true THEN 'oui' WHEN false THEN 'non' END parcelle_hors_zonage,
+	CASE CAST(ep.hors_zonage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END parcelle_hors_zonage,
 	ep.equip_commentaire as equipement_commentaire,
-	CASE ep.drainage WHEN true THEN 'oui' WHEN false THEN 'non' END drainage,
+	CASE CAST(ep.drainage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END drainage,
 	ep.drainage_annee_realisation,
-	CASE ep.protection_antigel WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antigel,
+	CASE CAST(ep.protection_antigel AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antigel,
 	ep.protection_antigel_type,
-	CASE ep.protection_antigrele WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_grele,
-	CASE ep.protection_antipluie WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antipluie,
-	CASE ep.protection_antiinsecte WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_insectes,
+	CASE CAST(ep.protection_antigrele AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_grele,
+	CASE CAST(ep.protection_antipluie AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antipluie,
+	CASE CAST(ep.protection_antiinsecte AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_insectes,
 	ep.equip_autre as autre_equipement
 from entrepot_parcelle ep
 left join entrepot_domaine ed on ep.domaine_id = ed.id

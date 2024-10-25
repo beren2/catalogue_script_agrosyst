@@ -20,8 +20,7 @@ UNION
 SELECT
     id, 
     plantation_perenne_realise_id, zone_id, noeuds_realise_id, culture_id, plantation_perenne_phases_realise_id, parcelle_id, sdc_campagne, sdc_id, domaine_id, dispositif_id
-FROM entrepot_intervention_realise_manquant_agrege
-limit 10;
+FROM entrepot_intervention_realise_manquant_agrege;
 
 
 alter table entrepot_intervention_realise_agrege add primary key (id);

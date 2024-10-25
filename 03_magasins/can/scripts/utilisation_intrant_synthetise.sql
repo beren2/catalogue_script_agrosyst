@@ -20,7 +20,7 @@ select
 	euir.profondeur_semis_cm,
 	euir.volume_bouillie_hl,
 	euir.unite,
-	CASE ei.biocontrole WHEN true THEN 'oui' WHEN false THEN 'non' END biocontrole,
+	CASE CAST(ei.biocontrole AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END biocontrole,
 	ei.type_produit as intrant_phyto_type,
 	euir.intrant_phyto_cible_nom,
 	ei.forme_fert_min as forme_ferti_min,

@@ -1,7 +1,7 @@
 SELECT
     eirp.utili_desherbage_meca_tx_comp,
     eirp.utili_desherbage_meca_chmps_non_rens,
-	CASE eirp.utili_desherbage_meca WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
+	CASE CAST(eirp.utili_desherbage_meca AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
     eirp.type_de_travail_du_sol_tx_comp,
     eirp.type_de_travail_du_sol_chmps_non_rens,
     eirp.type_de_travail_du_sol,
@@ -338,7 +338,7 @@ SELECT
     eiroc.nb_intrants,
     eirma.plantation_perenne_realise_id as plantation_id
 from entrepot_intervention_realise_performance eirp
-join  entrepot_intervention_realise_outils_can eiroc on eiroc.id = eirp.intervention_realise_id
+join entrepot_intervention_realise_outils_can eiroc on eiroc.id = eirp.intervention_realise_id
 join entrepot_intervention_realise eis on eiroc.id = eis.id
 join entrepot_intervention_realise_agrege eirma on eirma.id = eirp.intervention_realise_id 
 join entrepot_zone ez on ez.id = eirma.zone_id

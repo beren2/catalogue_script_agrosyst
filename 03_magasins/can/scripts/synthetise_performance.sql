@@ -129,7 +129,7 @@ SELECT
 	essp.nbre_de_passages_tcs_tx_comp,
 	essp.nbre_de_passages_desherbage_meca,
 	essp.nbre_de_passages_desherbage_meca_tx_comp,
-	CASE essp.utili_desherbage_meca WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
+	CASE CAST(essp.utili_desherbage_meca AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
 	essp.utili_desherbage_meca_tx_comp,
 	essp.type_de_travail_du_sol,
 	essp.type_de_travail_du_sol_tx_comp,
@@ -299,7 +299,7 @@ SELECT
 	sdc_context.sdc_valide,
 	es.nom as systeme_synthetise_nom,
 	essp.synthetise_id as systeme_synthetise_id,
-	CASE es.valide WHEN true THEN 'oui' WHEN false THEN 'non' END synthetise_valide,
+	CASE CAST(es.valide AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END synthetise_valide,
 	es.campagnes as synthetise_campagnes
 FROM entrepot_synthetise_synthetise_performance essp
 left join entrepot_synthetise es on essp.synthetise_id = es.id

@@ -144,7 +144,7 @@ SELECT
     eisp.nbre_de_passages_desherbage_meca,
     eisp.nbre_de_passages_desherbage_meca_tx_comp,
     eisp.nbre_de_passages_desherbage_meca_chmps_non_rens,
-    CASE eisp.utili_desherbage_meca WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
+    CASE CAST(eisp.utili_desherbage_meca AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END utili_desherbage_meca,
     eisp.utili_desherbage_meca_tx_comp,
     eisp.utili_desherbage_meca_chmps_non_rens,
     eisp.type_de_travail_du_sol,
@@ -311,10 +311,11 @@ SELECT
    	sdc_context.sdc_valide,
    	sdc_context.sdc_type_conduite as sdc_type_agriculture,
     es.nom as systeme_synthetise_nom,
-    CASE es.valide WHEN true THEN 'oui' WHEN false THEN 'non' END synthetise_valide,
+    CASE CAST(es.valide AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END synthetise_valide,
   	es.campagnes as synthetise_campagnes,
-   	ec.nom as culture_nom,
-  	ec.id as culture_id,
+  	ec_intermediaire.id as culture_id, -- il ne s'agit pas forcément de la culture intermediaire.
+    ec_intermediaire.nom as culture_nom, 
+    ec_intermediaire.code as culture_code,
     ens.rang as culture_rang,
     ecoc.complet_espece_edi_nettoye as culture_especes_edi,
     ecoc.variete_nom,
@@ -351,4 +352,5 @@ left join entrepot_noeuds_synthetise ens on ens.id = eismae.cible_noeuds_synthet
 left join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = CAST(eismae.plantation_perenne_phases_synthetise_id AS VARCHAR)
 left join entrepot_plantation_perenne_synthetise epps on CAST(eismae.plantation_perenne_synthetise_id AS VARCHAR)= epps.id
 join entrepot_culture ec on ec.id = eismae.culture_id
-join entrepot_culture_outils_can ecoc on ecoc.id = ec.id;
+join entrepot_culture_outils_can ecoc on ecoc.id = ec.id
+left join entrepot_culture ec_intermediaire on ec_intermediaire.id = eisoc.culture_id; -- on récupère les infos car la culture n'est pas forcément la culture principale 

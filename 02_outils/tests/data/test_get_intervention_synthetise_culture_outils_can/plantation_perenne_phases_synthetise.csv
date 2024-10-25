@@ -1,3 +1,3 @@
 id,duree,type,plantation_perenne_synthetise_id
-fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_4806ec12-01ba-4956-9b0a-30def094d3be,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_13dd88c8-1f48-4d30-860f-1b9bfd6e2b56
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_1b8b38cf-78a3-4495-bb69-1ceb63075e4a,0.0,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_d901f778-8b0e-4de1-a30b-5d3ab9abc9f7
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_4806ec12-01ba-4956-9b0a-30def094d3be,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_13dd88c8-1f48-4d30-860f-1b9bfd6e2b56

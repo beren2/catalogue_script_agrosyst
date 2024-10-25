@@ -17,7 +17,7 @@ SELECT
     (replace(replace(c.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as culture_nom,
     cr.culture_intermediaire_id as ci_id,
     (replace(replace(c_intermediaire.nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as ci_nom,
-    CASE ir.concerne_ci WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
+    CASE CAST(ir.concerne_ci AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END concerne_la_ci,
     iroc.esp_complet_var as especes_de_l_intervention,
 	iroc.precedent_id,
     (replace(replace(iroc.precedent_nom,CHR(13)||CHR(10),'<br>'), CHR(10), '<br>')) as precedent_nom,
@@ -52,16 +52,16 @@ SELECT
     iroc.inoculation_biologique_semis,
     iroc.type_semence
 FROM  entrepot_intervention_realise ir
-LEFT JOIN entrepot_intervention_realise_agrege ira ON ir.id = ira.id
-LEFT JOIN entrepot_intervention_realise_outils_can iroc ON ira.id = iroc.id
-LEFT JOIN entrepot_zone z ON ira.zone_id = z.id
-LEFT JOIN entrepot_parcelle p ON ira.parcelle_id = p.id
+JOIN entrepot_intervention_realise_agrege ira ON ir.id = ira.id
+JOIN entrepot_intervention_realise_outils_can iroc ON ira.id = iroc.id
+JOIN entrepot_zone z ON ira.zone_id = z.id
+JOIN entrepot_parcelle p ON ira.parcelle_id = p.id
 LEFT JOIN entrepot_sdc sdc ON ira.sdc_id = sdc.id
-LEFT JOIN entrepot_domaine d ON ira.domaine_id = d.id
+JOIN entrepot_domaine d ON ira.domaine_id = d.id
 LEFT JOIN entrepot_noeuds_realise nr ON ira.noeuds_realise_id = nr.id
 LEFT JOIN entrepot_connection_realise cr ON cr.cible_noeuds_realise_id = nr.id
 LEFT JOIN entrepot_plantation_perenne_phases_realise pppr ON CAST(ira.plantation_perenne_phases_realise_id AS VARCHAR) = pppr.id
 LEFT JOIN entrepot_plantation_perenne_realise eppr on pppr.plantation_perenne_realise_id = eppr.id 
-LEFT JOIN entrepot_culture c ON nr.culture_id = c.id or eppr.culture_id = c.id 
+JOIN entrepot_culture c ON nr.culture_id = c.id or eppr.culture_id = c.id 
 LEFT JOIN entrepot_culture c_intermediaire ON cr.culture_intermediaire_id = c_intermediaire.id
 join entrepot_dispositif_filtres_outils_can edifoc on sdc.dispositif_id = edifoc.id;
