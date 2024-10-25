@@ -7,6 +7,7 @@ import urllib
 import datetime
 import subprocess 
 import os
+import json
 import psycopg2 as psycopg
 import pandas as pd
 from sqlalchemy import create_engine, text
@@ -14,7 +15,6 @@ from sqlalchemy import inspect
 from colorama import Fore, Style
 from version import __version__
 from tqdm import tqdm
-import json
 
 #Fetch the sql files 
 path_sql_files = 'scripts/'

@@ -5,13 +5,13 @@ Ce script effectue les tâches suivantes  :
 """
 import os
 import re
+import json
 import configparser
 import pandas as pd
 import duckdb
 from tqdm import tqdm
 from colorama import Fore, Style
 from version import __version__
-import json
 
 #Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
