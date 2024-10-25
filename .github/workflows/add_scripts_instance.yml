@@ -5,7 +5,7 @@ on:
     branches:
         - 'main'
     paths:
-        - 03_magasins/can/**
+        - 03_magasins/can/unactivate
 jobs:
   build:
     runs-on: ubuntu-latest
