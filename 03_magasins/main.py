@@ -17,9 +17,15 @@ config.read(r'../00_config/config.ini')
 
 DATA_PATH = config.get('metadata', 'data_path') 
 TYPE = config.get('metadata', 'type')
-df = {}
-LIMIT = 100
+DEBUG=bool(int(config.get('metadata', 'debug')))
 
+if(DEBUG):
+    NROWS = int(config.get('debug', 'nrows'))
+    DATA_PATH = config.get('debug', 'data_test_path')
+
+df = {}
+
+VERBOSE = DEBUG
 
 if(TYPE == 'local'):
     welcome_message = """
@@ -35,7 +41,10 @@ else :
 def import_df(df_name, path_data, sep, index_col=None):
     """ importe un dataframe df_name dans le dictionnaire global df"""
     if('entrepot_'+df_name not in df):
-        df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False,  nrows=LIMIT)
+        if(DEBUG):
+            df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False,  nrows=NROWS)
+        else:
+            df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False)
 
 def import_dfs(df_names, path_data, sep = ',', index_col=None, verbose=False):
     """ importe un ensemble de dataframes dans une liste et dont la copie locale se situe au chemin path_data"""
@@ -133,6 +142,7 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
     if(verbose):
         print("- tables_utiles :", tables_utiles)
         print("- dependances :", dependances)
+        print("- current_dependances :", current_dependances)
 
     dependances_filtered = []
     tables_dependance = []
@@ -167,15 +177,14 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
     dependance_queries = preprocess_postgresql_queries(dependance_queries)
 
     # import de toutes les données utiles dans le dictionnaire
-    print("Début de l'import des données nécessaires")
+    print("DÉBUT DE L'IMPORT DES DONNÉES POUR LA TABLE "+current_table)
     import_dfs(tables_to_import, DATA_PATH, sep = ',', verbose=False) 
-    print("Fin de l'import des données nécessaires")
 
     # conversion du dictionnaire en variable pour duckdb
     for key, df_value in df.items():
         globals()[key] = df_value  # Assign each dataframe to a variable with the name of the key  
     
-    print("Début de l'exécution des scripts SQL")
+    print("DÉBUT DE GÉNÉRATION DE LA TABLE "+current_table)
 
     # Requêtes de dépendance à exécuter préalablement
     for _, dependance_query in enumerate(dependance_queries):  
@@ -187,7 +196,6 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
         res = duckdb.sql(query)
         res.to_csv(file_name)
         print(f"- fichier {Fore.GREEN}"+file_name+f"{Style.RESET_ALL} exporté") 
-    print("Fin de l'exécution des scripts SQL")
 
     return dependances
 
@@ -199,7 +207,7 @@ dependance_specs = {
             'utilisation_intrant_realise_agrege', 
             'action_realise_manquant_agrege',
             'sdc', 'dispositif', 'liaison_sdc_reseau',
-            'liaison_reseaux', 'reseau'
+            'liaison_reseaux', 'reseau', 'domaine'
         ]
     },
     'action_realise_agrege' : {
@@ -368,8 +376,7 @@ magasin_specs  = {
             },
             'parcelle_realise_performance' :{
                 'tables' :[
-                    'parcelle_realise_performance', 'parcelle_realise_outils_can',
-                    'parcelle'
+                    'parcelle_realise_performance', 'parcelle_realise_outils_can',                    'parcelle', 'domaine'
                 ],
                 'dependances' : [
                     'context_performance_sdc'
@@ -404,7 +411,7 @@ magasin_specs  = {
                     'plantation_perenne_synthetise_restructure',
                     'synthetise', 
                     'sdc', 'dispositif', 'domaine', 'culture',
-                    'dispositif_filtres_outils_can'
+                    'domaine_filtres_outils_can'
                 ],
                 'dependances': []
             },
@@ -505,7 +512,6 @@ magasin_specs  = {
                      'context_performance_sdc'
                 ]
             }
-            
         }, 
         'path' : 'can/scripts/'
     },
@@ -521,6 +527,7 @@ options = {
 }
 
 donnees = {}
+executed_dependances = []
 while True:
     print("")
     print("")
@@ -537,7 +544,6 @@ while True:
     print(choice_key)
 
     if(choice_key == "Générer un magasin"):
-
         # On demande le magasin à générer
         magasins = list(magasin_specs.keys())
         print("")
@@ -561,12 +567,11 @@ while True:
         choosen_table = tables[choice - 1]
         if(choosen_table == 'tout') :
             print("Début génération de toute les tables du magasin "+choosen_magasin)
-            executed_dependances = []
             for i, table in enumerate(magasin_specs[choosen_magasin]['tables']):
                 print("- " +table)
                 executed_dependances += generate_table(choosen_magasin, table, current_dependances=executed_dependances)
         else :
-            generate_table(choosen_magasin, choosen_table, verbose=True)
+            executed_dependances += generate_table(choosen_magasin, choosen_table, current_dependances=executed_dependances, verbose=VERBOSE)
             
 
 
