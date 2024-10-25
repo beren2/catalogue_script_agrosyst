@@ -67,8 +67,8 @@ def import_sql_file(file):
     """
         importe un fichier file et retourne la chaîne de caractère resultante
     """
-    with open(file, 'r',  encoding="utf-8") as file:
-        data = file.read()
+    with open(file, 'r',  encoding="utf-8") as f:
+        data = f.read()
     return data
 
 def import_sql_files(desired_tables, path):

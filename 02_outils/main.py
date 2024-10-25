@@ -114,7 +114,7 @@ def copy_tables_to_csv(table_names, csv_path, verbose=False):
     for table_name in pbar : 
         if(verbose) :
             print("- ", table_name)
-        pbar.set_description("Téléchargement de %s" % table_name)
+        pbar.set_description(f"Téléchargement de {table_name}")
         copy_table_to_csv('entrepot_'+table_name, csv_path, table_name)
 
 def download_datas(desired_tables, verbose=False):
