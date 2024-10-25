@@ -678,7 +678,9 @@ def convert(group, target_unit, df_converter):
             group['new_dose'] = group['dose']*taux_conversion
             group['new_unite'] = target_unit
             return group[['id', 'new_dose', 'new_unite']]
-    return None
+    group['new_dose'] = group['dose']
+    group['new_unite'] = current_unit
+    return group[['id', 'new_dose', 'new_unite']]
 
 def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
     """permet de convertir toutes les unites d'utilisation d'intrant en une unité recherchée"""
@@ -686,10 +688,12 @@ def get_utilisation_intrant_in_unit(donnees, target_unit='KG_HA'):
     # Import des données utiles
     df_converter = donnees['conversion_utilisation_intrant']
 
-    res = donnees['utilisation_intrant'].groupby('unite').apply(lambda x :
-        convert(x, target_unit, df_converter)
-    ).reset_index()[
-        ['id', 'new_dose', 'new_unite']
-    ].rename(columns={'new_dose' : 'dose_unite_standardise', 'new_unite' : 'unite_standardise'})
-
+    if(len(donnees['utilisation_intrant']) > 0):
+        res = donnees['utilisation_intrant'].groupby('unite').apply(lambda x :
+            convert(x, target_unit, df_converter)
+        ).reset_index()[
+            ['id', 'new_dose', 'new_unite']
+        ].rename(columns={'new_dose' : 'dose_unite_standardise', 'new_unite' : 'unite_standardise'})
+    else:
+        res = pd.DataFrame({'id' : [], 'dose_unite_standardise' : [], 'unite_standardise' : []})
     return res
