@@ -1,0 +1,10 @@
+id,code,nom,type,campagne,domaine_id
+fr.inra.agrosyst.api.entities.GrowingPlan_ea125ac1-7e29-4e91-8ff4-dfc2d9af96c3,20037010-8433-4262-b5fc-5de752713e26,DISP_,DEPHY_FERME,2011,fr.inra.agrosyst.api.entities.Domain_6bb05791-8052-4faf-b299-d09ae8ae841a
+fr.inra.agrosyst.api.entities.GrowingPlan_94a20c29-226c-4db2-b9fb-01831c5aa38d,e6b60cc7-432a-4c10-aa78-0394dfaee657,EXPL_,DEPHY_FERME,2022,fr.inra.agrosyst.api.entities.Domain_92451fa9-7e82-476a-a3dc-75ac21b051fd
+fr.inra.agrosyst.api.entities.GrowingPlan_f7268011-f1c2-4076-abbe-86903337089f,c2f4eb4b-bd33-4b09-a7f0-924e2ace8763,DISP_2018,DEPHY_EXPE,2018,fr.inra.agrosyst.api.entities.Domain_8e6275ae-e5d6-4b5f-a174-f241902fc67a
+fr.inra.agrosyst.api.entities.GrowingPlan_2ac72af2-9beb-488e-9628-d46b51c4b82d,bfc4a7f4-06e7-4643-bb57-452e872148d1,Ch,DEPHY_FERME,2022,fr.inra.agrosyst.api.entities.Domain_59a34e23-5fe4-48a7-a455-2bed8316ab5c
+fr.inra.agrosyst.api.entities.GrowingPlan_da3462ad-bb51-4537-8601-32123f58e3bd,31678cd5-0d31-41a6-b3dd-e240112b77b8,PECHE AB,DEPHY_FERME,2024,fr.inra.agrosyst.api.entities.Domain_c3c7b521-5e73-479f-85b3-b1c78c0ba2f1
+fr.inra.agrosyst.api.entities.GrowingPlan_5c29e4c9-9229-4904-a3ee-9653b8ecf5ae,acf9b36f-b56a-42b9-a786-714f69c53628,DIspo,DEPHY_FERME,2020,fr.inra.agrosyst.api.entities.Domain_c657cedd-d898-49ff-ad30-d49d38327e06
+fr.inra.agrosyst.api.entities.GrowingPlan_4f2572c2-df9b-4a4c-a349-5d8f203214be,f50f35b7-ffcd-4445-a952-541aa7fe9817,DEPHY EXPE,DEPHY_EXPE,2020,fr.inra.agrosyst.api.entities.Domain_b5ae0e0d-e155-4f6c-aac2-5451d3e80429
+fr.inra.agrosyst.api.entities.GrowingPlan_28391af8-9547-4d27-bb50-af80899e9f35,95cc5262-7cff-482e-bea9-310f5032eed0,Dispositif,DEPHY_FERME,2020,fr.inra.agrosyst.api.entities.Domain_72fc8a65-dc37-4b74-bd6c-a9014a9fae8e
+fr.inra.agrosyst.api.entities.GrowingPlan_e86fedaf-02ae-4346-8367-c6a12cbcac82,619e5dac-13f0-4fcc-9ccf-57521a1c0ba3,EXPLOITAT,DEPHY_FERME,2021,fr.inra.agrosyst.api.entities.Domain_451bf73a-fb73-4530-83a5-a5cff2108bdf

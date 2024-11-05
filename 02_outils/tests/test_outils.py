@@ -6,6 +6,7 @@ from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
 from scripts import indicateur
+from scripts import agregation
 
 
 
@@ -497,5 +498,49 @@ def test_restructuration_recolte_rendement_prix():
 
     # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
     res_valeur_ok = (merge['composant_culture_id'] == merge['composant_culture_id_expected']).all()
+
+    assert res_valeur_ok
+
+
+def test_get_aggreged_from_utilisation_intrant_synthetise():
+    """
+        Test de l'obtention des recoltes rendement prix restructurés
+    """
+    # lecture du fichier de métadonnées sur les tests
+    df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_get_aggreged_from_utilisation_intrant_synthetise']
+
+    # obtention des données
+    df_names = [   
+                    'utilisation_intrant_synthetise', 'action_synthetise', 
+                    'intervention_synthetise', 'connection_synthetise', 
+                    'noeuds_synthetise', 'plantation_perenne_phases_synthetise',
+                    'plantation_perenne_synthetise','synthetise',
+                    'sdc','dispositif'
+                ]
+                
+    path_data = '02_outils/tests/data/test_get_aggreged_from_utilisation_intrant_synthetise/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+
+    aggreged_utilisation_intrant_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'toutes'][
+        ['id_ligne', 'valeur_attendue']
+    ]
+    aggreged_utilisation_intrant_synthetise = agregation.get_aggreged_from_utilisation_intrant_synthetise(donnees)
+    aggreged_utilisation_intrant_synthetise = aggreged_utilisation_intrant_synthetise.apply(lambda row: ','.join(row.values.astype(str)), axis=1)
+
+    left = aggreged_utilisation_intrant_synthetise_expected[['id_ligne', 'valeur_attendue']].rename(columns={
+        'id_ligne' : 'utilisation_intrant_synthetise_id', 'valeur_attendue' : 'aggreged_utilisation_intrant_synthetise_expected'
+    })
+    right = aggreged_utilisation_intrant_synthetise.reset_index().rename(columns={
+        'id' : 'utilisation_intrant_synthetise_id',
+        0 : 'aggreged_utilisation_intrant_synthetise'
+    })
+    merge = pd.merge(left, right, on='utilisation_intrant_synthetise_id', how='left')
+
+    # on enlève ceux pour lesquelles on est sensé trouver "NaN" 
+    merge = merge.dropna()
+
+    # on vérifie que toutes les culture_id sont bien conforme à ceux qu'on attendait 
+    res_valeur_ok = (merge['aggreged_utilisation_intrant_synthetise'] == merge['aggreged_utilisation_intrant_synthetise_expected']).all()
 
     assert res_valeur_ok
