@@ -197,7 +197,6 @@ ordered_files = [
     "nuisible_edi",
     "substances_actives_europeennes",
     "phrases_de_risque_numero_amm",
-    "composition_substance_active_numero_amm",
     "prix_intrant_produit_phyto_sanitaire",
     "prix_carburant",
     "otex",
