@@ -119,6 +119,20 @@ def download_datas(desired_tables, verbose=False):
     """
     copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
 
+def check_existing_table_database(tables_to_check,schema):
+    """
+        Vérifie si les tables en argument sont bien présentes dans la base de données de l'entrepot
+    """
+    list_table = ['entrepot_' + t for t in tables_to_check]
+    tables_not_exists = [t.replace("entrepot_","") for t in list_table if t not in schema]
+    
+    if len(tables_not_exists) > 0:
+        print(f"{Fore.RED} ATTENTION DES TABLES SONT NON EXISTANTES EN BASE : "f"{Style.RESET_ALL}") 
+    for current_table in tables_not_exists:
+        print(f"{Fore.RED} - " + current_table + f"{Style.RESET_ALL}") 
+
+    return(tables_not_exists)
+
 
 ordered_files = [
     "commune",
@@ -442,7 +456,12 @@ while True:
         print("Les métas-données de", DB_NAME, "sont à jour, pensez à mettre à jour le fichier de configuration du serveur (database.ini)")
 
     elif choice_key == "Téléchargement de l'entrepôt":
-
+        engine_entrepot = create_engine(DATABASE_URI_entrepot) 
+        postgreSQLConnection_entrepot = engine_entrepot.connect()
+    
+        schema_tables = pd.read_sql( text("""select table_name from information_schema.tables where table_schema = 'public' and table_name like '%entrepot%'"""), postgreSQLConnection_entrepot) 
+        schema_tables = schema_tables['table_name'].values.tolist()
+    
         tables = ['tout']
         tables += list(ordered_files)
         print("")
@@ -452,11 +471,18 @@ while True:
                     print(f"{i + 1}. {option_table}")
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_table = tables[choice - 1]
+
+        no_existing_table = check_existing_table_database(ordered_files,schema_tables)
+
         print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         if(choosen_table == 'tout') :
+            for table in no_existing_table:
+                ordered_files.remove(table)
+            
             download_datas(ordered_files, verbose=False)
         else :
-            download_datas([choosen_table], verbose=False)
+            if choosen_table not in no_existing_table:
+                download_datas([choosen_table], verbose=False)
         print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
 
 
