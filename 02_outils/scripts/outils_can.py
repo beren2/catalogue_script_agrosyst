@@ -1112,7 +1112,6 @@ def get_intervention_synthetise_action_outils_can(
     
     df_action_synthetise = donnees['action_synthetise']
     df_intervention_synthetise = donnees['intervention_synthetise']
-    df_fertilisation_organique = donnees['fertilisation_organique']
 
     # on rajoute aux actions des informations sur l'intervention
     left =  df_action_synthetise
