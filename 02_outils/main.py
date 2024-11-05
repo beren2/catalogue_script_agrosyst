@@ -110,9 +110,9 @@ def import_df(df_name, path_data, sep):
     """
     global donnees
     if(DEBUG):
-        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=NROWS)
+        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
     else:
-        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False)
+        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
 
 def import_dfs(df_names, data_path, sep = ',', verbose=False):
     """

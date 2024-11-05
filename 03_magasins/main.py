@@ -62,9 +62,9 @@ def import_df(df_name, path_data, sep, index_col=None):
     """ importe un dataframe df_name dans le dictionnaire global df"""
     if('entrepot_'+df_name not in df):
         if(DEBUG):
-            df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False,  nrows=NROWS)
+            df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False,  nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
         else:
-            df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False)
+            df['entrepot_'+df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, index_col=index_col, low_memory=False).replace({'\r\n': '\n'}, regex=True)
 
 def import_dfs(df_names, path_data, sep = ',', index_col=None, verbose=False):
     """ importe un ensemble de dataframes dans une liste et dont la copie locale se situe au chemin path_data"""
