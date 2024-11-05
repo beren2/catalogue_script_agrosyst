@@ -14,7 +14,7 @@ def import_df(df_name, path_data, sep, df):
     """
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
-    df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep)
+    df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep).replace({'\r\n': '\n'}, regex=True)
 
 def import_dfs(df_names, path_data,  df, sep = ','):
     """
