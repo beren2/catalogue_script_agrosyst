@@ -138,6 +138,14 @@ TYPE_ACTION = {
     'TRAVAIL_DU_SOL' : 'Travail du sol'
 }
 
+MOLECULES = {
+    'n' : 'N', 
+    'p' : 'P₂O₅',
+    'k' : 'K₂O',
+    'cao' : 'CaO',
+    's' : 'S'
+}
+
 
 def map_boolean(values, sep='; '):
     """ permet de transformer les booléen en string """
@@ -1104,6 +1112,7 @@ def get_intervention_synthetise_action_outils_can(
     
     df_action_synthetise = donnees['action_synthetise']
     df_intervention_synthetise = donnees['intervention_synthetise']
+    df_fertilisation_organique = donnees['fertilisation_organique']
 
     # on rajoute aux actions des informations sur l'intervention
     left =  df_action_synthetise

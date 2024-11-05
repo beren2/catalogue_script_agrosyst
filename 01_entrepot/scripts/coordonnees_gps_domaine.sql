@@ -1,4 +1,4 @@
-CREATE TABLE entrepot_coordonees_gps_domaine AS
+CREATE TABLE entrepot_coordonnees_gps_domaine AS
   select
   	g.topiaid id,
   	g.name AS nom_coordonnees_centre_operationnel,
@@ -12,9 +12,9 @@ CREATE TABLE entrepot_coordonees_gps_domaine AS
   AND g.latitude !=0
   AND g.validated is true;
 
-alter table entrepot_coordonees_gps_domaine
+alter table entrepot_coordonnees_gps_domaine
 add constraint domaines_coordonnees_gps_PK
 PRIMARY KEY (id);
 
-alter table entrepot_coordonees_gps_domaine
+alter table entrepot_coordonnees_gps_domaine
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

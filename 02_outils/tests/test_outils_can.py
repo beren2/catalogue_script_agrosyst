@@ -197,7 +197,7 @@ def test_get_intervention_synthetise_action_outils_can():
 
     identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
     df_names = [   
-        'intervention_synthetise', 'action_synthetise'
+        'intervention_synthetise', 'action_synthetise', 'fertilisation_organique'
     ]
     path_data =  '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can

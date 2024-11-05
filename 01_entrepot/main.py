@@ -126,7 +126,7 @@ ordered_files = [
     "intervention_travail_edi",
     "criteres_selection",
     "domaine",
-    "coordonees_gps_domaine",
+    "coordonnees_gps_domaine",
     "dispositif",
     "sdc",
     "parcelle",
@@ -205,6 +205,7 @@ options = {
         "Création d'une nouvelle base de données entrepôt nettoyée" : [],
         "Mettre à jour les métadonnées de Datagrosyst" : [],
         "Téléchargement de l'entrepôt" : [],
+        "Télécharger la base OP de datagrosyst" : [],
         "Quitter" : []
 }
 
@@ -458,6 +459,27 @@ while True:
         else :
             download_datas([choosen_table], verbose=False)
         print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+    
+    elif choice_key == "Télécharger la base OP de datagrosyst":
+
+        print("Nom de la base de données à dump (ex : entrepot_20231115)")
+        nom_final = input()
+        DB_USER = config.get('datagrosyst', 'user')
+        DB_PASSWORD = config.get('datagrosyst', 'password')
+
+        os.environ['PGPASSWORD'] = DB_PASSWORD
+
+        subprocess.run("""pg_dump -vFc --dbname=datagrosyst_prod --host=147.100.179.208 --no-blobs --port=5439  --username="""+str(DB_USER)+""" --file="""+str(nom_final)+""".dump""", shell=True, check=True)
+        
+        os.environ['PGPASSWORD'] = 'postgres'
+        subprocess.run("""createdb """+str(nom_final)+""" -Upostgres -hlocalhost -p5432""", shell=True, check=True)
+        subprocess.run("""pg_restore -v -Upostgres -d"""+str(nom_final)+""" -hlocalhost -p5432 """+str(nom_final)+""".dump""", shell=True, check=True)
+        #os.environ['PGPASSWORD'] = 'postgres'
+        #subprocess.run("""pg_restore -v -Upostgres -d"""+str(nom_final)+""" -h127.0.0.1 -p5432 """+str(nom_origine)+""".dump""", shell=True, check=True)
+        subprocess.run("""rm """+str(nom_origine)+""".dump""",  check=False)
+
+        print("La nouvelle BDD est générée, pensez à mettre à jour le fichier 00_config/config.ini")
+    
 
 
 cur.close()

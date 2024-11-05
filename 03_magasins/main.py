@@ -296,10 +296,10 @@ magasin_specs  = {
                     'domaine_filtres_outils_can'
                 ]
             },
-            'coordonees_gps_domaine' : {
+            'coordonnees_gps_domaine' : {
                 'dependances' : [], 
                 'tables' : [
-                    'coordonees_gps_domaine', 
+                    'coordonnees_gps_domaine', 
                     'domaine_filtres_outils_can'
                 ]
             },

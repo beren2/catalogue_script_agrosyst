@@ -309,8 +309,8 @@ SELECT
     qsa_soufre_ferti,
     -- travail
     surface_par_unite_de_travail_humain,
-    surface_par_unite_de_travail_humain_detail_champs_non_renseig,
-    surface_par_unite_de_travail_humain_taux_de_completion
+    surface_par_unite_de_travail_humain_taux_de_completion,
+    surface_par_unite_de_travail_humain_detail_champs_non_renseig
 FROM realise_echelle_intervention rei
 JOIN entrepot_intervention_realise eir on eir.id = rei.intervention_id;
 

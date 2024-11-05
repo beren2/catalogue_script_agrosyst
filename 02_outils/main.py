@@ -415,7 +415,7 @@ entrepot_spec = {
         'composant_culture_concerne_intervention_synthetise', 'domaine', 'dispositif', 'modele_decisionnel_maitrise', 
         'modele_decisionnel_strategie', 'modele_decisionnel_strategie_culture', 'plantation_perenne_realise', 
         'intervention_realise_performance', 'intervention_synthetise_performance', 
-        'bilan_campagne_regional_pressionbioagresseur', 'bilan_campagne_regional_generalites', 'coordonees_gps_domaine', 
+        'bilan_campagne_regional_pressionbioagresseur', 'bilan_campagne_regional_generalites', 'coordonnees_gps_domaine', 
         'utilisation_intrant_performance', 'zone_realise_performance', 'intrant', 'composant_culture', 'culture', 
         'atelier_elevage', 'intervention_synthetise', 'commune', 'noeuds_realise', 'noeuds_synthetise', 
         'connection_synthetise', 'intervention_realise', 'combinaison_outil_action', 'domaine_sol', 
