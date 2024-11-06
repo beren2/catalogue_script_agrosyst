@@ -206,7 +206,6 @@ ordered_files = [
     "texture_sol",
     "fertilisation_organique",
     "fertilisation_minerale",
-    "groupe_cible",
     "adventice"
 ]
 
