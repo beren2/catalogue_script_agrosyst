@@ -40,8 +40,8 @@ select
 	ei.nom_utilisateur as intrant_nom,
 	eis.nom as intervention,
 	eis.id as intervention_id,
-	to_char(eis.date_debut, 'DD/MM/YYYY') as debut_intervention,
-    to_char(eis.date_fin, 'DD/MM/YYYY') as fin_intervention,
+	cast(eis.date_debut as text) as debut_intervention,
+	cast(eis.date_fin as text) as fin_intervention,
 	eisoc.interventions_cibles_trait as cibles_traitement
 from entrepot_utilisation_intrant_performance euip 
 join entrepot_utilisation_intrant_synthetise euis on euis.id = euip.utilisation_intrant_id 

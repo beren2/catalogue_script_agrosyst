@@ -331,7 +331,6 @@ SELECT
     eisoc.interventions_actions,
     eisoc.interventions_intrants,
     eisoc.interventions_cibles_trait,
-    ec.code as culture_code,
     eisoc.precedent_id as precedent_id,
     eisoc.esp as especes_intervention,
     eisoc.var as varietes_intervention, 

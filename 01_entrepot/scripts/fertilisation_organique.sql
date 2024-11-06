@@ -6,6 +6,9 @@ select
 	r.teneur_ferti_orga_n_total as n,
 	r.teneur_ferti_orga_p as p,
 	r.teneur_ferti_orga_k as k,
+	r.teneur_ferti_orga_cao as cao,
+	r.teneur_ferti_orga_mgo as mgo, 
+	r.teneur_ferti_orga_s as s,
 	r.unite_teneur_ferti_orga as unite_teneur
 from reffertiorga r
 where r.active is true;

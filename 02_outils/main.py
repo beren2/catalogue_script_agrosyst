@@ -30,7 +30,7 @@ config.read(r'../00_config/config.ini')
 DATA_PATH = config.get('metadata', 'data_path') 
 TYPE = config.get('metadata', 'type')
 DEBUG = bool(int(config.get('metadata', 'debug')))
-BDD_ENTREPOT=config.get
+BDD_ENTREPOT=config.get('metadata', 'bdd_entrepot')
 EXTERNAL_DATA_PATH = 'data/external_data/'
 VERSION = __version__
 
@@ -43,11 +43,11 @@ df_metadata = pd.read_csv(path_metadata)
 
 if(TYPE == 'distant'):
     # On se connecte à la BDD seulement si l'utilisateur veut déclarer à distance
-    DB_HOST = config.get('entrepot_local', 'host')
-    DB_PORT = config.get('entrepot_local', 'port')
-    DB_NAME_ENTREPOT = config.get('entrepot_local', 'database')
-    DB_USER = config.get('entrepot_local', 'user')
-    DB_PASSWORD = urllib.parse.quote(config.get('entrepot_local', 'password'))
+    DB_HOST = config.get(BDD_ENTREPOT, 'host')
+    DB_PORT = config.get(BDD_ENTREPOT, 'port')
+    DB_NAME_ENTREPOT = config.get(BDD_ENTREPOT, 'database')
+    DB_USER = config.get(BDD_ENTREPOT, 'user')
+    DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
     print(DB_USER, DB_PASSWORD, DATABASE_URI_entrepot)
@@ -83,7 +83,6 @@ def update_local_version_table(table_name):
 
     # ecriture du fichier
     with open(DATA_PATH+'version.txt','w', encoding='utf-8') as version_file:
-        print("UPDATE")
         json.dump(version_control, version_file)
 
     return 0
@@ -521,6 +520,7 @@ source_specs = {
                     'recolte_outils_can', 
                     'culture_outils_can',
                     'zone_realise_outils_can',
+                    'sdc_realise_outils_can',
                     'parcelle_realise_outils_can'
                 ]
             },
