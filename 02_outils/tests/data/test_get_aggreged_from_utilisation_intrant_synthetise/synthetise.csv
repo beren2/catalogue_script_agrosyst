@@ -1,10 +1,10 @@
-id,nom,campagnes,source,commentaire,parcelle_type_id,sdc_id,valide
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_38580c82-ad13-47d8-8dba-e628e8613106,Synthétisé,2020,,,,fr.inra.agrosyst.api.entities.GrowingSystem_f80b9123-d032-4b71-8da3-1da8f0e04980,t
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_98f283a7-192c-4701-8461-0a7d2eb84b46,Synthétisé_2021_,2022,,grosse pression mildiou oïdium ,,fr.inra.agrosyst.api.entities.GrowingSystem_309a4478-5e3d-494a-8276-d79433434d47,f
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a7e196b5-63b9-4870-973d-831788b68d91,systeme synthétisé A 2020,2020,,,,fr.inra.agrosyst.api.entities.GrowingSystem_9424f8eb-e503-4412-8799-32f1684b1879,f
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_cf2e4309-fcd5-449a-877c-838c4e48cd88,A,2022,ENTRETIEN,,,fr.inra.agrosyst.api.entities.GrowingSystem_17b06bdb-bd75-43fa-9604-4154022ed165,f
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c248f383-41e6-4f29-8c06-449196dc51e2,PECHE BIO 2024,2024,,,,fr.inra.agrosyst.api.entities.GrowingSystem_45eda978-60b6-42dc-9fd2-a52e06945468,f
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_e499c95f-959d-4494-8955-32c3bb93d997,A,2021,ENTRETIEN_ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_134cdb12-f09a-4ccc-9366-945c5e1b0b2c,t
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_399336db-639a-4008-9864-0a59eb3b1db9,A,2018,,,,fr.inra.agrosyst.api.entities.GrowingSystem_eed82291-29ee-46b4-b1ac-c8b32bd2c377,t
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5684e7ac-a77e-478a-bd83-9779aefff9fe,PPZ-,"2009, 2010, 2011",ENTRETIEN_ENREGISTREMENT,,fr.inra.agrosyst.api.entities.practiced.PracticedPlot_9cf93b55-05d5-4810-84bb-f3184afa7b7a,fr.inra.agrosyst.api.entities.GrowingSystem_0c2712b4-ad65-47a9-a5c9-bbf673b21175,t
-fr.inra.agrosyst.api.entities.practiced.PracticedSystem_6ef32653-1ed2-4cc6-9ac7-9f2466ae1e58,A (2020),2020,ENTRETIEN_ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_9c096380-a683-4716-b044-7775052d8a2d,t
+id,sdc_id
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_38580c82-ad13-47d8-8dba-e628e8613106,fr.inra.agrosyst.api.entities.GrowingSystem_f80b9123-d032-4b71-8da3-1da8f0e04980
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_98f283a7-192c-4701-8461-0a7d2eb84b46,fr.inra.agrosyst.api.entities.GrowingSystem_309a4478-5e3d-494a-8276-d79433434d47
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a7e196b5-63b9-4870-973d-831788b68d91,fr.inra.agrosyst.api.entities.GrowingSystem_9424f8eb-e503-4412-8799-32f1684b1879
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_cf2e4309-fcd5-449a-877c-838c4e48cd88,fr.inra.agrosyst.api.entities.GrowingSystem_17b06bdb-bd75-43fa-9604-4154022ed165
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c248f383-41e6-4f29-8c06-449196dc51e2,fr.inra.agrosyst.api.entities.GrowingSystem_45eda978-60b6-42dc-9fd2-a52e06945468
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_e499c95f-959d-4494-8955-32c3bb93d997,fr.inra.agrosyst.api.entities.GrowingSystem_134cdb12-f09a-4ccc-9366-945c5e1b0b2c
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_399336db-639a-4008-9864-0a59eb3b1db9,fr.inra.agrosyst.api.entities.GrowingSystem_eed82291-29ee-46b4-b1ac-c8b32bd2c377
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5684e7ac-a77e-478a-bd83-9779aefff9fe,fr.inra.agrosyst.api.entities.GrowingSystem_0c2712b4-ad65-47a9-a5c9-bbf673b21175
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_6ef32653-1ed2-4cc6-9ac7-9f2466ae1e58,fr.inra.agrosyst.api.entities.GrowingSystem_9c096380-a683-4716-b044-7775052d8a2d
