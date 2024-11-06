@@ -56,6 +56,7 @@ CREATE TABLE entrepot_parcelle AS
   gs.topiaid sdc_id,
   p."location" commune_id,
   p.ground domaine_sol_id,
+  g.name as sol_nom_ref,
   p.edaplosissuerid as edaplos_utilisateur_id
   FROM plot p
   LEFT JOIN growingsystem gs ON p.growingsystem = gs.topiaid -- on garde dans l'entrepot les parcelles qui ne sont pas rattachées à un sdc
@@ -64,6 +65,7 @@ CREATE TABLE entrepot_parcelle AS
   left join refsolprofondeurindigo refsolprof ON refsolprof.topiaid = p.soldepth 
   left join refsoltexturegeppa reftextu on reftextu.topiaid = p.surfacetexture 
   left join refsoltexturegeppa reftextu2 on reftextu2.topiaid = p.subsoiltexture
+  left join ground g on p.ground = g.topiaid
   WHERE (
   	(gs.topiaid in (select distinct id from entrepot_sdc)) -- on vérifie que le sdc associé est actif
   	OR 
