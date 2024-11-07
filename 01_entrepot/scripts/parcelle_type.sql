@@ -9,7 +9,7 @@ pp.longitude,
 pp.comment commentaire,
 pp.maxslope pente_max,
 pp.waterflowdistance distance_cours_eau,
-pp.bufferstrip bande_enherbe,
+pp.bufferstrip bande_enherbee,
 pp.activityendcomment motif_fin_utilisation,
 ------ Informations sur le zonage de la parcelle
 pp.outofzoning hors_zonage, 
@@ -43,6 +43,7 @@ pp.solwaterph ph,
 pp.solhydromorphisms hydromorphie,
 pp.sollimestone calcaire,
 pp.soltotallimestone proportion_calcaire_total,
+pp.solactivelimestone proportion_calcaire_actif,
 pp.location commune_id
 from practicedplot pp 
 left join refsolprofondeurindigo refsolprof on refsolprof.topiaid = pp.soldepth

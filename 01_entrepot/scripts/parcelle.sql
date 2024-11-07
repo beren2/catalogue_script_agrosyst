@@ -89,31 +89,4 @@ add FOREIGN KEY (domaine_sol_id) REFERENCES entrepot_domaine_sol(id);
 alter table entrepot_parcelle
 add FOREIGN KEY (commune_id) REFERENCES entrepot_commune(id);
 
--- Zonage de la parcelle
-drop table if exists entrepot_parcelle_zonage;
-
-CREATE TABLE entrepot_parcelle_zonage AS
-select
-bp.basicplot parcelle_id,
-r.libelle_engagement_parcelle as libelle_zonage
-from basicplot_plotzonings bp
-join entrepot_parcelle ep on ep.id = bp.basicplot 
-join refparcellezonageedi r on r.topiaid = bp.plotzonings ;
-
-alter table entrepot_parcelle_zonage
-ADD FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);
-
--- Voisinage de la parcelle
-drop table if exists entrepot_parcelle_voisinage;
-
-CREATE TABLE entrepot_parcelle_voisinage AS
-select
-ab.basicplot parcelle_id,
-r.iae_nom as libelle_voisinage
-from adjacentelements_basicplot ab 
-join entrepot_parcelle ep on ep.id = ab.basicplot 
-join refelementvoisinage r on r.topiaid = ab.adjacentelements ;
-
-alter table entrepot_parcelle_voisinage
-ADD FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);
 

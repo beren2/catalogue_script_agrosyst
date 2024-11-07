@@ -217,6 +217,7 @@ SELECT
     marge_directe_std_mil_avec_autoconso AS MD_std_mil_avec_autoconso,
     marge_directe_std_mil_taux_de_completion AS MD_std_mil_tx_comp,
     -- Performances sociales
+    nombre_uth_necessaires,
     consommation_de_carburant AS conso_carburant,
     consommation_de_carburant_taux_de_completion AS conso_carburant_tx_comp,
     consommation_eau as conso_eau,
