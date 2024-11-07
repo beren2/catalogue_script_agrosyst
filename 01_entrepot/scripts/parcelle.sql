@@ -56,6 +56,7 @@ CREATE TABLE entrepot_parcelle AS
   gs.topiaid sdc_id,
   p."location" commune_id,
   p.ground domaine_sol_id,
+  g.name as sol_nom_ref,
   p.edaplosissuerid as edaplos_utilisateur_id
   FROM plot p
   LEFT JOIN growingsystem gs ON p.growingsystem = gs.topiaid -- on garde dans l'entrepot les parcelles qui ne sont pas rattachées à un sdc
@@ -64,6 +65,7 @@ CREATE TABLE entrepot_parcelle AS
   left join refsolprofondeurindigo refsolprof ON refsolprof.topiaid = p.soldepth 
   left join refsoltexturegeppa reftextu on reftextu.topiaid = p.surfacetexture 
   left join refsoltexturegeppa reftextu2 on reftextu2.topiaid = p.subsoiltexture
+  left join ground g on p.ground = g.topiaid
   WHERE (
   	(gs.topiaid in (select distinct id from entrepot_sdc)) -- on vérifie que le sdc associé est actif
   	OR 
@@ -87,31 +89,4 @@ add FOREIGN KEY (domaine_sol_id) REFERENCES entrepot_domaine_sol(id);
 alter table entrepot_parcelle
 add FOREIGN KEY (commune_id) REFERENCES entrepot_commune(id);
 
--- Zonage de la parcelle
-drop table if exists entrepot_parcelle_zonage;
-
-CREATE TABLE entrepot_parcelle_zonage AS
-select
-bp.basicplot parcelle_id,
-r.libelle_engagement_parcelle as libelle_zonage
-from basicplot_plotzonings bp
-join entrepot_parcelle ep on ep.id = bp.basicplot 
-join refparcellezonageedi r on r.topiaid = bp.plotzonings ;
-
-alter table entrepot_parcelle_zonage
-ADD FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);
-
--- Voisinage de la parcelle
-drop table if exists entrepot_parcelle_voisinage;
-
-CREATE TABLE entrepot_parcelle_voisinage AS
-select
-ab.basicplot parcelle_id,
-r.iae_nom as libelle_voisinage
-from adjacentelements_basicplot ab 
-join entrepot_parcelle ep on ep.id = ab.basicplot 
-join refelementvoisinage r on r.topiaid = ab.adjacentelements ;
-
-alter table entrepot_parcelle_voisinage
-ADD FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);
 

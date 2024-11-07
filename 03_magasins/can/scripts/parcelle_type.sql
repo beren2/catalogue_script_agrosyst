@@ -16,6 +16,7 @@ select
 	CASE CAST(ept.drainage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END drainage,
 	ept.drainage_annee_realisation as drainage_annee_realisation,
 	CASE CAST(ept.protection_antigel AS BOOLEAN)  WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_gel,
+	CASE CAST(ept.protection_antigrele AS BOOLEAN)  WHEN true THEN 'oui' WHEN false THEN 'non' END protection_antigrele,
 	ept.protection_antigel_type as protection_anti_gel_type,
 	CASE CAST(ept.protection_antipluie AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_pluie,
 	CASE CAST(ept.protection_antiinsecte AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END protection_anti_insectes,
@@ -25,11 +26,13 @@ select
 	ept.texture_sous_sol_id as texture_sous_sol, 					--attention, on ne veut pas un référentiel ! 
 	ept.ph as sol_ph,
 	ept.pierrosite_moyenne,
+	ept.sol_profondeur_max_enracinement_classe as sol_profondeur,
 	ept.sol_profondeur_max_enracinement as sol_profondeur_max,
 	ept.teneur_MO_pct as teneur_mo,
 	CASE CAST(ept.hydromorphie AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END hydromorphie,
 	CASE CAST(ept.calcaire AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END calcaire,
 	ept.proportion_calcaire_total,
+	ept.proportion_calcaire_actif,
 	CASE CAST(ept.battance AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END battance,
 	CASE CAST(ept.systeme_irrigation AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END irrigation,
 	CASE CAST(ept.systeme_fertirrigation AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END fertirrigation,
@@ -39,7 +42,7 @@ select
 	ept.positionnement_tuyaux_arrosage as irrigation_position_tuyaux,
 	ept.pente_max as pente,
 	ept.distance_cours_eau,
-	ept.bande_enherbe
+	ept.bande_enherbee as bande_enherbee
 from entrepot_synthetise es
 join entrepot_parcelle_type ept on es.parcelle_type_id = ept.id
 left join entrepot_sdc esdc on es.sdc_id = esdc.id 

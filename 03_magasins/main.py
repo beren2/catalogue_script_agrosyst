@@ -321,7 +321,7 @@ magasin_specs  = {
                 'tables' : [
                     'intervention_realise_performance', 
                     'intervention_realise', 'intervention_realise_performance', 
-                    'intervention_realise_outils_can', 'zone', 'parcelle', 
+                    'intervention_realise_outils_can', 'zone', 'parcelle', 'parcelle_zonage', 'parcelle_voisinage',
                     'noeuds_realise', 'culture', 'culture_outils_can',
                     'plantation_perenne_phases_realise', 'plantation_perenne_realise', 'domaine',
                 ],
@@ -332,7 +332,7 @@ magasin_specs  = {
             'intervention_realise' : {
                 'tables' : [
                     'intervention_realise',
-                    'intervention_realise_outils_can', 'zone', 'parcelle',
+                    'intervention_realise_outils_can', 'zone', 'parcelle', 'parcelle_zonage', 'parcelle_voisinage',
                     'sdc', 'domaine', 'noeuds_realise', 'connection_realise', 
                     'plantation_perenne_phases_realise', 'plantation_perenne_realise',
                     'culture', 'dispositif_filtres_outils_can'
