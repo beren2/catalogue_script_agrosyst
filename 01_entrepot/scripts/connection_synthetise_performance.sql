@@ -1,10 +1,10 @@
 ------------------------------------------------------------------
--- performances à l'échelle du système synthétisé en synthétisé --
+-- performances à l'échelle de la connection en synthétisé
 ------------------------------------------------------------------
 
-create table entrepot_synthetise_synthetise_performance AS
+create table entrepot_connection_synthetise_performance AS
 SELECT
-    replace(replace(id_systeme_synthetise,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS synthetise_id,
+    replace(replace(connection_synthetise_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS connection_synthetise_id,
     approche_de_calcul AS approche_de_calcul,
 	-- IFT
     ift_a_l_ancienne_ift_chimique_total AS ift_histo_chimique_tot,
@@ -14,7 +14,7 @@ SELECT
     ift_a_l_ancienne_ift_i AS ift_histo_i,
     ift_a_l_ancienne_ift_ts AS ift_histo_ts,
     ift_a_l_ancienne_ift_a AS ift_histo_a,
-    ift_a_l_ancienne_ift_hh AS ift_histo_hh,
+    ift_a_l_ancienne_ift_hh AS ift_histo_hh,	
     ift_a_l_ancienne_ift_biocontrole AS ift_histo_biocontrole,
     ift_a_l_ancienne_tx_completion AS ift_histo_tx_comp,
     ift_a_la_cible_non_mil_ift_chimique_total AS ift_cible_non_mil_chimique_tot,
@@ -301,16 +301,47 @@ SELECT
     qsa_soufre_tot_hts,
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
-    qsa_soufre_ferti
-FROM synthetise_echelle_synthetise ses
-JOIN entrepot_synthetise es on es.id = ses.id_systeme_synthetise;
+    qsa_soufre_ferti,
+    connexion_synthetise_id
+FROM synthetise_echelle_culture ses;
 
 
-alter table entrepot_synthetise_synthetise_performance
-add constraint synthetise_synthetise_performance_PK
-PRIMARY KEY (synthetise_id);
+alter table entrepot_connection_synthetise_performance
+add constraint connection_synthetise_performance_PK
+PRIMARY KEY (connection);
 
-alter table entrepot_synthetise_synthetise_performance
-add FOREIGN KEY (synthetise_id) REFERENCES entrepot_synthetise(id);
+alter table entrepot_connection_synthetise_performance
+add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synthetise(id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
