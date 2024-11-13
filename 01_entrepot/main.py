@@ -136,7 +136,7 @@ def check_existing_table_database(tables_to_check,schema):
     return(tables_not_exists)
 
 
-ordered_files = [value["file_name"] for value in SOURCE_SPECS['entrepot']['tables'].values()]
+ordered_files = SOURCE_SPECS['entrepot']['ordered_files']
 ordered_tables = list(SOURCE_SPECS['entrepot']['tables'].keys())
 
 options = {
