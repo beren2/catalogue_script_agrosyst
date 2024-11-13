@@ -27,7 +27,9 @@ TYPE = config.get('metadata', 'type')
 BDD_ENTREPOT = config.get('metadata', 'bdd_entrepot')
 VERSION = __version__
 DEBUG = bool(int(config.get('metadata', 'debug')))
-DATA_PATH = config.get('metadata', 'data_path') 
+DATA_PATH = config.get('metadata', 'data_path')
+with open('../00_config/specs.json', encoding='utf8') as json_file:
+    SOURCE_SPECS = json.load(json_file)
 
 if(DEBUG):
     NROWS = int(config.get('debug', 'nrows'))
@@ -134,82 +136,8 @@ def check_existing_table_database(tables_to_check,schema):
     return(tables_not_exists)
 
 
-ordered_files = [
-    "commune",
-    "espece",
-    "intervention_travail_edi",
-    "criteres_selection",
-    "domaine",
-    "coordonnees_gps_domaine",
-    "dispositif",
-    "sdc",
-    "parcelle",
-    "zone",
-    "parcelle_type",
-    "synthetise",
-    "culture",
-    "materiel",
-    "combinaison_outil",
-    "composant_culture",
-    "atelier_elevage",
-    "bilan_campagne_regional",
-    "modele_decisionnel",
-    "sole_realise",
-    "cycle_culture_realise",
-    "cycle_culture_synthetise",
-    "plantation_perenne_realise",
-    "plantation_perenne_synthetise",
-    "intervention_realise",
-    "composant_culture_concerne_intervention",
-    "intervention_synthetise",
-    "action_realise",
-    "action_synthetise",
-    "intrant",
-    "semence",
-    "utilisation_intrant_realise",
-    "utilisation_intrant_synthetise",
-    "utilisation_intrant_cible",
-    "precision_espece_semis",
-    "variete",
-    "utilisation_intrant_performance",
-    "intervention_realise_performance",
-    "zone_realise_performance",
-    "parcelle_realise_performance",
-    "sdc_realise_performance",
-    "itk_realise_performance",
-    "intervention_synthetise_performance",
-    "synthetise_synthetise_performance",
-    "recolte",
-    "acta_groupe_culture",
-    "acta_substance_active",
-    "acta_traitement_produit",
-    "acta_dosage_spc",
-    "bilan_campagne_sdc",
-    'composition_substance_active_numero_amm',
-    'composant_action_semis',
-    'reseau',
-    'liaison_reseaux',
-    'liaison_sdc_reseau',
-    "critere_qualite_valorisation",
-    "destination_valorisation",
-    "dose_ref_par_groupe_cible",
-    "groupe_cible",
-    "nuisible_edi",
-    "substances_actives_europeennes",
-    "phrases_de_risque_numero_amm",
-    "prix_intrant_produit_phyto_sanitaire",
-    "prix_carburant",
-    "otex",
-    "variete_plante_grappe",
-    "station_meteo",
-    "levier",
-    "texture_sol",
-    "fertilisation_organique",
-    "fertilisation_minerale",
-    "groupe_cible",
-    "adventice"
-]
-
+ordered_files = [value["file_name"] for value in SOURCE_SPECS['entrepot']['tables'].values()]
+ordered_tables = list(SOURCE_SPECS['entrepot']['tables'].keys())
 
 options = {
         "Génération de toutes les données de l'entrepôt" : [],
@@ -429,7 +357,7 @@ while True:
         nom_origine = input()
         print("Nom de la base de données destination (ex : entrepot_20231115)")
         nom_final = input()
-        os.environ['PGPASSWORD'] = config.get('datagrosyst', 'password')
+        os.environ['PGPASSWORD'] = config.get('dephygraph_admin', 'password')
         subprocess.run("""pg_dump -vFc --dbname="""+str(nom_origine)+""" --host=147.100.179.208 --no-blobs --port=5438  --username=dephygraph_admin --file="""+str(nom_origine)+""".dump""", shell=True, check=True)
         subprocess.run("""createdb """+str(nom_final)+""" -Udephygraph_admin -h147.100.179.208 -p5438""", shell=True, check=True)
         subprocess.run("""pg_restore -v -Udephygraph_admin -d"""+str(nom_final)+""" -h147.100.179.208 -p5438 """+str(nom_origine)+""".dump""", shell=True, check=True)
@@ -463,7 +391,7 @@ while True:
         schema_tables = schema_tables['table_name'].values.tolist()
     
         tables = ['tout']
-        tables += list(ordered_files)
+        tables += list(ordered_tables)
         print("")
         print("Veuillez choisir la table à générer")
         print("")
@@ -472,22 +400,21 @@ while True:
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_table = tables[choice - 1]
 
-        no_existing_table = check_existing_table_database(ordered_files,schema_tables)
+        no_existing_table = check_existing_table_database(ordered_tables,schema_tables)
 
         print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         if(choosen_table == 'tout') :
             for table in no_existing_table:
-                ordered_files.remove(table)
+                ordered_tables.remove(table)
             
-            download_datas(ordered_files, verbose=False)
-        else :
-            if choosen_table not in no_existing_table:
-                download_datas([choosen_table], verbose=False)
+            download_datas(ordered_tables, verbose=False)
+        elif choosen_table not in no_existing_table:
+            download_datas([choosen_table], verbose=False)
         print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
     
     elif choice_key == "Télécharger la base OP de datagrosyst":
 
-        print("Nom de la base de données à dump (ex : entrepot_20231115)")
+        print("Nom de la base de données à créer (ex : entrepot_20231115)")
         nom_final = input()
         DB_USER = config.get('datagrosyst', 'user')
         DB_PASSWORD = config.get('datagrosyst', 'password')
