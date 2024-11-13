@@ -33,6 +33,8 @@ DEBUG = bool(int(config.get('metadata', 'debug')))
 BDD_ENTREPOT=config.get('metadata', 'bdd_entrepot')
 EXTERNAL_DATA_PATH = 'data/external_data/'
 VERSION = __version__
+with open('../00_config/specs.json', encoding='utf8') as json_file:
+    SOURCE_SPECS = json.load(json_file)
 
 if(DEBUG):
     NROWS = int(config.get('debug', 'nrows'))
@@ -436,121 +438,6 @@ external_data_spec = {
     ]
 }
 
-# déclaration des dépendances entre les différentes catégories
-source_specs = {
-    'outils' : {
-        'explication' : "Les données de la source outils permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
-        'categories' : {
-            'nettoyage' : {
-                'function' : create_category_nettoyage,
-                'dependances' : [], 
-                'generated' : [
-                    'intervention_realise_nettoyage', 
-                    'utilisation_intrant_realise_nettoyage',
-                    'utilisation_intrant_synthetise_nettoyage'
-                ]
-            },
-            'agregation' : {
-                'function' : create_category_agregation,
-                'dependances' : [],
-                'generated' : [
-                    'utilisation_intrant_realise_agrege',
-                    'utilisation_intrant_synthetise_agrege', 
-                    'intervention_synthetise_manquant_agrege', 
-                    'intervention_realise_manquant_agrege',
-                    'action_realise_manquant_agrege', 
-                    'action_synthetise_manquant_agrege',
-                ]
-            },
-            'agregation_complet' : {
-                'function' : None,
-                'dependances' : [{
-                    'source' : 'outils', 
-                    'categorie': 'agregation'
-                }
-                ],
-                'generated' : [
-                    'utilisation_intrant_realise_agrege', 
-                    'utilisation_intrant_synthetise_agrege',
-                    'intervention_synthetise_agrege', 
-                    'intervention_realise_agrege',
-                    'action_realise_agrege', 
-                    'action_synthetise_agrege'
-                ]
-            },
-            'restructuration' : {
-                'function' : create_category_restructuration,
-                'dependances' : [{
-                    'source' : 'outils', 
-                    'categorie': 'agregation_complet'
-                }],
-                'generated' : [
-                    'noeuds_synthetise_restructure', 
-                    'noeuds_realise_restructure',
-                    'connection_synthetise_restructure',
-                    'recolte_rendement_prix_restructure',
-                    'plantation_perenne_synthetise_restructure',
-                    'ccc_intervention_synthetise_restructure', 
-                    'intervention_synthetise_restructure'
-                ]
-            },
-            'indicateur' : {
-                'function' : create_category_indicateur,
-                'dependances' : [],
-                'generated' : [
-                    'utilisation_intrant_indicateur', 
-                    'sdc_donnee_attendue'
-                ]
-            },
-            'outils_can' : {
-                'function' : create_category_outils_can,
-                'dependances' : [{
-                    'source' : 'outils', 
-                    'categorie': 'restructuration'
-                },
-                {
-                    'source' : 'outils', 
-                    'categorie': 'agregation_complet'
-                }],
-                'generated' : [
-                    'dispositif_filtres_outils_can',
-                    'intervention_realise_outils_can', 
-                    'intervention_synthetise_outils_can',
-                    'parcelle_non_rattachee_outils_can',
-                    'recolte_outils_can', 
-                    'culture_outils_can',
-                    'zone_realise_outils_can',
-                    'sdc_realise_outils_can',
-                    'parcelle_realise_outils_can'
-                ]
-            },
-            'test' : {
-                'function' : create_category_test,
-                'dependances' : [{
-                    'source' : 'outils', 
-                    'categorie': 'restructuration'
-                },
-                {
-                    'source' : 'outils', 
-                    'categorie': 'agregation_complet'
-                }],
-                'generated' : [
-                    'recolte_outils_can'
-                ],
-                'entrepot_dependances' : [
-                    'intervention_realise', 'action_realise', 'combinaison_outil', 'materiel',
-                    'noeuds_realise', 'connection_realise', 'plantation_perenne_phases_realise', 'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise',
-                    'composant_culture', 'espece', 'variete', 'culture', 'intervention_realise_agrege', 'dispositif',
-                    'combinaison_outil_materiel', 'semence', 'utilisation_intrant_realise', 'intrant', 'recolte_rendement_prix',
-                    'utilisation_intrant_cible', 'nuisible_edi', 'adventice'
-                ]
-            },
-        }
-    }
-}
-
-
-
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
     {'source' : 'outils', 'categorie' : 'nettoyage'},
@@ -563,11 +450,12 @@ steps = [
 
 options_categories = {}
 
-for source_key, source in source_specs.items():
-    for categorie_key in source['categories']:
-        options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'categorie' : categorie_key}
-        categorie = source['categories'][categorie_key]
-        dependances = categorie['dependances']
+for source_key, source in SOURCE_SPECS.items():
+    if(source_key != 'entrepot'):
+        for categorie_key in source['categories']:
+            options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'categorie' : categorie_key}
+            categorie = source['categories'][categorie_key]
+            dependances = categorie['dependances']
 
 history = []
 
@@ -617,9 +505,9 @@ while True:
     if choice_key == 'Tout générer':
         if(TYPE == 'distant'):
             print("* TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-            download_datas(entrepot_spec['tables'], verbose=False)
+            download_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
         print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        load_datas(entrepot_spec['tables'], verbose=False)
+        load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
         print("* CHARGEMENT DES DONNÉES EXTERNES *")
         load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
         print("* CHARGEMENT DES RÉFÉRENTIELS *")
@@ -630,7 +518,7 @@ while True:
             current_source = step['source']
             current_category = step['categorie']
             print("* GÉNÉRATION ", current_source, current_category," *")
-            choosen_function = source_specs[current_source]['categories'][current_category]['function']
+            choosen_function = SOURCE_SPECS[current_source]['categories'][current_category]['function']
 
             if(current_category == 'agregation_complet'):
                 # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
@@ -639,8 +527,8 @@ while True:
             else :
                 choosen_function()
                 if(TYPE == 'distant'):
-                    download_datas(source_specs[current_source]['categories'][current_category]['generated'])
-                load_datas(source_specs[current_source]['categories'][current_category]['generated'])
+                    download_datas(SOURCE_SPECS[current_source]['categories'][current_category]['generated'])
+                load_datas(SOURCE_SPECS[current_source]['categories'][current_category]['generated'])
 
     elif choice_key == 'Télécharger une catégorie':
         print("")
@@ -652,16 +540,16 @@ while True:
         choosen_value = list(options_categories.values())[choice - 1]
         choosen_source = choosen_value['source']
         choosen_category = choosen_value['categorie']
-        choosen_function = source_specs[choosen_source]['categories'][choosen_category]['function']
-        choosen_generated = source_specs[choosen_source]['categories'][choosen_category]['generated']
+        choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function']
+        choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
 
         if(choosen_category == 'agregation_complet'):
             # Attention, dans ce cas les données à télécharger ne sont pas celles stockées, il faut préalablement les reconstituer
             # Chargement de toutes les données incomplètes
             print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
-            choosen_dependances = source_specs[choosen_source]['categories'][choosen_category]['dependances']
+            choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
             for choosen_dependance in choosen_dependances:
-                categorie_dependance = source_specs[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
+                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
                 if(len(categorie_dependance['generated']) != 0):
                     if(categorie_dependance['generated'][0] not in donnees):
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
@@ -691,10 +579,11 @@ while True:
         choosen_value = list(options_categories.values())[choice - 1]
         choosen_source = choosen_value['source']
         choosen_category = choosen_value['categorie']
-        choosen_function = source_specs[choosen_source]['categories'][choosen_category]['function']
-        choosen_dependances = source_specs[choosen_source]['categories'][choosen_category]['dependances']
+        print(str(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']))
+        choosen_function = eval(str(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']))
+        choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
         for choosen_dependance in choosen_dependances:
-            categorie_dependance = source_specs[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
+            categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
             if(len(categorie_dependance['generated']) != 0):
 
                 # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
@@ -713,7 +602,7 @@ while True:
             download_data_agreged(verbose=False)
         elif(choosen_category == 'test'):
             print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-            load_datas(source_specs['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
+            load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
             load_ref()
             print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
@@ -723,13 +612,13 @@ while True:
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
             choosen_function()
             if(TYPE == 'distant'):
-                download_datas(source_specs[choosen_source]['categories'][choosen_category]['generated'])
+                download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
             print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
         else :
             # on vérifie que les données n'ont pas été déjà chargées
             if('domaine' not in donnees):
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas(entrepot_spec['tables'], verbose=False)
+                load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
                 load_ref()
                 print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
@@ -739,7 +628,7 @@ while True:
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
             choosen_function()
             if(TYPE == 'distant'):
-                download_datas(source_specs[choosen_source]['categories'][choosen_category]['generated'])
+                download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
             print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
 
 
