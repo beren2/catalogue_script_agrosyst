@@ -1,15 +1,10 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de l'itk pour les réalisés   --
 ---------------------------------------------------------------
-create table entrepot_itk_realise_performance AS 
+create table entrepot_itk_synthetise_performance AS 
 SELECT
-    replace(replace(zone_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS zone_id, 
-    replace(replace(culture_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS culture_id,
-	replace(replace(culture_precedente_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS culture_precedente_id,
-    replace(replace(phase_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS plantation_perenne_phases_realise_id,
-    noeuds_realise_id AS noeuds_realise_id,
-    --plantation_phase_realise_id AS plantation_phase_realise_id, -- À décommenter une fois que le https://forge.codelutin.com/issues/13127 sera terminé
-    rang,
+    phase_id AS plantation_perenne_phases_synthetise_id,
+    connexion_synthetise_id AS connection_synthetise_id,
 	approche_de_calcul AS approche_de_calcul,
 	-- IFT
     ift_a_l_ancienne_ift_chimique_total AS ift_histo_chimique_tot,
@@ -304,7 +299,7 @@ SELECT
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
     qsa_soufre_ferti,
-    	qsa_glyphosate,
+    qsa_glyphosate, -- ajout des nouveaux indicateurs en 3.4
 	qsa_smetolachlore,
 	qsa_prosulfocarbe,
 	qsa_chlortoluron,
@@ -330,17 +325,11 @@ SELECT
 	qsa_acetamipride,
 	qsa_thiaclopride,
 	qsa_neonicotinoides
-FROM realise_echelle_itk rei
-JOIN entrepot_zone ez on ez.id = rei.zone_id;
+FROM synthetise_echelle_culture sec
+JOIN entrepot_synthetise es on es.id = sec.synthetise_id;
 
-alter table entrepot_itk_realise_performance
-add FOREIGN KEY (zone_id) REFERENCES entrepot_zone(id);
+alter table entrepot_itk_synthetise_performance
+add FOREIGN KEY (plantation_perenne_phases_synthetise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
 
-alter table entrepot_itk_realise_performance
-add FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
-
-alter table entrepot_itk_realise_performance
-add FOREIGN KEY (culture_precedente_id) REFERENCES entrepot_culture(id);
-
-alter table entrepot_itk_realise_performance
-add FOREIGN KEY (plantation_perenne_phases_realise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
+alter table entrepot_itk_synthetise_performance
+add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synhtetise(id);
