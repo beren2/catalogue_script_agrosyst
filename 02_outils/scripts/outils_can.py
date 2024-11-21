@@ -1444,7 +1444,7 @@ def get_intervention_synthetise_intrants_outils_can(
     merge_semis['interventions_intrants'] = merge_semis['interventions_intrants'].fillna('')
 
  
-    merge = pd.concat([df for df in [merge_application, merge_autre, merge_semis] if not df.empty])
+    merge = pd.concat([df for df in (merge_application, merge_autre, merge_semis) if not df.empty])
     merge['biocontrole'] = merge['biocontrole'].fillna('f').replace({'t': True, 'f': False})
 
     res = merge[['interventions_intrants', 'intervention_synthetise_id', 'biocontrole']].groupby('intervention_synthetise_id').agg({
