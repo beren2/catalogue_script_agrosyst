@@ -10,6 +10,8 @@
 			"dispositif",
 			"sdc",
 			"parcelle",
+			"parcelle_voisinage",
+			"parcelle_zonage",
 			"zone",
 			"parcelle_type",
 			"synthetise",
@@ -173,10 +175,10 @@
 				"file_name" : "parcelle_type"
 			},
 			"parcelle_voisinage":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_voisinage"
 			},
 			"parcelle_zonage":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_zonage"
 			},
 			"action_synthetise":{
 				"file_name" : "action_synthetise"
