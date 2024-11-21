@@ -299,14 +299,6 @@ SELECT
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
     qsa_soufre_ferti,
-    qsa_glyphosate, -- ajout des nouveaux indicateurs en 3.4
-	qsa_smetolachlore,
-	qsa_prosulfocarbe,
-	qsa_chlortoluron,
-	qsa_diflufenican,
-	qsa_lambda_cyhalothrine,
-	qsa_boscalid,
-	qsa_fluopyram,
 	qsa_bixafen,
 	qsa_dicamba,
 	qsa_mancozeb,
@@ -326,10 +318,10 @@ SELECT
 	qsa_thiaclopride,
 	qsa_neonicotinoides
 FROM synthetise_echelle_culture sec
-JOIN entrepot_synthetise es on es.id = sec.synthetise_id;
+JOIN entrepot_synthetise es on es.id = sec.id_systeme_synthetise;
 
-alter table entrepot_itk_synthetise_performance
-add FOREIGN KEY (plantation_perenne_phases_synthetise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
+-- alter table entrepot_itk_synthetise_performance
+-- add FOREIGN KEY (plantation_perenne_phases_synthetise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
 
-alter table entrepot_itk_synthetise_performance
-add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synhtetise(id);
+-- alter table entrepot_itk_synthetise_performance
+-- add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synhtetise(id);

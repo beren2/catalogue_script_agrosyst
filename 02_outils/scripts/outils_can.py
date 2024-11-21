@@ -306,19 +306,18 @@ def get_intervention_realise_action_outils_can(
 
 
     # Pour les applications de produits phytosanitaires :
-    df_action_produit_phyto = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
+    df_action_produit_phyto = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES'].copy()
     df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
     df_action_produit_phyto.loc[: ,'psci_phyto'] = df_action_produit_phyto['proportion_surface_traitee'] * \
           df_action_produit_phyto['freq_spatiale'] * df_action_produit_phyto['nombre_de_passage']
-
     # Pour la lutte biologique :
-    df_action_lutte_bio = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'LUTTE_BIOLOGIQUE']
+    df_action_lutte_bio = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'LUTTE_BIOLOGIQUE'].copy()
     df_action_lutte_bio.loc[: ,'proportion_surface_traitee_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee']
     df_action_lutte_bio.loc[: ,'psci_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee'] * \
           df_action_lutte_bio['freq_spatiale'] * df_action_lutte_bio['nombre_de_passage']
 
     # Pour l'irrigation :
-    df_action_irrigation = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'IRRIGATION']
+    df_action_irrigation = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'IRRIGATION'].copy()
     df_action_irrigation.loc[: ,'quantite_eau_mm'] = df_action_irrigation['eau_qte_moy_mm'] 
 
     # Pour les autres :
@@ -326,7 +325,7 @@ def get_intervention_realise_action_outils_can(
         (df_action_realise_extanded['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
         (df_action_realise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
         (df_action_realise_extanded['type'] != 'IRRIGATION')
-    ].groupby(['intervention_realise_id']).agg({
+    ].copy().groupby(['intervention_realise_id']).agg({
         'label' : ' ; '.join, 
     }).reset_index()
     
@@ -591,8 +590,9 @@ def get_intervention_realise_culture_outils_can(
     ])
 
     # pour le perenne :
-    left = df_composant_culture_concerne_intervention_extanded.reset_index()
+    left = df_composant_culture_concerne_intervention_extanded.reset_index().dropna(subset=['plantation_perenne_phases_realise_id'])
     right = df_plantation_perenne_phases_realise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
+
     df_composant_culture_concerne_intervention_extanded_perenne = pd.merge(left, right,
         on=['plantation_perenne_phases_realise_id', 'composant_culture_id'],
         how='inner'
@@ -1131,19 +1131,19 @@ def get_intervention_synthetise_action_outils_can(
     # On recalcul à présent le psci adapté en fonction du type d'action 
 
     # Pour les applications de produits phytosanitaires :
-    df_action_produit_phyto = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES']
+    df_action_produit_phyto = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES'].copy()
     df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
     df_action_produit_phyto.loc[: ,'psci_phyto'] = df_action_produit_phyto['proportion_surface_traitee'] * \
           df_action_produit_phyto['freq_spatiale'] * df_action_produit_phyto['freq_temporelle']
 
     # Pour la lutte biologique :
-    df_action_lutte_bio = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'LUTTE_BIOLOGIQUE']
+    df_action_lutte_bio = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'LUTTE_BIOLOGIQUE'].copy()
     df_action_lutte_bio.loc[: ,'proportion_surface_traitee_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee']
     df_action_lutte_bio.loc[: ,'psci_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee'] * \
           df_action_lutte_bio['freq_spatiale'] * df_action_lutte_bio['freq_temporelle']
 
     # Pour l'irrigation :
-    df_action_irrigation = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'IRRIGATION']
+    df_action_irrigation = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'IRRIGATION'].copy()
     df_action_irrigation.loc[: ,'quantite_eau_mm'] = df_action_irrigation['eau_qte_moy_mm'] 
 
     # Pour les autres :
@@ -1151,7 +1151,7 @@ def get_intervention_synthetise_action_outils_can(
         (df_action_synthetise_extanded['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
         (df_action_synthetise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
         (df_action_synthetise_extanded['type'] != 'IRRIGATION')
-    ].groupby(['intervention_synthetise_id']).agg({
+    ].copy().groupby(['intervention_synthetise_id']).agg({
         'label' : ' ; '.join
     }).reset_index()
     
@@ -1248,7 +1248,7 @@ def get_intervention_synthetise_semence_outils_can(
         'traitement_chimique' : lambda x: map_boolean(x, sep=', ')
     })
 
-    df_intervention_semence['dose'] = df_intervention_semence[['dose']].applymap(convert_to_int)
+    df_intervention_semence['dose'] = df_intervention_semence[['dose']].map(convert_to_int)
 
     return df_intervention_semence.reset_index().rename(columns={
         'intervention_synthetise_id' : 'id',
@@ -1270,7 +1270,6 @@ def get_intervention_synthetise_outils_can_context(
     # ajout des informations sur les différents indicateurs
     left = df_intervention_synthetise
     right = get_intervention_synthetise_action_outils_can(donnees)
-    print(right.columns, right.index)
     merge = pd.merge(left, right, on='id', how='left')
     
     # ajout des informations sur la table semis
@@ -1435,16 +1434,17 @@ def get_intervention_synthetise_intrants_outils_can(
     merge_application['interventions_intrants'] = merge_application['interventions_intrants'].fillna('')
 
     # INTRANT AUTRE
-    merge_autre = merge.loc[(merge['type'] == 'AUTRE')]
+    merge_autre = merge.loc[(merge['type'] == 'AUTRE')].copy()
     merge_autre.loc[:, 'interventions_intrants'] = (merge_autre['type']) + ' - ' + (merge_autre['nom_utilisateur'])
     merge_autre['interventions_intrants'] = merge_autre['interventions_intrants'].fillna('')
 
     # INTRANT SEMIS
-    merge_semis = merge.loc[(merge['type'] == 'SEMIS')]
+    merge_semis = merge.loc[(merge['type'] == 'SEMIS')].copy()
     merge_semis.loc[:, 'interventions_intrants'] = (merge_semis['nom_utilisateur'])
     merge_semis['interventions_intrants'] = merge_semis['interventions_intrants'].fillna('')
 
-    merge = pd.concat([merge_application, merge_autre, merge_semis])
+ 
+    merge = pd.concat([df for df in [merge_application, merge_autre, merge_semis] if not df.empty])
     merge['biocontrole'] = merge['biocontrole'].fillna('f').replace({'t': True, 'f': False})
 
     res = merge[['interventions_intrants', 'intervention_synthetise_id', 'biocontrole']].groupby('intervention_synthetise_id').agg({
@@ -2135,14 +2135,14 @@ def get_sdc_realise_outils_can(
     })
 
 
-def get_noeuds_realise_outils_can(
-    donnees
-):
-    """
-        Permet d'obtenir le culture_id du noeuds précédent
-                - precedent_id (culture_id du précédent)
-    """
-    print(donnees)
+# def get_noeuds_realise_outils_can(
+#     donnees
+# ):
+#     """
+#         Permet d'obtenir le culture_id du noeuds précédent
+#                 - precedent_id (culture_id du précédent)
+#     """
+#     print(donnees)
 
 
 

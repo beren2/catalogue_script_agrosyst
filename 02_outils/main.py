@@ -518,7 +518,7 @@ while True:
             current_source = step['source']
             current_category = step['categorie']
             print("* GÉNÉRATION ", current_source, current_category," *")
-            choosen_function = SOURCE_SPECS[current_source]['categories'][current_category]['function']
+            choosen_function = eval(str(SOURCE_SPECS[current_source]['categories'][current_category]['function_name']))
 
             if(current_category == 'agregation_complet'):
                 # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
@@ -540,7 +540,7 @@ while True:
         choosen_value = list(options_categories.values())[choice - 1]
         choosen_source = choosen_value['source']
         choosen_category = choosen_value['categorie']
-        choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function']
+        choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
         choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
 
         if(choosen_category == 'agregation_complet'):
