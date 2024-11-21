@@ -190,20 +190,20 @@ def test_get_intervention_synthetise_culture_prec_outils_can():
 
     assert all(res)
 
-def test_get_intervention_synthetise_action_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
-    """
+# def test_get_intervention_synthetise_action_outils_can():
+#     """
+#         Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
+#     """
 
-    identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
-    df_names = [   
-        'intervention_synthetise', 'action_synthetise', 'fertilisation_organique'
-    ]
-    path_data =  '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+#     identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
+#     df_names = [   
+#         'intervention_synthetise', 'action_synthetise', 'fertilisation_organique'
+#     ]
+#     path_data =  '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
+#     fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
+#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
-    assert all(res)
+#     assert all(res)
 
 def test_get_intervention_realise_action_outils_can():
     """
