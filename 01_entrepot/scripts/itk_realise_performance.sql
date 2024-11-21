@@ -7,6 +7,8 @@ SELECT
     replace(replace(culture_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS culture_id,
 	replace(replace(culture_precedente_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS culture_precedente_id,
     replace(replace(phase_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS plantation_perenne_phases_realise_id,
+    noeuds_realise_id AS noeuds_realise_id,
+    --plantation_phase_realise_id AS plantation_phase_realise_id, -- À décommenter une fois que le https://forge.codelutin.com/issues/13127 sera terminé
     rang,
 	approche_de_calcul AS approche_de_calcul,
 	-- IFT
@@ -301,7 +303,25 @@ SELECT
     qsa_soufre_tot_hts,
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
-    qsa_soufre_ferti
+    qsa_soufre_ferti,
+	qsa_bixafen,
+	qsa_dicamba,
+	qsa_mancozeb,
+	qsa_phosmet,
+	qsa_tebuconazole,
+	qsa_dimethenamidp,
+	qsa_pendimethalin,
+	qsa_flufenacet,
+	qsa_aclonifen,
+	qsa_isoxaben,
+	qsa_beflutamid,
+	qsa_isoproturon ,
+	qsa_clothianidine,
+	qsa_imidaclopride,
+	qsa_thiamethoxam,
+	qsa_acetamipride,
+	qsa_thiaclopride,
+	qsa_neonicotinoides
 FROM realise_echelle_itk rei
 JOIN entrepot_zone ez on ez.id = rei.zone_id;
 

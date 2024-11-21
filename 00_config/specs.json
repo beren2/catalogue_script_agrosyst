@@ -43,6 +43,7 @@
 			"parcelle_realise_performance",
 			"sdc_realise_performance",
 			"itk_realise_performance",
+			"itk_synthetise_performance",
 			"intervention_synthetise_performance",
 			"synthetise_synthetise_performance",
 			"recolte",
@@ -245,6 +246,9 @@
 			},
 			"itk_realise_performance":{
 				"file_name" : "itk_realise_performance"
+			},
+			"itk_synthetise_performance":{
+				"file_name" : "itk_synthetise_performance"
 			},
 			"composant_culture_concerne_intervention_realise":{
 				"file_name" : "composant_culture_concerne_intervention"

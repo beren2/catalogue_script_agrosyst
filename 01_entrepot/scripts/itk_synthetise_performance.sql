@@ -1,11 +1,11 @@
 ---------------------------------------------------------------
--- performances à l'échelle de la zone pour les réalisés
+-- performances à l'échelle de l'itk pour les réalisés   --
 ---------------------------------------------------------------
-
-create table entrepot_zone_realise_performance AS
+create table entrepot_itk_synthetise_performance AS 
 SELECT
-    replace(replace(zone_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS zone_id,
-    approche_de_calcul AS approche_de_calcul,
+    phase_id AS plantation_perenne_phases_synthetise_id,
+    connexion_synthetise_id AS connection_synthetise_id,
+	approche_de_calcul AS approche_de_calcul,
 	-- IFT
     ift_a_l_ancienne_ift_chimique_total AS ift_histo_chimique_tot,
     ift_a_l_ancienne_ift_chimique_tot_hts AS ift_histo_chim_tot_hts,
@@ -217,7 +217,6 @@ SELECT
     marge_directe_std_mil_avec_autoconso AS MD_std_mil_avec_autoconso,
     marge_directe_std_mil_taux_de_completion AS MD_std_mil_tx_comp,
     -- Performances sociales
-    nombre_uth_necessaires,
     consommation_de_carburant AS conso_carburant,
     consommation_de_carburant_taux_de_completion AS conso_carburant_tx_comp,
     consommation_eau as conso_eau,
@@ -300,7 +299,7 @@ SELECT
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
     qsa_soufre_ferti,
-    qsa_bixafen,
+	qsa_bixafen,
 	qsa_dicamba,
 	qsa_mancozeb,
 	qsa_phosmet,
@@ -317,17 +316,12 @@ SELECT
 	qsa_thiamethoxam,
 	qsa_acetamipride,
 	qsa_thiaclopride,
-	qsa_neonicotinoides,
-    surface_par_unite_de_travail_humain, 
-    surface_par_unite_de_travail_humain_taux_de_completion, 
-    surface_par_unite_de_travail_humain_detail_champs_non_renseig
-FROM realise_echelle_zone rez
-JOIN entrepot_zone ez on ez.id = rez.zone_id;
+	qsa_neonicotinoides
+FROM synthetise_echelle_culture sec
+JOIN entrepot_synthetise es on es.id = sec.id_systeme_synthetise;
 
+-- alter table entrepot_itk_synthetise_performance
+-- add FOREIGN KEY (plantation_perenne_phases_synthetise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
 
-alter table entrepot_zone_realise_performance
-add constraint zone_realise_performance_pk
-PRIMARY KEY (zone_id);
-
-alter table entrepot_zone_realise_performance
-add FOREIGN KEY (zone_id) REFERENCES entrepot_zone(id);
+-- alter table entrepot_itk_synthetise_performance
+-- add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synhtetise(id);

@@ -67,7 +67,7 @@ def sdc_donnee_attendue(donnees):
     # selection des colonnes utiles
     df_dispositif = df_dispositif[['id','type']]
     df_sdc = df_sdc[['id','campagne','code_dephy','dispositif_id','filiere','modalite_suivi_dephy']]
-    df_sdc['campagne'] = df_sdc['campagne'].astype('str')
+    df_sdc.loc[:, 'campagne'] = df_sdc['campagne'].astype('str')
 
     # Selection des dephy_ferme
     df_sdc = pd.merge(df_sdc, df_dispositif, left_on = 'dispositif_id', right_on = 'id', how = 'left').rename(columns={'id_x' : 'sdc_id'})
@@ -109,8 +109,8 @@ def sdc_donnee_attendue(donnees):
                                                                         (x['type'] != 'DEPHY_FERME') |
                                                                         (x['modalite_suivi_dephy'] != 'DETAILLE')) else x['donnee_attendue'] , axis=1)
     
-    print("Repartition de l'attribution des donnees attendues")
-    print(merge.groupby(by='donnee_attendue').size())
+    # print("Repartition de l'attribution des donnees attendues")
+    # print(merge.groupby(by='donnee_attendue').size())
     
     return(merge[['sdc_id','code_dephy','campagne','donnee_attendue']])
 

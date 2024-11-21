@@ -71,7 +71,6 @@ def get_infos_culture_realise(
     right = df_intervention_realise_assolee[['id', 'noeuds_realise_id']].rename(columns={
         'id' : 'intervention_realise_id'
     }) 
-    print(left.columns, right.columns)
     df_utilisation_intrant_realise_assolee = pd.merge(left, right, on = 'intervention_realise_id')
 
     # obtention du noeuds
