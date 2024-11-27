@@ -228,53 +228,60 @@ def dispositif_filtres_outils_can(
         donnees
 ):
     """
-        permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
-        c'est à dire ceux qui sont actifs, ceux qui ne contiennent que des dispositifs et des sdc actifs,
-        ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
+        Permet d'obtenir tous les dispositif_id qui doivent être conservés selon la CAN :
+        c'est à dire ceux qui sont actifs, ceux qui sont post 1999 et pré 2026 
+        et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
+
+        Attention, dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés.
     """
 
     # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
     df_dispositif = donnees['dispositif'].set_index('id')
     df_domaine = donnees['domaine'].set_index('id')
 
+    # on ajoute les informations sur le domaine
     left = df_dispositif
     right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
     df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
 
-    df_dispositif = df_dispositif.loc[
+    # on ne sélectionne que les domaines qui nous intéressent
+    df_dispositif_filtered = df_dispositif.loc[
         (df_dispositif['domaine_campagne'] > 1999) & (df_dispositif['domaine_campagne'] < 2026) & 
         (df_dispositif['type'] != 'NOT_DEPHY')
     ]
 
-    return  df_dispositif.reset_index()[['id']]
+    return  df_dispositif_filtered.reset_index()[['id']]
 
 def domaine_filtres_outils_can(
         donnees
 ):
     """
-        permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
+        Permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
         c'est à dire ceux qui sont actifs, ceux qui ne contiennent que des dispositifs et des sdc actifs,
-        ceux qui sont post 2020 et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
-    """
+        ceux qui sont post 1999 et pré 2026 et ceux dont le type de dispositif n'est pas 'NOT_DEPHY'.
 
-    # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
+        Attention, dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés.
+    """
     df_dispositif = donnees['dispositif'].set_index('id')
     df_domaine = donnees['domaine'].set_index('id')
 
+    # on rajoute au dispositif les informations utiles du domaine
     left = df_dispositif
     right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
     df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
 
-    df_dispositif = df_dispositif.loc[
+    # on ne sélectionne que les dispositifs qui nous intéressent
+    df_dispositif_filtered = df_dispositif.loc[
         (df_dispositif['domaine_campagne'] > 1999) & (df_dispositif['domaine_campagne'] < 2026) & 
         (df_dispositif['type'] != 'NOT_DEPHY')
     ]
 
-    df_domaine = df_domaine.loc[
-        df_domaine.index.isin(list(df_dispositif['domaine_id']))
+    # on ne sélectionne que les domaines qui contiennent au moins un dispositif qui nous intéresse
+    df_domaine_filtered = df_domaine.loc[
+        df_domaine.index.isin(list(df_dispositif_filtered['domaine_id']))
     ]
 
-    return  df_domaine.reset_index()[['id']]
+    return  df_domaine_filtered.reset_index()[['id']]
 
 
 # FONCTIONS POUR LES INTERVENTIONS EN RÉALISÉS
@@ -282,8 +289,8 @@ def get_intervention_realise_action_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir des informations sur les actions mobilisées dans les interventions en réalisé, dans le format attendu par la CAN.
-
+        Permet d'obtenir des informations sur les actions mobilisées 
+        dans les interventions en réalisé, dans le format attendu par la CAN.
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
@@ -382,7 +389,9 @@ def get_intervention_realise_semence_outils_can(
         donnees
     ):
     """
-        TODO
+        Retourne les informations sur les interventions de semis telles que désirées par la CAN :
+        concaténation des descriptions (libelle_espece_botanique, libelle_qualifiant_aee, libelle_type_saisonnier_aee, libelle_destination_aee),
+        concaténation des  types de semences, des doses, des unités, et des champs booléen "inoculation_biologique" / "traitement_chimique".
     """
     df_semence = donnees['semence']
     df_composant_culture = donnees['composant_culture']
