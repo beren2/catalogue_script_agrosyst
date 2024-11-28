@@ -162,12 +162,31 @@ def convert_to_int(x):
 
 def get_composant_culture_outils_can(donnees):
     """
-        permet d'obtenir toutes les informations sur le composant culture, dans le format attendu par la CAN
-        C'est à dire, retourne 3 colonnes :
-        esp_complet_var : espèce et variété complet ("Trèfle blanc - Aber dai" ou "Vigne Cuve - Cabernet franc N")
-        esp_complet : juste l'espèce avec toutes les infos
-        esp : juste l'espèce ("Trèfle blanc" ou "Vigne")
-        var : juste la variété ("Aber dai" ou "Cabernet franc N")
+    Permet d'obtenir toutes les informations sur les composants de culture dans le format attendu par la CAN.
+    
+    Arguments:
+        donnees (dict): Un dictionnaire contenant les DataFrames nécessaires, incluant les données sur les composants de culture, les espèces, et les variétés.
+
+    Retourne:
+        pd.DataFrame: Un DataFrame avec les colonnes suivantes :
+            - `culture_id` : Identifiant de la culture.
+            - `esp_complet_var` : Espèce et variété complète (par exemple, "Trèfle blanc - Aber dai").
+            - `esp_complet` : Description complète de l'espèce (par exemple, "Trèfle blanc, Qualifiant: AEE, Type saisonnier: AEE").
+            - `esp` : Nom de l'espèce (par exemple, "Trèfle blanc").
+            - `var` : Nom de la variété (par exemple, "Aber dai").
+
+    Exemple d'utilisation :
+        donnees = {
+            'composant_culture': pd.DataFrame(...),
+            'espece': pd.DataFrame(...),
+            'variete': pd.DataFrame(...),
+            ...
+        }
+        result = get_composant_culture_outils_can(donnees)
+
+    Notes:
+        - Les valeurs manquantes sont remplacées par des chaînes vides pour éviter les erreurs lors des manipulations de données.
+        - Les doublons sont supprimés pour éviter plusieurs occurrences des mêmes informations dans le résultat final.
     """
     # Ajout des informations sur le composant de culture
     df_composant_culture = donnees['composant_culture'].set_index('id')
@@ -228,11 +247,37 @@ def dispositif_filtres_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir tous les dispositif_id qui doivent être conservés selon la CAN :
-        c'est à dire ceux qui sont actifs, ceux qui sont post 1999 et pré 2026 
-        et ceux qui n'appartiennent pas à  'NOT_DEPHY'.
+    Sélectionne les `dispositif_id` à conserver selon les critères de la CAN.
 
-        Attention, dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés.
+    Cette fonction filtre les dispositifs valides en appliquant les règles suivantes :
+    - Appartenance à un domaine dont la campagne est :
+        - Postérieure à 1999.
+        - Antérieure à 2026.
+    - Le type du dispositif ne doit pas être égal à `NOT_DEPHY`.
+    - Les dispositifs sont présupposés actifs dans les données fournies.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'dispositif' : DataFrame contenant les informations sur les dispositifs :
+                - `id` : Identifiant unique du dispositif.
+                - `domaine_id` : Référence au domaine associé.
+                - `type` : Type de dispositif (ex. : `NOT_DEPHY`).
+            - 'domaine' : DataFrame contenant les informations sur les domaines :
+                - `id` : Identifiant unique du domaine.
+                - `campagne` : Année de la campagne associée.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant une colonne `id` correspondant aux identifiants des dispositifs
+            valides selon les critères CAN.
+
+    Exemple d'utilisation :
+        donnees = {
+            'dispositif': pd.DataFrame(...),
+            'domaine': pd.DataFrame(...)
+        }
+        dispositifs_filtres = dispositif_filtres_outils_can(donnees)
     """
 
     # dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés
@@ -240,7 +285,7 @@ def dispositif_filtres_outils_can(
     df_domaine = donnees['domaine'].set_index('id')
 
     # on ajoute les informations sur le domaine
-    left = df_dispositif
+    left = df_dispositif.copy()
     right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
     df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
 
@@ -256,17 +301,43 @@ def domaine_filtres_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir tous les domaine_id qui doivent être conservés selon la CAN :
-        c'est à dire ceux qui sont actifs, ceux qui ne contiennent que des dispositifs et des sdc actifs,
-        ceux qui sont post 1999 et pré 2026 et ceux dont le type de dispositif n'est pas 'NOT_DEPHY'.
+    Sélectionne les `domaine_id` à conserver selon les critères de la CAN.
 
-        Attention, dans l'entrepôt, les filtrations sur les actifs sont déjà réalisés.
+    Cette fonction identifie les domaines valides en appliquant les règles suivantes :
+    - Les domaines doivent contenir au moins un dispositif actif.
+    - Les dispositifs associés doivent respecter les critères suivants :
+        - Appartenir à des campagnes postérieures à 1999 et antérieures à 2026.
+        - Ne pas avoir un type de dispositif égal à `NOT_DEPHY`.
+    - Remarque : Les filtrages liés aux domaines ou dispositifs actifs sont présupposés effectués
+      dans les données fournies.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'dispositif' : Informations sur les dispositifs, avec les colonnes :
+                - `id` : Identifiant du dispositif.
+                - `domaine_id` : Référence au domaine associé.
+                - `type` : Type de dispositif (ex. : `NOT_DEPHY`).
+            - 'domaine' : Informations sur les domaines, avec les colonnes :
+                - `id` : Identifiant du domaine.
+                - `campagne` : Année de la campagne associée.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les identifiants (`id`) des domaines valides selon les critères CAN.
+
+    Exemple d'utilisation :
+        donnees = {
+            'dispositif': pd.DataFrame(...),
+            'domaine': pd.DataFrame(...)
+        }
+        result = domaine_filtres_outils_can(donnees)
     """
     df_dispositif = donnees['dispositif'].set_index('id')
     df_domaine = donnees['domaine'].set_index('id')
 
     # on rajoute au dispositif les informations utiles du domaine
-    left = df_dispositif
+    left = df_dispositif.copy()
     right = df_domaine[['campagne']].rename(columns={'campagne' : 'domaine_campagne'})
     df_dispositif = pd.merge(left, right, left_on='domaine_id', right_index=True)
 
@@ -289,8 +360,38 @@ def get_intervention_realise_action_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir des informations sur les actions mobilisées 
-        dans les interventions en réalisé, dans le format attendu par la CAN.
+    Construit un DataFrame contenant les détails et les indicateurs 
+    associés aux interventions réalisées, dans le format attendu par la CAN.
+
+    Args:
+        donnees (dict): 
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'action_realise' : Actions réalisées
+            - 'intervention_realise' : Interventions réalisées
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame consolidé contenant les informations suivantes :
+            - id : Identifiant unique de l'intervention.
+            - interventions_actions : concaténation des types d'actions mobilisées dans l'intervention.
+            - interventions_actions_details : concaténation des types d'actions, du psci, de la quantité d'eau... mobilisées dans l'intervention.
+            - proportion_surface_traitee_phyto : Proportion de surface traitée pour les phytosanitaires.
+            - proportion_surface_traitee_lutte_bio : Proportion de surface traitée pour la lutte biologique.           
+            - psci_phyto : Indicateur PSCI pour les phytosanitaires.
+            - psci_lutte_bio : Indicateur PSCI pour la lutte biologique.
+            - quantite_eau_mm : Quantité d’eau utilisée (en mm) pour l’irrigation.
+
+    Notes:
+        - Les actions spécifiques (produits phytosanitaires, lutte biologique, irrigation) 
+          sont traitées séparément pour calculer des indicateurs spécifiques.
+        - Les informations sont concaténées pour obtenir des colonnes interprétables facilement
+
+    Exemple d'utilisation :
+        donnees = {
+            'action_realise': pd.DataFrame(...),
+            'intervention_realise': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_action_outils_can(donnees)
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
@@ -389,9 +490,45 @@ def get_intervention_realise_semence_outils_can(
         donnees
     ):
     """
-        Retourne les informations sur les interventions de semis telles que désirées par la CAN :
-        concaténation des descriptions (libelle_espece_botanique, libelle_qualifiant_aee, libelle_type_saisonnier_aee, libelle_destination_aee),
-        concaténation des  types de semences, des doses, des unités, et des champs booléen "inoculation_biologique" / "traitement_chimique".
+    Construit un DataFrame consolidé contenant les informations relatives 
+    aux interventions de semis, dans le format attendu par la CAN.
+
+    Args:
+        donnees (dict): 
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'semence' : Semences
+            - 'composant_culture' : Composants des cultures.
+            - 'espece' : Espèces.
+            - 'utilisation_intrant_realise' : Utilisations d'intrants en réalisé.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame regroupant les informations suivantes par intervention réalisée :
+            - especes_semees : Description complète des espèces semées (concaténation des libellés).
+            - type_semence : Concaténation des types de semences utilisées.
+            - densite_semis : Concaténation des doses de semis (concaténation des doses associées).
+            - unite_semis : Concaténation des unités des doses de semis.
+            - inoculation_biologique_semis : Concaténation du statut d’inoculation biologique (booléen oui/non) 
+                                                pour toutes semences utilisées
+            - traitement_chimique_semis : Concaténation du statut de traitement chimique (booléen oui/non).
+                                                pour toutes les semences utilisées
+    Notes:
+        - Les descriptions des espèces semées sont générées à partir des colonnes :
+          `libelle_espece_botanique`, `libelle_qualifiant_aee`, `libelle_type_saisonnier_aee`, 
+          et `libelle_destination_aee`.
+        - Les informations sur les semences sont croisées avec celles des intrants pour inclure 
+          les doses et les unités associées.
+        - Les champs booléens (inoculation biologique, traitement chimique) sont regroupés et 
+          concaténés sous forme lisible.
+
+    Exemple d'utilisation :
+        donnees = {
+            'semence': pd.DataFrame(...),
+            'composant_culture': pd.DataFrame(...),
+            'espece': pd.DataFrame(...),
+            'utilisation_intrant_realise': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_semence_outils_can(donnees)
     """
     df_semence = donnees['semence']
     df_composant_culture = donnees['composant_culture']
@@ -445,7 +582,49 @@ def get_intervention_realise_outils_can_context(
     donnees
 ):
     """
-        Permet d'obtenir un dataframe intermédiaire des interventions pour la CAN
+    Construit un DataFrame contenant le contexte des interventions réalisées,
+    en regroupant les informations sur les actions, les semences et les indicateurs associés,
+    au format attendu par la CAN.
+
+    Args:
+        donnees (dict): 
+            Un dictionnaire contenant les DataFrames nécessaires à la construction :
+            - 'intervention_realise' : Détails des interventions réalisées.
+            - Autres tables nécessaires pour appeler les fonctions :
+              `get_intervention_realise_action_outils_can` et 
+              `get_intervention_realise_semence_outils_can`.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations des interventions :
+            - id : Identifiant unique de l'intervention.
+            - interventions_actions : Concaténation des types d'actions mobilisées.
+            - especes_semees : Concaténation des description complète des espèces semées.
+            - densite_semis : Concaténation des densités des semis (concaténation des doses associées).
+            - unite_semis : Concaténation des unités des densités de semis.
+            - traitement_chimique_semis : Concaténation des statuts de traitement chimique des semences.
+            - inoculation_biologique_semis : Concaténation des statuts d’inoculation biologique des semences.
+            - type_semence : Concaténation des types de semences utilisées.
+            - proportion_surface_traitee_phyto : Proportion de surface traitée (phytosanitaires).
+            - proportion_surface_traitee_lutte_bio : Proportion de surface traitée (lutte biologique).
+            - psci_phyto : Indicateur PSCI (phytosanitaires).
+            - psci_lutte_bio : Indicateur PSCI (lutte biologique).
+            - quantite_eau_mm : Quantité d’eau utilisée (en mm) pour l’irrigation.
+
+    Notes:
+        - Cette fonction utilise les résultats des fonctions 
+          `get_intervention_realise_action_outils_can` et 
+          `get_intervention_realise_semence_outils_can` pour enrichir les données.
+        - Les colonnes finales sont sélectionnées pour correspondre au format attendu par la CAN.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_realise': pd.DataFrame(...),
+            'action_realise': pd.DataFrame(...),
+            'semence': pd.DataFrame(...),
+            ...
+        }
+        result = get_intervention_realise_outils_can_context(donnees)
     """
     df_intervention_realise = donnees['intervention_realise']
 
@@ -469,7 +648,49 @@ def get_intervention_realise_combinaison_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe avec les informations sur les combinaisons d'outils
+    Génère un DataFrame contenant les informations détaillées sur les combinaisons d'outils 
+    utilisées dans les interventions.
+
+    Cette fonction enrichit les données des interventions en ajoutant des détails sur 
+    les combinaisons d'outils, y compris les informations sur les tracteurs, les matériels 
+    associés et leurs caractéristiques.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - `intervention_realise` : 
+                - `id` : Identifiant unique de l'intervention.
+                - `combinaison_outil_id` : Référence à une combinaison d'outils.
+            - `combinaison_outil` :
+                - `id` : Identifiant unique de la combinaison d'outils.
+                - `nom` : Nom de la combinaison d'outils.
+                - `tracteur_materiel_id` : Référence au tracteur ou matériel principal.
+            - `materiel` :
+                - `id` : Identifiant unique du matériel.
+                - `nom` : Nom du matériel.
+                - `type_materiel` : Type du matériel.
+                - `materiel_caracteristique1` : Première caractéristique du matériel 
+                  (ex. : tracteur ou automoteur, type d'outil).
+            - `combinaison_outil_materiel` :
+                - `combinaison_outil_id` : Référence à une combinaison d'outils.
+                - `materiel_id` : Référence à un matériel spécifique.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les colonnes suivantes :
+            - `id` : Identifiant unique de l'intervention.
+            - `combinaison_outils_nom` : Nom de la combinaison d'outils associée.
+            - `tracteur_ou_automoteur` : Type du tracteur ou automoteur utilisé.
+            - `outils` : Concaténation des outils utilisés, séparés par `;`.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_realise': pd.DataFrame(...),
+            'combinaison_outil': pd.DataFrame(...),
+            'materiel': pd.DataFrame(...),
+            'combinaison_outil_materiel': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_combinaison_outils_can(donnees)
     """
     df_intervention_realise = donnees['intervention_realise']
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
@@ -483,7 +704,7 @@ def get_intervention_realise_combinaison_outils_can(
     )
     df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
 
-    # Ajout des inforations sur le materiel à la combinaison d'outils
+    # Ajout des informations sur le materiel à la combinaison d'outils
     left = df_combinaison_outil_materiel
     right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
         columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
@@ -522,10 +743,44 @@ def get_intervention_realise_culture_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe avec les informations sur les cultures précédentes
-        retourne un dataframe avec pour index culture_id et pour colonne esp_var contenant 
-        l'agrégation des informations
-        sur la culture
+    Construit un DataFrame consolidé contenant les informations relatives aux cultures 
+    dans le cadre des interventions réalisées, selon le format attendu par la CAN.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'intervention_realise' : Informations sur les interventions réalisées.
+            - 'noeuds_realise' : Détails sur les noeuds réalisés, incluant les cultures annuelles (assolées) et intermédiaires.
+            - 'plantation_perenne_realise' : Informations sur les cultures pérennes.
+            - 'plantation_perenne_phases_realise' : Détails sur les phases des plantations pérennes.
+            - 'composant_culture_concerne_intervention_realise' : Liens entre les composants culture et les interventions.
+            - 'connection_realise' : Informations sur les connexions des noeuds réalisés, incluant les cultures intermédiaires.
+            - 'composant_culture' : Composants de culture.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame regroupant les informations suivantes par intervention réalisée :
+            - `esp_complet_var` : Concaténation complète des espèces et variétés associées.
+            - `esp_complet` : Concaténation des espèces complètes sans doublons.
+            - `esp` : Concaténation des espèces associées (sans doublons) pour chaque intervention.
+            - `var` : Concaténation des variétés associées (sans doublons) pour chaque intervention.
+
+    Notes:
+        - Les informations sont combinées pour inclure à la fois les cultures annuelles, intermédiaires, et pérennes.
+        - Les doublons dans les listes d'espèces et variétés sont supprimés pour fournir des descriptions uniques.
+        - La concaténation des informations est réalisée avec des séparateurs lisibles (ex. : '; ' pour les listes).
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_realise': pd.DataFrame(...),
+            'noeuds_realise': pd.DataFrame(...),
+            'plantation_perenne_realise': pd.DataFrame(...),
+            'plantation_perenne_phases_realise': pd.DataFrame(...),
+            'composant_culture_concerne_intervention_realise': pd.DataFrame(...),
+            'connection_realise': pd.DataFrame(...),
+            'composant_culture': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_culture_outils_can(donnees)
     """
     df_intervention_realise = donnees['intervention_realise'].set_index('id')
     df_noeuds_realise = donnees['noeuds_realise'].set_index('id')
@@ -631,8 +886,34 @@ def get_intervention_realise_culture_outils_can(
 def get_intervention_realise_culture_prec_outils_can(
         donnees
 ):
-    """Permet d'obtenir le dataframe des informations sur les cultures précédentes pour les interventions pour la CAN"""
-    
+    """
+    Permet d'obtenir le DataFrame des informations sur les cultures précédentes pour les interventions
+    dans le cadre de la CAN.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'intervention_realise' : Informations sur les interventions réalisées.
+            - 'noeuds_realise' : Détails sur les noeuds réalisés, incluant les cultures annuelles et leurs connexions.
+            - 'connection_realise' : Informations sur les connexions entre les noeuds réalisés.
+            - 'culture' : Informations sur les cultures et les composants associés (espèces, variétés, etc.).
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame avec les informations suivantes par intervention réalisée :
+            - `precedent_id` : Identifiant de la culture précédente (ou du noeud précédent).
+            - `precedent_nom` : Nom de la culture précédente (ou du noeud précédent).
+            - `precedent_especes_edi` : Espèces associées à la culture précédente dans le format attendu par la CAN.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_realise': pd.DataFrame(...),
+            'noeuds_realise': pd.DataFrame(...),
+            'connection_realise': pd.DataFrame(...),
+            'culture': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_culture_prec_outils_can(donnees)
+    """
     df_intervention_realise = donnees['intervention_realise'].set_index('id')
     df_noeuds_realise = donnees['noeuds_realise'].set_index('id')
     df_connection_realise = donnees['connection_realise'].set_index('id')
@@ -682,9 +963,46 @@ def get_intervention_realise_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir un dataframe qui contient toutes les colonnes "complexes" à obtenir 
-        pour le dataframe intervention_realise de la CAN 
-        (sert aussi dans intervention_realise_performance)
+    Permet d'obtenir un DataFrame contenant toutes les colonnes complexes nécessaires pour le DataFrame
+    `intervention_realise` du magasin CAN (sert également pour `intervention_realise_performance`).
+
+    Cette fonction effectue une série de fusions entre plusieurs DataFrames afin de collecter toutes les informations
+    pertinentes liées aux interventions réalisées, telles que les informations sur les outils utilisés, les cultures
+    concernées, les intrants, les rendements, les cibles d'intervention et le nombre d'intrants associés.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'intervention_realise' : Détails sur les interventions réalisées.
+            - 'combinaison_outil' : Détails sur les combinaisons d'outils utilisés dans les interventions.
+            - 'culture' : Informations sur les cultures concernées.
+            - 'culture_prec' : Informations sur les cultures précédentes.
+            - 'intrants' : Informations sur les intrants utilisés lors des interventions.
+            - 'cibles' : Cibles d'intervention définies.
+            - 'rendement' : Informations sur les rendements obtenus suite aux interventions.
+            - 'nb_intrants' : Informations sur le nombre d'intrants utilisés dans les interventions.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame qui contient les informations suivantes par intervention réalisée :
+            - Détails sur l'intervention, les outils utilisés, les cultures concernées, les rendements, les intrants, etc.
+
+    Notes:
+        - Les colonnes calculées, comme `nb_intrants`, sont traitées pour garantir l'intégrité des données, par exemple
+          avec des valeurs `NaN` remplacées par 0.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_realise': pd.DataFrame(...),
+            'combinaison_outil': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'culture_prec': pd.DataFrame(...),
+            'intrants': pd.DataFrame(...),
+            'cibles': pd.DataFrame(...),
+            'rendement': pd.DataFrame(...),
+            'nb_intrants': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_outils_can(donnees)
     """
     # ajout des informations de contexte sur l'intervention
     left = get_intervention_realise_outils_can_context(donnees).rename(
@@ -746,11 +1064,38 @@ def get_intervention_realise_intrants_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention synthétisé, la liste des intrants utilisés dans l'intervention, 
-        dans le format attendu par la CAN : 
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1
-        :  "CUPROXAT SC (0.5 L/ha), CUIVROL (0.5 kg/ha), HELIOSOUFRE S (4.0 L/ha), LAMINAFLOR (2.0 l/ha)"
-    """ 
+    Permet d'obtenir, pour chaque intervention synthétisée, la liste des intrants utilisés dans l'intervention,
+    dans le format attendu par la CAN. Par exemple, pour une intervention spécifique, la sortie peut ressembler à :
+    "CUPROXAT SC (0.5 L/ha), CUIVROL (0.5 kg/ha), HELIOSOUFRE S (4.0 L/ha), LAMINAFLOR (2.0 l/ha)".
+
+    Cette fonction traite les informations relatives aux intrants, leur type (autre, semis, etc.), et les doses utilisées
+    dans l'intervention, puis les assemble dans une chaîne de caractères formatée. 
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'utilisation_intrant_realise' : Détails sur les intrants utilisés dans chaque intervention.
+            - 'intrant' : Informations sur les intrants (nom, type, unité).
+        variable(s) globale(s) :
+            'UNITE_APPLICATION' : Information sur les unités d'application des intrants.
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les intrants utilisés pour chaque intervention, formaté comme suit :
+            - `interventions_intrants` : Liste des intrants utilisés, formatée avec leur nom, dose et unité.
+            - `biocontrole` : Indication de si un biocontrôle a été utilisé (`'oui'` ou `'non'`).
+
+    Notes:
+        - La fonction traite différemment les intrants de type 'AUTRE' et 'SEMIS' par rapport aux autres types.
+        - Les valeurs `NaN` sont remplies par des chaînes vides ou des valeurs par défaut.
+        
+    Exemple d'utilisation :
+        UNITE_APPLICATION = {'AA_HA': 'Aa/ha', ...}
+        donnees = {
+            'utilisation_intrant_realise': pd.DataFrame(...),
+            'intrant': pd.DataFrame(...),
+        }
+        result = get_intervention_realise_intrants_outils_can(donnees)
+    """
     df_utilisation_intrant_realise = donnees['utilisation_intrant_realise'].set_index('id')
     df_intrant = donnees['intrant'].set_index('id')
 
@@ -799,9 +1144,39 @@ def get_intervention_realise_cibles_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention réalisé, la liste des cibles concernées par l'intervention, dans le format attendu par la CAN
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_3107f3f9-27aa-4af8-8dfa-9ccce3eaa0ef
-        :  "Helminthosporiose, Rhynchosporiose"
+    Permet d'obtenir, pour chaque intervention réalisée, un champs de concaténation des cibles concernées par l'intervention,
+    dans le format attendu par la CAN. Par exemple, pour une intervention spécifique, la sortie pourrait être :
+    "Helminthosporiose, Rhynchosporiose".
+
+    Cette fonction traite les cibles d'intrants (nuisibles, adventices) associées aux interventions réalisées et les
+    concatène dans une chaîne de caractères formatée, séparée par des virgules.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'utilisation_intrant_realise' : Détails sur les intrants utilisés dans chaque intervention.
+            - 'utilisation_intrant_cible' : Détails sur les cibles associées aux intrants dans chaque intervention.
+            - 'nuisible_edi' : Informations sur les nuisibles (avec une colonne `label_nuisible`).
+            - 'adventice' : Informations sur les adventices (avec une colonne `label`).
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les cibles associées à chaque intervention, formaté comme suit :
+            - `interventions_cibles_trait` : Liste des cibles concernées par l'intervention, formatée comme une chaîne de caractères séparée par des virgules.
+
+    Notes:
+        - La fonction regroupe les cibles par intervention et les formatte en une seule ligne pour chaque intervention.
+        - Les cibles qui n'ont pas de nom (valeurs `NaN`) se voient attribuer un nom vide.
+        - Les cibles sont regroupées par leur `intervention_realise_id`.
+
+    Exemple d'utilisation :
+        donnees = {
+            'utilisation_intrant_realise': pd.DataFrame(...),
+            'utilisation_intrant_cible': pd.DataFrame(...),
+            'nuisible_edi': pd.DataFrame(...),
+            'adventice': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_cibles_outils_can(donnees)
     """
     df_utilisation_intrant_realise = donnees['utilisation_intrant_realise'].set_index('id')
     df_utilisation_intrant_cible = donnees['utilisation_intrant_cible'].set_index('id')
@@ -833,9 +1208,41 @@ def get_intervention_realise_rendement_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention réalisé, la liste des rendements / destinations dans l'intervention, dans le format attendu par la CAN
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_1bca5b10-af00-4883-bfb9-52674a4b5da6
-        :  [Grain (alimentation humaine)]|43,0|q/ha (humidité ramenée à la norme)
+    Permet d'obtenir, pour chaque intervention réalisée, la liste des rendements et destinations
+    associées à l'intervention, formatée comme attendu par la CAN. Par exemple, pour une intervention spécifique 
+    (fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_1bca5b10-af00-4883-bfb9-52674a4b5da6) :
+    "[Grain (alimentation humaine)]|43,0|q/ha (humidité ramenée à la norme)".
+
+    Cette fonction collecte les informations de rendement, les formate selon les conventions attendues,
+    puis les agrège pour chaque intervention.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'recolte_rendement_prix' : Informations sur les rendements, destinations et unités.
+            - 'action_realise' : Actions associées aux interventions réalisées.
+        variable(s) globale(s) :
+            'UNITE_RENDEMENT' : Dictionnaire global contenant la correspondance entre les unités internes 
+              et les unités utilisateur.
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant, pour chaque intervention, les rendements associés formatés comme suit :
+            - `id` : Identifiant unique de l'intervention réalisée.
+            - `rendement_total` : Chaîne de caractères représentant les rendements formatés, 
+              séparés par des `#` s'il y a plusieurs rendements. 
+
+    Notes:
+        - Le format final d'un rendement est : `[Destination]|Rendement Moyen|Unité`.
+        - Les rendements sont regroupés par `intervention_realise_id`.
+        - L'unité interne (`rendement_unite`) est convertie dans une unité utilisateur via le mapping `UNITE_RENDEMENT`.
+
+    Exemple d'utilisation :
+        donnees = {
+            'recolte_rendement_prix': pd.DataFrame(...),
+            'action_realise': pd.DataFrame(...),
+        }
+        UNITE_RENDEMENT = {}
+        result = get_intervention_realise_rendement_outils_can(donnees)
     """
     recolte_rendement_prix = donnees['recolte_rendement_prix'].set_index('id')
     action_realise = donnees['action_realise'].set_index('id')
@@ -868,9 +1275,30 @@ def get_intervention_realise_nb_intrant_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention réalisé, le nombre d'utilisation d'intrants contenues.
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_b33f89ad-3489-4a84-873b-eddafd9db459
-        :  0
+    Permet d'obtenir, pour chaque intervention réalisée, le nombre d'utilisations d'intrants 
+    associées à cette intervention.
+
+    Par exemple :
+    Pour l'intervention `EffectiveIntervention_b33f89ad-3489-4a84-873b-eddafd9db459`, le résultat serait `0` 
+    si aucun intrant n'a été utilisé.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'utilisation_intrant_realise' : Informations sur les utilisations d'intrants.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant, pour chaque intervention réalisée, le nombre total d'utilisations 
+            d'intrants :
+            - `id` : Identifiant unique de l'intervention réalisée.
+            - `nb_intrants` : Nombre d'utilisations d'intrants pour cette intervention.
+
+    Exemple d'utilisation :
+        donnees = {
+            'utilisation_intrant_realise': pd.DataFrame(...)
+        }
+        result = get_intervention_realise_nb_intrant_outils_can(donnees)
     """
     df_utilisation_intrant_realise = donnees['utilisation_intrant_realise']
 
@@ -886,15 +1314,48 @@ def get_intervention_synthetise_culture_outils_can(
       donnees  
 ):
     """
-        Permet d'obtenir le dataframe avec les informations sur les cultures 
-        
-        esp_var contenant l'agrégation des informations sur la culture
+    Permet d'obtenir un DataFrame contenant les informations détaillées sur les cultures 
+    associées aux interventions synthétisées, dans un format conforme à celui attendu par la CAN.
+
+    Cette fonction agrège et restructure des données complexes provenant de plusieurs tables 
+    pour fournir des informations synthétisées sur les cultures (assolées et pérennes) 
+    dans les interventions.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'intervention_synthetise' : Informations sur les interventions synthétisées.
+            - 'noeuds_synthetise' : Détails sur les nœuds de culture synthétisés.
+            - 'connection_synthetise' : Informations sur les connections entre les nœuds.
+            - 'plantation_perenne_phases_synthetise' : Données sur les phases des plantations pérennes.
+            - 'plantation_perenne_synthetise' : Détails sur les plantations pérennes.
+            - 'composant_culture_concerne_intervention_synthetise' : Composants de culture associés aux interventions.
+            - 'noeuds_synthetise_restructure' : Dataframe de restructuration des nœuds synthétisés.
+            - 'plantation_perenne_synthetise_restructure' : Dataframe de restructuration des plantations pérennes.
+            - 'ccc_intervention_synthetise_restructure' : Dataframe de restructuration des composants de culture.
+            - 'connection_synthetise_restructure' : Dataframe de restructuration des connections synthétisées.
+            - 'culture' : Informations générales sur les cultures.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations sur les cultures par intervention synthétisée :
+            - `id` : Identifiant de l'intervention synthétisée.
+            - `esp_complet_var` : Liste complète des espèces et variétés concernées, séparées par des "; ".
+            - `esp_complet` : Liste unique des espèces complètes, séparées par des ", ".
+            - `esp` : Liste unique des espèces, séparées par des ", ".
+            - `var` : Liste unique des variétés, séparées par des ", ".
+            - `culture_id` : Identifiant unique de la culture.
+            - `culture_nom` : Nom de la culture.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_synthetise': pd.DataFrame(...),
+            'noeuds_synthetise': pd.DataFrame(...),
+            'connection_synthetise': pd.DataFrame(...),
+            ...
+        }
+        result = get_intervention_synthetise_culture_outils_can(donnees)
     """
-    # on obtient un dataframe où composant_culture_id x intervention_synthetise_id est unique
-    # chaque ligne correspond à l'affectation d'un composant de culture à une intervention_synthetise
-
-    # dans un autre temps, 
-
     df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
     df_noeuds_synthetise = donnees['noeuds_synthetise'].set_index('id')
     df_connection_synthetise = donnees['connection_synthetise'].set_index('id')
@@ -1053,8 +1514,40 @@ def get_intervention_synthetise_culture_outils_can(
 def get_intervention_synthetise_culture_prec_outils_can(
         donnees
 ):
-    """Permet d'obtenir le dataframe des informations sur les cultures précédentes pour les interventions synthétisé pour la CAN"""
-    
+    """
+    Permet d'obtenir un DataFrame contenant les informations sur les cultures précédentes
+    associées aux interventions synthétisées, dans un format conforme à la CAN.
+
+    Cette fonction extrait et associe les informations des cultures précédentes
+    (nom, espèces, identifiant) liées aux nœuds et connexions des interventions.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'intervention_synthetise' : Interventions synthétisées.
+            - 'noeuds_synthetise' : Détails sur les nœuds synthétisés.
+            - 'connection_synthetise' : Informations sur les connexions entre les nœuds.
+            - 'culture' : Informations générales sur les cultures.
+            - 'noeuds_synthetise_restructure' : Dataframe de restructuration des nœuds synthétisés.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations des cultures précédentes par intervention synthétisée :
+            - `id` : Identifiant de l'intervention synthétisée.
+            - `precedent_code` : Code de la culture précédente.
+            - `precedent_nom` : Nom de la culture précédente.
+            - `precedent_especes_edi` : Liste des espèces précédentes dans un format enrichi.
+            - `precedent_id` : Identifiant unique de la culture précédente.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_synthetise': pd.DataFrame(...),
+            'noeuds_synthetise': pd.DataFrame(...),
+            'connection_synthetise': pd.DataFrame(...),
+            ...
+        }
+        result = get_intervention_synthetise_culture_prec_outils_can(donnees)
+    """
     df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
     df_noeuds_synthetise = donnees['noeuds_synthetise'].set_index('id')
     df_connection_synthetise = donnees['connection_synthetise'].set_index('id')
@@ -1115,8 +1608,37 @@ def get_intervention_synthetise_action_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir le dataframe des informations sur les actions pour les interventions synthétisé pour la CAN
-        (colonnes : )
+    Permet d'obtenir un DataFrame contenant des informations détaillées sur les actions
+    associées aux interventions synthétisées, adaptées au format attendu par la CAN.
+
+    Cette fonction intègre différentes catégories d'actions (application de produits phytosanitaires,
+    lutte biologique, irrigation, et autres) et calcule des indicateurs spécifiques
+    en fonction du type d'action.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'action_synthetise' : Détails sur les actions synthétisées.
+            - 'intervention_synthetise' : Informations sur les interventions synthétisées.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame avec les colonnes suivantes :
+            - `id` : Identifiant de l'intervention synthétisée.
+            - `interventions_actions` : Liste des types d'actions sous forme de chaîne.
+            - `interventions_actions_details` : Description détaillée des actions (concatenée).
+            - `proportion_surface_traitee_phyto` : Proportion de surface traitée pour les produits phytosanitaires.
+            - `proportion_surface_traitee_lutte_bio` : Proportion de surface traitée pour la lutte biologique.
+            - `psci_phyto` : Indicateur PSCI pour les produits phytosanitaires.
+            - `psci_lutte_bio` : Indicateur PSCI pour la lutte biologique.
+            - `quantite_eau_mm` : Quantité d'eau utilisée pour l'irrigation, en mm.
+
+    Exemple d'utilisation :
+        donnees = {
+            'action_synthetise': pd.DataFrame(...),
+            'intervention_synthetise': pd.DataFrame(...)
+        }
+        result = get_intervention_synthetise_action_outils_can(donnees)
     """
     
     df_action_synthetise = donnees['action_synthetise']
@@ -1215,7 +1737,38 @@ def get_intervention_synthetise_semence_outils_can(
         donnees
     ):
     """
-        permet d'obtenir les informations sur les interventions de type "SEMIS" en synthétisé.
+    Permet d'obtenir un DataFrame contenant des informations détaillées sur les interventions
+    de type "SEMIS" dans le format attendu par la CAN.
+
+    La fonction récupère et enrichit les données des semences utilisées dans les interventions
+    synthétisées, incluant les espèces semées, les densités de semis, et les traitements associés.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'semence' : Informations sur les semences utilisées.
+            - 'composant_culture' : Détails des composants de culture (espèces, variétés, etc.).
+            - 'espece' : Informations sur les espèces botaniques.
+            - 'utilisation_intrant_synthetise' : Utilisation des intrants (incluant les semences).
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame avec les colonnes suivantes :
+            - `id` : Identifiant de l'intervention synthétisée.
+            - `especes_semees` : Description des espèces semées (nom botanique et autres attributs) (concaténée)
+            - `densite_semis` : Densité de semis utilisée (concaténée).
+            - `unite_semis` : Unité de mesure pour la densité de semis (concaténée).
+            - `traitement_chimique_semis` : Indique si un traitement chimique a été appliqué (concaténé).
+            - `inoculation_biologique_semis` : Indique si une inoculation biologique a été réalisée (concaténée).
+
+    Exemple d'utilisation :
+        donnees = {
+            'semence': pd.DataFrame(...),
+            'composant_culture': pd.DataFrame(...),
+            'espece': pd.DataFrame(...),
+            'utilisation_intrant_synthetise': pd.DataFrame(...)
+        }
+        result = get_intervention_synthetise_semence_outils_can(donnees)
     """
     df_semence = donnees['semence']
     df_composant_culture = donnees['composant_culture']
@@ -1272,7 +1825,44 @@ def get_intervention_synthetise_outils_can_context(
     donnees
 ):
     """
-        Permet d'obtenir un dataframe intermédiaire des interventions pour la CAN
+    Permet d'obtenir un DataFrame intermédiaire contenant les informations
+    des interventions dans le format attendu par la CAN
+
+    La fonction combine plusieurs sources de données pour synthétiser :
+    - Les actions associées aux interventions.
+    - Les informations sur les semences utilisées.
+    - Les indicateurs spécifiques liés à différents types d'actions et de traitements.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'intervention_synthetise' : Données de base sur les interventions synthétisées.
+            - Les autres tables utilisées dans `get_intervention_synthetise_action_outils_can`
+              et `get_intervention_synthetise_semence_outils_can`.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les colonnes consolidées suivantes :
+            - `id` : Identifiant unique de l'intervention synthétisée.
+            - `interventions_actions` : Liste des actions associées à l'intervention.
+            - `especes_semees` : Description des espèces semées.
+            - `densite_semis` : Densité des semis.
+            - `unite_semis` : Unité de mesure pour la densité de semis.
+            - `traitement_chimique_semis` : Indique si un traitement chimique a été appliqué.
+            - `inoculation_biologique_semis` : Indique si une inoculation biologique a été réalisée.
+            - `type_semence` : Type de semences utilisées.
+            - `proportion_surface_traitee_phyto` : Proportion de surface traitée par produits phytosanitaires.
+            - `psci_phyto` : Indicateur de pression spécifique pour les phytosanitaires.
+            - `proportion_surface_traitee_lutte_bio` : Proportion de surface traitée en lutte biologique.
+            - `psci_lutte_bio` : Indicateur de pression spécifique pour la lutte biologique.
+            - `quantite_eau_mm` : Quantité d’eau utilisée pour l’irrigation (en millimètres).
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_synthetise': pd.DataFrame(...),
+            ...
+        }
+        result = get_intervention_synthetise_outils_can_context(donnees)
     """
     df_intervention_synthetise = donnees['intervention_synthetise']
 
@@ -1298,7 +1888,35 @@ def get_intervention_synthetise_combinaison_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe avec les informations sur les combinaisons d'outils
+    Permet d'obtenir un DataFrame contenant des informations détaillées sur les combinaisons d'outils
+    utilisées dans les interventions, avec les caractéristiques associées aux matériels et aux tracteurs.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'intervention_synthetise' : Données de base sur les interventions synthétisées.
+            - 'combinaison_outil' : Détails des combinaisons d'outils.
+            - 'materiel' : Informations sur les matériels associés aux outils.
+            - 'combinaison_outil_materiel' : Lien entre les combinaisons d'outils et les matériels.
+            - 'intervention_synthetise_restructure' : Dataframe restructuré des interventions synthétisé (pour éviter 
+            d'avoir à travailler avec des codes)
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations consolidées suivantes pour chaque intervention :
+            - `combinaison_outils_nom` : Nom de la combinaison d'outils.
+            - `tracteur_ou_automoteur` : Information sur le tracteur ou automoteur associé.
+            - `outils` : Liste des outils associés à la combinaison d'outils, séparés par `;`.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_synthetise': pd.DataFrame(...),
+            'combinaison_outil': pd.DataFrame(...),
+            'materiel': pd.DataFrame(...),
+            'combinaison_outil_materiel': pd.DataFrame(...),
+            'intervention_synthetise_restructure': pd.DataFrame(...)
+        }
+        result = get_intervention_synthetise_combinaison_outils_can(donnees)
     """
     df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
@@ -1357,8 +1975,48 @@ def get_intervention_synthetise_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir le dataframe final des interventions synthétisés pour la CAN
+    Permet d'obtenir le DataFrame final des interventions synthétisées pour la CAN.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'intervention_synthetise' : Données de base sur les interventions synthétisées.
+            - Les autres tables utilisées dans `get_intervention_synthetise_outils_can_context`,
+            `get_intervention_synthetise_combinaison_outils_can`, `get_intervention_synthetise_culture_outils_ca`
+            `get_intervention_synthetise_culture_prec_outils_can`, `get_intervention_synthetise_cibles_outils_ca`, 
+            `get_intervention_synthetise_rendement_outils_can`, `get_intervention_synthetise_nb_intrant_outils_can`
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations consolidées suivantes pour chaque intervention :
+            - `intervention_synthetise_id` : Identifiant unique de l'intervention.
+            - `interventions_actions` : Description des actions effectuées lors de l'intervention.
+            - `especes_semees` : Liste des espèces semées dans le cadre de l'intervention.
+            - `densite_semis` : Densité des semis (quantité de semences par unité de surface).
+            - `unite_semis` : Unité de mesure de la densité des semis.
+            - `traitement_chimique_semis` : Indicateur de l'utilisation d'un traitement chimique pour les semis (oui/non).
+            - `inoculation_biologique_semis` : Indicateur de l'utilisation d'inoculation biologique pour les semis (oui/non).
+            - `type_semence` : Type de semence utilisée pour l'intervention.
+            - `proportion_surface_traitee_phyto` : Proportion de la surface traitée avec des produits phytosanitaires.
+            - `proportion_surface_traitee_lutte_bio` : Proportion de la surface traitée avec des méthodes de lutte biologique.
+            - `psci_phyto` : Indicateur PSCI phyto.
+            - `psci_lutte_bio` : Indicateur PSCI lutte biologique.
+            - `quantite_eau_mm` : Quantité d'eau utilisée pour l'intervention (en millimètres).
+            - `combinaison_outils_nom` : Nom de la combinaison d'outils utilisés pour l'intervention.
+            - `tracteur_ou_automoteur` : Information sur le tracteur ou l'automoteur associé à la combinaison d'outils.
+            - `outils` : Liste des outils utilisés dans la combinaison d'outils.
+
+    Exemple d'utilisation :
+        donnees = {
+            'intervention_synthetise': pd.DataFrame(...),
+            'combinaison_outil': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'intrants': pd.DataFrame(...),
+            # autres DataFrames requis
+        }
+        result = get_intervention_synthetise_outils_can(donnees)
     """
+
     # ajout des informations de contexte sur l'intervention
     left = get_intervention_synthetise_outils_can_context(donnees).rename(
         columns={'id' : 'intervention_synthetise_id'}
@@ -1417,10 +2075,39 @@ def get_intervention_synthetise_intrants_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention synthétisé, la liste des intrants utilisés dans l'intervnetion, 
-        dans le format attendu par la CAN : 
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1
-        :  "CUPROXAT SC (0.5 L/ha), CUIVROL (0.5 kg/ha), HELIOSOUFRE S (4.0 L/ha), LAMINAFLOR (2.0 l/ha)"
+    Permet d'obtenir pour chaque intervention synthétisée, la liste des intrants utilisés dans l'intervention, 
+    dans le format attendu par la CAN.
+
+    Cette fonction regroupe les informations sur les intrants appliqués lors de chaque intervention et les formate en indiquant notamment 
+    les produits chimiques et leurs doses, les types d'intrants 
+    (autre, semis, etc.), et les méthodes de biocontrôle utilisées.
+
+    Par exemple, pour l'intervention `fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1`, 
+    la sortie doit être : 
+    "CUPROXAT SC (0.5 L/ha), CUIVROL (0.5 kg/ha), HELIOSOUFRE S (4.0 L/ha), LAMINAFLOR (2.0 l/ha)".
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'utilisation_intrant_synthetise' : Données relatives à l'utilisation des intrants par intervention.
+            - 'intrant' : Informations sur les intrants utilisés (par exemple, type et nom des intrants).
+        variable(s) globale(s) :
+            'UNITE_APPLICATION' : Information sur les unités d'application des intrants.
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations suivantes pour chaque intervention :
+            - `intervention_synthetise_id` : Identifiant unique de l'intervention.
+            - `interventions_intrants` : Liste des intrants utilisés dans l'intervention sous le format attendu par la CAN.
+            - `biocontrole` : Indicateur de l'utilisation de biocontrole (valeurs 'oui' ou 'non').
+
+    Exemple d'utilisation :
+        donnees = {
+            'utilisation_intrant_synthetise': pd.DataFrame(...),
+            'intrant': pd.DataFrame(...),
+        }
+        UNITE_APPLICATION = {'AA_HA': 'Aa/ha', ...}
+
+        result = get_intervention_synthetise_intrants_outils_can(donnees)
     """
     df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise'].set_index('id')
     df_intrant = donnees['intrant'].set_index('id')
@@ -1469,9 +2156,41 @@ def get_intervention_synthetise_cibles_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention synthétisé, la liste des cibles concernées par l'intervention, dans le format attendu par la CAN
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1
-        :  "Mildiou, Oïdium"
+    Permet d'obtenir pour chaque intervention synthétisée, la liste des cibles concernées par l'intervention, 
+    dans le format attendu par la CAN.
+
+    Cette fonction identifie les cibles (adventices ou nuisibles) qui sont concernées par l'intervention 
+    et les formate en indiquant notamment les groupes cibles associés.
+
+    Par exemple, pour l'intervention `fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1`, 
+    la sortie pourrait être : 
+    `"Mildiou, Oïdium"`.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'utilisation_intrant_synthetise' : Données relatives à l'utilisation des intrants par intervention.
+            - 'utilisation_intrant_cible' : Informations sur les cibles associées aux intrants utilisés.
+            - 'nuisible_edi' : Nuisibles.
+            - 'adventice' : Adventices.
+            - 'groupe_cible' : Groupes cibles des interventions (pour les cibles spécifiques).
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations suivantes pour chaque intervention :
+            - `id` : Identifiant unique de l'intervention.
+            - `interventions_cibles_trait` : Liste des cibles concernées par l'intervention sous le format attendu par la CAN.
+            - `interventions_groupe_cible` : Liste des groupes cibles associés à l'intervention.
+
+    Exemple d'utilisation :
+        donnees = {
+            'utilisation_intrant_synthetise': pd.DataFrame(...),
+            'utilisation_intrant_cible': pd.DataFrame(...),
+            'nuisible_edi': pd.DataFrame(...),
+            'adventice': pd.DataFrame(...),
+            'groupe_cible': pd.DataFrame(...),
+        }
+        result = get_intervention_synthetise_cibles_outils_can(donnees)
     """
 
     df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise'].set_index('id')
@@ -1523,9 +2242,31 @@ def get_intervention_synthetise_nb_intrant_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention synthétisé, le nombre d'utilisation d'intrants contenues.
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1
-        :  4
+    Permet d'obtenir pour chaque intervention synthétisée, le nombre d'utilisations d'intrants associées à l'intervention.
+
+    Cette fonction calcule le nombre total d'intrants utilisés dans chaque intervention synthétisée en comptabilisant 
+    le nombre d'occurrences des intrants dans les données d'utilisation des intrants.
+
+    Par exemple, pour l'intervention `fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1`, 
+    la sortie doit être : 
+    `4`.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'utilisation_intrant_synthetise' : Données relatives à l'utilisation des intrants par intervention.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations suivantes pour chaque intervention :
+            - `id` : Identifiant unique de l'intervention.
+            - `nb_intrants` : Nombre d'intrants utilisés dans l'intervention.
+
+    Exemple d'utilisation :
+        donnees = {
+            'utilisation_intrant_synthetise': pd.DataFrame(...),
+        }
+        result = get_intervention_synthetise_nb_intrant_outils_can(donnees)
     """
     df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise']
 
@@ -1539,9 +2280,41 @@ def get_intervention_synthetise_rendement_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir pour chaque intervention synthétisé, la liste des rendements / destinationsl'intervention, dans le format attendu par la CAN
-        Par ex, pour l'intervention fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_aadac31e-c5ff-450e-97e9-a4fc13a361ec
-        :  [Fourrage (enrubannage)]|6,000000|t MS/ha#[Fourrage (foin)]|5,000000|t MS/ha
+    Permet d'obtenir pour chaque intervention synthétisée, la liste des rendements et destinations associés à l'intervention,
+    dans le format attendu par la CAN.
+
+    Cette fonction génère une liste des rendements et de leurs destinations dans un format spécifique, par exemple :
+
+    Par exemple, pour l'intervention `fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_aadac31e-c5ff-450e-97e9-a4fc13a361ec`,
+    la sortie pourrait être :
+    `[Fourrage (enrubannage)]|6,000000|t MS/ha#[Fourrage (foin)]|5,000000|t MS/ha`
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'recolte_rendement_prix' : Données relatives aux rendements associés aux récoltes.
+            - 'recolte_rendement_prix_restructure' : Données restructurées des rendements.
+            - 'action_synthetise' : Données sur les actions liées à chaque intervention.
+        variable(s) globale(s) :
+            'UNITE_RENDEMENT' : Dictionnaire global contenant la correspondance entre les unités internes 
+              et les unités utilisateur.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations suivantes pour chaque intervention :
+            - `id` : Identifiant unique de l'intervention.
+            - `rendement_total` : Liste des rendements et de leurs destinations, sous le format spécifié.
+
+    Exemple d'utilisation :
+        donnees = {
+            'recolte_rendement_prix': pd.DataFrame(...),
+            'recolte_rendement_prix_restructure': pd.DataFrame(...),
+            'action_synthetise': pd.DataFrame(...),
+        }
+
+        UNITE_RENDEMENT = {}
+
+        result = get_intervention_synthetise_rendement_outils_can(donnees)
     """
     recolte_rendement_prix = donnees['recolte_rendement_prix'].set_index('id')
     recolte_rendement_prix_restructure = donnees['recolte_rendement_prix_restructure'].set_index('id')
@@ -1580,11 +2353,47 @@ def get_parcelles_non_rattachees_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir des informations sur les parcelles non-rattachées
-        On agrège toutes les informations au niveau du domaine auquel elles appartiennent.
-        On ne considère : 
-            - que les parcelles qui contiennent des interventions
-            - que les parcelles qui ont une surface > 0
+    Permet d'obtenir des informations sur les parcelles non-rattachées et agrège toutes les informations au niveau du domaine
+    auquel elles appartiennent.
+
+    Cette fonction filtre les parcelles pour ne conserver que celles qui :
+    - Contiennent des interventions réalisées.
+    - Ont une surface > 0.
+
+    Les informations agrégées incluent des données sur les réseaux, les dispositifs et les domaines associés.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'parcelle' : Données des parcelles.
+            - 'reseau' : Données des réseaux associés aux dispositifs.
+            - 'liaison_reseaux' : Liaison des réseaux et autres données associées.
+            - 'liaison_sdc_reseau' : Affectation des systèmes de cultures à un ou plusieurs réseaux.
+            - 'sdc' : Données des systèmes de cutlures.
+            - 'dispositif' : Données des dispositifs.
+            - 'intervention_realise_agrege' : Données des interventions réalisées.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations agrégées sur les parcelles non-rattachées, avec les colonnes suivantes :
+            - `id` : Identifiant du domaine.
+            - `nb_parcelles_sans_sdc` : Nombre de parcelles sans SDC rattaché.
+            - `nb_parcelles_avec_id_edaplos` : Nombre de parcelles avec un identifiant Edaplos.
+            - `reseaux_ir` : Liste des réseaux associés au domaine.
+            - `reseaux_it` : Liste des réseaux parents associés au domaine.
+            - `codes_convention_dephy` : Liste des codes de convention Dephy associés.
+
+    Exemple d'utilisation :
+        donnees = {
+            'parcelle': pd.DataFrame(...),
+            'reseau': pd.DataFrame(...),
+            'liaison_reseaux': pd.DataFrame(...),
+            'liaison_sdc_reseau': pd.DataFrame(...),
+            'sdc': pd.DataFrame(...),
+            'dispositif': pd.DataFrame(...),
+            'intervention_realise_agrege': pd.DataFrame(...),
+        }
+        result = get_parcelles_non_rattachees_outils_can(donnees)
     """
     df_parcelle = donnees['parcelle'].set_index('id')
     df_reseau = donnees['reseau'].set_index('id')
@@ -1658,7 +2467,34 @@ def get_culture_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir des informations agrégées sur les cultures (sous le format désiré par la CAN)
+    Permet d'obtenir des informations agrégées sur les cultures, sous le format désiré par la CAN.
+
+    Cette fonction agrège les informations concernant les espèces et les variétés des cultures. Elle inclut des informations
+    détaillées sur les espèces, telles que leur nom botanique, type saisonnier, destination et d'autres caractéristiques.
+    Elle fournit également un format nettoyé pour les performances et une liste des variétés associées à chaque culture.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'composant_culture' : Données des composants des cultures.
+            - 'espece' : Données des espèces associées aux cultures.
+            - 'variete' : Données des variétés associées aux cultures.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations agrégées sur les cultures, avec les colonnes suivantes :
+            - `id` : Identifiant de la culture.
+            - `complet_espece_edi` : Description complète de l'espèce (avec libellés complets, séparée par des `;`).
+            - `complet_espece_edi_nettoye` : Description simplifiée de l'espèce (nom botanique uniquement, séparée par des `,`).
+            - `variete_nom` : Liste des variétés associées à la culture, séparée par des `,`.
+
+    Exemple d'utilisation :
+        donnees = {
+            'composant_culture': pd.DataFrame(...),
+            'espece': pd.DataFrame(...),
+            'variete': pd.DataFrame(...),
+        }
+        result = get_culture_outils_can(donnees)
     """
     df_composant_culture = donnees['composant_culture'].set_index('id')
     df_espece = donnees['espece'].set_index('id')
@@ -1711,7 +2547,41 @@ def get_culture_outils_can(
 def get_recolte_realise_outils_can(
         donnees
 ):
-    """ permet d'obtenir les informations sur les récoltes en réalisé (cf get_recolte_outils_can)"""
+    """
+    Permet d'obtenir les informations sur les récoltes en réalisé, en ajustant les rendements et en prenant en compte
+    les mélanges d'espèces et de variétés. La fonction corrige les surfaces relatives des récoltes et calcule des valeurs
+    agrégées par destination et unité de rendement.
+
+    Args:
+        donnees (dict): 
+            Un dictionnaire contenant plusieurs DataFrames nécessaires à l'agrégation des informations sur les récoltes réalisées :
+            - 'composant_culture' : Données des composants des cultures.
+            - 'culture' : Données des cultures associées aux composants.
+            - 'composant_culture_concerne_intervention_realise' : Données des composants concernés par les interventions réalisées.
+            - 'recolte_rendement_prix' : Données des rendements des récoltes.
+            - 'recolte_rendement_prix_restructure' : Données des rendements restructurés.
+            - 'action_realise' : Données des actions réalisées associées aux récoltes.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame avec des informations agrégées par destination, unité de rendement et action réalisée :
+            - `destination` : La destination des récoltes.
+            - `rendement_unite` : L'unité de mesure du rendement.
+            - `action_id` : L'identifiant de l'action réalisée.
+            - `rendement_moy_corr`, `rendement_median_corr`, `rendement_max_corr`, `rendement_min_corr` : Rendements corrigés par surface relative.
+            - `commercialisation_pct_corr`, `autoconsommation_pct_corr`, `nonvalorisation_pct_corr` : Pourcentages corrigés par surface relative de commercialisation, autoconsommation, et non valorisation.
+
+    Exemple d'utilisation :
+        donnees = {
+            'composant_culture': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'composant_culture_concerne_intervention_realise': pd.DataFrame(...),
+            'recolte_rendement_prix': pd.DataFrame(...),
+            'recolte_rendement_prix_restructure': pd.DataFrame(...),
+            'action_realise': pd.DataFrame(...),
+        }
+        result = get_recolte_realise_outils_can(donnees)
+    """
     df = donnees.copy()
     df['composant_culture'] = df['composant_culture'].set_index('id')
     df['culture'] = df['culture'].set_index('id')
@@ -1816,7 +2686,63 @@ def get_recolte_realise_outils_can(
 def get_recolte_synthetise_outils_can(
         donnees
 ):
-    """ permet d'obtenir les informations sur les recoltes en synthétisé (cf get_recolte_outils_can)"""
+    """
+    Permet d'obtenir une version synthétisée des informations relatives aux récoltes. 
+    Cette fonction effectue plusieurs étapes d'agrégation et de correction des données, notamment en prenant 
+    en compte les surfaces relatives et les mélanges d'espèces ou de variétés. Les résultats sont ensuite 
+    regroupés par destination et unité de rendement.
+
+    La fonction suit les étapes suivantes :
+    1. Fusionne les informations sur les composants de culture avec les cultures, pour déterminer si un composant 
+       appartient à un "mélange espèce" ou "mélange variété".
+    2. Calcule la surface relative corrigée en tenant compte des surfaces relatives existantes et en les ajustant 
+       si nécessaire.
+    3. Agrège les données de rendement et d'interventions pour calculer les rendements corrigés (moyens, médian, 
+       maximum et minimum).
+    4. Regroupe les données finales par destination, unité de rendement et identifiant d'action, puis calcule les 
+       totaux pour chaque groupe.
+
+    Args:
+        donnees (dict): Un dictionnaire contenant plusieurs DataFrames nécessaires à l'agrégation des informations
+                        sur les récoltes :
+                        - 'composant_culture' : Données des composants des cultures.
+                        - 'culture' : Données des cultures associées aux composants.
+                        - 'composant_culture_concerne_intervention_synthetise' : Données des composants 
+                          concernés par les interventions réalisées.
+                        - 'ccc_intervention_synthetise_restructure' : Données sur les interventions restructurées.
+                        - 'recolte_rendement_prix' : Données des rendements des récoltes.
+                        - 'recolte_rendement_prix_restructure' : Données des rendements restructurés.
+                        - 'action_synthetise' : Données des actions synthétisées associées aux récoltes.
+
+    Returns:
+        pd.DataFrame: Un DataFrame avec des informations agrégées et corrigées sur les récoltes :
+                      - `destination` : La destination des récoltes.
+                      - `rendement_unite` : L'unité de mesure du rendement.
+                      - `action_id` : L'identifiant de l'action réalisée.
+                      - `rendement_moy_corr`, `rendement_median_corr`, `rendement_max_corr`, 
+                        `rendement_min_corr` : Rendements corrigés par surface relative.
+                      - `commercialisation_pct_corr`, `autoconsommation_pct_corr`, 
+                        `nonvalorisation_pct_corr` : Pourcentages corrigés par surface relative de 
+                        commercialisation, autoconsommation, et non valorisation.
+
+    Exemple d'utilisation :
+        donnees = {
+            'composant_culture': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'composant_culture_concerne_intervention_synthetise': pd.DataFrame(...),
+            'ccc_intervention_synthetise_restructure': pd.DataFrame(...),
+            'recolte_rendement_prix': pd.DataFrame(...),
+            'recolte_rendement_prix_restructure': pd.DataFrame(...),
+            'action_synthetise': pd.DataFrame(...),
+        }
+        result = get_recolte_synthetise_outils_can(donnees)
+
+    Notes:
+        - La fonction traite des données historiques et applique des corrections spécifiques dans certains cas où 
+          les surfaces totales dépassent 100%. 
+        - Les résultats sont regroupés par destination et unité de rendement, et les rendements sont ajustés 
+          en fonction des surfaces relatives corrigées.
+    """
     df = donnees.copy()
     df['composant_culture'] = df['composant_culture'].set_index('id')
     df['culture'] = df['culture'].set_index('id')
@@ -1929,14 +2855,39 @@ def get_recolte_outils_can(
     donnees
 ):
     """ 
-        permet d'obtenir les informations sur les récoltes en réalisé
-        Attention : 
-        - on veut un seul résultat par action de récolte (pas par action de valorisation)
-        - le résultat diffère en fonction de s'il s'agit d'un mélange d'espèce ou non (soit on fait la moyenne pondérée, soit on fait la somme)
-        - il y a plusieurs problèmes historiques sur les données (répartition des espèces absentes, mélanges d'especes non renseigné...)
+    Permet d'obtenir les informations sur les récoltes réalisées. La fonction récupère et fusionne 
+    les données relatives aux récoltes effectuées à partir de deux fonctions : 
+    `get_recolte_realise_outils_can` pour les récoltes réelles et `get_recolte_synthetise_outils_can` 
+    pour les récoltes synthétisées. Ensuite, elle fusionne ces résultats pour produire un seul tableau final.
 
-        à la fin, la clé unique est : 
-            - 'destination_id', 'rendement_unite', 'action_id'
+    Args:
+        donnees (dict): Un dictionnaire contenant plusieurs DataFrames nécessaires: 
+            - Les autres tables utilisées dans `get_intervention_synthetise_outils_can_context`,
+                `get_recolte_realise_outils_can`, `get_recolte_synthetise_outils_can`
+    
+    Returns:
+        pd.DataFrame: Un DataFrame consolidé avec les informations sur les récoltes réalisées et synthétisées. 
+                      Le résultat contient les colonnes 
+                        `destination_id`, 
+                        `rendement_unite`,
+                        `action_id` 
+                      ainsi que des informations agrégées sur les rendements, en tenant compte des ajustements 
+                      et des corrections historiques.
+
+    Exemple d'utilisation :
+        donnees = {
+            'composant_culture': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'action_synthetise': pd.DataFrame(...),
+            ...
+        }
+        result = get_recolte_outils_can(donnees)
+
+    Notes:
+        - La fonction fait appel à deux sous-fonctions (`get_recolte_realise_outils_can` et 
+          `get_recolte_synthetise_outils_can`) pour récupérer et combiner les résultats des récoltes réalisées.
+        - La gestion des mélanges d'espèces et des problèmes historiques dans les données doit être prise en compte 
+          pour assurer l'exactitude des résultats.
     """
     resultat_realise = get_recolte_realise_outils_can(donnees)
     resultat_synthetise = get_recolte_synthetise_outils_can(donnees)
@@ -1949,13 +2900,27 @@ def get_zone_realise_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir les informations liées aux zones. 
-        Morcelé en 2 sous-fonctions : 
-        get_zone_realise_culture_outils_can : 
-            - culture_especes_edi (concaténation de toutes les espèces sur la zone)
-            - variete_nom (concaténation de toutes les variétés sur la zone)
-        get_zone_realise_rendement_outils_can : 
-            - rendement_culture (concaténation de tous les rendements sur la zone)
+    Permet d'obtenir les informations liées aux zones. La fonction combine les données de deux sous-fonctions 
+    pour fournir des informations sur les cultures, les variétés, et les rendements associés à chaque zone.
+
+    Args:
+        donnees (dict): 
+                - Les autres tables utilisées dans `get_zone_realise_culture_outils_can`, 
+                `get_zone_realise_rendement_outils_can`
+    
+    Returns:
+        pd.DataFrame: Un DataFrame contenant les informations sur les zones, avec les colonnes suivantes :
+                        - `id` : Identifiant de la zone.
+                        - `variete_nom` : Concaténation des variétés sur la zone.
+                        - `culture_especes_edi` : Concaténation des espèces sur la zone.
+                        - `rendement_culture` : Concaténation des rendements de culture sur la zone.
+
+    Exemple d'utilisation :
+        donnees = {
+            'zone': pd.DataFrame(...),
+            ...
+        }
+        result = get_zone_realise_outils_can(donnees)
     """
     df_zone= donnees['zone']
 
@@ -1973,8 +2938,34 @@ def get_zone_realise_rendement_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir les informations des cultures liées aux zones
-            - rendement_culture (concaténation de tous les rendements sur la zone)
+    Permet d'obtenir les informations de rendement des cultures liées aux zones. La fonction calcule la somme des rendements 
+    moyens pour chaque zone et les regroupe sous une forme concaténée pour chaque zone.
+
+    À la fin, la fonction retourne un DataFrame où chaque zone est associée à un rendement total sous forme de chaîne concaténée.
+
+
+    Args:
+        donnees (dict): 
+            - Les autres tables utilisées dans `get_recolte_realise_outils_can`, 
+            - 'action_realise_agrege' : Données des actions en réalisé.
+
+    Returns:
+        pd.DataFrame: Un DataFrame contenant les rendements totaux par zone, avec les colonnes suivantes :
+                        - `id` : Identifiant de la zone.
+                        - `rendement_culture` : Rendement total concaténé sous forme de chaîne.
+
+    Exemple d'utilisation :
+        donnees = {
+            'zone': pd.DataFrame(...),
+            'action_realise_agrege': pd.DataFrame(...),
+            ...
+        }
+        result = get_zone_realise_rendement_outils_can(donnees)
+
+    Notes:
+        - Les rendements sont regroupés par zone et concaténés pour former une chaîne de caractères qui inclut 
+          la destination, le rendement moyen corrigé, et l'unité de rendement.
+        - La fonction utilise les données des récoltes réalisées et les actions agrégées pour obtenir les informations de rendement.
     """
     # on ajoute les informations sur les action
     left = get_recolte_realise_outils_can(donnees)
@@ -2010,9 +3001,42 @@ def get_zone_realise_culture_outils_can(
         donnees
 ):
     """
-        Permet d'obtenir les informations des cultures liées aux zones
-                - culture_especes_edi (concaténation de toutes les espèces sur la zone)
-                - variete_nom (concaténation de toutes les variétés sur la zone)
+    Permet d'obtenir les informations des cultures liées aux zones, notamment les espèces cultivées et les variétés. 
+
+    La sortie contient les colonnes suivantes :
+        - `id` : Identifiant de la zone.
+        - `culture_especes_edi` : Liste des espèces cultivées dans la zone, concaténées sous forme de chaîne.
+        - `variete_nom` : Liste des variétés cultivées dans la zone, concaténées sous forme de chaîne.
+
+    Args:
+        donnees (dict): 
+                - 'culture' : Données des cultures.
+                - 'composant_culture' : Composants de cultures. 
+                - 'espece' : Espèces.
+                - 'variete' : Variétés.
+                - 'noeuds_realise' : Noeuds en réalisé.
+                - 'plantation_perenne_realise' : Plantation perenne en réalisé.
+
+    Returns:
+        pd.DataFrame: Un DataFrame contenant les informations sur les cultures par zone, avec les colonnes suivantes :
+                        - `id` : Identifiant de la zone.
+                        - `culture_especes_edi` : Liste concaténée des espèces cultivées dans la zone.
+                        - `variete_nom` : Liste concaténée des variétés cultivées dans la zone.
+
+    Exemple d'utilisation :
+        donnees = {
+            'culture': pd.DataFrame(...),
+            'composant_culture': pd.DataFrame(...),
+            'espece': pd.DataFrame(...),
+            'variete': pd.DataFrame(...),
+            'noeuds_realise': pd.DataFrame(...),
+            'plantation_perenne_realise': pd.DataFrame(...),
+            ...
+        }
+        result = get_zone_realise_culture_outils_can(donnees)
+
+    Notes:
+        - Les valeurs manquantes sont remplacées par des chaînes vides pour éviter les erreurs lors de la concaténation.
     """
     df_culture = donnees['culture']
     df_composant_culture = donnees['composant_culture']
@@ -2102,11 +3126,34 @@ def get_sdc_realise_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir les informations des cultures liées aux sdc
-                - especes (concaténation de toutes les espèces sur le sdc)
-                - variete (concaténation de toutes les variétés sur le sdc)
-    """
+    Permet d'obtenir les informations des cultures liées aux SDC (Systèmes de Culture), notamment les espèces et les variétés cultivées dans chaque SDC.
 
+    La sortie contient les colonnes suivantes :
+        - `id` : Identifiant du SDC.
+        - `especes` : Liste concaténée des espèces cultivées dans le SDC.
+        - `varietes` : Liste concaténée des variétés cultivées dans le SDC.
+
+    Args:
+        donnees (dict): Un dictionnaire contenant les DataFrames nécessaires,
+            - 'zone' : Zones.
+            - 'parcelle' : Parcelles.
+            - Les autres tables utilisées dans `get_zone_realise_culture_outils_can`, 
+
+    Returns:
+        pd.DataFrame: Un DataFrame contenant les informations sur les espèces et variétés cultivées dans chaque SDC, avec les colonnes suivantes :
+                        - `id` : Identifiant du SDC.
+                        - `especes` : Concaténation des espèces cultivées dans le SDC.
+                        - `varietes` : Concaténation des variétés cultivées dans le SDC.
+
+    Exemple d'utilisation :
+        donnees = {
+            'zone': pd.DataFrame(...),
+            'parcelle': pd.DataFrame(...),
+            ...
+        }
+        result = get_sdc_realise_outils_can(donnees)
+
+    """
     # Fonction pour fusionner les valeurs d'une colonne sépare par une virgule, en évitant les doublons
     def merge_concat(values):
         # Split les valeurs par ", ", puis enlever les doublons avec set, enfin rejoindre avec ", "
@@ -2159,9 +3206,31 @@ def get_parcelle_realise_outils_can(
     donnees
 ):
     """
-        Permet d'obtenir les informations des cultures liées aux sdc
-                - especes (concaténation de toutes les espèces sur le sdc)
-                - variete (concaténation de toutes les variétés sur le sdc)
+    Permet d'obtenir les informations des cultures liées aux parcelles, notamment les espèces, les variétés et les rendements des cultures dans chaque parcelle.
+
+    Args:
+        donnees (dict): Un dictionnaire contenant les DataFrames nécessaires,
+            - 'zone' : Zones.
+            - 'parcelle' : Parcelles.
+            - Les autres tables utilisées dans `get_zone_realise_culture_outils_can`, 
+
+    Returns:
+        pd.DataFrame: Un DataFrame contenant les informations sur les espèces, variétés et rendements cultivés dans chaque parcelle, avec les colonnes suivantes :
+                        - `id` : Identifiant de la parcelle.
+                    - `especes` : Concaténation des espèces cultivées dans la parcelle.
+                    - `varietes` : Concaténation des variétés cultivées dans la parcelle.
+                    - `rendement` : Concaténation des rendements des cultures dans la parcelle.
+
+    Exemple d'utilisation :
+        donnees = {
+            'zone': pd.DataFrame(...),
+            'parcelle': pd.DataFrame(...),
+            ...
+        }
+        result = get_parcelle_realise_outils_can(donnees)
+
+    Notes:
+        - Les valeurs manquantes pour les espèces, variétés et rendements sont remplacées par des chaînes vides avant d'effectuer les agrégations.
     """
 
     # Fonction pour fusionner les valeurs d'une colonne sépare par une virgule, en évitant les doublons
