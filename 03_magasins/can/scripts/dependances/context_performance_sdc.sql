@@ -4,9 +4,9 @@ with reseaux_agg as (
 	string_agg(distinct er2.nom, ', ') as nom_reseau_it, 
 	string_agg(distinct er.nom,', ') as nom_reseau_ir
 	from entrepot_liaison_sdc_reseau elsr 
-	join entrepot_reseau er on elsr.reseau_id = er.id
-	join entrepot_liaison_reseaux elr on elr.reseau_id = er.id 
-	join entrepot_reseau er2 on er2.id = elr.reseau_parent_id
+	left join entrepot_reseau er on elsr.reseau_id = er.id
+	left join entrepot_liaison_reseaux elr on elr.reseau_id = er.id 
+	left join entrepot_reseau er2 on er2.id = elr.reseau_parent_id
 	group by  elsr.sdc_id
 )
 select 
@@ -27,6 +27,6 @@ select
 	es.validite as sdc_valide, 
 	es.modalite_suivi_dephy  as sdc_modalite_suivi_dephy
 from entrepot_sdc es 
-join reseaux_agg r on r.sdc_id = es.id 
+left join reseaux_agg r on r.sdc_id = es.id 
 join entrepot_dispositif ed on ed.id = es.dispositif_id 
 join entrepot_domaine ed2 on ed2.id = ed.domaine_id;
