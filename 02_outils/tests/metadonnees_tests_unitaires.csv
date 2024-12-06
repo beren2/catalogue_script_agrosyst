@@ -478,6 +478,7 @@ test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_4dc1
 test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_7459c92b-3f01-471e-898b-05d1bef463a1,Vigne,,culture_especes_edi
 test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_36558cba-a513-43ed-b68f-98500628c80f,Blé tendre,,culture_especes_edi
 test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_faddd433-f219-41e9-85e8-90d071649193,Concombre,,culture_especes_edi
+test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_1fe57084-ae72-4f09-a028-f24906f92a82,"Tournesol, Maïs, Epeautre, Lentille, Lin, Blé tendre, Avoine, Vesce commune, Moutarde brune",,culture_especes_edi
 test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_589d7161-1def-4816-b688-050fe8e730f5,Sydney,,variete_nom
 test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_30b065f2-d6d3-4cdd-895c-8021a23b584f,Diva,,variete_nom
 test_get_zone_realise_culture_outils_can,fr.inra.agrosyst.api.entities.Zone_7459c92b-3f01-471e-898b-05d1bef463a1,Chardonnay B,,variete_nom

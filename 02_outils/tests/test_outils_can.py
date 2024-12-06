@@ -319,7 +319,7 @@ def test_get_zone_realise_culture_outils_can():
 
     df_names = [
         'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
-        'plantation_perenne_phases_realise', 'parcelle'
+        'plantation_perenne_phases_realise', 'parcelle','connection_realise'
     ]
 
     path_data = '02_outils/tests/data/test_get_zone_realise_culture_outils_can/'

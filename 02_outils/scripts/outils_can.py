@@ -3044,6 +3044,7 @@ def get_zone_realise_culture_outils_can(
     df_variete = donnees['variete'].set_index('id')
     df_noeuds_realise = donnees['noeuds_realise']
     df_plantation_perenne_realise = donnees['plantation_perenne_realise']
+    df_connection_realise = donnees['connection_realise']
 
     # on rajoute au composant de culture les informations sur les variétés et les espèces
     left = df_composant_culture
@@ -3091,12 +3092,21 @@ def get_zone_realise_culture_outils_can(
     right = df_noeuds_realise.rename(columns={'id' : 'noeuds_realise_id'})
     merge_assolee = pd.merge(left, right, on='culture_id', how='inner')
 
+    # on rajoute aussi la culture intermediaire
+    left = df_connection_realise.rename(columns={'id' : 'connection_id'})
+    right = df_noeuds_realise.rename(columns={'id' : 'noeuds_realise_id'})
+    noeuds_connection = pd.merge(left, right, left_on='source_noeuds_realise_id', right_on = 'noeuds_realise_id', how='inner')
+
+    left = df_culture.rename(columns={'id' : 'culture_id'})
+    right = noeuds_connection[['culture_intermediaire_id','noeuds_realise_id','rang','zone_id']]
+    merge_ci = pd.merge(left, right, left_on='culture_id', right_on = 'culture_intermediaire_id', how='inner')
+    
     # on rajoute à la culture l'information de la zone pour les perennes
     left = df_culture.rename(columns={'id' : 'culture_id'})
     right = df_plantation_perenne_realise.rename(columns={'id' : 'plantation_perenne_realise_id'})
     merge_perenne = pd.merge(left, right, on='culture_id', how='inner')
 
-    merge = pd.concat([merge_assolee, merge_perenne])
+    merge = pd.concat([merge_assolee, merge_ci, merge_perenne])
 
     # on rajoute aux composants de culture les informations sur les zones :
     left = df_composant_culture_extanded[['esp', 'var', 'esp_complet', 'esp_complet_var', 'culture_id']]
