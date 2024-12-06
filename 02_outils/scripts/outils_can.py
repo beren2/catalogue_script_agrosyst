@@ -3095,10 +3095,11 @@ def get_zone_realise_culture_outils_can(
     # on rajoute aussi la culture intermediaire
     left = df_connection_realise.rename(columns={'id' : 'connection_id'})
     right = df_noeuds_realise.rename(columns={'id' : 'noeuds_realise_id'})
-    noeuds_connection = pd.merge(left, right, left_on='source_noeuds_realise_id', right_on = 'noeuds_realise_id', how='inner')
+    noeuds_connection = pd.merge(left, right, left_on='cible_noeuds_realise_id', right_on = 'noeuds_realise_id', how='inner')
 
     left = df_culture.rename(columns={'id' : 'culture_id'})
     right = noeuds_connection[['culture_intermediaire_id','noeuds_realise_id','rang','zone_id']]
+    right = right.dropna()
     merge_ci = pd.merge(left, right, left_on='culture_id', right_on = 'culture_intermediaire_id', how='inner')
     
     # on rajoute à la culture l'information de la zone pour les perennes

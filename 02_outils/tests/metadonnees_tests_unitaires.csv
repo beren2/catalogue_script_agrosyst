@@ -488,7 +488,21 @@ test_get_zone_realise_rendement_outils_can,fr.inra.agrosyst.api.entities.Zone_54
 test_get_zone_realise_rendement_outils_can,fr.inra.agrosyst.api.entities.Zone_a8143bb7-584c-46e7-840f-e55e7f9e40e0,[Fourrage (ensilage)]|10.0|t MS/ha,,rendement_culture
 test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_620b147e-fa8d-4105-aa34-2da69120285f,[Grain]|70.0|q/ha (humidité ramenée à la norme)#[Grain (amidon)]|70.0|q/ha (humidité ramenée à la norme)#[Paille]|3.5|t MS/ha,,rendement_culture
 test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_54476254-68fd-4c78-95a4-e29b5e49575e,[A compléter]|6.33|t/ha#[Fourrage (enrubannage)]|2.07|t MS/ha#[Fourrage (foin)]|4.75|t MS/ha,,rendement_culture
-test_get_sdc_realise_outils_can,fr.inra.agrosyst.api.entities.GrowingSystem_988e137f-f864-4e56-b845-774dcf017743,"Avoine, Blé tendre, Maïs, Prairie",,especes
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_36558cba-a513-43ed-b68f-98500628c80f,"[Grain]|48.0|q/ha (humidité ramenée à la norme)",,rendement_culture
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_faddd433-f219-41e9-85e8-90d071649193,"[Toutes catégories - tous calibres]|165.0|unité/ha",,rendement_culture
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_7459c92b-3f01-471e-898b-05d1bef463a1,"[Toutes appellations / Tous modes de commercialisation]|40.0|hL vin/ha",,rendement_culture
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_589d7161-1def-4816-b688-050fe8e730f5,"[Fourrage (foin)]|0.56|t MS/ha#[Grain]|125.56|q/ha (humidité ramenée à la norme)",,rendement_culture
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_4dc17026-f913-4084-98cc-06e5a88348f3,"[Fourrage (ensilage)]|23.8|t MS/ha#[Grain]|105.0|q/ha (humidité ramenée à la norme)",,rendement_culture
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_30b065f2-d6d3-4cdd-895c-8021a23b584f,"[Grain (alimentation animale)]|24.0|q/ha (humidité ramenée à la norme)",,rendement_culture
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_30b065f2-d6d3-4cdd-895c-8021a23b584f,Fèverole,,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_620b147e-fa8d-4105-aa34-2da69120285f,Blé tendre,,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_4dc17026-f913-4084-98cc-06e5a88348f3,"Maïs, Mélange Fourrager",,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_589d7161-1def-4816-b688-050fe8e730f5,"Sorgho, Trèfle incarnat, Phacélie, Seigle",,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_7459c92b-3f01-471e-898b-05d1bef463a1,Vigne,,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_faddd433-f219-41e9-85e8-90d071649193,Concombre,,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_36558cba-a513-43ed-b68f-98500628c80f,Blé tendre,,culture_especes_edi
+test_get_zone_realise_outils_can,fr.inra.agrosyst.api.entities.Zone_54476254-68fd-4c78-95a4-e29b5e49575e,Luzerne,,culture_especes_edi
+test_get_sdc_realise_outils_can,fr.inra.agrosyst.api.entities.GrowingSystem_988e137f-f864-4e56-b845-774dcf017743,"Avoine, Blé tendre, Maïs, Prairie, Ray-grass d'Italie",,especes
 test_get_sdc_realise_outils_can,fr.inra.agrosyst.api.entities.GrowingSystem_aec1ef69-0f7f-44cb-8054-c43a5bd056ec,"Avoine, Espèces diverses, Maïs, Orge, Prairie, Soja, Tournesol",,especes
 test_get_sdc_realise_outils_can,fr.inra.agrosyst.api.entities.GrowingSystem_920d10f9-a370-4b9b-856e-94c775584a89,Vigne,,especes
 test_get_sdc_realise_outils_can,fr.inra.agrosyst.api.entities.GrowingSystem_8d5038ab-b28a-4c36-b5d5-3e9fef06ec57,Vigne,,especes
@@ -496,7 +510,7 @@ test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_767b5d1d
 test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_b2a65257-aa63-4c05-91b9-558919b4ae0b,,,varietes
 test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_d0583d18-5a2c-4fa1-86e6-09d9071974b9,Franceline,,varietes
 test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_767b5d1d-3d66-4383-8f58-8863dcdc0c5a,Maïs,,especes
-test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_b2a65257-aa63-4c05-91b9-558919b4ae0b,Lin,,especes
+test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_b2a65257-aa63-4c05-91b9-558919b4ae0b,"Avoine, Lin, Moutarde blanche, Radis, Trèfle d'Alexandrie",,especes
 test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_d0583d18-5a2c-4fa1-86e6-09d9071974b9,Pomme de terre,,especes
 test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_767b5d1d-3d66-4383-8f58-8863dcdc0c5a,[Grain]|100.0|q/ha (humidité ramenée à la norme),,rendement
 test_get_parcelle_realise_outils_can,fr.inra.agrosyst.api.entities.Plot_b2a65257-aa63-4c05-91b9-558919b4ae0b,[Grain (oléagineux)]|5.0|q/ha (humidité ramenée à la norme),,rendement
