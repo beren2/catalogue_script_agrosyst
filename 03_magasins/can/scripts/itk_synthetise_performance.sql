@@ -1,26 +1,5 @@
--- CREATE INDEX if not exists entrepot_culture_outils_can_idx0 on entrepot_culture_outils_can(id);
--- CREATE INDEX if not exists entrepot_noeuds_synthetise_restructure_idx0 on entrepot_noeuds_synthetise_restructure(culture_id);
--- CREATE INDEX if not exists entrepot_plantation_perenne_synthetise_restructure_idx0 on entrepot_plantation_perenne_synthetise_restructure(culture_id);
 
--- CREATE INDEX test1 on entrepot_culture_outils_can(id);
--- CREATE INDEX test2 on entrepot_noeuds_synthetise_restructure(culture_id);
--- CREATE INDEX test3 on entrepot_plantation_perenne_synthetise_restructure(culture_id);
--- CREATE INDEX test5 on entrepot_connection_synthetise(id);
--- CREATE INDEX test6 on entrepot_noeuds_synthetise(id);
--- CREATE INDEX test7 on entrepot_noeuds_synthetise_restructure(id);
--- CREATE INDEX test8 on entrepot_plantation_perenne_synthetise_restructure(id);
--- CREATE INDEX test9 on entrepot_plantation_perenne_phases_synthetise(id);
--- CREATE INDEX test10 on entrepot_plantation_perenne_synthetise(id);
--- CREATE INDEX test11 on entrepot_plantation_perenne_synthetise_restructure(id);
--- CREATE INDEX test12 on entrepot_culture_outils_can(id);
--- CREATE INDEX test13 on entrepot_synthetise(id);
--- CREATE INDEX test14 on entrepot_culture(id);
--- CREATE INDEX test15 on entrepot_noeuds_synthetise_restructure(culture_id);
--- CREATE INDEX test16 on entrepot_plantation_perenne_synthetise_restructure(culture_id);
--- CREATE INDEX test17 on entrepot_noeuds_synthetise(synthetise_id);
--- CREATE INDEX test18 on entrepot_plantation_perenne_synthetise(synthetise_id);
-
-select 
+select -- requête spécifique aux cultures assolées
 	eisp.*,
 	ecps.domaine_nom,
 	ecps.domaine_id,
@@ -60,7 +39,7 @@ left join entrepot_culture ec on ec.id = ecoc.id
 left join entrepot_context_performance_sdc ecps on ecps.sdc_id = es.sdc_id
 left join entrepot_culture ec_prec on ens_source_restructure.culture_id = ec_prec.id
 UNION ALL
-select 
+select -- requête spécifiques aux cultures perennes
 	eisp.*,
 	ecps.domaine_nom,
 	ecps.domaine_id,
