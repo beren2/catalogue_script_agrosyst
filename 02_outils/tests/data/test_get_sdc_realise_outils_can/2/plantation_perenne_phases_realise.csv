@@ -1,0 +1,3 @@
+id,duree,type,plantation_perenne_realise_id
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_221dba53-896b-461c-b125-96ec17dba6c7,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_37154fa1-ce1b-49ad-821b-9e488ebae1a6
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_bc4d5245-b2d1-4e5a-a8eb-8170839521f1,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_b4f8356d-d84f-4d27-9a81-263ccf1d1fb0
