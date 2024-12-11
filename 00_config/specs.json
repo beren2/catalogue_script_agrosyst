@@ -339,6 +339,13 @@
                     "action_synthetise_agrege"
                 ]
             },
+			"interoperabilite" : {
+                "function_name" : "create_category_interoperabilite",
+                "dependances" : [], 
+                "generated" : [
+                    "donnees_spatiales"
+                ]
+            },
             "restructuration" : {
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{

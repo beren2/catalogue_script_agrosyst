@@ -16,6 +16,7 @@ from scripts import nettoyage
 from scripts import restructuration 
 from scripts import indicateur
 from scripts import agregation
+from scripts import interoperabilite
 from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
@@ -105,6 +106,7 @@ def export_to_db(df, name):
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 donnees = {}
+external_data = {}
 
 def import_df(df_name, path_data, sep):
     """
@@ -115,6 +117,8 @@ def import_df(df_name, path_data, sep):
         donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
     else:
         donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+
+# FAIRE UN IMPORT DF POUR EXTERNAL DATA !
 
 def import_dfs(df_names, data_path, sep = ',', verbose=False):
     """
@@ -355,6 +359,14 @@ def create_category_indicateur():
     
     df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
     export_to_db(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
+
+def create_category_interoperabilite():
+    """
+        Execute les requêtes pour créer les outils d'interopérabilité
+    """
+    df_donnees_spatiales = interoperabilite.create_donnees_spatiales(donnees, external_data)
+    export_to_db(df_donnees_spatiales, 'entrepot_donnees_spatiales')
+
 
 def create_category_outils_can():
     """
