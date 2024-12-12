@@ -20,6 +20,7 @@ from scripts import interoperabilite
 from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
+import geopandas as gpd
 from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
@@ -33,6 +34,7 @@ TYPE = config.get('metadata', 'type')
 DEBUG = bool(int(config.get('metadata', 'debug')))
 BDD_ENTREPOT=config.get('metadata', 'bdd_entrepot')
 EXTERNAL_DATA_PATH = 'data/external_data/'
+EXTERNAL_GEODATA_PATH = 'data/external_data/geospatial_data/'
 VERSION = __version__
 with open('../00_config/specs.json', encoding='utf8') as json_file:
     SOURCE_SPECS = json.load(json_file)
@@ -106,21 +108,27 @@ def export_to_db(df, name):
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 donnees = {}
-external_data = {}
 
-def import_df(df_name, path_data, sep):
+def import_df(df_name, path_data, sep, file_format='csv') :
     """
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     global donnees
-    if(DEBUG):
-        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
-    else:
-        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'csv' :
+        if(DEBUG):
+            donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
+        else:
+            donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'json' and df_name.str.startswith('geoVec') :
+        # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
+        donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'gpkg' :
+        donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+
 
 # FAIRE UN IMPORT DF POUR EXTERNAL DATA !
 
-def import_dfs(df_names, data_path, sep = ',', verbose=False):
+def import_dfs(df_names, data_path, sep = ',', verbose=False, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
@@ -128,7 +136,7 @@ def import_dfs(df_names, data_path, sep = ',', verbose=False):
     pbar = tqdm(df_names)
     for df_name in pbar:
         pbar.set_description(f"Import de {df_name}")
-        import_df(df_name, data_path, sep)
+        import_df(df_name, data_path, sep, file_format=file_format)
 
 
 def copy_table_to_csv(table_name, csv_path, csv_name):
@@ -162,10 +170,10 @@ def download_datas(desired_tables, verbose=False):
     """
     copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
 
-def load_datas(desired_tables, verbose=False, path_data=DATA_PATH):
+def load_datas(desired_tables, verbose=False, path_data=DATA_PATH, file_format='csv'):
     """ permet de chager les tables dans la variable globale donnees"""
     global donnees
-    import_dfs(desired_tables, path_data, verbose=True)
+    import_dfs(desired_tables, path_data, verbose=True, file_format=file_format)
 
 
 def generate_leaking_df(df1, df2, id_name, columns_difference):
@@ -364,7 +372,7 @@ def create_category_interoperabilite():
     """
         Execute les requêtes pour créer les outils d'interopérabilité
     """
-    df_donnees_spatiales = interoperabilite.create_donnees_spatiales(donnees, external_data)
+    df_donnees_spatiales = interoperabilite.create_donnees_spatiales(donnees)
     export_to_db(df_donnees_spatiales, 'entrepot_donnees_spatiales')
 
 
@@ -446,7 +454,14 @@ entrepot_spec = {
 
 external_data_spec = {
     'tables' : [
-        'BDD_donnees_attendues_CAN'
+        'BDD_donnees_attendues_CAN',
+        'referentiel_geographique_fr_esr_unique'
+    ],
+    'geojson' : [
+        'geoVec_com2022'
+    ],
+    'geopackage' : [
+        'safran'
     ]
 }
 
@@ -522,6 +537,9 @@ while True:
         load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
         print("* CHARGEMENT DES DONNÉES EXTERNES *")
         load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+        print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+        load_datas(external_data_spec['geojson'], verbose=False, path_data=EXTERNAL_GEODATA_PATH, file_format='json')
+        load_datas(external_data_spec['geopackage'], verbose=False, path_data=EXTERNAL_GEODATA_PATH, file_format='gpkg')
         print("* CHARGEMENT DES RÉFÉRENTIELS *")
         print("Attention, penser à les mettre à jour manuellement.")
         load_ref()
@@ -619,6 +637,9 @@ while True:
             print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
             load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+            # print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+            # load_datas(external_data_spec['geojson'], verbose=False, path_data=EXTERNAL_GEODATA_PATH, file_format='json')
+            # load_datas(external_data_spec['geopackage'], verbose=False, path_data=EXTERNAL_GEODATA_PATH, file_format='gpkg')
             print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
@@ -635,6 +656,9 @@ while True:
                 print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                 load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+                # print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+                # load_datas(external_data_spec['geojson'], verbose=False, path_data=EXTERNAL_GEODATA_PATH, file_format='json')
+                # load_datas(external_data_spec['geopackage'], verbose=False, path_data=EXTERNAL_GEODATA_PATH, file_format='gpkg')
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
                 
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
