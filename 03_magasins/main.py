@@ -546,7 +546,15 @@ magasin_specs  = {
                      'intervention_realise_agrege',
                      'context_performance_sdc'
                 ]
-            }
+            },
+            'zone_realise_performance' :{
+                 'tables' :[
+                    'zone_realise_performance', 'zone_realise_outils_can','parcelle','zone'
+                ],
+                'dependances': [
+                     'context_performance_sdc'
+                ]
+            },
         }, 
         'path' : 'can/scripts/'
     },
