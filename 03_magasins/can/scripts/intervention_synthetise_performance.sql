@@ -351,5 +351,5 @@ left join entrepot_noeuds_synthetise ens on ens.id = eismae.cible_noeuds_synthet
 left join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = CAST(eismae.plantation_perenne_phases_synthetise_id AS VARCHAR)
 left join entrepot_plantation_perenne_synthetise epps on CAST(eismae.plantation_perenne_synthetise_id AS VARCHAR)= epps.id
 join entrepot_culture ec on ec.id = eismae.culture_id
-join entrepot_culture_outils_can ecoc on ecoc.id = ec.id
+left join entrepot_culture_outils_can ecoc on ecoc.id = ec.id -- left pour les cultures sans especes
 left join entrepot_culture ec_intermediaire on ec_intermediaire.id = eisoc.culture_id; -- on récupère les infos car la culture n'est pas forcément la culture principale 
