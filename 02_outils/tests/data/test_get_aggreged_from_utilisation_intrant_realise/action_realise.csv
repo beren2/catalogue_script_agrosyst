@@ -1,0 +1,11 @@
+id,intervention_realise_id
+fr.inra.agrosyst.api.entities.action.OtherAction_d697679d-1a70-458b-b65e-fd7a2fa18253,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_ec054016-7810-4770-9dba-1e0267494a3b
+fr.inra.agrosyst.api.entities.action.AbstractAction_ef224c55-cf50-48ec-9490-5a31f99432b9,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_874af5ab-b3fe-456b-a902-fe48817fcd89
+fr.inra.agrosyst.api.entities.action.AbstractAction_c055c4d0-245a-4264-a11d-290b645e7161,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_53856548-39b7-4825-8249-392138c4d385
+fr.inra.agrosyst.api.entities.action.BiologicalControlAction_cbb6fb09-8269-4faf-b3b6-2d46fc1cae79,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_ef8a8c9b-0d07-4218-bf99-1d3abb03f817
+fr.inra.agrosyst.api.entities.action.PesticidesSpreadingAction_456ee222-6d0a-491e-8355-be61b8962d4a,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_9c3d378f-5394-4ac2-a63a-4db1cc0f74b1
+fr.inra.agrosyst.api.entities.action.MineralFertilizersSpreadingAction_ac5af1a6-9182-4925-aa78-0fbdc1436130,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_a2eeb3ac-2684-4a0e-828f-d53683d595ae
+fr.inra.agrosyst.api.entities.action.AbstractAction_ca44e200-e2d6-4912-934f-ad1fcd94076f,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_386a8f30-7a88-4966-adaf-16dcd1b960d2
+fr.inra.agrosyst.api.entities.action.AbstractAction_177117e2-9bf9-40fc-80d7-93961f902376,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_2c42a89f-1e53-483c-886a-d8783941e85e
+fr.inra.agrosyst.api.entities.action.OrganicFertilizersSpreadingAction_6ed84422-ce34-4d65-a8b3-3a35b0923755,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_295e45d7-897c-46e8-9a84-a675ef8cc937
+fr.inra.agrosyst.api.entities.action.MineralFertilizersSpreadingAction_12350169-fabf-4839-a469-4e9e67e7d5f3,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_5dd5cc0a-1046-4614-91de-b388e703b65f

@@ -1,0 +1,12 @@
+id,action_realise_id
+fr.inra.agrosyst.api.entities.action.PotInputUsage_398fa9af-1787-41f3-9b50-15cf7e383281,fr.inra.agrosyst.api.entities.action.OtherAction_d697679d-1a70-458b-b65e-fd7a2fa18253
+fr.inra.agrosyst.api.entities.action.MineralProductInputUsage_0006acba-9c13-4cf6-96c6-ac4161f23659,fr.inra.agrosyst.api.entities.action.AbstractAction_177117e2-9bf9-40fc-80d7-93961f902376
+fr.inra.agrosyst.api.entities.action.MineralProductInputUsage_001e41ec-99b4-4fa6-91a8-df58f7b3a7c1,fr.inra.agrosyst.api.entities.action.MineralFertilizersSpreadingAction_12350169-fabf-4839-a469-4e9e67e7d5f3
+fr.inra.agrosyst.api.entities.action.MineralProductInputUsage_00218c8c-575a-4060-98c6-2ca6dd4de573,fr.inra.agrosyst.api.entities.action.MineralFertilizersSpreadingAction_ac5af1a6-9182-4925-aa78-0fbdc1436130
+fr.inra.agrosyst.api.entities.action.SeedProductInputUsage_30cc23df-f159-4528-abe1-947a08655ee8,fr.inra.agrosyst.api.entities.action.AbstractAction_ef224c55-cf50-48ec-9490-5a31f99432b9
+fr.inra.agrosyst.api.entities.action.OrganicProductInputUsage_01a2a9c3-1059-475d-9d19-7d2fa9e6bedd,fr.inra.agrosyst.api.entities.action.OrganicFertilizersSpreadingAction_6ed84422-ce34-4d65-a8b3-3a35b0923755
+fr.inra.agrosyst.api.entities.action.OtherProductInputUsage_05d417aa-4cf8-4ab8-bc9d-aa80f7771678,fr.inra.agrosyst.api.entities.action.AbstractAction_c055c4d0-245a-4264-a11d-290b645e7161
+fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_82addaf8-fd0e-44b7-9f53-8a4f8e3b1ece,fr.inra.agrosyst.api.entities.action.PesticidesSpreadingAction_456ee222-6d0a-491e-8355-be61b8962d4a
+fr.inra.agrosyst.api.entities.action.BiologicalProductInputUsage_5d372375-2699-4ddb-a529-c3388606599b,fr.inra.agrosyst.api.entities.action.BiologicalControlAction_cbb6fb09-8269-4faf-b3b6-2d46fc1cae79
+fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_658441ef-8208-4b1b-9115-54988850bc8b,fr.inra.agrosyst.api.entities.action.AbstractAction_ca44e200-e2d6-4912-934f-ad1fcd94076f
+fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_dcb8dc71-be57-4e57-a82b-3bb8c78c6a51,fr.inra.agrosyst.api.entities.action.AbstractAction_ca44e200-e2d6-4912-934f-ad1fcd94076f

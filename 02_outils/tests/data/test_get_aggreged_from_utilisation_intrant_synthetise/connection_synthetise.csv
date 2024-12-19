@@ -1,0 +1,5 @@
+id,cible_noeuds_synthetise_id
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_d4411bb5-0e94-45ca-a9dc-a0f64b30cc57,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_0ee9a16f-9daf-453e-b745-090853ba92f9
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_9a658216-2392-47f0-9d5c-ed1a9c9434a5,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_307bfe12-7b70-486c-9f11-cac033073850
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_7055f5b8-6261-48ab-89e0-7e356cd450c1,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_869135a2-8896-4f05-9dc5-aa26014e1c86
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_dd9fadb0-5060-4519-b96a-08d291ea11cc,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_40785680-e9be-47a2-8bbf-1246e149768b

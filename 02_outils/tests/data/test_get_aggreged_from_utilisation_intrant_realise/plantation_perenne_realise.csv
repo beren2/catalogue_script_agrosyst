@@ -1,0 +1,4 @@
+id,zone_id,culture_id
+fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_835aea49-6d1a-4d27-b6d3-f76974711fc6,fr.inra.agrosyst.api.entities.Zone_6d980e60-32cf-47ab-b804-39ced80aaac0,fr.inra.agrosyst.api.entities.CroppingPlanEntry_4dc272de-6b23-44e6-96d7-8be47a1eb4a0
+fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_16c2cd6a-e159-4b0d-8cc8-a7643bcbd053,fr.inra.agrosyst.api.entities.Zone_cded532f-ae0a-4853-9ae5-bac14e812891,fr.inra.agrosyst.api.entities.CroppingPlanEntry_44e51184-a4f4-4b49-ac5b-9267a76702c0
+fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_badfe29e-a940-44d5-975a-f3afd04959b4,fr.inra.agrosyst.api.entities.Zone_30911144-03be-43d0-bbf9-bc6950d2e495,fr.inra.agrosyst.api.entities.CroppingPlanEntry_5bf7a673-674c-4c0c-a5a5-8f4255ffcdb1

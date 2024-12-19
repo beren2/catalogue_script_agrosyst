@@ -1,0 +1,11 @@
+id,action_synthetise_id
+fr.inra.agrosyst.api.entities.action.PotInputUsage_48d0a5ed-664b-42b1-973a-9fe8ae0128e1,fr.inra.agrosyst.api.entities.action.OtherAction_db3759bd-62fb-4408-960b-794028d4f0d4
+fr.inra.agrosyst.api.entities.action.MineralProductInputUsage_0003910f-773a-470f-8b44-ee2a208dfcf1,fr.inra.agrosyst.api.entities.action.AbstractAction_cc01f6c1-da23-4171-8bf5-29373d0562d9
+fr.inra.agrosyst.api.entities.action.MineralProductInputUsage_02c0defa-de5a-4dd4-b728-4c9f6cd60414,fr.inra.agrosyst.api.entities.action.MineralFertilizersSpreadingAction_2119e5f8-5a86-430f-9043-a9bb128be579
+fr.inra.agrosyst.api.entities.action.SeedSpeciesInputUsage_145638dd-ae28-4b3f-bb9a-1bcdf79e5b6a,fr.inra.agrosyst.api.entities.action.SeedingAction_3446fa08-1a51-4473-b719-550df52773e5
+fr.inra.agrosyst.api.entities.action.OrganicProductInputUsage_00087c4c-7862-4bce-ab4a-3eaad7562b86,fr.inra.agrosyst.api.entities.action.AbstractAction_46b4094c-7299-4017-8b0d-0a13ae6940ce
+fr.inra.agrosyst.api.entities.action.OtherProductInputUsage_000acbb1-51ab-4f5b-8728-cb7821afb532,fr.inra.agrosyst.api.entities.action.AbstractAction_75d28684-2502-4076-a66d-6fc4e04de713
+fr.inra.agrosyst.api.entities.action.SubstrateInputUsage_203eb5a3-1595-49f4-8346-d57f8df70e60,fr.inra.agrosyst.api.entities.action.AbstractAction_6d3a264f-9ebe-4547-a66f-5f9def9c7bd0
+fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_1528c966-b66a-4b98-8c17-65e85d832534,fr.inra.agrosyst.api.entities.action.PesticidesSpreadingAction_4e4320ff-efc0-4f47-bb43-89c6b92a1d8b
+fr.inra.agrosyst.api.entities.action.PesticideProductInputUsage_962ab621-036b-46ba-be7d-8a724dc232f8,fr.inra.agrosyst.api.entities.action.AbstractAction_edc412bf-5500-4278-a6ec-f15ef72df051
+fr.inra.agrosyst.api.entities.action.BiologicalProductInputUsage_d0c126d6-81e0-48a5-b150-588909731d23,fr.inra.agrosyst.api.entities.action.BiologicalControlAction_7f9bf50e-d784-4ba2-8ca0-cc690625090a
