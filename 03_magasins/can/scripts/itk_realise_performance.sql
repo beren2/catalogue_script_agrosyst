@@ -1,4 +1,3 @@
-create temporary table test_itk_realise_performance_magasin_can as
 select 
 	eirp.*,
 	ecps.domaine_nom,

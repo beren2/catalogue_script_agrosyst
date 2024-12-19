@@ -14,7 +14,7 @@ FROM
     entrepot_intervention_synthetise eir 
 LEFT JOIN "entrepot_utilisation_intrant_synthetise_agrege" nuirac on eir.id = nuirac.intervention_synthetise_id
 WHERE nuirac.intervention_synthetise_id IS NOT null
-UNION 
+UNION
 SELECT 
     id, 
     plantation_perenne_synthetise_id, 
