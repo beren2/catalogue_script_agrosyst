@@ -15,6 +15,7 @@ CREATE TABLE entrepot_domaine AS
     d.type type_ferme,
     rl.departement departement,
     rl.codeinsee||' - '||rl.commune commune,
+    rl.topiaid commune_id,
     rl.petiteRegionAgricoleCode|| ' - '||rl.petiteRegionAgricoleNom petite_region_agricole,
     d.zoning zonage,
     d.uaavulnarablepart pct_SAU_zone_vulnerable,
