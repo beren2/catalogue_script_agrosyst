@@ -203,7 +203,9 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
     # conversion du dictionnaire en variable pour duckdb
     for key, df_value in df.items():
         globals()[key] = df_value  # Assign each dataframe to a variable with the name of the key  
-    
+        # chargement des dataframes en tant que table dans duckdb : 
+        query = f"CREATE TABLE IF NOT EXISTS {key} AS SELECT * FROM {key};".format(key)
+        duckdb.sql(query)
     print("DÉBUT DE GÉNÉRATION DE LA TABLE "+current_table)
 
     # Requêtes de dépendance à exécuter préalablement
@@ -214,8 +216,11 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
     for _, query in enumerate(queries):  
         file_name = DATA_PATH+""+current_table+"_"+current_magasin+".csv"
         res = duckdb.sql(query)
+    
+        if(verbose):
+            print(res)
         res.to_csv(file_name)
-        print(f"- fichier {Fore.GREEN}"+file_name+f"{Style.RESET_ALL} exporté") 
+        print(f"- fichier {Fore.GREEN}"+file_name+f"{Style.RESET_ALL} exporté")
         # mise à jour du fichier local
         update_local_version_table(current_table+"_"+current_magasin)
     return dependances
@@ -321,7 +326,7 @@ magasin_specs  = {
                 'tables' : [
                     'intervention_realise_performance', 
                     'intervention_realise', 'intervention_realise_performance', 
-                    'intervention_realise_outils_can', 'zone', 'parcelle', 
+                    'intervention_realise_outils_can', 'zone', 'parcelle', 'parcelle_zonage', 'parcelle_voisinage',
                     'noeuds_realise', 'culture', 'culture_outils_can',
                     'plantation_perenne_phases_realise', 'plantation_perenne_realise', 'domaine',
                 ],
@@ -332,7 +337,7 @@ magasin_specs  = {
             'intervention_realise' : {
                 'tables' : [
                     'intervention_realise',
-                    'intervention_realise_outils_can', 'zone', 'parcelle',
+                    'intervention_realise_outils_can', 'zone', 'parcelle', 'parcelle_zonage', 'parcelle_voisinage',
                     'sdc', 'domaine', 'noeuds_realise', 'connection_realise', 
                     'plantation_perenne_phases_realise', 'plantation_perenne_realise',
                     'culture', 'dispositif_filtres_outils_can'
@@ -376,6 +381,18 @@ magasin_specs  = {
                     'itk_realise_performance', 'culture_outils_can', 'noeuds_realise', 
                     'plantation_perenne_realise', 'plantation_perenne_phases_realise', 
                     'culture', 'zone', 'parcelle', 'connection_realise'
+                ],
+                'dependances':[
+                     'context_performance_sdc'
+                ]
+            }, 
+            'itk_synthetise_performance' : {
+                'tables' : [
+                    'noeuds_synthetise_restructure', 
+                    'itk_synthetise_performance', 'culture_outils_can', 'noeuds_synthetise',
+                    'connection_synthetise', 'plantation_perenne_synthetise', 'plantation_perenne_phases_synthetise', 
+                    'plantation_perenne_synthetise_restructure',
+                    'culture', 'synthetise'
                 ],
                 'dependances':[
                      'context_performance_sdc'
@@ -532,7 +549,15 @@ magasin_specs  = {
                      'intervention_realise_agrege',
                      'context_performance_sdc'
                 ]
-            }
+            },
+            'zone_realise_performance' :{
+                 'tables' :[
+                    'zone_realise_performance', 'zone_realise_outils_can','parcelle','zone'
+                ],
+                'dependances': [
+                     'context_performance_sdc'
+                ]
+            },
         }, 
         'path' : 'can/scripts/'
     },

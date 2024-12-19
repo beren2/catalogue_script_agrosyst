@@ -4,8 +4,40 @@
 import pandas as pd
 
 def restructuration_noeuds_synthetise(donnees):
-    """ 
-        fonction permettant d'obtenir pour chaque noeuds_synthetise, le bon culture_id plutôt que le culture_code
+    """
+    Permet d'obtenir un DataFrame contenant la culture_id associé à un noeuds dans le mode de saisie synthétisé.
+
+    Cette fonction, comme l'ensemble des fonctions de restructuration, 
+    permet d'éviter à avoir à travailler avec les codes (qui permettent de lier des entités millésimées).
+
+    La procédure est de charger la campagne du domaine sur laquelle est déclarée le noeuds synthétisé
+    et d'aller chercher le culture_id correspondant à cette campagne et au culture_code pointé par le noeuds
+    synthétisé.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'synthetise' : Systèmes synthétisés.
+            - 'sdc' : Systèmes de cultures.
+            - 'noeuds_synthetise' : Noeuds de rotation en synthétisé. 
+            - 'culture' : Culture
+            - 'domaine' : Domaine.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant, pour chaque noeuds_synthetise, le culture_id mobilisé sur ce noeuds.
+            - `id` : Identifiant du noeuds synthétisé.
+            - `culture_id` : identifiant de la culture déclaré sur le noeuds
+
+    Exemple d'utilisation :
+        donnees = {
+            'synthetise': pd.DataFrame(...),
+            'sdc': pd.DataFrame(...),
+            'noeuds_synhtetise': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'domaine': pd.DataFrame(...)
+        }
+        result = restructuration_noeuds_synthetise(donnees)
     """
     donnees = donnees.copy()
     donnees['synthetise'] = donnees['synthetise'].set_index('id')
@@ -25,6 +57,7 @@ def restructuration_noeuds_synthetise(donnees):
     right = donnees['domaine'].set_index('id')[['campagne']]
     donnees['culture_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
 
+    # fusion des informations une fois qu'on a le culture_code ET la campagne des deux côtés.
     left = donnees['noeuds_synthetise_extanded']
     right = donnees['culture_extanded'].reset_index()[['id', 'code', 'campagne']].rename(columns={'id' : 'culture_id'})
     donnees['noeuds_synthetise_restructure'] = pd.merge(left, right, left_on=['culture_code', 'campagne'], right_on=['code', 'campagne'])
@@ -34,7 +67,42 @@ def restructuration_noeuds_synthetise(donnees):
 
 def restructuration_connection_synthetise(donnees):
     """
-        fonction permettant d'obtenir, pour chaque connection_synthetise, un culture_intermediaire_id plutôt qu'un culture_intermediaire_code
+    Permet d'obtenir un DataFrame contenant le culture_intermediaire_id associé à une connexion dans le mode de saisie synthétisé.
+
+    Cette fonction, comme l'ensemble des fonctions de restructuration, 
+    permet d'éviter à avoir à travailler avec les codes (qui permettent de lier des entités millésimées).
+
+    La procédure est de charger la campagne du domaine sur laquelle est déclarée la connexion synthétisé
+    et d'aller chercher le culture_id correspondant à cette campagne et au culture_code pointé par la connexion
+    synthétisé.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'synthetise' : Systèmes synthétisés.
+            - 'sdc' : Systèmes de cultures.
+            - 'connection_synthetise' : Noeuds de rotation en synthétisé. 
+            - 'culture' : Culture
+            - 'domaine' : Domaine.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant, pour chaque noeuds_synthetise, le culture_id mobilisé sur ce noeuds.
+            - `id` : Identifiant de la connexion synthétisé
+            - `culture_intermediaire_id` : identifiant de la culture intermediaire déclarée sur la connection
+    Note :
+        Attention, une connexion qui ne possède pas de culture intermediaire sera absente du dataframe final. 
+
+    Exemple d'utilisation :
+        donnees = {
+            'synthetise': pd.DataFrame(...),
+            'sdc': pd.DataFrame(...),
+            'noeuds_synhtetise': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'domaine': pd.DataFrame(...)
+        }
+        result = restructuration_noeuds_synthetise(donnees)
+
     """
     donnees = donnees.copy()
     donnees['noeuds_synthetise'] = donnees['noeuds_synthetise'].set_index('id')
@@ -58,6 +126,7 @@ def restructuration_connection_synthetise(donnees):
     right = donnees['domaine'].set_index('id')[['campagne']]
     donnees['culture_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
 
+    # fusion des informations une fois qu'on a le culture_code ET la campagne des deux côtés.
     left = donnees['connection_synthetise_extanded'].reset_index()
     right = donnees['culture_extanded'].reset_index()[['id', 'code', 'campagne']].rename(columns={'id' : 'culture_intermediaire_id'})
     donnees['connection_synthetise_restructure'] = pd.merge(left, right, left_on=['culture_intermediaire_code', 'campagne'], right_on=['code', 'campagne'])
@@ -67,8 +136,39 @@ def restructuration_connection_synthetise(donnees):
 
 def restructuration_plantation_perenne_synthetise(donnees):
     """
-        fonction permettant d'obtenir, pour chaque plantation perenne en synthétisé
-        un culture_id plutôt qu'un culture_code
+    Permet d'obtenir un DataFrame contenant la culture_id associé à une plantation perenne dans le mode de saisie synthétisé.
+
+    Cette fonction, comme l'ensemble des fonctions de restructuration, 
+    permet d'éviter à avoir à travailler avec les codes (qui permettent de lier des entités millésimées).
+
+    La procédure est de charger la campagne du domaine sur laquelle est déclarée la plantation perenne
+    et d'aller chercher le culture_id correspondant à cette campagne et au culture_code pointé par la plantation perenne.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires :
+            - 'synthetise' : Systèmes synthétisés.
+            - 'sdc' : Systèmes de cultures.
+            - 'plantation_perenne_synthetise' : Noeuds de rotation en synthétisé. 
+            - 'culture' : Culture
+            - 'domaine' : Domaine.
+            - 'dispositif' : Dispositif.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant, pour chaque plantation_perenne synthétisé, le culture_id mobilisé.
+            - `id` : Identifiant de la plantation perenne synthétisé
+            - `culture_id` : identifiant de la culture déclaré sur la plantation
+
+    Exemple d'utilisation :
+        donnees = {
+            'synthetise': pd.DataFrame(...),
+            'sdc': pd.DataFrame(...),
+            'noeuds_synhtetise': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'domaine': pd.DataFrame(...)
+        }
+        result = restructuration_noeuds_synthetise(donnees)
     """
     donnees = donnees.copy()
     donnees['plantation_perenne_synthetise'] = donnees['plantation_perenne_synthetise'].set_index('id')
@@ -77,11 +177,13 @@ def restructuration_plantation_perenne_synthetise(donnees):
     donnees['dispositif'] = donnees['dispositif'].set_index('id')
     donnees['domaine'] = donnees['domaine'].set_index('id')
     donnees['culture'] = donnees['culture'].set_index('id')
-
+    
+    # obtention du culture_code pour la plantation_perenne
     left = donnees['plantation_perenne_synthetise'][['synthetise_id', 'culture_code']]
     right = donnees['synthetise'][['sdc_id']]
     donnees['plantation_perenne_synthetise_extanded'] = pd.merge(left, right, left_on='synthetise_id', right_index=True, how='left')
 
+    # obtention de la campagne de la plantation perenne
     left = donnees['plantation_perenne_synthetise_extanded']
     right = donnees['sdc']['dispositif_id']
     donnees['plantation_perenne_synthetise_extanded'] = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
@@ -98,6 +200,7 @@ def restructuration_plantation_perenne_synthetise(donnees):
     right = donnees['domaine'][['campagne']]
     donnees['culture_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
 
+    # fusion des informations une fois qu'on a le culture_code ET la campagne des deux côtés.
     left = donnees['plantation_perenne_synthetise_extanded'][['culture_code', 'campagne']].reset_index()
     right = donnees['culture_extanded'].reset_index().rename(columns={'code' : 'culture_code', 'id' : 'culture_id'})
     final = pd.merge(left, right, on=['culture_code', 'campagne'], how='inner')[['id', 'culture_id']]

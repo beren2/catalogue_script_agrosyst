@@ -282,6 +282,7 @@ select
 	esrp.qsa_soufre_ferti,
 	esrp.surface_par_unite_de_travail_humain as surf_unite_de_w_humain,
 	esrp.surface_par_unite_de_travail_humain_taux_de_completion as surf_unite_de_w_humain_tx_comp,
+	esrp.nombre_uth_necessaires,
 	ecps.domaine_nom,
 	ecps.domaine_id,
 	ecps.domaine_campagne,

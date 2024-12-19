@@ -51,6 +51,7 @@ select
 	es.traitement_localise,
 	es.utilisation_adjuvants,
 	es.utilisation_seuils,
+	es.utilisation_stim_defense,
 	es.utilisation_oad,
 	es.var_competitives_adventice,
 	es.var_peu_sensibles_verse,
@@ -91,7 +92,8 @@ select
 	es.reseaux_ir,
 	es.reseaux_it,
 	es.codes_convention_dephy,
-	es.modes_commercialisation
+	es.modes_commercialisation,
+	es.fort_ecartement
 from entrepot_sdc es	
 left join entrepot_dispositif edi on es.dispositif_id = edi.id
 left join entrepot_domaine ed on edi.domaine_id = ed.id

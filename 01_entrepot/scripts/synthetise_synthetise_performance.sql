@@ -301,7 +301,25 @@ SELECT
     qsa_soufre_tot_hts,
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
-    qsa_soufre_ferti
+    qsa_soufre_ferti,
+    qsa_bixafen,
+	qsa_dicamba,
+	qsa_mancozeb,
+	qsa_phosmet,
+	qsa_tebuconazole,
+	qsa_dimethenamidp,
+	qsa_pendimethalin,
+	qsa_flufenacet,
+	qsa_aclonifen,
+	qsa_isoxaben,
+	qsa_beflutamid,
+	qsa_isoproturon ,
+	qsa_clothianidine,
+	qsa_imidaclopride,
+	qsa_thiamethoxam,
+	qsa_acetamipride,
+	qsa_thiaclopride,
+	qsa_neonicotinoides
 FROM synthetise_echelle_synthetise ses
 JOIN entrepot_synthetise es on es.id = ses.id_systeme_synthetise;
 
@@ -312,22 +330,5 @@ PRIMARY KEY (synthetise_id);
 
 alter table entrepot_synthetise_synthetise_performance
 add FOREIGN KEY (synthetise_id) REFERENCES entrepot_synthetise(id);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

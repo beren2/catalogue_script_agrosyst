@@ -113,7 +113,8 @@ disable=
     bad-builtin,
     global-variable-not-assigned,
     consider-using-namedtuple-or-dataclass,
-    duplicate-code
+    duplicate-code,
+    eval-used
 
 
 [REPORTS]
@@ -462,8 +463,6 @@ max-bool-expr=5
 exclude-too-few-public-methods=
 
 max-complexity=10
-
-max-positional-arguments=30
 
 [CLASSES]
 

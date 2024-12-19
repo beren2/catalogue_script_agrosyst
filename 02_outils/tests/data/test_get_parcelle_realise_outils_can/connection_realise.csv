@@ -1,0 +1,2 @@
+id,source_noeuds_realise_id,cible_noeuds_realise_id,culture_intermediaire_id
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleConnection_8ce71b1d-eb45-4d1b-a28b-e3b81c492ae3,,fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode_d5976307-5a40-43eb-a19f-f8fde45e5a1b,fr.inra.agrosyst.api.entities.CroppingPlanEntry_013c1ab7-af2a-4f80-bcd9-2272c3a13db1

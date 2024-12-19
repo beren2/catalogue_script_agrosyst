@@ -217,6 +217,9 @@ SELECT
     marge_directe_std_mil_avec_autoconso AS MD_std_mil_avec_autoconso,
     marge_directe_std_mil_taux_de_completion AS MD_std_mil_tx_comp,
     -- Performances sociales
+    surface_par_unite_de_travail_humain,
+    surface_par_unite_de_travail_humain_taux_de_completion,
+    nombre_uth_necessaires,
     consommation_de_carburant AS conso_carburant,
     consommation_de_carburant_taux_de_completion AS conso_carburant_tx_comp,
     consommation_eau as conso_eau,
@@ -298,7 +301,25 @@ SELECT
     qsa_soufre_tot_hts,
     qsa_soufre_phyto,
     qsa_soufre_phyto_hts,
-    qsa_soufre_ferti
+    qsa_soufre_ferti,
+    qsa_bixafen,
+	qsa_dicamba,
+	qsa_mancozeb,
+	qsa_phosmet,
+	qsa_tebuconazole,
+	qsa_dimethenamidp,
+	qsa_pendimethalin,
+	qsa_flufenacet,
+	qsa_aclonifen,
+	qsa_isoxaben,
+	qsa_beflutamid,
+	qsa_isoproturon ,
+	qsa_clothianidine,
+	qsa_imidaclopride,
+	qsa_thiamethoxam,
+	qsa_acetamipride,
+	qsa_thiaclopride,
+	qsa_neonicotinoides
 FROM realise_echelle_parcelle rep
 JOIN entrepot_parcelle ep on ep.id = rep.parcelle_id;
 

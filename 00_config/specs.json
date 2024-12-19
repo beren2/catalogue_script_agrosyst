@@ -1,0 +1,412 @@
+{
+	"entrepot" : {
+		"ordered_files" : [
+			"commune",
+			"espece",
+			"intervention_travail_edi",
+			"criteres_selection",
+			"domaine",
+			"coordonnees_gps_domaine",
+			"dispositif",
+			"sdc",
+			"parcelle",
+			"parcelle_voisinage",
+			"parcelle_zonage",
+			"zone",
+			"parcelle_type",
+			"synthetise",
+			"culture",
+			"materiel",
+			"combinaison_outil",
+			"composant_culture",
+			"atelier_elevage",
+			"bilan_campagne_regional",
+			"modele_decisionnel",
+			"sole_realise",
+			"cycle_culture_realise",
+			"cycle_culture_synthetise",
+			"plantation_perenne_realise",
+			"plantation_perenne_synthetise",
+			"intervention_realise",
+			"composant_culture_concerne_intervention",
+			"intervention_synthetise",
+			"action_realise",
+			"action_synthetise",
+			"intrant",
+			"semence",
+			"utilisation_intrant_realise",
+			"utilisation_intrant_synthetise",
+			"utilisation_intrant_cible",
+			"precision_espece_semis",
+			"variete",
+			"utilisation_intrant_performance",
+			"intervention_realise_performance",
+			"zone_realise_performance",
+			"parcelle_realise_performance",
+			"sdc_realise_performance",
+			"itk_realise_performance",
+			"itk_synthetise_performance",
+			"intervention_synthetise_performance",
+			"synthetise_synthetise_performance",
+			"recolte",
+			"acta_groupe_culture",
+			"acta_substance_active",
+			"acta_traitement_produit",
+			"acta_dosage_spc",
+			"bilan_campagne_sdc",
+			"composition_substance_active_numero_amm",
+			"composant_action_semis",
+			"reseau",
+			"liaison_reseaux",
+			"liaison_sdc_reseau",
+			"critere_qualite_valorisation",
+			"destination_valorisation",
+			"dose_ref_par_groupe_cible",
+			"groupe_cible",
+			"nuisible_edi",
+			"substances_actives_europeennes",
+			"phrases_de_risque_numero_amm",
+			"prix_intrant_produit_phyto_sanitaire",
+			"prix_carburant",
+			"otex",
+			"variete_plante_grappe",
+			"station_meteo",
+			"levier",
+			"texture_sol",
+			"fertilisation_organique",
+			"fertilisation_minerale",
+			"adventice"
+		],
+		"tables": {
+			"semence" : {
+				"file_name" : "semence"
+			},
+			"plantation_perenne_phases_realise":{
+				"file_name" : "plantation_perenne_realise"
+			},
+			"plantation_perenne_phases_synthetise":{
+				"file_name" : "plantation_perenne_synthetise"
+			},
+			"modele_decisionnel":{
+				"file_name" : "modele_decisionnel"
+			},
+ 			"composant_culture_concerne_intervention_synthetise":{
+				"file_name" : "composant_culture_concerne_intervention"
+			},
+			"domaine":{
+				"file_name" : "domaine"
+			},
+			"dispositif":{
+				"file_name" : "dispositif"
+			},
+			"modele_decisionnel_maitrise":{
+				"file_name" : "modele_decisionnel"
+			},
+			"modele_decisionnel_strategie":{
+				"file_name" : "modele_decisionnel"
+			},
+ 			"modele_decisionnel_strategie_culture":{
+				"file_name" : "modele_decisionnel"
+			},
+ 			"plantation_perenne_realise":{
+				"file_name" : "plantation_perenne_realise"
+			},
+			"intervention_realise_performance":{
+				"file_name" : "intervention_realise_performance"
+			},
+ 			"intervention_synthetise_performance":{
+				"file_name" : "intervention_synthetise_performance"
+			},
+			"bilan_campagne_regional_pressionbioagresseur":{
+				"file_name" : "bilan_campagne_regional"
+			},
+			"bilan_campagne_regional_generalites":{
+				"file_name" : "bilan_campagne_regional"
+			},
+			"coordonnees_gps_domaine":{
+				"file_name" : "coordonnees_gps_domaine"
+			},
+ 			"utilisation_intrant_performance":{
+				"file_name" : "utilisation_intrant_performance"
+			},
+			"zone_realise_performance":{
+				"file_name" : "zone_realise_performance"
+			},
+			"intrant":{
+				"file_name" : "intrant"
+			},
+			"composant_culture":{
+				"file_name" : "composant_culture"
+			},
+			"culture":{
+				"file_name" : "culture"
+			},
+			"atelier_elevage":{
+				"file_name" : "atelier_elevage"
+			},
+			"intervention_synthetise":{
+				"file_name" : "intervention_synthetise"
+			},
+			"commune":{
+				"file_name" : "commune"
+			},
+			"noeuds_realise":{
+				"file_name" : "noeuds_realise"
+			},
+			"noeuds_synthetise":{
+				"file_name" : "noeuds_synhtetise"
+			},
+			"connection_synthetise":{
+				"file_name" : "connection_synthetise"
+			},
+			"intervention_realise":{
+				"file_name" : "intervention_realise"
+			},
+			"combinaison_outil_action":{
+				"file_name" : "combinaison_outils"
+			},
+			"domaine_sol":{
+				"file_name" : "domaine"
+			},
+			"parcelle_type_voisinage":{
+				"file_name" : "parcelle_type"
+			},
+			"parcelle_type_zonage":{
+				"file_name" : "parcelle_type"
+			},
+			"parcelle_voisinage":{
+				"file_name" : "parcelle_voisinage"
+			},
+			"parcelle_zonage":{
+				"file_name" : "parcelle_zonage"
+			},
+			"action_synthetise":{
+				"file_name" : "action_synthetise"
+			},
+			"action_realise":{
+				"file_name" : "action_realise"
+			},
+			"synthetise_synthetise_performance":{
+				"file_name" : "synthetise_synthetise_performance"
+			},
+			"sdc_realise_performance":{
+				"file_name" : "sdc_realise_performance"
+			},
+			"parcelle_realise_performance":{
+				"file_name" : "parcelle_realise_performance"
+			},
+			"domaine_surface_especes_cultivees":{
+				"file_name" : "domaine"
+			},
+			"sole_realise":{
+				"file_name" : "sole_realise"
+			},
+			"connection_realise":{
+				"file_name" : "connection_realise"
+			},
+			"composition_substance_active_numero_amm":{
+				"file_name" : "composition_substance_active_numero_amm"
+			},		
+			"utilisation_intrant_realise":{
+				"file_name" : "utilisation_intrant_realise"
+			},
+			"parcelle":{
+				"file_name" : "parcelle"
+			},
+			"synthetise":{
+				"file_name" : "synthetise"
+			},
+			"zone":{
+				"file_name" : "zone"
+			},
+			"sdc":{
+				"file_name" : "sdc"
+			},
+			"plantation_perenne_synthetise":{
+				"file_name" : "plantation_perenne_synthetise"
+			},
+			"utilisation_intrant_synthetise":{
+				"file_name" : "utilisation_intrant_synthetise"
+			},
+			"materiel":{
+				"file_name" : "materiel"
+			},
+			"combinaison_outil":{
+				"file_name" : "combinaison_outil"
+			},
+			"combinaison_outil_materiel":{
+				"file_name" : "combinaison_outil"
+			},
+			"utilisation_intrant_cible":{
+				"file_name" : "utilisation_intrant_cible"
+			},
+			"parcelle_type":{
+				"file_name" : "parcelle_type"
+			},
+			"recolte_rendement_prix":{
+				"file_name" : "recolte_rendement_prix"
+			},
+			"itk_realise_performance":{
+				"file_name" : "itk_realise_performance"
+			},
+			"itk_synthetise_performance":{
+				"file_name" : "itk_synthetise_performance"
+			},
+			"composant_culture_concerne_intervention_realise":{
+				"file_name" : "composant_culture_concerne_intervention"
+			},
+			"bilan_campagne_sdc_generalites":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"espece":{
+				"file_name" : "espece"
+			},
+			"intervention_travail_edi":{
+				"file_name" : "intervention_travail_edi"
+			},
+			"variete":{
+				"file_name" : "variete"
+			},
+			"acta_groupe_culture":{
+				"file_name" : "acta_groupe_culture"
+			},
+			"acta_substance_active":{
+				"file_name" : "acta_substance_active"
+			},
+			"acta_traitement_produit":{
+				"file_name" : "acta_traitement_produit"
+			},
+			"composant_action_semis":{
+				"file_name" : "composant_action_semis"
+			},
+			"reseau":{
+				"file_name" : "reseau"
+			},
+			"liaison_sdc_reseau":{
+				"file_name" : "liaison_sdc_reseau"
+			},
+			"liaison_reseaux":{
+				"file_name" : "liaison_reseau"
+			},
+			"nuisible_edi":{
+				"file_name" : "nuisible_edi"
+			},
+			"adventice":{
+				"file_name" : "adventice"
+			},
+			"groupe_cible":{
+				"file_name" : "groupe_cible"
+			}
+		}
+	},
+	"outils" : {
+        "explication" : "Les données de la source outils permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
+        "categories" : {
+            "nettoyage" : {
+                "function_name" : "create_category_nettoyage",
+                "dependances" : [], 
+                "generated" : [
+                    "intervention_realise_nettoyage", 
+                    "utilisation_intrant_realise_nettoyage",
+                    "utilisation_intrant_synthetise_nettoyage"
+                ]
+            },
+            "agregation" : {
+                "function_name" : "create_category_agregation",
+                "dependances" : [],
+                "generated" : [
+                    "utilisation_intrant_realise_agrege",
+                    "utilisation_intrant_synthetise_agrege", 
+                    "intervention_synthetise_manquant_agrege", 
+                    "intervention_realise_manquant_agrege",
+                    "action_realise_manquant_agrege", 
+                    "action_synthetise_manquant_agrege"
+                ]
+            },
+            "agregation_complet" : {
+                "function_name" : "None",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "categorie": "agregation"
+                }
+                ],
+                "generated" : [
+                    "utilisation_intrant_realise_agrege", 
+                    "utilisation_intrant_synthetise_agrege",
+                    "intervention_synthetise_agrege", 
+                    "intervention_realise_agrege",
+                    "action_realise_agrege", 
+                    "action_synthetise_agrege"
+                ]
+            },
+            "restructuration" : {
+                "function_name" : "create_category_restructuration",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "categorie": "agregation_complet"
+                }],
+                "generated" : [
+                    "noeuds_synthetise_restructure", 
+                    "noeuds_realise_restructure",
+                    "connection_synthetise_restructure",
+                    "recolte_rendement_prix_restructure",
+                    "plantation_perenne_synthetise_restructure",
+                    "ccc_intervention_synthetise_restructure", 
+                    "intervention_synthetise_restructure"
+                ]
+            },
+            "indicateur" : {
+                "function_name" : "create_category_indicateur",
+                "dependances" : [],
+                "generated" : [
+                    "utilisation_intrant_indicateur", 
+                    "sdc_donnee_attendue"
+                ]
+            },
+            "outils_can" : {
+                "function_name" : "create_category_outils_can",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "categorie": "restructuration"
+                },
+                {
+                    "source" : "outils", 
+                    "categorie": "agregation_complet"
+                }],
+                "generated" : [
+                    "dispositif_filtres_outils_can",
+                    "intervention_realise_outils_can", 
+                    "intervention_synthetise_outils_can",
+                    "parcelle_non_rattachee_outils_can",
+                    "recolte_outils_can", 
+                    "culture_outils_can",
+                    "zone_realise_outils_can",
+                    "sdc_realise_outils_can",
+                    "parcelle_realise_outils_can"
+                ]
+            },
+            "test" : {
+                "function_name" : "create_category_test",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "categorie": "restructuration"
+                },
+                {
+                    "source" : "outils", 
+                    "categorie": "agregation_complet"
+                }],
+                "generated" : [
+                    "recolte_outils_can"
+                ],
+                "entrepot_dependances" : [
+                    "intervention_realise", "action_realise", "combinaison_outil", "materiel",
+                    "noeuds_realise", "connection_realise", "plantation_perenne_phases_realise", "plantation_perenne_realise", "composant_culture_concerne_intervention_realise",
+                    "composant_culture", "espece", "variete", "culture", "intervention_realise_agrege", "dispositif",
+                    "combinaison_outil_materiel", "semence", "utilisation_intrant_realise", "intrant", "recolte_rendement_prix",
+                    "utilisation_intrant_cible", "nuisible_edi", "adventice"
+                ]
+            }
+        }
+    }
+
+}

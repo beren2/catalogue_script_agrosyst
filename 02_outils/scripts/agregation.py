@@ -106,8 +106,8 @@ def get_aggreged_from_utilisation_intrant_realise(
     right = df_intervention_realise[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']].rename(columns={'id' : 'intervention_realise_id'})
     merge = pd.merge(left, right, on = 'intervention_realise_id', how='left')
 
-    merge_perenne = merge.loc[merge['noeuds_realise_id'].isna()]
-    merge_assolee = merge.loc[merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_perenne = merge.loc[~merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_assolee = merge.loc[~merge['noeuds_realise_id'].isna()]
     #----------#
     # ASSOLÉES #
     #----------#
@@ -121,7 +121,7 @@ def get_aggreged_from_utilisation_intrant_realise(
     # PERENNES #
     #----------#
     # obtention de la phase en synthétisé sur laquelle a lieu l'action
-    left = merge_perenne
+    left = merge_perenne.astype('object')
     right = df_plantation_perenne_phases_realise[['id', 'plantation_perenne_realise_id']].rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_phases_realise_id', how='left')
 
@@ -186,8 +186,8 @@ def get_leaking_aggreged_from_action_realise(
     right = df_intervention_realise[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']].rename(columns={'id' : 'intervention_realise_id'})
     merge = pd.merge(left, right, on = 'intervention_realise_id', how='left')
 
-    merge_perenne = merge.loc[merge['noeuds_realise_id'].isna()]
-    merge_assolee = merge.loc[merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_perenne = merge.loc[~merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_assolee = merge.loc[~merge['noeuds_realise_id'].isna()]
     #----------#
     # ASSOLÉES #
     #----------#
@@ -201,7 +201,7 @@ def get_leaking_aggreged_from_action_realise(
     # PERENNES #
     #----------#
     # obtention de la phase en synthétisé sur laquelle a lieu l'action
-    left = merge_perenne
+    left = merge_perenne.astype('object')
     right = df_plantation_perenne_phases_realise[['id', 'plantation_perenne_realise_id']].rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_phases_realise_id', how='left')
 

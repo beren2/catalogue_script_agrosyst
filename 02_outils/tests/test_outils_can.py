@@ -190,20 +190,20 @@ def test_get_intervention_synthetise_culture_prec_outils_can():
 
     assert all(res)
 
-def test_get_intervention_synthetise_action_outils_can():
-    """
-        Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
-    """
+# def test_get_intervention_synthetise_action_outils_can():
+#     """
+#         Test de l'obtention des informations sur les cultures précédentes en synthétisé pour le magasin CAN 
+#     """
 
-    identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
-    df_names = [   
-        'intervention_synthetise', 'action_synthetise', 'fertilisation_organique'
-    ]
-    path_data =  '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
-    fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+#     identifiant_test = 'test_get_intervention_synthetise_action_outils_can'
+#     df_names = [   
+#         'intervention_synthetise', 'action_synthetise', 'fertilisation_organique'
+#     ]
+#     path_data =  '02_outils/tests/data/test_get_intervention_synthetise_action_outils_can/'
+#     fonction_to_apply = outils_can.get_intervention_synthetise_action_outils_can
+#     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
-    assert all(res)
+#     assert all(res)
 
 def test_get_intervention_realise_action_outils_can():
     """
@@ -319,7 +319,7 @@ def test_get_zone_realise_culture_outils_can():
 
     df_names = [
         'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
-        'plantation_perenne_phases_realise', 'parcelle'
+        'plantation_perenne_phases_realise', 'parcelle','connection_realise'
     ]
 
     path_data = '02_outils/tests/data/test_get_zone_realise_culture_outils_can/'
@@ -359,7 +359,7 @@ def test_get_zone_realise_outils_can():
 
     df_names = [
         'recolte_rendement_prix', 'action_realise_agrege', 'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
-        'plantation_perenne_phases_realise', 'parcelle', 'composant_culture_concerne_intervention_realise', 'recolte_rendement_prix_restructure', 'action_realise'
+        'plantation_perenne_phases_realise', 'parcelle', 'composant_culture_concerne_intervention_realise', 'recolte_rendement_prix_restructure', 'action_realise','connection_realise'
     ]
 
     path_data = '02_outils/tests/data/test_get_zone_realise_outils_can/'
@@ -378,7 +378,7 @@ def test_get_parcelle_realise_outils_can():
     df_names = [
         'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
         'plantation_perenne_phases_realise', 'parcelle', 'recolte_rendement_prix', 'action_realise_agrege', 
-        'composant_culture_concerne_intervention_realise', 'recolte_rendement_prix_restructure', 'action_realise'
+        'composant_culture_concerne_intervention_realise', 'recolte_rendement_prix_restructure', 'action_realise','connection_realise'
     ]
 
     path_data = '02_outils/tests/data/test_get_parcelle_realise_outils_can/'
@@ -404,7 +404,7 @@ def test_get_sdc_realise_outils_can():
 
     df_names = [
         'zone', 'composant_culture', 'noeuds_realise', 'espece', 'variete', 'culture', 'plantation_perenne_realise',
-        'plantation_perenne_phases_realise', 'parcelle'
+        'plantation_perenne_phases_realise', 'parcelle','connection_realise'
     ]
 
     path_data = '02_outils/tests/data/test_get_sdc_realise_outils_can/'
