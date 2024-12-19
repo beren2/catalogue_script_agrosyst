@@ -216,6 +216,9 @@ def generate_table(current_magasin, current_table, current_dependances=None, ver
     for _, query in enumerate(queries):  
         file_name = DATA_PATH+""+current_table+"_"+current_magasin+".csv"
         res = duckdb.sql(query)
+    
+        if(verbose):
+            print(res)
         res.to_csv(file_name)
         print(f"- fichier {Fore.GREEN}"+file_name+f"{Style.RESET_ALL} exporté")
         # mise à jour du fichier local
