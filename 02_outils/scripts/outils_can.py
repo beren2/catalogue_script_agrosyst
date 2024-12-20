@@ -100,7 +100,8 @@ UNITE_APPLICATION = {
     'TA_HA': 'Ta/ha',
     'T_HA': 't/ha',
     'UNITE_HA': 'unité/ha',
-    'UNITE_HL': 'unité/hl'
+    'UNITE_HL': 'unité/hl',
+    'M_CUB_HA' : 'm3/ha'
 }
 
 UNITE_RENDEMENT = {
@@ -2096,7 +2097,7 @@ def get_intervention_synthetise_intrants_outils_can(
     merge_application = pd.merge(left, right, left_on='unite', right_on='unite_agrosyst', how='left')
 
     # utiliser le ref_nom ou le nom utilisateur ? --> il semble que ce soit le nom_utilisateur
-    merge_application.loc[:, 'interventions_intrants'] = (merge_application['nom_utilisateur']) + ' ('+merge_application['dose'].astype('str')+ ' '+merge_application['unite_utilisateur']+')'
+    merge_application.loc[:, 'interventions_intrants'] = (merge_application['nom_utilisateur']) + ' ('+merge_application['dose'].astype('str')+ ' '+merge_application['unite_utilisateur'].astype('str')+')'
     merge_application['interventions_intrants'] = merge_application['interventions_intrants'].fillna('')
 
     # INTRANT AUTRE

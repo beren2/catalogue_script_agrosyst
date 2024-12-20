@@ -28,3 +28,8 @@ fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_fd017078-0d95-4ca
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_f40672bc-226c-4698-a52c-4cf206b2c3f9,,,,,Sauvignon B,,,,,,,,
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0aedf302-4153-4b85-843b-97a0d67508e2,Blé tendre d'hiver,512D518,Céréales à paille,Triticum aestivum L.,RGT Cesario,RW 21337,A,,,LI,lignée,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_6e5628f8-f8c6-4c0b-834b-e850f41782b1,,,,,Cabernet franc N,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0bfe8211-c4e9-4730-ae69-249428d8a4f1,Blé tendre d'hiver,512D530,Céréales à paille,Triticum aestivum L.,Chevignon,SUR 260-25,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_5187fb45-37a7-47a2-b932-e74471e4f01b,Blé tendre d'hiver,512D065,Céréales à paille,Triticum aestivum L.,Fructidor,UN 6244-14,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_9bf9382b-1817-480c-8ed2-5dacda09608f,Colza oléagineux d'hiver,580B512,Colza et autres Crucifères,Brassica napus L.,ES Alicia,EGC 522,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_bc041fe5-248c-4b8f-a68b-e1fb2edb8fd1,Blé tendre d'hiver,512D296,Céréales à paille,Triticum aestivum L.,LG Absalon,NSA 11-8771,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_ebdcef56-74ee-4524-a741-a714ea27f8b8,Colza oléagineux d'hiver,580 E063,Colza et autres Crucifères,Brassica napus L.,DK EXTIME,,,,,,,,

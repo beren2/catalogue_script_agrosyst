@@ -422,6 +422,7 @@ test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.ef
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0143a358-7a89-45a5-97ac-2c98d5b862c2,,,quantite_eau_mm
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_0150d126-bdfc-4cc9-b994-d78ead3ed148,,,quantite_eau_mm
 test_get_intervention_realise_action_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_66e3f5b3-ef11-416d-b79b-65ba2caa6a07,,,quantite_eau_mm
+test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_00022c55-3de1-4e47-9906-d434c4a0bf00,"Lisier de porcins (27.0 m3/ha)",,interventions_intrants
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_eb0d0d43-a9cd-4dd7-a050-3794494107fd,,,interventions_intrants
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_7752a005-108c-4e92-bc99-eadbf3426d81,,,interventions_intrants
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_410565e6-e01a-49a9-9e9d-1fb3548b60d2,,,interventions_intrants
