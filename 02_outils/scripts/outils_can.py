@@ -1340,7 +1340,7 @@ def get_intervention_synthetise_culture_outils_can(
         pd.DataFrame:
             Un DataFrame contenant les informations sur les cultures par intervention synthétisée :
             - `id` : Identifiant de l'intervention synthétisée.
-            - `esp_complet_var` : Liste complète des espèces et variétés concernées, séparées par des "; ".
+            - `esp_complet_var` : Liste complète des espèces et variétés concernées par l'intervention, séparées par des "; ".
             - `esp_complet` : Liste unique des espèces complètes, séparées par des ", ".
             - `esp` : Liste unique des espèces, séparées par des ", ".
             - `var` : Liste unique des variétés, séparées par des ", ".
@@ -1372,43 +1372,34 @@ def get_intervention_synthetise_culture_outils_can(
     df_connection_synthetise_restructure = donnees['connection_synthetise_restructure'].set_index('id')
     df_culture = donnees['culture'].set_index('id')
 
+    # informations sur les composants cultures, dans le format attendu par la CAN
+    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
+
+    ## ASSOLEES ##
+    # avoir culture_intermediaire_id
     left = df_connection_synthetise
     right = df_connection_synthetise_restructure
     df_connection_synthetise_extanded_prim = pd.merge(left, right, left_index=True, right_index=True, how='left')
-
-    # informations sur les composants cultures, dans le format attendu par la CAN
-    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
 
     # reconstitution du culture_id pour le synthétisé
     left = df_noeuds_synthetise
     right = df_noeuds_synthetise_restructure
     df_noeuds_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    # informations assolée
-    left = df_noeuds_synthetise_extanded.reset_index()
-    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
-    df_noeuds_synthetise_extanded = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left')
-
+    # noeuds + connections
     left = df_connection_synthetise_extanded_prim.reset_index()
-    right = df_noeuds_synthetise_extanded.rename(columns={'id' : 'noeuds_synthetise_id'})
+    right = df_noeuds_synthetise_extanded.reset_index().rename(columns={'id' : 'noeuds_synthetise_id'})
     df_connection_synthetise_extanded = pd.merge(
         left, right, left_on='cible_noeuds_synthetise_id', right_on='noeuds_synthetise_id', how='left'
-    ).set_index(
-        ['id', 'composant_culture_id']
-    )
+    ).set_index('id')
 
+    ## PERENNES ##
+    # avoir le culture_id
     left = df_plantation_perenne_synthetise
     right = df_plantation_perenne_synthetise_restructure
     df_plantation_perenne_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    # informations perennes
-    left = df_plantation_perenne_synthetise_extanded.reset_index()
-    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
-    df_plantation_perenne_synthetise_extanded = pd.merge(
-        left, right, left_on='culture_id', right_on='culture_id', how='left').set_index(
-        ['id', 'composant_culture_id']
-    )
-
+    # ajout des phases
     left = df_plantation_perenne_phases_synthetise.reset_index()
     right = df_plantation_perenne_synthetise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_synthetise_id'})
     df_plantation_perenne_phases_synthetise_extanded = pd.merge(
@@ -1416,70 +1407,50 @@ def get_intervention_synthetise_culture_outils_can(
     ).set_index('id')
 
 
-    # on ajoute l'information de la connection où porte l'intervention
+    ## INTERVENTION ##
+    # composant_culture_id concerne par intervention : perennes + assolees + intermediaire sont dans la meme table
     left = df_composant_culture_concerne_intervention_synthetise
     right = df_composant_culture_concerne_intervention_synthetise_restructure
     df_composant_culture_intervention_synthetise_restructure = pd.merge(
         left, right, left_index=True, right_index=True, how='left'
     )
 
+    # esp et variété du composant culture concerné par l'intervention
     left = df_composant_culture_intervention_synthetise_restructure
-    right = df_intervention_synthetise[['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id','concerne_ci']]
-    df_composant_culture_concerne_intervention_extanded = pd.merge(
-        left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
+    right = df_composant_culture_extanded[['esp_complet_var', 'esp_complet', 'esp', 'var']]
+    df_composant_culture_intervention_synthetise_restructure = pd.merge(
+        left, right, left_on='composant_culture_id', right_index=True, how='inner'
+    ) 
 
-    # pour les cultures intermédiaires, on est obligé de faire un traitement spécifique : 
-    left = df_connection_synthetise_extanded_prim.reset_index()
-    right = df_composant_culture_extanded[['culture_id', 'esp_complet_var']].reset_index().rename(columns={'id': 'composant_culture_id'})
-    df_connection_synthetise_extanded_ci = pd.merge(
-        left, right, left_on='culture_intermediaire_id', right_on='culture_id', how='inner'
-    ).set_index(['id', 'composant_culture_id'])
+    # ajout à l'intervention les composants culture concernes si il y en a = left 
+    left = df_intervention_synthetise[['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id','concerne_ci']]
+    right = df_composant_culture_intervention_synthetise_restructure.reset_index()
+    df_intervention_synthetise_extanded = pd.merge(
+        left, right, left_index = True, right_on='intervention_synthetise_id', how='left').set_index(['intervention_synthetise_id','composant_culture_id'])
 
-    
-    # maintenant qu'on a tout, pour l'assolée :
-    left = df_composant_culture_concerne_intervention_extanded
+    # on ajoute à l'intervention l'information de la connection pour les assolees
+    left = df_intervention_synthetise_extanded
     right = df_connection_synthetise_extanded
     df_composant_culture_concerne_intervention_extanded_assolee = pd.merge(left, right, 
-        left_on=['connection_synthetise_id', 'composant_culture_id'],
+        left_on='connection_synthetise_id',
         right_index=True,
         how='inner'
     )
 
-    left = df_composant_culture_concerne_intervention_extanded
-    right = df_connection_synthetise_extanded_ci
-    df_composant_culture_concerne_intervention_extanded_assolee_ci = pd.merge(left, right, 
-        left_on=['connection_synthetise_id', 'composant_culture_id'],
+    # on ajoute à l'intervention l'information de la culture perenne
+    left = df_intervention_synthetise_extanded
+    right = df_plantation_perenne_phases_synthetise_extanded
+    df_composant_culture_concerne_intervention_extanded_perenne = pd.merge(left, right, 
+        left_on='plantation_perenne_phases_synthetise_id',
         right_index=True,
         how='inner'
     )
 
-    df_composant_culture_concerne_intervention_extanded_assolee = pd.concat([
-        df_composant_culture_concerne_intervention_extanded_assolee,
-        df_composant_culture_concerne_intervention_extanded_assolee_ci
-    ])
+    df_composant_culture_assole_perenne = pd.concat([df_composant_culture_concerne_intervention_extanded_assolee, 
+                                                     df_composant_culture_concerne_intervention_extanded_perenne])
+    df_composant_culture_assole_perenne = df_composant_culture_assole_perenne.fillna('')
 
-    # pour le perenne :
-    left = df_composant_culture_concerne_intervention_extanded.reset_index()
-    right = df_plantation_perenne_phases_synthetise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_phases_synthetise_id'})
-    df_composant_culture_concerne_intervention_extanded_perenne = pd.merge(left, right,
-        on=['plantation_perenne_phases_synthetise_id', 'composant_culture_id'],
-        how='inner'
-    )
-
-    df_composant_culture_concerne_intervention_extanded_perenne = df_composant_culture_concerne_intervention_extanded_perenne.fillna('')
-    df_composant_culture_concerne_intervention_extanded_assolee = df_composant_culture_concerne_intervention_extanded_assolee.fillna('')
-
-    df_final_perenne = df_composant_culture_concerne_intervention_extanded_perenne.groupby([
-        'intervention_synthetise_id'
-    ]).agg({
-        'esp_complet_var' : ' ; '.join, 
-        'esp_complet' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'esp': lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'var' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
-        'culture_id' : lambda x: next(iter(x)),
-    })
-
-    df_final_assolee = df_composant_culture_concerne_intervention_extanded_assolee.groupby([
+    df_intervention_synthetise_v1 = df_composant_culture_assole_perenne.reset_index().groupby([
         'intervention_synthetise_id'
     ]).agg({
         'esp_complet_var' : ' ; '.join,
@@ -1490,12 +1461,11 @@ def get_intervention_synthetise_culture_outils_can(
         'concerne_ci' : lambda x: next(iter(x)),
         'culture_intermediaire_id': lambda x: next(iter(x))
     })
-    df_final_assolee['culture_id'] = np.where(df_final_assolee['concerne_ci'] == 't', df_final_assolee['culture_intermediaire_id'], df_final_assolee['culture_id'])
-    df_final_assolee = df_final_assolee.drop(['concerne_ci'], axis = 1)
-    df_final_assolee = df_final_assolee.drop(['culture_intermediaire_id'], axis = 1)
-
-
-    df_intervention_synthetise_v1 = pd.concat([df_final_assolee, df_final_perenne])
+    df_intervention_synthetise_v1['culture_id'] = np.where(df_intervention_synthetise_v1['concerne_ci'] == 't' , 
+                                                           df_intervention_synthetise_v1['culture_intermediaire_id'], 
+                                                           df_intervention_synthetise_v1['culture_id'])
+    df_intervention_synthetise_v1 = df_intervention_synthetise_v1.drop(['concerne_ci'], axis = 1)
+    df_intervention_synthetise_v1 = df_intervention_synthetise_v1.drop(['culture_intermediaire_id'], axis = 1)
 
     # On merge le nom de la culture ('nom') par la 'culture_id'
     left = df_intervention_synthetise_v1.reset_index()
