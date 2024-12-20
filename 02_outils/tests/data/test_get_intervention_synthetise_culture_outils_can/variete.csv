@@ -19,3 +19,5 @@ fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_6e5628f8-f8c6-4c0
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_935aab47-fc7e-4181-a7c5-04324aa7fbc4,,,,,Cabernet-Sauvignon N,,,,,,,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_96f16e76-aa7e-42c1-81ff-bfdd6a97cd21,,,,,Merlot N,,,,,,,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_f40672bc-226c-4698-a52c-4cf206b2c3f9,,,,,Sauvignon B,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_0f0235b8-77f4-40c2-8477-9b7e6e9f3a07,Blé tendre d'hiver,512C826,Céréales à paille,Triticum aestivum L.,Oregrain,FD 07170,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_2b814b89-b008-4c43-bb0b-e8637c0d9d71,Soja,270306,"Tournesol, Soja et Ricin",Glycine max (L.) Merr.,Isidor,EGA 109,A,,,LI,lignée,,
