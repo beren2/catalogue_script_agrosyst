@@ -350,6 +350,9 @@ def create_category_indicateur():
     """
         Execute les requêtes pour créer les outils des indicateurs
     """
+    df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
+    export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
+
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
     
@@ -406,31 +409,9 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
-    df_intervention_realise_outils_can.set_index('id', inplace=True)
-    export_to_db(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
+    df_surface_connexion_synthetise_indicateur = indicateur.get_surface_connexion_synthetise(donnees)
+    export_to_db(df_surface_connexion_synthetise_indicateur, 'entrepot_surface_connection_synthetise_indicateur')
 
-entrepot_spec = {
-    'tables' : [
-        'semence', 'plantation_perenne_phases_realise', 'plantation_perenne_phases_synthetise', 'modele_decisionnel', 
-        'composant_culture_concerne_intervention_synthetise', 'domaine', 'dispositif', 'modele_decisionnel_maitrise', 
-        'modele_decisionnel_strategie', 'modele_decisionnel_strategie_culture', 'plantation_perenne_realise', 
-        'intervention_realise_performance', 'intervention_synthetise_performance', 
-        'bilan_campagne_regional_pressionbioagresseur', 'bilan_campagne_regional_generalites', 'coordonnees_gps_domaine', 
-        'utilisation_intrant_performance', 'zone_realise_performance', 'intrant', 'composant_culture', 'culture', 
-        'atelier_elevage', 'intervention_synthetise', 'commune', 'noeuds_realise', 'noeuds_synthetise', 
-        'connection_synthetise', 'intervention_realise', 'combinaison_outil_action', 'domaine_sol', 
-        'parcelle_type_voisinage', 'parcelle_type_zonage', 'parcelle_voisinage', 'parcelle_zonage', 'action_synthetise', 
-        'action_realise', 'synthetise_synthetise_performance', 'sdc_realise_performance', 'parcelle_realise_performance', 
-        'domaine_surface_especes_cultivees', 'sole_realise', 'connection_realise', 'composition_substance_active_numero_amm', 
-        'utilisation_intrant_realise', 'parcelle', 'synthetise', 'zone', 'sdc', 'plantation_perenne_synthetise', 
-        'utilisation_intrant_synthetise', 'materiel', 'combinaison_outil', 'combinaison_outil_materiel', 
-        'utilisation_intrant_cible', 'parcelle_type', 'recolte_rendement_prix', 'itk_realise_performance', 
-        'composant_culture_concerne_intervention_realise', 'bilan_campagne_sdc_generalites', 'espece', 
-        'intervention_travail_edi', 'variete', 'acta_groupe_culture', 'acta_substance_active', 'acta_traitement_produit',
-        'composant_action_semis', 'reseau', 'liaison_sdc_reseau', 'liaison_reseaux', 'nuisible_edi', 'adventice', 'groupe_cible'
-    ]
-}
 
 external_data_spec = {
     'tables' : [
@@ -489,7 +470,11 @@ while True:
     print("")
     print("*****************************************************************")
     print("")
-    
+
+    print("""Information(s) : le type local signifie qu'on supprime toutes les fonctionnalités liées aux BDD.
+Par exemple, les outils générés sont téléchargés uniquement en csv et pas importés dans la base.
+En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour en local.
+          """, )
 
     print("Veuillez choisir une option parmi les suivantes :")
     print("")
