@@ -22,3 +22,5 @@ fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_95b4
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_eb51086e-6454-4418-b00c-ee906715d213,RAVAGEUR,t,19683,000000AEE132,Tordeuse,131,Ravageurs divers
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_0efe1fec-2112-4c78-8696-ddbffc810482,RAVAGEUR,t,19693,AEE132LASPMO,Tordeuse orientale du pêcher,131,Ravageurs divers
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_118346cf-a38d-43cd-8f36-c17e62a3faeb,RAVAGEUR,f,19683,000000AEE132,Tordeuse,156,Tordeuses de la grappe
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_876cce12-b28b-4523-b995-b381f812a7e5,ADVENTICE,f,000000AEE504,000000AEE504,** Toutes adventices **,5,Adventices
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4c9035da-f8b8-42d5-b7fd-79ec2db71120,ADVENTICE,f,000000AEE508,000000AEE508,** Toutes graminées **,5,Adventices
