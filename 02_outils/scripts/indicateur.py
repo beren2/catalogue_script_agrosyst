@@ -103,7 +103,7 @@ def str_replace_code_dephy(df,regex_pattern,pattern_replace):
     df = df.replace(to_replace={'code_dephy': regex_pattern},value=pattern_replace,regex=True)
     return(df)
 
-def sdc_donnee_attendue(donnees):
+def identification_pz0(donnees):
     '''
     Qualifie chaque sdc (code dephy * campagne) par "PZ0 attendu" OU "Pas de donnees attendues" OU "donnees annuelles attendues" OU "inconnue dephy ferme" pour les dispositifs DEPHY_FERME.
     Pour les sdc d autres dispositif : "inconnue : hors dephy ferme ou suivi non detaille"
