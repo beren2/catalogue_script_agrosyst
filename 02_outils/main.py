@@ -432,7 +432,7 @@ steps = [
 options_categories = {}
 
 for source_key, source in SOURCE_SPECS.items():
-    if(source_key != 'entrepot'):
+    if(source_key == 'outils'):
         for categorie_key in source['categories']:
             options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'categorie' : categorie_key}
             categorie = source['categories'][categorie_key]
