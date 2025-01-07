@@ -338,28 +338,28 @@ def test_get_dose_ref():
     assert res_valeur_ok
     assert res_unit_ok
 
-def test_sdc_donnee_attendue():
+def test_identification_pz0():
     """
         Test du tag des sdc par le type de donnees attendue
     """
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_sdc_donnee_attendue']
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_identification_pz0']
 
     # obtention des données
     df_names = [    
                     'dispositif',
                     'sdc'
                 ]
-    path_data = '02_outils/tests/data/test_sdc_donnee_attendue/'
+    path_data = '02_outils/tests/data/test_identification_pz0/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
     
-    external_data_path = '02_outils/tests/data/test_sdc_donnee_attendue/'
+    external_data_path = '02_outils/tests/data/test_identification_pz0/'
     
     import_df('BDD_donnees_attendues_CAN', external_data_path, sep = ',', df = donnees)
 
     # application de la fonction d'identification des pz0
-    result_function = indicateur.sdc_donnee_attendue(donnees)
+    result_function = indicateur.identification_pz0(donnees)
     
     df_metadonnees.set_index('id_ligne',inplace = True)
     comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
