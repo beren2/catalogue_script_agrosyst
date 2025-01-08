@@ -348,8 +348,12 @@ def test_identification_pz0():
 
     # obtention des données
     df_names = [    
+                    'domaine',
                     'dispositif',
-                    'sdc'
+                    'sdc',
+                    'synthetise',
+                    'parcelle',
+                    'zone'
                 ]
     path_data = '02_outils/tests/data/test_identification_pz0/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
