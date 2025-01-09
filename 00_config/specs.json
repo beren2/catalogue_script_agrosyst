@@ -343,7 +343,8 @@
                 "function_name" : "create_category_interoperabilite",
                 "dependances" : [], 
                 "generated" : [
-                    "donnees_spatiales"
+					"donnees_spatiales_commune_du_domaine",
+                    "donnees_spatiales_coord_gps_du_domaine"
                 ]
             },
             "restructuration" : {

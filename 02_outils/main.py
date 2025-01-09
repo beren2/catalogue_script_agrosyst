@@ -372,9 +372,11 @@ def create_category_interoperabilite():
     """
         Execute les requêtes pour créer les outils d'interopérabilité
     """
-    df_donnees_spatiales = interoperabilite.create_donnees_spatiales(donnees)
-    export_to_db(df_donnees_spatiales, 'entrepot_donnees_spatiales')
+    df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
+    export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
 
+    df_donnees_spatiales_coord_gps_du_domaine = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
+    export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
 
 def create_category_outils_can():
     """
@@ -455,10 +457,9 @@ entrepot_spec = {
 external_data_spec = {
     'tables' : [
         'BDD_donnees_attendues_CAN',
-        'referentiel_geographique_fr_esr_unique'
     ],
     'geojson' : [
-        'geoVec_com2022'
+        'geoVec_com2024'
     ],
     'geopackage' : [
         'safran'

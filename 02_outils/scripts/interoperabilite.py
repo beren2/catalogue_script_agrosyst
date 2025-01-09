@@ -27,7 +27,7 @@ def get_safran_cell_for_each_township(donnees):
 
     Notes:
         Cette fonction met environ 3 secondes à tourner. Elle n'est qu'un intermédiaire pour arrivé à une sortie attendue principalement pour
-        la fonction create_donnees_spatiales. Un futur dévellopement à penser pour stocker ces fichiers intermédiaires qui ne seront à refaire 
+        la fonction get_donnees_spatiales_from_domain_township. Un futur dévellopement à penser pour stocker ces fichiers intermédiaires qui ne seront à refaire 
         tourner qu'une fois tout les an, voire plus (au changement des contour de communes, chgt de codeinsee, chgt d'id maille safran)
         Pour l'instant on choisit de faire tourner cette fonction à chaque fois (que 3s !)
     """
@@ -40,7 +40,7 @@ def get_safran_cell_for_each_township(donnees):
 
     # Celui utilisé ici est celui de 2024 avec DROMS NON RAPPORCHES trouvé sur BAN Open data !!
     # https://adresse.data.gouv.fr/data/contours-administratifs/2024/geojson
-    gdf_commune = donnees['geoVec_com2024'][['codgeo','geometry','dep']].rename(columns={"codgeo": "codeinsee"})
+    gdf_commune = donnees['geoVec_com2024'][['code','geometry','dep']].rename(columns={"code": "codeinsee"})
 
     #Verification de l'unicité des code insee
     if gdf_commune.codeinsee.is_unique : print('index gdf_commune OK') 
@@ -93,7 +93,7 @@ def get_safran_cell_for_each_township(donnees):
     return df_spatial
 
 
-def create_donnees_spatiales(donnees, get_safran_cell_for_each_township_data):
+def get_donnees_spatiales_commune_du_domaine(donnees):
     
     """
     Permet d'obtenir des informations spatiales pour chaque domaines.
@@ -104,17 +104,18 @@ def create_donnees_spatiales(donnees, get_safran_cell_for_each_township_data):
             Et, point important, il est possible de changer de commune au cours du temps, la spatialisation est rattaché à l'id pas au code !
     
     Arguments:
-        donnees (dict): Contenant les tables suivantes
-            - domaine (entrepot.Contexte => commune_id)
-            - commune (entrepot.Référentiel => codeinsee)
-            - coordonnees_gps_domaine (entrepot.Contexte => latitude, longitude)
-        external_data (dict): Contient les données dont a besoin la fonction get_safran_cell_for_each_township()
-            - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
-            - safran.gpkg : geopackage safran télécharger sur le site de SICLIMA
+        donnees (dict): 
+            Contenant les tables suivantes de l'entrepot
+                - domaine (entrepot.Contexte => commune_id)
+                - commune (entrepot.Référentiel => codeinsee)
+            Contient aussi les données dont a besoin la fonction get_safran_cell_for_each_township()
+                - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
+                - safran.gpkg : geopackage safran téléchargé sur le site de SICLIMA
 
     Retourne:
         pd.DataFrame:
             - 'domaine_id' : Identifiant du domaine
+            - 'domaine_code' : Code du domaine
             - 'commune_id' : Identifiant du référentiel de localisation des communes
             - 'codeinsee' : le code insee
             - 'cellule_safran' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
@@ -123,6 +124,18 @@ def create_donnees_spatiales(donnees, get_safran_cell_for_each_township_data):
         get_safran_cell_for_each_township() est une fonction permettant de générer un Dataframe qui donne le rattachement commune/maille safran
         on la fait tourner pour obtenir la maille safran en mergeant par le code insee. Possible qu'un jour on ne lui fasse plus appel mais qu'on
         importe sa sortie comme n'importe quel Df
+
+        
+
+
+
+
+        A AJOUTER : GEOFLA
+
+
+
+
+
     """
     # import et renommage
     df_domaine = donnees['domaine'][['id','code','commune_id']].rename(columns={
@@ -132,37 +145,60 @@ def create_donnees_spatiales(donnees, get_safran_cell_for_each_township_data):
     df_commune = donnees['commune'][['id','codeinsee']].rename(columns={
         'id' : 'commune_id'
         })
-    # On crée deux geodf un avec safran et un avec les coord gps des domaines
-    gdf_gps = donnees['coordonnees_gps_domaine'][['domaine_id','latitude','longitude']]
+    df_spatial = get_safran_cell_for_each_township(donnees[['safran','geoVec_com2024']])
+
+    # merge
+    df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
+    df = df.merge(df_spatial, on = 'codeinsee', how='left')
+
+    return df
+
+
+
+def get_donnees_spatiales_coord_gps_du_domaine(donnees):
+    
+    """
+    Permet d'obtenir des informations spatiales pour chaque coordonnées gps saisies au niveau du domaine
+    
+    Echelle : 
+        geopoint_id : 
+            Au niveau du domaine on peut saisir plusieurs points gps et les nommés (par exemple 'Siege', 'Hangar', ...).
+            Les points gps des parcelles seront saisie plutot au niveau de la zone en réalisé.
+    
+    Arguments:
+        donnees (dict): Contenant les tables suivantes
+            - coordonnees_gps_domaine (entrepot.Contexte => domain_id, latitude, longitude)
+        external_data (dict): Contient les données dont a besoin la fonction get_safran_cell_for_each_township()
+            - safran.gpkg : geopackage safran télécharger sur le site de SICLIMA
+
+    Retourne:
+        pd.DataFrame:
+            - 'geopoint_id' : Identifiant du point gps
+            - 'domaine_id' : Identifiant du domaine
+            - 'cellule_safran' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
+    """
+    
+    # import et renommage
+
+    gdf_gps = donnees['coordonnees_gps_domaine'][['id','domaine_id','latitude','longitude']].rename(columns={"id": "geopoint_id"})
     gdf_gps = gpd.GeoDataFrame(gdf_gps,
                                geometry = gpd.points_from_xy(
                                    x = gdf_gps.longitude,
                                    y = gdf_gps.latitude,
                                    crs = 'EPSG:4326')
                                 ).drop(columns=['latitude', 'longitude'])
-    gdf_safran = get_safran_cell_for_each_township_data['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran"})
+    
+    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran"})
 
     # On joint la cellule safran si les coord gps du domaine sont à l'intérieur de la cell
     df_coord_gps = gpd.sjoin(gdf_gps.set_geometry('geometry'), gdf_safran, how='left', predicate='within')
     # Si pas le cas on va chercher la cell la plus proche.
-    # On pose un distance pax d'appariement de 70km (au jugé)
+    # On pose un distance pax d'appariement de 80km (au jugé, = x10 mailles)
     join = df_coord_gps.loc[df_coord_gps.cellule_safran.isna(), ['geometry']]
-    join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('geometry'), gdf_safran.to_crs(3857).set_geometry('geometry'), how = 'left', max_distance = 70000).to_crs(4326)
+    join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('geometry'), gdf_safran.to_crs(3857).set_geometry('geometry'), how = 'left', max_distance = 80000).to_crs(4326)
     # On joint les communes rattachées par nearest avec celles rattachés par within
     df_coord_gps = df_coord_gps.combine_first(join[['cellule_safran']])
-    df_coord_gps = df_coord_gps[['domaine_id','cellule_safran']]
 
-    if df_coord_gps.duplicated('domaine_id').shape[0] != 0:
-        return print('/!\ ATTENTION pluseiurs coordonnées gps renseignés pour un même domaine !'), df_coord_gps.duplicated('domaine_id', keep=False)
-
-    df_spatial = get_safran_cell_for_each_township(get_safran_cell_for_each_township_data)
-
-    # merge
-    df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
-    df = df.merge(df_coord_gps, on = 'domaine_id', how='left')
-    df = df.merge(df_spatial, on = 'codeinsee', how='left')
-
-    df['cellule_safran'] = df['cellule_safran_x'].fillna(df['cellule_safran_y'])
-    df = df.drop(['cellule_safran_x', 'cellule_safran_y'], axis=1)
+    df = df_coord_gps[['geopoint_id','domaine_id','geometry','cellule_safran']].rename(columns={"geometry": "coord_gps"})
 
     return df
