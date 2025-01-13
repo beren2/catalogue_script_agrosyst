@@ -190,7 +190,7 @@ def join_saisies_with_ref_donnees_attendues(df_sdc, df_synthetise, saisies_atten
         saisies_attendues : data.frame, issu de formatage_referentiel_donnees_attendue()
     
     return :
-        identif_pz0 : data.frame, avec ['sdc_id', 'synthetise_id','donnee_attendue']
+        identif_pz0 : data.frame, avec index ['sdc_id', 'synthetise_id'] et colonne ['donnee_attendue']
     '''
     # LA JOINTURE SE FAIT avec LES CAMPAGNES DU SYNTHETISE ou la campagne du domaine pour les realises
     # UN PZ0 = un synthétisé et un tri annuel
@@ -236,6 +236,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     
     return :
         df : data.frame
+        dephy_mono : list, liste des codes dephy ayant un pz0 mono annuel
     '''
 
     select_df = df.loc[df['code_dephy'].isin(code_dephy_select.to_list())]
@@ -428,13 +429,35 @@ def identification_pz0(donnees):
 
     # Re unir les tables
     df_identification_pz0 = pd.concat([identif_pz0_with_pz0,identif_pz0_non_attendue,identif_pz0_aucun]).reset_index()
-    df_identification_pz0 = df_identification_pz0[['code_dephy','synthetise_id','donnee_attendue']].rename(columns = {'synthetise_id' : 'id',
-                                                                                               'donnee_attendue' : 'pz0'}).set_index('id')
+
+    print(df_identification_pz0[df_identification_pz0['code_dephy']=="ARF10264"].values)
+
+    # CAS DES REALISES 
+    # ajouter le detail jusque à la zone. Jusqu'a maintenant on s'arretait jusque sdc_id
+    left = df_zone
+    right = df_parcelle
+    df_zone_extanded = pd.merge(left,right, left_on = 'parcelle_id', right_index=True).drop('parcelle_id', axis = 1)
+
+    left = df_identification_pz0.loc[df_identification_pz0['synthetise_id'].isna()]
+    right = df_zone_extanded.reset_index().rename(columns = {'id' : 'zone_id'})
+    df_identification_pz0_zones = pd.merge(left,right, on = "sdc_id")
+
+    df_identification_pz0_synthetise = df_identification_pz0.loc[~ df_identification_pz0['synthetise_id'].isna()]
+    df_identification_pz0_synthetise['zone_id'] = np.nan
+
+    df_identification_pz0 = pd.concat([df_identification_pz0_synthetise, df_identification_pz0_zones])
+
+    # construction de la colonne 'id' = synthetise_id OU 'zone_id'
+    df_identification_pz0.loc[df_identification_pz0['synthetise_id'].isna(),'id'] = df_identification_pz0.loc[df_identification_pz0['synthetise_id'].isna(),'zone_id']
+    df_identification_pz0.loc[df_identification_pz0['zone_id'].isna(),'id'] = df_identification_pz0.loc[df_identification_pz0['zone_id'].isna(),'synthetise_id']
+
+
+    df_identification_pz0 = df_identification_pz0.set_index('id')
     
     # Pour les cas de "saisie pz0 non acceptable", transformer leurs "données non attendues" -> "saisie pz0 non acceptable"
-    
-    code_dephy_nonacceptable = df_identification_pz0.loc[df_identification_pz0['pz0'] == modalite_pz0_non_acceptable,'code_dephy'].to_list()
-    df_identification_pz0.loc[df_identification_pz0['code_dephy'].isin(code_dephy_nonacceptable), 'pz0'] = modalite_pz0_non_acceptable
+    code_dephy_nonacceptable = df_identification_pz0.loc[df_identification_pz0['donnee_attendue'] == modalite_pz0_non_acceptable,'code_dephy'].to_list()
+    df_identification_pz0.loc[df_identification_pz0['code_dephy'].isin(code_dephy_nonacceptable), 'donnee_attendue'] = modalite_pz0_non_acceptable
 
+    df_identification_pz0 = df_identification_pz0[['donnee_attendue','code_dephy']].rename(columns={'donnee_attendue' : 'pz0'})
     return(df_identification_pz0)
 
