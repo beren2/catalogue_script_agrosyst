@@ -342,8 +342,14 @@ def identification_pz0(donnees):
     df_synthetise = donnees['synthetise'].set_index('id')
     df_parcelle = donnees['parcelle'].set_index('id')
     df_zone = donnees['zone'].set_index('id')
+    df_intervention_synthetise_agrege = donnees['intervention_synthetise_agrege'].set_index('id')
+    df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
     saisies_attendues = donnees['BDD_donnees_attendues_CAN']
     
+    # retirer les zones et synthetises sur lesquels il n'y a aucune intervention
+    df_synthetise = df_synthetise.loc[df_intervention_synthetise_agrege['synthetise_id'].to_list()]
+    df_zone = df_zone.loc[df_intervention_realise_agrege['zone_id'].to_list()]
+
     # pattern pz0
     modalite_pz0_non_acceptable = "incorrect : saisie pz0 non acceptable"
     modalite_pz0_chevauchement = "incorrect : chevauchement pz0"
