@@ -353,22 +353,23 @@ def test_identification_pz0():
                     'sdc',
                     'synthetise',
                     'parcelle',
-                    'zone'
+                    'zone',
+                    'intervention_synthetise_agrege',
+                    'intervention_realise_agrege'
                 ]
     path_data = '02_outils/tests/data/test_identification_pz0/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
     
     external_data_path = '02_outils/tests/data/test_identification_pz0/'
-    
     import_df('BDD_donnees_attendues_CAN', external_data_path, sep = ',', df = donnees)
 
     # application de la fonction d'identification des pz0
     result_function = indicateur.identification_pz0(donnees)
     
     df_metadonnees.set_index('id_ligne',inplace = True)
-    comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
+    comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True).reset_index()
     
-    res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['donnee_attendue'].astype('int')).all()
+    res_test = (comparaison['valeur_attendue'] == comparaison['pz0']).all()
     assert res_test
   
 def test_connection_synthetise_restructured():
