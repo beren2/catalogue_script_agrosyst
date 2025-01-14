@@ -111,8 +111,10 @@ def formatage_referentiel_donnees_attendue(df):
     df = df.rename(columns={'codes_SdC' : 'code_dephy'})
 
     # certains code dephy ont le pz0 qui est inconnu. On supprime ces lignes, c'est comme si le code dephy est inconnu
-    df = df.dropna(axis=1, how='all') # supprimer d'abord les colonnes qui contiennent que des na
     df = df.dropna()
+
+    if df.shape[0] == 0:
+        print('Attention vérifiez le référentiel à propos des na ! lors de la suppresion des lignes avec nan pour les inconnu toutes les lignes ont été supprimées')
 
     # FORMATAGE DU DATA SAISIES ATTENDUES : => 1 ligne = code_dephy * campagne * donnee_attendue
     cols_to_keep = [col for col in df.columns if '20' in col]
@@ -217,6 +219,7 @@ def join_saisies_with_ref_donnees_attendues(df_sdc, df_synthetise, saisies_atten
     
     # On fait l'inverse de la distribution, on concatene les cas de synthetises pluriannuel pour retrouver 1 ligne par synthetise 
     # On obtiens des donnnees attendues de type "non-attendue,pz0,pz0"
+    identif_distrib['campagnes_dis'] = identif_distrib['campagnes_dis'].astype("str")
     identif_pz0 = identif_distrib.groupby(['code_dephy','sdc_id','campagne_domaine','synthetise_id'], dropna=False).agg({
         'campagnes_dis' : ', '.join,
         'donnee_attendue' : ', '.join
@@ -304,9 +307,10 @@ def do_correct_overlap(df,modalite_pz0_chevauchement,dephy_monoannuel):
     pz0_choosed = pz0_choosed.loc[pz0_choosed['donnee_attendue'] == "pz0",['code_dephy','campagnes']].rename(columns = {'campagnes' : 'campagnes_pz0'})
 
     df_not_monoannuel = pd.merge(df_not_monoannuel.reset_index(),pz0_choosed, on = 'code_dephy')
-    df_not_monoannuel['campagnes_pz0'] = df_not_monoannuel['campagnes_pz0'].str.split(', ')
 
-    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : modalite_pz0_chevauchement if (x['campagne_domaine'] in x['campagnes_pz0']) & (x['donnee_attendue'] != "pz0") 
+    # si la campagne du domaine ou les campagnes du synthetises sont compris dans le pz0, il y a chevauchement
+    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : modalite_pz0_chevauchement if ((str(x['campagne_domaine']) in x['campagnes_pz0']) | (str(x['campagnes']) in x['campagnes_pz0']))
+                                                                                                                & (x['donnee_attendue'] != "pz0") 
                                                                                                     else x['donnee_attendue'], axis=1)
 
     df_not_monoannuel = df_not_monoannuel.drop('campagnes_pz0', axis = 1)
@@ -335,6 +339,7 @@ def identification_pz0(donnees):
     !!! NE SONT PAS DANS LA SORTIE : 
         - autre que dephy_ferme
         - autre que suivi detaille
+        - les zones et synthetises ayant aucune intervention
     '''
     df_domaine = donnees['domaine'].set_index('id')
     df_dispositif = donnees['dispositif'].set_index('id')
@@ -346,9 +351,12 @@ def identification_pz0(donnees):
     df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
     saisies_attendues = donnees['BDD_donnees_attendues_CAN']
     
-    # retirer les zones et synthetises sur lesquels il n'y a aucune intervention
-    df_synthetise = df_synthetise.loc[df_intervention_synthetise_agrege['synthetise_id'].to_list()]
-    df_zone = df_zone.loc[df_intervention_realise_agrege['zone_id'].to_list()]
+    # retirer les zones et synthetises sur lesquelles il n'y a aucune intervention (list(set()) puisque il y a plusieurs interventions par synthetises)
+    print('nb zones sans interventions' + str(df_zone.loc[df_zone.index.isin(list(set(df_intervention_realise_agrege['zone_id'])))].shape))
+    print('nb synthetise sans interventions'+ str(df_synthetise.loc[~df_synthetise.index.isin(list(set(df_intervention_synthetise_agrege['synthetise_id'])))].shape))
+
+    df_synthetise = df_synthetise.loc[list(set(df_intervention_synthetise_agrege['synthetise_id']))]
+    df_zone = df_zone.loc[list(set(df_intervention_realise_agrege['zone_id']))]
 
     # pattern pz0
     modalite_pz0_non_acceptable = "incorrect : saisie pz0 non acceptable"
@@ -435,8 +443,6 @@ def identification_pz0(donnees):
 
     # Re unir les tables
     df_identification_pz0 = pd.concat([identif_pz0_with_pz0,identif_pz0_non_attendue,identif_pz0_aucun]).reset_index()
-
-    print(df_identification_pz0[df_identification_pz0['code_dephy']=="ARF10264"].values)
 
     # CAS DES REALISES 
     # ajouter le detail jusque à la zone. Jusqu'a maintenant on s'arretait jusque sdc_id
