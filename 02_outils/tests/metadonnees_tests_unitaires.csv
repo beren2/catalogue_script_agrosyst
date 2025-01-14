@@ -82,8 +82,8 @@ test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_da9b084b-24bd-427d-96fa-0d2ad8e261a1,incorrect : code dephy inconnu,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_1842112a-4bb0-452c-a511-1b60be72d12c,incorrect : code dephy inconnu,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_e6bfd200-4968-4de7-884e-93ab57513e05,incorrect : code dephy inconnu,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_03512b7f-8aa0-4bb6-9e91-ecf232a4e39a,incorrect : saisie pz0 non acceptable,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_19af9c4e-a656-44d0-abdf-39ecb589f8c7,incorrect : saisie pz0 non acceptable,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_03512b7f-8aa0-4bb6-9e91-ecf232a4e39a,post,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_19af9c4e-a656-44d0-abdf-39ecb589f8c7,post,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5bc82306-16bc-44bf-b5df-e0246aae1718,incorrect : saisie pz0 non acceptable,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_854cbd37-7525-45ef-9961-c0222afdbd3c,incorrect : saisie pz0 non acceptable,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_9a48c09c-32b9-4af7-81d3-d677510c5ed1,incorrect : saisie pz0 non acceptable,entite_id,pz0
@@ -118,6 +118,7 @@ test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a8a33424-7043-4331-9491-8384947f29de,pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_16cf85b7-9ac0-4c7d-b61c-74c111604b13,post,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b0545ff2-691f-4f19-a889-d40b36afdcf0,pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_8a26af50-8fe2-4371-8d19-e840133a7af6,pz0,entite_id,pz0
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_2b85c593-764d-4fb8-9c5e-cf5b7e4ce007,fr.inra.agrosyst.api.entities.CroppingPlanEntry_6070cc5d-4fac-46fa-8623-71bdc8c57869,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_b458d315-fb5d-4484-9511-2c235f445fc4,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0ee04d75-a71c-4f00-8a5c-69c3e020104f,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_f6a81255-cf9e-4e0e-8622-ec07facd07df,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e9b9c498-1815-49d9-9376-2d3e04db2532,,culture_id
