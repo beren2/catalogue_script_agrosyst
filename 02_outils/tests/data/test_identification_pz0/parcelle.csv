@@ -1,4 +1,5 @@
 id,sdc_id
+fr.inra.agrosyst.api.entities.Plot_0164bcbb-3e4a-4e9e-a4c3-2c2a24dd8324,fr.inra.agrosyst.api.entities.GrowingSystem_48456d18-7780-449f-9871-4d00bbe2d92e
 fr.inra.agrosyst.api.entities.Plot_16449ee0-423d-440a-9402-4040cf805f40,fr.inra.agrosyst.api.entities.GrowingSystem_1539ba92-8d50-4e69-ba5e-cfd94028f1ea
 fr.inra.agrosyst.api.entities.Plot_3a30cf9a-9a3e-4686-8c77-f3e733738782,fr.inra.agrosyst.api.entities.GrowingSystem_57ffda50-65cd-4f29-abc1-0437e30238bd
 fr.inra.agrosyst.api.entities.Plot_4fbf2078-c455-4337-a2d1-abad037904df,fr.inra.agrosyst.api.entities.GrowingSystem_6e4f7407-cbb4-4c81-83f3-f0c1b59e75d8
