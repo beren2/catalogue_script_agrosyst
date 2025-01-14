@@ -1,5 +1,6 @@
 id,campagne
 fr.inra.agrosyst.api.entities.Domain_440e853e-1829-4158-91b6-dffbff18090b,2010
+fr.inra.agrosyst.api.entities.Domain_be466fef-1345-49af-8929-2c1c6e9fa0c2,2018
 fr.inra.agrosyst.api.entities.Domain_d5241cc6-cdcd-4c70-b506-867a0819308f,2015
 fr.inra.agrosyst.api.entities.Domain_18a434ea-234a-4fc2-8e51-59c2ddb0ad74,2012
 fr.inra.agrosyst.api.entities.Domain_e3902463-bf2b-4211-bcaa-f9fb25d7fe36,2010
@@ -16,10 +17,14 @@ fr.inra.agrosyst.api.entities.Domain_b7e17945-043c-4800-b5a6-6962b5ceab05,2019
 fr.inra.agrosyst.api.entities.Domain_aee73c93-e43d-4ae5-a2a8-c00603fc068b,2011
 fr.inra.agrosyst.api.entities.Domain_2408b6f6-9bc0-4e72-a4ff-61ce92123949,2009
 fr.inra.agrosyst.api.entities.Domain_38af5ba5-1e78-4501-9339-a00f5b39af4d,2009
+fr.inra.agrosyst.api.entities.Domain_3bff9849-8216-4891-a2b0-db29ad33116b,2019
 fr.inra.agrosyst.api.entities.Domain_c6d1bc75-0c89-44e3-9342-487d5ee70a22,2016
 fr.inra.agrosyst.api.entities.Domain_007ca77c-2bf6-4b84-97e2-12dc8b124529,2010
 fr.inra.agrosyst.api.entities.Domain_b20891f3-5326-40f3-a2fb-5576ffb31e76,2017
+fr.inra.agrosyst.api.entities.Domain_2da3a40c-8151-4bad-8da9-ed01573cbb7f,2016
 fr.inra.agrosyst.api.entities.Domain_171e221c-b10b-4570-908f-97642d452c1f,2018
+fr.inra.agrosyst.api.entities.Domain_e43c9b2c-0403-48d6-ae4a-7bed9f11bf6c,2018
+fr.inra.agrosyst.api.entities.Domain_fae4bd38-b1a1-4b89-9bc2-3b993fce8e2d,2016
 fr.inra.agrosyst.api.entities.Domain_b07aaec4-f0f8-41ae-88f9-64389ec101b7,2012
 fr.inra.agrosyst.api.entities.Domain_4f9f9d12-d022-433f-b419-1b9fc8d019a5,2009
 fr.inra.agrosyst.api.entities.Domain_199803fb-072f-4d51-ae5f-92734e7d1e39,2016

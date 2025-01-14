@@ -119,6 +119,12 @@ test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_16cf85b7-9ac0-4c7d-b61c-74c111604b13,post,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b0545ff2-691f-4f19-a889-d40b36afdcf0,pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_8a26af50-8fe2-4371-8d19-e840133a7af6,pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_52fbbc87-d675-46a3-b424-2573836265a9,incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_dadb8ebc-b2da-4337-b527-33b62aa7f854,incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_bda297a1-f4cf-4da1-8281-c1b512359b20,incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_86b86082-2a63-412b-bf00-4507d8a9326e,incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ba3c39b7-1a22-4b36-965a-33cf70b22553,incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0,entite_id,pz0
+stest_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a7dac827-2f1a-476f-ac54-67b18d5e582f,incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0,entite_id,pz0
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_2b85c593-764d-4fb8-9c5e-cf5b7e4ce007,fr.inra.agrosyst.api.entities.CroppingPlanEntry_6070cc5d-4fac-46fa-8623-71bdc8c57869,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_b458d315-fb5d-4484-9511-2c235f445fc4,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0ee04d75-a71c-4f00-8a5c-69c3e020104f,,culture_id
 test_noeuds_synthetise_restructured,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_f6a81255-cf9e-4e0e-8622-ec07facd07df,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e9b9c498-1815-49d9-9376-2d3e04db2532,,culture_id
