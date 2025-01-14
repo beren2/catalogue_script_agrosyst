@@ -175,3 +175,57 @@ def sdc_donnee_attendue(donnees):
     
     return(merge[['sdc_id','code_dephy','campagne','donnee_attendue']])
 
+
+
+def get_typologie_culture_rotation_CAN(donnees):
+    ''' 
+    Le but est d'obtenir les typologies de culture et de rotation utilisées par la Cellule référence.
+
+    Note(s):
+        Eventuellement à mettre dans Agrosyst directement
+        La typologie espece a été directement intégré au référentiel refespece d'Agrosyst
+
+    Echelle :
+        culture_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'composant_culture'
+            - 'culture'
+            Données externe (référentiel CAN):
+            - 'typo_especes_typo_culture.csv'
+            - 'typo_especes_typo_culture_marai.csv'
+
+    Returns:
+        pd.DataFrame() contenant la culture_id et la typologie de culture de la CAN
+    '''
+    cropsp = donnees['composant_culture'][['id','espece_id','culture_id']]
+    crop = donnees['culture'][['id','type']]
+    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']]
+    # sp = donnees['espece'][['id','typocan','typocan_maraich']]
+    typo1 = donnees['typo_especes_typo_culture'].rename(columns={
+        'TYPO_ESPECES':'typocan_espece', 'Typo_Culture':'typocan_culture'})
+    typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
+        'TYPO_ESPECES':'typocan_espece_maraich', 'Typo_Culture':'typocan_culture_maraich'})
+
+    df = cropsp.merge(sp, how = 'left', left_on = 'espece_id', right_on = 'id')
+
+    df = df[['culture_id','typocan','typocan_maraich']].group_by('culture_id').agg({
+            'typocan' : lambda x: '_'.join(set(x).remove(np.nan).str.sort()),
+            'typocan_maraich' : lambda x: '_'.join(list(set([y for y in x if y == y])).sort()),
+            'nb_espece' : lambda x : len(list(x)),
+            'nb_typocan' : lambda x : len(list(set([y for y in x if y == y])))
+            })
+    
+    df = df.merge(crop, how='left', left_on='culture_id', right_on='id')
+    df = df.merge(typo1, how='left', on='typocan_espece')
+    df = df.merge(typo2, how='left', on='typocan_espece_maraich')
+
+    df.loc[df.type == 'intermediate', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
+
+    # Ajout de 'Culture porte-graine' ??
+    # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
+    # Du coup utilisation du nom de la culture pour changement non souhaité
+
+    return df
