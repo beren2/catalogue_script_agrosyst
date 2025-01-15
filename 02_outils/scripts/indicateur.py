@@ -208,7 +208,7 @@ def get_typologie_culture_rotation_CAN(donnees):
     typo1 = donnees['typo_especes_typo_culture'].rename(columns={
         'TYPO_ESPECES':'typocan_espece', 'Typo_Culture':'typocan_culture'})
     typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
-        'TYPO_ESPECES':'typocan_espece_maraich', 'Typo_Culture':'typocan_culture_maraich'})
+        'TYPO_ESPECES_BIS':'typocan_espece_maraich', 'Typo_Culture_bis':'typocan_culture_maraich'})
 
     df = cropsp.merge(sp, how = 'left', left_on = 'espece_id', right_on = 'id')
 
@@ -216,20 +216,32 @@ def get_typologie_culture_rotation_CAN(donnees):
     df['nb_typocan_esp'] = df['typocan_espece']
     df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich']
 
-    df = df[['culture_id','typocan_espece','typocan_espece_maraich','nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg({
-            'typocan_espece' : lambda x: '_'.join(set(x).remove(np.nan).str.sort()),
-            'typocan_espece_maraich' : lambda x: '_'.join(list(set([y for y in x if y == y])).sort()),
-            'nb_espece' : 'sum',
-            'nb_typocan_esp' : lambda x : len(list(set([y for y in x if y == y]))),
-            'nb_typocan_esp_maraich' : lambda x : len(list(set([y for y in x if y == y])))
-            })
+    def concat_unique_sorted(series):
+        cleaned = series.dropna().unique()
+        if len(cleaned) == 0:
+            return np.nan
+        return '_'.join(sorted(cleaned))
+    def get_nb_unique_typo(series):
+        cleaned = series.dropna().unique()
+        return len(cleaned)
+    agg_dict = {
+        'typocan_espece': concat_unique_sorted,
+        'typocan_espece_maraich': concat_unique_sorted,
+        'nb_espece': 'sum',
+        'nb_typocan_esp': get_nb_unique_typo,
+        'nb_typocan_esp_maraich': get_nb_unique_typo
+    }
+    df = df[['culture_id','typocan_espece','typocan_espece_maraich',
+             'nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
+
     
     df = df.merge(crop, how='left', left_on='culture_id', right_on='id')
     df = df.merge(typo1, how='left', on='typocan_espece')
     df = df.merge(typo2, how='left', on='typocan_espece_maraich')
 
-    df.loc[df.type == 'intermediate', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
+    df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
 
+    df = df.set_index('culture_id')
     # Ajout de 'Culture porte-graine' ??
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
     # Du coup utilisation du nom de la culture pour changement non souhaité
