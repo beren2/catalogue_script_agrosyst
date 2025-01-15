@@ -1,6 +1,8 @@
 id,sdc_id
 fr.inra.agrosyst.api.entities.Plot_0164bcbb-3e4a-4e9e-a4c3-2c2a24dd8324,fr.inra.agrosyst.api.entities.GrowingSystem_48456d18-7780-449f-9871-4d00bbe2d92e
 fr.inra.agrosyst.api.entities.Plot_16449ee0-423d-440a-9402-4040cf805f40,fr.inra.agrosyst.api.entities.GrowingSystem_1539ba92-8d50-4e69-ba5e-cfd94028f1ea
+fr.inra.agrosyst.api.entities.Plot_1eac2a9e-a299-4566-87e3-efd33e6ef587,fr.inra.agrosyst.api.entities.GrowingSystem_05c01922-2103-4545-bc06-51d8d4e19f3f
+fr.inra.agrosyst.api.entities.Plot_28930d21-ce13-42f4-9276-8bfb4e3d54a8,fr.inra.agrosyst.api.entities.GrowingSystem_9bb07e0b-81b5-4e79-adbf-5478ce7552ed
 fr.inra.agrosyst.api.entities.Plot_3a30cf9a-9a3e-4686-8c77-f3e733738782,fr.inra.agrosyst.api.entities.GrowingSystem_57ffda50-65cd-4f29-abc1-0437e30238bd
 fr.inra.agrosyst.api.entities.Plot_4fbf2078-c455-4337-a2d1-abad037904df,fr.inra.agrosyst.api.entities.GrowingSystem_6e4f7407-cbb4-4c81-83f3-f0c1b59e75d8
 fr.inra.agrosyst.api.entities.Plot_aa50990d-a7e6-42f3-a8c2-5065dc9e280a,fr.inra.agrosyst.api.entities.GrowingSystem_9e7932e7-a316-405c-af76-c827fa418137
