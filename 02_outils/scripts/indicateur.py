@@ -200,10 +200,11 @@ def get_typologie_culture_rotation_CAN(donnees):
     Returns:
         pd.DataFrame() contenant la culture_id et la typologie de culture de la CAN
     '''
-    cropsp = donnees['composant_culture'][['id','espece_id','culture_id']]
-    crop = donnees['culture'][['id','type']]
-    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']]
-    # sp = donnees['espece'][['id','typocan','typocan_maraich']]
+    cropsp = donnees['composant_culture'][['espece_id','culture_id']]
+    crop = donnees['culture'][['type']]
+    sp = donnees['espece_vCAN'][['typocan_espece','typocan_espece_maraich']]
+    # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
+    # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]
     typo1 = donnees['typo_especes_typo_culture'].rename(columns={
         'TYPO_ESPECES':'typocan_espece', 'Typo_Culture':'typocan_culture'})
     typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
@@ -211,11 +212,16 @@ def get_typologie_culture_rotation_CAN(donnees):
 
     df = cropsp.merge(sp, how = 'left', left_on = 'espece_id', right_on = 'id')
 
-    df = df[['culture_id','typocan','typocan_maraich']].group_by('culture_id').agg({
-            'typocan' : lambda x: '_'.join(set(x).remove(np.nan).str.sort()),
-            'typocan_maraich' : lambda x: '_'.join(list(set([y for y in x if y == y])).sort()),
-            'nb_espece' : lambda x : len(list(x)),
-            'nb_typocan' : lambda x : len(list(set([y for y in x if y == y])))
+    df['nb_espece'] = 1
+    df['nb_typocan_esp'] = df['typocan_espece']
+    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich']
+
+    df = df[['culture_id','typocan_espece','typocan_espece_maraich','nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg({
+            'typocan_espece' : lambda x: '_'.join(set(x).remove(np.nan).str.sort()),
+            'typocan_espece_maraich' : lambda x: '_'.join(list(set([y for y in x if y == y])).sort()),
+            'nb_espece' : 'sum',
+            'nb_typocan_esp' : lambda x : len(list(set([y for y in x if y == y]))),
+            'nb_typocan_esp_maraich' : lambda x : len(list(set([y for y in x if y == y])))
             })
     
     df = df.merge(crop, how='left', left_on='culture_id', right_on='id')
