@@ -1,0 +1,2 @@
+id,culture_intermediaire_code,frequence_source,culture_absente,source_noeuds_synthetise_id,cible_noeuds_synthetise_id
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_87451de9-d413-444a-aee7-e8e1b028c408,,100.0,f,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_a9a46097-e5ba-422c-af29-e372ca4dde2e,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_bdc2227f-ac40-40c2-96ab-cac2f56dccf3

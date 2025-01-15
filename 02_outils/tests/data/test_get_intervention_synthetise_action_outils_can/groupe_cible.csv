@@ -1,0 +1,3 @@
+id,type,cible_generique,cible_edi_ref_id,cible_edi_ref_code,cible_edi_ref_label,code_groupe_cible_maa,groupe_cible_maa
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_876cce12-b28b-4523-b995-b381f812a7e5,ADVENTICE,f,000000AEE504,000000AEE504,** Toutes adventices **,5,Adventices
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4c9035da-f8b8-42d5-b7fd-79ec2db71120,ADVENTICE,f,000000AEE508,000000AEE508,** Toutes graminées **,5,Adventices

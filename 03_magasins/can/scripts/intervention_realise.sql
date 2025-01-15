@@ -38,7 +38,7 @@ SELECT
     ir.nombre_de_passage nombre_de_passage,
     ir.psci as psci,
     ir.psci_phyto_avec_amm as psci_phyto,
-    ir.psci_phyto_sans_amm as psci_lutte_bio 
+    ir.psci_phyto_sans_amm as psci_lutte_bio,
     iroc.proportion_surface_traitee_phyto,
     iroc.proportion_surface_traitee_lutte_bio,
     ir.debit_de_chantier,

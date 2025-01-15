@@ -100,7 +100,8 @@ UNITE_APPLICATION = {
     'TA_HA': 'Ta/ha',
     'T_HA': 't/ha',
     'UNITE_HA': 'unité/ha',
-    'UNITE_HL': 'unité/hl'
+    'UNITE_HL': 'unité/hl',
+    'M_CUB_HA' : 'm3/ha'
 }
 
 UNITE_RENDEMENT = {
@@ -1187,6 +1188,7 @@ def get_intervention_realise_cibles_outils_can(
     # on associe à chaque cible d'utilisation d'intrants les informations sur la cible
     left = df_utilisation_intrant_cible
     df_nuisible_edi = df_nuisible_edi[['label_nuisible']].rename(columns={'label_nuisible' : 'label'})
+    df_adventice = df_adventice.rename(columns = {'code' : 'reference_id'})
     right = pd.concat([df_nuisible_edi, df_adventice])
     merge = pd.merge(left, right, left_on='ref_cible_id', right_index=True, how='left')[['label', 'utilisation_intrant_id']]
 
@@ -2026,7 +2028,9 @@ def get_intervention_synthetise_outils_can(
         columns={'id' : 'intervention_synthetise_id'}
     )
     merge = pd.merge(left, right, on='intervention_synthetise_id', how='left')
-
+    print(merge[merge['intervention_synthetise_id'] == "fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_76d81551-adb2-4066-a181-212a6fbe08d7"].values)
+    print(merge[merge['intervention_synthetise_id'] == "fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_76d81551-adb2-4066-a181-212a6fbe08d7"].columns)
+    
     # ajout des informations sur les rendements :
     left = merge 
     right = get_intervention_synthetise_rendement_outils_can(donnees).rename(
@@ -2099,7 +2103,7 @@ def get_intervention_synthetise_intrants_outils_can(
     merge_application = pd.merge(left, right, left_on='unite', right_on='unite_agrosyst', how='left')
 
     # utiliser le ref_nom ou le nom utilisateur ? --> il semble que ce soit le nom_utilisateur
-    merge_application.loc[:, 'interventions_intrants'] = (merge_application['nom_utilisateur']) + ' ('+merge_application['dose'].astype('str')+ ' '+merge_application['unite_utilisateur']+')'
+    merge_application.loc[:, 'interventions_intrants'] = (merge_application['nom_utilisateur']) + ' ('+merge_application['dose'].astype('str')+ ' '+merge_application['unite_utilisateur'].astype('str')+')'
     merge_application['interventions_intrants'] = merge_application['interventions_intrants'].fillna('')
 
     # INTRANT AUTRE
@@ -2180,6 +2184,7 @@ def get_intervention_synthetise_cibles_outils_can(
     # on associe à chaque cible d'utilisation d'intrants les informations sur la cible (adventices ou nuisibles)
     left = df_utilisation_intrant_cible
     df_nuisible_edi = df_nuisible_edi[['label_nuisible', 'reference_id']].rename(columns={'label_nuisible' : 'label'})
+    df_adventice = df_adventice.rename(columns = {'code' : 'reference_id'})
     right = pd.concat([df_nuisible_edi, df_adventice])
     merge = pd.merge(left, right, left_on='ref_cible_id', right_index=True, how='left')[[
         'label', 'utilisation_intrant_id', 'code_groupe_cible_maa', 'reference_id'

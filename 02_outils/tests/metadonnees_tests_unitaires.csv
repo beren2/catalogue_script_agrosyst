@@ -454,6 +454,8 @@ test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practi
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_9012c381-d558-4d19-a817-bb6eaf71fa5e,3.0,,nb_intrants
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_5117f8f1-e44b-4f9f-a37c-695a7c9b0862,1.0,,nb_intrants
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_9012c381-d558-4d19-a817-bb6eaf71fa5e,Mildiou(s),,interventions_groupe_cible
+test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_76d81551-adb2-4066-a181-212a6fbe08d7,Adventices,,interventions_groupe_cible
+test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_76d81551-adb2-4066-a181-212a6fbe08d7,"** Toutes adventices **, ** Toutes graminées **",,interventions_cibles_trait
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_c038db42-9198-49d3-925d-ba37e3788ffe,non,,biocontrole
 test_get_intervention_synthetise_outils_can,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_fb063bae-d233-40a5-97ff-e31f19d1efc1,oui,,biocontrole
 test_get_intervention_realise_outils_can,fr.inra.agrosyst.api.entities.effective.EffectiveIntervention_c02084a1-61a2-4141-b050-3fe25a93f982,,,interventions_cibles_trait
