@@ -193,6 +193,7 @@ def get_typologie_culture_rotation_CAN(donnees):
             Données d'entrepot
             - 'composant_culture'
             - 'culture'
+            - 'espece'
             Données externe (référentiel CAN):
             - 'typo_especes_typo_culture.csv'
             - 'typo_especes_typo_culture_marai.csv'
@@ -234,14 +235,26 @@ def get_typologie_culture_rotation_CAN(donnees):
     df = df[['culture_id','typocan_espece','typocan_espece_maraich',
              'nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
 
-    
+
     df = df.merge(crop, how='left', left_on='culture_id', right_on='id')
+    crop = crop.reset_index().rename(columns={'id' : 'culture_id'})
+    crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
+    df = pd.concat([df, crop_only], ignore_index=True)
+
     df = df.merge(typo1, how='left', on='typocan_espece')
+
     df = df.merge(typo2, how='left', on='typocan_espece_maraich')
 
-    df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
+    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
+    df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = [np.nan, np.nan]
 
+
+    df['type'] = df['type'].astype('category')
+    df['type'] = df['type'].cat.rename_categories({'MAIN': 'PRINCIPALE', 
+                                                   'INTERMEDIATE': 'INTERMEDIAIRE', 
+                                                   'CATCH': 'DEROBEE' })
     df = df.set_index('culture_id')
+
     # Ajout de 'Culture porte-graine' ??
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
     # Du coup utilisation du nom de la culture pour changement non souhaité
