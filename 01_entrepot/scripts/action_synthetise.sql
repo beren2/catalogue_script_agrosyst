@@ -1,11 +1,10 @@
 CREATE TABLE entrepot_action_synthetise AS
-select 
+SELECT 
 aa.topiaid id,
 refintrav.intervention_agrosyst "type",
 refintrav.reference_label as label,
 aa."comment" commentaire,
 aa.proportionoftreatedsurface proportion_surface_traitee,
-aa.proportionoftreatedsurface * pi.spatialfrequency * pi.temporalfrequency psci_action,
 -- semences
 aa.yealdtarget semence_objectif_rendement,
 aa.yealdunit semence_objectif_rendement_unite,
@@ -40,10 +39,10 @@ aa.pasturingatnight paturage_presence_nuit,
 aa.cattlecode atelier_elevage_code,
 --aa.deepness, = la profondeur de semis avant le local a intrant qui a été déplacé aux usages 
 eis.id intervention_synthetise_id
-from abstractaction aa
+FROM abstractaction aa
 JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.topiaid
-join practicedintervention pi on pi.topiaid = aa.practicedintervention
-join entrepot_intervention_synthetise eis on eis.id = aa.practicedintervention ;
+JOIN practicedintervention pi on pi.topiaid = aa.practicedintervention
+JOIN entrepot_intervention_synthetise eis on eis.id = aa.practicedintervention ;
 
 alter table entrepot_action_synthetise
 add constraint action_synthetise_PK
