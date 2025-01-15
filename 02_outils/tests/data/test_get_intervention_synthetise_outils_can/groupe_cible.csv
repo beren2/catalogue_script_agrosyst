@@ -1,4 +1,6 @@
 id,type,cible_generique,cible_edi_ref_id,cible_edi_ref_code,cible_edi_ref_label,code_groupe_cible_maa,groupe_cible_maa
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_876cce12-b28b-4523-b995-b381f812a7e5,ADVENTICE,f,000000AEE504,000000AEE504,** Toutes adventices **,5,Adventices
+fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4c9035da-f8b8-42d5-b7fd-79ec2db71120,ADVENTICE,f,000000AEE508,000000AEE508,** Toutes graminées **,5,Adventices
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4ae921dd-84dc-458d-8ca1-c2decdcb1eae,MALADIE,t,19089,000000AEE167,Mildiou,23,Champignons autres que pythiacées
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_ccf47a50-bf2f-4e93-86fc-e4187a7876b5,MALADIE,t,19224,000000AEE174,Oïdium,23,Champignons autres que pythiacées
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4307aed3-e77e-404f-b48f-e85398d73ee6,MALADIE,f,19089,000000AEE167,Mildiou,22,Champignons (pythiacées)
@@ -22,5 +24,3 @@ fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_95b4
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_eb51086e-6454-4418-b00c-ee906715d213,RAVAGEUR,t,19683,000000AEE132,Tordeuse,131,Ravageurs divers
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_0efe1fec-2112-4c78-8696-ddbffc810482,RAVAGEUR,t,19693,AEE132LASPMO,Tordeuse orientale du pêcher,131,Ravageurs divers
 fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_118346cf-a38d-43cd-8f36-c17e62a3faeb,RAVAGEUR,f,19683,000000AEE132,Tordeuse,156,Tordeuses de la grappe
-fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_876cce12-b28b-4523-b995-b381f812a7e5,ADVENTICE,f,000000AEE504,000000AEE504,** Toutes adventices **,5,Adventices
-fr.inra.agrosyst.api.entities.referential.RefCiblesAgrosystGroupesCiblesMAA_4c9035da-f8b8-42d5-b7fd-79ec2db71120,ADVENTICE,f,000000AEE508,000000AEE508,** Toutes graminées **,5,Adventices

@@ -5,7 +5,6 @@ refintrav.intervention_agrosyst "type",
 refintrav.reference_label as label,
 aa."comment" commentaire,
 aa.proportionoftreatedsurface proportion_surface_traitee,
-aa.proportionoftreatedsurface * ei.spatialfrequency * ei.transitcount psci_action,
 -- semences
 aa.yealdtarget semence_objectif_rendement,
 aa.yealdunit semence_objectif_rendement_unite,

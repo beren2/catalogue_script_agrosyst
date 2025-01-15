@@ -1,0 +1,2 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_9137004b-16a1-4744-be6e-05708bb27bfe,Ray-grass d'Italie alternatif,580382,Plantes fourragères et à gazon,Lolium multiflorum Lam.,Magloire,LW 00-2015,A,,,SY,synthétique,2n,Diploïde
