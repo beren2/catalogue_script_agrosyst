@@ -2,6 +2,7 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
+import numpy as np
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
@@ -25,6 +26,56 @@ def import_dfs(df_names, path_data,  df, sep = ','):
         import_df(df_name, path_data, sep, df)
 
     return df
+
+
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
+                  metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', \
+                    df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id'):
+    """
+        Fonction qui permet de tester 
+    """
+    df_metadonnees = pd.read_csv(metadonnee_file)
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == identifiant_test]
+
+    # dictionnaire donnant pour chaque identifiant d'entité (par exemple intervention_id), les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees_ref = {}
+    if(not df_ref_names is None):
+        # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
+        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+    donnees = donnees_ | donnees_ref
+    
+    donnees_computed = fonction_to_apply(donnees)
+    donnees_computed = donnees_computed.reset_index().set_index(key_name).reset_index()
+
+    res = []
+    for entite_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[entite_id]
+
+        # valeur trouvée :
+        output = donnees_computed.loc[donnees_computed[key_name] == entite_id]
+        output = output[colonnes_to_test].fillna('').astype('str')
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
+
+        for colonne_to_test in colonnes_to_test:
+            print(output[colonne_to_test].values)
+            print(expected_output[colonne_to_test].values)
+            if(len(expected_output[colonne_to_test].values) > 0):
+                is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
+
+            if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
+                res.append(False)
+            else:
+                res.append(True)
+
+    return res
 
 def test_debit_chantier_intervention_realise():
     """
@@ -587,3 +638,24 @@ def test_get_aggreged_from_utilisation_intrant_realise():
     res_valeur_ok = (merge['aggreged_utilisation_intrant_realise'] == merge['aggreged_utilisation_intrant_realise_expected']).all()
 
     assert res_valeur_ok
+
+
+
+def test_get_typologie_culture_CAN():
+    """
+        Test de l'obtention des typologies d'espece et de cultures 
+    """
+    identifiant_test = 'test_get_typologie_culture_CAN'
+    df_names = [   
+                    'composant_culture', 'culture', 
+                    'espece_vCAN', # A changer lorsque le refespece sera pret
+                    'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
+                ]
+    path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
+    fonction_to_apply = indicateur.get_typologie_culture_CAN
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
