@@ -177,9 +177,9 @@ def sdc_donnee_attendue(donnees):
 
 
 
-def get_typologie_culture_rotation_CAN(donnees):
+def get_typologie_culture_CAN(donnees):
     ''' 
-    Le but est d'obtenir les typologies de culture et de rotation utilisées par la Cellule référence.
+    Le but est d'obtenir les typologies d'espece et de culture utilisées par la Cellule référence.
 
     Note(s):
         Eventuellement à mettre dans Agrosyst directement
@@ -213,8 +213,10 @@ def get_typologie_culture_rotation_CAN(donnees):
             ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
     '''
     cropsp = donnees['composant_culture'][['espece_id','culture_id']]
-    crop = donnees['culture'][['type']]
-    sp = donnees['espece_vCAN'][['typocan_espece','typocan_espece_maraich']]
+    crop = donnees['culture'][['id','type']].rename(columns={
+        'id':'culture_id'})
+    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
+        'id':'espece_id'})
     # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
     # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]
     typo1 = donnees['typo_especes_typo_culture'].rename(columns={
@@ -222,7 +224,7 @@ def get_typologie_culture_rotation_CAN(donnees):
     typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
         'TYPO_ESPECES_BIS':'typocan_espece_maraich', 'Typo_Culture_bis':'typocan_culture_maraich'})
 
-    df = cropsp.merge(sp, how = 'left', left_on = 'espece_id', right_on = 'id')
+    df = cropsp.merge(sp, how = 'left', on = 'espece_id')
 
     df['nb_espece'] = 1
     df['nb_typocan_esp'] = df['typocan_espece']
@@ -247,8 +249,7 @@ def get_typologie_culture_rotation_CAN(donnees):
              'nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
 
 
-    df = df.merge(crop, how='left', left_on='culture_id', right_on='id')
-    crop = crop.reset_index().rename(columns={'id' : 'culture_id'})
+    df = df.merge(crop, how='left', on='culture_id')
     crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
     # ATTENTION_DIFF_CAN_a ::: 2 Lignes
     crop_only.loc[:,['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
@@ -273,8 +274,9 @@ def get_typologie_culture_rotation_CAN(donnees):
     df['type'] = df['type'].cat.rename_categories({'MAIN': 'PRINCIPALE', 
                                                    'INTERMEDIATE': 'INTERMEDIAIRE', 
                                                    'CATCH': 'DEROBEE' })
-    df = df.set_index('culture_id')
+    df['type'] = df['type'].astype('str')
     df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
+    df = df.set_index('culture_id')
 
     # Ajout de 'Culture porte-graine' ??
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence

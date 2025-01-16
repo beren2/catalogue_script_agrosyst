@@ -359,8 +359,8 @@ def create_category_indicateur():
     df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
     export_to_db(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
 
-    df_typologie_culture_rotation_CAN = indicateur.get_typologie_culture_rotation_CAN(donnees)
-    export_to_db(df_typologie_culture_rotation_CAN, 'entrepot_typologie_can_culture')
+    df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
+    export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
 
 def create_category_outils_can():
     """
