@@ -327,18 +327,42 @@ def do_correct_overlap(df,modalite_pz0_chevauchement,dephy_monoannuel):
     
     pz0_choosed = df_not_monoannuel.reset_index()
     pz0_choosed = pz0_choosed.loc[pz0_choosed['donnee_attendue'] == "pz0",['code_dephy','campagnes']].rename(columns = {'campagnes' : 'campagnes_pz0'})
-
+    pz0_choosed.loc[:,'campagnes_pz0'] = pz0_choosed['campagnes_pz0'].str.split(', ')
+    
     df_not_monoannuel = pd.merge(df_not_monoannuel.reset_index(),pz0_choosed, on = 'code_dephy')
+    df_not_monoannuel.loc[:,'campagnes_split'] = df_not_monoannuel.loc[:,'campagnes'].str.split(', ')
 
-    # si la campagne du domaine ou les campagnes du synthetises sont compris dans le pz0, il y a chevauchement
-    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : modalite_pz0_chevauchement if ((str(x['campagne_domaine']) in x['campagnes_pz0']) | (str(x['campagnes']) in x['campagnes_pz0']))
-                                                                                                                & (x['donnee_attendue'] != "pz0") 
+    # si le min de la campagne du synthetise <= au max de la campagne pz0, il y a chevauchement
+    # pour le cas de detection de post qui chevauchent
+    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : modalite_pz0_chevauchement if ((min(x['campagnes_split']) <= max(x['campagnes_pz0']))
+                                                                                                                & (x['donnee_attendue'] != 'pz0') )
+                                                                                                    else x['donnee_attendue'], axis=1)
+    
+    # pour le cas de de plusieurs pz0 à choisir, l'un est devenu chevauchant alors que il doit etre post. ex PYF10511 2009,2010,2011 et 2012,2013,2014,2015
+    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : "post" if ((min(x['campagnes_split']) > max(x['campagnes_pz0']))
+                                                                                                                & (x['donnee_attendue'] == modalite_pz0_chevauchement) )
                                                                                                     else x['donnee_attendue'], axis=1)
 
     df_not_monoannuel = df_not_monoannuel.drop('campagnes_pz0', axis = 1)
     df_not_monoannuel = df_not_monoannuel.set_index(['sdc_id','synthetise_id'])
 
+    # les pz0 mono annuels peuvent aussi avoir des chevauchements si il y a un realise de campagne pz0.
+    # a ete transformé en post mais doit devenir chevauchement
+    pz0_mono = df_monoannuel.reset_index()
+    pz0_mono = pz0_mono.loc[pz0_mono['donnee_attendue'] == "pz0",['code_dephy','campagnes']].rename(columns = {'campagnes' : 'campagnes_pz0'})
+    pz0_mono = pz0_mono.groupby(by = ['code_dephy'])['campagnes_pz0'].apply(list)
+
+    df_monoannuel = pd.merge(df_monoannuel.reset_index(), pz0_mono, on = 'code_dephy')
+
+    df_monoannuel['donnee_attendue'] = df_monoannuel.apply(
+        lambda x : modalite_pz0_chevauchement if ((x['donnee_attendue'] == "post") & (x['campagnes'] <= max(x['campagnes_pz0']))) else x['donnee_attendue'] ,
+    axis=1)
+
+    df_monoannuel = df_monoannuel.drop(['campagnes_pz0'], axis=1)
+    df_monoannuel = df_monoannuel.set_index(['sdc_id','synthetise_id'])
+
     df_modified = pd.concat([df_not_monoannuel,df_monoannuel,df_none_pz0])
+
     return(df_modified)
 
 def control_nb_pz0_per_codedephy(df,dephy_monoannuel):
@@ -358,7 +382,63 @@ def control_nb_pz0_per_codedephy(df,dephy_monoannuel):
 
     dephynb_manypz0 = count_pz0_by_code.loc[count_pz0_by_code['count_pz0'] > 1]['code_dephy'].to_list()
 
-    return(dephynb_manypz0)
+    # les pz0 mono annuels peuvent aussi être mal saisi,
+    # - nb pz0 > 3 ex : 2014,2015,2016,2016 = 4 pz0
+    # - ou plusieurs fois la meme annee
+    count_pz0_mono = df.reset_index()
+    count_pz0_mono = count_pz0_mono.loc[count_pz0_mono['code_dephy'].isin(dephy_monoannuel)]
+    count_pz0_mono.loc[:,'count'] = count_pz0_mono.loc[:,'campagnes']
+
+    count_pz0_mono = count_pz0_mono.loc[count_pz0_mono['donnee_attendue'] == 'pz0',['code_dephy','synthetise_id','campagnes','count']].groupby(
+        by = ['code_dephy']).agg({
+        'campagnes' : lambda x :'/ '.join(x.unique()),
+        'count' : 'size'
+        })
+    
+    count_pz0_mono.loc[:,'count_unique'] = count_pz0_mono['campagnes'].str.count('/') +1
+
+    dephynb_pz0_notunique = count_pz0_mono.loc[count_pz0_mono['count_unique'] != count_pz0_mono['count']].index.to_list()
+
+    return(dephynb_manypz0 + dephynb_pz0_notunique)
+
+def check_coherence_frise_chronologique(df,modalite_pz0_non_acceptable,modalite_pz0_aucun, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs):
+    ''' Controle la coherence des frises chronologiques. Retourne si y a des post avant les pz0 = Pas possible
+    arg : 
+        df : data.frame
+        modalite_pz0_non_acceptable : str
+
+    return bool, False si au moin une frises a un post avant le pz0
+    '''
+    frises = df.reset_index()
+
+    frises.loc[frises['donnee_attendue'] == modalite_pz0_inconnu, 'donnee_attendue'] = 'inconnu'
+    frises.loc[frises['donnee_attendue'] == modalite_non_attendu, 'donnee_attendue'] = 'NA'
+    frises.loc[frises['donnee_attendue'] == modalite_pz0_chevauchement, 'donnee_attendue'] = 'C'
+    frises.loc[frises['donnee_attendue'] == modalite_pz0_non_acceptable, 'donnee_attendue'] = 'bof'
+    frises.loc[frises['donnee_attendue'] == modalite_pz0_aucun, 'donnee_attendue'] = 'X'
+    frises.loc[frises['donnee_attendue'] == modalite_pz0_plusieurs, 'donnee_attendue'] = '+1'
+    frises.loc[frises['donnee_attendue'] == 'pz0', 'donnee_attendue'] = '0'
+    frises.loc[frises['donnee_attendue'] == 'post', 'donnee_attendue'] = 'p'
+
+    # avoir 1 seule ligne par sdc_id si ce sont des zones 
+    frises = frises.groupby(by=['code_dephy','sdc_id','synthetise_id'], dropna=False).agg({
+        'donnee_attendue' : lambda x : '/ '.join(x.unique()),
+        'campagnes' : lambda x :'/ '.join(x.unique())
+        }).reset_index()
+
+    frises = frises.sort_values(['code_dephy','campagnes'])
+    frises = frises.loc[:,['code_dephy','donnee_attendue','campagnes']].groupby(
+        by = ['code_dephy']).agg({
+        'donnee_attendue' : '/ '.join,
+        'campagnes' : '/ '.join
+        }).reset_index()
+    
+    frises_summary = frises.groupby(['donnee_attendue']).size().reset_index().rename(columns = {0 : 'count'})
+
+    test = frises_summary[frises_summary['donnee_attendue'].str.contains('p/ 0')].shape[0] != 0
+    test2 = frises_summary[frises_summary['donnee_attendue'].str.contains('p/ C')].shape[0] != 0
+    
+    return(test & test2)
 
 def identification_pz0(donnees):
     '''
@@ -367,8 +447,9 @@ def identification_pz0(donnees):
         "incorrect : campagne non attendue",
         "incorrect : chevauchement pz0",
         "incorrect : saisie pz0 non acceptable", -> tague toute la frise chronologique = ne laisse pas post
+        "incorrect : aucun pz0 saisi", -> tague toute la frise chronologique
         "incorrect : code dephy inconnu" pour les dispositifs DEPHY_FERME. -> tague toute la frise chronologique
-        "incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0" -> tague toute la frise, deux pz0 acceptables ont été trouvés
+        "incorrect : saisie de plusieurs plusieurs pz0" -> tague toute la frise, deux pz0 acceptables ont été trouvés
     La méthode fait intervenir un référentiel externe , produit par la CAN des données attendues qui peut être partageable si il n'y a que les codes dephy * campagne * donnee_attendue
     
     Ce reférentiel peut contenir des erreurs. La procédure de vérification est externe à la fonction et se fait via le main des outils
@@ -390,7 +471,8 @@ def identification_pz0(donnees):
     modalite_pz0_chevauchement = "incorrect : chevauchement pz0"
     modalite_pz0_inconnu = "incorrect : code dephy inconnu"
     modalite_non_attendu = "incorrect : campagne non-attendue"
-    modalite_pz0_plusieurs = "incorrect : saisie de plusieurs sdc pour un meme code dephy et plusieurs pz0"
+    modalite_pz0_plusieurs = "incorrect : saisie de plusieurs plusieurs pz0"
+    modalite_pz0_aucun = "incorrect : aucun pz0 saisi"
 
     df_domaine = donnees['domaine'].set_index('id')
     df_dispositif = donnees['dispositif'].set_index('id')
@@ -412,6 +494,13 @@ def identification_pz0(donnees):
 
     df_synthetise = df_synthetise.loc[list(set(df_intervention_synthetise_agrege['synthetise_id']))]
     df_zone = df_zone.loc[list(set(df_intervention_realise_agrege['zone_id']))]
+
+    # puis supprimer les sdc_id qui n'ont pas de zone_id ou synthetise_id
+    left = df_zone[['parcelle_id']]
+    right = df_parcelle[['sdc_id']]
+    df_zone_extanded = pd.merge(left,right, left_on = 'parcelle_id', right_index=True).drop('parcelle_id', axis = 1)
+
+    df_sdc = df_sdc.loc[df_sdc.index.isin(df_zone_extanded['sdc_id'].to_list()) | df_sdc.index.isin(df_synthetise['sdc_id'].to_list())]
 
     # formatage du tableau des données attendues
     saisies_attendues_melt = formatage_referentiel_donnees_attendue(saisies_attendues)
@@ -451,7 +540,7 @@ def identification_pz0(donnees):
     # separer les saisies non_attendues et inconnues
     identif_pz0_aucun = identif_pz0.loc[identif_pz0['code_dephy'].isin(dephy_none_synthetise_pz0)]
     identif_pz0_aucun.loc[:, ['donnee_attendue']] = modalite_pz0_inconnu # on attribue d'abord à tous "inconnu"
-    identif_pz0_aucun.loc[identif_pz0_aucun['code_dephy'].isin(saisies_attendues_melt['code_dephy']),'donnee_attendue'] = modalite_pz0_non_acceptable # mais ceux qui sont dans le fichier BDD_donnees_attendues_CAN, sont des "saisies non acceptables"
+    identif_pz0_aucun.loc[identif_pz0_aucun['code_dephy'].isin(saisies_attendues_melt['code_dephy']),'donnee_attendue'] = modalite_pz0_aucun # mais ceux qui sont dans le fichier BDD_donnees_attendues_CAN, sont des "saisies non acceptables"
 
     identif_pz0_non_attendue = identif_pz0.copy()
     identif_pz0_non_attendue['donnee_attendue_split'] = identif_pz0_non_attendue.apply(lambda x : ', '.join(set(x['donnee_attendue'].split(', '))) , axis = 1)
@@ -530,13 +619,17 @@ def identification_pz0(donnees):
     if all(check) is False:
         message_error = message_error + "ATTENTION : Le nombre de modalités ne correspond pas à celles attendues !"
 
-    if df_identification_pz0[df_identification_pz0.index.duplicated() is True].shape[0] != 0: 
+    if df_identification_pz0[df_identification_pz0.index.duplicated()].shape[0] != 0: 
         message_error = message_error + "ATTENTION : Il y a des zones ou synthetise qui sont dupliques"
 
+    post_before_pz0 = check_coherence_frise_chronologique(df_identification_pz0, modalite_pz0_non_acceptable, modalite_pz0_aucun, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu,modalite_pz0_plusieurs)
+    if post_before_pz0: 
+        message_error = message_error + "ATTENTION : Il y a frises qui contiennent des post avant les pz0"
+    
     if len(message_error) != 0:
         print(message_error)
 
-    df_identification_pz0 = df_identification_pz0[['donnee_attendue','code_dephy']].rename(columns={'donnee_attendue' : 'pz0'})
+    df_identification_pz0 = df_identification_pz0[['donnee_attendue','code_dephy','campagnes']].rename(columns={'donnee_attendue' : 'pz0'})
         
     return(df_identification_pz0)
 
