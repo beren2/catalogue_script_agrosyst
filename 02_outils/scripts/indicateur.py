@@ -200,6 +200,17 @@ def get_typologie_culture_rotation_CAN(donnees):
 
     Returns:
         pd.DataFrame() contenant la culture_id et la typologie de culture de la CAN
+
+    ATTENTION :
+        Modèle de sortie différent de celui de la CAN
+        De plus 2 changements de décision par rapport à leurs sorties
+        ATTENTION_DIFF_CAN_a :
+            Pour les culture qui n'ont pas de composant culture, on les ajoute en renseignant "Aucune espèce renseignée" pour les typologies au lieu de NaN pour les typologie d'espece
+            Et on renseigne 0 au lieu de 1 pour le nb d'espece/nb de typologie
+        ATTENTION_DIFF_CAN_b :
+            Pour les Cultures intermédiaires on laisse la définition de typologie au lieu de passer les typologies en NaN
+            Voir si on passe en NaN lors de la création du magasin
+            ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
     '''
     cropsp = donnees['composant_culture'][['espece_id','culture_id']]
     crop = donnees['culture'][['type']]
@@ -239,14 +250,23 @@ def get_typologie_culture_rotation_CAN(donnees):
     df = df.merge(crop, how='left', left_on='culture_id', right_on='id')
     crop = crop.reset_index().rename(columns={'id' : 'culture_id'})
     crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
+    # ATTENTION_DIFF_CAN_a ::: 2 Lignes
+    crop_only.loc[:,['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
+    crop_only.loc[:,['typocan_espece','typocan_espece_maraich']] = 'Aucune espèce renseignée'
+
     df = pd.concat([df, crop_only], ignore_index=True)
 
     df = df.merge(typo1, how='left', on='typocan_espece')
 
     df = df.merge(typo2, how='left', on='typocan_espece_maraich')
 
+    # ATTENTION_DIFF_CAN_a_bis ::: 1 Lignes
+    df.loc[df['nb_espece'] == 0,['typocan_culture','typocan_culture_maraich']] = 'Aucune espèce renseignée'
+
+
+    # ATTENTION_DIFF_CAN_b ::: 2 Lignes
     # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
-    df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = [np.nan, np.nan]
+    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = [np.nan, np.nan]
 
 
     df['type'] = df['type'].astype('category')
@@ -254,6 +274,7 @@ def get_typologie_culture_rotation_CAN(donnees):
                                                    'INTERMEDIATE': 'INTERMEDIAIRE', 
                                                    'CATCH': 'DEROBEE' })
     df = df.set_index('culture_id')
+    df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
 
     # Ajout de 'Culture porte-graine' ??
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
