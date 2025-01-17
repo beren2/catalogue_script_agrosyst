@@ -5,6 +5,67 @@
 import pandas as pd
 import numpy as np
 from scripts.utils import fonctions_utiles
+from scripts.utils import get_surfaces_connections_synthetise
+
+def get_surface_connexion_synthetise(
+        donnees
+):
+    """
+    Permet d'obtenir un DataFrame où on associe à une connexion en synthétisé la surface imputable à cette connexion.
+    Cette fonction utilise notamment un calcul de la répartition du flux dans la description de la rotation.
+    Elle se base aussi :
+        - sur la surface déclarée dans le domaine
+        - sur le pourcentage de surface du domaine alloué au système de culture
+        - sur la présence ou non de cultures perennes dans le même système synthétisé
+        
+    Note(s):
+        - Une surface nulle peut signifier : 
+            - que certaines connexions ont un poids de 0 dans l'assolement
+            - que le graph est "mal formé", c'est à dire qu'il existe des poids absurdes
+            - qu'aucune intervention n'a été renseigné pour l'ensemble de l'assolement.
+
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames suivants :
+            - 'synthetise' : Informations sur les systèmes synthétisés
+            - 'culture' : Informations sur les cultures
+            - 'noeuds_synthetise' : Informations sur les noeuds en synthétisé
+            - 'connection_synthetise' : Informations sur les connexion en synthétisé
+            - 'intervention_synthetise' : Information sur les interventions en synthétisé
+            - 'plantation_perenne_synthetise' : Informations sur les plantations perennes en synthétisés
+            - 'sdc' : Informations sur les systèmes de cultures
+            - 'dispositif' : Informations sur les dispositifs
+            - 'domaine' : Informations sur les domaines
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame avec les informations suivantes par connexion synthétisé (`connection_synthetise_id`) :
+            - `surface (ha)` : valeur de la surface de la connexion en hectare
+
+    Exemple d'utilisation :
+        donnees = {
+            'synthetise': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'noeuds_synthetise': pd.DataFrame(...),
+            ...
+        }
+        result = get_surfaces_connections_synthetise(donnees)
+    """
+
+    res = get_surfaces_connections_synthetise.get_surfaces_connections_synthetise(
+        donnees['synthetise'].set_index('id'),
+        donnees['culture'].set_index('id'),
+        donnees['noeuds_synthetise'].set_index('id'),
+        donnees['connection_synthetise'].set_index('id'),
+        donnees['intervention_synthetise'].set_index('id'),
+        donnees['plantation_perenne_synthetise'].set_index('id'),
+        donnees['sdc'].set_index('id'),
+        donnees['dispositif'].set_index('id'),
+        donnees['domaine'].set_index('id')
+    )
+
+    res = res.rename(index={'id' : 'connection_synthetise_id'})
+    return res
 
 def indicateur_utilisation_intrant(donnees):
     """ 
@@ -67,7 +128,7 @@ def sdc_donnee_attendue(donnees):
     # selection des colonnes utiles
     df_dispositif = df_dispositif[['id','type']]
     df_sdc = df_sdc[['id','campagne','code_dephy','dispositif_id','filiere','modalite_suivi_dephy']]
-    df_sdc['campagne'] = df_sdc['campagne'].astype('str')
+    df_sdc.loc[:, 'campagne'] = df_sdc['campagne'].astype('str')
 
     # Selection des dephy_ferme
     df_sdc = pd.merge(df_sdc, df_dispositif, left_on = 'dispositif_id', right_on = 'id', how = 'left').rename(columns={'id_x' : 'sdc_id'})
@@ -109,8 +170,8 @@ def sdc_donnee_attendue(donnees):
                                                                         (x['type'] != 'DEPHY_FERME') |
                                                                         (x['modalite_suivi_dephy'] != 'DETAILLE')) else x['donnee_attendue'] , axis=1)
     
-    print("Repartition de l'attribution des donnees attendues")
-    print(merge.groupby(by='donnee_attendue').size())
+    # print("Repartition de l'attribution des donnees attendues")
+    # print(merge.groupby(by='donnee_attendue').size())
     
     return(merge[['sdc_id','code_dephy','campagne','donnee_attendue']])
 

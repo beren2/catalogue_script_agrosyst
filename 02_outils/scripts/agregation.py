@@ -94,7 +94,7 @@ def get_aggreged_from_utilisation_intrant_realise(
     df_zone = donnees['zone']
     df_parcelle = donnees['parcelle']
     df_sdc = donnees['sdc']
-    df_dispositif = donnees['dispositif']
+    df_domaine = donnees['domaine']
 
     # obtention de l'action sur laquelle a lieu l'utilisation d'intrant en synthétisé
     left = df_utilisation_intrant_realise[['id', 'action_realise_id']]
@@ -106,8 +106,8 @@ def get_aggreged_from_utilisation_intrant_realise(
     right = df_intervention_realise[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']].rename(columns={'id' : 'intervention_realise_id'})
     merge = pd.merge(left, right, on = 'intervention_realise_id', how='left')
 
-    merge_perenne = merge.loc[merge['noeuds_realise_id'].isna()]
-    merge_assolee = merge.loc[merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_perenne = merge.loc[~merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_assolee = merge.loc[~merge['noeuds_realise_id'].isna()]
     #----------#
     # ASSOLÉES #
     #----------#
@@ -121,13 +121,13 @@ def get_aggreged_from_utilisation_intrant_realise(
     # PERENNES #
     #----------#
     # obtention de la phase en synthétisé sur laquelle a lieu l'action
-    left = merge_perenne
+    left = merge_perenne.astype('object')
     right = df_plantation_perenne_phases_realise[['id', 'plantation_perenne_realise_id']].rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_phases_realise_id', how='left')
 
     # obtention de la plantation sur perenne sur lequel a laquelle a lieu l'action
     left = merge_perenne
-    right = df_plantation_perenne_realise[['id', 'zone_id']].rename(columns={'id' : 'plantation_perenne_realise_id'})
+    right = df_plantation_perenne_realise[['id', 'zone_id', 'culture_id']].rename(columns={'id' : 'plantation_perenne_realise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_realise_id', how='left')
 
     merge = pd.concat([merge_assolee, merge_perenne], axis=0)
@@ -140,18 +140,19 @@ def get_aggreged_from_utilisation_intrant_realise(
 
     # obtention de la parcelle sur laquelle a lieu l'action
     left = merge
-    right = df_parcelle[['id', 'sdc_id']].rename(columns={'id' : 'parcelle_id'})
+    right = df_parcelle[['id', 'domaine_id', 'sdc_id']].rename(columns={'id' : 'parcelle_id'})
     merge = pd.merge(left, right, on = 'parcelle_id', how='left')
 
     # obtention du système de culture sur laquelle a lieu l'action --> cette fois on a une seule campagne de référence
     left = merge
-    right = df_sdc[['id', 'campagne', 'dispositif_id']].rename(columns={'id' :'sdc_id', 'campagne' : 'sdc_campagne'})
+    right = df_sdc[['id', 'dispositif_id']].rename(columns={'id' :'sdc_id'})
     merge = pd.merge(left, right, on = 'sdc_id', how='left')
 
-    # obtention du dispositif sur lequel a lieu l'action 
-    left = merge 
-    right = df_dispositif[['id', 'domaine_id']].rename(columns={'id' : 'dispositif_id'})
-    merge = pd.merge(left, right, on = 'dispositif_id', how='left')
+    # obtention du domaine sur lequel a lieu l'action et de la campagne que l on nomme sdc_campagne pour adequation avec synthetise
+    # on lie le domaine avec la parcelle pour integrer les parcelles non rattachées
+    left = merge
+    right = df_domaine[['id', 'campagne']].rename(columns={'id' : 'domaine_id', 'campagne' : 'sdc_campagne'})
+    merge = pd.merge(left, right, on = 'domaine_id', how='left')
 
     merge = merge.set_index('id')
 
@@ -185,8 +186,8 @@ def get_leaking_aggreged_from_action_realise(
     right = df_intervention_realise[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']].rename(columns={'id' : 'intervention_realise_id'})
     merge = pd.merge(left, right, on = 'intervention_realise_id', how='left')
 
-    merge_perenne = merge.loc[merge['noeuds_realise_id'].isna()]
-    merge_assolee = merge.loc[merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_perenne = merge.loc[~merge['plantation_perenne_phases_realise_id'].isna()]
+    merge_assolee = merge.loc[~merge['noeuds_realise_id'].isna()]
     #----------#
     # ASSOLÉES #
     #----------#
@@ -200,7 +201,7 @@ def get_leaking_aggreged_from_action_realise(
     # PERENNES #
     #----------#
     # obtention de la phase en synthétisé sur laquelle a lieu l'action
-    left = merge_perenne
+    left = merge_perenne.astype('object')
     right = df_plantation_perenne_phases_realise[['id', 'plantation_perenne_realise_id']].rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
     merge_perenne = pd.merge(left, right, on = 'plantation_perenne_phases_realise_id', how='left')
 

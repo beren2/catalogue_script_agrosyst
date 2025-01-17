@@ -10,6 +10,8 @@
 			"dispositif",
 			"sdc",
 			"parcelle",
+			"parcelle_voisinage",
+			"parcelle_zonage",
 			"zone",
 			"parcelle_type",
 			"synthetise",
@@ -43,6 +45,7 @@
 			"parcelle_realise_performance",
 			"sdc_realise_performance",
 			"itk_realise_performance",
+			"itk_synthetise_performance",
 			"intervention_synthetise_performance",
 			"synthetise_synthetise_performance",
 			"recolte",
@@ -172,10 +175,10 @@
 				"file_name" : "parcelle_type"
 			},
 			"parcelle_voisinage":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_voisinage"
 			},
 			"parcelle_zonage":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_zonage"
 			},
 			"action_synthetise":{
 				"file_name" : "action_synthetise"
@@ -245,6 +248,9 @@
 			},
 			"itk_realise_performance":{
 				"file_name" : "itk_realise_performance"
+			},
+			"itk_synthetise_performance":{
+				"file_name" : "itk_synthetise_performance"
 			},
 			"composant_culture_concerne_intervention_realise":{
 				"file_name" : "composant_culture_concerne_intervention"
@@ -353,6 +359,7 @@
                 "function_name" : "create_category_indicateur",
                 "dependances" : [],
                 "generated" : [
+					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
                     "sdc_donnee_attendue"
                 ]
@@ -393,14 +400,308 @@
                     "recolte_outils_can"
                 ],
                 "entrepot_dependances" : [
-                    "intervention_realise", "action_realise", "combinaison_outil", "materiel",
-                    "noeuds_realise", "connection_realise", "plantation_perenne_phases_realise", "plantation_perenne_realise", "composant_culture_concerne_intervention_realise",
-                    "composant_culture", "espece", "variete", "culture", "intervention_realise_agrege", "dispositif",
-                    "combinaison_outil_materiel", "semence", "utilisation_intrant_realise", "intrant", "recolte_rendement_prix",
-                    "utilisation_intrant_cible", "nuisible_edi", "adventice"
+                    "synthetise", "culture", "noeuds_synthetise", "connection_synthetise",
+                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine"
                 ]
             }
         }
-    }
+    },
+	"magasins" : {
+		"magasin_can" : {
+			"tables" : {
+				"assolee_synthetise" : {
+					"tables" : [
+						"connection_synthetise", 
+						"noeuds_synthetise", "synthetise", 
+						"sdc", "dispositif", "domaine",
+						"noeuds_synthetise_restructure", "culture", 
+						"culture_outils_can", "connection_synthetise_restructure", 
+						"dispositif_filtres_outils_can"
+					],
+					"dependances":[
+						"context_performance_sdc"
+					]
+				},
+				"atelier_elevage" : {
+					"dependances" : [
+						"context_performance_sdc"
+					],
+					"tables" : [
+						"atelier_elevage", "domaine", 
+						"domaine_filtres_outils_can"
+					]
+				},
+				"composant_culture": {
+					"dependances" : [],
+					"tables" : [
+						"composant_culture", 
+						"espece", "variete", 
+						"domaine",
+						"culture",
+						"domaine_filtres_outils_can"
+					]
+				},
+				"coordonnees_gps_domaine" : {
+					"dependances" : [], 
+					"tables" : [
+						"coordonnees_gps_domaine", 
+						"domaine_filtres_outils_can"
+					]
+				},
+				"dispositif":{
+					"dependances" : [],
+					"tables" : [
+						"dispositif", "domaine", 
+						"dispositif_filtres_outils_can"
+					]
+				},
+				"domaine":{
+					"dependances" : [],
+					"tables" : [
+						"domaine", 
+						"domaine_filtres_outils_can"
+					]
+				},
+				"intervention_realise_performance" : {
+					"tables" : [
+						"intervention_realise_performance", 
+						"intervention_realise", "intervention_realise_performance", 
+						"intervention_realise_outils_can", "zone", "parcelle", "parcelle_zonage", "parcelle_voisinage",
+						"noeuds_realise", "culture", "culture_outils_can",
+						"plantation_perenne_phases_realise", "plantation_perenne_realise", "domaine"
+					],
+					"dependances":[
+						"context_performance_sdc", "intervention_realise_agrege"
+					]
+				},
+				"intervention_realise" : {
+					"tables" : [
+						"intervention_realise",
+						"intervention_realise_outils_can", "zone", "parcelle", "parcelle_zonage", "parcelle_voisinage",
+						"sdc", "domaine", "noeuds_realise", "connection_realise", 
+						"plantation_perenne_phases_realise", "plantation_perenne_realise",
+						"culture", "dispositif_filtres_outils_can"
+					],
+					"dependances" : ["intervention_realise_agrege"]
+				},
+				"intervention_synthetise_performance" : {
+					"tables" : [
+						"intervention_synthetise_performance", 
+						"intervention_synthetise", "intervention_synthetise_performance", 
+						"intervention_synthetise_outils_can", 
+						"intervention_synthetise_agrege", "synthetise", "noeuds_synthetise", 
+						"plantation_perenne_phases_synthetise", "plantation_perenne_synthetise", "culture",
+						"culture_outils_can", "domaine"
+					],
+					"dependances":[
+						"context_performance_sdc", "intervention_synthetise_agrege"
+					]
+				}, 
+				"intervention_synthetise" : {
+					"tables" : [
+						"intervention_synthetise", 
+						"connection_synthetise", "intervention_synthetise_outils_can", 
+						"noeuds_synthetise", "plantation_perenne_phases_synthetise", 
+						"plantation_perenne_synthetise", "synthetise", 
+						"sdc", "domaine", "culture",
+						"combinaison_outil", "dispositif_filtres_outils_can"
+					],
+					"dependances":[
+						"intervention_synthetise_agrege"
+					]
+				}, 
+				"intrant" : {
+					"tables" : [
+						"intrant", "domaine", "domaine_filtres_outils_can"
+					],
+					"dependances":[]
+				}, 
+				"itk_realise_performance" : {
+					"tables" : [
+						"itk_realise_performance", "culture_outils_can", "noeuds_realise", 
+						"plantation_perenne_realise", "plantation_perenne_phases_realise", 
+						"culture", "zone", "parcelle", "connection_realise"
+					],
+					"dependances":[
+						"context_performance_sdc"
+					]
+				}, 
+				"itk_synthetise_performance" : {
+					"tables" : [
+						"noeuds_synthetise_restructure", 
+						"itk_synthetise_performance", "culture_outils_can", "noeuds_synthetise",
+						"connection_synthetise", "plantation_perenne_synthetise", "plantation_perenne_phases_synthetise", 
+						"plantation_perenne_synthetise_restructure",
+						"culture", "synthetise"
+					],
+					"dependances":[
+						"context_performance_sdc"
+					]
+				}, 
+				"materiel" : {
+					"tables" :[
+						"materiel", "combinaison_outil_materiel", "combinaison_outil",
+						"domaine", "domaine_filtres_outils_can"     
+					],
+					"dependances" : []
+				},
+				"parcelle_non_rattachee" :{
+					"tables" :[
+						"parcelle_non_rattachee_outils_can", "domaine",
+						"domaine_filtres_outils_can"
+					],
+					"dependances" : []
+				},
+				"parcelle_realise_performance" :{
+					"tables" :[
+						"parcelle_realise_performance", "parcelle_realise_outils_can", "parcelle", "domaine"
+					],
+					"dependances" : [
+						"context_performance_sdc"
+					]
+				},
+				"parcelle_type" :{
+					"tables" :[
+						"synthetise", "parcelle_type", 
+						"sdc", "dispositif", "domaine", "dispositif_filtres_outils_can"
+					],
+					"dependances": []
+				},
+				"parcelle" :{
+					"tables" :[
+						"parcelle", "domaine", 
+						"sdc", "commune", "dispositif_filtres_outils_can"
+					],
+					"dependances": []
+				},
+				"perenne_realise" :{
+					"tables" :[
+						"plantation_perenne_phases_realise", "plantation_perenne_realise", 
+						"zone", "parcelle", "sdc", "domaine", "culture", "culture_outils_can",
+						"dispositif_filtres_outils_can"
+					],
+					"dependances": []
+				},
+				"perenne_synthetise" :{
+					"tables" :[
+						"plantation_perenne_phases_synthetise", 
+						"plantation_perenne_synthetise", 
+						"plantation_perenne_synthetise_restructure",
+						"synthetise", 
+						"sdc", "dispositif", "domaine", "culture",
+						"domaine_filtres_outils_can"
+					],
+					"dependances": []
+				},
+				"recolte_realise" :{
+					"tables" :[
+						"recolte_outils_can", 
+						"action_realise", 
+						"domaine",
+						"sdc", 
+						"zone", "parcelle",
+						"dispositif_filtres_outils_can"
+					],
+					"dependances": [
+						"action_realise_agrege"
+					]
+				},
+				"recolte_synthetise" :{
+					"tables" :[
+						"recolte_outils_can", 
+						"action_synthetise", 
+						"domaine",
+						"sdc", 
+						"synthetise",
+						"domaine_filtres_outils_can"
+					],
+					"dependances": [
+						"action_synthetise_agrege"
+					]
+				},
+				"sdc_realise_performance" :{
+					"tables" :[
+						"sdc_realise_performance",
+						"sdc_realise_outils_can", 
+						"domaine"
+					],
+					"dependances": [
+						"context_performance_sdc"
+					]
+				},
+				"sdc" :{
+					"tables" :[
+						"sdc",
+						"dispositif", "domaine", 
+						"dispositif_filtres_outils_can"
+					],
+					"dependances": [
+					]
+				},
+				"semence" :{
+					"tables" :[
+						"semence"
+					],
+					"dependances": []
+				},
+				"succession_assolee_realise" :{
+					"tables" :[
+						"noeuds_realise", "zone", "connection_realise",
+						"parcelle", "domaine", "culture", "sdc", "culture_outils_can",
+						"dispositif_filtres_outils_can"
+					],
+					"dependances": []
+				},
+				"synthetise_performance" :{
+					"tables" :[
+						"synthetise_synthetise_performance", "synthetise"
+					],
+					"dependances": [
+						"context_performance_sdc"
+					]
+				},
+				"utilisation_intrant_performance" :{
+					"tables" :[
+						"utilisation_intrant_performance", 
+						"utilisation_intrant_synthetise", 
+						"utilisation_intrant_realise",
+						"utilisation_intrant_synthetise_agrege",
+						"utilisation_intrant_realise_agrege",
+						"intervention_synthetise_outils_can",
+						"intervention_realise_outils_can",
+						"intervention_realise", 
+						"intervention_synthetise",
+						"synthetise",
+						"parcelle", "zone",
+						"culture",
+						"culture_outils_can", 
+						"intrant", "noeuds_synthetise", 
+						"noeuds_realise",
+						"plantation_perenne_phases_synthetise",
+						"plantation_perenne_phases_realise",
+						"plantation_perenne_synthetise",
+						"plantation_perenne_realise", 
+						"domaine"
+					],
+					"dependances": [
+						"intervention_synthetise_agrege",
+						"intervention_realise_agrege",
+						"context_performance_sdc"
+					]
+				},
+				"zone_realise_performance" :{
+					"tables" :[
+						"zone_realise_performance", "zone_realise_outils_can","parcelle","zone"
+					],
+					"dependances": [
+						"context_performance_sdc"
+					]
+				}
+			}, 
+			"path" : "can/scripts/"
+		}
+    },
+    "means" : {
 
+    } 
 }

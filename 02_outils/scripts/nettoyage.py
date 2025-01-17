@@ -117,8 +117,6 @@ def nettoyage_intervention(donnees, params=None, verbose=False, path_metadata='0
         # obtention de la fonction associée au test
         fonction_test = getattr(ft, test['fichier'])
 
-        print(test['fichier'])
-
         # application de la fonction
         codes_tests[test_key]= np.array(fonction_test(donnees, metadata_seuils))
 

@@ -16,3 +16,4 @@ fr.inra.agrosyst.api.entities.CroppingPlanEntry_b775a9f3-da85-4d35-a802-3399f541
 fr.inra.agrosyst.api.entities.CroppingPlanEntry_8bf31016-53c9-4cb9-8665-7adc7dbaacc0,Avoine,f,f,f,,f,bcab3748-b84d-4e80-93c8-7e6d21412f78,MAIN,fr.inra.agrosyst.api.entities.Domain_c05b8b2e-364a-4be5-a05d-736731ca7ffa
 fr.inra.agrosyst.api.entities.CroppingPlanEntry_0409363b-e372-419b-9fd7-233685a598a1,Maïs,f,f,f,,f,5fd6f33d-ad46-4cca-bc1c-850c2a968009,MAIN,fr.inra.agrosyst.api.entities.Domain_c05b8b2e-364a-4be5-a05d-736731ca7ffa
 fr.inra.agrosyst.api.entities.CroppingPlanEntry_f5a29eee-1b60-4391-94d5-f15f9c57721a,Maïs,f,f,f,,f,f6ff0a42-d1c5-4df6-b8f2-391c76f27d7e,MAIN,fr.inra.agrosyst.api.entities.Domain_c05b8b2e-364a-4be5-a05d-736731ca7ffa
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_e96e7708-047c-4397-8a4b-b6c982f890ff,RGI,f,f,f,,f,1c2e5661-b283-4d3c-9b1c-5f64e3c04fb3,INTERMEDIATE,fr.inra.agrosyst.api.entities.Domain_c05b8b2e-364a-4be5-a05d-736731ca7ffa

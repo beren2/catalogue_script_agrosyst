@@ -464,8 +464,6 @@ exclude-too-few-public-methods=
 
 max-complexity=10
 
-max-positional-arguments=30
-
 [CLASSES]
 
 # List of method names used to declare (i.e. assign) instance attributes.

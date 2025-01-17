@@ -1,0 +1,2 @@
+id,stade_minimal,stade_maximal,intervention_synthetise_id,composant_culture_code
+fr.inra.agrosyst.api.entities.practiced.PracticedSpeciesStade_cbb592f5-04e3-462e-9b38-43e19c028123,,,fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_76d81551-adb2-4066-a181-212a6fbe08d7,f01fd3cc-1660-4334-83ec-439f4f514d98

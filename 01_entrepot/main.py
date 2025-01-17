@@ -141,6 +141,7 @@ ordered_tables = list(SOURCE_SPECS['entrepot']['tables'].keys())
 
 options = {
         "Génération de toutes les données de l'entrepôt" : [],
+        "Reprendre la génération de l'entrepôt" : [],
         "Génération de certaines données de l'entrepôt" : [],  
         "Vérification cohérence colonnes existantes tables et documentation" : [],  
         "Création d'une nouvelle base de données entrepôt nettoyée" : [],
@@ -208,6 +209,43 @@ while True:
 
             print(f"- Maj entrepôt à partir du fichier: {Fore.YELLOW}"+current_file+f"{Style.RESET_ALL}")           
             print(datetime.datetime.now())
+            
+            extract_file = path_sql_files+current_file  
+
+            if('sql' in extract_file):
+                #Get the sql extract file
+                with open(extract_file, "r", encoding="utf8") as file:
+                    sql_extract = file.read()
+                cur.execute(sql_extract)    
+            conn.commit()
+            print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
+            print(datetime.datetime.now())
+    elif(choice_key == "Reprendre la génération de l'entrepôt"):
+        
+        for i, option in enumerate(ordered_files):
+            print(f"{i + 1}. {option}")
+        
+        choice = int(input("Entrez le rang de votre choix : "))
+        choice_key = list(ordered_files)[choice - 1]
+        print("choice_key : ", choice_key)
+
+        print("")
+        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
+        
+
+        for i in range(choice-1, len(ordered_files)):
+            choice_key = list(ordered_files)[i]
+            print("--")
+            print(f"- Suppression de la table : {Fore.RED}entrepot_"+choice_key+f"{Style.RESET_ALL}")           
+            drop_request = "DROP TABLE IF EXISTS entrepot_"+choice_key+" CASCADE"
+            cur.execute(drop_request)
+            print("")
+            print("GÉNÉRATION DES TABLES DE L'ENTREPÔT :")
+            print("--")
+            #Obtention des fichiers sql
+            current_file = choice_key+'.sql'
+
+            print(f"- Maj entrepôt à partir du fichier: {Fore.YELLOW}"+current_file+f"{Style.RESET_ALL}")           
             
             extract_file = path_sql_files+current_file  
 
@@ -389,25 +427,27 @@ while True:
     
         schema_tables = pd.read_sql( text("""select table_name from information_schema.tables where table_schema = 'public' and table_name like '%entrepot%'"""), postgreSQLConnection_entrepot) 
         schema_tables = schema_tables['table_name'].values.tolist()
-    
+
+        local_tables = list(SOURCE_SPECS['entrepot']['tables'].keys())
+
         tables = ['tout']
-        tables += list(ordered_tables)
+        tables += list(local_tables)
         print("")
-        print("Veuillez choisir la table à générer")
+        print("Veuillez choisir la table à télécharger")
         print("")
         for i, option_table in enumerate(tables):
                     print(f"{i + 1}. {option_table}")
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_table = tables[choice - 1]
 
-        no_existing_table = check_existing_table_database(ordered_tables,schema_tables)
+        no_existing_table = check_existing_table_database(local_tables,schema_tables)
 
         print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         if(choosen_table == 'tout') :
             for table in no_existing_table:
-                ordered_tables.remove(table)
+                local_tables.remove(table)
             
-            download_datas(ordered_tables, verbose=False)
+            download_datas(local_tables, verbose=False)
         elif choosen_table not in no_existing_table:
             download_datas([choosen_table], verbose=False)
         print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")

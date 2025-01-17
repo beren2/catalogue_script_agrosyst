@@ -1,0 +1,10 @@
+id,connection_synthetise_id,plantation_perenne_phases_synthetise_id
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_43a61def-c3f4-419c-b9fe-87c073d4d5eb,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_9a658216-2392-47f0-9d5c-ed1a9c9434a5,
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_45793f47-bb2a-478d-9f58-00655ef9b33f,,fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_031373e5-6208-4834-a495-70cfa94cc7f4
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_4b8271a7-d604-45a8-9d91-9667ad8418c5,,fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_836b6915-5b85-420f-97f7-aa534296da7e
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_4cfc3c3b-72f4-4e3d-b2a0-33e330c06a2b,,fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_f48926b1-ecf1-4fe3-b61f-61c30510fe2d
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_63457c5b-c938-44c4-aa13-57d9dde425cb,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_d4411bb5-0e94-45ca-a9dc-a0f64b30cc57,
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_79906c11-de84-4fc4-99fe-7ec57304f56f,,fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_2f09b746-47fc-463b-9c6b-116e4a0ee7b3
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_9798bea3-7799-4c4c-aee0-404fa996a141,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_dd9fadb0-5060-4519-b96a-08d291ea11cc,
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_a483f39f-c556-4e54-90ee-4a21be0223f2,,fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_00ad5165-89b8-49dd-8ccf-591aeb4fc109
+fr.inra.agrosyst.api.entities.practiced.PracticedIntervention_c77c7ae8-5bcb-4c71-8d72-0b3d73c8fdf9,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_7055f5b8-6261-48ab-89e0-7e356cd450c1,

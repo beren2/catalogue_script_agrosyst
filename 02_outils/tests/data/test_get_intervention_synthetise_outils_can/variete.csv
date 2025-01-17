@@ -10,6 +10,7 @@ fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_82d44fd3-524e-4634-b10
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_4e06e9a7-f95d-4108-b4f4-1745d0d8d7f4,,,,,Chardonnay B,,,,,,,,
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_f6fe0a62-37c0-438c-96e2-3c8aa68be08e,Maïs,570M119,Maïs et Sorgho,Zea mays L.,DK315,MI8390,A,GRN,Grain,HS,hybride simple,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_535450e2-bb34-4f6a-a907-0331d8732325,,,,,Semillon B,,,,,,,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_9137004b-16a1-4744-be6e-05708bb27bfe,Ray-grass d'Italie alternatif,580382,Plantes fourragères et à gazon,Lolium multiflorum Lam.,Magloire,LW 00-2015,A,,,SY,synthétique,2n,Diploïde
 fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_2e161ea5-54ec-411e-80e3-86f1b18af3cf,Blé tendre d'hiver,512C664,Céréales à paille,Triticum aestivum L.,SY Mattis,CCB 08 H 023,A,,,LI,lignée,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_96f16e76-aa7e-42c1-81ff-bfdd6a97cd21,,,,,Merlot N,,,,,,,,
 fr.inra.agrosyst.api.entities.referential.RefVarietePlantGrape_46d777ca-11c3-4d40-8223-677d0489170a,,,,,Mourvèdre N,,,,,,,,
