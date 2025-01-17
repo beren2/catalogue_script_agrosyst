@@ -175,3 +175,111 @@ def sdc_donnee_attendue(donnees):
     
     return(merge[['sdc_id','code_dephy','campagne','donnee_attendue']])
 
+
+
+def get_typologie_culture_CAN(donnees):
+    ''' 
+    Le but est d'obtenir les typologies d'espece et de culture utilisées par la Cellule référence.
+
+    Note(s):
+        Eventuellement à mettre dans Agrosyst directement
+        La typologie espece a été directement intégré au référentiel refespece d'Agrosyst
+
+    Echelle :
+        culture_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'composant_culture'
+            - 'culture'
+            - 'espece'
+            Données externe (référentiel CAN):
+            - 'typo_especes_typo_culture.csv'
+            - 'typo_especes_typo_culture_marai.csv'
+
+    Returns:
+        pd.DataFrame() contenant la culture_id et la typologie de culture de la CAN
+
+    ATTENTION :
+        Modèle de sortie différent de celui de la CAN
+        De plus 2 changements de décision par rapport à leurs sorties
+        ATTENTION_DIFF_CAN_a :
+            Pour les culture qui n'ont pas de composant culture, on les ajoute en renseignant "Aucune espèce renseignée" pour les typologies au lieu de NaN pour les typologie d'espece
+            Et on renseigne 0 au lieu de 1 pour le nb d'espece/nb de typologie
+        ATTENTION_DIFF_CAN_b :
+            Pour les Cultures intermédiaires on laisse la définition de typologie au lieu de passer les typologies en NaN
+            Voir si on passe en NaN lors de la création du magasin
+            ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
+    '''
+    cropsp = donnees['composant_culture'][['espece_id','culture_id']]
+    crop = donnees['culture'][['id','type']].rename(columns={
+        'id':'culture_id'})
+    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
+        'id':'espece_id'})
+    # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
+    # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]
+    typo1 = donnees['typo_especes_typo_culture'].rename(columns={
+        'TYPO_ESPECES':'typocan_espece', 'Typo_Culture':'typocan_culture'})
+    typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
+        'TYPO_ESPECES_BIS':'typocan_espece_maraich', 'Typo_Culture_bis':'typocan_culture_maraich'})
+
+    df = cropsp.merge(sp, how = 'left', on = 'espece_id')
+
+    df['nb_espece'] = 1
+    df['nb_typocan_esp'] = df['typocan_espece']
+    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich']
+
+    def concat_unique_sorted(series):
+        cleaned = series.dropna().unique()
+        if len(cleaned) == 0:
+            return np.nan
+        return '_'.join(sorted(cleaned))
+    def get_nb_unique_typo(series):
+        cleaned = series.dropna().unique()
+        return len(cleaned)
+    agg_dict = {
+        'typocan_espece': concat_unique_sorted,
+        'typocan_espece_maraich': concat_unique_sorted,
+        'nb_espece': 'sum',
+        'nb_typocan_esp': get_nb_unique_typo,
+        'nb_typocan_esp_maraich': get_nb_unique_typo
+    }
+    df = df[['culture_id','typocan_espece','typocan_espece_maraich',
+             'nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
+
+
+    df = df.merge(crop, how='left', on='culture_id')
+    crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
+    # ATTENTION_DIFF_CAN_a ::: 2 Lignes
+    crop_only.loc[:,['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
+    crop_only.loc[:,['typocan_espece','typocan_espece_maraich']] = 'Aucune espèce renseignée'
+
+    df = pd.concat([df, crop_only], ignore_index=True)
+
+    df = df.merge(typo1, how='left', on='typocan_espece')
+
+    df = df.merge(typo2, how='left', on='typocan_espece_maraich')
+
+    # ATTENTION_DIFF_CAN_a_bis ::: 1 Lignes
+    df.loc[df['nb_espece'] == 0,['typocan_culture','typocan_culture_maraich']] = 'Aucune espèce renseignée'
+
+
+    # ATTENTION_DIFF_CAN_b ::: 2 Lignes
+    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
+    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = [np.nan, np.nan]
+
+
+    df['type'] = df['type'].astype('category')
+    df['type'] = df['type'].cat.rename_categories({'MAIN': 'PRINCIPALE', 
+                                                   'INTERMEDIATE': 'INTERMEDIAIRE', 
+                                                   'CATCH': 'DEROBEE' })
+    df['type'] = df['type'].astype('str')
+    df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
+    df = df.set_index('culture_id')
+
+    # Ajout de 'Culture porte-graine' ??
+    # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
+    # Du coup utilisation du nom de la culture pour changement non souhaité
+
+    return df

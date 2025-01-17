@@ -361,7 +361,8 @@
                 "generated" : [
 					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
-                    "sdc_donnee_attendue"
+                    "sdc_donnee_attendue",
+					"typologie_can_culture"
                 ]
             },
             "outils_can" : {
