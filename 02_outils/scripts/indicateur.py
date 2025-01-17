@@ -153,7 +153,7 @@ def select_sdc_interet(df_domaine,df_dispositif,df_sdc):
     
     '''
     # Recuperation de la campagne du domaine
-    df_domaine.loc[:, 'campagne'] = df_domaine['campagne'].astype('str')
+    df_domaine['campagne'] = df_domaine['campagne'].astype('str')
     df_dispositif = pd.merge(df_dispositif, df_domaine, left_on='domaine_id', right_index = True, how = 'inner')
     
     # Selection des dephy_ferme uniquement. Les donnees autres ne seront pas dans la sortie
@@ -267,7 +267,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # A) On prefere un pluriannuel plutot que monoannuel si il y a le choix donc :
     # Si le code dephy n'es pas dans dephy_mono, le pz0 mono annuel devient post. on le sauvegarde ensuite dans post
     # (Si il chevauche avec le pz0, il sera traité plus tard)
-    select_df['donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') 
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') 
                                                                             else x['donnee_attendue'], axis = 1)
  
     # sauvegarde les post
@@ -282,18 +282,18 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
 
     # C) Pour les pz0 pluri annuels restants : 
     # tag des lignes correctes
-    select_df['to_keep'] = select_df.apply(lambda x : True if (x['donnee_attendue'] in (pattern_pz0_correct))
+    select_df.loc[:,'to_keep'] = select_df.apply(lambda x : True if (x['donnee_attendue'] in (pattern_pz0_correct))
                                                                             else False , axis = 1)
     
     dephy_correct = select_df.loc[select_df['to_keep'], 'code_dephy'].to_list()
     
-    select_df['donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_non_acceptable if (x['code_dephy'] not in (dephy_correct))
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_non_acceptable if (x['code_dephy'] not in (dephy_correct))
                                                                             else x['donnee_attendue'] , axis = 1)
     
-    select_df['donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_chevauchement if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is False)
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_chevauchement if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is False)
                                                                             else x['donnee_attendue'] , axis = 1)    
     
-    select_df['donnee_attendue'] = select_df.apply(lambda x : "pz0" if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is True)
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "pz0" if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is True)
                                                                             else x['donnee_attendue'] , axis = 1)    
     
     select_df = select_df.drop(['to_keep'], axis = 1)
@@ -334,12 +334,12 @@ def do_correct_overlap(df,modalite_pz0_chevauchement,dephy_monoannuel):
 
     # si le min de la campagne du synthetise <= au max de la campagne pz0, il y a chevauchement
     # pour le cas de detection de post qui chevauchent
-    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : modalite_pz0_chevauchement if ((min(x['campagnes_split']) <= max(x['campagnes_pz0']))
+    df_not_monoannuel.loc[:,'donnee_attendue'] = df_not_monoannuel.apply(lambda x : modalite_pz0_chevauchement if ((min(x['campagnes_split']) <= max(x['campagnes_pz0']))
                                                                                                                 & (x['donnee_attendue'] != 'pz0') )
                                                                                                     else x['donnee_attendue'], axis=1)
     
     # pour le cas de de plusieurs pz0 à choisir, l'un est devenu chevauchant alors que il doit etre post. ex PYF10511 2009,2010,2011 et 2012,2013,2014,2015
-    df_not_monoannuel['donnee_attendue'] = df_not_monoannuel.apply(lambda x : "post" if ((min(x['campagnes_split']) > max(x['campagnes_pz0']))
+    df_not_monoannuel.loc[:,'donnee_attendue'] = df_not_monoannuel.apply(lambda x : "post" if ((min(x['campagnes_split']) > max(x['campagnes_pz0']))
                                                                                                                 & (x['donnee_attendue'] == modalite_pz0_chevauchement) )
                                                                                                     else x['donnee_attendue'], axis=1)
 
@@ -354,7 +354,7 @@ def do_correct_overlap(df,modalite_pz0_chevauchement,dephy_monoannuel):
 
     df_monoannuel = pd.merge(df_monoannuel.reset_index(), pz0_mono, on = 'code_dephy')
 
-    df_monoannuel['donnee_attendue'] = df_monoannuel.apply(
+    df_monoannuel.loc[:,'donnee_attendue'] = df_monoannuel.apply(
         lambda x : modalite_pz0_chevauchement if ((x['donnee_attendue'] == "post") & (x['campagnes'] <= max(x['campagnes_pz0']))) else x['donnee_attendue'] ,
     axis=1)
 
@@ -515,8 +515,8 @@ def identification_pz0(donnees):
     #print(identif_pz0.groupby(by='donnee_attendue').size())
 
     # les campagnes synthetise pluriannuelles ont elles des doublons ? 
-    identif_pz0['count_campaign'] = identif_pz0.apply(lambda x : len(x['campagnes'].split(', ')), axis=1)
-    identif_pz0['count_unique_campaign'] = identif_pz0.apply(lambda x : len(set(x['campagnes'].split(', '))), axis=1)
+    identif_pz0.loc[:,'count_campaign'] = identif_pz0.apply(lambda x : len(x['campagnes'].split(', ')), axis=1)
+    identif_pz0.loc[:,'count_unique_campaign'] = identif_pz0.apply(lambda x : len(set(x['campagnes'].split(', '))), axis=1)
     
     if identif_pz0.loc[identif_pz0['count_campaign'] != identif_pz0['count_unique_campaign']].shape[0] != 0:
         message_error = message_error + "!!! Attention !!! Saisies de synthetises incorrects : campagnes en doubles"
@@ -543,7 +543,7 @@ def identification_pz0(donnees):
     identif_pz0_aucun.loc[identif_pz0_aucun['code_dephy'].isin(saisies_attendues_melt['code_dephy']),'donnee_attendue'] = modalite_pz0_aucun # mais ceux qui sont dans le fichier BDD_donnees_attendues_CAN, sont des "saisies non acceptables"
 
     identif_pz0_non_attendue = identif_pz0.copy()
-    identif_pz0_non_attendue['donnee_attendue_split'] = identif_pz0_non_attendue.apply(lambda x : ', '.join(set(x['donnee_attendue'].split(', '))) , axis = 1)
+    identif_pz0_non_attendue.loc[:,'donnee_attendue_split'] = identif_pz0_non_attendue.apply(lambda x : ', '.join(set(x['donnee_attendue'].split(', '))) , axis = 1)
     identif_pz0_non_attendue = identif_pz0_non_attendue.loc[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
     identif_pz0_non_attendue['donnee_attendue'] = modalite_non_attendu
 
@@ -630,7 +630,8 @@ def identification_pz0(donnees):
         print(message_error)
 
     df_identification_pz0 = df_identification_pz0[['donnee_attendue']].rename(columns={'donnee_attendue' : 'pz0'})
-        
+    df_identification_pz0.index.names = ['entite_id']
+
     return(df_identification_pz0)
 
 

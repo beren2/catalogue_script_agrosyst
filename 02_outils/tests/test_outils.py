@@ -420,7 +420,7 @@ def test_identification_pz0():
     df_metadonnees.set_index('id_ligne',inplace = True)
     comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True, how = 'left').reset_index()
     
-    print(comparaison.loc[comparaison['valeur_attendue'] != comparaison['pz0'],['code_dephy','valeur_attendue','pz0','campagnes']].values)
+    print(comparaison.loc[comparaison['valeur_attendue'] != comparaison['pz0'],].values)
 
     res_test = (comparaison['valeur_attendue'] == comparaison['pz0']).all()
     assert res_test
