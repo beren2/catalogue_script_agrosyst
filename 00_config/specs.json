@@ -361,7 +361,7 @@
                 "generated" : [
 					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
-                    "sdc_donnee_attendue",
+                    "identification_pz0",
 					"typologie_can_culture"
                 ]
             },

@@ -356,8 +356,8 @@ def create_category_indicateur():
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
     
-    df_sdc_donnee_attendue = indicateur.sdc_donnee_attendue(donnees)
-    export_to_db(df_sdc_donnee_attendue, 'entrepot_sdc_donnee_attendue')
+    df_identification_pz0 = indicateur.identification_pz0(donnees)
+    export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
 
     df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
     export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
