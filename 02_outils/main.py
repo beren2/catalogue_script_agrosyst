@@ -359,6 +359,9 @@ def create_category_indicateur():
     df_identification_pz0 = indicateur.identification_pz0(donnees)
     export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
 
+    df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
+    export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
+
 def create_category_outils_can():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
@@ -415,7 +418,9 @@ def create_category_test():
 
 external_data_spec = {
     'tables' : [
-        'BDD_donnees_attendues_CAN'
+        'BDD_donnees_attendues_CAN',
+        'typo_especes_typo_culture',
+        'typo_especes_typo_culture_marai'
     ]
 }
 
