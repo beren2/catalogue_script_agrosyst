@@ -492,8 +492,8 @@ def identification_pz0(donnees):
     #print('nb zones sans interventions' + str(df_zone.loc[df_zone.index.isin(list(set(df_intervention_realise_agrege['zone_id'])))].shape))
     #print('nb synthetise sans interventions'+ str(df_synthetise.loc[~df_synthetise.index.isin(list(set(df_intervention_synthetise_agrege['synthetise_id'])))].shape))
 
-    df_synthetise = df_synthetise.loc[list(set(df_intervention_synthetise_agrege['synthetise_id']))]
-    df_zone = df_zone.loc[list(set(df_intervention_realise_agrege['zone_id']))]
+    df_synthetise = df_synthetise.loc[df_synthetise.index.isin(list(set(df_intervention_synthetise_agrege['synthetise_id'])))]
+    df_zone = df_zone.loc[df_zone.index.isin(list(set(df_intervention_realise_agrege['zone_id'])))]
 
     # puis supprimer les sdc_id qui n'ont pas de zone_id ou synthetise_id
     left = df_zone[['parcelle_id']]
@@ -629,7 +629,7 @@ def identification_pz0(donnees):
     if len(message_error) != 0:
         print(message_error)
 
-    df_identification_pz0 = df_identification_pz0[['donnee_attendue','code_dephy','campagnes']].rename(columns={'donnee_attendue' : 'pz0'})
+    df_identification_pz0 = df_identification_pz0[['donnee_attendue']].rename(columns={'donnee_attendue' : 'pz0'})
         
     return(df_identification_pz0)
 
