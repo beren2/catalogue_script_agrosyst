@@ -1,0 +1,2 @@
+id,nom,code,intervention_manuelle,tracteur_materiel_id,nb_personnes,debit,debit_unite,bouillie_volume_moy_parha_hl,buse_anti_derive_pulverisateur,volume_voyage,prestation_service,domaine_id
+fr.inra.agrosyst.api.entities.ToolsCoupling_a2ae70fa-28eb-4a14-a74a-623eff12713d,Pulvérisation,ffe5ea44-9676-4d61-8570-d06702c10c74,f,fr.inra.agrosyst.api.entities.Equipment_e3a73168-2802-422a-9fc8-730f5b618985,,10.0,HA_H,,f,,f,fr.inra.agrosyst.api.entities.Domain_2ba3314f-0eeb-4dce-854e-e26715d4b7d8

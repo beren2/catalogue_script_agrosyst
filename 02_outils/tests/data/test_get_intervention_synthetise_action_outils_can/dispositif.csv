@@ -1,0 +1,2 @@
+id,code,nom,type,campagne,domaine_id
+fr.inra.agrosyst.api.entities.GrowingPlan_bdb363f4-a55c-4ced-a60f-2a7f5923b1d7,4acd368f-7e78-42b8-85ec-b1bba45e42e8,GAEC de Porz Nevez Dispositif,DEPHY_FERME,2023,fr.inra.agrosyst.api.entities.Domain_2ba3314f-0eeb-4dce-854e-e26715d4b7d8

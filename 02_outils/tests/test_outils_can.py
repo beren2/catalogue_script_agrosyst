@@ -57,6 +57,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
         for colonne_to_test in colonnes_to_test:
             print(output[colonne_to_test].values)
             print(expected_output[colonne_to_test].values)
+            print(expected_output[colonne_to_test].values == output[colonne_to_test].values)
             if(len(expected_output[colonne_to_test].values) > 0):
                 is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
 
