@@ -47,97 +47,6 @@ ADD FOREIGN KEY (modele_descisionelassocie_prevu_id) REFERENCES entrepot_modele_
 alter table entrepot_bilan_campagne_sdc_generalites
 ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_decisionnel(id);
 
--- Creation d'une table de traduction entre l'information en base et l'interface
-DROP TABLE IF EXISTS traductions_bilan_campagne_sdc;
-CREATE TABLE traductions_bilan_campagne_sdc(
-	nom_rubrique text, 
-	nom_base text,
-	traduction_interface text);
-	
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','NONE','Nulle (absence)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','LOW','Faible (un peu mais pas d''impact)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','MODERATE','Moyenne (impact sur le rendement possible)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','HIGH','Forte (impact certain sur le rendement et la marge)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','NONE','Aucun symptôme');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','LOW','Symptômes sans effet sur le rendement ou la qualité');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','MODERATE','Symptômes avec effet très limité sur le rendement et la qualité');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','HIGH','Pertes économiques dues à la maladie');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','NONE','Aucun symptome ou presence');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','LOW','Symptomes sans effet sur le rendement');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','MODERATE','Rendement un peu affecté sans effet sur la marge de la culture');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','HIGH','Pertes économiques sur la culture');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','NONE','Aucun symptôme');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','LOW','Symptômes sans effet sur le rendement ou la qualité');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','MODERATE','Symptômes avec effet très limité sur le rendement et la qualité');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','HIGH','Pertes économiques dues à des dégâts sur fruits, feuilles, ou arbres');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','ZERO','0% de ceps touchés, 0% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_0_TO_10_2_INTENSITY','0 à 10 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_10_TO_35_2_INTENSITY','10 à 35 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_35_TO_70_2_INTENSITY','35 à 70 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_70_TO_100_2_INTENSITY','70 à 100 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_35_TO_70_2_TO_5_INTENSITY','35 à 70 % de ceps touchés, 2 à 5% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_70_TO_100_2_TO_5_INTENSITY','70 à 100 % de ceps touchés, 2 à 5% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_70_TO_100_5_TO_15_INTENSITY','70 à 100 % de ceps touchés, 5 à 15% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_70_TO_100_15_TO_25_INTENSITY','70 à 100 % de ceps touchés, 15 à 25% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_70_TO_100_25_INTENSITY','70 à 100 % de ceps touchés, > 25% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','ZERO','0% de ceps touchés, 0% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_0_TO_10_2_INTENSITY','0 à 10 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_10_TO_35_2_INTENSITY','10 à 35 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_35_TO_70_2_INTENSITY','35 à 70 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_70_TO_100_2_INTENSITY','70 à 100 % de ceps touchés, moins de 2% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_35_TO_70_2_TO_5_INTENSITY','35 à 70 % de ceps touchés, 2 à 5% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_70_TO_100_2_TO_5_INTENSITY','70 à 100 % de ceps touchés, 2 à 5% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_70_TO_100_5_TO_15_INTENSITY','70 à 100 % de ceps touchés, 5 à 15% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_70_TO_100_15_TO_25_INTENSITY','70 à 100 % de ceps touchés, 15 à 25% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie grappe','FROM_70_TO_100_25_INTENSITY','70 à 100 % de ceps touchés, > 25% d intensité d attaque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs feuille','NONE','pas de dégâts');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs feuille','LOW','attaque faible');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs feuille','MODERATE','attaque moyenne');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs feuille','HIGH','attaque forte');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs grappe','NONE','pas de dégâts');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs grappe','LOW','attaque faible');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs grappe','MODERATE','attaque moyenne');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque ravageurs grappe','HIGH','attaque forte');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','NONE','sol nu');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','LOW','sol globalement nu avec toutefois quelques taches, sans gravité ni concurrence hydrique');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','MODERATE','enherbement sans concurrence hydrique');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','HIGH','enherbement generalise (voulu ou accidentel) avec baisse de vigeur et rendement');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','NON_IRRIGABLE','Non irrigable');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','NOT_IRRIGATED_CROP','Irrigable, culture non irriguée');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','IRRIGATED_CROP_LIMITED_QUANTITY','Culture irriguée, quantité limitée');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','IRRIGATED_CROP','Culture irriguée');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('stress hydrique mineral temperature','NO_STRESS','Pas de stress');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('stress hydrique mineral temperature','STRESS_NO_IMPACT_YIELD','Stress limité sans impact sur le rendement');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('stress hydrique mineral temperature','STRESS_NO_IMPACT_PROFIT','Stress limité sans impact sur la marge');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('stress hydrique mineral temperature','STRESS_IMPACT_YIELD_PROFIT','Stress impactant le rendement et la marge');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice assolee','NONE','Nulle (absence)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice assolee','LOW','Faible (presence sporadique)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice assolee','MODERATE','Moyenne (premiers ronds)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice assolee','HIGH','Forte (concurrence en voie de generalisation)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise adventice assolee','NONE','Pas de presence');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise adventice assolee','LOW','Presence sans concurrence ni multiplication significative (sous couvert ou sur couvert)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise adventice assolee','MODERATE','Presence de premiers ronds de concurrence directe sur ou sous couvert (avec risque de multiplication futur)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise adventice assolee','HIGH','Concurrence en voie de generalisation (multication des zones ou "ronds") sous ou sur couvert cultive');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de risque verse','NONE','Pas de risque');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de risque verse','LOW','Risque faible (un peu mais pas d''impact)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de risque verse','MODERATE','Risque moyenne (impact sur le rendement possible)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de risque verse','HIGH','Risque fort (impact certain sur le rendement et la marge)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','NONE','Pas de verse');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','LOW','Un peu de verse sans effet sur le rendement');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','MODERATE','Verse sans effet sur la marge de la culture');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','HIGH','Verse impactant la performance economique');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise visee adv arboexpe','NONE','Rang nu toute la saison');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise visee adv arboexpe','LOW','Rang nu à certaines periodes');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise visee adv arboexpe','HIGH','Enherbement permanent');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','NONE','Sol propre toute la saison');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','LOW','Sol propre à certaines periodes (recolte)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','MODERATE','Enherbement permanent sans concurrence hydrique');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','HIGH','Enherbement permanent avec concurrence (eau,vigueur,coloration …)');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','4','LESS_50');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','3','FROM_50_TO_75');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','2','FROM_75_TO_95');
-insert into traductions_bilan_campagne_sdc(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','1','MORE_95');
-
 -- Maitrise des ravageurs maladies et adventices
 DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_agresseur;
 CREATE TABLE entrepot_bilan_campagne_sdc_agresseur AS
@@ -163,8 +72,8 @@ from pestmaster pm
 join croppestmaster cm on cm.topiaid = pm.croppestmaster 
 join refadventice refadv on pm.agressor = refadv.topiaid
 -- traductions des libelles
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'echelle de pression maladie ravageur') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
 join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = cm.cropadventicemasterreportgrowingsystem
 union
 select 
@@ -196,8 +105,8 @@ left join (select distinct code_groupe_cible_maa,groupe_cible_maa
 			and groupe_cible_maa not in ('Cicadelles cercopides et psylles','Maladies des taches foliaires')) refgrpcible -- on retire les doublons de code 38 'Cicadelles cercopides et psylles' puisque ce nom est utilisé par le 37 , et le 82 puisqu'il y a deux orthographes 
 		on refgrpcible.code_groupe_cible_maa = pm.codegroupeciblemaa 
 -- traductions des libelles
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
 join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id in (cm.croppestmasterreportgrowingsystem, cm.cropdiseasemasterreportgrowingsystem)
 ;
 
@@ -225,8 +134,8 @@ vm.advisercomments IFT_commentaire_conseiller,
 vm.reportgrowingsystem bilan_campagne_sdc_generalites_id
 from versemaster vm
 -- traductions des libelles
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'echelle de risque verse') trad1 on vm.riskscale = trad1.nom_base 
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de risque verse') trad1 on vm.riskscale = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
 join entrepot_bilan_campagne_sdc_generalites e on e.id = vm.reportgrowingsystem;
 
 alter table entrepot_bilan_campagne_sdc_verse
@@ -280,10 +189,10 @@ fm.comment commentaire,
 ebcsg.id bilan_campagne_sdc_generalites_id
 from foodmaster fm 
 -- traductions des libelles
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'irrigation') trad1 on fm.foodirrigation = trad1.nom_base 
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'stress hydrique mineral temperature') trad2 on fm.hydriquestress = trad2.nom_base 
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'stress hydrique mineral temperature') trad3 on fm.azotestress = trad3.nom_base 
-left join (select * from traductions_bilan_campagne_sdc where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'irrigation') trad1 on fm.foodirrigation = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad2 on fm.hydriquestress = trad2.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad3 on fm.azotestress = trad3.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
 join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = fm.foodmasterreportgrowingsystem ;
 
 alter table entrepot_bilan_campagne_sdc_alimentation
@@ -294,4 +203,4 @@ alter table entrepot_bilan_campagne_sdc_alimentation
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
 
--- DROP TABLE IF EXISTS traductions_bilan_campagne_sdc;
+-- DROP TABLE IF EXISTS bilan_campagne_sdc_traduction;
