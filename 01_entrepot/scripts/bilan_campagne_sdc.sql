@@ -48,8 +48,8 @@ alter table entrepot_bilan_campagne_sdc_generalites
 ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_decisionnel(id);
 
 -- Maitrise des ravageurs maladies et adventices
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_agresseur;
-CREATE TABLE entrepot_bilan_campagne_sdc_agresseur AS
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_agresseur;
+CREATE TABLE entrepot_bilan_campagne_sdc_assolee_agresseur AS
 select 
 pm.topiaid id,
 'adventice' type_bioagresseur,
@@ -111,17 +111,17 @@ join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id in (cm.croppestma
 ;
 
 
-alter table entrepot_bilan_campagne_sdc_agresseur
+alter table entrepot_bilan_campagne_sdc_assolee_agresseur
 add constraint bilan_campagne_sdc_agresseur_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_agresseur
+alter table entrepot_bilan_campagne_sdc_assolee_agresseur
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
 
 -- Maitrise de la verse
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_verse;
-CREATE TABLE entrepot_bilan_campagne_sdc_verse AS
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse;
+CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse AS
 select 
 vm.topiaid id ,
 trad1.traduction_interface risque_echelle,
@@ -138,11 +138,11 @@ left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'ech
 left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
 join entrepot_bilan_campagne_sdc_generalites e on e.id = vm.reportgrowingsystem;
 
-alter table entrepot_bilan_campagne_sdc_verse
+alter table entrepot_bilan_campagne_sdc_assolee_verse
 add constraint bilan_campagne_sdc_verse_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_verse
+alter table entrepot_bilan_campagne_sdc_assolee_verse
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
 -- Rendement et qualité
@@ -201,6 +201,3 @@ PRIMARY KEY (id);
 
 alter table entrepot_bilan_campagne_sdc_alimentation
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
-
-
--- DROP TABLE IF EXISTS bilan_campagne_sdc_traduction;
