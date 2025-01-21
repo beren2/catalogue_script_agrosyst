@@ -31,7 +31,6 @@ DATA_PATH = config.get('metadata', 'data_path')
 TYPE = config.get('metadata', 'type')
 DEBUG = bool(int(config.get('metadata', 'debug')))
 BDD_ENTREPOT=config.get('metadata', 'bdd_entrepot')
-EXTERNAL_DATA_PATH = 'data/external_data/'
 VERSION = __version__
 with open('../00_config/specs.json', encoding='utf8') as json_file:
     SOURCE_SPECS = json.load(json_file)
@@ -417,11 +416,7 @@ def create_category_test():
 
 
 external_data_spec = {
-    'tables' : [
-        'BDD_donnees_attendues_CAN',
-        'typo_especes_typo_culture',
-        'typo_especes_typo_culture_marai'
-    ]
+
 }
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
@@ -450,11 +445,13 @@ options = {
     'local' : {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
+        "Tester la cohérence des référentiels externes ": [],
         "Quitter" : []
     },
     'distant' : {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
+        "Tester la cohérence des référentiels externes ": [],
         "Télécharger une catégorie" : [],  
         "Quitter" : []
     }
@@ -499,7 +496,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
         load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
         print("* CHARGEMENT DES DONNÉES EXTERNES *")
-        load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+        load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
         print("* CHARGEMENT DES RÉFÉRENTIELS *")
         print("Attention, penser à les mettre à jour manuellement.")
         load_ref()
@@ -556,7 +553,6 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
         else :
             download_datas(choosen_generated, verbose=False)
-
     elif choice_key == "Générer une catégorie":
         print("")
         print("Veuillez choisir la catégorie à générer")
@@ -596,7 +592,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             load_ref()
             print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
-            load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+            load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
             print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
@@ -612,7 +608,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 load_ref()
                 print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
-                load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+                load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
                 
             print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
@@ -621,6 +617,20 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
             print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
 
+    elif choice_key == 'Tester la cohérence des référentiels externes':
+        print("* DÉBUT DU TEST DE COHÉRENCE DES RÉFÉRENTIELS EXTERNES *")
+
+        # mettre tout ça dans une fonction car devra être appelé au tout début dans l'exécution de "Tout générer".
+
+        # récupération des tests
+        # récupérer toutes les dépendances externes mobilisées dans la création d'outils (specs.json)
+        # récupérer les fonctions pour chacun de ces tests
+        # --> par exemple, faire juste une fonction "présence" pour s'assurer que le référentiel est bien présent
+
+        # exécution des tests
+        # stockage du résulat 
+
+        print("* FIN DU TEST DE COHÉRENCE DES RÉFÉRENTIELS EXTERNES *")
 
     elif choice_key == "Test":
         print("* DÉBUT DE LA GÉNÉRATION TEST *")
