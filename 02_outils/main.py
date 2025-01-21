@@ -22,6 +22,8 @@ import pandas as pd
 from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
+import importlib
+import time
 
 # obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -31,7 +33,6 @@ DATA_PATH = config.get('metadata', 'data_path')
 TYPE = config.get('metadata', 'type')
 DEBUG = bool(int(config.get('metadata', 'debug')))
 BDD_ENTREPOT=config.get('metadata', 'bdd_entrepot')
-EXTERNAL_DATA_PATH = 'data/external_data/'
 VERSION = __version__
 with open('../00_config/specs.json', encoding='utf8') as json_file:
     SOURCE_SPECS = json.load(json_file)
@@ -163,6 +164,128 @@ def load_datas(desired_tables, verbose=False, path_data=DATA_PATH):
     global donnees
     import_dfs(desired_tables, path_data, verbose=True)
 
+def check_files_exist(tables, path_data=DATA_PATH, verbose=False):
+    """
+        Vérifie que toutes les tables sont accessible au chemin path_data.
+        - tables : liste de nom auquel on rajoutera ".csv" pour checker l'existence dans le répertoire.
+
+        retourne une liste des tables manquantes
+    """
+    leaking_tables = []
+    for table in tables :
+        file_name = table+'.csv'
+        file = path_data+file_name
+        if(not os.path.isfile(file)):
+            leaking_tables.append(table)
+            if(verbose):
+                print(f"- fichier {Fore.RED}"+file+f"{Style.RESET_ALL} manquant")
+    return leaking_tables
+    
+
+def get_leaking_tables_for_category(category, verbose=False):
+    """
+        Vérifier si toutes les tables nécessaires à la génération de l'outil sont accessibles 
+        - Tables de l'entrepôt
+        - Tables outils dépendances
+        - Tables externes
+    """
+    entrepot_spec = SOURCE_SPECS['entrepot']
+    category_spec = SOURCE_SPECS['outils']['categories'][category]
+    external_data_spec = SOURCE_SPECS['outils']['external_data']
+    outils_dependances = category_spec['dependances']
+
+    # constitution de la liste des tables de l'entrepôt (toujours supposées nécessaires, sauf pour la catégorie test)
+    entrepot_tables = []
+    for _, table_name in enumerate(entrepot_spec['tables']):
+        entrepot_tables.append(table_name)
+
+    # constitution de la liste des tables dépendantes pour la catégorie :
+    dependance_tables = []
+    for _, outil_dependance in enumerate(outils_dependances):
+        if(verbose):
+            print("dependance : ", outil_dependance['category'])
+        print(outil_dependance)
+        category = outil_dependance['category']
+        dependance_tables += SOURCE_SPECS['outils']['categories'][category]['generated']
+
+
+    # check que toutes les tables de l'entrepôt sont présentes
+    leaking_tables_entrepot = check_files_exist(entrepot_tables)
+
+    # check que toutes les tables outils nécessaires sont présentes
+    leaking_tables_outils = check_files_exist(dependance_tables)
+
+    # check que toutes les tables externes nécessaires sont présentes
+    leaking_tables_external = check_files_exist(
+        external_data_spec['tables'], 
+        path_data=external_data_spec['path'])
+
+    if(verbose):
+        print('Tables manquantes entrepôt : ', leaking_tables_entrepot)
+        print('Tables manquantes outils : ', leaking_tables_outils)
+        print('Tables manquantes externes : ', leaking_tables_external)
+    
+    return {
+        'entrepot' : leaking_tables_entrepot, 
+        'outils' : leaking_tables_outils,
+        'external' : leaking_tables_external
+    }
+
+
+def test_all_findable_for_category(category, verbose=False):
+    """
+        retourne un message et un code d'erreur si certaines tables ne sont pas trouvées
+    """
+    
+    leaking_tables = get_leaking_tables_for_category(category)
+    error_message = """Vous disposez de toutes les tables nécessaires."""
+    error_code = 0
+
+    # si au moins l'une des listes est non-vide, on doit retourner une erreur
+    if(len(leaking_tables['entrepot']) > 0 or len(leaking_tables['outils'])>0 or len(leaking_tables['external']) >0):
+        error_message = f"""{Fore.RED}Attention, il manque les tables suivantes :{Style.RESET_ALL}
+entrepot : """+str(leaking_tables['entrepot'])+ """ ("""+DATA_PATH+""")
+outils : """+str(leaking_tables['outils'])+""" ("""+DATA_PATH+""")
+external : """+str(leaking_tables['external'])+""" ("""+SOURCE_SPECS['outils']['external_data']['path']+""")
+        """
+        error_code = 1
+
+    return error_code, error_message
+
+def test_check_external_data():
+    """
+        Print les résultats des tests effectués dans le fichier défini 
+        dans la spec : outils.external_data.validation.path
+        Retourne 0 si tout s'est bien passé, 1 sinon
+    """
+    external_data_validation = SOURCE_SPECS['outils']['external_data']['validation']
+    external_data_validation_path = external_data_validation['path']
+    external_data_validation_checks = external_data_validation['checks']
+
+    # load des données externes
+    load_datas(
+        SOURCE_SPECS['outils']['external_data']['tables'], 
+        verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path']
+    )
+    all_passed = True
+    for check in external_data_validation_checks:
+        external_data_test_module = importlib.import_module(external_data_validation_path)
+        check_function = getattr(external_data_test_module, check['function_name'])
+        res = check_function(donnees)
+        if res:
+            print(check['name'], ":", f"{Fore.GREEN} validé {Style.RESET_ALL}")
+        else:
+            print(check['name'], ":", f"{Fore.RED} échoué {Style.RESET_ALL}")
+            all_passed = False
+
+    if all_passed:
+        error_code = 0
+        error_message = f"{Fore.GREEN}Toutes les données externes sont conformes{Style.RESET_ALL}"
+    else :
+        error_code = 0
+        error_message = f"{Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
+    
+    return error_code, error_message
 
 def generate_leaking_df(df1, df2, id_name, columns_difference):
     """
@@ -239,15 +362,7 @@ def load_ref(verbose=False):
     import_dfs(refs, path, verbose=True)
 
 
-def check_existing_tables(desired_tables):
-    """vérifie que toutes les tables sont présentes"""
-    code_error = 0
-    for table in desired_tables : 
-        file_path = DATA_PATH+table+'.csv'
-        if(not os.path.isfile(file_path)):
-            print(f"- fichier {Fore.RED}"+file_path+f"{Style.RESET_ALL} manquant") 
-            code_error = 1
-    return code_error
+
 
 def create_category_nettoyage():
     """
@@ -417,21 +532,17 @@ def create_category_test():
 
 
 external_data_spec = {
-    'tables' : [
-        'BDD_donnees_attendues_CAN',
-        'typo_especes_typo_culture',
-        'typo_especes_typo_culture_marai'
-    ]
+
 }
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
-    {'source' : 'outils', 'categorie' : 'nettoyage'},
-    {'source' : 'outils', 'categorie' : 'agregation'},
-    {'source' : 'outils', 'categorie' : 'agregation_complet'},
-    {'source' : 'outils', 'categorie' : 'restructuration'},
-    {'source' : 'outils', 'categorie' : 'indicateur'},
-    {'source' : 'outils', 'categorie' : 'outils_can'}
+    {'source' : 'outils', 'category' : 'nettoyage'},
+    {'source' : 'outils', 'category' : 'agregation'},
+    {'source' : 'outils', 'category' : 'agregation_complet'},
+    {'source' : 'outils', 'category' : 'restructuration'},
+    {'source' : 'outils', 'category' : 'indicateur'},
+    {'source' : 'outils', 'category' : 'outils_can'}
 ]
 
 options_categories = {}
@@ -439,7 +550,7 @@ options_categories = {}
 for source_key, source in SOURCE_SPECS.items():
     if(source_key == 'outils'):
         for categorie_key in source['categories']:
-            options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'categorie' : categorie_key}
+            options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'category' : categorie_key}
             categorie = source['categories'][categorie_key]
             dependances = categorie['dependances']
 
@@ -450,15 +561,21 @@ options = {
     'local' : {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
+        "Tester la cohérence des données externes": [],
         "Quitter" : []
     },
     'distant' : {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
+        "Tester la cohérence des données externes": [],
         "Télécharger une catégorie" : [],  
         "Quitter" : []
     }
 }
+
+class LeakingData(Exception):
+    pass
+
 
 donnees = {}
 while True:
@@ -493,33 +610,55 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         print("Au revoir !")
         break
     if choice_key == 'Tout générer':
+
+        # Téléchargement et chargement des données
         if(TYPE == 'distant'):
             print("* TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             download_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
-        print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-        load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
-        print("* CHARGEMENT DES DONNÉES EXTERNES *")
-        load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
-        print("* CHARGEMENT DES RÉFÉRENTIELS *")
-        print("Attention, penser à les mettre à jour manuellement.")
-        load_ref()
 
-        for step in steps :
-            current_source = step['source']
-            current_category = step['categorie']
-            print("* GÉNÉRATION ", current_source, current_category," *")
-            choosen_function = eval(str(SOURCE_SPECS[current_source]['categories'][current_category]['function_name']))
+        # Vérification que toutes les données sont présentes pour la première catégorie
+        error_code_findable, error_message = test_all_findable_for_category(steps[0]['category'])
+        print(error_message)
 
-            if(current_category == 'agregation_complet'):
-                # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
-                generate_data_agreged(verbose=False)
-                download_data_agreged(verbose=False)
-            else :
-                choosen_function()
-                if(TYPE == 'distant'):
-                    download_datas(SOURCE_SPECS[current_source]['categories'][current_category]['generated'])
-                load_datas(SOURCE_SPECS[current_source]['categories'][current_category]['generated'])
+        
+        # Si toutes les données nécessaires sont disponibles, on peut les charger
+        if(error_code_findable == 0):
+            # Vérification que les données externes vérifient le format attendu
+            error_code_check, error_message = test_check_external_data()
+            print(error_message)
+            if(error_code_check == 0):
 
+                # Chargement des données
+                print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+                load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                print("* CHARGEMENT DES DONNÉES EXTERNES *")
+                load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                print("* CHARGEMENT DES RÉFÉRENTIELS *")
+                print("Attention, penser à les mettre à jour manuellement.")
+                load_ref()
+
+                for step in steps :
+                    CURRENT_SOURCE = step['source']
+                    CURRENT_CATEGORY = step['category']
+
+                    # Vérification que toutes les données sont présentes pour la catégorie courante
+                    error_code, error_message = test_all_findable_for_category(step['category'])
+                    print(error_message)
+                    if(error_code == 0):
+                        print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
+                        choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
+
+                        if(CURRENT_CATEGORY == 'agregation_complet'):
+                            # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
+                            generate_data_agreged(verbose=False)
+                            download_data_agreged(verbose=False)
+                        else :
+                            choosen_function()
+                            if(TYPE == 'distant'):
+                                download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                            load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+        else:
+            time.sleep(1)
     elif choice_key == 'Télécharger une catégorie':
         print("")
         print("Veuillez choisir la catégorie à télécharger")
@@ -529,7 +668,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_value = list(options_categories.values())[choice - 1]
         choosen_source = choosen_value['source']
-        choosen_category = choosen_value['categorie']
+        choosen_category = choosen_value['category']
         choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
         choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
 
@@ -539,7 +678,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
             choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
             for choosen_dependance in choosen_dependances:
-                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
+                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
                 if(len(categorie_dependance['generated']) != 0):
                     if(categorie_dependance['generated'][0] not in donnees):
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
@@ -556,7 +695,6 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
         else :
             download_datas(choosen_generated, verbose=False)
-
     elif choice_key == "Générer une catégorie":
         print("")
         print("Veuillez choisir la catégorie à générer")
@@ -568,59 +706,77 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_value = list(options_categories.values())[choice - 1]
         choosen_source = choosen_value['source']
-        choosen_category = choosen_value['categorie']
-        print(str(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']))
+        choosen_category = choosen_value['category']
         choosen_function = eval(str(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']))
         choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
-        for choosen_dependance in choosen_dependances:
-            categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['categorie']]
-            if(len(categorie_dependance['generated']) != 0):
 
-                # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
-                errors = check_existing_tables(categorie_dependance['generated'])
-                if(errors == 1):
-                    break
-                
-                if(categorie_dependance['generated'][0] not in donnees):
-                    print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                    load_datas(categorie_dependance['generated'], verbose=False)
-                    print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
+        # Vérification que toutes les données sont présentes pour la catégorie courante
+        error_code, error_message = test_all_findable_for_category(choosen_category)
+        print(error_message)
         
-        if(choosen_category == 'agregation_complet'):
-            # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
-            generate_data_agreged(verbose=False)
-            download_data_agreged(verbose=False)
-        elif(choosen_category == 'test'):
-            print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-            load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
-            load_ref()
-            print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-            print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
-            load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
-            print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
+        if(error_code == 0):
+            for choosen_dependance in choosen_dependances:
+                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
+                if(len(categorie_dependance['generated']) != 0):
 
-            print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
-            choosen_function()
-            if(TYPE == 'distant'):
-                download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
-            print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
-        else :
-            # on vérifie que les données n'ont pas été déjà chargées
-            if('domaine' not in donnees):
+                    # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
+                    errors = check_existing_files(categorie_dependance['generated'])
+                    if(errors == 1):
+                        break
+                    
+                    if(categorie_dependance['generated'][0] not in donnees):
+                        print("* DÉBUT DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
+                        load_datas(categorie_dependance['generated'], verbose=False)
+                        print("* FIN DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
+            
+            if(choosen_category == 'agregation_complet'):
+                # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
+                generate_data_agreged(verbose=False)
+                download_data_agreged(verbose=False)
+            elif(choosen_category == 'test'):
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
                 load_ref()
                 print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
-                load_datas(external_data_spec['tables'], verbose=False, path_data=EXTERNAL_DATA_PATH)
+                load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
-                
-            print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
-            choosen_function()
-            if(TYPE == 'distant'):
-                download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
-            print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
 
+                print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
+                choosen_function()
+                if(TYPE == 'distant'):
+                    download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
+                print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
+            else :
+                # on vérifie que les données n'ont pas été déjà chargées
+                if('domaine' not in donnees):
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+                    load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                    load_ref()
+                    print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                    print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
+                    
+                print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
+                choosen_function()
+                if(TYPE == 'distant'):
+                    download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
+                print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
+
+    elif choice_key == 'Tester la cohérence des données externes':
+        print("* DÉBUT DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
+        leaking_tables_external = check_files_exist(
+            SOURCE_SPECS['outils']['external_data']['tables'], 
+            path_data=SOURCE_SPECS['outils']['external_data']['path']
+        )
+        if len(leaking_tables_external) == 0:
+            error_code, error_message = test_check_external_data()
+            print(error_message)
+        else :
+            print(f"{Fore.RED} Certaines tables externes sont absentes (",str(leaking_tables_external),f"){Style.RESET_ALL}")
+        time.sleep(1) 
+        print("* FIN DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
 
     elif choice_key == "Test":
         print("* DÉBUT DE LA GÉNÉRATION TEST *")

@@ -301,7 +301,30 @@
 	},
 	"outils" : {
         "explication" : "Les données de la source outils permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
-        "categories" : {
+        "external_data" : {
+			"path" : "data/external_data/",
+			"tables" : [
+				"BDD_donnees_attendues_CAN",
+				"typo_especes_typo_culture",
+				"typo_especes_typo_culture_marai"
+			],
+			"validation" : {
+				"path" : "tests.test_external_data",
+				"checks" : [
+					{
+						"name" : "check_bdd_donnees_attendues_CAN", 
+						"table" : "BDD_donnees_attendues_CAN", 
+						"function_name" : "check_BDD_donnees_attendues_CAN"
+					},
+					{
+						"name" : "check_typo_especes_typo_culture", 
+						"table" : "typo_especes_typo_culture", 
+						"function_name" : "typo_especes_typo_culture"
+					}
+				]
+			}
+		},
+		"categories" : {
             "nettoyage" : {
                 "function_name" : "create_category_nettoyage",
                 "dependances" : [], 
@@ -327,7 +350,7 @@
                 "function_name" : "None",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "agregation"
+                    "category": "agregation"
                 }
                 ],
                 "generated" : [
@@ -343,7 +366,7 @@
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "agregation_complet"
+                    "category": "agregation_complet"
                 }],
                 "generated" : [
                     "noeuds_synthetise_restructure", 
@@ -369,11 +392,11 @@
                 "function_name" : "create_category_outils_can",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "restructuration"
+                    "category": "restructuration"
                 },
                 {
                     "source" : "outils", 
-                    "categorie": "agregation_complet"
+                    "category": "agregation_complet"
                 }],
                 "generated" : [
                     "dispositif_filtres_outils_can",
@@ -389,20 +412,23 @@
             },
             "test" : {
                 "function_name" : "create_category_test",
-                "dependances" : [{
-                    "source" : "outils", 
-                    "categorie": "restructuration"
-                },
-                {
-                    "source" : "outils", 
-                    "categorie": "agregation_complet"
-                }],
+                "dependances" : [
+					{
+                    	"source" : "outils", 
+						"category": "restructuration"
+					},
+					{
+						"source" : "outils", 
+						"category": "agregation_complet"
+					}
+				],
                 "generated" : [
                     "recolte_outils_can"
                 ],
                 "entrepot_dependances" : [
                     "synthetise", "culture", "noeuds_synthetise", "connection_synthetise",
-                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine"
+                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine", 
+					"zone", "intervention_synthetise_agrege", "intervention_realise_agrege", "parcelle"
                 ]
             }
         }

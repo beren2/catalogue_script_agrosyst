@@ -385,7 +385,7 @@ def restructuration_noeuds_realise(donnees):
     """
         fonction permettant d'obtenir pour un noeuds en réalisé, le noeuds précédent si celui-ci existe. 
         C'est à dire qu'on obtient le noeuds précédent si il existe sur la même zone, ou qu'on obtient le 
-        dernier noeuds de la zone précédent si le noeuds et le premier et que la zone précédente 
+        dernier noeuds de la zone précédent si le noeuds est le premier et que la zone précédente 
         (liée avec le zone_code) existe.
     """
     donnees = donnees.copy()
