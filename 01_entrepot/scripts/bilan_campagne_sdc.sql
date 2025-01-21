@@ -79,6 +79,27 @@ ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_de
 -- ASSOLEE : Maitrise agresseurs = ravageurs, maladies et adventices
 --------------------------------------------------------------------
 
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur CASCADE;
+CREATE TABLE entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur AS
+select
+topiaid as id, 
+iftmain as IFT_principal,
+iftother as IFT_autre_ravageur,
+ifthorsbiocontrole as IFT_hors_biocontrol,
+advisercomments as commentaires_conseiller_experi,
+ebcsg.id as bilan_campagne_sdc_generalites_id
+from croppestmaster c  
+join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id in (c.croppestmasterreportgrowingsystem, c.cropdiseasemasterreportgrowingsystem,c.cropadventicemasterreportgrowingsystem)
+;
+
+alter table entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur
+add constraint bilan_campagne_sdc_assolee_maitrise_agresseur_PK
+PRIMARY KEY (id);
+
+alter table entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur
+ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
+
+
 DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_agresseur;
 CREATE TABLE entrepot_bilan_campagne_sdc_assolee_agresseur AS
 select 
@@ -93,18 +114,13 @@ trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
-cm.iftmain IFT_principal,
-null IFT_autre_ravageur,
-null EXPE_IFT_hors_biocontrol,
-cm.advisercomments commentaire_conseiller_experi,
-ebcsg.id bilan_campagne_sdc_generalites_id
+bcsama.id as bilan_campagne_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
-join croppestmaster cm on cm.topiaid = pm.croppestmaster 
+join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 join refadventice refadv on pm.agressor = refadv.topiaid
 -- traductions des libelles
 left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
 left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = cm.cropadventicemasterreportgrowingsystem
 union
 select 
 pm.topiaid id,
@@ -121,13 +137,10 @@ trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
-cm.iftmain IFT_principal,
-cm.iftother IFT_autre_ravageur,
-cm.ifthorsbiocontrole EXPE_IFT_hors_biocontrol,
-cm.advisercomments commentaire_conseiller_experi,
-ebcsg.id bilan_campagne_sdc_generalites_id
+bcsama.id as bilan_campagne_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
-join croppestmaster cm on cm.topiaid = pm.croppestmaster 
+join croppestmaster cm on pm.croppestmaster = cm.topiaid
+join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 join refnuisibleedi refnui on pm.agressor = refnui.topiaid
 left join (select distinct code_groupe_cible_maa,groupe_cible_maa 
 			from refciblesagrosystgroupesciblesmaa where active = true 
@@ -136,7 +149,6 @@ left join (select distinct code_groupe_cible_maa,groupe_cible_maa
 -- traductions des libelles
 left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
 left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id in (cm.croppestmasterreportgrowingsystem, cm.cropdiseasemasterreportgrowingsystem)
 ;
 
 
@@ -145,8 +157,7 @@ add constraint bilan_campagne_sdc_agresseur_PK
 PRIMARY KEY (id);
 
 alter table entrepot_bilan_campagne_sdc_assolee_agresseur
-ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
-
+ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise de la verse
