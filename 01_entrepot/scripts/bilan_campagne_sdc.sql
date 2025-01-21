@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_generalites CASCADE;
-CREATE TABLE entrepot_bilan_campagne_sdc_generalites AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_generalites CASCADE;
+CREATE TABLE entrepot_BC_sdc_generalites AS
 select 
 rgs.topiaid id,
 rgs.name nom,
@@ -59,49 +59,49 @@ left join (select * from managementmode where category = 'OBSERVED') mm2 on gs.t
 join (select owner, string_agg(sectors,'|') filiere_bcsdc from reportgrowingsystem_sectors group by owner) rgs_sect on rgs_sect.owner = rgs.topiaid 
 join entrepot_sdc es on es.id = gs.topiaid ;
 
-alter table entrepot_bilan_campagne_sdc_generalites
-add constraint bilan_campagne_sdc_generalites_PK
+alter table entrepot_BC_sdc_generalites
+add constraint BC_sdc_generalites_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_generalites
+alter table entrepot_BC_sdc_generalites
 ADD FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);
 
-alter table entrepot_bilan_campagne_sdc_generalites
+alter table entrepot_BC_sdc_generalites
 ADD FOREIGN KEY (bcregional_associe_id) REFERENCES entrepot_bilan_campagne_regional_generalites(id);
 
-alter table entrepot_bilan_campagne_sdc_generalites
+alter table entrepot_BC_sdc_generalites
 ADD FOREIGN KEY (modele_descisionelassocie_prevu_id) REFERENCES entrepot_modele_decisionnel(id);
 
-alter table entrepot_bilan_campagne_sdc_generalites
+alter table entrepot_BC_sdc_generalites
 ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_decisionnel(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise agresseurs = ravageurs, maladies et adventices
 --------------------------------------------------------------------
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur CASCADE;
-CREATE TABLE entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_maitrise_agresseur CASCADE;
+CREATE TABLE entrepot_BC_sdc_maitrise_agresseur AS
 select
 topiaid as id, 
 iftmain as IFT_principal,
 iftother as IFT_autre_ravageur,
 ifthorsbiocontrole as IFT_hors_biocontrol,
 advisercomments as commentaires_conseiller_experi,
-ebcsg.id as bilan_campagne_sdc_generalites_id
+ebcsg.id as BC_sdc_generalites_id
 from croppestmaster c  
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id in (c.croppestmasterreportgrowingsystem, c.cropdiseasemasterreportgrowingsystem,c.cropadventicemasterreportgrowingsystem)
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (c.croppestmasterreportgrowingsystem, c.cropdiseasemasterreportgrowingsystem,c.cropadventicemasterreportgrowingsystem)
 ;
 
-alter table entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur
-add constraint bilan_campagne_sdc_assolee_maitrise_agresseur_PK
+alter table entrepot_BC_sdc_maitrise_agresseur
+add constraint BC_sdc_assolee_maitrise_agresseur_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur
-ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
+alter table entrepot_BC_sdc_maitrise_agresseur
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_agresseur;
-CREATE TABLE entrepot_bilan_campagne_sdc_assolee_agresseur AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_agresseur;
+CREATE TABLE entrepot_BC_sdc_agresseur AS
 select 
 pm.topiaid id,
 'adventice' type_bioagresseur,
@@ -114,13 +114,13 @@ trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
-bcsama.id as bilan_campagne_sdc_assolee_maitrise_agresseur_id
+bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
-join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
+join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 join refadventice refadv on pm.agressor = refadv.topiaid
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
 union
 select 
 pm.topiaid id,
@@ -137,67 +137,67 @@ trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
-bcsama.id as bilan_campagne_sdc_assolee_maitrise_agresseur_id
+bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join croppestmaster cm on pm.croppestmaster = cm.topiaid
-join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
+join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 join refnuisibleedi refnui on pm.agressor = refnui.topiaid
 left join (select distinct code_groupe_cible_maa,groupe_cible_maa 
 			from refciblesagrosystgroupesciblesmaa where active = true 
 			and groupe_cible_maa not in ('Cicadelles cercopides et psylles','Maladies des taches foliaires')) refgrpcible -- on retire les doublons de code 38 'Cicadelles cercopides et psylles' puisque ce nom est utilisé par le 37 , et le 82 puisqu'il y a deux orthographes 
 		on refgrpcible.code_groupe_cible_maa = pm.codegroupeciblemaa 
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
 ;
 
 
-alter table entrepot_bilan_campagne_sdc_assolee_agresseur
-add constraint bilan_campagne_sdc_agresseur_PK
+alter table entrepot_BC_sdc_agresseur
+add constraint BC_sdc_agresseur_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_assolee_agresseur
-ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
+alter table entrepot_BC_sdc_agresseur
+ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_maitrise_agresseur(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_maitrise_agresseur_culture;
-CREATE TABLE entrepot_bilan_campagne_sdc_maitrise_agresseur_culture AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_maitrise_agresseur_culture;
+CREATE TABLE entrepot_BC_sdc_maitrise_agresseur_culture AS
 select 
-cc.croppestmaster as bilan_campagne_sdc_assolee_maitrise_agresseur_id, 
+cc.croppestmaster as BC_sdc_assolee_maitrise_agresseur_id, 
 cc.crops as culture_id
 from croppestmaster_crops cc
-join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cc.croppestmaster
-join entrepot_culture ec on ecc.id = cc.crops
+join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = cc.croppestmaster
+join entrepot_culture ec on ec.id = cc.crops
 ;
 
-alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_culture
-ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
+alter table entrepot_BC_sdc_maitrise_agresseur_culture
+ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_maitrise_agresseur(id);
 
-alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_culture
+alter table entrepot_BC_sdc_maitrise_agresseur_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_maitrise_agresseur_especes;
-CREATE TABLE entrepot_bilan_campagne_sdc_maitrise_agresseur_especes AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_maitrise_agresseur_especes;
+CREATE TABLE entrepot_BC_sdc_maitrise_agresseur_especes AS
 select 
-cs.croppestmaster as bilan_campagne_sdc_assolee_maitrise_agresseur_id, 
+cs.croppestmaster as BC_sdc_assolee_maitrise_agresseur_id, 
 cs.species as composant_culture_id
 from croppestmaster_species cs
-join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cs.croppestmaster
-join entrepot_composant_culture ec on ecc.id = cs.species
+join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = cs.croppestmaster
+join entrepot_composant_culture ec on ec.id = cs.species
 ;
 
-alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_especes
-ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
+alter table entrepot_BC_sdc_maitrise_agresseur_especes
+ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_maitrise_agresseur(id);
 
-alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_especes
+alter table entrepot_BC_sdc_maitrise_agresseur_especes
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise de la verse
 --------------------------------------------------------------------
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse;
-CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_verse;
+CREATE TABLE entrepot_BC_sdc_verse AS
 select 
 vm.topiaid id ,
 trad1.traduction_interface echelle_risque,
@@ -207,58 +207,58 @@ vm.qualifier maitrise_qualifiant,
 vm.resultfarmercomment resultats_commentaire_agri , 
 vm.iftmain IFT_regulateur , 
 vm.advisercomments commentaire_conseiller,
-vm.reportgrowingsystem bilan_campagne_sdc_generalites_id
+vm.reportgrowingsystem BC_sdc_generalites_id
 from versemaster vm
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de risque verse') trad1 on vm.riskscale = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
-join entrepot_bilan_campagne_sdc_generalites e on e.id = vm.reportgrowingsystem;
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de risque verse') trad1 on vm.riskscale = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
+join entrepot_BC_sdc_generalites e on e.id = vm.reportgrowingsystem;
 
-alter table entrepot_bilan_campagne_sdc_assolee_verse
-add constraint bilan_campagne_sdc_verse_PK
+alter table entrepot_BC_sdc_verse
+add constraint BC_sdc_verse_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_assolee_verse
-ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
+alter table entrepot_BC_sdc_verse
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse_culture;
-CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse_culture AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_verse_culture;
+CREATE TABLE entrepot_BC_sdc_verse_culture AS
 select 
-cv.versemaster as bilan_campagne_sdc_assolee_verse_id, 
+cv.versemaster as BC_sdc_assolee_verse_id, 
 cv.crops as culture_id
 from crops_versemaster cv 
-join entrepot_bilan_campagne_sdc_assolee_verse ebcsav  on ebcsav.id = cv.versemaster
+join entrepot_BC_sdc_verse ebcsav  on ebcsav.id = cv.versemaster
 join entrepot_culture ec on ec.id = cv.crops
 ;
 
-alter table entrepot_bilan_campagne_sdc_assolee_verse_culture
-ADD FOREIGN KEY (bilan_campagne_sdc_assolee_verse_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_verse(id);
+alter table entrepot_BC_sdc_verse_culture
+ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_verse(id);
 
-alter table entrepot_bilan_campagne_sdc_assolee_verse_culture
+alter table entrepot_BC_sdc_verse_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse_especes;
-CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse_especes AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_verse_especes;
+CREATE TABLE entrepot_BC_sdc_verse_especes AS
 select 
-sv.versemaster as bilan_campagne_sdc_assolee_verse_id, 
+sv.versemaster as BC_sdc_assolee_verse_id, 
 sv.species as composant_culture_id
 from species_versemaster sv 
-join entrepot_bilan_campagne_sdc_assolee_verse ebcsav on ebcsav.id = sv.versemaster
+join entrepot_BC_sdc_verse ebcsav on ebcsav.id = sv.versemaster
 join entrepot_composant_culture ec on ec.id = sv.species
 ;
 
-alter table entrepot_bilan_campagne_sdc_assolee_verse_especes
-ADD FOREIGN KEY (bilan_campagne_sdc_assolee_verse_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_verse(id);
+alter table entrepot_BC_sdc_verse_especes
+ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_verse(id);
 
-alter table entrepot_bilan_campagne_sdc_assolee_verse_especes
+alter table entrepot_BC_sdc_verse_especes
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
 --------------------------------------------------------------------
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_rendement;
-CREATE TABLE entrepot_bilan_campagne_sdc_rendement AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_rendement;
+CREATE TABLE entrepot_BC_sdc_rendement AS
 select 
 coalesce(yl.topiaid,'') ||''|| coalesce(yi.topiaid,'') id,
 case 
@@ -270,15 +270,15 @@ yl.cause2 as rendement_cause2,
 yl.cause3 as rendement_cause3,
 yl.comment as qualite_commentaire,
 yi.comment as rendementqualite_commentaire_global,
-rgs.topiaid as bilan_campagne_sdc_generalites_id
+rgs.topiaid as BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
 left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
 left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
 where gs.sector <> 'VITICULTURE' and (yi.topiaid is not null or yl.topiaid is not null)
 union 
 select 
@@ -289,61 +289,61 @@ rgs.vitilosscause2 as  rendement_cause2,
 rgs.vitilosscause3 as  rendement_cause3,
 rgs.vitiyieldquality as qualite_commentaire,
 yi.comment rendementqualite_commentaire_global,
-rgs.topiaid bilan_campagne_sdc_generalites_id
+rgs.topiaid BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
 left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem and yi.sector = 'VITICULTURE'
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on rgs.vitiyieldobjective = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on rgs.vitiyieldobjective = trad1.nom_base 
 where gs.sector = 'VITICULTURE'
 ;
 
-alter table entrepot_bilan_campagne_sdc_rendement
-add constraint bilan_campagne_sdc_rendement_PK
+alter table entrepot_BC_sdc_rendement
+add constraint BC_sdc_rendement_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_rendement
-ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
+alter table entrepot_BC_sdc_rendement
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_rendement_culture;
-CREATE TABLE entrepot_bilan_campagne_sdc_rendement_culture AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_rendement_culture;
+CREATE TABLE entrepot_BC_sdc_rendement_culture AS
 select 
-cy.yieldloss as bilan_campagne_sdc_rendement_id, 
+cy.yieldloss as BC_sdc_rendement_id, 
 cy.crops as culture_id
 from crops_yieldloss cy 
-join entrepot_bilan_campagne_sdc_rendement ebcsav  on ebcsav.id = cy.yieldloss
+join entrepot_BC_sdc_rendement ebcsav  on ebcsav.id = cy.yieldloss
 join entrepot_culture ec on ec.id = cy.crops
 ;
 
-alter table entrepot_bilan_campagne_sdc_rendement_culture
-ADD FOREIGN KEY (bilan_campagne_sdc_rendement_id) REFERENCES entrepot_bilan_campagne_sdc_rendement(id);
+alter table entrepot_BC_sdc_rendement_culture
+ADD FOREIGN KEY (BC_sdc_rendement_id) REFERENCES entrepot_BC_sdc_rendement(id);
 
-alter table entrepot_bilan_campagne_sdc_rendement_culture
+alter table entrepot_BC_sdc_rendement_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_rendement_especes;
-CREATE TABLE entrepot_bilan_campagne_sdc_rendement_especes AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_rendement_especes;
+CREATE TABLE entrepot_BC_sdc_rendement_especes AS
 select 
-sy.yieldloss as bilan_campagne_sdc_rendement_id, 
+sy.yieldloss as BC_sdc_rendement_id, 
 sy.species as composant_culture_id
 from species_yieldloss sy 
-join entrepot_bilan_campagne_sdc_rendement ebcsav on ebcsav.id = sy.yieldloss
+join entrepot_BC_sdc_rendement ebcsav on ebcsav.id = sy.yieldloss
 join entrepot_composant_culture ec on ec.id = sy.species
 ;
 
-alter table entrepot_bilan_campagne_sdc_rendement_especes
-ADD FOREIGN KEY (bilan_campagne_sdc_rendement_id) REFERENCES entrepot_bilan_campagne_sdc_rendement(id);
+alter table entrepot_BC_sdc_rendement_especes
+ADD FOREIGN KEY (BC_sdc_rendement_id) REFERENCES entrepot_BC_sdc_rendement(id);
 
-alter table entrepot_bilan_campagne_sdc_rendement_especes
+alter table entrepot_BC_sdc_rendement_especes
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Alimentation hydrique et minerale
 --------------------------------------------------------------------
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_alimentation;
-CREATE TABLE entrepot_bilan_campagne_sdc_alimentation AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_alimentation;
+CREATE TABLE entrepot_BC_sdc_alimentation AS
 select 
 fm.topiaid id,
 trad1.traduction_interface irrigation ,
@@ -352,50 +352,50 @@ trad3.traduction_interface stress_azote ,
 fm.mineralfood alimentation_minerale_hors_azote ,
 trad4.traduction_interface stress_temperature_rayonnement ,
 fm.comment commentaire,
-ebcsg.id bilan_campagne_sdc_generalites_id
+ebcsg.id BC_sdc_generalites_id
 from foodmaster fm 
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'irrigation') trad1 on fm.foodirrigation = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad2 on fm.hydriquestress = trad2.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad3 on fm.azotestress = trad3.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = fm.foodmasterreportgrowingsystem ;
+left join (select * from BC_sdc_traduction where nom_rubrique = 'irrigation') trad1 on fm.foodirrigation = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad2 on fm.hydriquestress = trad2.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad3 on fm.azotestress = trad3.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = fm.foodmasterreportgrowingsystem ;
 
-alter table entrepot_bilan_campagne_sdc_alimentation
-add constraint bilan_campagne_sdc_alimentation_PK
+alter table entrepot_BC_sdc_alimentation
+add constraint BC_sdc_alimentation_PK
 PRIMARY KEY (id);
 
-alter table entrepot_bilan_campagne_sdc_alimentation
-ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
+alter table entrepot_BC_sdc_alimentation
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_alimentation_culture;
-CREATE TABLE entrepot_bilan_campagne_sdc_alimentation_culture AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_alimentation_culture;
+CREATE TABLE entrepot_BC_sdc_alimentation_culture AS
 select 
-cf.foodmaster as bilan_campagne_sdc_alimentation_id, 
+cf.foodmaster as BC_sdc_alimentation_id, 
 cf.crops as culture_id
 from crops_foodmaster cf 
-join entrepot_bilan_campagne_sdc_alimentation ebcsav  on ebcsav.id = cf.foodmaster
+join entrepot_BC_sdc_alimentation ebcsav  on ebcsav.id = cf.foodmaster
 join entrepot_culture ec on ec.id = cf.crops
 ;
 
-alter table entrepot_bilan_campagne_sdc_alimentation_culture
-ADD FOREIGN KEY (bilan_campagne_sdc_alimentation_id) REFERENCES entrepot_bilan_campagne_sdc_alimentation(id);
+alter table entrepot_BC_sdc_alimentation_culture
+ADD FOREIGN KEY (BC_sdc_alimentation_id) REFERENCES entrepot_BC_sdc_alimentation(id);
 
-alter table entrepot_bilan_campagne_sdc_alimentation_culture
+alter table entrepot_BC_sdc_alimentation_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_alimentation_especes;
-CREATE TABLE entrepot_bilan_campagne_sdc_alimentation_especes AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_alimentation_especes;
+CREATE TABLE entrepot_BC_sdc_alimentation_especes AS
 select 
-fs.foodmaster as bilan_campagne_sdc_alimentation_id, 
+fs.foodmaster as BC_sdc_alimentation_id, 
 fs.species as composant_culture_id
 from foodmaster_species fs 
-join entrepot_bilan_campagne_sdc_alimentation ebcsav on ebcsav.id = fs.foodmaster
+join entrepot_BC_sdc_alimentation ebcsav on ebcsav.id = fs.foodmaster
 join entrepot_composant_culture ec on ec.id = fs.species
 ;
 
-alter table entrepot_bilan_campagne_sdc_alimentation_especes
-ADD FOREIGN KEY (bilan_campagne_sdc_alimentation_id) REFERENCES entrepot_bilan_campagne_sdc_alimentation(id);
+alter table entrepot_BC_sdc_alimentation_especes
+ADD FOREIGN KEY (BC_sdc_alimentation_id) REFERENCES entrepot_BC_sdc_alimentation(id);
 
-alter table entrepot_bilan_campagne_sdc_alimentation_especes
+alter table entrepot_BC_sdc_alimentation_especes
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
