@@ -302,25 +302,28 @@
 	"outils" : {
         "explication" : "Les données de la source outils permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
         "external_data" : {
-			"path" : "02_outils/data/external_data/",
+			"path" : "data/external_data/",
 			"tables" : [
 				"BDD_donnees_attendues_CAN",
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai"
-			]
-		},
-		"checks" : [
-			{
-				"name" : "check_bdd_donnees_attendues_CAN", 
-				"table" : "BDD_donnees_attendues_CAN", 
-				"function_name" : "check_bdd_donnees_attendues_CAN"
-			},
-			{
-				"name" : "check_typo_especes_typo_culture", 
-				"table" : "typo_especes_typo_culture", 
-				"function_name" : "typo_especes_typo_culture"
+			],
+			"validation" : {
+				"path" : "tests.test_external_data",
+				"checks" : [
+					{
+						"name" : "check_bdd_donnees_attendues_CAN", 
+						"table" : "BDD_donnees_attendues_CAN", 
+						"function_name" : "check_BDD_donnees_attendues_CAN"
+					},
+					{
+						"name" : "check_typo_especes_typo_culture", 
+						"table" : "typo_especes_typo_culture", 
+						"function_name" : "typo_especes_typo_culture"
+					}
+				]
 			}
-		],
+		},
 		"categories" : {
             "nettoyage" : {
                 "function_name" : "create_category_nettoyage",
@@ -347,7 +350,7 @@
                 "function_name" : "None",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "agregation"
+                    "category": "agregation"
                 }
                 ],
                 "generated" : [
@@ -363,7 +366,7 @@
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "agregation_complet"
+                    "category": "agregation_complet"
                 }],
                 "generated" : [
                     "noeuds_synthetise_restructure", 
@@ -389,11 +392,11 @@
                 "function_name" : "create_category_outils_can",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "restructuration"
+                    "category": "restructuration"
                 },
                 {
                     "source" : "outils", 
-                    "categorie": "agregation_complet"
+                    "category": "agregation_complet"
                 }],
                 "generated" : [
                     "dispositif_filtres_outils_can",
@@ -412,11 +415,11 @@
                 "dependances" : [
 					{
                     	"source" : "outils", 
-						"categorie": "restructuration"
+						"category": "restructuration"
 					},
 					{
 						"source" : "outils", 
-						"categorie": "agregation_complet"
+						"category": "agregation_complet"
 					}
 				],
                 "generated" : [
