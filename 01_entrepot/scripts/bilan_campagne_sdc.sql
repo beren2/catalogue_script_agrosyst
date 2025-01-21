@@ -10,11 +10,39 @@ gs.sector filiere_sdc,
 gp.type type_dispositif,
 rgs_sect.filiere_bcsdc,
 -- faits marquants
-rgs.iftestimationmethod methode_estimation_IFT_declares,
 rgs.highlightsevolutions principales_evolutions_depuis_pz0,
 rgs.highlightsmeasures mesure_specifique_annee,
 rgs.highlightsperformances faits_marquants_conduiteculture_performancetechnique,
 rgs.highlightsteachings enseignements_amelioration_sdc,
+rgs.iftestimationmethod methode_estimation_IFT_declares,
+case 
+	when rgs.arbochemicalfungicideift is not null then rgs.arbochemicalfungicideift
+	when rgs.vitidiseasechemicalfungicideift  is not null then rgs.vitidiseasechemicalfungicideift 
+end perenne_ift_fongicide_chimique_sdc,
+case 
+	when rgs.arbobiocontrolfungicideift  is not null then rgs.arbobiocontrolfungicideift
+	when rgs.vitidiseasebiocontrolfungicideift is not null then rgs.vitidiseasebiocontrolfungicideift
+end perenne_ift_fongicide_biocontrole_sdc,
+case 
+	when rgs.arbocopperquantity is not null then  rgs.arbocopperquantity 
+	when rgs.vitidiseasecopperquantity is not null then rgs.vitidiseasecopperquantity
+end perenne_quantite_cuivre_appliquee_kgha,
+case 
+	when rgs.arbochemicalpestift is not null then rgs.arbochemicalpestift
+	when rgs.vitipestchemicalpestift  is not null then rgs.vitipestchemicalpestift
+end perenne_ift_ravageur_chimique_sdc,
+case 
+	when rgs.arbobiocontrolpestift is not null then rgs.arbobiocontrolpestift
+	when rgs.vitipestbiocontrolpestift  is not null then rgs.vitipestbiocontrolpestift
+end perenne_ift_ravageur_biocontrole_sdc,
+case 
+	when rgs.arbodiseasequalifier is not null then rgs.arbodiseasequalifier
+	when rgs.vitidiseasequalifier is not null then rgs.vitidiseasequalifier
+end perenne_niveau_maitrise_maladie,
+case 
+	when rgs.arbopestqualifier is not null then rgs.arbopestqualifier
+	when rgs.vitipestqualifier is not null then rgs.vitipestqualifier
+end perenne_niveau_maitrise_ravageur,
 gs.topiaid sdc_id,
 rgs.reportregional bcregional_associe_id,
 mm1.topiaid modele_descisionelassocie_prevu_id,
@@ -47,24 +75,26 @@ ADD FOREIGN KEY (modele_descisionelassocie_prevu_id) REFERENCES entrepot_modele_
 alter table entrepot_bilan_campagne_sdc_generalites
 ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_decisionnel(id);
 
--- Maitrise des ravageurs maladies et adventices
+--------------------------------------------------------------------
+-- ASSOLEE : Maitrise agresseurs = ravageurs, maladies et adventices
+--------------------------------------------------------------------
+
 DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_agresseur;
 CREATE TABLE entrepot_bilan_campagne_sdc_assolee_agresseur AS
 select 
 pm.topiaid id,
 'adventice' type_bioagresseur,
 null groupe_cible,
-refadv.adventice agresseur,
+refadv.adventice bioagresseur,
 trad1.traduction_interface echelle_pression,
 pm.pressurescaleint EXPE_echelle_pression_marhorti,
 pm.pressurefarmercomment pression_commentaire_agri,
-pm.masterscale echelle_maitrise,
-trad2.traduction_interface echelle_maitrise_libelle_filiere,
+trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
 cm.iftmain IFT_principal,
-null IFT_autre,
+null IFT_autre_ravageur,
 null EXPE_IFT_hors_biocontrol,
 cm.advisercomments commentaire_conseiller_experi,
 ebcsg.id bilan_campagne_sdc_generalites_id
@@ -72,8 +102,8 @@ from pestmaster pm
 join croppestmaster cm on cm.topiaid = pm.croppestmaster 
 join refadventice refadv on pm.agressor = refadv.topiaid
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
 join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = cm.cropadventicemasterreportgrowingsystem
 union
 select 
@@ -87,13 +117,12 @@ refnui.reference_label bioagresseur,
 trad1.traduction_interface echelle_pression,
 pm.pressurescaleint EXPE_echelle_pression_marhorti,
 pm.pressurefarmercomment pression_commentaire_agri,
-pm.masterscale echelle_maitrise,
-trad2.traduction_interface echelle_maitrise_libelle_filiere,
+trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
 cm.iftmain IFT_principal,
-cm.iftother IFT_autre,
+cm.iftother IFT_autre_ravageur,
 cm.ifthorsbiocontrole EXPE_IFT_hors_biocontrol,
 cm.advisercomments commentaire_conseiller_experi,
 ebcsg.id bilan_campagne_sdc_generalites_id
@@ -105,8 +134,8 @@ left join (select distinct code_groupe_cible_maa,groupe_cible_maa
 			and groupe_cible_maa not in ('Cicadelles cercopides et psylles','Maladies des taches foliaires')) refgrpcible -- on retire les doublons de code 38 'Cicadelles cercopides et psylles' puisque ce nom est utilisé par le 37 , et le 82 puisqu'il y a deux orthographes 
 		on refgrpcible.code_groupe_cible_maa = pm.codegroupeciblemaa 
 -- traductions des libelles
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
 join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id in (cm.croppestmasterreportgrowingsystem, cm.cropdiseasemasterreportgrowingsystem)
 ;
 
@@ -119,18 +148,21 @@ alter table entrepot_bilan_campagne_sdc_assolee_agresseur
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
 
--- Maitrise de la verse
+--------------------------------------------------------------------
+-- ASSOLEE : Maitrise de la verse
+--------------------------------------------------------------------
+
 DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse;
 CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse AS
 select 
 vm.topiaid id ,
-trad1.traduction_interface risque_echelle,
+trad1.traduction_interface echelle_risque,
 vm.riskfarmercomment risque_commentaire_agri ,
-trad2.traduction_interface resultats_echelle_maitrise,
-vm.qualifier resultats_qualifiant, 
+trad2.traduction_interface echelle_maitrise,
+vm.qualifier maitrise_qualifiant, 
 vm.resultfarmercomment resultats_commentaire_agri , 
 vm.iftmain IFT_regulateur , 
-vm.advisercomments IFT_commentaire_conseiller,
+vm.advisercomments commentaire_conseiller,
 vm.reportgrowingsystem bilan_campagne_sdc_generalites_id
 from versemaster vm
 -- traductions des libelles
@@ -145,28 +177,52 @@ PRIMARY KEY (id);
 alter table entrepot_bilan_campagne_sdc_assolee_verse
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
--- Rendement et qualité
+
+--------------------------------------------------------------------
+-- TOUTES fillieres : Rendement
+--------------------------------------------------------------------
+
 DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_rendement;
 CREATE TABLE entrepot_bilan_campagne_sdc_rendement AS
 select 
-yl.topiaid ||''|| coalesce(yi.topiaid,'') id,
-yl.yieldobjective objectif_rendement,
-yl.yieldobjectiveint objectif_rendement_echelleint,
-yl.cause1 rendement_cause1,
-yl.cause2 rendement_cause2,
-yl.cause3 rendement_cause3,
-yl.comment qualite_commentaire ,
-yi.comment rendementqualite_commentaires_global,
-rgs.vitiyieldobjective objectif_rendement_viti,
-rgs.vitilosscause1 rendement_cause1_viti,
-rgs.vitilosscause2 rendement_cause2_viti,
-rgs.vitilosscause3 rendement_cause3_viti,
-rgs.vitiyieldquality qualite_commentaire_viti,
+coalesce(yl.topiaid,'') ||''|| coalesce(yi.topiaid,'') id,
+case 
+	when yl.yieldobjective is not null then trad1.traduction_interface
+	when yl.yieldobjectiveint is not null then trad2.traduction_interface
+end objectif_rendement_atteint,
+yl.cause1 as rendement_cause1,
+yl.cause2 as rendement_cause2,
+yl.cause3 as rendement_cause3,
+yl.comment as qualite_commentaire,
+yi.comment as rendementqualite_commentaire_global,
+rgs.topiaid as bilan_campagne_sdc_generalites_id
+from reportgrowingsystem rgs
+join growingsystem gs on gs.topiaid = rgs.growingsystem
+left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
+left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
+join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
+-- traductions des libelles
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
+where gs.sector <> 'VITICULTURE' and (yi.topiaid is not null or yl.topiaid is not null)
+union 
+select 
+'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(rgs.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
+trad1.traduction_interface as objectif_rendement_atteint,
+rgs.vitilosscause1 as rendement_cause1,
+rgs.vitilosscause2 as  rendement_cause2,
+rgs.vitilosscause3 as  rendement_cause3,
+rgs.vitiyieldquality as qualite_commentaire,
+yi.comment rendementqualite_commentaire_global,
 rgs.topiaid bilan_campagne_sdc_generalites_id
 from reportgrowingsystem rgs
-join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
-left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
-join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid;
+join growingsystem gs on gs.topiaid = rgs.growingsystem
+left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem and yi.sector = 'VITICULTURE'
+join entrepot_bilan_campagne_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
+-- traductions des libelles
+left join (select * from bilan_campagne_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on rgs.vitiyieldobjective = trad1.nom_base 
+where gs.sector = 'VITICULTURE'
+;
 
 alter table entrepot_bilan_campagne_sdc_rendement
 add constraint bilan_campagne_sdc_rendement_PK
@@ -175,7 +231,10 @@ PRIMARY KEY (id);
 alter table entrepot_bilan_campagne_sdc_rendement
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
--- Alimentation hydrique et minerale
+--------------------------------------------------------------------
+-- TOUTES fillieres : Alimentation hydrique et minerale
+--------------------------------------------------------------------
+
 DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_alimentation;
 CREATE TABLE entrepot_bilan_campagne_sdc_alimentation AS
 select 
