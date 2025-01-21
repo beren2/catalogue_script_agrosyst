@@ -159,6 +159,39 @@ PRIMARY KEY (id);
 alter table entrepot_bilan_campagne_sdc_assolee_agresseur
 ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
 
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_maitrise_agresseur_culture;
+CREATE TABLE entrepot_bilan_campagne_sdc_maitrise_agresseur_culture AS
+select 
+cc.croppestmaster as bilan_campagne_sdc_assolee_maitrise_agresseur_id, 
+cc.crops as culture_id
+from croppestmaster_crops cc
+join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cc.croppestmaster
+join entrepot_culture ec on ecc.id = cc.crops
+;
+
+alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_culture
+ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
+
+alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_culture
+ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
+
+
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_maitrise_agresseur_especes;
+CREATE TABLE entrepot_bilan_campagne_sdc_maitrise_agresseur_especes AS
+select 
+cs.croppestmaster as bilan_campagne_sdc_assolee_maitrise_agresseur_id, 
+cs.species as composant_culture_id
+from croppestmaster_species cs
+join entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cs.croppestmaster
+join entrepot_composant_culture ec on ecc.id = cs.species
+;
+
+alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_especes
+ADD FOREIGN KEY (bilan_campagne_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_maitrise_agresseur(id);
+
+alter table entrepot_bilan_campagne_sdc_maitrise_agresseur_especes
+ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
+
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise de la verse
 --------------------------------------------------------------------
@@ -188,6 +221,37 @@ PRIMARY KEY (id);
 alter table entrepot_bilan_campagne_sdc_assolee_verse
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse_culture;
+CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse_culture AS
+select 
+cv.versemaster as bilan_campagne_sdc_assolee_verse_id, 
+cv.crops as culture_id
+from crops_versemaster cv 
+join entrepot_bilan_campagne_sdc_assolee_verse ebcsav  on ebcsav.id = cv.versemaster
+join entrepot_culture ec on ec.id = cv.crops
+;
+
+alter table entrepot_bilan_campagne_sdc_assolee_verse_culture
+ADD FOREIGN KEY (bilan_campagne_sdc_assolee_verse_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_verse(id);
+
+alter table entrepot_bilan_campagne_sdc_assolee_verse_culture
+ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
+
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_assolee_verse_especes;
+CREATE TABLE entrepot_bilan_campagne_sdc_assolee_verse_especes AS
+select 
+sv.versemaster as bilan_campagne_sdc_assolee_verse_id, 
+sv.species as composant_culture_id
+from species_versemaster sv 
+join entrepot_bilan_campagne_sdc_assolee_verse ebcsav on ebcsav.id = sv.versemaster
+join entrepot_composant_culture ec on ec.id = sv.species
+;
+
+alter table entrepot_bilan_campagne_sdc_assolee_verse_especes
+ADD FOREIGN KEY (bilan_campagne_sdc_assolee_verse_id) REFERENCES entrepot_bilan_campagne_sdc_assolee_verse(id);
+
+alter table entrepot_bilan_campagne_sdc_assolee_verse_especes
+ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
@@ -242,6 +306,38 @@ PRIMARY KEY (id);
 alter table entrepot_bilan_campagne_sdc_rendement
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
 
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_rendement_culture;
+CREATE TABLE entrepot_bilan_campagne_sdc_rendement_culture AS
+select 
+cy.yieldloss as bilan_campagne_sdc_rendement_id, 
+cy.crops as culture_id
+from crops_yieldloss cy 
+join entrepot_bilan_campagne_sdc_rendement ebcsav  on ebcsav.id = cy.yieldloss
+join entrepot_culture ec on ec.id = cy.crops
+;
+
+alter table entrepot_bilan_campagne_sdc_rendement_culture
+ADD FOREIGN KEY (bilan_campagne_sdc_rendement_id) REFERENCES entrepot_bilan_campagne_sdc_rendement(id);
+
+alter table entrepot_bilan_campagne_sdc_rendement_culture
+ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
+
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_rendement_especes;
+CREATE TABLE entrepot_bilan_campagne_sdc_rendement_especes AS
+select 
+sy.yieldloss as bilan_campagne_sdc_rendement_id, 
+sy.species as composant_culture_id
+from species_yieldloss sy 
+join entrepot_bilan_campagne_sdc_rendement ebcsav on ebcsav.id = sy.yieldloss
+join entrepot_composant_culture ec on ec.id = sy.species
+;
+
+alter table entrepot_bilan_campagne_sdc_rendement_especes
+ADD FOREIGN KEY (bilan_campagne_sdc_rendement_id) REFERENCES entrepot_bilan_campagne_sdc_rendement(id);
+
+alter table entrepot_bilan_campagne_sdc_rendement_especes
+ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
+
 --------------------------------------------------------------------
 -- TOUTES fillieres : Alimentation hydrique et minerale
 --------------------------------------------------------------------
@@ -271,3 +367,35 @@ PRIMARY KEY (id);
 
 alter table entrepot_bilan_campagne_sdc_alimentation
 ADD FOREIGN KEY (bilan_campagne_sdc_generalites_id) REFERENCES entrepot_bilan_campagne_sdc_generalites(id);
+
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_alimentation_culture;
+CREATE TABLE entrepot_bilan_campagne_sdc_alimentation_culture AS
+select 
+cf.foodmaster as bilan_campagne_sdc_alimentation_id, 
+cf.crops as culture_id
+from crops_foodmaster cf 
+join entrepot_bilan_campagne_sdc_alimentation ebcsav  on ebcsav.id = cf.foodmaster
+join entrepot_culture ec on ec.id = cf.crops
+;
+
+alter table entrepot_bilan_campagne_sdc_alimentation_culture
+ADD FOREIGN KEY (bilan_campagne_sdc_alimentation_id) REFERENCES entrepot_bilan_campagne_sdc_alimentation(id);
+
+alter table entrepot_bilan_campagne_sdc_alimentation_culture
+ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
+
+DROP TABLE IF EXISTS entrepot_bilan_campagne_sdc_alimentation_especes;
+CREATE TABLE entrepot_bilan_campagne_sdc_alimentation_especes AS
+select 
+fs.foodmaster as bilan_campagne_sdc_alimentation_id, 
+fs.species as composant_culture_id
+from foodmaster_species fs 
+join entrepot_bilan_campagne_sdc_alimentation ebcsav on ebcsav.id = fs.foodmaster
+join entrepot_composant_culture ec on ec.id = fs.species
+;
+
+alter table entrepot_bilan_campagne_sdc_alimentation_especes
+ADD FOREIGN KEY (bilan_campagne_sdc_alimentation_id) REFERENCES entrepot_bilan_campagne_sdc_alimentation(id);
+
+alter table entrepot_bilan_campagne_sdc_alimentation_especes
+ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
