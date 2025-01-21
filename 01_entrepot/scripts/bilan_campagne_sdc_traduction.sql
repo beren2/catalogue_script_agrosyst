@@ -3,10 +3,10 @@ CREATE TABLE bilan_campagne_sdc_traduction(
 	nom_base text,
 	traduction_interface text);
 	
-insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','NONE','Nulle (absence)');
-insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','LOW','Faible (un peu mais pas d''impact)');
-insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','MODERATE','Moyenne (impact sur le rendement possible)');
-insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur','HIGH','Forte (impact certain sur le rendement et la marge)');
+insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','NONE','Nulle (absence)');
+insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','LOW','Faible (un peu mais pas d''impact)');
+insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','MODERATE','Moyenne (impact sur le rendement possible)');
+insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','HIGH','Forte (impact certain sur le rendement et la marge)');
 insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','NONE','Aucun symptôme');
 insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','LOW','Symptômes sans effet sur le rendement ou la qualité');
 insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','MODERATE','Symptômes avec effet très limité sur le rendement et la qualité');
@@ -86,3 +86,11 @@ insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_inter
 insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','3','FROM_50_TO_75');
 insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','2','FROM_75_TO_95');
 insert into bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','1','MORE_95');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'MORE_95', 'supérieur ou égal 95% de l''objectif');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'FROM_75_TO_95', 'de 75% à 95%');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'FROM_50_TO_75', 'de 75% à 95%'); 
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'LESS_50', '< 50%');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '1', 'supérieur ou égal 95% de l''objectif');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '2', 'de 75% à 95%');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '3', 'de 75% à 95%');
+INSERT INTO bilan_campagne_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '4', '< 50%');
