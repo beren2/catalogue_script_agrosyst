@@ -79,8 +79,8 @@ ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_de
 -- ASSOLEE : Maitrise agresseurs = ravageurs, maladies et adventices
 --------------------------------------------------------------------
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_maitrise_agresseur CASCADE;
-CREATE TABLE entrepot_BC_sdc_maitrise_agresseur AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_maitrise_agresseur CASCADE;
+CREATE TABLE entrepot_BC_sdc_assolee_maitrise_agresseur AS
 select
 topiaid as id, 
 iftmain as IFT_principal,
@@ -92,16 +92,16 @@ from croppestmaster c
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (c.croppestmasterreportgrowingsystem, c.cropdiseasemasterreportgrowingsystem,c.cropadventicemasterreportgrowingsystem)
 ;
 
-alter table entrepot_BC_sdc_maitrise_agresseur
+alter table entrepot_BC_sdc_assolee_maitrise_agresseur
 add constraint BC_sdc_assolee_maitrise_agresseur_PK
 PRIMARY KEY (id);
 
-alter table entrepot_BC_sdc_maitrise_agresseur
+alter table entrepot_BC_sdc_assolee_maitrise_agresseur
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_agresseur;
-CREATE TABLE entrepot_BC_sdc_agresseur AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_agresseur;
+CREATE TABLE entrepot_BC_sdc_assolee_agresseur AS
 select 
 pm.topiaid id,
 'adventice' type_bioagresseur,
@@ -116,7 +116,7 @@ pm.qualifier maitrise_qualifiant,
 pm.resultfarmercomment maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
-join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
+join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 join refadventice refadv on pm.agressor = refadv.topiaid
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
@@ -140,7 +140,7 @@ pm.resultfarmercomment maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join croppestmaster cm on pm.croppestmaster = cm.topiaid
-join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
+join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 join refnuisibleedi refnui on pm.agressor = refnui.topiaid
 left join (select distinct code_groupe_cible_maa,groupe_cible_maa 
 			from refciblesagrosystgroupesciblesmaa where active = true 
@@ -152,52 +152,52 @@ left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de mait
 ;
 
 
-alter table entrepot_BC_sdc_agresseur
-add constraint BC_sdc_agresseur_PK
+alter table entrepot_BC_sdc_assolee_agresseur
+add constraint BC_sdc_assolee_agresseur_PK
 PRIMARY KEY (id);
 
-alter table entrepot_BC_sdc_agresseur
-ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_maitrise_agresseur(id);
+alter table entrepot_BC_sdc_assolee_agresseur
+ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_maitrise_agresseur_culture;
-CREATE TABLE entrepot_BC_sdc_maitrise_agresseur_culture AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_maitrise_agresseur_culture;
+CREATE TABLE entrepot_BC_sdc_assolee_maitrise_agresseur_culture AS
 select 
 cc.croppestmaster as BC_sdc_assolee_maitrise_agresseur_id, 
 cc.crops as culture_id
 from croppestmaster_crops cc
-join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = cc.croppestmaster
+join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cc.croppestmaster
 join entrepot_culture ec on ec.id = cc.crops
 ;
 
-alter table entrepot_BC_sdc_maitrise_agresseur_culture
-ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_maitrise_agresseur(id);
+alter table entrepot_BC_sdc_assolee_maitrise_agresseur_culture
+ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
 
-alter table entrepot_BC_sdc_maitrise_agresseur_culture
+alter table entrepot_BC_sdc_assolee_maitrise_agresseur_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_maitrise_agresseur_especes;
-CREATE TABLE entrepot_BC_sdc_maitrise_agresseur_especes AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_maitrise_agresseur_especes;
+CREATE TABLE entrepot_BC_sdc_assolee_maitrise_agresseur_especes AS
 select 
 cs.croppestmaster as BC_sdc_assolee_maitrise_agresseur_id, 
 cs.species as composant_culture_id
 from croppestmaster_species cs
-join entrepot_BC_sdc_maitrise_agresseur bcsama on bcsama.id = cs.croppestmaster
+join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cs.croppestmaster
 join entrepot_composant_culture ec on ec.id = cs.species
 ;
 
-alter table entrepot_BC_sdc_maitrise_agresseur_especes
-ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_maitrise_agresseur(id);
+alter table entrepot_BC_sdc_assolee_maitrise_agresseur_especes
+ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
 
-alter table entrepot_BC_sdc_maitrise_agresseur_especes
+alter table entrepot_BC_sdc_assolee_maitrise_agresseur_especes
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise de la verse
 --------------------------------------------------------------------
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_verse;
-CREATE TABLE entrepot_BC_sdc_verse AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_verse;
+CREATE TABLE entrepot_BC_sdc_assolee_verse AS
 select 
 vm.topiaid id ,
 trad1.traduction_interface echelle_risque,
@@ -214,43 +214,43 @@ left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de risq
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
 join entrepot_BC_sdc_generalites e on e.id = vm.reportgrowingsystem;
 
-alter table entrepot_BC_sdc_verse
-add constraint BC_sdc_verse_PK
+alter table entrepot_BC_sdc_assolee_verse
+add constraint BC_sdc_assolee_verse_PK
 PRIMARY KEY (id);
 
-alter table entrepot_BC_sdc_verse
+alter table entrepot_BC_sdc_assolee_verse
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_verse_culture;
-CREATE TABLE entrepot_BC_sdc_verse_culture AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_verse_culture;
+CREATE TABLE entrepot_BC_sdc_assolee_verse_culture AS
 select 
 cv.versemaster as BC_sdc_assolee_verse_id, 
 cv.crops as culture_id
 from crops_versemaster cv 
-join entrepot_BC_sdc_verse ebcsav  on ebcsav.id = cv.versemaster
+join entrepot_BC_sdc_assolee_verse ebcsav  on ebcsav.id = cv.versemaster
 join entrepot_culture ec on ec.id = cv.crops
 ;
 
-alter table entrepot_BC_sdc_verse_culture
-ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_verse(id);
+alter table entrepot_BC_sdc_assolee_verse_culture
+ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_assolee_verse(id);
 
-alter table entrepot_BC_sdc_verse_culture
+alter table entrepot_BC_sdc_assolee_verse_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_verse_especes;
-CREATE TABLE entrepot_BC_sdc_verse_especes AS
+DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_verse_especes;
+CREATE TABLE entrepot_BC_sdc_assolee_verse_especes AS
 select 
 sv.versemaster as BC_sdc_assolee_verse_id, 
 sv.species as composant_culture_id
 from species_versemaster sv 
-join entrepot_BC_sdc_verse ebcsav on ebcsav.id = sv.versemaster
+join entrepot_BC_sdc_assolee_verse ebcsav on ebcsav.id = sv.versemaster
 join entrepot_composant_culture ec on ec.id = sv.species
 ;
 
-alter table entrepot_BC_sdc_verse_especes
-ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_verse(id);
+alter table entrepot_BC_sdc_assolee_verse_especes
+ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_assolee_verse(id);
 
-alter table entrepot_BC_sdc_verse_especes
+alter table entrepot_BC_sdc_assolee_verse_especes
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
