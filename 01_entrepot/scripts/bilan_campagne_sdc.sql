@@ -431,6 +431,25 @@ ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(i
 alter table entrepot_BC_sdc_viti_maladie_ravageur
 ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
 
+
+DROP TABLE if exists entrepot_BC_sdc_viti_ravageur_explication;
+CREATE TABLE entrepot_BC_sdc_viti_ravageur_explication(
+	nom_colonne text,
+	type_ravageur text,
+	valeur text,
+	explication text);
+	
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','cicadelle verte','pas de dégâts','0');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','cicadelle verte','attaque faible','inferieur a 50 larve pour 100 feuilles');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','cicadelle verte','attaque moyenne','entre 50 à 10 larves pour 100 feuilles');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','cicadelle verte','attaque forte','superieur à 100 larves pour 100 feuilles');
+
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','acariens','pas de dégâts','0');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','acariens','attaque faible','inferieur a 10 % de feuille avec une forme mobile');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','acariens','attaque moyenne','10 % a 30% de feuille avec une forme mobile');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','acariens','attaque forte','superieur a 30 % de feuille avec une forme mobile');
+
+
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
 --------------------------------------------------------------------
