@@ -159,38 +159,6 @@ PRIMARY KEY (id);
 alter table entrepot_BC_sdc_assolee_agresseur
 ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_maitrise_agresseur_culture;
-CREATE TABLE entrepot_BC_sdc_assolee_maitrise_agresseur_culture AS
-select 
-cc.croppestmaster as BC_sdc_assolee_maitrise_agresseur_id, 
-cc.crops as culture_id
-from croppestmaster_crops cc
-join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cc.croppestmaster
-join entrepot_culture ec on ec.id = cc.crops
-;
-
-alter table entrepot_BC_sdc_assolee_maitrise_agresseur_culture
-ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
-
-alter table entrepot_BC_sdc_assolee_maitrise_agresseur_culture
-ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
-
-
-DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_maitrise_agresseur_especes;
-CREATE TABLE entrepot_BC_sdc_assolee_maitrise_agresseur_especes AS
-select 
-cs.croppestmaster as BC_sdc_assolee_maitrise_agresseur_id, 
-cs.species as composant_culture_id
-from croppestmaster_species cs
-join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = cs.croppestmaster
-join entrepot_composant_culture ec on ec.id = cs.species
-;
-
-alter table entrepot_BC_sdc_assolee_maitrise_agresseur_especes
-ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
-
-alter table entrepot_BC_sdc_assolee_maitrise_agresseur_especes
-ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise de la verse
@@ -221,37 +189,6 @@ PRIMARY KEY (id);
 alter table entrepot_BC_sdc_assolee_verse
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_verse_culture;
-CREATE TABLE entrepot_BC_sdc_assolee_verse_culture AS
-select 
-cv.versemaster as BC_sdc_assolee_verse_id, 
-cv.crops as culture_id
-from crops_versemaster cv 
-join entrepot_BC_sdc_assolee_verse ebcsav  on ebcsav.id = cv.versemaster
-join entrepot_culture ec on ec.id = cv.crops
-;
-
-alter table entrepot_BC_sdc_assolee_verse_culture
-ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_assolee_verse(id);
-
-alter table entrepot_BC_sdc_assolee_verse_culture
-ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
-
-DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_verse_especes;
-CREATE TABLE entrepot_BC_sdc_assolee_verse_especes AS
-select 
-sv.versemaster as BC_sdc_assolee_verse_id, 
-sv.species as composant_culture_id
-from species_versemaster sv 
-join entrepot_BC_sdc_assolee_verse ebcsav on ebcsav.id = sv.versemaster
-join entrepot_composant_culture ec on ec.id = sv.species
-;
-
-alter table entrepot_BC_sdc_assolee_verse_especes
-ADD FOREIGN KEY (BC_sdc_assolee_verse_id) REFERENCES entrepot_BC_sdc_assolee_verse(id);
-
-alter table entrepot_BC_sdc_assolee_verse_especes
-ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
@@ -306,37 +243,6 @@ PRIMARY KEY (id);
 alter table entrepot_BC_sdc_rendement
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_rendement_culture;
-CREATE TABLE entrepot_BC_sdc_rendement_culture AS
-select 
-cy.yieldloss as BC_sdc_rendement_id, 
-cy.crops as culture_id
-from crops_yieldloss cy 
-join entrepot_BC_sdc_rendement ebcsav  on ebcsav.id = cy.yieldloss
-join entrepot_culture ec on ec.id = cy.crops
-;
-
-alter table entrepot_BC_sdc_rendement_culture
-ADD FOREIGN KEY (BC_sdc_rendement_id) REFERENCES entrepot_BC_sdc_rendement(id);
-
-alter table entrepot_BC_sdc_rendement_culture
-ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
-
-DROP TABLE IF EXISTS entrepot_BC_sdc_rendement_especes;
-CREATE TABLE entrepot_BC_sdc_rendement_especes AS
-select 
-sy.yieldloss as BC_sdc_rendement_id, 
-sy.species as composant_culture_id
-from species_yieldloss sy 
-join entrepot_BC_sdc_rendement ebcsav on ebcsav.id = sy.yieldloss
-join entrepot_composant_culture ec on ec.id = sy.species
-;
-
-alter table entrepot_BC_sdc_rendement_especes
-ADD FOREIGN KEY (BC_sdc_rendement_id) REFERENCES entrepot_BC_sdc_rendement(id);
-
-alter table entrepot_BC_sdc_rendement_especes
-ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Alimentation hydrique et minerale
@@ -368,34 +274,91 @@ PRIMARY KEY (id);
 alter table entrepot_BC_sdc_alimentation
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_alimentation_culture;
-CREATE TABLE entrepot_BC_sdc_alimentation_culture AS
+--------------------------------------------------------------------
+-- TOUTES entites et fillieres : cultures liee pour reduire le nombre de tables creees
+--------------------------------------------------------------------
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_culture_liee;
+CREATE TABLE entrepot_BC_sdc_culture_liee as
 select 
-cf.foodmaster as BC_sdc_alimentation_id, 
+cc.croppestmaster as entite_id,
+cc.crops as culture_id
+from croppestmaster_crops cc 
+join entrepot_composant_culture ec on ec.id = cc.crops 
+union
+select 
+ac.arbocropadventicemaster as entite_id,
+ac.crops as culture_id
+from arbocropadventicemaster_crops ac 
+join entrepot_composant_culture ec on ec.id = ac.crops  
+union
+select 
+ac2.arbocroppestmaster as entite_id,
+ac2.crops as culture_id
+from arbocroppestmaster_crops ac2  
+join entrepot_composant_culture ec on ec.id = ac2.crops 
+union
+select 
+cf.foodmaster as entite_id,
 cf.crops as culture_id
-from crops_foodmaster cf 
-join entrepot_BC_sdc_alimentation ebcsav  on ebcsav.id = cf.foodmaster
-join entrepot_culture ec on ec.id = cf.crops
+from crops_foodmaster cf
+join entrepot_composant_culture ec on ec.id = cf.crops 
+union
+select 
+cv.versemaster as entite_id,
+cv.crops as culture_id
+from crops_versemaster cv    
+join entrepot_composant_culture ec on ec.id = cv.crops 
+union
+select 
+cy.yieldloss as entite_id,
+cy.crops as culture_id
+from crops_yieldloss cy  
+join entrepot_composant_culture ec on ec.id = cy.crops 
 ;
 
-alter table entrepot_BC_sdc_alimentation_culture
-ADD FOREIGN KEY (BC_sdc_alimentation_id) REFERENCES entrepot_BC_sdc_alimentation(id);
-
-alter table entrepot_BC_sdc_alimentation_culture
+alter table entrepot_BC_sdc_culture_liee
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-DROP TABLE IF EXISTS entrepot_BC_sdc_alimentation_especes;
-CREATE TABLE entrepot_BC_sdc_alimentation_especes AS
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_especes_liee;
+CREATE TABLE entrepot_BC_sdc_especes_liee as
 select 
-fs.foodmaster as BC_sdc_alimentation_id, 
+cs.croppestmaster as entite_id,
+cs.species as composant_culture_id
+from croppestmaster_species cs 
+join entrepot_composant_culture ec on ec.id = cs.species
+union
+select 
+s.arbocropadventicemaster as entite_id,
+s.species as composant_culture_id
+from arbocropadventicemaster_species s
+join entrepot_composant_culture ec on ec.id = s.species
+union
+select 
+as2.arbocroppestmaster as entite_id,
+as2.species as composant_culture_id
+from arbocroppestmaster_species as2  
+join entrepot_composant_culture ec on ec.id = as2.species
+union
+select 
+fs.foodmaster as entite_id,
 fs.species as composant_culture_id
-from foodmaster_species fs 
-join entrepot_BC_sdc_alimentation ebcsav on ebcsav.id = fs.foodmaster
+from foodmaster_species fs
 join entrepot_composant_culture ec on ec.id = fs.species
+union
+select 
+sv.versemaster as entite_id,
+sv.species as composant_culture_id
+from species_versemaster sv    
+join entrepot_composant_culture ec on ec.id = sv.species
+union
+select 
+sy.yieldloss as entite_id,
+sy.species as composant_culture_id
+from species_yieldloss sy
+join entrepot_composant_culture ec on ec.id = sy.species
 ;
 
-alter table entrepot_BC_sdc_alimentation_especes
-ADD FOREIGN KEY (BC_sdc_alimentation_id) REFERENCES entrepot_BC_sdc_alimentation(id);
-
-alter table entrepot_BC_sdc_alimentation_especes
+alter table entrepot_BC_sdc_especes_liee
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
