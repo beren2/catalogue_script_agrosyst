@@ -10,10 +10,10 @@ gs.sector filiere_sdc,
 gp.type type_dispositif,
 rgs_sect.filiere_bcsdc,
 -- faits marquants
-rgs.highlightsevolutions principales_evolutions_depuis_pz0,
-rgs.highlightsmeasures mesure_specifique_annee,
-rgs.highlightsperformances faits_marquants_conduiteculture_performancetechnique,
-rgs.highlightsteachings enseignements_amelioration_sdc,
+replace(replace(rgs.highlightsevolutions,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS principales_evolutions_depuis_pz0,
+replace(replace(rgs.highlightsmeasures,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS mesure_specifique_annee,
+replace(replace(rgs.highlightsperformances,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS faits_marquants_conduiteculture_performancetechnique,
+replace(replace(rgs.highlightsteachings,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS enseignements_amelioration_sdc,
 rgs.iftestimationmethod methode_estimation_IFT_declares,
 case 
 	when rgs.arbochemicalfungicideift is not null then rgs.arbochemicalfungicideift
@@ -101,7 +101,7 @@ case
 	when c.croppestmasterreportgrowingsystem is not null then iftother
 end IFT_autre_ravageur,
 ifthorsbiocontrole as IFT_hors_biocontrol_EXPE,
-advisercomments as commentaires_conseiller_experi,
+replace(replace(c.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaires_conseiller_experi,
 ebcsg.id as BC_sdc_generalites_id
 from croppestmaster c  
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (c.croppestmasterreportgrowingsystem, c.cropdiseasemasterreportgrowingsystem,c.cropadventicemasterreportgrowingsystem)
@@ -124,11 +124,11 @@ null groupe_cible,
 refadv.adventice bioagresseur,
 trad1.traduction_interface echelle_pression,
 pm.pressurescaleint EXPE_echelle_pression_marhorti,
-pm.pressurefarmercomment pression_commentaire_agri,
+replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
-pm.resultfarmercomment maitrise_commentaire_agri,
+replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
@@ -147,11 +147,11 @@ refgrpcible.groupe_cible_maa groupe_cible,
 refnui.reference_label bioagresseur,
 trad1.traduction_interface echelle_pression,
 pm.pressurescaleint EXPE_echelle_pression_marhorti,
-pm.pressurefarmercomment pression_commentaire_agri,
+replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
 pm.masterscaleint EXPE_echelle_maitrise_marhorti,
 pm.qualifier maitrise_qualifiant,
-pm.resultfarmercomment maitrise_commentaire_agri,
+replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join croppestmaster cm on pm.croppestmaster = cm.topiaid
@@ -184,12 +184,12 @@ CREATE TABLE entrepot_BC_sdc_assolee_verse AS
 select 
 vm.topiaid id ,
 trad1.traduction_interface echelle_risque,
-vm.riskfarmercomment risque_commentaire_agri ,
+replace(replace(vm.riskfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS risque_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
 vm.qualifier maitrise_qualifiant, 
-vm.resultfarmercomment resultats_commentaire_agri , 
+replace(replace(vm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS resultats_commentaire_agri,
 vm.iftmain IFT_regulateur , 
-vm.advisercomments commentaire_conseiller,
+replace(replace(vm.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_conseiller,
 vm.reportgrowingsystem BC_sdc_generalites_id
 from versemaster vm
 -- traductions des libelles
@@ -271,8 +271,8 @@ a.grassinglevel as niveau_enherbement,
 trad2.traduction_interface as evolution_enherbement,
 trad1.traduction_interface as echelle_maitrise ,
 a.qualifier as qualification_maitrise,
-a.resultfarmercomment as commentaire_agriculteur,
-a.advisercomments as commentaire_conseiller,
+replace(replace(a.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_agriculteur,
+replace(replace(a.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_conseiller,
 ebama.id as BC_sdc_arbo_maitrise_adventice_id
 from arboadventicemaster a 
 join refadventice r on r.topiaid = a.agressor
@@ -309,8 +309,8 @@ trad6.traduction_interface as fruits_impactes_pct,
 trad7.traduction_interface as feuilles_impactees_pct,
 a.nextyearinoculum as inoculum_annees_suivantes,
 a.qualifier as maitrise_qualifiant,
-a.resultfarmercomment as commentaire_agri,
-a.advisercomments as commentaire_conseiller,
+replace(replace(a.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_agri,
+replace(replace(a.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_conseiller,
 a.arbocroppestmaster as BC_sdc_arbo_maitrise_agresseur_id
 from arbopestmaster a
 join entrepot_BC_sdc_arbo_maitrise_agresseur ebsama on a.arbocroppestmaster = ebsama.id
@@ -345,9 +345,9 @@ select
 -- on cree un id à partir de celui rgs pour qu'il ne change pas à chaque generation de entrepot
 'fr.inra.agrosyst.api.entities.report.VitiAdventiceMaster_' || SUBSTR(rgs.topiaid,58),
 trad1.traduction_interface as echelle_pression,
-rgs.vitiadventicepressurefarmercomment as pression_commentaire_agri,
+replace(replace(rgs.vitiadventicepressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 rgs.vitiadventicequalifier as niveau_maitrise,
-rgs.vitiadventiceresultfarmercomment as niveau_maitrise_commentaire_agri,
+replace(replace(rgs.vitiadventiceresultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS niveau_maitrise_commentaire_agri,
 rgs.vitiherbotreatmentchemical as nb_traitement_herbicide_chimique,
 rgs.vitiherbotreatmentbiocontrol as nb_traitement_herbicide_biocontrol,
 rgs.vitisuckeringchemical as nb_traitement_epamprage_chimique,
@@ -376,15 +376,15 @@ v.agressor as nuisible_edi_id,
 v.codegroupeciblemaa as groupe_cible_code,
 trad5.traduction_interface as echelle_pression,
 trad6.traduction_interface as evolution_pression_annee_precedente,
-v.pressurefarmercomment as pression_commentaire_agri,
+replace(replace(v.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad7.traduction_interface as echelle_maitrise,
 trad1.traduction_interface as note_attaque_feuille_maladie,
 trad2.traduction_interface as note_attaque_feuille_ravageur,
 trad3.traduction_interface as note_attaque_grappe_maladie,
 trad4.traduction_interface as note_attaque_grappe_ravageur,
 v.qualifier as maitrise_qualifiant,
-v.resultfarmercomment as maitrise_commentaire_agri,
-v.advisercomments as maitrise_commentaire_conseiller,
+replace(replace(v.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
+replace(replace(v.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_conseiller,
 v.treatmentcount as nombre_traitement,
 v.nbpesttraitementrequired as nombre_traitement_obligatoire,
 v.chemicalfungicideift as ift_chimique,
@@ -424,8 +424,8 @@ end objectif_rendement_atteint,
 yl.cause1 as rendement_cause1,
 yl.cause2 as rendement_cause2,
 yl.cause3 as rendement_cause3,
-yl.comment as qualite_commentaire,
-yi.comment as rendementqualite_commentaire_global,
+replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
+replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid as BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
@@ -443,8 +443,8 @@ trad1.traduction_interface as objectif_rendement_atteint,
 rgs.vitilosscause1 as rendement_cause1,
 rgs.vitilosscause2 as  rendement_cause2,
 rgs.vitilosscause3 as  rendement_cause3,
-rgs.vitiyieldquality as qualite_commentaire,
-yi.comment rendementqualite_commentaire_global,
+replace(replace(rgs.vitiyieldquality,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
+replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
@@ -474,9 +474,9 @@ fm.topiaid id,
 trad1.traduction_interface irrigation ,
 trad2.traduction_interface stress_hydrique ,
 trad3.traduction_interface stress_azote ,
-fm.mineralfood alimentation_minerale_hors_azote ,
+replace(replace(fm.mineralfood ,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS alimentation_minerale_hors_azote,
 trad4.traduction_interface stress_temperature_rayonnement ,
-fm.comment commentaire,
+replace(replace(fm.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire,
 ebcsg.id BC_sdc_generalites_id
 from foodmaster fm 
 -- traductions des libelles
