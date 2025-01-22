@@ -83,9 +83,24 @@ DROP TABLE IF EXISTS entrepot_BC_sdc_assolee_maitrise_agresseur CASCADE;
 CREATE TABLE entrepot_BC_sdc_assolee_maitrise_agresseur AS
 select
 topiaid as id, 
-iftmain as IFT_principal,
-iftother as IFT_autre_ravageur,
-ifthorsbiocontrole as IFT_hors_biocontrol,
+case 
+	when c.cropdiseasemasterreportgrowingsystem is not null then 'maladie'
+	when c.croppestmasterreportgrowingsystem is not null then 'ravageur'
+	when c.cropadventicemasterreportgrowingsystem is not null then 'adventice'
+end type_bioagresseur,
+case 
+	when c.cropadventicemasterreportgrowingsystem is not null then iftmain
+end IFT_herbicide,
+case 
+	when c.cropdiseasemasterreportgrowingsystem is not null then iftmain
+end IFT_fongicide_chimique,
+case 
+	when c.croppestmasterreportgrowingsystem is not null then iftmain
+end IFT_insecticide_chimique,
+case 
+	when c.croppestmasterreportgrowingsystem is not null then iftother
+end IFT_autre_ravageur,
+ifthorsbiocontrole as IFT_hors_biocontrol_EXPE,
 advisercomments as commentaires_conseiller_experi,
 ebcsg.id as BC_sdc_generalites_id
 from croppestmaster c  
@@ -189,6 +204,135 @@ PRIMARY KEY (id);
 alter table entrepot_BC_sdc_assolee_verse
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
+
+--------------------------------------------------------------------
+-- ARBO : Adventice, maladies et ravageurs
+--------------------------------------------------------------------
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_arbo_maitrise_agresseur CASCADE;
+CREATE TABLE entrepot_BC_sdc_arbo_maitrise_agresseur AS
+select
+a.topiaid as id,
+'adventice' as type_bioagresseur,
+a.treatmentcount as nombre_traitement,
+a.chemicalpestift as ift_herbicide_chimique,
+a.biocontrolpestift as ift_herbicide_biocontrole,
+null as ift_fongicide_chimique,
+null as ift_fongicide_biocontrole,
+null as ift_ravageur_chimique,
+null as ift_ravageur_biocontrole,
+a.reportgrowingsystem as BC_sdc_generalites_id
+from arbocropadventicemaster a 
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = a.reportgrowingsystem
+union 
+select 
+a.topiaid as id,
+case 
+	when a.arbodiseasemasterreportgrowingsystem is not null then 'maladie'
+	when a.arbopestmastergrowingsystem  is not null then 'ravageur'
+end type_bioagresseur,
+a.treatmentcount as nombre_traitement,
+null as ift_chimique_herbicide,
+null as ift_biocontrole_herbicide,
+case 
+	when a.arbodiseasemasterreportgrowingsystem is not null then a.chemicalpestift
+end ift_fongicide_chimique,
+case 
+	when a.arbodiseasemasterreportgrowingsystem is not null then a.biocontrolpestift
+end ift_fongicide_biocontrole,
+case 
+	when a.arbodiseasemasterreportgrowingsystem is not null then a.chemicalpestift
+end ift_ravageur_chimique,
+case 
+	when a.arbodiseasemasterreportgrowingsystem is not null then a.biocontrolpestift
+end ift_ravageur_biocontrole,
+ebcsg.id as BC_sdc_generalites_id
+from arbocroppestmaster a 
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (a.arbodiseasemasterreportgrowingsystem, a.arbopestmastergrowingsystem)
+;
+
+alter table entrepot_BC_sdc_arbo_maitrise_agresseur
+add constraint BC_sdc_arbo_maitrise_agresseur_PK
+PRIMARY KEY (id);
+
+alter table entrepot_BC_sdc_arbo_maitrise_agresseur
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
+
+--------------------------------------------------------------------
+-- ARBO : Adventice
+--------------------------------------------------------------------
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_arbo_adventice CASCADE;
+CREATE TABLE entrepot_BC_sdc_arbo_adventice AS
+select
+a.topiaid as id,
+r.adventice as adventice,
+a.grassinglevel as niveau_enherbement,
+trad2.traduction_interface as evolution_enherbement,
+trad1.traduction_interface as echelle_maitrise ,
+a.qualifier as qualification_maitrise,
+a.resultfarmercomment as commentaire_agriculteur,
+a.advisercomments as commentaire_conseiller,
+ebama.id as BC_sdc_arbo_maitrise_adventice_id
+from arboadventicemaster a 
+join refadventice r on r.topiaid = a.agressor
+join entrepot_BC_sdc_arbo_maitrise_agresseur ebama on a.arbocropadventicemaster = ebama.id
+-- traductions des libelles
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise arbo adv') trad1 on a.masterscale = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution enherbement arbo adv') trad2 on a.grassingevolution = trad2.nom_base 
+;
+
+alter table entrepot_BC_sdc_arbo_adventice
+add constraint BC_sdc_arbo_adventice_PK
+PRIMARY KEY (id);
+
+alter table entrepot_BC_sdc_arbo_adventice
+ADD FOREIGN KEY (BC_sdc_arbo_maitrise_adventice_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
+
+--------------------------------------------------------------------
+-- ARBO : Maladies et ravageurs
+--------------------------------------------------------------------
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_arbo_ravageur_maladie CASCADE;
+CREATE TABLE entrepot_BC_sdc_arbo_ravageur_maladie AS
+select 
+a.topiaid as id,
+a.agressor as nuisible_edi_id,
+a.codegroupeciblemaa as code_groupe_cible,
+a.previousyearinoculum as inoculum_annee_precedente,
+trad1.traduction_interface as echelle_pression,
+trad2.traduction_interface as evolution_pression_annee_precedente,
+trad3.traduction_interface as echelle_maitrise,
+trad4.traduction_interface as parcelles_impactees_pct,
+trad5.traduction_interface as arbres_impactes_pct,
+trad6.traduction_interface as fruits_impactes_pct,
+trad7.traduction_interface as feuilles_impactees_pct,
+a.nextyearinoculum as inoculum_annees_suivantes,
+a.qualifier as maitrise_qualifiant,
+a.resultfarmercomment as commentaire_agri,
+a.advisercomments as commentaire_conseiller,
+a.arbocroppestmaster as BC_sdc_arbo_maitrise_agresseur_id
+from arbopestmaster a
+join entrepot_BC_sdc_arbo_maitrise_agresseur ebsama on a.arbocroppestmaster = ebsama.id
+-- traductions des libelles
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur arbo') trad1 on a.pressurescale = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution pression arbo maladie ravageur') trad2 on a.pressureevolution = trad2.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur arbo') trad3 on a.masterscale = trad3.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad4 on a.percentaffectedplots = trad4.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad5 on a.percentaffectedtrees = trad5.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad6 on a.percentdamagefruits = trad6.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad7 on a.percentdamageleafs = trad7.nom_base 
+;
+
+alter table entrepot_BC_sdc_arbo_ravageur_maladie
+add constraint BC_sdc_arbo_maitrise_ravageur_maladie_PK
+PRIMARY KEY (id);
+
+alter table entrepot_BC_sdc_arbo_ravageur_maladie
+ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
+
+alter table entrepot_BC_sdc_arbo_ravageur_maladie
+ADD FOREIGN KEY (BC_sdc_arbo_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement

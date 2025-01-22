@@ -1,3 +1,4 @@
+DROP TABLE if exists BC_sdc_traduction;
 CREATE TABLE BC_sdc_traduction(
 	nom_rubrique text, 
 	nom_base text,
@@ -75,13 +76,31 @@ insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','LOW','Un peu de verse sans effet sur le rendement');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','MODERATE','Verse sans effet sur la marge de la culture');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise verse','HIGH','Verse impactant la performance economique');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise visee adv arboexpe','NONE','Rang nu toute la saison');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise visee adv arboexpe','LOW','Rang nu à certaines periodes');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise visee adv arboexpe','HIGH','Enherbement permanent');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','NONE','Sol propre toute la saison');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','LOW','Sol propre à certaines periodes (recolte)');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','MODERATE','Enherbement permanent sans concurrence hydrique');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo ferme','HIGH','Enherbement permanent avec concurrence (eau,vigueur,coloration …)');
+
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo adv','NONE','Sol propre toute la saison');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo adv','LOW','Sol propre à certaines periodes (recolte)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo adv','MODERATE','Enherbement permanent sans concurrence hydrique');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise arbo adv','HIGH','Enherbement permanent avec concurrence (eau,vigueur,coloration …)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution enherbement arbo adv','MUCH_HIGHER','Enherbement beaucoup plus fort que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution enherbement arbo adv','HIGHER','Enherbement plus fort que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution enherbement arbo adv','SAME','Enherbement identique à l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution enherbement arbo adv','LOWER','Enherbement plus faible que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution enherbement arbo adv','MUCH_LOWER','Enherbement beaucoup plus faible que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur arbo','NONE','Nulle (absence)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur arbo','LOW','Faible (un peu mais pas d''impact)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur arbo','MODERATE','Moyenne (impact sur le rendement possible)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur arbo','HIGH','Forte (impact certain sur le rendement et la marge)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression arbo maladie ravageur','MUCH_HIGHER','Pression beaucoup plus forte que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression arbo maladie ravageur','HIGHER','Pression plus forte que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression arbo maladie ravageur','SAME','Pression identique à l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression arbo maladie ravageur','LOWER','Pression plus faible que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression arbo maladie ravageur','MUCH_LOWER','Pression beaucoup plus faible que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('pct touchee arbo','LESS_0_5','inferieur à 0.5 %');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('pct touchee arbo','FROM_0_5_TO_2','0.5 à 10 %');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('pct touchee arbo','FROM_2_TO_10','2 à 50 %');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('pct touchee arbo','FROM_10_TO_50','10 à 50 %');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('pct touchee arbo','MORE_50','superieur à 50 %');
+
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','4','LESS_50');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','3','FROM_50_TO_75');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','2','FROM_75_TO_95');
@@ -94,3 +113,7 @@ INSERT INTO BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES
 INSERT INTO BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '2', 'de 75% à 95%');
 INSERT INTO BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '3', 'de 75% à 95%');
 INSERT INTO BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '4', '< 50%');
+
+alter table BC_sdc_traduction
+add constraint BC_sdc_traduction_PK
+PRIMARY KEY (nom_rubrique,nom_base);
