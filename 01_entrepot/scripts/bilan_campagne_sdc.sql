@@ -335,6 +335,81 @@ alter table entrepot_BC_sdc_arbo_ravageur_maladie
 ADD FOREIGN KEY (BC_sdc_arbo_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
 
 --------------------------------------------------------------------
+-- Viti : Adventice, maladies et ravageurs
+--------------------------------------------------------------------
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_viti_adventice CASCADE;
+CREATE TABLE entrepot_BC_sdc_viti_adventice AS
+select
+-- les infos de la viti sont dans rgs mais pour une cohérence avec les autres tables, 
+-- on cree un id à partir de celui rgs pour qu'il ne change pas à chaque generation de entrepot
+'fr.inra.agrosyst.api.entities.report.VitiAdventiceMaster_' || SUBSTR(rgs.topiaid,58),
+trad1.traduction_interface as echelle_pression,
+rgs.vitiadventicepressurefarmercomment as pression_commentaire_agri,
+rgs.vitiadventicequalifier as niveau_maitrise,
+rgs.vitiadventiceresultfarmercomment as niveau_maitrise_commentaire_agri,
+rgs.vitiherbotreatmentchemical as nb_traitement_herbicide_chimique,
+rgs.vitiherbotreatmentbiocontrol as nb_traitement_herbicide_biocontrol,
+rgs.vitisuckeringchemical as nb_traitement_epamprage_chimique,
+rgs.vitisuckeringbiocontrol as nb_traitement_epamprage_biocontrol,
+rgs.vitiherbotreatmentchemicalift as ift_herbicide_chimique,
+rgs.vitiherbotreatmentbiocontrolift as ift_herbicide_biocontrol,
+rgs.vitisuckeringchemicalift as ift_epamprage_chimique,
+rgs.vitisuckeringbiocontrolift as ift_epamprage_biocontrol,
+rgs.topiaid as BC_sdc_generalites_id
+from reportgrowingsystem rgs
+join entrepot_sdc es on es.id = rgs.growingsystem
+-- traductions des libelles
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice viti') trad1 on rgs.vitiadventicepressurescale = trad1.nom_base 
+where es.filiere = 'VITICULTURE';
+
+
+DROP TABLE IF EXISTS entrepot_BC_sdc_viti_maladie_ravageur CASCADE;
+CREATE TABLE entrepot_BC_sdc_viti_maladie_ravageur AS
+select
+v.topiaid ,
+case 
+	when v.reportgrowingsystemvitidiseasemaster is not null then 'maladie'
+	when v.reportgrowingsystemvitipestmaster is not null then 'ravageur'
+end type_bioagresseur,
+v.agressor as nuisible_edi_id,
+v.codegroupeciblemaa as groupe_cible_code,
+trad5.traduction_interface as echelle_pression,
+trad6.traduction_interface as evolution_pression_annee_precedente,
+v.pressurefarmercomment as pression_commentaire_agri,
+trad7.traduction_interface as echelle_maitrise,
+trad1.traduction_interface as note_attaque_feuille_maladie,
+trad2.traduction_interface as note_attaque_feuille_ravageur,
+trad3.traduction_interface as note_attaque_grappe_maladie,
+trad4.traduction_interface as note_attaque_grappe_ravageur,
+v.qualifier as maitrise_qualifiant,
+v.resultfarmercomment as maitrise_commentaire_agri,
+v.advisercomments as maitrise_commentaire_conseiller,
+v.treatmentcount as nombre_traitement,
+v.nbpesttraitementrequired as nombre_traitement_obligatoire,
+v.chemicalfungicideift as ift_chimique,
+v.biocontrolfungicideift as ift_biocontrole,
+case 
+	when v.reportgrowingsystemvitidiseasemaster is not null then v.reportgrowingsystemvitidiseasemaster
+	when v.reportgrowingsystemvitipestmaster is not null then v.reportgrowingsystemvitipestmaster
+end BC_sdc_generalites_id,
+v.leafdiseaseattackrateprecisevalue as notre_fq_attaque_feuille_EXPE,
+v.leafdiseaseattackintensityprecisevalue as notre_intensite_attaque_feuille_EXPE,
+v.grapediseaseattackintensityprecisevalue as notre_fq_attaque_grappe_EXPE,
+v.grapediseaseattackrateprecisevalue as notre_intensite_attaque_grappe_EXPE
+from vitipestmaster v 
+-- traductions des libelles
+left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque maladie feuille') trad1 on v.leafdiseaseattackrate = trad1.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs feuille') trad2 on v.leafpestattackrate = trad2.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque maladie grappe') trad3 on v.grapediseaseattackrate = trad3.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs grappe') trad4 on v.grapepestattackrate = trad4.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur viti') trad5 on v.pressurescale = trad5.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution pression viti maladie ravageur') trad6 on v.pressureevolution = trad6.nom_base 
+left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur viti') trad7 on v.masterscale = trad7.nom_base 
+;
+
+
+--------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
 --------------------------------------------------------------------
 
