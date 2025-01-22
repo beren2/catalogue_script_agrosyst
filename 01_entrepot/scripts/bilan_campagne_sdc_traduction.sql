@@ -8,10 +8,6 @@ insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','LOW','Faible (un peu mais pas d''impact)');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','MODERATE','Moyenne (impact sur le rendement possible)');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur assolee','HIGH','Forte (impact certain sur le rendement et la marge)');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','NONE','Aucun symptôme');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','LOW','Symptômes sans effet sur le rendement ou la qualité');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','MODERATE','Symptômes avec effet très limité sur le rendement et la qualité');
-insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','HIGH','Pertes économiques dues à la maladie');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','NONE','Aucun symptome ou presence');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','LOW','Symptomes sans effet sur le rendement');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur assolee','MODERATE','Rendement un peu affecté sans effet sur la marge de la culture');
@@ -20,6 +16,7 @@ insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','LOW','Symptômes sans effet sur le rendement ou la qualité');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','MODERATE','Symptômes avec effet très limité sur le rendement et la qualité');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur arbo','HIGH','Pertes économiques dues à des dégâts sur fruits, feuilles, ou arbres');
+
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','ZERO','0% de ceps touchés, 0% d intensité d attaque');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_0_TO_10_2_INTENSITY','0 à 10 % de ceps touchés, moins de 2% d intensité d attaque');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('Note globale attaque maladie feuille','FROM_10_TO_35_2_INTENSITY','10 à 35 % de ceps touchés, moins de 2% d intensité d attaque');
@@ -52,6 +49,20 @@ insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','LOW','sol globalement nu avec toutefois quelques taches, sans gravité ni concurrence hydrique');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','MODERATE','enherbement sans concurrence hydrique');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle pression adventice viti','HIGH','enherbement generalise (voulu ou accidentel) avec baisse de vigeur et rendement');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur viti','NONE','Nulle (absence)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur viti','LOW','Faible (un peu mais pas d''impact)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur viti','MODERATE','Moyenne (impact sur le rendement possible)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de pression maladie ravageur viti','HIGH','Forte (impact certain sur le rendement et la marge)');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression viti maladie ravageur','MUCH_HIGHER','Pression beaucoup plus forte que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression viti maladie ravageur','HIGHER','Pression plus forte que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression viti maladie ravageur','SAME','Pression identique à l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression viti maladie ravageur','LOWER','Pression plus faible que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('evolution pression viti maladie ravageur','MUCH_LOWER','Pression beaucoup plus faible que l''annee precedente');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','NONE','Aucun symptôme');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','LOW','Symptômes sans effet sur le rendement ou la qualité');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','MODERATE','Symptômes avec effet très limité sur le rendement et la qualité');
+insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('echelle de maitrise maladie ravageur viti','HIGH','Pertes économiques dues à la maladie');
+
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','NON_IRRIGABLE','Non irrigable');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','NOT_IRRIGATED_CROP','Irrigable, culture non irriguée');
 insert into BC_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('irrigation','IRRIGATED_CROP_LIMITED_QUANTITY','Culture irriguée, quantité limitée');
