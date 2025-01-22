@@ -121,7 +121,8 @@ select
 pm.topiaid id,
 'adventice' type_bioagresseur,
 null groupe_cible,
-refadv.adventice bioagresseur,
+pm.agressor as adventice_id,
+null as nuisible_edi_id,
 trad1.traduction_interface echelle_pression,
 pm.pressurescaleint EXPE_echelle_pression_marhorti,
 replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
@@ -132,10 +133,10 @@ replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') 
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
-join refadventice refadv on pm.agressor = refadv.topiaid
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
+where pm.agressor like '%adventic%'
 union
 select 
 pm.topiaid id,
@@ -143,8 +144,9 @@ case
 	when cm.cropdiseasemasterreportgrowingsystem is not null then 'maladie'
 	when cm.croppestmasterreportgrowingsystem is not null then 'ravageur'
 end type_bioagresseur,
-refgrpcible.groupe_cible_maa groupe_cible,
-refnui.reference_label bioagresseur,
+pm.codegroupeciblemaa groupe_cible_code,
+null as adventice_id,
+pm.agressor nuisible_edi_id,
 trad1.traduction_interface echelle_pression,
 pm.pressurescaleint EXPE_echelle_pression_marhorti,
 replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
@@ -156,15 +158,10 @@ bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join croppestmaster cm on pm.croppestmaster = cm.topiaid
 join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
-join refnuisibleedi refnui on pm.agressor = refnui.topiaid
-left join (select distinct code_groupe_cible_maa,groupe_cible_maa 
-			from refciblesagrosystgroupesciblesmaa where active = true 
-			and groupe_cible_maa not in ('Cicadelles cercopides et psylles','Maladies des taches foliaires')) refgrpcible -- on retire les doublons de code 38 'Cicadelles cercopides et psylles' puisque ce nom est utilisé par le 37 , et le 82 puisqu'il y a deux orthographes 
-		on refgrpcible.code_groupe_cible_maa = pm.codegroupeciblemaa 
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
-;
+where pm.agressor like '%nuisible%';
 
 
 alter table entrepot_BC_sdc_assolee_agresseur
@@ -174,6 +171,11 @@ PRIMARY KEY (id);
 alter table entrepot_BC_sdc_assolee_agresseur
 ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
 
+alter table entrepot_BC_sdc_assolee_agresseur
+ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
+
+alter table entrepot_BC_sdc_assolee_agresseur
+ADD FOREIGN KEY (adventice_id) REFERENCES entrepot_adventice(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise de la verse
@@ -266,7 +268,7 @@ DROP TABLE IF EXISTS entrepot_BC_sdc_arbo_adventice CASCADE;
 CREATE TABLE entrepot_BC_sdc_arbo_adventice AS
 select
 a.topiaid as id,
-r.adventice as adventice,
+a.agressor as adventice_id,
 a.grassinglevel as niveau_enherbement,
 trad2.traduction_interface as evolution_enherbement,
 trad1.traduction_interface as echelle_maitrise ,
@@ -275,7 +277,6 @@ replace(replace(a.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') A
 replace(replace(a.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_conseiller,
 ebama.id as BC_sdc_arbo_maitrise_adventice_id
 from arboadventicemaster a 
-join refadventice r on r.topiaid = a.agressor
 join entrepot_BC_sdc_arbo_maitrise_agresseur ebama on a.arbocropadventicemaster = ebama.id
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise arbo adv') trad1 on a.masterscale = trad1.nom_base 
@@ -288,6 +289,9 @@ PRIMARY KEY (id);
 
 alter table entrepot_BC_sdc_arbo_adventice
 ADD FOREIGN KEY (BC_sdc_arbo_maitrise_adventice_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
+
+alter table entrepot_BC_sdc_arbo_adventice
+ADD FOREIGN KEY (adventice_id) REFERENCES entrepot_adventice(id);
 
 --------------------------------------------------------------------
 -- ARBO : Maladies et ravageurs
@@ -343,7 +347,7 @@ CREATE TABLE entrepot_BC_sdc_viti_adventice AS
 select
 -- les infos de la viti sont dans rgs mais pour une cohérence avec les autres tables, 
 -- on cree un id à partir de celui rgs pour qu'il ne change pas à chaque generation de entrepot
-'fr.inra.agrosyst.api.entities.report.VitiAdventiceMaster_' || SUBSTR(rgs.topiaid,58),
+'fr.inra.agrosyst.api.entities.report.VitiAdventiceMaster_' || SUBSTR(rgs.topiaid,58) as id,
 trad1.traduction_interface as echelle_pression,
 replace(replace(rgs.vitiadventicepressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 rgs.vitiadventicequalifier as niveau_maitrise,
@@ -359,15 +363,23 @@ rgs.vitisuckeringbiocontrolift as ift_epamprage_biocontrol,
 rgs.topiaid as BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join entrepot_sdc es on es.id = rgs.growingsystem
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid 
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice viti') trad1 on rgs.vitiadventicepressurescale = trad1.nom_base 
 where es.filiere = 'VITICULTURE';
+
+alter table entrepot_BC_sdc_viti_adventice
+add constraint BC_sdc_viti_adventice_PK
+PRIMARY KEY (id);
+
+alter table entrepot_BC_sdc_viti_adventice
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
 
 
 DROP TABLE IF EXISTS entrepot_BC_sdc_viti_maladie_ravageur CASCADE;
 CREATE TABLE entrepot_BC_sdc_viti_maladie_ravageur AS
 select
-v.topiaid ,
+v.topiaid id,
 case 
 	when v.reportgrowingsystemvitidiseasemaster is not null then 'maladie'
 	when v.reportgrowingsystemvitipestmaster is not null then 'ravageur'
@@ -397,7 +409,8 @@ v.leafdiseaseattackrateprecisevalue as notre_fq_attaque_feuille_EXPE,
 v.leafdiseaseattackintensityprecisevalue as notre_intensite_attaque_feuille_EXPE,
 v.grapediseaseattackintensityprecisevalue as notre_fq_attaque_grappe_EXPE,
 v.grapediseaseattackrateprecisevalue as notre_intensite_attaque_grappe_EXPE
-from vitipestmaster v 
+from vitipestmaster v
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (v.reportgrowingsystemvitidiseasemaster,v.reportgrowingsystemvitipestmaster)
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque maladie feuille') trad1 on v.leafdiseaseattackrate = trad1.nom_base 
 left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs feuille') trad2 on v.leafpestattackrate = trad2.nom_base 
@@ -408,6 +421,15 @@ left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution press
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur viti') trad7 on v.masterscale = trad7.nom_base 
 ;
 
+alter table entrepot_BC_sdc_viti_maladie_ravageur
+add constraint BC_sdc_viti_maladie_ravageur_PK
+PRIMARY KEY (id);
+
+alter table entrepot_BC_sdc_viti_maladie_ravageur
+ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
+
+alter table entrepot_BC_sdc_viti_maladie_ravageur
+ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
