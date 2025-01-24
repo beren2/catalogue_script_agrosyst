@@ -283,3 +283,97 @@ def get_typologie_culture_CAN(donnees):
     # Du coup utilisation du nom de la culture pour changement non souhaité
 
     return df
+
+
+
+
+def get_typologie_culture_CAN_synthetise(donnees):
+    ''' 
+    Le but est d'obtenir les typologies de rotation utilisées par la Cellule référence.
+    Pour le synthetise
+
+    Echelle :
+        entite_id : synthetise_id / zone_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+                'connection_synthetise'
+                'noeuds_synthetise'
+            Données d'outils (attention dépendence)
+                'surface_connection_synthetise'
+                'typologie_can_culture'
+                'noeuds_synthetise_restructure'
+
+    Returns:
+        pd.DataFrame() contenant le synthetise_id et la typologie de rotation de la CAN
+    '''
+
+    # Attention on prend ici l'année du sdc (voir outil restructuration) et pas les années du synthétisé car les cultures disponibles pour le synthétisé ne proviennent que du couple culture_code*campagne_du_domaine désormais
+    restruct_culture_id = donnees['intervention_synthetise_agrege']
+    # Pas besoin de la culture précédente
+    # conn = donnees['connection_synthetise'][['source_noeuds_synthetise_id','cible_noeuds_synthetise_id','culture_absente']]
+    conn = donnees['connection_synthetise'][['cible_noeuds_synthetise_id','culture_absente']]
+    conn = conn.loc[conn['culture_absente'] == 'f'].drop('culture_absente', axis=1)
+    noeud = donnees['noeuds_synthetise'][['synthetise_id']]
+    noeud = noeud.merge(restruct_culture_id, on_index = True)
+    con_frq = donnees['surface_connection_synthetise'][['frequence']]
+    # df = conn.merge(noeud, left_on = 'source_noeuds_synthetise_id', right_index = True, suffixes = (None, '_source'))
+    typo_culture = donnees['typologie_can_culture']
+
+    df = conn.merge(noeud, left_on = 'cible_noeuds_synthetise_id', right_index = True)
+    df = df.merge(con_frq, on_index = True)
+    df = df.merge(typo_culture, left_on = 'culture_id', right_index = True)
+
+    # Comme la CAN fait, on check à chaque fois une condition, si true on return.
+    # il y a donc un ordre de priorité bien défini
+    # Sans cet ordre de priorité il y aurait des chevauchements, mais quand meme pas dans tout les cas
+    def get_rota_typo(cgrp):
+        # Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
+        # ils aggregent totu avec un return 'Pas de type rotation calculé'
+        # ATTENTION nous ferons le distingo avec les 2 premiers if
+        if all(cgrp['frequence'].isna()) :
+            return 'aucune fréquence de rotation calulée'
+        elif all(cgrp['typocan_culture'].isna()) :
+            return 'aucune typologie de culture détectée'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Betterave','Lin','Légume']), 'frequence']) >= 0.05 :
+            return 'succession avec betterave ou lin ou légumes (>= 5 %%)'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Pomme de terre']), 'frequence']) >= 0.05 :
+            return 'successions avec pomme de terre'
+        # elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Cultures porte graines']), 'frequence']) >= 0.05 :
+        #     return 'successions avec cultures porte graine'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Colza']), 'frequence']) >= 0.95 :
+            return 'céréales à paille hiver/colza'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza']), 'frequence']) >= 0.95 :
+            return 'céréales à paille hiver+printemps/colza'
+        # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Maïs']), 'frequence']) >= 0.95 :
+            return 'maïs'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Maïs','Oléagineux (hors Colza et Tournesol)','Protéagineux','Mélange fourrager']), 'frequence']) >= 0.95 :
+            return 'céréales à paille/colza/maïs ou protéagineux'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
+            return 'céréales à paille/colza/tournesol'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Maïs','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
+            return 'céréales à paille/maïs(/tournesol)'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Tournesol']), 'frequence']) >= 0.95 :
+            return 'céréales à paille/tournesol'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) < 0.5 :
+            return 'prairie temporaire < 50 %% assolement'
+        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) >= 0.5 :
+            return 'prairie temporaire >= 50 %% assolement'
+        else :
+            return 'Autre'
+    
+    agg_dict = {
+        'typocan_culture': get_rota_typo,
+        'frequence': 'sum'
+    }
+
+    df = df.groupby('sdc_id').agg(agg_dict).reset_index().\
+        rename(columns={'typocan_culture':'typocan_rotation',
+                        'frequence':'frequence_total_rota'})
+
+    df['frequence_total_rota'] = df['frequence_total_rota'].astype('int64')
+    df = df.set_index('sdc_id')
+
+    return df
