@@ -53,7 +53,6 @@
 			"acta_substance_active",
 			"acta_traitement_produit",
 			"acta_dosage_spc",
-			"bilan_campagne_sdc",
 			"composition_substance_active_numero_amm",
 			"composant_action_semis",
 			"reseau",
@@ -64,6 +63,9 @@
 			"dose_ref_par_groupe_cible",
 			"groupe_cible",
 			"nuisible_edi",
+			"adventice",
+			"bilan_campagne_sdc_traduction",
+			"bilan_campagne_sdc",
 			"substances_actives_europeennes",
 			"phrases_de_risque_numero_amm",
 			"prix_intrant_produit_phyto_sanitaire",
@@ -74,8 +76,7 @@
 			"levier",
 			"texture_sol",
 			"fertilisation_organique",
-			"fertilisation_minerale",
-			"adventice"
+			"fertilisation_minerale"
 		],
 		"tables": {
 			"semence" : {
@@ -255,7 +256,49 @@
 			"composant_culture_concerne_intervention_realise":{
 				"file_name" : "composant_culture_concerne_intervention"
 			},
-			"bilan_campagne_sdc_generalites":{
+			"BC_sdc_traduction":{
+				"file_name" : "bilan_campagne_sdc_traduction"
+			},
+			"BC_sdc_generalites":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_assolee_maitrise_agresseur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_assolee_agresseur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_arbo_maitrise_agresseur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_arbo_adventice":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_arbo_ravageur_maladie":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_viti_adventice":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_viti_maladie_ravageur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"entrepot_BC_sdc_viti_ravageur_explication":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_rendement":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_alimentation":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_assolee_verse":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_culture_liee":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_especes_liee":{
 				"file_name" : "bilan_campagne_sdc"
 			},
 			"espece":{
