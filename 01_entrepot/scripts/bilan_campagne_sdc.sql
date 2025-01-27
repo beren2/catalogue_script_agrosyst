@@ -44,9 +44,9 @@ case
 	when rgs.vitipestqualifier is not null then rgs.vitipestqualifier
 end perenne_niveau_maitrise_ravageur,
 gs.topiaid sdc_id,
-rgs.reportregional bcregional_associe_id,
-mm1.topiaid modele_descisionelassocie_prevu_id,
-mm2.topiaid modele_descisionelassocie_obs_id
+rgs.reportregional bilan_campagne_regional_generalites_id,
+mm1.topiaid modele_decisionnel_prevu_id,
+mm2.topiaid modele_decisionnel_obs_id
 from reportgrowingsystem rgs
 left JOIN reportregional rr on rgs.reportregional = rr.topiaid -- pas toujours de BC regional associe (pareil pour le reseau puisque on l'a depuis BC regional)
 left join (select nrg.reportregional, string_agg(distinct n.name,'|') reseau from networks_reportregional nrg -- Quand il y a plusieurs IR pour un meme id de rr, on agrege les noms d'IR sur la meme ligne  
@@ -67,13 +67,13 @@ alter table entrepot_BC_sdc_generalites
 ADD FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);
 
 alter table entrepot_BC_sdc_generalites
-ADD FOREIGN KEY (bcregional_associe_id) REFERENCES entrepot_bilan_campagne_regional_generalites(id);
+ADD FOREIGN KEY (bilan_campagne_regional_generalites_id) REFERENCES entrepot_bilan_campagne_regional_generalites(id);
 
 alter table entrepot_BC_sdc_generalites
-ADD FOREIGN KEY (modele_descisionelassocie_prevu_id) REFERENCES entrepot_modele_decisionnel(id);
+ADD FOREIGN KEY (modele_decisionnel_prevu_id) REFERENCES entrepot_modele_decisionnel(id);
 
 alter table entrepot_BC_sdc_generalites
-ADD FOREIGN KEY (modele_descisionelassocie_obs_id) REFERENCES entrepot_modele_decisionnel(id);
+ADD FOREIGN KEY (modele_decisionnel_obs_id) REFERENCES entrepot_modele_decisionnel(id);
 
 --------------------------------------------------------------------
 -- ASSOLEE : Maitrise agresseurs = ravageurs, maladies et adventices
@@ -100,7 +100,7 @@ end IFT_insecticide_chimique,
 case 
 	when c.croppestmasterreportgrowingsystem is not null then iftother
 end IFT_autre_ravageur,
-ifthorsbiocontrole as IFT_hors_biocontrol_EXPE,
+ifthorsbiocontrole as IFT_hors_biocontrole_EXPE,
 replace(replace(c.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaires_conseiller_experi,
 ebcsg.id as BC_sdc_generalites_id
 from croppestmaster c  
@@ -124,10 +124,10 @@ null groupe_cible,
 pm.agressor as adventice_id,
 null as nuisible_edi_id,
 trad1.traduction_interface echelle_pression,
-pm.pressurescaleint EXPE_echelle_pression_marhorti,
+pm.pressurescaleint echelle_pression_marhorti_EXPE,
 replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
-pm.masterscaleint EXPE_echelle_maitrise_marhorti,
+pm.masterscaleint echelle_maitrise_marhorti_EXPE,
 pm.qualifier maitrise_qualifiant,
 replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
@@ -136,7 +136,7 @@ join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppes
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
-where pm.agressor like '%adventic%'
+where pm.agressor like '%Adventic%'
 union
 select 
 pm.topiaid id,
@@ -148,10 +148,10 @@ pm.codegroupeciblemaa groupe_cible_code,
 null as adventice_id,
 pm.agressor nuisible_edi_id,
 trad1.traduction_interface echelle_pression,
-pm.pressurescaleint EXPE_echelle_pression_marhorti,
+pm.pressurescaleint echelle_pression_marhorti_EXPE,
 replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
-pm.masterscaleint EXPE_echelle_maitrise_marhorti,
+pm.masterscaleint echelle_maitrise_marhorti_EXPE,
 pm.qualifier maitrise_qualifiant,
 replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
@@ -161,7 +161,7 @@ join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppes
 -- traductions des libelles
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
 left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
-where pm.agressor like '%nuisible%';
+where pm.agressor like '%Nuisible%';
 
 
 alter table entrepot_BC_sdc_assolee_agresseur
@@ -275,7 +275,7 @@ trad1.traduction_interface as echelle_maitrise ,
 a.qualifier as qualification_maitrise,
 replace(replace(a.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_agriculteur,
 replace(replace(a.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentaire_conseiller,
-ebama.id as BC_sdc_arbo_maitrise_adventice_id
+ebama.id as BC_sdc_arbo_maitrise_agresseur_id
 from arboadventicemaster a 
 join entrepot_BC_sdc_arbo_maitrise_agresseur ebama on a.arbocropadventicemaster = ebama.id
 -- traductions des libelles
@@ -288,7 +288,7 @@ add constraint BC_sdc_arbo_adventice_PK
 PRIMARY KEY (id);
 
 alter table entrepot_BC_sdc_arbo_adventice
-ADD FOREIGN KEY (BC_sdc_arbo_maitrise_adventice_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
+ADD FOREIGN KEY (BC_sdc_arbo_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
 
 alter table entrepot_BC_sdc_arbo_adventice
 ADD FOREIGN KEY (adventice_id) REFERENCES entrepot_adventice(id);
@@ -353,13 +353,13 @@ replace(replace(rgs.vitiadventicepressurefarmercomment,CHR(13)||CHR(10),'<br>'),
 rgs.vitiadventicequalifier as niveau_maitrise,
 replace(replace(rgs.vitiadventiceresultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS niveau_maitrise_commentaire_agri,
 rgs.vitiherbotreatmentchemical as nb_traitement_herbicide_chimique,
-rgs.vitiherbotreatmentbiocontrol as nb_traitement_herbicide_biocontrol,
+rgs.vitiherbotreatmentbiocontrol as nb_traitement_herbicide_biocontrole,
 rgs.vitisuckeringchemical as nb_traitement_epamprage_chimique,
-rgs.vitisuckeringbiocontrol as nb_traitement_epamprage_biocontrol,
+rgs.vitisuckeringbiocontrol as nb_traitement_epamprage_biocontrole,
 rgs.vitiherbotreatmentchemicalift as ift_herbicide_chimique,
-rgs.vitiherbotreatmentbiocontrolift as ift_herbicide_biocontrol,
+rgs.vitiherbotreatmentbiocontrolift as ift_herbicide_biocontrole,
 rgs.vitisuckeringchemicalift as ift_epamprage_chimique,
-rgs.vitisuckeringbiocontrolift as ift_epamprage_biocontrol,
+rgs.vitisuckeringbiocontrolift as ift_epamprage_biocontrole,
 rgs.topiaid as BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join entrepot_sdc es on es.id = rgs.growingsystem
@@ -449,6 +449,11 @@ insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,
 insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','acariens','attaque moyenne','10 % a 30% de feuille avec une forme mobile');
 insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_feuille_ravageur','acariens','attaque forte','superieur a 30 % de feuille avec une forme mobile');
 
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','pas de dégâts','0');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque faible','inferieur a 5 % de grappes perforées');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque moyenne','5 % a 10 % de grappes perforées');
+insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque forte','superieur a 10 % de grappes perforées');
+
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
@@ -462,9 +467,9 @@ case
 	when yl.yieldobjective is not null then trad1.traduction_interface
 	when yl.yieldobjectiveint is not null then trad2.traduction_interface
 end objectif_rendement_atteint,
-yl.cause1 as rendement_cause1,
-yl.cause2 as rendement_cause2,
-yl.cause3 as rendement_cause3,
+yl.cause1 as cause1,
+yl.cause2 as cause2,
+yl.cause3 as cause3,
 replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid as BC_sdc_generalites_id
@@ -481,9 +486,9 @@ union
 select 
 'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(rgs.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
 trad1.traduction_interface as objectif_rendement_atteint,
-rgs.vitilosscause1 as rendement_cause1,
-rgs.vitilosscause2 as  rendement_cause2,
-rgs.vitilosscause3 as  rendement_cause3,
+rgs.vitilosscause1 as cause1,
+rgs.vitilosscause2 as cause2,
+rgs.vitilosscause3 as cause3,
 replace(replace(rgs.vitiyieldquality,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid BC_sdc_generalites_id
@@ -544,37 +549,37 @@ select
 cc.croppestmaster as entite_id,
 cc.crops as culture_id
 from croppestmaster_crops cc 
-join entrepot_composant_culture ec on ec.id = cc.crops 
+join entrepot_culture ec on ec.id = cc.crops 
 union
 select 
 ac.arbocropadventicemaster as entite_id,
 ac.crops as culture_id
 from arbocropadventicemaster_crops ac 
-join entrepot_composant_culture ec on ec.id = ac.crops  
+join entrepot_culture ec on ec.id = ac.crops  
 union
 select 
 ac2.arbocroppestmaster as entite_id,
 ac2.crops as culture_id
 from arbocroppestmaster_crops ac2  
-join entrepot_composant_culture ec on ec.id = ac2.crops 
+join entrepot_culture ec on ec.id = ac2.crops 
 union
 select 
 cf.foodmaster as entite_id,
 cf.crops as culture_id
 from crops_foodmaster cf
-join entrepot_composant_culture ec on ec.id = cf.crops 
+join entrepot_culture ec on ec.id = cf.crops 
 union
 select 
 cv.versemaster as entite_id,
 cv.crops as culture_id
 from crops_versemaster cv    
-join entrepot_composant_culture ec on ec.id = cv.crops 
+join entrepot_culture ec on ec.id = cv.crops 
 union
 select 
 cy.yieldloss as entite_id,
 cy.crops as culture_id
 from crops_yieldloss cy  
-join entrepot_composant_culture ec on ec.id = cy.crops 
+join entrepot_culture ec on ec.id = cy.crops 
 ;
 
 alter table entrepot_BC_sdc_culture_liee
