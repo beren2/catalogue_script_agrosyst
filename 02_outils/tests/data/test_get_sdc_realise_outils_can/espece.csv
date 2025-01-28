@@ -8,3 +8,4 @@ fr.inra.agrosyst.api.entities.referential.RefEspece_f04f33fa-bebf-4ecb-b78c-47c0
 fr.inra.agrosyst.api.entities.referential.RefEspece_3b4191bb-171d-4650-a960-7309ce4ff810,ZOJ,,,,J05,Divers,,Espèces diverses,,,,,,,,,,TEMP_ZOJ,,,,cultures diverses,
 fr.inra.agrosyst.api.entities.referential.RefEspece_6893af38-dd9f-4f9e-9cc6-a57a5d46ca9f,ZAR,,ZFB,ZLG,J10,Grandes cultures,,Blé tendre,,Hiver,Biscuit,,,,,Triticum,aestivum,512,1,BLE TENDRE,TRITICUM AESTIVUM L.,blé tendre d'hiver,
 fr.inra.agrosyst.api.entities.referential.RefEspece_2bbb38a3-2fec-4776-bb36-d297de125ca1,ZEL,,,,J10,Grandes cultures,,Soja,,,,,,,,Glycine,max,27,22,SOJA,GLYCINE MAX L. MERRILL,soja,
+fr.inra.agrosyst.api.entities.referential.RefEspece_85829526-51e5-4791-a1a0-7c5139d193d6,ZDZ,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Ray-grass d'Italie,,,,ZDZ,Ray-grass d'Italie,Fourrage,,Lolium,multiflorum,58,4,RAY GRASS D'ITALIE,LOLIUM MULTIFLORUM LAM,ray-grass,

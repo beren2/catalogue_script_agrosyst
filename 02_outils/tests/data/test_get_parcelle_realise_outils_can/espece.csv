@@ -1,6 +1,10 @@
 id,code_espece_botanique,code_qualifiant_aee,code_type_saisonnier_aee,code_destination_aee,code_categorie_culture,libelle_categorie_culture,commentaire,libelle_espece_botanique,libelle_qualifiant_aee,libelle_type_saisonnier_aee,libelle_destination_aee,code_cipan_aee,libelle_cipan_aee,libelle_destination_bbch,commentaires,genre,espece,code_gnis,num_groupe_gnis,nom_gnis,nom_latin_gnis,nom_culture_acta,remarque_culture_acta
+fr.inra.agrosyst.api.entities.referential.RefEspece_4b86ffcf-139a-4f40-a7c0-9617416cbdd6,ZAM,ZLN,ZFB,,J10,Grandes cultures,,Avoine,Blanche,Hiver,,ZAMZLNZFB,Avoine blanche d'hiver,,,Avena,sativa,510,3,AVOINE,AVENA SATIVA L.,avoine d'hiver,
 fr.inra.agrosyst.api.entities.referential.RefEspece_9eecc022-2c30-4b27-974a-36e988c7fd97,ZCS,,,ZLD,J10,Grandes cultures,,Maïs,,,Grain(es),,,Grain,,Zea,mays,570,18,MAIS,ZEA MAYS L.,maïs grain,
+fr.inra.agrosyst.api.entities.referential.RefEspece_e57bfced-921d-4ef6-b34b-b99f9429a95c,ZDA,,,,J10,Grandes cultures,,Moutarde blanche,,,,ZDA,Moutarde blanche,,,Sinapsis,alba,25,20,MOUTARDE BLANCHE,SINAPIS ALBA L.,moutarde blanche,jachères semées
+fr.inra.agrosyst.api.entities.referential.RefEspece_966cbdcd-de05-4be7-98bd-c4d83f7df5dd,ZMG,,,,J07,Cultures fourragères/Prairie/ Pelouse/ Gazon,,Trèfle d'Alexandrie,,,,,,Semence,,Trifolium,alexandrinum,67,5,TREFLE ALEXANDRIE,TRIFOLIUM ALEXANDRINUM L.,trèfle d'Alexandrie,
 fr.inra.agrosyst.api.entities.referential.RefEspece_b24d4b7a-59be-4caa-a92e-d0bcb3084f4b,ZCL,ZES,,,J10,Grandes cultures,,Lin,Oléagineux,,,,,,,Linum,usitatissimum,16,16,LIN OLEAGINEUX,LINUM USITATISSIMUM L.,lin oléagineux,
 fr.inra.agrosyst.api.entities.referential.RefEspece_4eab135c-c32e-48b4-92f7-c869405bd5ea,ZDS,ZLR,,ZLQ,J02,Cultures légumières,,Pomme de terre,Consommation,,frais,,,"Chair ferme, 
 Primeur, 
 Autres",,Solanum,tuberosum,1,15,POMMES DE TERRE,SOLANUM TUBEROSUM L.,pomme de terre,de consommation
+fr.inra.agrosyst.api.entities.referential.RefEspece_6a6df17b-c21d-4bfe-9ba0-c6a7ed600422,ZDV,ZLF,,,J02,Cultures légumières,,Radis,Fourrager / Fourrage,,,ZDVZLF,Radis Fourrager,,,Raphanus,sativus,90,6,RADIS FOURRAGER,RAPHANUS SATIVUS L. OLEIF,radis,

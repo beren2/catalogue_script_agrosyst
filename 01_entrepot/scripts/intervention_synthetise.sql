@@ -1,3 +1,30 @@
+-- cette table est un peu particulière : on doit préalablement récupérer des informations provenant des actions. 
+-- en effet, le psci, traditionnelement défini au niveau de l'intervention fait appel à certaines informations à l'échelle de l'action.
+-- on a donc 3 psci différentes : 
+-- 	- le psci de l'intervention (n'intègre pas la pondération par la proportion de surface traitée)
+--	- le psci_phyto_avec_amm (dans le cas des interventions contenant une action de type "APPLICATION_DE_PRODUITS_PHYTOSANITAIRES"), le psci pondéré par la proportion de surface traitée
+-- 	- le psci_phyto_sans_amm (dans le cas des interventions contenant une action de type "LUTTE_BIOLOGIQUE"), le psci pondéré par la proportion de surface traitée
+-- c'est une entorse au principe de l'entrepôt qui est censé uniquement sélectionner les informations présentes dans la base, au bénéfice du confort de l'utilisateur historique. 
+
+CREATE TEMPORARY table action_synthetise_phyto_avec_amm AS 
+SELECT DISTINCT ON (aa.practicedintervention)
+	aa.topiaid,
+	aa.proportionoftreatedsurface,
+	aa.practicedintervention
+FROM abstractaction aa
+JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.topiaid
+where refintrav.intervention_agrosyst = 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES';
+
+CREATE TEMPORARY table action_synthetise_phyto_sans_amm AS 
+SELECT DISTINCT ON (aa.practicedintervention)
+	aa.topiaid,
+	aa.proportionoftreatedsurface,
+	aa.practicedintervention
+FROM abstractaction aa
+JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.topiaid
+where refintrav.intervention_agrosyst = 'LUTTE_BIOLOGIQUE';
+
+
 CREATE INDEX if not exists entrepot_domaine_idx0 on entrepot_domaine(id);
 CREATE INDEX if not exists entrepot_dispositif_idx0 on entrepot_dispositif(id);
 CREATE INDEX if not exists entrepot_abstraction_action_idx0 on abstractaction(topiaid, mainaction);
@@ -23,7 +50,10 @@ pi.startingperioddate date_debut,
 pi.endingperioddate date_fin,
 pi.spatialfrequency freq_spatiale,
 pi.temporalfrequency freq_temporelle,
-pi.spatialfrequency * pi.temporalfrequency psci_intervention,
+pi.spatialfrequency * pi.temporalfrequency as psci,
+aa1.proportionoftreatedsurface * pi.spatialfrequency * pi.temporalfrequency / 100 as psci_phyto_avec_amm,
+aa2.proportionoftreatedsurface * pi.spatialfrequency * pi.temporalfrequency / 100 as psci_phyto_sans_amm,
+-- pi.spatialfrequency * pi.temporalfrequency psci_intervention,
 pi.workrate debit_de_chantier,
 pi.workrateunit debit_de_chantier_unite,
 pi.progressionspeed vitesse_avancement,
@@ -35,6 +65,8 @@ pitcc.toolscouplingcodes combinaison_outil_code
 FROM practicedintervention pi
 JOIN practicedcropcycleconnection pccc ON pi.practicedcropcycleconnection = pccc.topiaid
 LEFT JOIN practicedintervention_toolscouplingcodes pitcc ON pi.topiaid = pitcc.owner
+LEFT JOIN action_synthetise_phyto_avec_amm aa1 on aa1.practicedintervention = pi.topiaid 
+LEFT JOIN action_synthetise_phyto_sans_amm aa2 on aa2.practicedintervention = pi.topiaid 
 JOIN entrepot_connection_synthetise ecs ON pccc.topiaid = ecs.id
 
 UNION
@@ -51,7 +83,10 @@ pi.startingperioddate date_debut,
 pi.endingperioddate date_fin,
 pi.spatialfrequency freq_spatiale,
 pi.temporalfrequency freq_temporelle,
-pi.spatialfrequency * pi.temporalfrequency psci_intervention,
+pi.spatialfrequency * pi.temporalfrequency as psci,
+aa1.proportionoftreatedsurface * pi.spatialfrequency * pi.temporalfrequency / 100 as psci_phyto_avec_amm,
+aa2.proportionoftreatedsurface * pi.spatialfrequency * pi.temporalfrequency / 100 as psci_phyto_sans_amm,
+-- pi.spatialfrequency * pi.temporalfrequency psci_intervention,
 pi.workrate debit_de_chantier,
 pi.workrateunit debit_de_chantier_unite,
 pi.progressionspeed vitesse_avancement,
@@ -63,8 +98,9 @@ pitcc.toolscouplingcodes combinaison_outil_code
 FROM practicedintervention pi
 JOIN practicedcropcyclephase pccp ON pi.practicedcropcyclephase = pccp.topiaid
 left JOIN practicedintervention_toolscouplingcodes pitcc ON pi.topiaid = pitcc.owner
-join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = pccp.topiaid
-;
+LEFT JOIN action_synthetise_phyto_avec_amm aa1 on aa1.practicedintervention = pi.topiaid 
+LEFT JOIN action_synthetise_phyto_sans_amm aa2 on aa2.practicedintervention = pi.topiaid 
+join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = pccp.topiaid;
     
 alter table entrepot_intervention_synthetise 
 add constraint intervention_synthetise_PK

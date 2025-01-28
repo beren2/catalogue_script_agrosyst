@@ -106,7 +106,7 @@ def get_surfaces_connections_synthetise(df_synthetise,
         else:
             pass # on ne fait rien, on pourrait ajouter des NaN avec les indices des noeuds et des aretes mais a voir si il faut ou pas
 
-    connections_synthetise_surfaces = pd.DataFrame(pd.concat(ret_aretes)).rename(columns={'frequence_totale' :'surface (ha)'})
+    connections_synthetise_surfaces = pd.DataFrame(pd.concat(ret_aretes)).rename(columns={'frequence_totale' :'surface'})
     # noeuds_synthetise_surfaces =  pd.concat(ret_noeuds)
 
     return connections_synthetise_surfaces
