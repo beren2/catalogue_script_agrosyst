@@ -213,10 +213,23 @@ def get_typologie_culture_CAN(donnees):
             ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
     '''
     cropsp = donnees['composant_culture'][['espece_id','culture_id']]
-    crop = donnees['culture'][['id','type']].rename(columns={
+
+    crop = donnees['culture']
+    if crop.index.name == 'id' :
+        crop = crop.reset_index()
+    else :
+        crop = crop.reset_index(drop = True)
+    crop = crop[['id','type']].rename(columns={
         'id':'culture_id'})
-    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
+    
+    sp = donnees['espece_vCAN']
+    if sp.index.name == 'id' :
+        sp = sp.reset_index()
+    else :
+        sp = sp.reset_index(drop = True)
+    sp = sp[['id','typocan_espece','typocan_espece_maraich']].rename(columns={
         'id':'espece_id'})
+    
     # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
     # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]
     typo1 = donnees['typo_especes_typo_culture'].rename(columns={
@@ -287,13 +300,13 @@ def get_typologie_culture_CAN(donnees):
 
 
 
-def get_typologie_culture_CAN_synthetise(donnees):
+def get_typologie_rotation_CAN_synthetise(donnees):
     ''' 
     Le but est d'obtenir les typologies de rotation utilisées par la Cellule référence.
     Pour le synthetise
 
     Echelle :
-        entite_id : synthetise_id / zone_id
+        entite_id : synthetise_id
 
     Args:
         donnees (dict):
@@ -301,29 +314,33 @@ def get_typologie_culture_CAN_synthetise(donnees):
                 'connection_synthetise'
                 'noeuds_synthetise'
             Données d'outils (attention dépendence)
+                'noeuds_synthetise_restructure'
                 'surface_connection_synthetise'
                 'typologie_can_culture'
-                'noeuds_synthetise_restructure'
 
     Returns:
         pd.DataFrame() contenant le synthetise_id et la typologie de rotation de la CAN
     '''
+    # OUTILS
+    # Attention on utilise ici l'outil passant de noeuds_synth_id à la culture_id (voir outil restructuration)
+    noeud_with_culture_id = donnees['noeuds_synthetise_restructure']
+    con_frq = donnees['surface_connection_synthetise'][['frequence']]
+    typo_culture = donnees['typologie_can_culture']
 
-    # Attention on prend ici l'année du sdc (voir outil restructuration) et pas les années du synthétisé car les cultures disponibles pour le synthétisé ne proviennent que du couple culture_code*campagne_du_domaine désormais
-    restruct_culture_id = donnees['intervention_synthetise_agrege']
+    # ENTREPOT
     # Pas besoin de la culture précédente
     # conn = donnees['connection_synthetise'][['source_noeuds_synthetise_id','cible_noeuds_synthetise_id','culture_absente']]
     conn = donnees['connection_synthetise'][['cible_noeuds_synthetise_id','culture_absente']]
     conn = conn.loc[conn['culture_absente'] == 'f'].drop('culture_absente', axis=1)
     noeud = donnees['noeuds_synthetise'][['synthetise_id']]
-    noeud = noeud.merge(restruct_culture_id, on_index = True)
-    con_frq = donnees['surface_connection_synthetise'][['frequence']]
+    noeud = noeud.merge(noeud_with_culture_id, left_index = True, right_index = True)
     # df = conn.merge(noeud, left_on = 'source_noeuds_synthetise_id', right_index = True, suffixes = (None, '_source'))
-    typo_culture = donnees['typologie_can_culture']
-
+     
+    # MERGE
     df = conn.merge(noeud, left_on = 'cible_noeuds_synthetise_id', right_index = True)
-    df = df.merge(con_frq, on_index = True)
+    df = df.merge(con_frq, left_index = True, right_index = True)
     df = df.merge(typo_culture, left_on = 'culture_id', right_index = True)
+    df = df[['synthetise_id','typocan_culture','frequence']]
 
     # Comme la CAN fait, on check à chaque fois une condition, si true on return.
     # il y a donc un ordre de priorité bien défini
@@ -369,11 +386,13 @@ def get_typologie_culture_CAN_synthetise(donnees):
         'frequence': 'sum'
     }
 
-    df = df.groupby('sdc_id').agg(agg_dict).reset_index().\
-        rename(columns={'typocan_culture':'typocan_rotation',
-                        'frequence':'frequence_total_rota'})
+    df_res = df.groupby('synthetise_id').apply(
+         lambda cgrp: pd.Series({
+            'typocan_rotation': get_rota_typo(cgrp),
+            'frequence_total_rota': cgrp['frequence'].sum(),
+            'list_freq': '_'.join(list(cgrp['frequence'].astype('str')))
+        }))
 
-    df['frequence_total_rota'] = df['frequence_total_rota'].astype('int64')
-    df = df.set_index('sdc_id')
+    # df_res['frequence_total_rota'] = df_res['frequence_total_rota'].astype('int64')
 
-    return df
+    return df_res
