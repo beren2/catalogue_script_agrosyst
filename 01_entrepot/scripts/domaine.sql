@@ -67,7 +67,7 @@ g.name nom_local,
 g."comment" commentaire,
 g.importance SAU_concernee_pct,
 g."domain" domaine_id,
-g.refsolarvalis refsolarvalis_id
+g.refsolarvalis sol_arvalis_id
 from ground g
 join entrepot_domaine ed on ed.id = g."domain" ;
  
@@ -79,7 +79,7 @@ alter table entrepot_domaine_sol
 add FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);
 
 alter table entrepot_domaine_sol
-add FOREIGN KEY (refsolarvalis_id) REFERENCES refsolarvalis(topiaid);
+add FOREIGN KEY (sol_arvalis_id) REFERENCES entrepot_sol_arvalis(id);
 
 
 -- Surfaces par especes
