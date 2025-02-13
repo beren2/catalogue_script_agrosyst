@@ -45,7 +45,15 @@ CREATE TABLE entrepot_domaine AS
     ro1.libelle_otex_18_postes otex_18_nom,
     ro2.libelle_otex_70_postes otex_70_nom,
     d.orientation otex_commentaire,
-    dr.responsibles responsables_domaine
+    dr.responsibles responsables_domaine, 
+    d.nbplot as nombre_parcelles,
+    d.furthestplotdistance as distance_siege_parcelle_max,
+    d.areaaroundhq as surface_autour_siege_exploitation,
+    d.groupedplots as parcelles_groupees,
+    d.scatteredplots as parcelles_dispersees,
+    d.ratherscatteredplots as parcelles_plutot_dispersees,
+    d.joinedplots as parcelles_groupees_distinctes,
+    d.rathergroupedplots as parcelles_plutot_groupees
   FROM domain d
   LEFT JOIN domainresponsibles dr ON d.code = dr.domaincode
   LEFT JOIN reflocation rl ON d.location = rl.topiaid
