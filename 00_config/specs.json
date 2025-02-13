@@ -75,7 +75,8 @@
 			"texture_sol",
 			"fertilisation_organique",
 			"fertilisation_minerale",
-			"adventice"
+			"adventice", 
+			"sol_arvalis"
 		],
 		"tables": {
 			"semence" : {
@@ -296,6 +297,9 @@
 			},
 			"groupe_cible":{
 				"file_name" : "groupe_cible"
+			},
+			"sol_arvalis":{
+				"file_name" : "sol_arvalis"
 			}
 		}
 	},
