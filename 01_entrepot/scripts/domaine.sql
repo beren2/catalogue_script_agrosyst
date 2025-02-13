@@ -27,6 +27,7 @@ CREATE TABLE entrepot_domaine AS
     d.description description,
     rls.libelle_insee statut_juridique_nom,
     d.statuscomment statut_juridique_commentaire,
+    d.chiefbirthyear annee_naissance_exploitant, 
     d.usedagriculturalarea SAU_totale,
     d.croppingplancomment cultures_commentaire,
     d.otheractivitiescomment autres_activites_commentaire,
