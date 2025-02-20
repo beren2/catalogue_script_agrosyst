@@ -4,7 +4,7 @@ select
 	ed.nom as domaine_nom, 
 	ed.campagne as domaine_campagne,
 	sdc.code as sdc_code, 
-	sdc.id as domaine_id, 
+	sdc.id as sdc_id, 
 	sdc.nom as domaine_nom, 
 	es.id as systeme_synthetise_id,
 	es.nom as systeme_synthetise_nom,
