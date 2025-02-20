@@ -53,6 +53,7 @@
 			"acta_substance_active",
 			"acta_traitement_produit",
 			"acta_dosage_spc",
+			"bilan_campagne_sdc",
 			"composition_substance_active_numero_amm",
 			"composant_action_semis",
 			"reseau",
@@ -65,7 +66,6 @@
 			"nuisible_edi",
 			"adventice",
 			"bilan_campagne_sdc_traduction",
-			"bilan_campagne_sdc",
 			"substances_actives_europeennes",
 			"phrases_de_risque_numero_amm",
 			"prix_intrant_produit_phyto_sanitaire",
@@ -76,7 +76,8 @@
 			"levier",
 			"texture_sol",
 			"fertilisation_organique",
-			"fertilisation_minerale"
+			"fertilisation_minerale",
+			"adventice"
 		],
 		"tables": {
 			"semence" : {
@@ -339,6 +340,9 @@
 			},
 			"groupe_cible":{
 				"file_name" : "groupe_cible"
+			},
+			"sol_arvalis":{
+				"file_name" : "sol_arvalis"
 			}
 		}
 	},
