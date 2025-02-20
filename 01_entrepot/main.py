@@ -148,6 +148,7 @@ options = {
         "Mettre à jour les métadonnées de Datagrosyst" : [],
         "Téléchargement de l'entrepôt" : [],
         "Télécharger la base OP de datagrosyst" : [],
+        "Vérification de colonnes non nulles dans les tables de performances" : [],
         "Quitter" : []
 }
 
@@ -472,7 +473,54 @@ while True:
 
         print("La nouvelle BDD est générée, pensez à mettre à jour le fichier 00_config/config.ini")
     
+    elif choice_key == "Vérification de colonnes non nulles dans les tables de performances":
+        list_file_performance = ['utilisation_intrant_performance',
+                'intervention_synthetise_performance',
+                'intervention_realise_performance',
+                'zone_realise_performance',
+                'parcelle_realise_performance',
+                'synthetise_synthetise_performance',
+                'sdc_realise_performance']
+        
+        error = 0
+        for filename in list_file_performance.copy() : 
+            pathfile = DATA_PATH+filename+'.csv'
+            if(not os.path.isfile(pathfile)):
+                error = error +1
+                list_file_performance.remove(filename)
+                print(f"{Fore.RED}ATTENTION " + pathfile + " : non trouvé"f"{Style.RESET_ALL}")
+        
+        if error != 0:
+            print(f"{Fore.RED}\nLe controle s'effectura sur les tables deja téléchargées.\n"f"{Style.RESET_ALL}")
 
+        # import des .csv
+        donnees = {}
+        for df_name in list_file_performance :
+            donnees[df_name] = pd.read_csv(DATA_PATH+df_name+'.csv', sep = ',').replace({'\r\n': '\n'}, regex=True)
+        
+        column_pattern_to_skip = ["non_rens","no_rens","tx_comp","taux_de_completion"]
 
-cur.close()
-conn.close()
+        for key, df in donnees.items():
+            print('****************')
+            print(f"{Fore.BLUE} Fichier "+ str(key) + f"{Style.RESET_ALL}" )
+            max_0 = []
+            only_na = []
+            for c in df.columns:
+                type_ = df[c].dtype
+                if not any(pattern in str(c) for pattern in column_pattern_to_skip) :
+                    if type_ == 'float64':
+                        max_column = df[c].max()
+                        if max_column == 0.0:
+                            max_0.append(c)
+                    
+                    if df[c].dropna().shape[0] == 0:
+                        only_na.append(c)
+            
+            if len(max_0) != 0 : 
+                print("     ERREUR : des colonnes ont pour "f"{Fore.RED}valeur maximale 0.0 : "f"{Style.RESET_ALL}")
+                print("         " + str(max_0))
+            if len(only_na) != 0 : 
+                print("     ERREUR : des colonnes "f"{Fore.RED} des colonnes contiennent uniquement des NA : "f"{Style.RESET_ALL}")
+                print("         " + str(only_na))
+    
+    

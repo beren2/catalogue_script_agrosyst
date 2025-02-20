@@ -64,6 +64,8 @@
 			"dose_ref_par_groupe_cible",
 			"groupe_cible",
 			"nuisible_edi",
+			"adventice",
+			"bilan_campagne_sdc_traduction",
 			"substances_actives_europeennes",
 			"phrases_de_risque_numero_amm",
 			"prix_intrant_produit_phyto_sanitaire",
@@ -75,8 +77,7 @@
 			"texture_sol",
 			"fertilisation_organique",
 			"fertilisation_minerale",
-			"adventice", 
-			"sol_arvalis"
+			"adventice"
 		],
 		"tables": {
 			"semence" : {
@@ -256,7 +257,49 @@
 			"composant_culture_concerne_intervention_realise":{
 				"file_name" : "composant_culture_concerne_intervention"
 			},
-			"bilan_campagne_sdc_generalites":{
+			"BC_sdc_traduction":{
+				"file_name" : "bilan_campagne_sdc_traduction"
+			},
+			"BC_sdc_generalites":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_assolee_maitrise_agresseur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_assolee_agresseur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_arbo_maitrise_agresseur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_arbo_adventice":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_arbo_ravageur_maladie":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_viti_adventice":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_viti_maladie_ravageur":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"entrepot_BC_sdc_viti_ravageur_explication":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_rendement":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_alimentation":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_assolee_verse":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_culture_liee":{
+				"file_name" : "bilan_campagne_sdc"
+			},
+			"BC_sdc_especes_liee":{
 				"file_name" : "bilan_campagne_sdc"
 			},
 			"espece":{
@@ -305,7 +348,30 @@
 	},
 	"outils" : {
         "explication" : "Les données de la source outils permettent d'obtenir des informations utiles pour le nettoyage et la manipulation des différentes entités.",
-        "categories" : {
+        "external_data" : {
+			"path" : "data/external_data/",
+			"tables" : [
+				"BDD_donnees_attendues_CAN",
+				"typo_especes_typo_culture",
+				"typo_especes_typo_culture_marai"
+			],
+			"validation" : {
+				"path" : "tests.test_external_data",
+				"checks" : [
+					{
+						"name" : "check_bdd_donnees_attendues_CAN", 
+						"table" : "BDD_donnees_attendues_CAN", 
+						"function_name" : "check_BDD_donnees_attendues_CAN"
+					},
+					{
+						"name" : "check_typo_especes_typo_culture", 
+						"table" : "typo_especes_typo_culture", 
+						"function_name" : "typo_especes_typo_culture"
+					}
+				]
+			}
+		},
+		"categories" : {
             "nettoyage" : {
                 "function_name" : "create_category_nettoyage",
                 "dependances" : [], 
@@ -331,7 +397,7 @@
                 "function_name" : "None",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "agregation"
+                    "category": "agregation"
                 }
                 ],
                 "generated" : [
@@ -347,7 +413,7 @@
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "agregation_complet"
+                    "category": "agregation_complet"
                 }],
                 "generated" : [
                     "noeuds_synthetise_restructure", 
@@ -365,18 +431,19 @@
                 "generated" : [
 					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
-                    "sdc_donnee_attendue"
+                    "identification_pz0",
+					"typologie_can_culture"
                 ]
             },
             "outils_can" : {
                 "function_name" : "create_category_outils_can",
                 "dependances" : [{
                     "source" : "outils", 
-                    "categorie": "restructuration"
+                    "category": "restructuration"
                 },
                 {
                     "source" : "outils", 
-                    "categorie": "agregation_complet"
+                    "category": "agregation_complet"
                 }],
                 "generated" : [
                     "dispositif_filtres_outils_can",
@@ -392,20 +459,23 @@
             },
             "test" : {
                 "function_name" : "create_category_test",
-                "dependances" : [{
-                    "source" : "outils", 
-                    "categorie": "restructuration"
-                },
-                {
-                    "source" : "outils", 
-                    "categorie": "agregation_complet"
-                }],
+                "dependances" : [
+					{
+                    	"source" : "outils", 
+						"category": "restructuration"
+					},
+					{
+						"source" : "outils", 
+						"category": "agregation_complet"
+					}
+				],
                 "generated" : [
                     "recolte_outils_can"
                 ],
                 "entrepot_dependances" : [
                     "synthetise", "culture", "noeuds_synthetise", "connection_synthetise",
-                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine"
+                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine", 
+					"zone", "intervention_synthetise_agrege", "intervention_realise_agrege", "parcelle"
                 ]
             }
         }
