@@ -12,13 +12,13 @@ select
 	es.valide as systeme_synthetise_validation,
 	ecs.id as culture_precedent_rang_id,
 	ens_cible.id as culture_rotation_id,
-	ens_cible.rang as culture_rang,
+	ens_cible.rang+1 as culture_rang,
 	null as culture_indicateur_branche, -- information non trouvée et à priori inutile
 	ens_cible.culture_code as culture_code,
 	ec.nom as culture_nom,
-	ens_cible.fin_cycle as fin_rotation,
-	ens_cible.memecampagne_noeudprecedent as meme_campagne_culture_precedente,
-	ecs.culture_absente as culture_absente,
+	CASE CAST(ens_cible.fin_cycle AS BOOLEAN) WHEN true THEN 'OUI' WHEN false THEN 'NON' END fin_rotation,
+	CASE CAST(ens_cible.memecampagne_noeudprecedent AS BOOLEAN) WHEN true THEN 'OUI' WHEN false THEN 'NON' END meme_campagne_culture_precedente,
+	CASE CAST(ecs.culture_absente AS BOOLEAN) WHEN true THEN 'OUI' WHEN false THEN 'NON' END culture_absente,
 	ecoc.complet_espece_edi as culture_especes_edi,
 	ec_intermediaire.code as ci_code,
 	ec_intermediaire.nom as ci_nom,
@@ -37,7 +37,7 @@ left join entrepot_noeuds_synthetise_restructure ensr on ensr.id = ens_cible.id
 left join entrepot_noeuds_synthetise_restructure ensr_source on ensr_source.id = ens_source.id
 left join entrepot_culture ec on ec.id = ensr.culture_id
 left join entrepot_culture_outils_can ecoc on ecoc.id = ec.id
-left join entrepot_culture ec_source on ec_source.id = ensr_source.id
+left join entrepot_culture ec_source on ec_source.id = ensr_source.culture_id
 left join entrepot_culture_outils_can ecoc_source on ecoc.id = ec_source.id
 left join entrepot_culture ec_intermediaire on ecsr.culture_intermediaire_id = ec_intermediaire.id
 left join entrepot_synthetise es on ens_cible.synthetise_id = es.id
