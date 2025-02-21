@@ -16,9 +16,9 @@ select
 	null as culture_indicateur_branche, -- information non trouvée et à priori inutile
 	ens_cible.culture_code as culture_code,
 	ec.nom as culture_nom,
-	CASE CAST(ens_cible.fin_cycle AS BOOLEAN) WHEN true THEN 'OUI' WHEN false THEN 'NON' END fin_rotation,
-	CASE CAST(ens_cible.memecampagne_noeudprecedent AS BOOLEAN) WHEN true THEN 'OUI' WHEN false THEN 'NON' END meme_campagne_culture_precedente,
-	CASE CAST(ecs.culture_absente AS BOOLEAN) WHEN true THEN 'OUI' WHEN false THEN 'NON' END culture_absente,
+	CASE WHEN ens_cible.fin_cycle = TRUE THEN 'OUI' ELSE 'NON' END AS fin_rotation,
+    CASE WHEN ens_cible.memecampagne_noeudprecedent = TRUE THEN 'OUI' ELSE 'NON' END AS meme_campagne_culture_precedente,
+    CASE WHEN ecs.culture_absente = TRUE THEN 'OUI' ELSE 'NON' END AS culture_absente,
 	ecoc.complet_espece_edi as culture_especes_edi,
 	ec_intermediaire.code as ci_code,
 	ec_intermediaire.nom as ci_nom,
