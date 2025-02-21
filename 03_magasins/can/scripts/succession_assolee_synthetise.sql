@@ -1,3 +1,4 @@
+create temporary table test2 as
 select 
 	ed.code as domaine_code, 
 	ed.id as domaine_id, 
@@ -37,11 +38,17 @@ left join entrepot_noeuds_synthetise_restructure ensr on ensr.id = ens_cible.id
 left join entrepot_noeuds_synthetise_restructure ensr_source on ensr_source.id = ens_source.id
 left join entrepot_culture ec on ec.id = ensr.culture_id
 left join entrepot_culture_outils_can ecoc on ecoc.id = ec.id
-left join entrepot_culture ec_source on ec_source.id = ensr_source.culture_id
-left join entrepot_culture_outils_can ecoc_source on ecoc.id = ec_source.id
+left join entrepot_culture ec_source on ec_source.id = ensr_source.culture_id 
+left join entrepot_culture_outils_can ecoc_source on ecoc_source.id = ec_source.id
 left join entrepot_culture ec_intermediaire on ecsr.culture_intermediaire_id = ec_intermediaire.id
 left join entrepot_synthetise es on ens_cible.synthetise_id = es.id
 left join entrepot_sdc sdc on es.sdc_id = sdc.id
 left join entrepot_dispositif edisp on sdc.dispositif_id = edisp.id
 left join entrepot_domaine ed on ed.id = edisp.domaine_id
 join entrepot_dispositif_filtres_outils_can edfoc on edisp.id = edfoc.id;
+
+
+
+
+select * from entrepot_culture;
+select * from entrepot_noeuds_synthetise_restructure;
