@@ -19,7 +19,7 @@ select
 	ens_cible.fin_cycle as fin_rotation,
 	ens_cible.memecampagne_noeudprecedent as meme_campagne_culture_precedente,
 	ecs.culture_absente as culture_absente,
-	ecoc.complet_espece_edi as culture_espece_edi,
+	ecoc.complet_espece_edi as culture_especes_edi,
 	ec_intermediaire.code as ci_code,
 	ec_intermediaire.nom as ci_nom,
 	ens_source.id as precedent_rotation_id,
