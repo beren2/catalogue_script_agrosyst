@@ -1,4 +1,3 @@
-create temporary table test2 as
 select 
 	ed.code as domaine_code, 
 	ed.id as domaine_id, 
