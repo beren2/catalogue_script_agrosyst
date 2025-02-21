@@ -23,7 +23,7 @@ select
 	ec_intermediaire.code as ci_code,
 	ec_intermediaire.nom as ci_nom,
 	ens_source.id as precedent_rotation_id,
-	ens_source.rang as precedent_rang,
+	ens_source.rang+1 as precedent_rang,
 	null as precedent_indicateur_branche, -- information non trouvée et à priori inutile
 	ens_source.culture_code as precedent_code,
 	ec_source.nom as precedent_nom,
