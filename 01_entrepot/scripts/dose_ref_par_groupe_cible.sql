@@ -10,9 +10,7 @@ r.groupe_cible_maa ,
 r.campagne ,
 r.dose_ref_maa ,
 r.unit_dose_ref_maa ,
-r.volume_max_bouillie ,
-r.date_correction_maa ,
-r.description_correction_maa 
+r.volume_max_bouillie
 from refmaadosesrefpargroupecible r 
 where active is true;
 
