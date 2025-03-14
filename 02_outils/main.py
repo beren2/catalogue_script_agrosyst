@@ -11,6 +11,8 @@ import os
 import json
 import configparser
 import urllib
+import importlib
+import time
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -22,8 +24,6 @@ import pandas as pd
 from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
-import importlib
-import time
 
 # obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -578,10 +578,6 @@ options = {
         "Quitter" : []
     }
 }
-
-class LeakingData(Exception):
-    pass
-
 
 donnees = {}
 while True:

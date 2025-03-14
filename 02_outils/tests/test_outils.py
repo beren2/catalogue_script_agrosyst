@@ -2,7 +2,6 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
-import numpy as np
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
