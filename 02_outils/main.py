@@ -268,18 +268,21 @@ def test_check_external_data(leaking_tables_external):
     # load des données externes
     load_datas(
         external_tables_existing, 
-        verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path']
+        verbose=True, path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
     
     all_passed = True
     for check in external_data_validation_checks:
         external_data_test_module = importlib.import_module(external_data_validation_path)
         check_function = getattr(external_data_test_module, check['function_name'])
-        res = check_function(donnees)
-        if res:
-            print(check['name'], ":", f"{Fore.GREEN} validé {Style.RESET_ALL}")
+        message_error = check_function(donnees)
+        
+        if len(message_error) == 0:
+            print(f"{Fore.GREEN}", check['name'], ":", f"validé {Style.RESET_ALL}")
         else:
-            print(check['name'], ":", f"{Fore.RED} échoué {Style.RESET_ALL}")
+            print(f"{Fore.RED}", check['name'], ":", f"échoué {Style.RESET_ALL}")
+            print(message_error)
+            print("\n")
             all_passed = False
 
     if all_passed:
