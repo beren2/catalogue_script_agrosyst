@@ -1,4 +1,4 @@
-CREATE TEMPORARY TABLE entrepot_context_performance_sdc IF NOT EXISTS AS
+CREATE TEMPORARY TABLE IF NOT EXISTS entrepot_context_performance_sdc  AS
 with reseaux_agg as (
 	select elsr.sdc_id , 
 	string_agg(distinct er2.nom, ', ') as nom_reseau_it, 
