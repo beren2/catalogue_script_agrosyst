@@ -252,21 +252,25 @@ external : """+str(leaking_tables['external'])+""" ("""+SOURCE_SPECS['outils']['
 
     return error_code, error_message
 
-def test_check_external_data():
+def test_check_external_data(leaking_tables_external):
     """
         Print les résultats des tests effectués dans le fichier défini 
         dans la spec : outils.external_data.validation.path
         Retourne 0 si tout s'est bien passé, 1 sinon
     """
+    external_tables = SOURCE_SPECS['outils']['external_data']['tables']
+    external_tables_existing = [t for t in external_tables if t not in leaking_tables_external]
+
     external_data_validation = SOURCE_SPECS['outils']['external_data']['validation']
     external_data_validation_path = external_data_validation['path']
-    external_data_validation_checks = external_data_validation['checks']
+    external_data_validation_checks = [check for check in external_data_validation['checks'] if check['table'] not in leaking_tables_external]
 
     # load des données externes
     load_datas(
-        SOURCE_SPECS['outils']['external_data']['tables'], 
+        external_tables_existing, 
         verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
+    
     all_passed = True
     for check in external_data_validation_checks:
         external_data_test_module = importlib.import_module(external_data_validation_path)
@@ -280,7 +284,7 @@ def test_check_external_data():
 
     if all_passed:
         error_code = 0
-        error_message = f"{Fore.GREEN}Toutes les données externes sont conformes{Style.RESET_ALL}"
+        error_message = f"{Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
     else :
         error_code = 0
         error_message = f"{Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
@@ -766,16 +770,18 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
     elif choice_key == 'Tester la cohérence des données externes':
         print("* DÉBUT DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
+        tables_to_check = SOURCE_SPECS['outils']['external_data']['tables']
         leaking_tables_external = check_files_exist(
-            SOURCE_SPECS['outils']['external_data']['tables'], 
+            tables_to_check, 
             path_data=SOURCE_SPECS['outils']['external_data']['path']
         )
-        if len(leaking_tables_external) == 0:
-            error_code, error_message = test_check_external_data()
+        if len(leaking_tables_external) != 0:
+            print(f"{Fore.RED} Attention : certaines tables externes sont absentes. Elles NE SONT PAS vérifiées(",str(leaking_tables_external),f"){Style.RESET_ALL}")
+            
+        if len(tables_to_check) > len(leaking_tables_external):
+            error_code, error_message = test_check_external_data(leaking_tables_external)
             print(error_message)
-        else :
-            print(f"{Fore.RED} Certaines tables externes sont absentes (",str(leaking_tables_external),f"){Style.RESET_ALL}")
-        time.sleep(1) 
+
         print("* FIN DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
 
     elif choice_key == "Test":
