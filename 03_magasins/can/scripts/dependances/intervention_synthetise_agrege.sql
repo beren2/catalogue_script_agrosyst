@@ -1,4 +1,4 @@
-CREATE TEMPORARY TABLE entrepot_intervention_synthetise_agrege AS
+CREATE TEMPORARY TABLE entrepot_intervention_synthetise_agrege IF NOT EXISTS AS
 SELECT DISTINCT 
     nuirac.intervention_synthetise_id AS id, 
     nuirac.plantation_perenne_synthetise_id, 

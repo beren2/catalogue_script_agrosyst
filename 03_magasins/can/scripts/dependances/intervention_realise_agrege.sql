@@ -1,5 +1,5 @@
 -- On génère d'abord la table agrégée complète
-CREATE TEMPORARY TABLE entrepot_intervention_realise_agrege AS
+CREATE TEMPORARY TABLE entrepot_intervention_realise_agrege IF NOT EXISTS AS
 SELECT DISTINCT 
     nuirac.intervention_realise_id AS id, 
     nuirac.plantation_perenne_realise_id, 
