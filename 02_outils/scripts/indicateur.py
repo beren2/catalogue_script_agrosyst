@@ -222,7 +222,7 @@ def get_typologie_culture_CAN(donnees):
     crop = crop[['id','type']].rename(columns={
         'id':'culture_id'})
     
-    sp = donnees['espece_vCAN']
+    sp = donnees['espece']
     if sp.index.name == 'id' :
         sp = sp.reset_index()
     else :
@@ -381,11 +381,6 @@ def get_typologie_rotation_CAN_synthetise(donnees):
         else :
             return 'Autre'
     
-    agg_dict = {
-        'typocan_culture': get_rota_typo,
-        'frequence': 'sum'
-    }
-
     df_res = df.groupby('synthetise_id').apply(
          lambda cgrp: pd.Series({
             'typocan_rotation': get_rota_typo(cgrp),
