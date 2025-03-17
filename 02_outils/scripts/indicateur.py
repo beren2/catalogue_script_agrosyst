@@ -282,8 +282,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
 
     # C) Pour les pz0 pluri annuels restants : 
     # tag des lignes correctes
-    select_df.loc[:,'to_keep'] = select_df.apply(lambda x : True if (x['donnee_attendue'] in (pattern_pz0_correct))
-                                                                            else False , axis = 1)
+    select_df.loc[:,'to_keep'] = select_df.apply(lambda x : x['donnee_attendue'] in (pattern_pz0_correct) , axis = 1)
     
     dephy_correct = select_df.loc[select_df['to_keep'], 'code_dephy'].to_list()
     
