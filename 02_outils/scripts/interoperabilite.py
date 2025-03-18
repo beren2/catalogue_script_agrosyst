@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import geopandas as gpd
 
-def get_safran_cell_for_each_township(donnees):
+def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
     """
     Permet d'obtenir la correspondance spatiale entre une commune et une maille safran
     Pour le bind la règle est la suivante : 
@@ -14,19 +14,28 @@ def get_safran_cell_for_each_township(donnees):
         2 - si le centroide n'est inclu dans aucune maille, on va chercher la maille la plus proche (1er essai la distance max de rattachement était de 46km)
     QUE POUR LA METROPOLE FRANçAISE
 
+    Permet aussi d'obtenir la correspondance spatiale entre une commune et un site du projet RMQS (GIS Sol)
+    Pour le bind la règle est la suivante : 
+        le site RMQS (point) le plus proche du centroide de la commune
+    QUE POUR LA METROPOLE FRANçAISE
+
     Arguments:
         donnees (dict): 
             Contenant les fichiers suivants provenant des external_data :
                 - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
                 - safran.gpkg : geopackage safran télécharger sur le site de SICLIMA
+                - geoVec_rmqs.json : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes)
 
     Retourne:
         pd.DataFrame:
             - 'codeinsee' : le code insee de la commune
-            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe la commune (voir règles plus haut)
+            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe la commune
+            - 'rmqs_site_id' = identifiant du site RMS le plus proche du centroide de la commune métropolitaine
+            - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
+            - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
 
     Notes:
-        Cette fonction met environ 3 secondes à tourner. Elle n'est qu'un intermédiaire pour arrivé à une sortie attendue principalement pour
+        Cette fonction n'est qu'un intermédiaire pour arrivé à une sortie attendue principalement pour
         la fonction get_donnees_spatiales_from_domain_township. Un futur dévellopement à penser pour stocker ces fichiers intermédiaires qui ne seront à refaire 
         tourner qu'une fois tout les an, voire plus (au changement des contour de communes, chgt de codeinsee, chgt d'id maille safran)
         Pour l'instant on choisit de faire tourner cette fonction à chaque fois (que 3s !)
@@ -160,7 +169,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     df_commune = donnees['commune'][['id','codeinsee']].rename(columns={
         'id' : 'commune_id'
         })
-    df_spatial = get_safran_cell_for_each_township(donnees[['safran','geoVec_com2024']])
+    df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees[['safran','geoVec_com2024','geoVec_rmqs']])
 
     # merge
     df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
