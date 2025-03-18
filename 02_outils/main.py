@@ -11,6 +11,8 @@ import os
 import json
 import configparser
 import urllib
+import importlib
+import time
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -22,8 +24,6 @@ import pandas as pd
 from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
-import importlib
-import time
 
 # obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
@@ -252,35 +252,44 @@ external : """+str(leaking_tables['external'])+""" ("""+SOURCE_SPECS['outils']['
 
     return error_code, error_message
 
-def test_check_external_data():
+def test_check_external_data(leaking_tables):
     """
         Print les résultats des tests effectués dans le fichier défini 
         dans la spec : outils.external_data.validation.path
         Retourne 0 si tout s'est bien passé, 1 sinon
+
+        leaking_tables : list, fichiers non présents en local
     """
+    external_tables = SOURCE_SPECS['outils']['external_data']['tables']
+    external_tables_existing = [t for t in external_tables if t not in leaking_tables]
+
     external_data_validation = SOURCE_SPECS['outils']['external_data']['validation']
     external_data_validation_path = external_data_validation['path']
-    external_data_validation_checks = external_data_validation['checks']
+    external_data_validation_checks = [check for check in external_data_validation['checks'] if check['table'] not in leaking_tables]
 
     # load des données externes
     load_datas(
-        SOURCE_SPECS['outils']['external_data']['tables'], 
-        verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path']
+        external_tables_existing, 
+        verbose=True, path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
+    
     all_passed = True
     for check in external_data_validation_checks:
         external_data_test_module = importlib.import_module(external_data_validation_path)
         check_function = getattr(external_data_test_module, check['function_name'])
-        res = check_function(donnees)
-        if res:
-            print(check['name'], ":", f"{Fore.GREEN} validé {Style.RESET_ALL}")
+        message_error = check_function(donnees)
+        
+        if len(message_error) == 0:
+            print(f"{Fore.GREEN}", check['name'], ":", f"validé {Style.RESET_ALL}")
         else:
-            print(check['name'], ":", f"{Fore.RED} échoué {Style.RESET_ALL}")
+            print(f"{Fore.RED}", check['name'], ":", f"échoué {Style.RESET_ALL}")
+            print(message_error)
+            print("\n")
             all_passed = False
 
     if all_passed:
         error_code = 0
-        error_message = f"{Fore.GREEN}Toutes les données externes sont conformes{Style.RESET_ALL}"
+        error_message = f"{Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
     else :
         error_code = 0
         error_message = f"{Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
@@ -531,9 +540,6 @@ def create_category_test():
     export_to_db(df_surface_connexion_synthetise_indicateur, 'entrepot_surface_connection_synthetise_indicateur')
 
 
-external_data_spec = {
-
-}
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -572,10 +578,6 @@ options = {
         "Quitter" : []
     }
 }
-
-class LeakingData(Exception):
-    pass
-
 
 donnees = {}
 while True:
@@ -617,15 +619,15 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             download_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
 
         # Vérification que toutes les données sont présentes pour la première catégorie
-        error_code_findable, error_message = test_all_findable_for_category(steps[0]['category'])
-        print(error_message)
+        error_code_findable, error_message_findable = test_all_findable_for_category(steps[0]['category'])
+        print(error_message_findable)
 
         
         # Si toutes les données nécessaires sont disponibles, on peut les charger
         if(error_code_findable == 0):
             # Vérification que les données externes vérifient le format attendu
-            error_code_check, error_message = test_check_external_data()
-            print(error_message)
+            error_code_check, error_message_check = test_check_external_data(leaking_tables=[])
+            print(error_message_check)
             if(error_code_check == 0):
 
                 # Chargement des données
@@ -642,9 +644,9 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     CURRENT_CATEGORY = step['category']
 
                     # Vérification que toutes les données sont présentes pour la catégorie courante
-                    error_code, error_message = test_all_findable_for_category(step['category'])
-                    print(error_message)
-                    if(error_code == 0):
+                    error_code_findable, error_message_findable = test_all_findable_for_category(step['category'])
+                    print(error_message_findable)
+                    if(error_code_findable == 0):
                         print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
                         choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
 
@@ -711,10 +713,10 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
 
         # Vérification que toutes les données sont présentes pour la catégorie courante
-        error_code, error_message = test_all_findable_for_category(choosen_category)
-        print(error_message)
+        error_code_findable, error_message_findable = test_all_findable_for_category(choosen_category)
+        print(error_message_findable)
         
-        if(error_code == 0):
+        if(error_code_findable == 0):
             for choosen_dependance in choosen_dependances:
                 categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
                 if(len(categorie_dependance['generated']) != 0):
@@ -766,16 +768,18 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
     elif choice_key == 'Tester la cohérence des données externes':
         print("* DÉBUT DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
-        leaking_tables_external = check_files_exist(
-            SOURCE_SPECS['outils']['external_data']['tables'], 
+        tables_to_check = SOURCE_SPECS['outils']['external_data']['tables']
+        leaking_tables_ext = check_files_exist(
+            tables_to_check, 
             path_data=SOURCE_SPECS['outils']['external_data']['path']
         )
-        if len(leaking_tables_external) == 0:
-            error_code, error_message = test_check_external_data()
-            print(error_message)
-        else :
-            print(f"{Fore.RED} Certaines tables externes sont absentes (",str(leaking_tables_external),f"){Style.RESET_ALL}")
-        time.sleep(1) 
+        if len(leaking_tables_ext) != 0:
+            print(f"{Fore.RED} Attention : certaines tables externes sont absentes. Elles NE SONT PAS vérifiées(",str(leaking_tables_ext),f"){Style.RESET_ALL}")
+            
+        if len(tables_to_check) > len(leaking_tables_ext):
+            error_code_check, error_message_check = test_check_external_data(leaking_tables = leaking_tables_ext)
+            print(error_message_check)
+
         print("* FIN DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
 
     elif choice_key == "Test":
