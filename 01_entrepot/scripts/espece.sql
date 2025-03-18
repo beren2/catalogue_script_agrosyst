@@ -23,7 +23,9 @@ SELECT
 	re.nom_gnis, 
 	re.nom_latin_gnis,
 	re.nom_culture_acta, 
-	re.remarque_culture_acta
+	re.remarque_culture_acta,
+	re.typocan_espece,
+	re.typocan_espece_maraich
 FROM refespece re;
 
 alter table entrepot_espece
