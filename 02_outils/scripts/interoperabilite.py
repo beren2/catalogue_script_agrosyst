@@ -23,7 +23,7 @@ def get_safran_cell_for_each_township(donnees):
     Retourne:
         pd.DataFrame:
             - 'codeinsee' : le code insee de la commune
-            - 'cellule_safran' : l'identifiant de la cellule safran où se situe la commune (voir règles plus haut)
+            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe la commune (voir règles plus haut)
 
     Notes:
         Cette fonction met environ 3 secondes à tourner. Elle n'est qu'un intermédiaire pour arrivé à une sortie attendue principalement pour
@@ -48,12 +48,14 @@ def get_safran_cell_for_each_township(donnees):
 
 
     # Geopackage safran dont la citation est dans le READ ME.txt
-    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran"})
+    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran_id"})
 
     # Verification de l'unicité des cellules safran
-    if gdf_safran.cellule_safran.is_unique : print('index gdf_safran OK') 
-    else : print('ATTENTION cellule_safran ne doit pas servir d\'index à gdf_safran !')
+    if gdf_safran.cellule_safran_id.is_unique : print('index gdf_safran OK') 
+    else : print('ATTENTION cellule_safran_id ne doit pas servir d\'index à gdf_safran !')
     
+    # geojson des sites RMQS (GIS Sol : https://entrepot.recherche.data.gouv.fr/dataverse/info_et_sols?q=&types=dataverses%3Adatasets&sort=dateSort&order=desc&page=3)
+    gdf_rmqs = donnees['geoVec_rmqs']
 
     # Les géopositions des communes d'outre mer (DROMs) ne sont pas à considérés car pas dans SAFRAN
     gdf_commune = gdf_commune[~(gdf_commune['dep'].str.match(r'97+') | gdf_commune['dep'].str.match(r'98+'))]
@@ -69,24 +71,37 @@ def get_safran_cell_for_each_township(donnees):
     df_spatial = gpd.sjoin(gdf_commune.set_geometry('centroid'), gdf_safran, how='left', predicate='within')
     df_spatial = df_spatial[df_spatial.columns.difference(['dep','index_right'])]
     # 357 communes sans maille rattaché par un within, on fait donc à la maille la plus proche. Besoin de passer en projection
-    join = df_spatial.loc[df_spatial.cellule_safran.isna(), ['geometry','centroid']]
+    join = df_spatial.loc[df_spatial.cellule_safran_id.isna(), ['geometry','centroid']]
     join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('centroid'), gdf_safran.to_crs(3857), how = 'left', distance_col = "distances").to_crs(4326)
     print('La distance max de jointure par la maille la plus proche est de '+str(np.ceil(join['distances'].max() / 1000).astype(int))+' km')
     # On joint les communes rattachées par nearest avec celles rattachés par within
-    df_spatial = df_spatial.combine_first(join[['cellule_safran','distances']])
+    df_spatial = df_spatial.combine_first(join[['cellule_safran_id','distances']])
+
+
+    df_spatial = gpd.sjoin_nearest(df_spatial.to_crs(3857), gdf_rmqs.to_crs(3857), distance_col="distances", how='left')\
+        [['codeinsee','id_site','sampling_date','distances']].set_index('codeinsee')
+    df_spatial['distances'] = round(df_spatial['distances']/1000, 1)
+    df_spatial = df_spatial.rename(columns={
+        'id_site' : 'rmqs_site_id',
+        'sampling_date' : 'rmqs_date_sampl',
+        'distances' : 'rmqs_dist_site'
+    })
+    df_spatial = df_spatial.to_crs(4326)
 
     # Check et changement cellules safran en int
-    if df_spatial['cellule_safran'].isnull().values.any() : 
+    if df_spatial['cellule_safran_id'].isnull().values.any() : 
         print('/!\ ATTENTION des communes ne sont pas rattachées à une maille !')
     else :
-        df_spatial['cellule_safran'] = df_spatial['cellule_safran'].astype('Int64')
+        df_spatial['cellule_safran_id'] = df_spatial['cellule_safran_id'].astype('Int64')
+    
+    # On ne check pas les sites RMQS car on a pas mis de max distances et surtout certains site n'ont pas de coordonnées !
     
     # # Map explore() permettant de voir les communes non rattachés par within pour comprendre leur distances par rapport aux mailles
     # m2 = df_spatial.loc[df_spatial.distances.notnull()].set_geometry('geometry').explore(name="Polygons")
     # m2 = df_spatial.loc[df_spatial.distances.notnull()].set_geometry('centroid').explore(m=m2, color="red", name="Points", marker_type = 'circle')
     # m2 = gdf_safran.explore(m=m2, name="Polygons safran", color="grey")
 
-    df_spatial = df_spatial[['codeinsee','cellule_safran']]
+    df_spatial = df_spatial[['codeinsee','cellule_safran_id','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site']]
 
     # return m
     # return m2
@@ -118,7 +133,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
             - 'domaine_code' : Code du domaine
             - 'commune_id' : Identifiant du référentiel de localisation des communes
             - 'codeinsee' : le code insee
-            - 'cellule_safran' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
+            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
 
     Notes:
         get_safran_cell_for_each_township() est une fonction permettant de générer un Dataframe qui donne le rattachement commune/maille safran
@@ -130,7 +145,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
 
 
 
-        A AJOUTER : GEOFLA
+        A AJOUTER : GEOFLA, BRGF(sols)
 
 
 
@@ -175,7 +190,7 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
         pd.DataFrame:
             - 'geopoint_id' : Identifiant du point gps
             - 'domaine_id' : Identifiant du domaine
-            - 'cellule_safran' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
+            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
     """
     
     # import et renommage
@@ -188,17 +203,17 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
                                    crs = 'EPSG:4326')
                                 ).drop(columns=['latitude', 'longitude'])
     
-    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran"})
+    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran_id"})
 
     # On joint la cellule safran si les coord gps du domaine sont à l'intérieur de la cell
     df_coord_gps = gpd.sjoin(gdf_gps.set_geometry('geometry'), gdf_safran, how='left', predicate='within')
     # Si pas le cas on va chercher la cell la plus proche.
     # On pose un distance pax d'appariement de 80km (au jugé, = x10 mailles)
-    join = df_coord_gps.loc[df_coord_gps.cellule_safran.isna(), ['geometry']]
+    join = df_coord_gps.loc[df_coord_gps.cellule_safran_id.isna(), ['geometry']]
     join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('geometry'), gdf_safran.to_crs(3857).set_geometry('geometry'), how = 'left', max_distance = 80000).to_crs(4326)
     # On joint les communes rattachées par nearest avec celles rattachés par within
-    df_coord_gps = df_coord_gps.combine_first(join[['cellule_safran']])
+    df_coord_gps = df_coord_gps.combine_first(join[['cellule_safran_id']])
 
-    df = df_coord_gps[['geopoint_id','domaine_id','geometry','cellule_safran']].rename(columns={"geometry": "coord_gps"})
+    df = df_coord_gps[['geopoint_id','domaine_id','geometry','cellule_safran_id']].rename(columns={"geometry": "coord_gps"})
 
     return df
