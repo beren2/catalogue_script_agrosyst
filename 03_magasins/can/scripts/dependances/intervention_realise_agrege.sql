@@ -11,7 +11,7 @@ SELECT DISTINCT
     nuirac.sdc_campagne, 
     nuirac.sdc_id, 
     nuirac.domaine_id, 
-    nuirac.disposietif_id
+    nuirac.dispositif_id
 FROM
     entrepot_intervention_realise eir
 LEFT JOIN "entrepot_utilisation_intrant_realise_agrege" nuirac on eir.id = nuirac.intervention_realise_id
