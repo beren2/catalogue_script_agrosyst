@@ -11,7 +11,7 @@ SELECT DISTINCT
     nuirac.sdc_campagne, 
     nuirac.sdc_id, 
     nuirac.domaine_id, 
-    nuirac.dispositif_id
+    nuirac.disposietif_id
 FROM
     entrepot_intervention_realise eir
 LEFT JOIN "entrepot_utilisation_intrant_realise_agrege" nuirac on eir.id = nuirac.intervention_realise_id
@@ -23,4 +23,4 @@ SELECT
 FROM entrepot_intervention_realise_manquant_agrege;
 
 
-alter table entrepot_intervention_realise_agrege add primary key (id);
+--alter table entrepot_intervention_realise_agrege add primary key (id);

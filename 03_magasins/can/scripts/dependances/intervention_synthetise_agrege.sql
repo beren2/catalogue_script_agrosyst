@@ -28,7 +28,7 @@ SELECT
     dispositif_id
 FROM entrepot_intervention_synthetise_manquant_agrege;
 
-alter table entrepot_intervention_synthetise_agrege add primary key (id);
+--alter table entrepot_intervention_synthetise_agrege add primary key (id);
 
 
 -- on rajoute les informations sur les culture_id et culture intermediaire_id...
@@ -51,5 +51,5 @@ LEFT JOIN entrepot_noeuds_synthetise_restructure nsr ON nsr.id = eisa.cible_noeu
 LEFT JOIN entrepot_connection_synthetise_restructure csr ON csr.id = CAST(eisa.connection_synthetise_id AS VARCHAR)
 LEFT JOIN entrepot_plantation_perenne_synthetise_restructure eppsr ON eppsr.id = CAST(eisa.plantation_perenne_synthetise_id AS VARCHAR);
 
-alter table entrepot_intervention_synthetise_agrege_extanded add primary key (id);
+--alter table entrepot_intervention_synthetise_agrege_extanded add primary key (id);
 
