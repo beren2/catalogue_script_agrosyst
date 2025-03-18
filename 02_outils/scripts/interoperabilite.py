@@ -132,9 +132,11 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
             Contenant les tables suivantes de l'entrepot
                 - domaine (entrepot.Contexte => commune_id)
                 - commune (entrepot.Référentiel => codeinsee)
-            Contient aussi les données dont a besoin la fonction get_safran_cell_for_each_township()
+            Contient aussi les données dont a besoin la fonction make_spatial_interoperation_btw_codeinsee_and_spatial_id()
                 - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
                 - safran.gpkg : geopackage safran téléchargé sur le site de SICLIMA
+                - geoVec_rmqs.json : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes)
+                - geofla.csv : référentiel avec un code insee (2024) et une liste d'identifiant geofla (2015)
 
     Retourne:
         pd.DataFrame:
@@ -143,24 +145,17 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
             - 'commune_id' : Identifiant du référentiel de localisation des communes
             - 'codeinsee' : le code insee
             - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
+            - 'rmqs_site_id' = identifiant du site RMS le plus proche du centroide de la commune métropolitaine
+            - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
+            - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
+            - 'geofla_2015_id' = liste d'identifiant geofla pour chaque code insee. Attention geofla est obsolete !
 
     Notes:
-        get_safran_cell_for_each_township() est une fonction permettant de générer un Dataframe qui donne le rattachement commune/maille safran
+        make_spatial_interoperation_btw_codeinsee_and_spatial_id() est une fonction permettant de générer un Dataframe qui donne le rattachement commune/maille safran/site RMQS
         on la fait tourner pour obtenir la maille safran en mergeant par le code insee. Possible qu'un jour on ne lui fasse plus appel mais qu'on
         importe sa sortie comme n'importe quel Df
-
-        
-
-
-
-
-        A AJOUTER : GEOFLA, BRGF(sols)
-
-
-
-
-
     """
+
     # import et renommage
     df_domaine = donnees['domaine'][['id','code','commune_id']].rename(columns={
         'id' : 'domaine_id',
@@ -169,11 +164,13 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     df_commune = donnees['commune'][['id','codeinsee']].rename(columns={
         'id' : 'commune_id'
         })
+    df_geofla = donnees['geofla']
     df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees[['safran','geoVec_com2024','geoVec_rmqs']])
 
     # merge
     df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
     df = df.merge(df_spatial, on = 'codeinsee', how='left')
+    df = df.merge(df_geofla, on = 'codeinsee', how='left')
 
     return df
 
