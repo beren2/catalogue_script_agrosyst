@@ -235,10 +235,13 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     ''' Tague les frises des pz0 non acceptables
     arg :
         df : data.frame : issu de join_saisies_with_ref_donnees_attendues()
-        code_dephy : pd.serie, serie de code_dephy à traiter
+        code_dephy_select : pd.serie, serie de code_dephy à traiter
+        pattern_pz0_correct : list de chr, valeurs de la colonne "donnee_attendue" que l'on juge acceptable
+        modalite_pz0_chevauchement : chr, modalite a attribuer
+        modalite_pz0_non_acceptable : chr, modalité a attribuer
     
     return :
-        df : data.frame
+        df_res : data.frame, issu de df, où les données ont été taguées
         dephy_mono : list, liste des codes dephy ayant un pz0 mono annuel
     '''
 
@@ -270,7 +273,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') 
                                                                             else x['donnee_attendue'], axis = 1)
  
-    # sauvegarde les post
+    # sauvegarde les "post" (il n'y a plus de post,post)
     post = select_df.loc[select_df['donnee_attendue'] == "post"]
     select_df = select_df.loc[select_df['donnee_attendue'] != "post"]
 
@@ -286,23 +289,28 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     
     dephy_correct = select_df.loc[select_df['to_keep'], 'code_dephy'].to_list()
     
+    # si code dephy n'a aucun pz0 qui est dans la liste pattern_pz0_correct : pz0 non acceptable pour toute la frise
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_non_acceptable if (x['code_dephy'] not in (dephy_correct))
                                                                             else x['donnee_attendue'] , axis = 1)
     
+    # si le code dephy est dans dephy_correct, mais que la ligne de select_df to_keep = False => chevauchement pz0, puisqu'il y a mieux
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_chevauchement if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is False)
                                                                             else x['donnee_attendue'] , axis = 1)    
     
+    # si le code dephy est dans dephy_correct, mais que la ligne de select_df to_keep = True => c'est le pz0 à choisir
+    # Attention si la frise a deux saisies de même ''valeur'' , ex : 'NA,pz0,pz0', à ce stade ils sont tagués tous les deux pz0
+    # On ne peut pas choisir, ils seront tagués comme non acceptable suite au control_nb_pz0_per_codedephy()
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "pz0" if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is True)
                                                                             else x['donnee_attendue'] , axis = 1)    
     
     select_df = select_df.drop(['to_keep'], axis = 1)
 
-    # Pour les post sauvegardes à part, les taguer incorrect : saisie pz0 non acceptable" pour des codes dephy concernes
+    # Pour les post sauvegardes à part dont leur code dephy n'a pas de pz0 acceptable, les taguer aussi en pz0 non acceptable"
     code_dephy_nonacceptable = select_df.loc[select_df['donnee_attendue'] == modalite_pz0_non_acceptable,'code_dephy'].to_list()
     post.loc[post['code_dephy'].isin(code_dephy_nonacceptable), 'donnee_attendue'] = modalite_pz0_non_acceptable
 
-    df = pd.concat([unselect_df,select_df,post])
-    return(df,dephy_mono)
+    df_res = pd.concat([unselect_df,select_df,post])
+    return(df_res,dephy_mono)
 
 
 def do_correct_overlap(df,modalite_pz0_chevauchement,dephy_monoannuel):
@@ -481,7 +489,7 @@ def identification_pz0(donnees):
     df_zone = donnees['zone'].set_index('id')
     df_intervention_synthetise_agrege = donnees['intervention_synthetise_agrege'].set_index('id')
     df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
-    saisies_attendues = donnees['BDD_donnees_attendues_CAN']
+    saisies_attendues = donnees['BDD_donnees_attendues_CAN'].copy()
     
     # suppression des colonnes campagne du sdc et dispositif
     df_dispositif = df_dispositif.drop(['campagne'], axis = 1)
@@ -548,13 +556,16 @@ def identification_pz0(donnees):
 
     identif_pz0_non_attendue = identif_pz0_non_attendue.drop(['donnee_attendue_split'], axis = 1)
 
-    # retirer les non attendue du data aucun pz0
+    # aucun pz0 = TOUTE la frise pz0 inconnu OU saisie non acceptable
+    # SAUF pour les non attendue que l'on garde tague comme tel.
+    # On les retire du data aucun pz0 : 
     identif_pz0_aucun = identif_pz0_aucun.drop(identif_pz0_non_attendue.index,errors = 'ignore')
 
     identif_pz0_with_pz0 = identif_pz0.drop(identif_pz0_aucun.index,errors = 'ignore')
     identif_pz0_with_pz0 = identif_pz0_with_pz0.drop(identif_pz0_non_attendue.index,errors = 'ignore')
     
-    ## TRI DES PZ0 NON ACCEPTABLES
+    ## TRI DES PZ0 ACCEPTABLES
+    # Meme si un synthetise contient une campagne pz0, il y en a qui ne sont pas acceptables
     # les pz0 que l'on considere correct sont ceux parfaits : "pz0, pz0, pz0" OU 3 synthetise monoannuels des 3 campagnes pz0 attendues 
     # On accepte les décalages de 1 an avant ou apres donc une mention de non-attendu ou post 1 fois
 
@@ -577,7 +588,7 @@ def identification_pz0(donnees):
     dephy_mono = dephy_mono + dephy_mono_temp
     
     ## CONTROLE DU NB DE PZ0 PAR CODE DEPHY 
-    # si il reste des codes dephy ayant plusieurs pz0, transformer la frise en incorrect. Vu les cas -> cas de saisie reeelle de plusieurs synthetises pz0
+    # si il reste des codes dephy ayant plusieurs pz0, transformer la frise en incorrect. Vu les cas -> cas de saisie reelle de plusieurs synthetises pz0
     dephynb_plusieurspz0_restant = control_nb_pz0_per_codedephy(identif_pz0_with_pz0,dephy_mono)
     identif_pz0_with_pz0.loc[identif_pz0_with_pz0['code_dephy'].isin(dephynb_plusieurspz0_restant),'donnee_attendue'] = modalite_pz0_plusieurs
 
