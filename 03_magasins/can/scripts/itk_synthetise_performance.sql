@@ -68,7 +68,7 @@ select -- requête spécifiques aux cultures perennes
 	null as precedent_code,
 	eppps."type" as phase,
 	eppps.id as phase_id,
-	null as connexion_id, 
+	null as connexion_id
 from entrepot_itk_synthetise_performance eisp
 join entrepot_plantation_perenne_phases_synthetise eppps on (eppps.id = eisp.plantation_perenne_phases_synthetise_id)
 left join entrepot_plantation_perenne_synthetise epps on (epps.id = eppps.plantation_perenne_synthetise_id)
