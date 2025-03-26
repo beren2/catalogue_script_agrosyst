@@ -25,6 +25,7 @@ select -- requête spécifique aux cultures assolées
 	ec_prec.nom as precedent_nom, 
 	ec_prec.id as precedent_id,
 	ec_prec.code as precedent_code,
+	eps.id as connexion_id, 
 	null as phase,
 	null as phase_id
 from entrepot_itk_synthetise_performance eisp
