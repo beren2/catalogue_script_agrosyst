@@ -742,3 +742,311 @@ def get_typologie_culture_CAN(donnees):
     # Du coup utilisation du nom de la culture pour changement non souhaité
 
     return df
+
+
+
+def extract_good_rotation_diagram(donnees):
+
+    conx = donnees['connection_synthetise'].copy()
+    noeud = donnees['noeuds_synthetise'].copy()
+
+    conx = conx[['id', 'frequence_source','culture_absente','source_noeuds_synthetise_id','cible_noeuds_synthetise_id']]\
+    .rename(columns={'id' : 'conx_id',
+                     'frequence_source' : 'freq',
+                     'culture_absente' : 'abs',
+                     'source_noeuds_synthetise_id' : 'nd_prec',
+                     'cible_noeuds_synthetise_id' : 'nd_suiv'})
+    noeud = noeud[['id', 'rang', 'fin_cycle','memecampagne_noeudprecedent', 'synthetise_id']]\
+        .rename(columns={'id' : 'nd_id',
+                        'fin_cycle' : 'end',
+                        'rang' : 'rang',
+                        'memecampagne_noeudprecedent' : 'sameyear',
+                        'synthetise_id' : 'synth_id'})
+        
+    # Nombre de premier rang
+    def number_node_rank0(dfgrp):
+        return len(dfgrp.loc[dfgrp['rang']==0,'rang'])
+    # Nombre de noeud terminaux
+    def number_node_end(dfgrp):
+        return len(dfgrp.loc[dfgrp['end']=='t','end'])
+    # Nombre de noeud en premier rang
+    def noeud_end_on_rank0(dfgrp):
+        return any(dfgrp.loc[dfgrp['end']=='t','rang']==0)
+
+    noeud_test = noeud.groupby('synth_id').apply(
+        lambda dfgrp: pd.Series({
+            'nb_noeud_de_rang1': number_node_rank0(dfgrp),
+            'nb_noeud_finaux' : number_node_end(dfgrp),
+            'noeud_finaux_en_rang1' : noeud_end_on_rank0(dfgrp)
+            }), include_groups=False).copy()
+    
+    # Tague des synthétisé qui (n')ont...
+    # ...Aucun noeud en premier rang
+    no_first_node = list(noeud_test.loc[noeud_test['nb_noeud_de_rang1']==0].index)
+    # ...Plusieurs noeuds en premier rang
+    several_first_nodes = list(noeud_test.loc[noeud_test['nb_noeud_de_rang1']>1].index)
+    # ...Aucun noeud terminal
+    no_end_node = list(noeud_test.loc[noeud_test['nb_noeud_finaux']==0].index)
+    # ...Au moins un noeud de premier rang qui est aussi terminal
+    first_node_is_end_node = list(noeud_test.loc[noeud_test['noeud_finaux_en_rang1']>0].index)
+    
+    # Les noeuds qui n'ont pas de précédent OU pas de suivant
+    node_wo_prev_or_next = list(noeud.loc[~((noeud['nd_id'].isin(conx['nd_prec'])) & \
+                                            (noeud['nd_id'].isin(conx['nd_suiv']))),'synth_id'])
+
+    def get_hole_in_rotation(series):
+        ranks_theo = pd.Series(range(min(series)+1, max(series)))
+        if all(ranks_theo.isin(series)) == False :
+            return list(ranks_theo.loc[~(ranks_theo.isin(series))])
+    
+    # Les rangs qui sont entierement vide
+    empty_rank = noeud[['rang','synth_id']].groupby('synth_id').agg(get_hole_in_rotation).reset_index()
+    empty_rank = empty_rank.loc[empty_rank['rang'].notna()]
+
+    # Frequence des connexions égales à 0
+        # On augmente un peu le sueil à 0.5% car bizarre d''avoir une connexion avec une fréquence si faible
+    freq_cnx_at_0 = list(conx.loc[conx['freq'] < 0.5, 'synth_id'])
+
+    # Merge de connexion et noeud (suivant et précédent)
+    df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
+    .drop('nd_id_prec', axis=1)
+    df = df.merge(noeud.add_suffix('_suiv'), left_on='nd_suiv', right_on='nd_id_suiv').\
+        rename(columns={'synth_id_suiv' : 'synth_id'})\
+            .drop('nd_id_suiv', axis=1)
+
+    # Somme de sortie du noeuf ne faisant pas 100%
+    def get_unique_txt(series):
+        cleaned = series.dropna().unique().copy()
+        return cleaned[0]
+
+    exit_cnx_100 = df[['synth_id','freq','nd_prec']].groupby('nd_prec').agg({
+        'synth_id' : get_unique_txt,
+        'freq' : 'sum'})
+    exit_cnx_100 = exit_cnx_100.loc[round(exit_cnx_100['freq'],8) != 100, 'synth_id']
+
+    # Noeud suivant est forcement sur le rang suivant (pas de 'trou') 
+        # Attention si le rang qui a un trou dans le chemin n'est fait que de culture dérobée et que le noeud suivant n'est pas une dérobée
+
+    test_hole_in_path = df.loc[(df['rang_prec'] != (df['rang_suiv']-1) ) & (df['end_prec'] == 'f'),].copy()
+    test_hole_in_path['empty_rank_are_catch_crop'] = ''
+
+    for idx, row in test_hole_in_path.iterrows() :
+        empty_rank_list = list(range(row['rang_prec']+1, row['rang_suiv']))
+        # Premier if eventuellement redondant (voir avant avec le rang entierement)
+        if list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t') == []:
+            test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'empty_rank'
+        elif (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t'))) & \
+            (all(list((noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear']) == 'f'))):
+            test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'ok'
+        else :
+            test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'hole_in_path'
+
+    def concat_unique_sorted_txt(series):
+        cleaned = series.dropna().unique().copy()
+        return '_&_'.join(sorted(cleaned))
+    
+    test_hole_in_path = test_hole_in_path.groupby('synth_id').agg({'empty_rank_are_catch_crop': concat_unique_sorted_txt}).reset_index()
+
+    hole_in_path = list(test_hole_in_path.loc[test_hole_in_path['empty_rank_are_catch_crop'] != 'ok', 'synth_id'])
+
+    # Noeud terminaux qui ne boucle pas entierement sur un noeud de premier rang
+    end_node_continue = list(df.loc[(df['end_prec'] == 't') & df['rang_suiv'] != 0, 'synth_id'])
+
+
+    # Liste final des BONS synthétisés
+    list_good_synth_rotation = tuple(set(noeud['synth_id']) - set(list(
+        no_first_node + several_first_nodes + no_end_node + first_node_is_end_node + node_wo_prev_or_next + empty_rank + exit_cnx_100 + freq_cnx_at_0 + hole_in_path + end_node_continue
+        )))
+
+    dic_of_bad_synth = {'no_first_node': no_first_node, 
+                        'several_first_nodes' : several_first_nodes,
+                        'no_end_node' : no_end_node, 
+                        'first_node_is_end_node' : first_node_is_end_node, 
+                        'node_wo_prev_or_next' : node_wo_prev_or_next, 
+                        'empty_rank' : empty_rank, 
+                        'exit_cnx_100' : exit_cnx_100, 
+                        'freq_cnx_at_0' : freq_cnx_at_0, 
+                        'hole_in_path' : hole_in_path, 
+                        'end_node_continue' : end_node_continue}
+    
+    return list_good_synth_rotation, dic_of_bad_synth
+            
+
+   
+
+def trouver_chemins(graphe, debut, fins):
+    stack = [(debut, [])]  # (node actuel, chemin parcouru)
+    chemins = []
+
+    while stack:
+        node, chemin = stack.pop()
+        chemin.append(node)
+
+        if node in fins:
+            chemins.append(list(chemin))
+            continue
+
+        for voisin in graphe.get(node, []):
+            if voisin not in chemin:  # Éviter les cycles
+                stack.append((voisin, chemin[:]))  # Copie du chemin actuel
+
+    return chemins
+
+
+def get_connexion_weight_in_synth_rotation(donnees):
+    import os
+    from concurrent.futures import ProcessPoolExecutor
+    from tqdm import tqdm
+
+    # Importation des données etmise en forme
+    conx = donnees['connection_synthetise'].copy()
+    noeud = donnees['noeuds_synthetise'].copy()
+
+    conx = conx[['id', 'frequence_source','culture_absente','source_noeuds_synthetise_id','cible_noeuds_synthetise_id']]\
+    .rename(columns={'id' : 'conx_id',
+                     'frequence_source' : 'freq',
+                     'culture_absente' : 'abs',
+                     'source_noeuds_synthetise_id' : 'nd_prec',
+                     'cible_noeuds_synthetise_id' : 'nd_suiv'})
+    noeud = noeud[['id', 'rang', 'fin_cycle','memecampagne_noeudprecedent', 'synthetise_id']]\
+        .rename(columns={'id' : 'nd_id',
+                        'fin_cycle' : 'end',
+                        'rang' : 'rang',
+                        'memecampagne_noeudprecedent' : 'sameyear',
+                        'synthetise_id' : 'synth_id'})
+
+    df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
+        .drop('nd_id_prec', axis=1)
+    df = df.merge(noeud.add_suffix('_suiv'), left_on='nd_suiv', right_on='nd_id_suiv').\
+        rename(columns={'synth_id_suiv' : 'synth_id'})\
+            .drop('nd_id_suiv', axis=1)
+
+    list_good_synth = extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
+
+    cx = df.loc[df['synth_id'].isin(list_good_synth)].set_index('conx_id').copy()
+    nd = noeud.loc[noeud['synth_id'].isin(list_good_synth)].set_index('nd_id').copy()
+
+    final_data = pd.DataFrame()
+
+    # Fonction principal en mode fonction pour permettre la parrallélisation
+    def process_sy(sy):
+
+        # Construire le graphe des connexions sous forme de dictionnaire
+        graphe = {}
+        connexions = {}
+
+        for idx, row in cx.iterrows():
+            nd_prec, nd_suiv, conx_id, abs_value, freq = row['nd_prec'], row['nd_suiv'], idx, row['abs'], row['freq']
+            
+            if nd_prec not in graphe:
+                graphe[nd_prec] = []
+            graphe[nd_prec].append(nd_suiv)
+
+            # Stocker les connexions avec leurs IDs et attributs pour un accès rapide
+            connexions[(nd_prec, nd_suiv)] = {
+                'conx_id': conx_id,
+                'abs': abs_value,
+                'freq': freq
+            }
+
+        # Trouver le premier nœud et les nœuds finaux
+        first_node = nd.loc[(nd['rang'] == 0) & (nd['synth_id'] == sy)].index.item()
+        end_nodes = set(nd.loc[(nd['end'] == 't') & (nd['synth_id'] == sy)].index)
+
+        # Obtenir tous les chemins
+        chemins_possibles = trouver_chemins(graphe, first_node, end_nodes)
+
+        #  Associer chaque connexion aux chemins où elle apparaît, en comptant abs='t', sameyear='t', et calculant le poids du chemin
+        df_couples_connexion_chemins = []
+        df_chemins = []
+
+        for chemin in chemins_possibles:
+
+            poid_chemin = 1
+            groupe_id = 0
+            groupes_sameyear = {}
+
+            # Déterminer les groupes sameyear chemin par chemin
+            for i, node3 in enumerate(chemin):
+                if i == 0 or nd.loc[node3, 'sameyear'] == 'f':
+                    groupe_id += 1  # Nouveau groupe
+                groupes_sameyear[node3] = groupe_id  # Associer le nœud à son groupe
+            # Si le premier noeud est en sameyear on associe son groupe à toutes les connexions qui ont le meme groupe que le dernier neoud
+            if nd.loc[chemin[0], 'sameyear'] == 't':
+                list_node_same_grp_as_last = [key for key, value in groupes_sameyear.items() if value == groupes_sameyear[chemin[-1]]]
+                for key in list_node_same_grp_as_last: groupes_sameyear[key] = groupes_sameyear[chemin[0]]
+
+            # Calculer le poids du chemin (produit) et Ajouter les infos de couples connexions/chemins
+            for i in range(len(chemin) - 1):
+                nd_prec, nd_suiv = chemin[i], chemin[i + 1]
+                if (nd_prec, nd_suiv) in connexions:
+                    poid_chemin *= connexions[(nd_prec, nd_suiv)]['freq'] / 100  # Convertir en probabilité
+                    df_couples_connexion_chemins.append({
+                        'connexion_id': connexions[(nd_prec, nd_suiv)]['conx_id'],
+                        'chemin_id': chemin,
+                        'groupe_sameyear': groupes_sameyear[nd_suiv],  # La connexion prend le groupe du noeud suivant
+                        'abs': connexions[(nd_prec, nd_suiv)]['abs']
+                    })
+            # Ajout des connexions des nœuds terminaux vers le premier nœud
+            if chemin[-1] in end_nodes and (chemin[-1], chemin[0]) in connexions:
+                poid_chemin *= connexions[(chemin[-1], chemin[0])]['freq'] / 100
+                df_couples_connexion_chemins.append({
+                    'connexion_id': connexions[(chemin[-1], chemin[0])]['conx_id'],
+                    'chemin_id': chemin,
+                    'groupe_sameyear': groupes_sameyear[chemin[0]],  # La connexion prend le groupe du premier noeud
+                    'abs': connexions[(chemin[-1], chemin[0])]['abs']
+                })
+            
+            # Nombre d'année (soit le nombre de groupe sameyear après avoir enlever les connexions absentes)
+            nb_annee = len(set([entry['groupe_sameyear'] for entry in df_couples_connexion_chemins if \
+                                (entry['abs'] == 'f') & (entry['chemin_id'] == chemin)]))
+            if nb_annee == 0 : nb_annee = 1
+            # Ajouter les infos des chemins, dont le poids des chemins après recalcul sans conx absente
+            df_chemins.append({
+                'chemin_id': chemin,
+                'pd_chem' : poid_chemin,
+                'poid_standard_cnx_wo_abs': poid_chemin / nb_annee,
+                'synth_id': sy
+            })
+
+        # Convertir en DataFrame
+        df_chemins = pd.DataFrame(df_chemins)
+        df_chemins['chemin_id'] = df_chemins['chemin_id'].astype(str)
+        df_couples_connexion_chemins = pd.DataFrame(df_couples_connexion_chemins)
+        df_couples_connexion_chemins['chemin_id'] = df_couples_connexion_chemins['chemin_id'].astype(str)
+        # Merge chemin sur les couples cx_ch
+        df_couples_connexion_chemins = df_couples_connexion_chemins.merge(df_chemins, on = 'chemin_id', how = 'left')
+
+        # Avoir le compte du nombre de connexions active (abs == 'f') ayant le meme chemin ET le meme groupe_sameyear
+        nb_grp_sameyear_overall = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
+            groupby(['chemin_id', 'groupe_sameyear']).size().reset_index(name='count_grp_sameyear_overall')
+        all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
+
+        # Calculer le vrai poids de connexion final (poid_standard_cnx_wo_abs / count_grp_sameyear_overall)
+        all_df['connexion_freq'] = all_df['poid_standard_cnx_wo_abs'] / all_df['count_grp_sameyear_overall']
+
+        # Supprimer le poids de connexion des connexions absentes
+        all_df.loc[all_df['abs'] == 't','connexion_freq'] = np.nan
+
+        return all_df
+
+
+
+    # Utilisation de ProcessPoolExecutor avec 80% des cœurs
+    with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
+        results = list(tqdm(executor.map(process_sy, list_good_synth), total=len(list_good_synth)))
+
+    # Concaténation des résultats
+    final_data = pd.concat(results)
+
+    test = final_data.copy()
+    test = test[['connexion_freq','synth_id']].groupby('synth_id').sum('connexion_freq')
+    test = test.loc[round(test['connexion_freq'],2) != 1]
+
+    final_data = final_data.loc[~(final_data['synth_id'].isin(test.index))]
+
+    final_data_conx_level = final_data[['connexion_id','connexion_freq','synth_id']].groupby('connexion_id').agg({
+        'connexion_freq' : 'sum',
+        'synth_id' : lambda x : x.unique().item()
+    })
+    
