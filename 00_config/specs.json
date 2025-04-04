@@ -425,6 +425,8 @@
                 "function_name" : "create_category_indicateur",
                 "dependances" : [],
                 "generated" : [
+					"couple_connexions_chemins_synthetise_rotation",
+					"poids_connexions_synthetise_rotation",
 					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",

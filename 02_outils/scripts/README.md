@@ -19,6 +19,7 @@ Les tables de restructuration permettent essentiellement de corriger des problè
 
 #### Indicateurs
 Les tables Indicateurs proposent des informations supplémentaires sur des indicateurs non retournés par Agrosyst. 
+Une fonction importe est la fonction de calcul des poids de connexions au sein du synthétisé : get_connexion_weight_in_synth_rotation(). Cette fonction en utilise 2 qui la précède, dans l'ordre d'utilisation : extract_good_rotation_diagram() qui permet d'avoir une liste de synthétisé_id qui ont une bonne strucutre & trouver_chemins() qui est juste utile et pas soumise à l'export de données, permettant d'identifier tout les chemins possibles dans un synthétisé. Pour plus de précision sur le calcul des poids se référé à la description de la fonction get_connexion_weight_in_synth_rotation().
 
 ### Outils_can
 Les tables Outils_can permettent de générer les outils qui permettent de générer le magasin CAN

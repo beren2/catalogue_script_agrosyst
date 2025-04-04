@@ -105,6 +105,20 @@ def export_to_db(df, name):
         df.to_sql(name=name, con=engine, if_exists='replace')
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
+def export_dict_to_catalogue(dic, name):
+    """ permet d'exporter un dictionnaire dans le catalgoue 02_outils/data/export_from_functions"""
+    pathway_for_data_to_export = '02_outils/data/export_from_functions/'
+    if('entrepot_' in name):
+        name = name[9:]
+    if(TYPE == 'local'):
+        with open(DATA_PATH + name + '.json', 'w') as f:
+            json.dump(dic, f)
+    else :
+        with open(pathway_for_data_to_export + name + '.json', 'w') as f:
+            json.dump(dic, f)
+    print("* CRÉATION DANS LE CATALOGUE DU DICTIONNAIRE ",name, " TERMINEE *")
+
+
 donnees = {}
 
 def import_df(df_name, path_data, sep):
@@ -465,6 +479,15 @@ def create_category_indicateur():
     """
         Execute les requêtes pour créer les outils des indicateurs
     """
+    dict_extract_good_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
+    export_dict_to_catalogue(dict_extract_good_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
+
+    _, df_get_couple_connexion_paths = indicateur.get_connexion_weight_in_synth_rotation(donnees)
+    export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')
+
+    df_get_connexion_weight_in_synth_rotation, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
+    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
+
     df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
     export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
 

@@ -746,6 +746,27 @@ def get_typologie_culture_CAN(donnees):
 
 
 def extract_good_rotation_diagram(donnees):
+    ''' 
+    Le but est d'obtenir une liste de synthetise_id qui ont une bonne structure/ un bon schéma de rotation
+    Par exemple il faut une seule culture (=noeud) en premier rang (rang = 0). Ou bien, il faut que les itk (= connexion) en sortie d'une même culture somme à 100%
+
+    Note(s):
+        Est réutilisé dans le cadre du calcul des poids de connexion au seins du synthétisé
+        Que pour les cultures assolées en synthétisé
+
+    Echelle :
+        synthetise_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'connection_synthetise'
+            - 'noeuds_synthetise'
+
+    Returns:
+        1° : list() des synthetisés qui sont bons
+        2° : dict() des synthetisés mauvais selon leur problèmes
+    '''
 
     conx = donnees['connection_synthetise'].copy()
     noeud = donnees['noeuds_synthetise'].copy()
@@ -872,9 +893,10 @@ def extract_good_rotation_diagram(donnees):
     return list_good_synth_rotation, dic_of_bad_synth
             
 
-   
-
 def trouver_chemins(graphe, debut, fins):
+    ''' 
+    Fonction utile permettant de calculer tout les chemins possibles au seins d'une rotation d'un synthétisé 
+    '''
     stack = [(debut, [])]  # (node actuel, chemin parcouru)
     chemins = []
 
@@ -894,9 +916,36 @@ def trouver_chemins(graphe, debut, fins):
 
 
 def get_connexion_weight_in_synth_rotation(donnees):
+    ''' 
+    Le but est d'obtenir un Dataframe avec les poids des connexions au sein du stynhétisé. 
+    On exporte aussi le dataframe intermédiaire qui est très utile avec les couples connexions-chemins
+
+    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion annualisé soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. Puis pour chaque connexion on donne ce poids de connexion annualisé divisé par le nombre de connexions dans le groupe de même camapgne qui n'est pas absente. Puis on passe en NA les poids de connexions pour les connexions absentes. Et au final on fait une somme des poids de connexion pour une meme connexion (car on était jusque là au niveau du couple connexion-chemin)
+    Attention, on filtre les synthétisés dont la somme des poids de connexion ne fait pas 1 ! (c'est le cas d'une trentaine de synthétisé qui ont des chemins entierrement composé de culture absentes)
+
+    Note(s):
+        Que pour les cultures assolées en synthétisé
+
+    Echelle :
+        connexion_id
+        couple connexion_id-chemin_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'connection_synthetise'
+            - 'noeuds_synthetise'
+            Focntions
+            - trouver_chemins(graphe, debut, fins)
+            - extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
+
+    Returns:
+        1° : pd.Dataframe() des poids de connexion
+        2° : pd.Dataframe() des poids des couples connexion-chemin (donc avec connexion, chemins de noeuds, groupe de couples ayant la même campagne, connexion absente, poids du couple)
+    '''
+
     import os
     from concurrent.futures import ProcessPoolExecutor
-    from tqdm import tqdm
 
     # Importation des données etmise en forme
     conx = donnees['connection_synthetise'].copy()
@@ -921,7 +970,7 @@ def get_connexion_weight_in_synth_rotation(donnees):
         rename(columns={'synth_id_suiv' : 'synth_id'})\
             .drop('nd_id_suiv', axis=1)
 
-    list_good_synth = extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
+    list_good_synth, _ = extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
 
     cx = df.loc[df['synth_id'].isin(list_good_synth)].set_index('conx_id').copy()
     nd = noeud.loc[noeud['synth_id'].isin(list_good_synth)].set_index('nd_id').copy()
@@ -1031,22 +1080,27 @@ def get_connexion_weight_in_synth_rotation(donnees):
         return all_df
 
 
-
     # Utilisation de ProcessPoolExecutor avec 80% des cœurs
     with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
-        results = list(tqdm(executor.map(process_sy, list_good_synth), total=len(list_good_synth)))
+        results = list(executor.map(process_sy, list_good_synth), total=len(list_good_synth))
 
     # Concaténation des résultats
     final_data = pd.concat(results)
 
-    test = final_data.copy()
-    test = test[['connexion_freq','synth_id']].groupby('synth_id').sum('connexion_freq')
-    test = test.loc[round(test['connexion_freq'],2) != 1]
+    test_sum_at_100 = final_data.copy()
+    test_sum_at_100 = test_sum_at_100[['connexion_freq','synth_id']].groupby('synth_id').sum('connexion_freq')
+    test_sum_at_100 = test_sum_at_100.loc[round(test_sum_at_100['connexion_freq'],2) != 1].index
 
-    final_data = final_data.loc[~(final_data['synth_id'].isin(test.index))]
+    # print('Nombre de connexion qui ne somme pas à 100 : ', len(test_sum_at_100).astype('str'))
 
-    final_data_conx_level = final_data[['connexion_id','connexion_freq','synth_id']].groupby('connexion_id').agg({
-        'connexion_freq' : 'sum',
-        'synth_id' : lambda x : x.unique().item()
+    final_data = final_data.loc[~(final_data['synth_id'].isin(test_sum_at_100))]
+    final_data = final_data[['connexion_id','chemin_id','groupe_sameyear','abs','connexion_freq']]
+
+    # Somme des poids des couples cnx_chem pour aller à l'échelle connexion_id
+    final_data_conx_level = final_data[['connexion_id','connexion_freq']].groupby('connexion_id').agg({
+        'connexion_freq' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
     })
+
+    # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem
+    return final_data_conx_level, final_data
     
