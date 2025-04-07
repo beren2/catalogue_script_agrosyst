@@ -824,16 +824,15 @@ def extract_good_rotation_diagram(donnees):
     empty_rank = noeud[['rang','synth_id']].groupby('synth_id').agg(get_hole_in_rotation).reset_index()
     empty_rank = empty_rank.loc[empty_rank['rang'].notna()]
 
-    # Frequence des connexions égales à 0
-        # On augmente un peu le sueil à 0.5% car bizarre d''avoir une connexion avec une fréquence si faible
-    freq_cnx_at_0 = list(conx.loc[conx['freq'] < 0.5, 'synth_id'])
-
     # Merge de connexion et noeud (suivant et précédent)
     df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
-    .drop('nd_id_prec', axis=1)
+        .drop('nd_id_prec', axis=1)
     df = df.merge(noeud.add_suffix('_suiv'), left_on='nd_suiv', right_on='nd_id_suiv').\
-        rename(columns={'synth_id_suiv' : 'synth_id'})\
-            .drop('nd_id_suiv', axis=1)
+        rename(columns={'synth_id_suiv' : 'synth_id'}).drop('nd_id_suiv', axis=1)
+    
+    # Frequence des connexions égales à 0
+        # On augmente un peu le sueil à 0.5% car bizarre d''avoir une connexion avec une fréquence si faible
+    freq_cnx_at_0 = list(df.loc[df['freq'] < 0.5, 'synth_id'])
 
     # Somme de sortie du noeuf ne faisant pas 100%
     def get_unique_txt(series):
