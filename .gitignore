@@ -5,3 +5,4 @@
 .vscode/settings.json
 01_entrepot/.Rhistory
 01_entrepot/documentation_manquante.csv
+05_tests_locaux/*
