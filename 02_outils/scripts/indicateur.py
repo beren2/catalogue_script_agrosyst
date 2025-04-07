@@ -856,8 +856,9 @@ def extract_good_rotation_diagram(donnees):
         # Premier if eventuellement redondant (voir avant avec le rang entierement)
         if list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t') == []:
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'empty_rank'
-        elif (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t'))) & \
-            (all(list((noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear']) == 'f'))):
+        elif (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 't'))) & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear'] == 'f'))) \
+        | \
+        (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 'f'))) & (all(list(noeud.loc[((noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv'])) & (noeud['nd_id']!=row['nd_suiv']), 'sameyear'] == 't'))) :
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'ok'
         else :
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'hole_in_path'
@@ -925,6 +926,7 @@ def get_connexion_weight_in_synth_rotation(donnees):
 
     Note(s):
         Que pour les cultures assolées en synthétisé
+        Processus parralélisé à 70% des cores de la machine (4h30 --> 45min)
 
     Echelle :
         connexion_id
