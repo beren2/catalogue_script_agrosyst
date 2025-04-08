@@ -970,7 +970,7 @@ def get_connexion_weight_in_synth_rotation(donnees):
         rename(columns={'synth_id_suiv' : 'synth_id'})\
             .drop('nd_id_suiv', axis=1)
 
-    list_good_synth, _ = extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
+    list_good_synth, _ = extract_good_rotation_diagram(donnees)
 
     cx = df.loc[df['synth_id'].isin(list_good_synth)].set_index('conx_id').copy()
     nd = noeud.loc[noeud['synth_id'].isin(list_good_synth)].set_index('nd_id').copy()
@@ -1103,4 +1103,11 @@ def get_connexion_weight_in_synth_rotation(donnees):
 
     # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem
     return final_data_conx_level, final_data
-    
+
+
+def get_connexion_weight_in_synth_rotation_for_test(donnees):
+    """
+        Enveloppe pour tester le premier résultat de la fonction get_connexion_weight_in_synth_rotation_first_for plus facilement.
+    """
+    final_data_conx_level, _ = get_connexion_weight_in_synth_rotation(donnees)
+    return final_data_conx_level

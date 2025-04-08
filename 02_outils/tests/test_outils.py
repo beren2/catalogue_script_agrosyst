@@ -666,3 +666,21 @@ def test_get_typologie_culture_CAN():
     res = pd.Series(res).fillna(False).all()
 
     assert res
+
+
+def test_get_connexion_weight_in_synth_rotation():
+    """
+        Test de l'obtention des poids des rotations en synthétisé
+    """
+    identifiant_test = 'test_get_connexion_weight_in_synth_rotation'
+    df_names = [   
+                    'noeuds_synthetise', 'connection_synthetise'
+                ]
+    path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
+    fonction_to_apply = indicateur.get_connexion_weight_in_synth_rotation_for_test
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
