@@ -824,16 +824,15 @@ def extract_good_rotation_diagram(donnees):
     empty_rank = noeud[['rang','synth_id']].groupby('synth_id').agg(get_hole_in_rotation).reset_index()
     empty_rank = empty_rank.loc[empty_rank['rang'].notna()]
 
-    # Frequence des connexions égales à 0
-        # On augmente un peu le sueil à 0.5% car bizarre d''avoir une connexion avec une fréquence si faible
-    freq_cnx_at_0 = list(conx.loc[conx['freq'] < 0.5, 'synth_id'])
-
     # Merge de connexion et noeud (suivant et précédent)
     df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
-    .drop('nd_id_prec', axis=1)
+        .drop('nd_id_prec', axis=1)
     df = df.merge(noeud.add_suffix('_suiv'), left_on='nd_suiv', right_on='nd_id_suiv').\
-        rename(columns={'synth_id_suiv' : 'synth_id'})\
-            .drop('nd_id_suiv', axis=1)
+        rename(columns={'synth_id_suiv' : 'synth_id'}).drop('nd_id_suiv', axis=1)
+    
+    # Frequence des connexions égales à 0
+        # On augmente un peu le sueil à 0.5% car bizarre d''avoir une connexion avec une fréquence si faible
+    freq_cnx_at_0 = list(df.loc[df['freq'] < 0.5, 'synth_id'])
 
     # Somme de sortie du noeuf ne faisant pas 100%
     def get_unique_txt(series):
@@ -856,8 +855,9 @@ def extract_good_rotation_diagram(donnees):
         # Premier if eventuellement redondant (voir avant avec le rang entierement)
         if list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t') == []:
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'empty_rank'
-        elif (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t'))) & \
-            (all(list((noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear']) == 'f'))):
+        elif (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 't'))) & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear'] == 'f'))) \
+        | \
+        (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 'f'))) & (all(list(noeud.loc[((noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv'])) & (noeud['nd_id']!=row['nd_suiv']), 'sameyear'] == 't'))) :
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'ok'
         else :
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'hole_in_path'
@@ -925,6 +925,7 @@ def get_connexion_weight_in_synth_rotation(donnees):
 
     Note(s):
         Que pour les cultures assolées en synthétisé
+        Processus parralélisé à 70% des cores de la machine (4h30 --> 45min)
 
     Echelle :
         connexion_id
