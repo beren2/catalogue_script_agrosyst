@@ -678,11 +678,11 @@ test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_6
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_931d7b38-1df6-4e38-bbf5-9661ddb0a81b,,,typocan_culture_maraich
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_94c605bb-a2c5-4f47-833e-c126edc00594,Aucune espèce renseignée,,typocan_culture_maraich
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_f144f317-25b5-403d-81ca-56ed7809c705,Aucune espèce renseignée,,typocan_culture_maraich
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_cffd990a-b401-46d8-b338-28ad52c749ea,"0,5",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_aaef3477-1e6b-4226-ba44-56006336166a,"0,5",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_c64570ec-7563-47b6-afaf-13c4a71727fe,"0,25",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_439cd55e-fa78-455a-9504-234279059142,"0,25",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_65c9c876-9634-4542-aa00-0ed70d770650,"0,15",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fc6dff67-16ea-4cdf-ab0f-4b5ade4d49e4,"0,1",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_9e756084-e6e0-42f1-a007-9b2e7c625555,"0,1",,connexion_freq
-test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_4fc23bd1-5986-4abb-8968-0f485b8175e0,"0,15",,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_cffd990a-b401-46d8-b338-28ad52c749ea,0.5,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_aaef3477-1e6b-4226-ba44-56006336166a,0.5,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_c64570ec-7563-47b6-afaf-13c4a71727fe,0.25,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_439cd55e-fa78-455a-9504-234279059142,0.25,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_65c9c876-9634-4542-aa00-0ed70d770650,0.15,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fc6dff67-16ea-4cdf-ab0f-4b5ade4d49e4,0.1,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_9e756084-e6e0-42f1-a007-9b2e7c625555,0.1,,connexion_freq
+test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_4fc23bd1-5986-4abb-8968-0f485b8175e0,0.15,,connexion_freq

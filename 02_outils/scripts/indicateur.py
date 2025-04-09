@@ -915,7 +915,7 @@ def trouver_chemins(graphe, debut, fins):
     return chemins
 
 
-def get_connexion_weight_in_synth_rotation(donnees):
+def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True):
     ''' 
     Le but est d'obtenir un Dataframe avec les poids des connexions au sein du stynhétisé. 
     On exporte aussi le dataframe intermédiaire qui est très utile avec les couples connexions-chemins
@@ -1081,9 +1081,16 @@ def get_connexion_weight_in_synth_rotation(donnees):
         return all_df
 
 
-    # Utilisation de ProcessPoolExecutor avec 80% des cœurs
-    with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
-        results = list(executor.map(process_sy, list_good_synth))
+    # Utilisation de ProcessPoolExecutor avec 70% des cœurs
+    if(parallelization_enabled):
+        # si on est en mode réel, on active la parallélisation
+        with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
+            results = list(executor.map(process_sy, list_good_synth))
+    else:
+        # si on est en mode TU, on désactive la parralélisation
+        results = []
+        for sy in list(list_good_synth) :
+            results.append(process_sy(sy))
 
     # Concaténation des résultats
     final_data = pd.concat(results)
@@ -1110,5 +1117,5 @@ def get_connexion_weight_in_synth_rotation_for_test(donnees):
     """
         Enveloppe pour tester le premier résultat de la fonction get_connexion_weight_in_synth_rotation_first_for plus facilement.
     """
-    final_data_conx_level, _ = get_connexion_weight_in_synth_rotation(donnees)
+    final_data_conx_level, _ = get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=False)
     return final_data_conx_level

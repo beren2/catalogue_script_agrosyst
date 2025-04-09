@@ -679,7 +679,7 @@ def test_get_connexion_weight_in_synth_rotation():
     path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
     fonction_to_apply = indicateur.get_connexion_weight_in_synth_rotation_for_test
 
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='connexion_id')
 
     res = pd.Series(res).fillna(False).all()
 
