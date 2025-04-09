@@ -674,7 +674,7 @@ def get_typologie_culture_CAN(donnees):
     cropsp = donnees['composant_culture'][['espece_id','culture_id']]
     crop = donnees['culture'][['id','type']].rename(columns={
         'id':'culture_id'})
-    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
+    sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
         'id':'espece_id'})
     # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
     # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]

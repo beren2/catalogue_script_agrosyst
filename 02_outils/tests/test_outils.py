@@ -653,8 +653,7 @@ def test_get_typologie_culture_CAN():
     """
     identifiant_test = 'test_get_typologie_culture_CAN'
     df_names = [   
-                    'composant_culture', 'culture', 
-                    'espece_vCAN', # A changer lorsque le refespece sera pret
+                    'composant_culture', 'culture', 'espece',
                     'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
                 ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
