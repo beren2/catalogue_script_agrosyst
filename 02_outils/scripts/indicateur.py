@@ -1109,6 +1109,9 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
         'connexion_freq' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
     })
 
+    # On choisit d'arrondir à 5 chiffres après la virgule :
+    final_data_conx_level['connexion_freq'] = final_data_conx_level['connexion_freq'].round(5)
+
     # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem
     return final_data_conx_level, final_data
 
