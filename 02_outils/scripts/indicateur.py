@@ -822,7 +822,7 @@ def extract_good_rotation_diagram(donnees):
     
     # Les rangs qui sont entierement vide
     empty_rank = noeud[['rang','synth_id']].groupby('synth_id').agg(get_hole_in_rotation).reset_index()
-    empty_rank = empty_rank.loc[empty_rank['rang'].notna()]
+    empty_rank = list(empty_rank.loc[empty_rank['rang'].notna(), 'synth_id'])
 
     # Merge de connexion et noeud (suivant et précédent)
     df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
@@ -842,7 +842,7 @@ def extract_good_rotation_diagram(donnees):
     exit_cnx_100 = df[['synth_id','freq','nd_prec']].groupby('nd_prec').agg({
         'synth_id' : get_unique_txt,
         'freq' : 'sum'})
-    exit_cnx_100 = exit_cnx_100.loc[round(exit_cnx_100['freq'],8) != 100, 'synth_id']
+    exit_cnx_100 = list(exit_cnx_100.loc[round(exit_cnx_100['freq'],8) != 100, 'synth_id'])
 
     # Noeud suivant est forcement sur le rang suivant (pas de 'trou') 
         # Attention si le rang qui a un trou dans le chemin n'est fait que de culture dérobée et que le noeud suivant n'est pas une dérobée
@@ -1083,7 +1083,7 @@ def get_connexion_weight_in_synth_rotation(donnees):
 
     # Utilisation de ProcessPoolExecutor avec 80% des cœurs
     with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
-        results = list(executor.map(process_sy, list_good_synth), total=len(list_good_synth))
+        results = list(executor.map(process_sy, list_good_synth))
 
     # Concaténation des résultats
     final_data = pd.concat(results)
