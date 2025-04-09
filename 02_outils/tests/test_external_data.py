@@ -52,7 +52,7 @@ def check_BDD_donnees_attendues_CAN(donnees):
     if error_ref.shape[0] != 0:
         message_error = message_error + "\n" + "\t" + "Attention il y a des incohérences dans le référentiel : \n"
         message_error = message_error + str(error_ref)
-    return message_error
+    return [message_error]
 
 def typo_especes_typo_culture(donnees):
     """
@@ -60,4 +60,4 @@ def typo_especes_typo_culture(donnees):
         ie de s'assurer qu'elle correspond au format attendu :
         TODO
     """
-    return True
+    return []
