@@ -4,8 +4,7 @@ select
 	r.adventice as label,
 	r.identifiant as code,
 	r.famille_de_culture
-from refadventice r
-where r.active is true;
+from refadventice r;
 
 alter table entrepot_adventice
 ADD CONSTRAINT entrepot_adventice_PK
