@@ -479,8 +479,8 @@ def create_category_indicateur():
     """
         Execute les requêtes pour créer les outils des indicateurs
     """
-    dict_extract_good_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
-    export_dict_to_catalogue(dict_extract_good_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
+    _, dict_extract_bad_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
+    export_dict_to_catalogue(dict_extract_bad_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
 
     _, df_get_couple_connexion_paths = indicateur.get_connexion_weight_in_synth_rotation(donnees)
     export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')

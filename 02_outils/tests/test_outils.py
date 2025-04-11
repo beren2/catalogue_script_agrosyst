@@ -655,7 +655,7 @@ def test_get_typologie_culture_CAN():
     identifiant_test = 'test_get_typologie_culture_CAN'
     df_names = [   
                     'composant_culture', 'culture', 
-                    'espece',
+                    'espece_vCAN', # MODIF TO DO ! 
                     'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
                 ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
@@ -668,7 +668,7 @@ def test_get_typologie_culture_CAN():
     assert res
 
 
-def extract_good_rotation_diagram():
+def test_extract_good_rotation_diagram():
     """
         Test de l'obtention de la liste de "bon" synthétisé pour la suite (soit la fonction poids des rotations en synthétisé)
         ATTENTION va prendre les même données d'entrée que la fonction test_get_connexion_weight_in_synth_rotation(. donc path_data ne change pas
