@@ -2,10 +2,13 @@
 	Regroupe les fonctions qui consistent en des calculs d'indicateurs 
 """
 
+import os
+from concurrent.futures import ProcessPoolExecutor
 import pandas as pd
 import numpy as np
 from scripts.utils import fonctions_utiles
 from scripts.utils import get_surfaces_connections_synthetise
+
 
 def get_surface_connexion_synthetise(
         donnees
@@ -818,8 +821,9 @@ def extract_good_rotation_diagram(donnees):
 
     def get_hole_in_rotation(series):
         ranks_theo = pd.Series(range(min(series)+1, max(series)))
-        if all(ranks_theo.isin(series)) == False :
+        if all(ranks_theo.isin(series)) is False :
             return list(ranks_theo.loc[~(ranks_theo.isin(series))])
+        return None
     
     # Les rangs qui sont entierement vide
     empty_rank = noeud[['rang','synth_id']].groupby('synth_id').agg(get_hole_in_rotation).reset_index()
@@ -854,7 +858,7 @@ def extract_good_rotation_diagram(donnees):
     for idx, row in test_hole_in_path.iterrows() :
         empty_rank_list = list(range(row['rang_prec']+1, row['rang_suiv']))
         # Premier if eventuellement redondant (voir avant avec le rang entierement)
-        if list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t') == []:
+        if not list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t'):
             test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'empty_rank'
         elif (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 't'))) & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear'] == 'f'))) \
         | \
@@ -916,7 +920,7 @@ def trouver_chemins(graphe, debut, fins):
     return chemins
 
 
-def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True):
+def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool = True):
     ''' 
     Le but est d'obtenir un Dataframe avec les poids des connexions au sein du stynhétisé.
     Avec le poids des connexions pour l'agrégation (indicateur à l'itk) et la probabilité d'apparition de la connexion (indicateur à l'année, ou proportion spatio-temporelle de la culture). 
@@ -941,18 +945,19 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
             Données d'entrepot
             - 'connection_synthetise'
             - 'noeuds_synthetise'
-            Focntions
+            Fonctions
             - trouver_chemins(graphe, debut, fins)
             - extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
+        parallelization_enabled (bool):
+            booléen indiquant si la parralélisation est active ou non
+
+
 
     Returns:
         1° : pd.Dataframe() des poids de connexion
         2° : pd.Dataframe() des poids des couples connexion-chemin (donc avec connexion, chemins de noeuds, groupe de couples ayant la même campagne, connexion absente, poids du couple)
     '''
-
-    import os
-    from concurrent.futures import ProcessPoolExecutor
-
+    
     # Importation des données etmise en forme
     conx = donnees['connection_synthetise'].copy()
     noeud = donnees['noeuds_synthetise'].copy()
@@ -1012,8 +1017,8 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
         chemins_possibles = trouver_chemins(graphe, first_node, end_nodes)
 
         #  Associer chaque connexion aux chemins où elle apparaît, en comptant abs='t', sameyear='t', et calculant le poids du chemin
-        df_couples_connexion_chemins = []
-        df_chemins = []
+        lst_couples_connexion_chemins = []
+        lst_chemins = []
 
         for chemin in chemins_possibles:
 
@@ -1036,7 +1041,7 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
                 nd_prec, nd_suiv = chemin[i], chemin[i + 1]
                 if (nd_prec, nd_suiv) in connexions:
                     poid_chemin *= connexions[(nd_prec, nd_suiv)]['freq'] / 100  # Convertir en probabilité
-                    df_couples_connexion_chemins.append({
+                    lst_couples_connexion_chemins.append({
                         'connexion_id': connexions[(nd_prec, nd_suiv)]['conx_id'],
                         'chemin_id': chemin,
                         'groupe_sameyear': groupes_sameyear[nd_suiv],  # La connexion prend le groupe du noeud suivant
@@ -1045,7 +1050,7 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
             # Ajout des connexions des nœuds terminaux vers le premier nœud
             if chemin[-1] in end_nodes and (chemin[-1], chemin[0]) in connexions:
                 poid_chemin *= connexions[(chemin[-1], chemin[0])]['freq'] / 100
-                df_couples_connexion_chemins.append({
+                lst_couples_connexion_chemins.append({
                     'connexion_id': connexions[(chemin[-1], chemin[0])]['conx_id'],
                     'chemin_id': chemin,
                     'groupe_sameyear': groupes_sameyear[chemin[0]],  # La connexion prend le groupe du premier noeud
@@ -1053,11 +1058,11 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
                 })
             
             # Nombre d'année (soit le nombre de groupe sameyear après avoir enlever les connexions absentes)
-            nb_annee = len(set([entry['groupe_sameyear'] for entry in df_couples_connexion_chemins if \
-                                (entry['abs'] == 'f') & (entry['chemin_id'] == chemin)]))
+            nb_annee = len({entry['groupe_sameyear'] for entry in lst_couples_connexion_chemins if \
+                                (entry['abs'] == 'f') & (entry['chemin_id'] == chemin)})
             if nb_annee == 0 : nb_annee = 1
             # Ajouter les infos des chemins, dont le poids des chemins après recalcul sans conx absente
-            df_chemins.append({
+            lst_chemins.append({
                 'chemin_id': chemin,
                 'pd_chem' : poid_chemin,
                 'poids_conx_agregation': poid_chemin / nb_annee,
@@ -1065,10 +1070,11 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
             })
 
         # Convertir en DataFrame
-        df_chemins = pd.DataFrame(df_chemins)
-        df_chemins['chemin_id'] = df_chemins['chemin_id'].astype(str)
-        df_couples_connexion_chemins = pd.DataFrame(df_couples_connexion_chemins)
-        df_couples_connexion_chemins['chemin_id'] = df_couples_connexion_chemins['chemin_id'].astype(str)
+        df_chemins = pd.DataFrame.from_records(lst_chemins)
+        df_chemins['chemin_id'] = df_chemins['chemin_id'].astype('str')
+        df_couples_connexion_chemins = pd.DataFrame.from_records(lst_couples_connexion_chemins)
+        df_couples_connexion_chemins['chemin_id'] = df_couples_connexion_chemins['chemin_id'].astype('str')
+
         # Merge chemin sur les couples cx_ch
         df_couples_connexion_chemins = df_couples_connexion_chemins.merge(df_chemins, on = 'chemin_id', how = 'left')
 
