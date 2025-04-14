@@ -19,6 +19,7 @@ def get_surfaces_connections_synthetise(df_synthetise,
         Retourne un dataframe où on associe la surface au sol aux connections en synthétisé
         Colonnes du dataframe de sortie : 
             - surface (ha)                      (valeur de la surface en hectare)
+            - frequence (%)                     (fréquence d'apparation de la sole au seins de la rotation dans un synthetisé)
         Indice du dataframe de sortie :
             - connection_synthetise_id          (identifiant de la connection en synthétisé)
     """
@@ -63,7 +64,7 @@ def get_surfaces_connections_synthetise(df_synthetise,
                                                                   delete_empty_arete=False)
         return graph_synthetise
 
-    ret_noeuds, ret_aretes = [], []
+    ret_noeuds, ret_aretes, ret_noeuds_frq, ret_aretes_frq = [], [], [], []
     for synthetise_id in tqdm(df_synthetise.index, total=len(df_synthetise)):
         graph_synthetise = filter_rotation_synthetise_(synthetise_id)
         if graph_synthetise['valid']:
@@ -103,13 +104,19 @@ def get_surfaces_connections_synthetise(df_synthetise,
             # (noeuds et aretes contiennent d'autres infos que les proportions de terrains associées, mais on les jette ici)
             ret_noeuds.append((noeuds['frequence_totale'] / n_annees) * surface_disponible_synthetise_assole)
             ret_aretes.append((aretes['frequence_totale'] / n_annees) * surface_disponible_synthetise_assole)
+            ret_noeuds_frq.append(noeuds['frequence_totale'] / n_annees)
+            ret_aretes_frq.append(aretes['frequence_totale'] / n_annees)
         else:
             pass # on ne fait rien, on pourrait ajouter des NaN avec les indices des noeuds et des aretes mais a voir si il faut ou pas
 
     connections_synthetise_surfaces = pd.DataFrame(pd.concat(ret_aretes)).rename(columns={'frequence_totale' :'surface'})
+    connections_synthetise_surf_and_freq = connections_synthetise_surfaces.join(
+    pd.DataFrame(pd.concat(ret_aretes_frq)).rename(columns={'frequence_totale' :'frequence'})
+    )
+
     # noeuds_synthetise_surfaces =  pd.concat(ret_noeuds)
 
-    return connections_synthetise_surfaces
+    return connections_synthetise_surf_and_freq
 
 
 

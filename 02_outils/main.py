@@ -512,6 +512,11 @@ def create_category_indicateur():
     df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
     export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
 
+    df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
+    export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
+
+    
+
 def create_category_outils_can():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
