@@ -691,8 +691,7 @@ def test_extract_good_rotation_diagram():
     'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_000f911f-5e67-4280-ae77-35098c17aa5d',
     'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_592b3792-8ad0-4213-ab98-a948f444ed04']
 
-    if set(list(res_to_test)) == set(good_to_check) : res = True
-    else : res = False
+    res = set(list(res_to_test)) == set(good_to_check)
 
     assert res
 
