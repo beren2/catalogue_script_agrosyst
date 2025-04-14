@@ -474,8 +474,8 @@ def create_category_indicateur():
     """
         Execute les requêtes pour créer les outils des indicateurs
     """
-    df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
-    export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
+    # df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
+    # export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
 
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
