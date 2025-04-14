@@ -2,7 +2,6 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
-import numpy as np
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
@@ -389,33 +388,40 @@ def test_get_dose_ref():
     assert res_valeur_ok
     assert res_unit_ok
 
-def test_sdc_donnee_attendue():
+def test_identification_pz0():
     """
         Test du tag des sdc par le type de donnees attendue
     """
     # lecture du fichier de métadonnées sur les tests
     df_metadonnees = pd.read_csv('02_outils/tests/metadonnees_tests_unitaires.csv')
-    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_sdc_donnee_attendue']
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == 'test_identification_pz0']
 
     # obtention des données
     df_names = [    
+                    'domaine',
                     'dispositif',
-                    'sdc'
+                    'sdc',
+                    'synthetise',
+                    'parcelle',
+                    'zone',
+                    'intervention_synthetise_agrege',
+                    'intervention_realise_agrege'
                 ]
-    path_data = '02_outils/tests/data/test_sdc_donnee_attendue/'
+    path_data = '02_outils/tests/data/test_identification_pz0/'
     donnees = import_dfs(df_names, path_data, {}, sep = ',')
     
-    external_data_path = '02_outils/tests/data/test_sdc_donnee_attendue/'
-    
+    external_data_path = '02_outils/tests/data/test_identification_pz0/'
     import_df('BDD_donnees_attendues_CAN', external_data_path, sep = ',', df = donnees)
 
     # application de la fonction d'identification des pz0
-    result_function = indicateur.sdc_donnee_attendue(donnees)
+    result_function = indicateur.identification_pz0(donnees)
     
     df_metadonnees.set_index('id_ligne',inplace = True)
-    comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True)
+    comparaison = pd.merge(result_function,df_metadonnees[['valeur_attendue']], left_index=True, right_index=True, how = 'left').reset_index()
     
-    res_test = (comparaison['valeur_attendue'].astype('int') == comparaison['donnee_attendue'].astype('int')).all()
+    print(comparaison.loc[comparaison['valeur_attendue'] != comparaison['pz0'],].values)
+
+    res_test = (comparaison['valeur_attendue'] == comparaison['pz0']).all()
     assert res_test
   
 def test_connection_synthetise_restructured():
@@ -646,15 +652,63 @@ def test_get_typologie_culture_CAN():
         Test de l'obtention des typologies d'espece et de cultures 
     """
     identifiant_test = 'test_get_typologie_culture_CAN'
-    df_names = [   
-                    'composant_culture', 'culture', 
-                    'espece_vCAN', # A changer lorsque le refespece sera pret
-                    'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
-                ]
+    df_names = [
+                'composant_culture', 'culture', 'espece',
+                'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
+               ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
     fonction_to_apply = indicateur.get_typologie_culture_CAN
 
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
+
+
+def test_extract_good_rotation_diagram():
+    """
+        Test de l'obtention de la liste de "bon" synthétisé pour la suite (soit la fonction poids des rotations en synthétisé)
+        ATTENTION va prendre les même données d'entrée que la fonction test_get_connexion_weight_in_synth_rotation(. donc path_data ne change pas
+    """
+    df_names = [   
+                    'noeuds_synthetise', 'connection_synthetise'
+                ]
+    path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
+    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    res_to_test, _ = indicateur.extract_good_rotation_diagram(donnees)
+    
+    good_to_check = ['fr.inra.agrosyst.api.entities.practiced.PracticedSystem_d4a1b64c-afa0-440f-92e1-30a483871ab4',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_00b5a0b4-39a6-4822-802b-e81fd44386a2',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_05e5d9d6-ad2b-43b2-b37a-1f32850e37a1',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_61f75804-3823-4fae-9ce1-82bfa3d7e41e',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_41ae9d22-5515-44d8-9a7f-8254c42149eb',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2f68d851-cb30-402f-bfc6-b0abf37c49a8',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_1e606337-4238-437b-9856-a302b2431efd',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_91611752-8cd2-42f1-b19f-97186597ab64',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_445dd407-58f6-403e-8dd6-8352166a0131',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0316e326-6369-4ec7-ab50-b983c3aa0b3d',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_000f911f-5e67-4280-ae77-35098c17aa5d',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_592b3792-8ad0-4213-ab98-a948f444ed04']
+
+    res = set(list(res_to_test)) == set(good_to_check)
+
+    assert res
+
+
+
+def test_get_connexion_weight_in_synth_rotation():
+    """
+        Test de l'obtention des poids des rotations en synthétisé
+    """
+    identifiant_test = 'test_get_connexion_weight_in_synth_rotation'
+    df_names = [   
+                    'noeuds_synthetise', 'connection_synthetise'
+                ]
+    path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
+    fonction_to_apply = indicateur.get_connexion_weight_in_synth_rotation_for_test
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='connexion_id')
 
     res = pd.Series(res).fillna(False).all()
 

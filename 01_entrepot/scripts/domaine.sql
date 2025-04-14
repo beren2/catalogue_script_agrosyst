@@ -27,6 +27,7 @@ CREATE TABLE entrepot_domaine AS
     d.description description,
     rls.libelle_insee statut_juridique_nom,
     d.statuscomment statut_juridique_commentaire,
+    d.chiefbirthyear annee_naissance_exploitant, 
     d.usedagriculturalarea SAU_totale,
     d.croppingplancomment cultures_commentaire,
     d.otheractivitiescomment autres_activites_commentaire,
@@ -44,7 +45,15 @@ CREATE TABLE entrepot_domaine AS
     ro1.libelle_otex_18_postes otex_18_nom,
     ro2.libelle_otex_70_postes otex_70_nom,
     d.orientation otex_commentaire,
-    dr.responsibles responsables_domaine
+    dr.responsibles responsables_domaine, 
+    d.nbplot as nombre_parcelles,
+    d.furthestplotdistance as distance_siege_parcelle_max,
+    d.areaaroundhq as surface_autour_siege_exploitation,
+    d.groupedplots as parcelles_groupees,
+    d.scatteredplots as parcelles_dispersees,
+    d.ratherscatteredplots as parcelles_plutot_dispersees,
+    d.joinedplots as parcelles_groupees_distinctes,
+    d.rathergroupedplots as parcelles_plutot_groupees
   FROM domain d
   LEFT JOIN domainresponsibles dr ON d.code = dr.domaincode
   LEFT JOIN reflocation rl ON d.location = rl.topiaid
@@ -67,7 +76,7 @@ g.name nom_local,
 g."comment" commentaire,
 g.importance SAU_concernee_pct,
 g."domain" domaine_id,
-g.refsolarvalis refsolarvalis_id
+g.refsolarvalis sol_arvalis_id
 from ground g
 join entrepot_domaine ed on ed.id = g."domain" ;
  
@@ -79,7 +88,7 @@ alter table entrepot_domaine_sol
 add FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);
 
 alter table entrepot_domaine_sol
-add FOREIGN KEY (refsolarvalis_id) REFERENCES refsolarvalis(topiaid);
+add FOREIGN KEY (sol_arvalis_id) REFERENCES entrepot_sol_arvalis(id);
 
 
 -- Surfaces par especes
