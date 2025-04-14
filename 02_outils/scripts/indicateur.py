@@ -804,32 +804,32 @@ def get_typologie_rotation_CAN_synthetise(donnees):
         # ATTENTION nous ferons le distingo avec les 2 premiers if
         if all(cgrp['frequence'].isna()) :
             return 'aucune fréquence de rotation calulée'
-        elif all(cgrp['typocan_culture'].isna()) :
+        if all(cgrp['typocan_culture'].isna()) :
             return 'aucune typologie de culture détectée'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Betterave','Lin','Légume']), 'frequence']) >= 0.05 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Betterave','Lin','Légume']), 'frequence']) >= 0.05 :
             return 'succession avec betterave ou lin ou légumes (>= 5 %%)'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Pomme de terre']), 'frequence']) >= 0.05 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Pomme de terre']), 'frequence']) >= 0.05 :
             return 'successions avec pomme de terre'
         # elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Cultures porte graines']), 'frequence']) >= 0.05 :
         #     return 'successions avec cultures porte graine'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Colza']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Colza']), 'frequence']) >= 0.95 :
             return 'céréales à paille hiver/colza'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza']), 'frequence']) >= 0.95 :
             return 'céréales à paille hiver+printemps/colza'
         # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Maïs']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Maïs']), 'frequence']) >= 0.95 :
             return 'maïs'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Maïs','Oléagineux (hors Colza et Tournesol)','Protéagineux','Mélange fourrager']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Maïs','Oléagineux (hors Colza et Tournesol)','Protéagineux','Mélange fourrager']), 'frequence']) >= 0.95 :
             return 'céréales à paille/colza/maïs ou protéagineux'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
             return 'céréales à paille/colza/tournesol'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Maïs','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Maïs','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
             return 'céréales à paille/maïs(/tournesol)'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Tournesol']), 'frequence']) >= 0.95 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Tournesol']), 'frequence']) >= 0.95 :
             return 'céréales à paille/tournesol'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) < 0.5 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) < 0.5 :
             return 'prairie temporaire < 50 %% assolement'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) >= 0.5 :
+        if sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) >= 0.5 :
             return 'prairie temporaire >= 50 %% assolement'
         else :
             return 'Autre'
