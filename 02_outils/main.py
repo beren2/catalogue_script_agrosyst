@@ -111,10 +111,10 @@ def export_dict_to_catalogue(dic, name):
     if('entrepot_' in name):
         name = name[9:]
     if(TYPE == 'local'):
-        with open(DATA_PATH + name + '.json', 'w') as f:
+        with open(DATA_PATH + name + '.json', 'w', encoding="utf-8") as f:
             json.dump(dic, f)
     else :
-        with open(pathway_for_data_to_export + name + '.json', 'w') as f:
+        with open(pathway_for_data_to_export + name + '.json', 'w', encoding="utf-8") as f:
             json.dump(dic, f)
     print("* CRÉATION DANS LE CATALOGUE DU DICTIONNAIRE ",name, " TERMINEE *")
 
