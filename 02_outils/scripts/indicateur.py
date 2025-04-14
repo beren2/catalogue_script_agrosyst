@@ -771,18 +771,19 @@ def extract_good_rotation_diagram(donnees):
     conx = donnees['connection_synthetise'].copy()
     noeud = donnees['noeuds_synthetise'].copy()
 
-    conx = conx[['id', 'frequence_source','culture_absente','source_noeuds_synthetise_id','cible_noeuds_synthetise_id']]\
-    .rename(columns={'id' : 'conx_id',
-                     'frequence_source' : 'freq',
-                     'culture_absente' : 'abs',
-                     'source_noeuds_synthetise_id' : 'nd_prec',
-                     'cible_noeuds_synthetise_id' : 'nd_suiv'})
-    noeud = noeud[['id', 'rang', 'fin_cycle','memecampagne_noeudprecedent', 'synthetise_id']]\
-        .rename(columns={'id' : 'nd_id',
-                        'fin_cycle' : 'end',
-                        'rang' : 'rang',
-                        'memecampagne_noeudprecedent' : 'sameyear',
-                        'synthetise_id' : 'synth_id'})
+    conx = conx[['id', 'frequence_source','culture_absente','source_noeuds_synthetise_id','cible_noeuds_synthetise_id']]
+    conx = conx.rename(columns={'id' : 'conx_id',
+                                'frequence_source' : 'freq',
+                                'culture_absente' : 'abs',
+                                'source_noeuds_synthetise_id' : 'nd_prec',
+                                'cible_noeuds_synthetise_id' : 'nd_suiv'})
+    noeud = noeud[['id', 'rang', 'fin_cycle','memecampagne_noeudprecedent', 'synthetise_id']]
+    noeud = noeud.rename(columns={'id' : 'nd_id',
+                                  'fin_cycle' : 'end',
+                                  'rang' : 'rang',
+                                  'memecampagne_noeudprecedent' : 'sameyear',
+                                  'synthetise_id' : 'synth_id'})
+
         
     # Nombre de premier rang
     def number_node_rank0(dfgrp):
@@ -921,7 +922,7 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
     Avec le poids des connexions pour l'agrégation (indicateur à l'itk) et la probabilité d'apparition de la connexion (indicateur à l'année, ou proportion spatio-temporelle de la culture). 
     On exporte aussi le dataframe intermédiaire qui est très utile avec les couples connexions-chemins
 
-    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion annualisé soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. Ce poids de connexion annualisé correspond au poids de la connexion à utiliser pour faire les agrégrations d'indicateurs.
+    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion annualisé soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. Ce poids de connexion annualisé correspond au poids de la connexion à utiliser pour faire les agrégrations d'indicateurs. On le normalise pour qu'ils somment à 1 (càd diviser chaque poids par la somme des autres).
     Puis pour chaque connexion on donne ce poids de connexion annualisé divisé par le nombre de connexions dans le groupe de même camapgne qui ne sont pas absente. Nous avons désormais la probabilité d'apparition des cultures.
     Puis on passe en NA les connexions absentes pour le poids et la probabilité. 
     Au final on fait une somme de ces indicateurs pour une meme connexion (car on était jusque là au niveau du couple connexion-chemin)
@@ -1083,6 +1084,9 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
         all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
         all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
 
+        # Normalisation des poids de connexions pour l'agrégation
+        all_df['poids_conx_agregation'] = all_df['poids_conx_agregation'] / all_df['poids_conx_agregation'].sum()
+
         return all_df
 
 
@@ -1100,9 +1104,14 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
     # Concaténation des résultats
     final_data = pd.concat(results)
 
+    # On enleve les données qui ne somme pas à 1
     test_sum_at_100 = final_data.copy()
-    test_sum_at_100 = test_sum_at_100[['proba_conx_spatiotemp','synth_id']].groupby('synth_id').sum('proba_conx_spatiotemp')
-    test_sum_at_100 = test_sum_at_100.loc[round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1].index
+    test_sum_at_100 = test_sum_at_100[['poids_conx_agregation','proba_conx_spatiotemp','synth_id']].groupby('synth_id').agg({
+        'poids_conx_agregation' : 'sum',
+        'proba_conx_spatiotemp' : 'sum'
+    })
+    test_sum_at_100 = test_sum_at_100.loc[(round(test_sum_at_100['poids_conx_agregation'],2) != 1) | \
+                                          (round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1)].index
 
     # print('Nombre de connexion qui ne somme pas à 100 : ', len(test_sum_at_100).astype('str'))
 
@@ -1119,13 +1128,13 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=True
     final_data_conx_level['poids_conx_agregation'] = final_data_conx_level['poids_conx_agregation'].round(5)
     final_data_conx_level['proba_conx_spatiotemp'] = final_data_conx_level['proba_conx_spatiotemp'].round(5)
 
-    # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem
-    return final_data_conx_level, final_data
+    # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem /// liste synthe somme pas à 1
+    return final_data_conx_level, final_data, test_sum_at_100
 
 
 def get_connexion_weight_in_synth_rotation_for_test(donnees):
     """
         Enveloppe pour tester le premier résultat de la fonction get_connexion_weight_in_synth_rotation_first_for plus facilement.
     """
-    final_data_conx_level, _ = get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=False)
+    final_data_conx_level, _, _ = get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=False)
     return final_data_conx_level

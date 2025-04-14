@@ -1,4 +1,4 @@
-nd_id,rang,end,sameyear,synth_id
+id,rang,fin_cycle,memecampagne_noeudprecedent,synthetise_id
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_4ae1d306-e26c-4376-b526-2ee01850f29d,0,f,f,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0316e326-6369-4ec7-ab50-b983c3aa0b3d
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_de63f6b1-eec9-438f-bb5e-b2cf9ccadac8,1,f,f,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0316e326-6369-4ec7-ab50-b983c3aa0b3d
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_d74f4c47-0eff-4b00-848e-aeb9b862eda3,2,t,t,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0316e326-6369-4ec7-ab50-b983c3aa0b3d

@@ -1,4 +1,4 @@
-conx_id,freq,abs,nd_prec,nd_suiv
+id,frequence_source,culture_absente,source_noeuds_synthetise_id,cible_noeuds_synthetise_id
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_331c36ff-3258-432a-8a8b-b05f2207c908,100.0,f,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_ee56c590-85ce-4519-8df5-04fc408a229e,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_e7af9e0e-61de-497c-9633-edf1e23aac71
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_bbde3d98-8744-4b95-a8ea-db9a31f936f8,100.0,f,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_e8407d53-93d6-4fbd-aca0-667834cfcb0f,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_48cef04a-2a7d-4906-a528-7e368eb9173c
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_a45db8c4-6af2-42ef-9d9e-32d7281692ca,100.0,f,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_e7af9e0e-61de-497c-9633-edf1e23aac71,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_48cef04a-2a7d-4906-a528-7e368eb9173c
