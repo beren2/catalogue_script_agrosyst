@@ -825,6 +825,7 @@ def get_typologie_rotation_CAN_synthetise(donnees):
                 return message
 
         return 'Autre'
+
     
     df_res = df.groupby('synthetise_id').apply(
          lambda cgrp: pd.Series({
