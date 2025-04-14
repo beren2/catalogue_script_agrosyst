@@ -352,7 +352,7 @@
         "external_data" : {
 			"path" : "data/external_data/",
 			"tables" : [
-				"BDD_donnees_attendues_CAN",
+				"BDD_donnees_attendues_CAN", 
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai"
 			],
@@ -428,9 +428,11 @@
             },
             "indicateur" : {
                 "function_name" : "create_category_indicateur",
-                "dependances" : [],
+                "dependances" : [{
+						"source" : "outils", 
+						"category": "agregation_complet"
+				}],
                 "generated" : [
-					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
 					"typologie_can_culture"
