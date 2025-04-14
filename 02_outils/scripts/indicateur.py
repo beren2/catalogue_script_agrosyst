@@ -801,38 +801,30 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     def get_rota_typo(cgrp):
         # Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
         # ils aggregent totu avec un return 'Pas de type rotation calculé'
-        # ATTENTION nous ferons le distingo avec les 2 premiers if
-        if all(cgrp['frequence'].isna()) :
-            return 'aucune fréquence de rotation calulée'
-        elif all(cgrp['typocan_culture'].isna()) :
-            return 'aucune typologie de culture détectée'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Betterave','Lin','Légume']), 'frequence']) >= 0.05 :
-            return 'succession avec betterave ou lin ou légumes (>= 5 %%)'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Pomme de terre']), 'frequence']) >= 0.05 :
-            return 'successions avec pomme de terre'
-        # elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Cultures porte graines']), 'frequence']) >= 0.05 :
-        #     return 'successions avec cultures porte graine'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Colza']), 'frequence']) >= 0.95 :
-            return 'céréales à paille hiver/colza'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza']), 'frequence']) >= 0.95 :
-            return 'céréales à paille hiver+printemps/colza'
-        # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Maïs']), 'frequence']) >= 0.95 :
-            return 'maïs'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Maïs','Oléagineux (hors Colza et Tournesol)','Protéagineux','Mélange fourrager']), 'frequence']) >= 0.95 :
-            return 'céréales à paille/colza/maïs ou protéagineux'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Colza','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
-            return 'céréales à paille/colza/tournesol'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Maïs','Tournesol','Oléagineux (hors Colza et Tournesol)','Mélange fourrager']), 'frequence']) >= 0.95 :
-            return 'céréales à paille/maïs(/tournesol)'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver','Céréales à paille printemps','Tournesol']), 'frequence']) >= 0.95 :
-            return 'céréales à paille/tournesol'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) < 0.5 :
-            return 'prairie temporaire < 50 %% assolement'
-        elif sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) >= 0.5 :
-            return 'prairie temporaire >= 50 %% assolement'
-        else :
-            return 'Autre'
+        # ATTENTION nous ferons le distingo avec les 2 premieres conditions
+        conditions = [
+            (all(cgrp['frequence'].isna()), 'aucune fréquence de rotation calculée'),
+            (all(cgrp['typocan_culture'].isna()), 'aucune typologie de culture détectée'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Betterave', 'Lin', 'Légume']), 'frequence']) >= 0.05, 'succession avec betterave ou lin ou légumes (>= 5 %)'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Pomme de terre']), 'frequence']) >= 0.05, 'successions avec pomme de terre'),
+            # (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Cultures porte graines']), 'frequence']) >= 0.05, 'successions avec cultures porte graine'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver', 'Colza']), 'frequence']) >= 0.95, 'céréales à paille hiver/colza'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza']), 'frequence']) >= 0.95, 'céréales à paille hiver+printemps/colza'),
+            # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Maïs']), 'frequence']) >= 0.95, 'maïs'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Maïs', 'Oléagineux (hors Colza et Tournesol)', 'Protéagineux', 'Mélange fourrager']), 'frequence']) >= 0.95, 'céréales à paille/colza/maïs ou protéagineux'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), 'frequence']) >= 0.95, 'céréales à paille/colza/tournesol'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), 'frequence']) >= 0.95, 'céréales à paille/maïs(/tournesol)'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), 'frequence']) >= 0.95, 'céréales à paille/tournesol'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) < 0.5, 'prairie temporaire < 50 %% assolement'),
+            (sum(cgrp.loc[cgrp['typocan_culture'].isin(['Prairie temporaire']), 'frequence']) >= 0.5, 'prairie temporaire >= 50 %% assolement')
+        ]
+        
+        for condition, message in conditions:
+            if condition:
+                return message
+
+        return 'Autre'
     
     df_res = df.groupby('synthetise_id').apply(
          lambda cgrp: pd.Series({
