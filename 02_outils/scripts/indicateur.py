@@ -282,8 +282,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
 
     # C) Pour les pz0 pluri annuels restants : 
     # tag des lignes correctes
-    select_df.loc[:,'to_keep'] = select_df.apply(lambda x : True if (x['donnee_attendue'] in (pattern_pz0_correct))
-                                                                            else False , axis = 1)
+    select_df.loc[:,'to_keep'] = select_df.apply(lambda x : x['donnee_attendue'] in (pattern_pz0_correct) , axis = 1)
     
     dephy_correct = select_df.loc[select_df['to_keep'], 'code_dephy'].to_list()
     
@@ -615,7 +614,8 @@ def identification_pz0(donnees):
         message_error = message_error + "ATTENTION : il reste des codes dephy avec plusieurs pz0 ce qui est impossible !"
 
     modalites = df_identification_pz0['donnee_attendue'].value_counts().reset_index()['donnee_attendue'].to_list()
-    check = [m in modalites for m in ["pz0", "post", modalite_pz0_non_acceptable, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs]]
+    modalites_list_expected = ["pz0", "post", modalite_pz0_non_acceptable, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs]
+    check = [m in modalites for m in modalites_list_expected]
     if all(check) is False:
         message_error = message_error + "ATTENTION : Le nombre de modalités ne correspond pas à celles attendues !"
 
@@ -674,7 +674,7 @@ def get_typologie_culture_CAN(donnees):
     cropsp = donnees['composant_culture'][['espece_id','culture_id']]
     crop = donnees['culture'][['id','type']].rename(columns={
         'id':'culture_id'})
-    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
+    sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
         'id':'espece_id'})
     # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
     # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]

@@ -1,5 +1,18 @@
+DROP TABLE if exists MD_traduction;
+CREATE TABLE MD_traduction(
+	nom_rubrique text, 
+	nom_base text,
+	traduction_interface text);
+
+insert into MD_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('categorie_objectif','AUCUNE','Z - Zéro tolérance');
+insert into MD_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('categorie_objectif','MINIMISER_LES_SYMPTOMES','De - Quelques symptômes acceptés, aucun impact sur le rendement ou la qualité');
+insert into MD_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('categorie_objectif','MINIMISER_LES_DOMMAGES','Do - Quelques dommages (impact sur le rendement ou la qualité) acceptés, aucunes pertes économiques');
+insert into MD_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('categorie_objectif','MINIMISER_LES_PERTES','Pe - Des pertes économiques limitées peuvent être acceptées');
+insert into MD_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('categorie_objectif','AUTRE','Autre');
+
+
 -- entrepot_modele_decisionnel : les generalites du modele decisionnel
-DROP TABLE IF EXISTS entrepot_modele_decisionnel;
+DROP TABLE IF EXISTS entrepot_modele_decisionnel CASCADE;
 CREATE TABLE entrepot_modele_decisionnel AS
 select 
 mm.topiaid id,
@@ -20,7 +33,7 @@ alter table entrepot_modele_decisionnel
 ADD FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);
 
 -- entrepot_modele_decisionnel_maitrise : les sections de maitrises de rubrique (maladies, ravageurs ...)
-DROP TABLE IF EXISTS entrepot_modele_decisionnel_maitrise;
+DROP TABLE IF EXISTS entrepot_modele_decisionnel_maitrise CASCADE;
 CREATE TABLE entrepot_modele_decisionnel_maitrise AS
 WITH groupe_cible as (select distinct 
 	code_groupe_cible_maa,
@@ -41,7 +54,7 @@ case
 	when sec.bioagressor like '%RefNuisibleEDI%' then refnui.reference_label
 	when sec.bioagressor like '%RefAdventice%' then refadv.adventice
 end bioagresseur_considere , 
-sec.categoryobjective categorie_objectif,
+trad.traduction_interface categorie_objectif,
 sec.agronomicobjective objectif_agronomique,
 sec.expectedresult resultat_attendu,
 sec.categorystrategy categorie_strategie, 
@@ -57,7 +70,8 @@ left join groupe_cible refcible on case
 end
 left join (select distinct code_groupe_cible_maa,groupe_cible_maa from groupe_cible) refcible2 on case 
 	when sec.bioagressor is null then sec.codegroupeciblemaa = refcible2.code_groupe_cible_maa -- quand le bioagresseur n'est pas précisé, la jointure se fait avec seulement avec le code groupe cible.
-end ;
+end
+left join MD_traduction trad on trad.nom_base = sec.categoryobjective;
 
 alter table entrepot_modele_decisionnel_maitrise
 add constraint modele_decisionnel_maitrise_PK
@@ -67,7 +81,7 @@ alter table entrepot_modele_decisionnel_maitrise
 ADD FOREIGN KEY (modele_decisionnel_id) REFERENCES entrepot_modele_decisionnel(id);
 
 -- entrepot_modeles_decisionnels_strategies : au sein d'une meme rubrique, il peut y avoir differentes strategies = leviers
-DROP TABLE IF EXISTS entrepot_modele_decisionnel_strategie;
+DROP TABLE IF EXISTS entrepot_modele_decisionnel_strategie CASCADE;
 CREATE TABLE entrepot_modele_decisionnel_strategie AS
 select 
 s.topiaid id,

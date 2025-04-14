@@ -6,6 +6,7 @@ on:
         - 'main'
     paths:
         - 02_outils/**
+        - 00_config/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

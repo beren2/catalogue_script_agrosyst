@@ -5,6 +5,7 @@
 			"espece",
 			"intervention_travail_edi",
 			"criteres_selection",
+			"sol_arvalis",
 			"domaine",
 			"coordonnees_gps_domaine",
 			"dispositif",
@@ -53,6 +54,11 @@
 			"acta_substance_active",
 			"acta_traitement_produit",
 			"acta_dosage_spc",
+			"bilan_campagne_sdc_traduction",
+			"groupe_cible",
+			"nuisible_edi",
+			"adventice",
+			"bilan_campagne_sdc",
 			"composition_substance_active_numero_amm",
 			"composant_action_semis",
 			"reseau",
@@ -61,11 +67,6 @@
 			"critere_qualite_valorisation",
 			"destination_valorisation",
 			"dose_ref_par_groupe_cible",
-			"groupe_cible",
-			"nuisible_edi",
-			"adventice",
-			"bilan_campagne_sdc_traduction",
-			"bilan_campagne_sdc",
 			"substances_actives_europeennes",
 			"phrases_de_risque_numero_amm",
 			"prix_intrant_produit_phyto_sanitaire",
@@ -76,7 +77,8 @@
 			"levier",
 			"texture_sol",
 			"fertilisation_organique",
-			"fertilisation_minerale"
+			"fertilisation_minerale",
+			"adventice"
 		],
 		"tables": {
 			"semence" : {
@@ -256,49 +258,49 @@
 			"composant_culture_concerne_intervention_realise":{
 				"file_name" : "composant_culture_concerne_intervention"
 			},
-			"BC_sdc_traduction":{
+			"bc_sdc_traduction":{
 				"file_name" : "bilan_campagne_sdc_traduction"
 			},
-			"BC_sdc_generalites":{
+			"bc_sdc_generalites":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_assolee_maitrise_agresseur":{
+			"bc_sdc_assolee_maitrise_agresseur":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_assolee_agresseur":{
+			"bc_sdc_assolee_agresseur":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_arbo_maitrise_agresseur":{
+			"bc_sdc_arbo_maitrise_agresseur":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_arbo_adventice":{
+			"bc_sdc_arbo_adventice":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_arbo_ravageur_maladie":{
+			"bc_sdc_arbo_ravageur_maladie":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_viti_adventice":{
+			"bc_sdc_viti_adventice":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_viti_maladie_ravageur":{
+			"bc_sdc_viti_maladie_ravageur":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"entrepot_BC_sdc_viti_ravageur_explication":{
+			"bc_sdc_viti_ravageur_explication":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_rendement":{
+			"bc_sdc_rendement":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_alimentation":{
+			"bc_sdc_alimentation":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_assolee_verse":{
+			"bc_sdc_assolee_verse":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_culture_liee":{
+			"bc_sdc_culture_liee":{
 				"file_name" : "bilan_campagne_sdc"
 			},
-			"BC_sdc_especes_liee":{
+			"bc_sdc_especes_liee":{
 				"file_name" : "bilan_campagne_sdc"
 			},
 			"espece":{
@@ -339,6 +341,9 @@
 			},
 			"groupe_cible":{
 				"file_name" : "groupe_cible"
+			},
+			"sol_arvalis":{
+				"file_name" : "sol_arvalis"
 			}
 		}
 	},

@@ -2,7 +2,6 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
-import numpy as np
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
@@ -653,11 +652,10 @@ def test_get_typologie_culture_CAN():
         Test de l'obtention des typologies d'espece et de cultures 
     """
     identifiant_test = 'test_get_typologie_culture_CAN'
-    df_names = [   
-                    'composant_culture', 'culture', 
-                    'espece_vCAN', # MODIF TO DO ! 
-                    'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
-                ]
+    df_names = [
+                'composant_culture', 'culture', 'espece',
+                'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
+               ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
     fonction_to_apply = indicateur.get_typologie_culture_CAN
 
