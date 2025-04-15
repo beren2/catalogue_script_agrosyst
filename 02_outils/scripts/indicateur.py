@@ -674,24 +674,24 @@ def get_typologie_culture_CAN(donnees):
             Voir si on passe en NaN lors de la création du magasin
             ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
     '''
-    cropsp = donnees['composant_culture'][['espece_id','culture_id']]
+    cropsp = donnees['composant_culture'][['espece_id','culture_id']].copy()
 
-    crop = donnees['culture']
+    crop = donnees['culture'].copy()
     if crop.index.name == 'id' :
         crop = crop.reset_index()
     else :
         crop = crop.reset_index(drop = True)
     crop = crop[['id','type']].rename(columns={
         'id':'culture_id'})
-    sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
-        'id':'espece_id'})
+    sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']].copy()
+    sp = sp.rename(columns={'id':'espece_id'})
     
-    # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
-    # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]
-    typo1 = donnees['typo_especes_typo_culture'].rename(columns={
-        'TYPO_ESPECES':'typocan_espece', 'Typo_Culture':'typocan_culture'})
-    typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
-        'TYPO_ESPECES_BIS':'typocan_espece_maraich', 'Typo_Culture_bis':'typocan_culture_maraich'})
+    typo1 = donnees['typo_especes_typo_culture'].copy()
+    typo1 = typo1.rename(columns={'TYPO_ESPECES':'typocan_espece',
+                                  'Typo_Culture':'typocan_culture'})
+    typo2 = donnees['typo_especes_typo_culture_marai'].copy()
+    typo2 = typo2.rename(columns={'TYPO_ESPECES_BIS':'typocan_espece_maraich',
+                                  'Typo_Culture_bis':'typocan_culture_maraich'})
 
     df = cropsp.merge(sp, how = 'left', on = 'espece_id')
 
@@ -776,16 +776,16 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     '''
     # OUTILS
     # Attention on utilise ici l'outil passant de noeuds_synth_id à la culture_id (voir outil restructuration)
-    noeud_with_culture_id = donnees['noeuds_synthetise_restructure']
-    con_frq = donnees['surface_connection_synthetise'][['frequence']]
-    typo_culture = donnees['typologie_can_culture']
+    noeud_with_culture_id = donnees['noeuds_synthetise_restructure'].copy()
+    con_frq = donnees['poids_connexions_synthetise_rotation'][['frequence']].copy()
+    typo_culture = donnees['typologie_can_culture'].copy()
 
     # ENTREPOT
     # Pas besoin de la culture précédente
     # conn = donnees['connection_synthetise'][['source_noeuds_synthetise_id','cible_noeuds_synthetise_id','culture_absente']]
-    conn = donnees['connection_synthetise'][['cible_noeuds_synthetise_id','culture_absente']]
+    conn = donnees['connection_synthetise'][['cible_noeuds_synthetise_id','culture_absente']].copy()
     conn = conn.loc[conn['culture_absente'] == 'f'].drop('culture_absente', axis=1)
-    noeud = donnees['noeuds_synthetise'][['synthetise_id']]
+    noeud = donnees['noeuds_synthetise'][['synthetise_id']].copy()
     noeud = noeud.merge(noeud_with_culture_id, left_index = True, right_index = True)
     # df = conn.merge(noeud, left_on = 'source_noeuds_synthetise_id', right_index = True, suffixes = (None, '_source'))
      
