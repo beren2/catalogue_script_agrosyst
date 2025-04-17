@@ -1,0 +1,720 @@
+,TYPO_ESPECES_BIS,Typo_Culture_bis
+0,Abricotier,Abricotier
+1,Abricotier_Amandier_Cerisier_Cognassier_Prunier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+2,Abricotier_Amandier_Cormier_Figuier_Mûrier (Arbuste)_Noyer_Plante aromatique ou médicinale_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+3,Abricotier_Cerisier_Culture ornementale_Pommier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+4,Abricotier_Cerisier_Kiwi_Olivier_Poirier_Pommier_Prunier_Pêcher_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+5,Abricotier_Cerisier_Prunier_Pêcher,Arbres fruitiers
+6,Abricotier_Cognassier,Arbres fruitiers
+7,Abricotier_Cognassier_Noisetier_Prunier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+8,Abricotier_Figuier,Arbres fruitiers
+9,Abricotier_Figuier_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+10,Abricotier_Figuier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+11,Abricotier_Poirier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+12,Abricotier_Poirier_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+13,Abricotier_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+14,Abricotier_Prunier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+15,Abricotier_Pêcher,Arbres fruitiers
+16,Ail,Ail
+17,Ail_Autre_Culture ornementale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+18,Ail_Autres Oignon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+19,Ail_Autres Oignon_Betterave_Carotte_Céleri Rave,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+20,Ail_Autres Oignon_Betterave_Carotte_Céleri Rave_Echalote_Navet_Panais Topinambour_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+21,"Ail_Autres Oignon_Carotte_Pois potager, fèves_Protéagineux",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+22,Ail_Autres Oignon_Echalote,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+23,Ail_Autres Oignon_Echalote_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+24,Ail_Betterave Poirée = bettes_Choux feuillus_Laitues_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+25,Ail_Betterave_Carotte_Céleri Rave_Echalote_Navet_Panais Topinambour_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+26,Ail_Betterave_Echalote_Epinards_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+27,Ail_Carotte_Culture ornementale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+28,Ail_Culture ornementale_Oignon_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+29,Ail_Echalote,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+30,Ail_Echalote_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+31,Ail_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+32,Amandier,Amandier
+33,Amandier_Amandier de Chine,Amandier
+34,Ananas,Ananas
+35,Arbousier commun,Arbousier commun
+36,Arbousier commun_Autre_Culture ornementale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+37,Arbre de Judée,Arbre de Judée
+38,Arbre de Judée_Culture ornementale_Mûrier (Arbuste),CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+39,Arbre à pain,Arbre à pain
+40,Artichaut,Artichaut
+41,Artichaut_Asperge_Rhubarbe,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+42,Artichaut_Aubergine_Courgette_Fraisier_Patate douce_Piment Poivron_Plante aromatique ou médicinale_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+43,Artichaut_Aubergine_Courgette_Fraisier_Piment Poivron_Plante aromatique ou médicinale_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+44,Artichaut_Aubergine_Courgette_Fraisier_Plante aromatique ou médicinale_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+45,Artichaut_Chou Rave_Choux à inflorescences,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+46,Asperge,Asperge
+47,Asperge_Choux feuillus_Courge_Melon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+48,Asperge_Fraisier_Melon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+49,Attier,Attier
+50,Aubergine,Aubergine
+51,Aubergine_Autres Oignon_Courge_Courgette_Haricot Vert_Patate douce_Piment Poivron_Pomme de terre_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+52,Aubergine_Chou chinois_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+53,Aubergine_Concombre_Courge_Courgette_Melon_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+54,Aubergine_Concombre_Courgette_Fenouil_Haricot Vert_Laitues_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+55,Aubergine_Concombre_Courgette_Fraisier_Haricot Vert_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+56,Aubergine_Concombre_Haricot,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+57,Aubergine_Concombre_Melon_Piment Poivron,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+58,Aubergine_Concombre_Piment Poivron,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+59,Aubergine_Courge_Courgette_Céleri Branches_Céleri Rave_Patate douce_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+60,Aubergine_Courge_Courgette_Pastèque_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+61,Aubergine_Courge_Courgette_Patate douce_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+62,Aubergine_Courge_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+63,Aubergine_Courgette_Haricot Vert_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+64,Aubergine_Courgette_Pastèque_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+65,Aubergine_Culture ornementale_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+66,Aubergine_Piment Poivron,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+67,Aubergine_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+68,Aubergine_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+69,Aubergine_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+70,Autre,Autre
+71,Autre_Carotte_Chicorée_Culture ornementale_Fenouil_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Panais Topinambour_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+72,Autre_Chicorée_Culture ornementale_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Oléagineux_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+73,Autre_Châtaignier_Culture ornementale_Noisetier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+74,Autre_Colza,Colza
+75,Autre_Colza_Céréales à paille hiver,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+76,Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+77,Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+78,Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+79,Autre_Colza_Céréales à paille printemps_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+80,Autre_Colza_Céréales à paille printemps_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+81,Autre_Colza_Graminée fourragère_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+82,Autre_Colza_Lin_Légumineuse fourragère_Protéagineux,Colza
+83,Autre_Colza_Lin_Légumineuse fourragère_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+84,Autre_Colza_Légumineuse fourragère,Mélange fourrager
+85,Autre_Colza_Légumineuse fourragère_Oléagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+86,Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+87,Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+88,Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+89,Autre_Colza_Légumineuse fourragère_Protéagineux,Colza
+90,Autre_Colza_Légumineuse fourragère_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+91,Autre_Colza_Légumineuse fourragère_Sorgho_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+92,Autre_Colza_Oléagineux_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+93,Autre_Colza_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+94,Autre_Colza_Protéagineux,Colza
+95,Autre_Courge_Haricot Sec,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+96,Autre_Crucifère fourragère,Mélange fourrager
+97,Autre_Crucifère fourragère_Culture ornementale_Céréales à paille hiver_Légumineuse fourragère_Maïs_Protéagineux_Sorgho_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+98,Autre_Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère_Oléagineux,Mélange fourrager
+99,Autre_Crucifère fourragère_Céréales à paille hiver_Protéagineux_Sorgho,Mélange fourrager
+100,Autre_Crucifère fourragère_Légumineuse fourragère_Oléagineux,Mélange fourrager
+101,Autre_Crucifère fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+102,Autre_Crucifère fourragère_Oléagineux,Mélange fourrager
+103,Autre_Crucifère fourragère_Protéagineux,Mélange fourrager
+104,Autre_Crucifère fourragère_Protéagineux_Sorgho,Mélange fourrager
+105,Autre_Crucifère fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
+106,Autre_Culture ornementale,Culture ornementale
+107,Autre_Culture ornementale_Céréales à paille hiver_Flore indigène prairie_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+108,Autre_Culture ornementale_Céréales à paille hiver_Maïs_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+109,Autre_Culture ornementale_Flore indigène prairie,Mélange fourrager
+110,Autre_Culture ornementale_Flore indigène prairie_Légumineuse fourragère_Oléagineux_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+111,Autre_Culture ornementale_Graminée fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+112,Autre_Culture ornementale_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+113,Autre_Culture ornementale_Noisetier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+114,Autre_Culture ornementale_Plant potager,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+115,Autre_Culture ornementale_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+116,Autre_Culture ornementale_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+117,Autre_Céréales à paille hiver,Mélange fourrager
+118,Autre_Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+119,Autre_Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Mélange fourrager
+120,Autre_Céréales à paille hiver_Gesse Commune ou pois carré_Lin_Légumineuse fourragère_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+121,Autre_Céréales à paille hiver_Gesse Commune ou pois carré_Légumineuse fourragère_Oléagineux_Radis,Mélange fourrager
+122,Autre_Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
+123,Autre_Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+124,Autre_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
+125,Autre_Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Radis_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+126,Autre_Céréales à paille hiver_Maïs_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+127,Autre_Céréales à paille hiver_Oléagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+128,"Autre_Céréales à paille hiver_Pois potager, fèves",Mélange fourrager
+129,Autre_Céréales à paille hiver_Protéagineux,Mélange fourrager
+130,Autre_Céréales à paille hiver_Protéagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+131,Autre_Céréales à paille hiver_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+132,Autre_Céréales à paille printemps,Mélange fourrager
+133,Autre_Céréales à paille printemps_Lin_Légumineuse fourragère_Oléagineux_Protéagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+134,Autre_Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
+135,Autre_Céréales à paille printemps_Maïs_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+136,Autre_Céréales à paille printemps_Oléagineux_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+137,Autre_Céréales à paille printemps_Protéagineux,Mélange fourrager
+138,Autre_Céréales à paille printemps_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+139,Autre_Figuier_Grenadier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+140,Autre_Flore indigène prairie,Autre
+141,Autre_Flore indigène prairie_Oléagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+142,Autre_Flore indigène prairie_Oléagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+143,Autre_Fraisier,Fraisier
+144,Autre_Graminée fourragère,Mélange fourrager
+145,Autre_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+146,Autre_Graminée fourragère_Légumineuse fourragère_Oléagineux_Protéagineux,Mélange fourrager
+147,Autre_Haricot,Haricot
+148,Autre_Haricot Vert_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+149,Autre_Légumineuse fourragère,Prairie temporaire
+150,Autre_Légumineuse fourragère_Protéagineux,Mélange fourrager
+151,Autre_Légumineuse fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
+152,Autre_Légumineuse fourragère_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+153,Autre_Légumineuse fourragère_Sorgho,Mélange fourrager
+154,Autre_Légumineuse fourragère_Tournesol,Mélange fourrager
+155,Autre_Maïs,Maïs
+156,Autre_Maïs_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+157,Autre_Mélange fourrager,Mélange fourrager
+158,Autre_Olivier,Olivier
+159,Autre_Oléagineux,Oléagineux (hors Colza et Tournesol)
+160,Autre_Oléagineux_Protéagineux,Mélange fourrager
+161,Autre_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
+162,Autre_Oléagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+163,"Autre_Pois potager, fèves",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+164,Autre_Pommier,Pommier
+165,Autre_Prairie temporaire,Prairie temporaire
+166,Autre_Protéagineux,Mélange fourrager
+167,Autre_Protéagineux_Vigne,Vigne
+168,Autre_Radis,Radis
+169,Autre_Sorgho,Mélange fourrager
+170,Autre_Tomate,Tomate
+171,Autre_Tournesol,Tournesol
+172,Autre_Vigne,Vigne
+173,Autres,Autre
+174,Autres Oignon,Autres Oignon
+175,Autres Oignon_Betterave Poirée = bettes_Choux feuillus_Courge_Courgette_Haricot Vert_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+176,Autres Oignon_Betterave Poirée = bettes_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+177,Autres Oignon_Betterave_Céleri Rave_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+178,Autres Oignon_Betterave_Echalote_Fenouil_Laitues_Pomme de terre_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+179,Autres Oignon_Betterave_Echalote_Fenouil_Pomme de terre_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+180,Autres Oignon_Betterave_Laitues_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+181,Autres Oignon_Betterave_Navet_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+182,Autres Oignon_Carotte_Choux à inflorescences_Courge_Céleri Rave_Fenouil_Laitues_Patate douce_Poireau_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+183,Autres Oignon_Carotte_Choux à inflorescences_Mâche_Navet_Pomme de terre_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+184,Autres Oignon_Carotte_Choux à inflorescences_Navet_Pomme de terre_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+185,Autres Oignon_Culture ornementale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+186,Autres Oignon_Echalote,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+187,Autres Oignon_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+188,Avocatier,Avocatier
+189,Bananier,Bananier
+190,Betterave,Betterave
+191,Betterave Poirée = bettes,Betterave Poirée = bettes
+192,Betterave Poirée = bettes_Cardon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+193,"Betterave Poirée = bettes_Carotte_Laitues_Mâche_Navet_Oignon blanc_Plante aromatique ou médicinale_Pois potager, fèves_Pomme de terre_Radis",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+194,Betterave Poirée = bettes_Chicorée_Fenouil_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+195,Betterave Poirée = bettes_Chicorée_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+196,Betterave Poirée = bettes_Chou Rave_Chou chinois_Epinards_Laitues_Navet_Oléagineux_Plante aromatique ou médicinale_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+197,Betterave Poirée = bettes_Chou Rave_Fenouil_Laitues_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+198,Betterave Poirée = bettes_Chou Rave_Fenouil_Laitues_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+199,Betterave Poirée = bettes_Chou Rave_Fenouil_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+200,Betterave Poirée = bettes_Chou chinois_Epinards_Fenouil_Laitues_Mâche_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+201,Betterave Poirée = bettes_Choux feuillus_Choux à inflorescences_Céleri Branches_Fenouil_Framboisier_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+202,Betterave Poirée = bettes_Choux feuillus_Céleri Branches_Epinards_Laitues_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+203,Betterave Poirée = bettes_Courgette_Céleri Rave_Pastèque,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+204,Betterave Poirée = bettes_Courgette_Laitues_Mâche_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+205,Betterave Poirée = bettes_Céleri Branches_Epinards_Fenouil_Mâche_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+206,Betterave Poirée = bettes_Epinards,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+207,Betterave Poirée = bettes_Epinards_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+208,Betterave Poirée = bettes_Epinards_Fenouil_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+209,Betterave Poirée = bettes_Epinards_Fenouil_Laitues_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+210,Betterave Poirée = bettes_Epinards_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+211,Betterave Poirée = bettes_Epinards_Laitues_Plante aromatique ou médicinale_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+212,Betterave Poirée = bettes_Epinards_Mâche_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+213,Betterave Poirée = bettes_Epinards_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+214,Betterave Poirée = bettes_Fenouil_Haricot Vert,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+215,Betterave Poirée = bettes_Fenouil_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+216,Betterave Poirée = bettes_Laitues_Mâche,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+217,Betterave Poirée = bettes_Laitues_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+218,Betterave_Betterave Poirée = bettes_Carotte_Choux feuillus_Courge_Céleri Rave_Epinards_Patate douce_Poireau_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+219,Betterave_Betterave Poirée = bettes_Carotte_Epinards_Protéagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+220,Betterave_Betterave Poirée = bettes_Céleri Rave_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+221,Betterave_Betterave Poirée = bettes_Laitues_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+222,Betterave_Carotte,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+223,Betterave_Carotte_Chou Rave_Chou chinois_Choux feuillus_Epinards_Fenouil_Laitues_Mâche_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+224,Betterave_Carotte_Céleri Rave_Panais Topinambour,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+225,Betterave_Carotte_Fenouil_Laitues_Mâche_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+226,Betterave_Carotte_Laitues_Oignon blanc_Pomme de terre_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+227,Betterave_Carotte_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+228,Betterave_Chou Rave,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+229,Betterave_Chou Rave_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+230,Betterave_Chou chinois_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+231,Betterave_Choux feuillus_Epinards_Laitues_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+232,Betterave_Colza,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+233,Betterave_Céleri Rave,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+234,Betterave_Céleri Rave_Panais Topinambour_Radis_Salsifis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+235,Betterave_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+236,Betterave_Haricot,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+237,Betterave_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+238,Cacaoyer,Cacaoyer
+239,Canne à sucre,Canne à sucre
+240,Canne à sucre_Manguier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+241,Cardon,Cardon
+242,Carotte,Carotte
+243,Carotte_Chicorée_Céleri Branches_Epinards_Fenouil_Mâche,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+244,Carotte_Choux feuillus,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+245,Carotte_Choux feuillus_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+246,Carotte_Choux à inflorescences_Courge_Céleri Rave_Fenouil_Patate douce_Poireau_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+247,Carotte_Choux à inflorescences_Courge_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+248,Carotte_Choux à inflorescences_Céleri Rave_Fenouil_Laitues_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+249,Carotte_Epinards_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+250,Carotte_Epinards_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+251,Carotte_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+252,"Carotte_Laitues_Pois potager, fèves_Protéagineux",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+253,Carotte_Panais Topinambour_Poireau_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+254,Cassissier,Cassissier
+255,Cassissier_Cerisier_Cognassier_Cormier_Figuier_Framboisier_Groseiller_Myrtille et airelles_Néflier d'Europe_Poirier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+256,Cassissier_Groseiller,Petits fruits
+257,Cassissier_Groseiller_Myrtille et airelles,Petits fruits
+258,Cerfeuil tubéreux,Cerfeuil tubéreux
+259,Cerisier,Cerisier
+260,Cerisier_Culture ornementale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+261,Cerisier_Poirier_Pommier_Prunier,Arbres fruitiers
+262,Cerisier_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+263,Chicorée,Chicorée
+264,Chicorée_Chou chinois_Choux feuillus,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+265,Chicorée_Colza_Graminée fourragère,Colza
+266,Chicorée_Céleri Branches_Epinards_Fenouil_Mâche,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+267,Chicorée_Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+268,Chicorée_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+269,Chicorée_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Prairie temporaire
+270,Chicorée_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+271,Chicorée_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+272,Chicorée_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+273,Chicorée_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+274,Chicorée_Plante aromatique ou médicinale_Pourpier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+275,Chou Rave,Chou Rave
+276,Chou Rave_Chou chinois_Choux feuillus_Choux à inflorescences,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+277,Chou Rave_Chou chinois_Choux à inflorescences,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+278,Chou Rave_Chou chinois_Epinards_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+279,Chou Rave_Choux feuillus,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+280,Chou Rave_Choux feuillus_Choux à inflorescences,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+281,Chou Rave_Courgette,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+282,Chou Rave_Céleri Branches,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+283,Chou Rave_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+284,Chou Rave_Laitues_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+285,Chou Rave_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+286,Chou Rave_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+287,Chou chinois,Chou chinois
+288,Chou chinois_Choux feuillus,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+289,Chou chinois_Choux feuillus_Choux à inflorescences,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+290,Chou chinois_Choux feuillus_Choux à inflorescences_Epinards_Laitues_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+291,Chou chinois_Choux feuillus_Epinards_Laitues_Mâche_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+292,Chou chinois_Choux feuillus_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+293,Chou chinois_Céleri Branches,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+294,Chou chinois_Epinards,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+295,Chou chinois_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+296,Chou chinois_Fenouil_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+297,Chou chinois_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+298,Choux feuillus,Choux feuillus
+299,Choux feuillus_Choux à inflorescences,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+300,Choux feuillus_Céleri Rave_Navet_Panais Topinambour_Poireau_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+301,Choux feuillus_Epinards_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+302,Choux feuillus_Epinards_Laitues_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+303,Choux feuillus_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+304,Choux à inflorescences,Choux à inflorescences
+305,Choux à inflorescences_Culture ornementale,Culture ornementale
+306,Choux à inflorescences_Fenouil_Oignon blanc_Pomme de terre_Protéagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+307,Choux à inflorescences_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+308,Choux à inflorescences_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+309,Christophine,Christophine
+310,Christophine_Courge,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+311,Châtaignier,Châtaignier
+312,Châtaignier_Noyer_Prairie permanente_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+313,Citronnier,Citronnier
+314,Clémentinier,Clémentinier
+315,Cognassier,Cognassier
+316,Cognassier_Figuier_Grenadier_Kaki (Plaqueminier),CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+317,Colza,Colza
+318,Colza_Crucifère fourragère,Colza
+319,Colza_Crucifère fourragère_Graminée fourragère_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+320,Colza_Céréales à paille hiver,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+321,Colza_Céréales à paille hiver_Céréales à paille printemps_Maïs_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+322,Colza_Céréales à paille hiver_Céréales à paille printemps_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+323,Colza_Céréales à paille hiver_Céréales à paille printemps_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+324,Colza_Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+325,Colza_Céréales à paille hiver_Lin_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+326,Colza_Céréales à paille hiver_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+327,Colza_Céréales à paille hiver_Légumineuse fourragère_Maïs_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+328,Colza_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+329,Colza_Céréales à paille hiver_Légumineuse fourragère_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+330,Colza_Céréales à paille hiver_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+331,Colza_Céréales à paille hiver_Maïs_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+332,Colza_Céréales à paille hiver_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+333,Colza_Céréales à paille hiver_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+334,Colza_Céréales à paille printemps,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+335,Colza_Céréales à paille printemps_Graminée fourragère,Mélange fourrager
+336,Colza_Céréales à paille printemps_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+337,Colza_Céréales à paille printemps_Maïs_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+338,Colza_Céréales à paille printemps_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+339,Colza_Flore indigène prairie_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+340,Colza_Gesse Commune ou pois carré_Légumineuse fourragère,Mélange fourrager
+341,Colza_Gesse Commune ou pois carré_Légumineuse fourragère_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+342,Colza_Gesse Commune ou pois carré_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+343,Colza_Gesse Commune ou pois carré_Légumineuse fourragère_Protéagineux,Colza
+344,Colza_Gesse Commune ou pois carré_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+345,Colza_Graminée fourragère,Mélange fourrager
+346,Colza_Graminée fourragère_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+347,Colza_Graminée fourragère_Légumineuse fourragère_Oléagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+348,Colza_Graminée fourragère_Légumineuse fourragère_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+349,Colza_Graminée fourragère_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+350,Colza_Graminée fourragère_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+351,Colza_Lin,Colza
+352,Colza_Lin_Légumineuse fourragère,Colza
+353,Colza_Lin_Légumineuse fourragère_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+354,Colza_Lin_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+355,Colza_Lin_Protéagineux,Colza
+356,Colza_Légumineuse fourragère,Colza
+357,Colza_Légumineuse fourragère_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+358,Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+359,Colza_Légumineuse fourragère_Protéagineux,Colza
+360,Colza_Légumineuse fourragère_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+361,Colza_Légumineuse fourragère_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+362,Colza_Légumineuse fourragère_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+363,Colza_Oléagineux,Colza
+364,Colza_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+365,Colza_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+366,Colza_Plante aromatique ou médicinale_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+367,Colza_Protéagineux,Colza
+368,Colza_Protéagineux_Sorgho_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+369,Colza_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+370,Colza_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+371,Colza_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+372,Colza_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+373,Concombre,Concombre
+374,Concombre_Courge_Courgette,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+375,Concombre_Courge_Courgette_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+376,Concombre_Courgette,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+377,Concombre_Courgette_Melon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+378,Concombre_Courgette_Melon_Pastèque,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+379,Concombre_Haricot Vert_Melon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+380,Concombre_Haricot Vert_Piment Poivron,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+381,Courge,Courge
+382,Courge_Courgette,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+383,Courge_Courgette_Pastèque,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+384,Courge_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+385,Courge_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+386,Courge_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+387,Courgette,Courgette
+388,Courgette_Fenouil_Haricot Vert_Laitues_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+389,Courgette_Fenouil_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+390,Courgette_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+391,Courgette_Laitues_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+392,Courgette_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+393,Courgette_Melon,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+394,Courgette_Melon_Pastèque,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+395,Courgette_Patate douce_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+396,Courgette_Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+397,Courgette_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+398,Cresson des fontaines,Autre
+399,Crucifère fourragère,Mélange fourrager
+400,Crucifère fourragère_Céréales à paille hiver,Mélange fourrager
+401,Crucifère fourragère_Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Radis,Mélange fourrager
+402,Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
+403,Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
+404,Crucifère fourragère_Céréales à paille hiver_Protéagineux,Mélange fourrager
+405,Crucifère fourragère_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+406,Crucifère fourragère_Légumineuse fourragère,Mélange fourrager
+407,Crucifère fourragère_Maïs,Maïs
+408,Crucifère fourragère_Oléagineux,Mélange fourrager
+409,Crucifère fourragère_Oléagineux_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+410,Crucifère fourragère_Oléagineux_Sorgho,Mélange fourrager
+411,Crucifère fourragère_Protéagineux,Mélange fourrager
+412,Crucifère fourragère_Sorgho,Mélange fourrager
+413,Crucifère fourragère_Tournesol,Tournesol
+414,Crucifère fourragère_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+415,Culture ornementale,Culture ornementale
+416,Culture ornementale_Céréales à paille hiver,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+417,Culture ornementale_Céréales à paille hiver_Céréales à paille printemps,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+418,Culture ornementale_Céréales à paille hiver_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+419,Culture ornementale_Céréales à paille printemps,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+420,Culture ornementale_Flore indigène prairie,Culture ornementale
+421,Culture ornementale_Flore indigène prairie_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+422,Culture ornementale_Framboisier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+423,Culture ornementale_Framboisier_Groseiller,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+424,Culture ornementale_Graminée fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+425,Culture ornementale_Graminée fourragère_Légumineuse fourragère,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+426,Culture ornementale_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+427,Culture ornementale_Olivier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+428,Culture ornementale_Plante aromatique ou médicinale,Culture ornementale
+429,Culture ornementale_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+430,Culture ornementale_Pommier_Prunier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+431,Culture ornementale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+432,Culture ornementale_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+433,Culture ornementale_Sorgho_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+434,Culture ornementale_Tomate,Culture ornementale
+435,Céleri Branches,Céleri Branches
+436,Céleri Branches_Céleri Rave,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+437,Céleri Branches_Epinards_Fenouil,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+438,Céleri Branches_Fenouil_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+439,Céleri Branches_Figuier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+440,Céleri Branches_Oignon_Piment Poivron_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+441,Céleri Branches_Oignon_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+442,Céleri Rave,Céleri Rave
+443,Céleri Rave_Navet,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+444,Céleri Rave_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+445,Céréales à paille hiver,Céréales à paille hiver
+446,Céréales à paille hiver_Céréales à paille printemps,Céréales à paille hiver
+447,Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère,Mélange fourrager
+448,Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère_Protéagineux,Mélange fourrager
+449,Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère,Mélange fourrager
+450,Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
+451,Céréales à paille hiver_Céréales à paille printemps_Mélange fourrager,Mélange fourrager
+452,Céréales à paille hiver_Céréales à paille printemps_Mélange fourrager_Protéagineux,Mélange fourrager
+453,"Céréales à paille hiver_Céréales à paille printemps_Pois potager, fèves_Protéagineux",Mélange fourrager
+454,Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Mélange fourrager
+455,Céréales à paille hiver_Céréales à paille printemps_Sorgho,Mélange fourrager
+456,Céréales à paille hiver_Flore indigène prairie,Mélange fourrager
+457,Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+458,Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+459,Céréales à paille hiver_Flore indigène prairie_Légumineuse fourragère,Mélange fourrager
+460,Céréales à paille hiver_Flore indigène prairie_Protéagineux,Mélange fourrager
+461,Céréales à paille hiver_Gesse Commune ou pois carré_Oléagineux_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+462,Céréales à paille hiver_Gesse Commune ou pois carré_Protéagineux,Mélange fourrager
+463,Céréales à paille hiver_Graminée fourragère,Mélange fourrager
+464,Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+465,Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Mélange fourrager
+466,Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+467,Céréales à paille hiver_Graminée fourragère_Prairie temporaire,Mélange fourrager
+468,Céréales à paille hiver_Graminée fourragère_Protéagineux,Mélange fourrager
+469,Céréales à paille hiver_Graminée fourragère_Tournesol,Mélange fourrager
+470,Céréales à paille hiver_Haricot Sec_Protéagineux,Mélange fourrager
+471,Céréales à paille hiver_Lin_Légumineuse fourragère,Mélange fourrager
+472,Céréales à paille hiver_Lin_Protéagineux,Mélange fourrager
+473,Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
+474,Céréales à paille hiver_Légumineuse fourragère_Maïs_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+475,Céréales à paille hiver_Légumineuse fourragère_Mélange fourrager,Mélange fourrager
+476,Céréales à paille hiver_Légumineuse fourragère_Mélange fourrager_Protéagineux,Mélange fourrager
+477,Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Protéagineux_Radis_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+478,Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+479,Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+480,Céréales à paille hiver_Légumineuse fourragère_Prairie temporaire_Protéagineux,Mélange fourrager
+481,Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
+482,Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Radis,Mélange fourrager
+483,Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Radis_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+484,Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Sorgho,Mélange fourrager
+485,Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+486,Céréales à paille hiver_Légumineuse fourragère_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+487,Céréales à paille hiver_Légumineuse fourragère_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+488,Céréales à paille hiver_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+489,Céréales à paille hiver_Maïs_Prairie temporaire_Sorgho_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+490,Céréales à paille hiver_Maïs_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+491,Céréales à paille hiver_Maïs_Protéagineux_Sorgho_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+492,Céréales à paille hiver_Maïs_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+493,Céréales à paille hiver_Mélange fourrager,Mélange fourrager
+494,Céréales à paille hiver_Mélange fourrager_Protéagineux,Mélange fourrager
+495,Céréales à paille hiver_Oléagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+496,Céréales à paille hiver_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
+497,Céréales à paille hiver_Oléagineux_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+498,Céréales à paille hiver_Oléagineux_Sorgho,Mélange fourrager
+499,"Céréales à paille hiver_Pois potager, fèves",Mélange fourrager
+500,"Céréales à paille hiver_Pois potager, fèves_Protéagineux",Mélange fourrager
+501,Céréales à paille hiver_Prairie temporaire_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+502,Céréales à paille hiver_Protéagineux,Mélange fourrager
+503,Céréales à paille hiver_Protéagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+504,Céréales à paille hiver_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+505,Céréales à paille hiver_Sorgho,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+506,Céréales à paille hiver_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+507,Céréales à paille printemps,Céréales à paille printemps
+508,Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+509,Céréales à paille printemps_Fraisier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+510,Céréales à paille printemps_Gesse Commune ou pois carré_Légumineuse fourragère_Protéagineux,Mélange fourrager
+511,Céréales à paille printemps_Gesse Commune ou pois carré_Protéagineux,Mélange fourrager
+512,Céréales à paille printemps_Graminée fourragère,Mélange fourrager
+513,Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+514,Céréales à paille printemps_Graminée fourragère_Protéagineux,Mélange fourrager
+515,Céréales à paille printemps_Lin,Mélange fourrager
+516,Céréales à paille printemps_Légumineuse fourragère,Mélange fourrager
+517,Céréales à paille printemps_Légumineuse fourragère_Oléagineux,Mélange fourrager
+518,Céréales à paille printemps_Légumineuse fourragère_Oléagineux_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+519,Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
+520,Céréales à paille printemps_Légumineuse fourragère_Sorgho,Mélange fourrager
+521,Céréales à paille printemps_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+522,Céréales à paille printemps_Mélange fourrager_Protéagineux,Mélange fourrager
+523,Céréales à paille printemps_Oléagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+524,"Céréales à paille printemps_Pois potager, fèves",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+525,Céréales à paille printemps_Prairie permanente,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+526,Céréales à paille printemps_Prairie temporaire,Mélange fourrager
+527,Céréales à paille printemps_Protéagineux,Mélange fourrager
+528,Céréales à paille printemps_Protéagineux_Sorgho,Mélange fourrager
+529,Céréales à paille printemps_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+530,Céréales à paille printemps_Sorgho,Mélange fourrager
+531,Céréales à paille printemps_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+532,Dachine,Dachine
+533,Dachine_Manioc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+534,Echalote,Echalote
+535,Echalote_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+536,Epinards,Epinards
+537,Epinards_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+538,Epinards_Laitues_Mâche,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+539,Epinards_Laitues_Mâche_Navet_Plante aromatique ou médicinale_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+540,Epinards_Laitues_Mâche_Oignon blanc,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+541,Epinards_Laitues_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+542,Epinards_Mâche,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+543,Fenouil,Fenouil
+544,Fenouil_Haricot Vert_Laitues_Plante aromatique ou médicinale_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+545,Fenouil_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+546,Fenouil_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+547,Figuier,Figuier
+548,Flore indigène prairie,Prairie temporaire
+549,Flore indigène prairie_Graminée fourragère,Prairie temporaire
+550,Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Prairie temporaire
+551,Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+552,Flore indigène prairie_Légumineuse fourragère,Prairie temporaire
+553,Flore indigène prairie_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+554,Flore indigène prairie_Sorgho,Maïs
+555,Fraisier,Fraisier
+556,Fraisier_Framboisier,Petits fruits
+557,Fraisier_Tomate,Fraisier
+558,Framboisier,Framboisier
+559,Framboisier_Groseiller,Petits fruits
+560,Framboisier_Groseiller_Myrtille et airelles,Petits fruits
+561,Fruit de la passion,Fruit de la passion
+562,Gesse Commune ou pois carré,Autre
+563,Gesse Commune ou pois carré_Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+564,Gesse Commune ou pois carré_Oléagineux_Protéagineux,Mélange fourrager
+565,Gesse Commune ou pois carré_Protéagineux,Mélange fourrager
+566,Gombo,Autre
+567,Graminée fourragère,Prairie temporaire
+568,Graminée fourragère_Légumineuse fourragère,Prairie temporaire
+569,Graminée fourragère_Légumineuse fourragère_Mélange fourrager,Prairie temporaire
+570,Graminée fourragère_Légumineuse fourragère_Oléagineux,Mélange fourrager
+571,Graminée fourragère_Légumineuse fourragère_Oléagineux_Protéagineux_Sorgho,Mélange fourrager
+572,Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+573,Graminée fourragère_Légumineuse fourragère_Prairie temporaire_Protéagineux,Mélange fourrager
+574,Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+575,Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+576,Graminée fourragère_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+577,Graminée fourragère_Prairie temporaire,Prairie temporaire
+578,Graminée fourragère_Protéagineux,Mélange fourrager
+579,Graminée fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
+580,Graminée fourragère_Sorgho,Mélange fourrager
+581,Graminée fourragère_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+582,Grenadier,Grenadier
+583,Grenadille,Grenadille
+584,Groseiller,Groseiller
+585,Haricot,Haricot
+586,Haricot Sec,Haricot Sec
+587,Haricot Sec_Haricot Vert,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+588,Haricot Sec_Maïs,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+589,Haricot Vert,Haricot Vert
+590,Haricot Vert_Laitues,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+591,Haricot Vert_Maïs_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+592,"Haricot Vert_Pois potager, fèves",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+593,"Haricot Vert_Pois potager, fèves_Protéagineux",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+594,Haricot Vert_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+595,Haricot Vert_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+596,Haricot d'Espagne,Haricot d'Espagne
+597,Haricot_Haricot Sec,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+598,Haricot_Haricot Vert,Haricot
+599,Haricot_Maïs,Autre
+600,"Haricot_Pois potager, fèves_Protéagineux",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+601,Igname,Autre
+602,Igname_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+603,Kaki (Plaqueminier),Kaki (Plaqueminier)
+604,Kiwi,Kiwi
+605,Laitues,Laitues
+606,Laitues_Mâche,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+607,Laitues_Mâche_Pourpier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+608,Laitues_Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+609,Laitues_Oignon blanc_Pomme de terre,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+610,Laitues_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+611,Laitues_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+612,"Laitues_Pois potager, fèves_Pomme de terre_Protéagineux",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+613,Laitues_Pourpier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+614,Laitues_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+615,Lin,Lin
+616,Lin_Tournesol,Autre
+617,Litchi,Litchi
+618,Légumineuse fourragère,Prairie temporaire
+619,Légumineuse fourragère_Maïs,Maïs
+620,Légumineuse fourragère_Mélange fourrager,Mélange fourrager
+621,Légumineuse fourragère_Oléagineux,Mélange fourrager
+622,Légumineuse fourragère_Oléagineux_Radis_Tournesol,Mélange fourrager
+623,Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+624,Légumineuse fourragère_Poirier_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+625,"Légumineuse fourragère_Pois potager, fèves",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+626,Légumineuse fourragère_Prairie permanente,Prairie temporaire
+627,Légumineuse fourragère_Prairie temporaire,Mélange fourrager
+628,Légumineuse fourragère_Protéagineux,Mélange fourrager
+629,Légumineuse fourragère_Protéagineux_Sorgho,Mélange fourrager
+630,Légumineuse fourragère_Sorgho,Mélange fourrager
+631,Légumineuse fourragère_Tournesol,Tournesol
+632,Légumineuse fourragère_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+633,Manguier,Manguier
+634,Manioc,Autre
+635,Maïs,Maïs
+636,Maïs_Prairie temporaire,Maïs
+637,Maïs_Protéagineux,Maïs
+638,Maïs_Sorgho,Maïs
+639,Maïs_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+640,Melon,Melon
+641,Melon_Pastèque,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+642,Myrtille et airelles,Myrtille et airelles
+643,Mâche,Mâche
+644,Mâche_Pourpier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+645,Mélange fourrager,Mélange fourrager
+646,Mélange fourrager_Prairie permanente,Mélange fourrager
+647,Mélange fourrager_Protéagineux,Mélange fourrager
+648,Mélange fourrager_Sorgho,Mélange fourrager
+649,Mûrier (Arbuste),Petits fruits
+650,Nashi,Nashi
+651,Navet,Navet
+652,Navet_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+653,Noisetier,Noisetier
+654,Noyer,Noyer
+655,Néflier d'Europe,Néflier d'Europe
+656,Oignon,Oignon
+657,Oignon blanc,Oignon blanc
+658,Oignon blanc_Poireau,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+659,Oignon_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+660,Olivier,Olivier
+661,Olivier_Pommier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+662,Oléagineux,Oléagineux (hors Colza et Tournesol)
+663,Oléagineux_Piment Poivron_Plante aromatique ou médicinale,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+664,Oléagineux_Protéagineux,Autre
+665,Oléagineux_Protéagineux_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+666,Oléagineux_Protéagineux_Vigne,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+667,Oranger,Oranger
+668,Oseille,Oseille
+669,Pamplemoussier (Pomelo),Pamplemoussier (Pomelo)
+670,Panais Topinambour,Panais Topinambour
+671,Papayer,Papayer
+672,Pastèque,Pastèque
+673,Patate douce,Patate douce
+674,Piment Poivron,Piment Poivron
+675,Piment Poivron_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+676,Piment Poivron_Tomate,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+677,Pistachier,Pistachier
+678,Pitaya,Pitaya
+679,Plant potager,Plant potager
+680,Plante aromatique ou médicinale,Plante aromatique ou médicinale
+681,Plante aromatique ou médicinale_Protéagineux,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+682,Plante aromatique ou médicinale_Radis,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+683,Poireau,Poireau
+684,Poirier,Poirier
+685,Poirier_Pommier,Arbres fruitiers
+686,Poirier_Pommier_Pêcher,Arbres fruitiers
+687,Poirier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+688,"Pois potager, fèves","Pois potager, fèves"
+689,"Pois potager, fèves_Protéagineux",Protéagineux
+690,"Pois potager, fèves_Protéagineux_Radis",CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+691,Pois sabre,Pois sabre
+692,Pomme de terre,Pomme de terre
+693,Pommier,Pommier
+694,Pommier_Prunier,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+695,Pommier_Pêcher,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+696,Pourpier,Autre
+697,Prairie permanente,Prairie temporaire
+698,Prairie permanente_Prairie temporaire,Prairie temporaire
+699,Prairie temporaire,Prairie temporaire
+700,Prairie temporaire_Tournesol,Tournesol
+701,Protéagineux,Protéagineux
+702,Protéagineux_Sorgho,Mélange fourrager
+703,Protéagineux_Tournesol,Tournesol
+704,Protéagineux_Vigne,Vigne
+705,Prunier,Prunier
+706,Pêcher,Pêcher
+707,Radis,Radis
+708,Rhubarbe,Rhubarbe
+709,Rutabaga,Rutabaga
+710,Salsifis,Salsifis
+711,Sapin,Sapin
+712,Scorsonère,Scorsonère
+713,Sorgho,Maïs
+714,Sorgho_Tournesol,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges)
+715,Sorossi,Sorossi
+716,Tomate,Tomate
+717,Tournesol,Tournesol
+718,Vigne,Vigne
