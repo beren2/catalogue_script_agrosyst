@@ -1,0 +1,2 @@
+id,nom_coordonnees_centre_operationnel,domaine_id,coordonnees_description_centre_operationnel,longitude,latitude
+fr.inra.agrosyst.api.entities.GeoPoint_ca26541d-c921-4068-a0e0-606df6e2a084,CFPPA Piton St Leu,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,545 m d'altitude,55.3260944,-21.2145056
