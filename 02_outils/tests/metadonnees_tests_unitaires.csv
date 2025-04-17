@@ -880,3 +880,24 @@ test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practi
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fc55b589-8b91-45b0-87f1-d7af2487b6dc,0.01042,,proba_conx_spatiotemp
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fc6dff67-16ea-4cdf-ab0f-4b5ade4d49e4,0.1,,proba_conx_spatiotemp
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fe240732-e034-4125-b107-bbc611cf7e85,0.20833,,proba_conx_spatiotemp
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85cedf6b-df0e-4470-b42b-1232608495aa,prairie temporaire >= 50 % assolement,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b142d1f3-cb04-418c-bd77-31ac3922b09b,prairie temporaire < 50 % assolement,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c3c050a7-cedb-4071-9a0e-fadcbb311cc2,Autre,,typocan_rotation
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,Céréales à paille hiver_Protéagineux,,typocan_espece
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,5,,nb_composant_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,2,,nb_typocan_esp
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,Mélange fourrager,,typocan_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_37ee6c6d-608a-4a26-9052-0443ac33872c,NoLink-sp-crop,,typocan_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_cfddbda8-a215-4853-bef8-8fa323613249,Autre,,typocan_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_cfddbda8-a215-4853-bef8-8fa323613249,Colza,,typocan_culture_sans_compagne
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_b649d216-567b-422e-828e-7003ee316755,INTERMEDIAIRE,,type
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_cfddbda8-a215-4853-bef8-8fa323613249,CULTURE A CORRIGER (plusieurs espèces différentes en mélanges),,typocan_culture_maraich
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_4b831ac2-9527-41e7-8808-5f98b01314e1,Graminée fourragère_Légumineuse fourragère,,typocan_espece
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_4b831ac2-9527-41e7-8808-5f98b01314e1,Prairie temporaire,,typocan_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_37ee6c6d-608a-4a26-9052-0443ac33872c,NoLink-sp-crop,,typocan_culture_maraich
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_64e4449a-ff06-4c07-afb6-64399dd75263,Tournesol,,typocan_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_64e4449a-ff06-4c07-afb6-64399dd75263,Tournesol,,typocan_culture_sans_compagne
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_37c92658-bc95-47a4-8816-1630dd6081ad,2,,nb_typocan_esp_maraich
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_b649d216-567b-422e-828e-7003ee316755,Autre_Crucifère fourragère_Légumineuse fourragère_Oléagineux,,typocan_esp_sans_compagne
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3e57e44a-c2c0-407c-b628-654634b9027a,Protéagineux,,typocan_espece
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3e57e44a-c2c0-407c-b628-654634b9027a,Protéagineux,,typocan_culture
