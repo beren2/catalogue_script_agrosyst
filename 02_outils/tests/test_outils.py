@@ -665,6 +665,23 @@ def test_get_typologie_culture_CAN():
 
     assert res
 
+def test_get_typologie_rotation_CAN_synthetise():
+    """
+        Test de l'obtention des typologies d'espece et de cultures 
+    """
+    identifiant_test = 'test_get_typologie_rotation_CAN_synthetise'
+    df_names = [
+                'connection_synthetise', 'noeuds_synthetise',
+                'noeuds_synthetise_restructure','poids_connexions_synthetise_rotation', 'typologie_can_culture' # issus d'outils
+               ]
+    path_data = '02_outils/tests/data/test_get_typologie_rotation_CAN_synthetise/'
+    fonction_to_apply = indicateur.get_typologie_rotation_CAN_synthetise
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='synthetise_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
 
 def test_extract_good_rotation_diagram():
     """
