@@ -515,7 +515,17 @@ def create_category_indicateur():
     df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
     export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
 
+    # TODO : on fait appel à une fonction "get_recolte_realise_outils_can" car l'importance pour tout le monde de bénéficier de cet outil a été identifié à posteriori.
+    # Ce n'est pas idéal, il vaudrait mieux créer une fonction qui créer cette outil et faire appel à cet outil dans les outils can / le magasin can
+    df_action_realise_rendement_total = outils_can.get_recolte_realise_outils_can(donnees)
+    df_action_realise_rendement_total = df_action_realise_rendement_total.rename(columns={'action_id' : 'action_realise_id'})
+    export_to_db(df_action_realise_rendement_total, 'entrepot_action_realise_rendement_total')
     
+    # TODO : cf commentaire plus haut : idem pour "get_recolte_synthetise_outils_can"
+    df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
+    df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
+    export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
+
 
 def create_category_outils_can():
     """
@@ -567,10 +577,9 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_surface_connexion_synthetise_indicateur = indicateur.get_surface_connexion_synthetise(donnees)
-    export_to_db(df_surface_connexion_synthetise_indicateur, 'entrepot_surface_connection_synthetise_indicateur')
-
-
+    df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
+    df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
+    export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [

@@ -430,6 +430,9 @@
                 "function_name" : "create_category_indicateur",
                 "dependances" : [{
 						"source" : "outils", 
+						"category": "restructuration"
+					},{
+						"source" : "outils", 
 						"category": "agregation_complet"
 				}],
                 "generated" : [
@@ -439,7 +442,10 @@
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
 					"typologie_can_culture",
-					"typologie_can_rotation_synthetise"
+					"typologie_can_rotation_synthetise", 
+					"parcelle_realise_outils_can",
+					"action_realise_rendement_total", 
+					"action_synthetise_rendement_total"
                 ]
             },
             "outils_can" : {
@@ -480,9 +486,10 @@
                     "recolte_outils_can"
                 ],
                 "entrepot_dependances" : [
-                    "synthetise", "culture", "noeuds_synthetise", "connection_synthetise",
-                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine", 
-					"zone", "intervention_synthetise_agrege", "intervention_realise_agrege", "parcelle"
+                    "recolte_rendement_prix", "recolte_rendement_prix_restructure",
+					"composant_culture", "culture", "composant_culture_concerne_intervention_synthetise",
+					"ccc_intervention_synthetise_restructure",
+					"action_synthetise"
                 ]
             }
         }
