@@ -691,8 +691,8 @@ def get_typologie_culture_CAN(donnees):
     df = cropsp.merge(sp, how = 'left', on = 'espece_id')
 
     df['nb_composant_culture'] = 1
-    df['nb_typocan_esp'] = df['typocan_espece']
-    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich']
+    df['nb_typocan_esp'] = df['typocan_espece'].copy()
+    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich'].copy()
 
     def concat_unique_sorted(series):
         cleaned = series.dropna().unique()
@@ -715,7 +715,7 @@ def get_typologie_culture_CAN(donnees):
                 'nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
     #  On crée une typologie can culture mais sans les cpc qui sont des plantes compagnes
     df_comp = df.loc[df['compagne'].isna()].copy()
-    df_comp['typocan_esp_sans_compagne'] = df_comp['typocan_espece']
+    df_comp['typocan_esp_sans_compagne'] = df_comp['typocan_espece'].copy()
     df_comp = df_comp[['culture_id','typocan_esp_sans_compagne']].groupby('culture_id').agg(concat_unique_sorted).reset_index()
 
     # On repart sur un pd.Df qui est le merge de df_base et df_comp (donc le meme groupby mais sur un version filtré de df_base)
@@ -759,7 +759,6 @@ def get_typologie_culture_CAN(donnees):
                                                    'CATCH': 'DEROBEE' })
     df['type'] = df['type'].astype('str')
     df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
-    df = df.set_index('culture_id')
     
     # Ajout de 'Culture porte-graine' ??
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence

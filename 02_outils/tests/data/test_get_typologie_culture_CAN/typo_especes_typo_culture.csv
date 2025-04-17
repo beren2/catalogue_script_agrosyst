@@ -1,492 +1,492 @@
-,TYPO_ESPECES,Typo_Culture
-0,Abricotier,Abricotier
-1,Abricotier_Amandier_Cerisier_Cognassier_Prunier_Pêcher,Autre
-2,Abricotier_Amandier_Cormier_Figuier_Mûrier (Arbuste)_Noyer_Plante aromatique ou médicinale_Pêcher,Autre
-3,Abricotier_Amandier_Figuier_Mûrier (Arbuste)_Noyer_Pêcher,Autre
-4,Abricotier_Cerisier,Autre
-5,Abricotier_Cerisier_Culture ornementale_Pommier_Pêcher,Autre
-6,Abricotier_Cerisier_Kiwi_Olivier_Poirier_Pommier_Prunier_Pêcher_Vigne,Autre
-7,Abricotier_Cerisier_Prunier_Pêcher,Arbres fruitiers
-8,Abricotier_Cognassier,Arbres fruitiers
-9,Abricotier_Cognassier_Noisetier_Prunier_Pêcher,Autre
-10,Abricotier_Figuier,Arbres fruitiers
-11,Abricotier_Figuier_Pommier,Autre
-12,Abricotier_Figuier_Pêcher,Autre
-13,Abricotier_Poirier,Autre
-14,Abricotier_Poirier_Pommier,Autre
-15,Abricotier_Pommier,Autre
-16,Abricotier_Prunier_Pêcher,Autre
-17,Abricotier_Pêcher,Arbres fruitiers
-18,Amandier,Amandier
-19,Amandier_Amandier de Chine,Amandier
-20,Ananas,Ananas
-21,Arbousier commun,Arbousier commun
-22,Arbousier commun_Autre_Culture ornementale,Autre
-23,Arbre de Judée,Arbre de Judée
-24,Arbre de Judée_Culture ornementale_Mûrier (Arbuste),Autre
-25,Arbre à pain,Arbre à pain
-26,Attier,Attier
-27,Autre,Autre
-28,Autre_Châtaignier_Culture ornementale_Noisetier,Autre
-29,Autre_Colza,Colza
-30,Autre_Colza_Céréales à paille hiver,Autre
-31,Autre_Colza_Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux,Autre
-32,Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Tournesol,Autre
-33,Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Tournesol,Autre
-34,Autre_Colza_Céréales à paille printemps_Légumineuse fourragère,Autre
-35,Autre_Colza_Céréales à paille printemps_Protéagineux_Vigne,Autre
-36,Autre_Colza_Graminée fourragère_Légumineuse fourragère,Autre
-37,Autre_Colza_Lin_Légumineuse fourragère_Protéagineux,Colza
-38,Autre_Colza_Lin_Légumineuse fourragère_Protéagineux_Tournesol,Autre
-39,Autre_Colza_Légume_Légumineuse fourragère_Protéagineux,Autre
-40,Autre_Colza_Légume_Protéagineux,Autre
-41,Autre_Colza_Légumineuse fourragère,Mélange fourrager
-42,Autre_Colza_Légumineuse fourragère_Oléagineux,Autre
-43,Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
-44,Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
-45,Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux_Tournesol,Autre
-46,Autre_Colza_Légumineuse fourragère_Protéagineux,Colza
-47,Autre_Colza_Légumineuse fourragère_Protéagineux_Tournesol,Autre
-48,Autre_Colza_Légumineuse fourragère_Sorgho_Tournesol,Autre
-49,Autre_Colza_Oléagineux_Protéagineux_Tournesol,Autre
-50,Autre_Colza_Plante aromatique ou médicinale_Protéagineux,Autre
-51,Autre_Colza_Protéagineux,Colza
-52,Autre_Crucifère fourragère,Mélange fourrager
-53,Autre_Crucifère fourragère_Culture ornementale_Céréales à paille hiver_Légumineuse fourragère_Maïs_Protéagineux_Sorgho_Tournesol,Autre
-54,Autre_Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère_Oléagineux,Mélange fourrager
-55,Autre_Crucifère fourragère_Céréales à paille hiver_Protéagineux_Sorgho,Mélange fourrager
-56,Autre_Crucifère fourragère_Légumineuse fourragère_Oléagineux,Mélange fourrager
-57,Autre_Crucifère fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
-58,Autre_Crucifère fourragère_Oléagineux,Mélange fourrager
-59,Autre_Crucifère fourragère_Protéagineux,Mélange fourrager
-60,Autre_Crucifère fourragère_Protéagineux_Sorgho,Mélange fourrager
-61,Autre_Crucifère fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
-62,Autre_Culture ornementale,Culture ornementale
-63,Autre_Culture ornementale_Céréales à paille hiver_Flore indigène prairie_Protéagineux,Autre
-64,Autre_Culture ornementale_Céréales à paille hiver_Maïs_Protéagineux,Autre
-65,Autre_Culture ornementale_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Autre
-66,Autre_Culture ornementale_Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère,Autre
-67,Autre_Culture ornementale_Flore indigène prairie,Autre
-68,Autre_Culture ornementale_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Oléagineux_Plante aromatique ou médicinale,Autre
-69,Autre_Culture ornementale_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
-70,Autre_Culture ornementale_Flore indigène prairie_Légumineuse fourragère_Oléagineux_Plante aromatique ou médicinale,Autre
-71,Autre_Culture ornementale_Graminée fourragère,Autre
-72,Autre_Culture ornementale_Légume,Autre
-73,Autre_Culture ornementale_Légume_Plante aromatique ou médicinale,Autre
-74,Autre_Culture ornementale_Maïs,Autre
-75,Autre_Culture ornementale_Noisetier,Autre
-76,Autre_Culture ornementale_Plante aromatique ou médicinale,Autre
-77,Autre_Culture ornementale_Sorgho,Autre
-78,Autre_Céréales à paille hiver,Mélange fourrager
-79,Autre_Céréales à paille hiver_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère,Autre
-80,Autre_Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère_Protéagineux_Tournesol,Autre
-81,Autre_Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Mélange fourrager
-82,Autre_Céréales à paille hiver_Lin_Légumineuse fourragère_Protéagineux_Vigne,Autre
-83,Autre_Céréales à paille hiver_Légume,Autre
-84,Autre_Céréales à paille hiver_Légume_Légumineuse fourragère_Oléagineux,Autre
-85,Autre_Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux_Vigne,Autre
-86,Autre_Céréales à paille hiver_Légume_Oléagineux,Autre
-87,Autre_Céréales à paille hiver_Légume_Protéagineux,Autre
-88,Autre_Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
-89,Autre_Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Protéagineux,Autre
-90,Autre_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Autre
-91,Autre_Céréales à paille hiver_Maïs_Protéagineux_Vigne,Autre
-92,Autre_Céréales à paille hiver_Oléagineux_Protéagineux_Vigne,Autre
-93,Autre_Céréales à paille hiver_Protéagineux,Mélange fourrager
-94,Autre_Céréales à paille hiver_Protéagineux_Vigne,Autre
-95,Autre_Céréales à paille printemps,Mélange fourrager
-96,Autre_Céréales à paille printemps_Lin_Légume_Légumineuse fourragère_Oléagineux_Protéagineux,Autre
-97,Autre_Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
-98,Autre_Céréales à paille printemps_Maïs_Sorgho,Autre
-99,Autre_Céréales à paille printemps_Oléagineux_Plante aromatique ou médicinale,Autre
-100,Autre_Céréales à paille printemps_Protéagineux,Mélange fourrager
-101,Autre_Céréales à paille printemps_Vigne,Autre
-102,Autre_Figuier_Grenadier,Autre
-103,Autre_Flore indigène prairie,Autre
-104,Autre_Flore indigène prairie_Légume_Oléagineux,Autre
-105,Autre_Flore indigène prairie_Oléagineux_Tournesol,Autre
-106,Autre_Fraisier,Fraisier
-107,Autre_Graminée fourragère,Mélange fourrager
-108,Autre_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
-109,Autre_Graminée fourragère_Légumineuse fourragère_Oléagineux_Protéagineux,Autre
-110,Autre_Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
-111,Autre_Légume,Légume
-112,Autre_Légume_Légumineuse fourragère,Autre
-113,Autre_Légume_Maïs,Autre
-114,Autre_Légume_Oléagineux,Mélange fourrager
-115,Autre_Légume_Plante aromatique ou médicinale,Autre
-116,Autre_Légume_Protéagineux,Mélange fourrager
-117,Autre_Légume_Protéagineux_Sorgho,Autre
-118,Autre_Légume_Protéagineux_Sorgho_Tournesol,Mélange fourrager
-119,Autre_Légumineuse fourragère,Prairie temporaire
-120,Autre_Légumineuse fourragère_Protéagineux,Mélange fourrager
-121,Autre_Légumineuse fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
-122,Autre_Légumineuse fourragère_Sorgho,Autre
-123,Autre_Légumineuse fourragère_Tournesol,Mélange fourrager
-124,Autre_Maïs,Autre
-125,Autre_Maïs_Vigne,Autre
-126,Autre_Mélange fourrager,Mélange fourrager
-127,Autre_Olivier,Olivier
-128,Autre_Oléagineux,Oléagineux (hors Colza et Tournesol)
-129,Autre_Oléagineux_Protéagineux,Mélange fourrager
-130,Autre_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
-131,Autre_Pommier,Pommier
-132,Autre_Prairie temporaire,Prairie temporaire
-133,Autre_Protéagineux,Mélange fourrager
-134,Autre_Protéagineux_Vigne,Vigne
-135,Autre_Sorgho,Mélange fourrager
-136,Autre_Tournesol,Tournesol
-137,Autre_Vigne,Vigne
-138,Autres,Autre
-139,Avocatier,Avocatier
-140,Bananier,Bananier
-141,Betterave,Betterave
-142,Betterave_Colza,Autre
-143,Betterave_Légume,Légume
-144,Betterave_Légume_Plante aromatique ou médicinale_Protéagineux,Autre
-145,Betterave_Légume_Pomme de terre,Autre
-146,Betterave_Légume_Protéagineux,Autre
-147,Cacaoyer,Cacaoyer
-148,Canne à sucre,Canne à sucre
-149,Canne à sucre_Manguier,Autre
-150,Cassissier,Cassissier
-151,Cassissier_Cerisier_Cognassier_Cormier_Figuier_Framboisier_Groseiller_Myrtille et airelles_Néflier d'Europe_Poirier,Autre
-152,Cassissier_Groseiller,Petits fruits
-153,Cassissier_Groseiller_Myrtille et airelles,Petits fruits
-154,Cerisier,Cerisier
-155,Cerisier_Culture ornementale,Autre
-156,Cerisier_Poirier_Pommier_Prunier,Arbres fruitiers
-157,Cerisier_Pommier,Autre
-158,Christophine,Autre
-159,Christophine_Légume,Autre
-160,Châtaignier,Châtaignier
-161,Châtaignier_Noyer_Prairie permanente_Vigne,Autre
-162,Citronnier,Citronnier
-163,Clémentinier,Clémentinier
-164,Cognassier,Cognassier
-165,Cognassier_Figuier_Grenadier_Kaki (Plaqueminier),Autre
-166,Colza,Colza
-167,Colza_Crucifère fourragère,Colza
-168,Colza_Crucifère fourragère_Graminée fourragère_Légumineuse fourragère,Autre
-169,Colza_Céréales à paille hiver,Autre
-170,Colza_Céréales à paille hiver_Céréales à paille printemps_Maïs_Tournesol,Autre
-171,Colza_Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Autre
-172,Colza_Céréales à paille hiver_Céréales à paille printemps_Tournesol,Autre
-173,Colza_Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère,Autre
-174,Colza_Céréales à paille hiver_Lin_Légumineuse fourragère,Autre
-175,Colza_Céréales à paille hiver_Légumineuse fourragère,Autre
-176,Colza_Céréales à paille hiver_Légumineuse fourragère_Maïs_Tournesol,Autre
-177,Colza_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Autre
-178,Colza_Céréales à paille hiver_Légumineuse fourragère_Tournesol,Autre
-179,Colza_Céréales à paille hiver_Maïs,Autre
-180,Colza_Céréales à paille hiver_Maïs_Tournesol,Autre
-181,Colza_Céréales à paille hiver_Plante aromatique ou médicinale_Protéagineux,Autre
-182,Colza_Céréales à paille hiver_Protéagineux,Autre
-183,Colza_Céréales à paille printemps,Autre
-184,Colza_Céréales à paille printemps_Graminée fourragère,Mélange fourrager
-185,Colza_Céréales à paille printemps_Légumineuse fourragère,Autre
-186,Colza_Céréales à paille printemps_Maïs_Protéagineux_Tournesol,Autre
-187,Colza_Céréales à paille printemps_Protéagineux,Autre
-188,Colza_Flore indigène prairie_Plante aromatique ou médicinale_Protéagineux,Autre
-189,Colza_Graminée fourragère,Mélange fourrager
-190,Colza_Graminée fourragère_Légume,Colza
-191,Colza_Graminée fourragère_Légume_Légumineuse fourragère,Autre
-192,Colza_Graminée fourragère_Légumineuse fourragère,Autre
-193,Colza_Graminée fourragère_Légumineuse fourragère_Oléagineux,Autre
-194,Colza_Graminée fourragère_Légumineuse fourragère_Sorgho,Autre
-195,Colza_Graminée fourragère_Maïs,Autre
-196,Colza_Graminée fourragère_Sorgho,Autre
-197,Colza_Lin,Colza
-198,Colza_Lin_Légumineuse fourragère,Colza
-199,Colza_Lin_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
-200,Colza_Lin_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
-201,Colza_Lin_Protéagineux,Colza
-202,Colza_Légume_Légumineuse fourragère,Colza
-203,Colza_Légume_Légumineuse fourragère_Protéagineux,Colza
-204,Colza_Légume_Protéagineux,Colza
-205,Colza_Légume_Protéagineux_Tournesol,Colza
-206,Colza_Légumineuse fourragère,Colza
-207,Colza_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
-208,Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
-209,Colza_Légumineuse fourragère_Protéagineux,Colza
-210,Colza_Légumineuse fourragère_Protéagineux_Tournesol,Autre
-211,Colza_Légumineuse fourragère_Sorgho,Autre
-212,Colza_Légumineuse fourragère_Tournesol,Autre
-213,Colza_Oléagineux,Colza
-214,Colza_Plante aromatique ou médicinale,Autre
-215,Colza_Plante aromatique ou médicinale_Protéagineux,Autre
-216,Colza_Plante aromatique ou médicinale_Protéagineux_Tournesol,Autre
-217,Colza_Protéagineux,Colza
-218,Colza_Protéagineux_Sorgho_Tournesol,Autre
-219,Colza_Protéagineux_Tournesol,Autre
-220,Colza_Sorgho,Autre
-221,Colza_Tournesol,Autre
-222,Colza_Vigne,Autre
-223,Crucifère fourragère,Mélange fourrager
-224,Crucifère fourragère_Céréales à paille hiver,Mélange fourrager
-225,Crucifère fourragère_Céréales à paille hiver_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
-226,Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
-227,Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
-228,Crucifère fourragère_Céréales à paille hiver_Protéagineux,Mélange fourrager
-229,Crucifère fourragère_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
-230,Crucifère fourragère_Légumineuse fourragère,Mélange fourrager
-231,Crucifère fourragère_Maïs,Maïs
-232,Crucifère fourragère_Oléagineux,Mélange fourrager
-233,Crucifère fourragère_Oléagineux_Protéagineux_Tournesol,Autre
-234,Crucifère fourragère_Oléagineux_Sorgho,Mélange fourrager
-235,Crucifère fourragère_Protéagineux,Mélange fourrager
-236,Crucifère fourragère_Sorgho,Mélange fourrager
-237,Crucifère fourragère_Tournesol,Tournesol
-238,Crucifère fourragère_Vigne,Autre
-239,Culture ornementale,Culture ornementale
-240,Culture ornementale_Céréales à paille hiver,Autre
-241,Culture ornementale_Céréales à paille hiver_Céréales à paille printemps,Autre
-242,Culture ornementale_Céréales à paille hiver_Protéagineux,Autre
-243,Culture ornementale_Céréales à paille printemps,Autre
-244,Culture ornementale_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Sorgho,Autre
-245,Culture ornementale_Flore indigène prairie,Culture ornementale
-246,Culture ornementale_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Autre
-247,Culture ornementale_Flore indigène prairie_Légume_Plante aromatique ou médicinale,Autre
-248,Culture ornementale_Flore indigène prairie_Plante aromatique ou médicinale,Autre
-249,Culture ornementale_Framboisier,Autre
-250,Culture ornementale_Framboisier_Groseiller,Autre
-251,Culture ornementale_Graminée fourragère,Autre
-252,Culture ornementale_Graminée fourragère_Légumineuse fourragère,Autre
-253,Culture ornementale_Légume,Culture ornementale
-254,Culture ornementale_Légume_Plante aromatique ou médicinale,Autre
-255,Culture ornementale_Légume_Sorgho,Autre
-256,Culture ornementale_Légumineuse fourragère,Autre
-257,Culture ornementale_Maïs,Autre
-258,Culture ornementale_Olivier,Autre
-259,Culture ornementale_Plante aromatique ou médicinale,Culture ornementale
-260,Culture ornementale_Pommier,Autre
-261,Culture ornementale_Pommier_Prunier,Autre
-262,Culture ornementale_Protéagineux,Autre
-263,Culture ornementale_Sorgho,Autre
-264,Céréales à paille hiver,Céréales à paille hiver
-265,Céréales à paille hiver_Céréales à paille printemps,Céréales à paille hiver
-266,Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère,Mélange fourrager
-267,Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
-268,Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère_Protéagineux,Mélange fourrager
-269,Céréales à paille hiver_Céréales à paille printemps_Légume_Protéagineux,Mélange fourrager
-270,Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère,Mélange fourrager
-271,Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
-272,Céréales à paille hiver_Céréales à paille printemps_Mélange fourrager,Mélange fourrager
-273,Céréales à paille hiver_Céréales à paille printemps_Mélange fourrager_Protéagineux,Mélange fourrager
-274,Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Mélange fourrager
-275,Céréales à paille hiver_Céréales à paille printemps_Sorgho,Mélange fourrager
-276,Céréales à paille hiver_Flore indigène prairie,Mélange fourrager
-277,Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Prairie temporaire,Autre
-278,Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
-279,Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
-280,Céréales à paille hiver_Flore indigène prairie_Légumineuse fourragère,Mélange fourrager
-281,Céréales à paille hiver_Flore indigène prairie_Protéagineux,Mélange fourrager
-282,Céréales à paille hiver_Graminée fourragère,Mélange fourrager
-283,Céréales à paille hiver_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
-284,Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
-285,Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Mélange fourrager
-286,Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
-287,Céréales à paille hiver_Graminée fourragère_Prairie temporaire,Mélange fourrager
-288,Céréales à paille hiver_Graminée fourragère_Protéagineux,Mélange fourrager
-289,Céréales à paille hiver_Graminée fourragère_Tournesol,Mélange fourrager
-290,Céréales à paille hiver_Lin_Légumineuse fourragère,Mélange fourrager
-291,Céréales à paille hiver_Lin_Protéagineux,Mélange fourrager
-292,Céréales à paille hiver_Légume,Mélange fourrager
-293,Céréales à paille hiver_Légume_Légumineuse fourragère,Mélange fourrager
-294,Céréales à paille hiver_Légume_Légumineuse fourragère_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
-295,Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux,Mélange fourrager
-296,Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux_Vigne,Autre
-297,Céréales à paille hiver_Légume_Maïs,Autre
-298,Céréales à paille hiver_Légume_Protéagineux,Autre
-299,Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
-300,Céréales à paille hiver_Légumineuse fourragère_Maïs_Protéagineux,Autre
-301,Céréales à paille hiver_Légumineuse fourragère_Mélange fourrager,Mélange fourrager
-302,Céréales à paille hiver_Légumineuse fourragère_Mélange fourrager_Protéagineux,Mélange fourrager
-303,Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Tournesol,Autre
-304,Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Vigne,Autre
-305,Céréales à paille hiver_Légumineuse fourragère_Prairie temporaire_Protéagineux,Autre
-306,Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
-307,Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Sorgho,Mélange fourrager
-308,Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Vigne,Autre
-309,Céréales à paille hiver_Légumineuse fourragère_Sorgho,Autre
-310,Céréales à paille hiver_Légumineuse fourragère_Vigne,Autre
-311,Céréales à paille hiver_Maïs,Autre
-312,Céréales à paille hiver_Maïs_Prairie temporaire_Sorgho_Tournesol,Autre
-313,Céréales à paille hiver_Maïs_Protéagineux,Autre
-314,Céréales à paille hiver_Maïs_Protéagineux_Sorgho_Tournesol,Autre
-315,Céréales à paille hiver_Maïs_Tournesol,Autre
-316,Céréales à paille hiver_Mélange fourrager,Mélange fourrager
-317,Céréales à paille hiver_Mélange fourrager_Protéagineux,Mélange fourrager
-318,Céréales à paille hiver_Oléagineux,Autre
-319,Céréales à paille hiver_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
-320,Céréales à paille hiver_Oléagineux_Protéagineux_Vigne,Autre
-321,Céréales à paille hiver_Oléagineux_Sorgho,Mélange fourrager
-322,Céréales à paille hiver_Prairie temporaire_Protéagineux,Autre
-323,Céréales à paille hiver_Protéagineux,Mélange fourrager
-324,Céréales à paille hiver_Protéagineux_Tournesol,Autre
-325,Céréales à paille hiver_Protéagineux_Vigne,Autre
-326,Céréales à paille hiver_Sorgho,Autre
-327,Céréales à paille hiver_Tournesol,Autre
-328,Céréales à paille printemps,Céréales à paille printemps
-329,Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
-330,Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
-331,Céréales à paille printemps_Fraisier,Autre
-332,Céréales à paille printemps_Graminée fourragère,Mélange fourrager
-333,Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
-334,Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
-335,Céréales à paille printemps_Graminée fourragère_Protéagineux,Mélange fourrager
-336,Céréales à paille printemps_Lin,Mélange fourrager
-337,Céréales à paille printemps_Légume,Autre
-338,Céréales à paille printemps_Légume_Légumineuse fourragère_Protéagineux,Mélange fourrager
-339,Céréales à paille printemps_Légumineuse fourragère,Mélange fourrager
-340,Céréales à paille printemps_Légumineuse fourragère_Oléagineux,Mélange fourrager
-341,Céréales à paille printemps_Légumineuse fourragère_Oléagineux_Tournesol,Autre
-342,Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
-343,Céréales à paille printemps_Légumineuse fourragère_Sorgho,Mélange fourrager
-344,Céréales à paille printemps_Maïs,Autre
-345,Céréales à paille printemps_Mélange fourrager_Protéagineux,Mélange fourrager
-346,Céréales à paille printemps_Oléagineux,Autre
-347,Céréales à paille printemps_Prairie permanente,Autre
-348,Céréales à paille printemps_Prairie temporaire,Mélange fourrager
-349,Céréales à paille printemps_Protéagineux,Mélange fourrager
-350,Céréales à paille printemps_Protéagineux_Sorgho,Mélange fourrager
-351,Céréales à paille printemps_Protéagineux_Vigne,Autre
-352,Céréales à paille printemps_Sorgho,Mélange fourrager
-353,Céréales à paille printemps_Vigne,Autre
-354,Dachine,Autre
-355,Dachine_Manioc,Autre
-356,Figuier,Figuier
-357,Figuier_Légume,Autre
-358,Flore indigène prairie,Prairie temporaire
-359,Flore indigène prairie_Graminée fourragère,Prairie temporaire
-360,Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère,Prairie temporaire
-361,Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
-362,Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
-363,Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Prairie temporaire
-364,Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
-365,Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
-366,Flore indigène prairie_Légumineuse fourragère,Prairie temporaire
-367,Flore indigène prairie_Protéagineux,Autre
-368,Flore indigène prairie_Sorgho,Maïs
-369,Fraisier,Fraisier
-370,Fraisier_Framboisier,Petits fruits
-371,Fraisier_Légume,Autre
-372,Fraisier_Légume_Plante aromatique ou médicinale,Autre
-373,Framboisier,Framboisier
-374,Framboisier_Groseiller,Petits fruits
-375,Framboisier_Groseiller_Myrtille et airelles,Petits fruits
-376,Framboisier_Légume,Autre
-377,Fruit de la passion,Fruit de la passion
-378,Graminée fourragère,Prairie temporaire
-379,Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
-380,Graminée fourragère_Légume_Légumineuse fourragère_Sorgho,Mélange fourrager
-381,Graminée fourragère_Légumineuse fourragère,Prairie temporaire
-382,Graminée fourragère_Légumineuse fourragère_Mélange fourrager,Prairie temporaire
-383,Graminée fourragère_Légumineuse fourragère_Oléagineux,Mélange fourrager
-384,Graminée fourragère_Légumineuse fourragère_Oléagineux_Protéagineux_Sorgho,Mélange fourrager
-385,Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
-386,Graminée fourragère_Légumineuse fourragère_Prairie temporaire_Protéagineux,Mélange fourrager
-387,Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
-388,Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
-389,Graminée fourragère_Maïs,Autre
-390,Graminée fourragère_Prairie temporaire,Prairie temporaire
-391,Graminée fourragère_Protéagineux,Mélange fourrager
-392,Graminée fourragère_Protéagineux_Sorgho_Tournesol,Autre
-393,Graminée fourragère_Sorgho,Mélange fourrager
-394,Graminée fourragère_Vigne,Autre
-395,Grenadier,Grenadier
-396,Grenadille,Grenadille
-397,Groseiller,Groseiller
-398,Igname,Autre
-399,Igname_Légume,Autre
-400,Kaki (Plaqueminier),Kaki (Plaqueminier)
-401,Kiwi,Kiwi
-402,Lin,Lin
-403,Lin_Tournesol,Autre
-404,Litchi,Litchi
-405,Légume,Légume
-406,Légume_Légumineuse fourragère,Autre
-407,Légume_Légumineuse fourragère_Oléagineux_Tournesol,Mélange fourrager
-408,Légume_Légumineuse fourragère_Protéagineux,Mélange fourrager
-409,Légume_Maïs,Autre
-410,Légume_Maïs_Tournesol,Autre
-411,Légume_Melon,Légume
-412,Légume_Oléagineux,Mélange fourrager
-413,Légume_Oléagineux_Plante aromatique ou médicinale,Autre
-414,Légume_Oléagineux_Protéagineux,Autre
-415,Légume_Oléagineux_Protéagineux_Tournesol,Autre
-416,Légume_Oléagineux_Sorgho,Autre
-417,Légume_Plante aromatique ou médicinale,Autre
-418,Légume_Plante aromatique ou médicinale_Pomme de terre,Autre
-419,Légume_Pomme de terre,Légume
-420,Légume_Pomme de terre_Protéagineux,Autre
-421,Légume_Protéagineux,Protéagineux
-422,Légume_Sorgho,Autre
-423,Légumineuse fourragère,Prairie temporaire
-424,Légumineuse fourragère_Maïs,Maïs
-425,Légumineuse fourragère_Mélange fourrager,Mélange fourrager
-426,Légumineuse fourragère_Oléagineux,Mélange fourrager
-427,Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
-428,Légumineuse fourragère_Poirier_Pommier,Autre
-429,Légumineuse fourragère_Prairie permanente,Prairie temporaire
-430,Légumineuse fourragère_Prairie temporaire,Mélange fourrager
-431,Légumineuse fourragère_Protéagineux,Mélange fourrager
-432,Légumineuse fourragère_Protéagineux_Sorgho,Mélange fourrager
-433,Légumineuse fourragère_Sorgho,Mélange fourrager
-434,Légumineuse fourragère_Tournesol,Tournesol
-435,Légumineuse fourragère_Vigne,Autre
-436,Manguier,Manguier
-437,Manguier_Pitaya,Autre
-438,Manioc,Autre
-439,Maïs,Maïs
-440,Maïs_Prairie temporaire,Autre
-441,Maïs_Protéagineux,Maïs
-442,Maïs_Sorgho,Maïs
-443,Maïs_Tournesol,Autre
-444,Melon,Légume
-445,Myrtille et airelles,Myrtille et airelles
-446,Mélange fourrager,Mélange fourrager
-447,Mélange fourrager_Prairie permanente,Mélange fourrager
-448,Mélange fourrager_Protéagineux,Mélange fourrager
-449,Mélange fourrager_Sorgho,Mélange fourrager
-450,Mûrier (Arbuste),Petits fruits
-451,Nashi,Nashi
-452,Noisetier,Noisetier
-453,Noyer,Noyer
-454,Néflier d'Europe,Néflier d'Europe
-455,Olivier,Olivier
-456,Olivier_Pommier,Autre
-457,Oléagineux,Oléagineux (hors Colza et Tournesol)
-458,Oléagineux_Protéagineux,Autre
-459,Oléagineux_Protéagineux_Vigne,Autre
-460,Oranger,Oranger
-461,Pamplemoussier (Pomelo),Pamplemoussier (Pomelo)
-462,Papayer,Papayer
-463,Pistachier,Pistachier
-464,Pitaya,Pitaya
-465,Plante aromatique ou médicinale,Plante aromatique ou médicinale
-466,Plante aromatique ou médicinale_Protéagineux,Autre
-467,Poirier,Poirier
-468,Poirier_Pommier,Arbres fruitiers
-469,Poirier_Pommier_Pêcher,Arbres fruitiers
-470,Poirier_Pêcher,Autre
-471,Pomme de terre,Pomme de terre
-472,Pommier,Pommier
-473,Pommier_Prunier,Autre
-474,Pommier_Pêcher,Autre
-475,Prairie permanente,Prairie temporaire
-476,Prairie permanente_Prairie temporaire,Prairie temporaire
-477,Prairie temporaire,Prairie temporaire
-478,Prairie temporaire_Tournesol,Tournesol
-479,Protéagineux,Protéagineux
-480,Protéagineux_Sorgho,Mélange fourrager
-481,Protéagineux_Tournesol,Tournesol
-482,Protéagineux_Vigne,Vigne
-483,Prunier,Prunier
-484,Pêcher,Pêcher
-485,Sapin,Sapin
-486,Sorgho,Maïs
-487,Sorgho_Tournesol,Autre
-488,Sorossi,Sorossi
-489,Tournesol,Tournesol
-490,Vigne,Vigne
+TYPO_ESPECES,Typo_Culture
+Abricotier,Abricotier
+Abricotier_Amandier_Cerisier_Cognassier_Prunier_Pêcher,Autre
+Abricotier_Amandier_Cormier_Figuier_Mûrier (Arbuste)_Noyer_Plante aromatique ou médicinale_Pêcher,Autre
+Abricotier_Amandier_Figuier_Mûrier (Arbuste)_Noyer_Pêcher,Autre
+Abricotier_Cerisier,Autre
+Abricotier_Cerisier_Culture ornementale_Pommier_Pêcher,Autre
+Abricotier_Cerisier_Kiwi_Olivier_Poirier_Pommier_Prunier_Pêcher_Vigne,Autre
+Abricotier_Cerisier_Prunier_Pêcher,Arbres fruitiers
+Abricotier_Cognassier,Arbres fruitiers
+Abricotier_Cognassier_Noisetier_Prunier_Pêcher,Autre
+Abricotier_Figuier,Arbres fruitiers
+Abricotier_Figuier_Pommier,Autre
+Abricotier_Figuier_Pêcher,Autre
+Abricotier_Poirier,Autre
+Abricotier_Poirier_Pommier,Autre
+Abricotier_Pommier,Autre
+Abricotier_Prunier_Pêcher,Autre
+Abricotier_Pêcher,Arbres fruitiers
+Amandier,Amandier
+Amandier_Amandier de Chine,Amandier
+Ananas,Ananas
+Arbousier commun,Arbousier commun
+Arbousier commun_Autre_Culture ornementale,Autre
+Arbre de Judée,Arbre de Judée
+Arbre de Judée_Culture ornementale_Mûrier (Arbuste),Autre
+Arbre à pain,Arbre à pain
+Attier,Attier
+Autre,Autre
+Autre_Châtaignier_Culture ornementale_Noisetier,Autre
+Autre_Colza,Colza
+Autre_Colza_Céréales à paille hiver,Autre
+Autre_Colza_Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux,Autre
+Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Tournesol,Autre
+Autre_Colza_Céréales à paille hiver_Légumineuse fourragère_Tournesol,Autre
+Autre_Colza_Céréales à paille printemps_Légumineuse fourragère,Autre
+Autre_Colza_Céréales à paille printemps_Protéagineux_Vigne,Autre
+Autre_Colza_Graminée fourragère_Légumineuse fourragère,Autre
+Autre_Colza_Lin_Légumineuse fourragère_Protéagineux,Colza
+Autre_Colza_Lin_Légumineuse fourragère_Protéagineux_Tournesol,Autre
+Autre_Colza_Légume_Légumineuse fourragère_Protéagineux,Autre
+Autre_Colza_Légume_Protéagineux,Autre
+Autre_Colza_Légumineuse fourragère,Mélange fourrager
+Autre_Colza_Légumineuse fourragère_Oléagineux,Autre
+Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
+Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
+Autre_Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux_Tournesol,Autre
+Autre_Colza_Légumineuse fourragère_Protéagineux,Colza
+Autre_Colza_Légumineuse fourragère_Protéagineux_Tournesol,Autre
+Autre_Colza_Légumineuse fourragère_Sorgho_Tournesol,Autre
+Autre_Colza_Oléagineux_Protéagineux_Tournesol,Autre
+Autre_Colza_Plante aromatique ou médicinale_Protéagineux,Autre
+Autre_Colza_Protéagineux,Colza
+Autre_Crucifère fourragère,Mélange fourrager
+Autre_Crucifère fourragère_Culture ornementale_Céréales à paille hiver_Légumineuse fourragère_Maïs_Protéagineux_Sorgho_Tournesol,Autre
+Autre_Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère_Oléagineux,Mélange fourrager
+Autre_Crucifère fourragère_Céréales à paille hiver_Protéagineux_Sorgho,Mélange fourrager
+Autre_Crucifère fourragère_Légumineuse fourragère_Oléagineux,Mélange fourrager
+Autre_Crucifère fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+Autre_Crucifère fourragère_Oléagineux,Mélange fourrager
+Autre_Crucifère fourragère_Protéagineux,Mélange fourrager
+Autre_Crucifère fourragère_Protéagineux_Sorgho,Mélange fourrager
+Autre_Crucifère fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
+Autre_Culture ornementale,Culture ornementale
+Autre_Culture ornementale_Céréales à paille hiver_Flore indigène prairie_Protéagineux,Autre
+Autre_Culture ornementale_Céréales à paille hiver_Maïs_Protéagineux,Autre
+Autre_Culture ornementale_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Autre
+Autre_Culture ornementale_Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère,Autre
+Autre_Culture ornementale_Flore indigène prairie,Autre
+Autre_Culture ornementale_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Oléagineux_Plante aromatique ou médicinale,Autre
+Autre_Culture ornementale_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
+Autre_Culture ornementale_Flore indigène prairie_Légumineuse fourragère_Oléagineux_Plante aromatique ou médicinale,Autre
+Autre_Culture ornementale_Graminée fourragère,Autre
+Autre_Culture ornementale_Légume,Autre
+Autre_Culture ornementale_Légume_Plante aromatique ou médicinale,Autre
+Autre_Culture ornementale_Maïs,Autre
+Autre_Culture ornementale_Noisetier,Autre
+Autre_Culture ornementale_Plante aromatique ou médicinale,Autre
+Autre_Culture ornementale_Sorgho,Autre
+Autre_Céréales à paille hiver,Mélange fourrager
+Autre_Céréales à paille hiver_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère,Autre
+Autre_Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère_Protéagineux_Tournesol,Autre
+Autre_Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Mélange fourrager
+Autre_Céréales à paille hiver_Lin_Légumineuse fourragère_Protéagineux_Vigne,Autre
+Autre_Céréales à paille hiver_Légume,Autre
+Autre_Céréales à paille hiver_Légume_Légumineuse fourragère_Oléagineux,Autre
+Autre_Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux_Vigne,Autre
+Autre_Céréales à paille hiver_Légume_Oléagineux,Autre
+Autre_Céréales à paille hiver_Légume_Protéagineux,Autre
+Autre_Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
+Autre_Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Protéagineux,Autre
+Autre_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Autre
+Autre_Céréales à paille hiver_Maïs_Protéagineux_Vigne,Autre
+Autre_Céréales à paille hiver_Oléagineux_Protéagineux_Vigne,Autre
+Autre_Céréales à paille hiver_Protéagineux,Mélange fourrager
+Autre_Céréales à paille hiver_Protéagineux_Vigne,Autre
+Autre_Céréales à paille printemps,Mélange fourrager
+Autre_Céréales à paille printemps_Lin_Légume_Légumineuse fourragère_Oléagineux_Protéagineux,Autre
+Autre_Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Autre_Céréales à paille printemps_Maïs_Sorgho,Autre
+Autre_Céréales à paille printemps_Oléagineux_Plante aromatique ou médicinale,Autre
+Autre_Céréales à paille printemps_Protéagineux,Mélange fourrager
+Autre_Céréales à paille printemps_Vigne,Autre
+Autre_Figuier_Grenadier,Autre
+Autre_Flore indigène prairie,Autre
+Autre_Flore indigène prairie_Légume_Oléagineux,Autre
+Autre_Flore indigène prairie_Oléagineux_Tournesol,Autre
+Autre_Fraisier,Fraisier
+Autre_Graminée fourragère,Mélange fourrager
+Autre_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+Autre_Graminée fourragère_Légumineuse fourragère_Oléagineux_Protéagineux,Autre
+Autre_Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+Autre_Légume,Légume
+Autre_Légume_Légumineuse fourragère,Autre
+Autre_Légume_Maïs,Autre
+Autre_Légume_Oléagineux,Mélange fourrager
+Autre_Légume_Plante aromatique ou médicinale,Autre
+Autre_Légume_Protéagineux,Mélange fourrager
+Autre_Légume_Protéagineux_Sorgho,Autre
+Autre_Légume_Protéagineux_Sorgho_Tournesol,Mélange fourrager
+Autre_Légumineuse fourragère,Prairie temporaire
+Autre_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Autre_Légumineuse fourragère_Protéagineux_Sorgho_Tournesol,Mélange fourrager
+Autre_Légumineuse fourragère_Sorgho,Autre
+Autre_Légumineuse fourragère_Tournesol,Mélange fourrager
+Autre_Maïs,Autre
+Autre_Maïs_Vigne,Autre
+Autre_Mélange fourrager,Mélange fourrager
+Autre_Olivier,Olivier
+Autre_Oléagineux,Oléagineux (hors Colza et Tournesol)
+Autre_Oléagineux_Protéagineux,Mélange fourrager
+Autre_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
+Autre_Pommier,Pommier
+Autre_Prairie temporaire,Prairie temporaire
+Autre_Protéagineux,Mélange fourrager
+Autre_Protéagineux_Vigne,Vigne
+Autre_Sorgho,Mélange fourrager
+Autre_Tournesol,Tournesol
+Autre_Vigne,Vigne
+Autres,Autre
+Avocatier,Avocatier
+Bananier,Bananier
+Betterave,Betterave
+Betterave_Colza,Autre
+Betterave_Légume,Légume
+Betterave_Légume_Plante aromatique ou médicinale_Protéagineux,Autre
+Betterave_Légume_Pomme de terre,Autre
+Betterave_Légume_Protéagineux,Autre
+Cacaoyer,Cacaoyer
+Canne à sucre,Canne à sucre
+Canne à sucre_Manguier,Autre
+Cassissier,Cassissier
+Cassissier_Cerisier_Cognassier_Cormier_Figuier_Framboisier_Groseiller_Myrtille et airelles_Néflier d'Europe_Poirier,Autre
+Cassissier_Groseiller,Petits fruits
+Cassissier_Groseiller_Myrtille et airelles,Petits fruits
+Cerisier,Cerisier
+Cerisier_Culture ornementale,Autre
+Cerisier_Poirier_Pommier_Prunier,Arbres fruitiers
+Cerisier_Pommier,Autre
+Christophine,Autre
+Christophine_Légume,Autre
+Châtaignier,Châtaignier
+Châtaignier_Noyer_Prairie permanente_Vigne,Autre
+Citronnier,Citronnier
+Clémentinier,Clémentinier
+Cognassier,Cognassier
+Cognassier_Figuier_Grenadier_Kaki (Plaqueminier),Autre
+Colza,Colza
+Colza_Crucifère fourragère,Colza
+Colza_Crucifère fourragère_Graminée fourragère_Légumineuse fourragère,Autre
+Colza_Céréales à paille hiver,Autre
+Colza_Céréales à paille hiver_Céréales à paille printemps_Maïs_Tournesol,Autre
+Colza_Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Autre
+Colza_Céréales à paille hiver_Céréales à paille printemps_Tournesol,Autre
+Colza_Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère,Autre
+Colza_Céréales à paille hiver_Lin_Légumineuse fourragère,Autre
+Colza_Céréales à paille hiver_Légumineuse fourragère,Autre
+Colza_Céréales à paille hiver_Légumineuse fourragère_Maïs_Tournesol,Autre
+Colza_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Autre
+Colza_Céréales à paille hiver_Légumineuse fourragère_Tournesol,Autre
+Colza_Céréales à paille hiver_Maïs,Autre
+Colza_Céréales à paille hiver_Maïs_Tournesol,Autre
+Colza_Céréales à paille hiver_Plante aromatique ou médicinale_Protéagineux,Autre
+Colza_Céréales à paille hiver_Protéagineux,Autre
+Colza_Céréales à paille printemps,Autre
+Colza_Céréales à paille printemps_Graminée fourragère,Mélange fourrager
+Colza_Céréales à paille printemps_Légumineuse fourragère,Autre
+Colza_Céréales à paille printemps_Maïs_Protéagineux_Tournesol,Autre
+Colza_Céréales à paille printemps_Protéagineux,Autre
+Colza_Flore indigène prairie_Plante aromatique ou médicinale_Protéagineux,Autre
+Colza_Graminée fourragère,Mélange fourrager
+Colza_Graminée fourragère_Légume,Colza
+Colza_Graminée fourragère_Légume_Légumineuse fourragère,Autre
+Colza_Graminée fourragère_Légumineuse fourragère,Autre
+Colza_Graminée fourragère_Légumineuse fourragère_Oléagineux,Autre
+Colza_Graminée fourragère_Légumineuse fourragère_Sorgho,Autre
+Colza_Graminée fourragère_Maïs,Autre
+Colza_Graminée fourragère_Sorgho,Autre
+Colza_Lin,Colza
+Colza_Lin_Légumineuse fourragère,Colza
+Colza_Lin_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
+Colza_Lin_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
+Colza_Lin_Protéagineux,Colza
+Colza_Légume_Légumineuse fourragère,Colza
+Colza_Légume_Légumineuse fourragère_Protéagineux,Colza
+Colza_Légume_Protéagineux,Colza
+Colza_Légume_Protéagineux_Tournesol,Colza
+Colza_Légumineuse fourragère,Colza
+Colza_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
+Colza_Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
+Colza_Légumineuse fourragère_Protéagineux,Colza
+Colza_Légumineuse fourragère_Protéagineux_Tournesol,Autre
+Colza_Légumineuse fourragère_Sorgho,Autre
+Colza_Légumineuse fourragère_Tournesol,Autre
+Colza_Oléagineux,Colza
+Colza_Plante aromatique ou médicinale,Autre
+Colza_Plante aromatique ou médicinale_Protéagineux,Autre
+Colza_Plante aromatique ou médicinale_Protéagineux_Tournesol,Autre
+Colza_Protéagineux,Colza
+Colza_Protéagineux_Sorgho_Tournesol,Autre
+Colza_Protéagineux_Tournesol,Autre
+Colza_Sorgho,Autre
+Colza_Tournesol,Autre
+Colza_Vigne,Autre
+Crucifère fourragère,Mélange fourrager
+Crucifère fourragère_Céréales à paille hiver,Mélange fourrager
+Crucifère fourragère_Céréales à paille hiver_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
+Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
+Crucifère fourragère_Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Crucifère fourragère_Céréales à paille hiver_Protéagineux,Mélange fourrager
+Crucifère fourragère_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+Crucifère fourragère_Légumineuse fourragère,Mélange fourrager
+Crucifère fourragère_Maïs,Maïs
+Crucifère fourragère_Oléagineux,Mélange fourrager
+Crucifère fourragère_Oléagineux_Protéagineux_Tournesol,Autre
+Crucifère fourragère_Oléagineux_Sorgho,Mélange fourrager
+Crucifère fourragère_Protéagineux,Mélange fourrager
+Crucifère fourragère_Sorgho,Mélange fourrager
+Crucifère fourragère_Tournesol,Tournesol
+Crucifère fourragère_Vigne,Autre
+Culture ornementale,Culture ornementale
+Culture ornementale_Céréales à paille hiver,Autre
+Culture ornementale_Céréales à paille hiver_Céréales à paille printemps,Autre
+Culture ornementale_Céréales à paille hiver_Protéagineux,Autre
+Culture ornementale_Céréales à paille printemps,Autre
+Culture ornementale_Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Sorgho,Autre
+Culture ornementale_Flore indigène prairie,Culture ornementale
+Culture ornementale_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Autre
+Culture ornementale_Flore indigène prairie_Légume_Plante aromatique ou médicinale,Autre
+Culture ornementale_Flore indigène prairie_Plante aromatique ou médicinale,Autre
+Culture ornementale_Framboisier,Autre
+Culture ornementale_Framboisier_Groseiller,Autre
+Culture ornementale_Graminée fourragère,Autre
+Culture ornementale_Graminée fourragère_Légumineuse fourragère,Autre
+Culture ornementale_Légume,Culture ornementale
+Culture ornementale_Légume_Plante aromatique ou médicinale,Autre
+Culture ornementale_Légume_Sorgho,Autre
+Culture ornementale_Légumineuse fourragère,Autre
+Culture ornementale_Maïs,Autre
+Culture ornementale_Olivier,Autre
+Culture ornementale_Plante aromatique ou médicinale,Culture ornementale
+Culture ornementale_Pommier,Autre
+Culture ornementale_Pommier_Prunier,Autre
+Culture ornementale_Protéagineux,Autre
+Culture ornementale_Sorgho,Autre
+Céréales à paille hiver,Céréales à paille hiver
+Céréales à paille hiver_Céréales à paille printemps,Céréales à paille hiver
+Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Graminée fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Légume_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Mélange fourrager,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Mélange fourrager_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Céréales à paille printemps_Sorgho,Mélange fourrager
+Céréales à paille hiver_Flore indigène prairie,Mélange fourrager
+Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Prairie temporaire,Autre
+Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Flore indigène prairie_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Flore indigène prairie_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Prairie temporaire,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Graminée fourragère_Tournesol,Mélange fourrager
+Céréales à paille hiver_Lin_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Lin_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Légume,Mélange fourrager
+Céréales à paille hiver_Légume_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Légume_Légumineuse fourragère_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
+Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Légume_Légumineuse fourragère_Protéagineux_Vigne,Autre
+Céréales à paille hiver_Légume_Maïs,Autre
+Céréales à paille hiver_Légume_Protéagineux,Autre
+Céréales à paille hiver_Légumineuse fourragère,Mélange fourrager
+Céréales à paille hiver_Légumineuse fourragère_Maïs_Protéagineux,Autre
+Céréales à paille hiver_Légumineuse fourragère_Mélange fourrager,Mélange fourrager
+Céréales à paille hiver_Légumineuse fourragère_Mélange fourrager_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Tournesol,Autre
+Céréales à paille hiver_Légumineuse fourragère_Oléagineux_Vigne,Autre
+Céréales à paille hiver_Légumineuse fourragère_Prairie temporaire_Protéagineux,Autre
+Céréales à paille hiver_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Sorgho,Mélange fourrager
+Céréales à paille hiver_Légumineuse fourragère_Protéagineux_Vigne,Autre
+Céréales à paille hiver_Légumineuse fourragère_Sorgho,Autre
+Céréales à paille hiver_Légumineuse fourragère_Vigne,Autre
+Céréales à paille hiver_Maïs,Autre
+Céréales à paille hiver_Maïs_Prairie temporaire_Sorgho_Tournesol,Autre
+Céréales à paille hiver_Maïs_Protéagineux,Autre
+Céréales à paille hiver_Maïs_Protéagineux_Sorgho_Tournesol,Autre
+Céréales à paille hiver_Maïs_Tournesol,Autre
+Céréales à paille hiver_Mélange fourrager,Mélange fourrager
+Céréales à paille hiver_Mélange fourrager_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Oléagineux,Autre
+Céréales à paille hiver_Oléagineux_Protéagineux_Tournesol,Mélange fourrager
+Céréales à paille hiver_Oléagineux_Protéagineux_Vigne,Autre
+Céréales à paille hiver_Oléagineux_Sorgho,Mélange fourrager
+Céréales à paille hiver_Prairie temporaire_Protéagineux,Autre
+Céréales à paille hiver_Protéagineux,Mélange fourrager
+Céréales à paille hiver_Protéagineux_Tournesol,Autre
+Céréales à paille hiver_Protéagineux_Vigne,Autre
+Céréales à paille hiver_Sorgho,Autre
+Céréales à paille hiver_Tournesol,Autre
+Céréales à paille printemps,Céréales à paille printemps
+Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
+Céréales à paille printemps_Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+Céréales à paille printemps_Fraisier,Autre
+Céréales à paille printemps_Graminée fourragère,Mélange fourrager
+Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère,Mélange fourrager
+Céréales à paille printemps_Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+Céréales à paille printemps_Graminée fourragère_Protéagineux,Mélange fourrager
+Céréales à paille printemps_Lin,Mélange fourrager
+Céréales à paille printemps_Légume,Autre
+Céréales à paille printemps_Légume_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille printemps_Légumineuse fourragère,Mélange fourrager
+Céréales à paille printemps_Légumineuse fourragère_Oléagineux,Mélange fourrager
+Céréales à paille printemps_Légumineuse fourragère_Oléagineux_Tournesol,Autre
+Céréales à paille printemps_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Céréales à paille printemps_Légumineuse fourragère_Sorgho,Mélange fourrager
+Céréales à paille printemps_Maïs,Autre
+Céréales à paille printemps_Mélange fourrager_Protéagineux,Mélange fourrager
+Céréales à paille printemps_Oléagineux,Autre
+Céréales à paille printemps_Prairie permanente,Autre
+Céréales à paille printemps_Prairie temporaire,Mélange fourrager
+Céréales à paille printemps_Protéagineux,Mélange fourrager
+Céréales à paille printemps_Protéagineux_Sorgho,Mélange fourrager
+Céréales à paille printemps_Protéagineux_Vigne,Autre
+Céréales à paille printemps_Sorgho,Mélange fourrager
+Céréales à paille printemps_Vigne,Autre
+Dachine,Autre
+Dachine_Manioc,Autre
+Figuier,Figuier
+Figuier_Légume,Autre
+Flore indigène prairie,Prairie temporaire
+Flore indigène prairie_Graminée fourragère,Prairie temporaire
+Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère,Prairie temporaire
+Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Plante aromatique ou médicinale,Autre
+Flore indigène prairie_Graminée fourragère_Légume_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+Flore indigène prairie_Graminée fourragère_Légumineuse fourragère,Prairie temporaire
+Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+Flore indigène prairie_Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Flore indigène prairie_Légumineuse fourragère,Prairie temporaire
+Flore indigène prairie_Protéagineux,Autre
+Flore indigène prairie_Sorgho,Maïs
+Fraisier,Fraisier
+Fraisier_Framboisier,Petits fruits
+Fraisier_Légume,Autre
+Fraisier_Légume_Plante aromatique ou médicinale,Autre
+Framboisier,Framboisier
+Framboisier_Groseiller,Petits fruits
+Framboisier_Groseiller_Myrtille et airelles,Petits fruits
+Framboisier_Légume,Autre
+Fruit de la passion,Fruit de la passion
+Graminée fourragère,Prairie temporaire
+Graminée fourragère_Légume_Légumineuse fourragère,Mélange fourrager
+Graminée fourragère_Légume_Légumineuse fourragère_Sorgho,Mélange fourrager
+Graminée fourragère_Légumineuse fourragère,Prairie temporaire
+Graminée fourragère_Légumineuse fourragère_Mélange fourrager,Prairie temporaire
+Graminée fourragère_Légumineuse fourragère_Oléagineux,Mélange fourrager
+Graminée fourragère_Légumineuse fourragère_Oléagineux_Protéagineux_Sorgho,Mélange fourrager
+Graminée fourragère_Légumineuse fourragère_Prairie temporaire,Prairie temporaire
+Graminée fourragère_Légumineuse fourragère_Prairie temporaire_Protéagineux,Mélange fourrager
+Graminée fourragère_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Graminée fourragère_Légumineuse fourragère_Sorgho,Mélange fourrager
+Graminée fourragère_Maïs,Autre
+Graminée fourragère_Prairie temporaire,Prairie temporaire
+Graminée fourragère_Protéagineux,Mélange fourrager
+Graminée fourragère_Protéagineux_Sorgho_Tournesol,Autre
+Graminée fourragère_Sorgho,Mélange fourrager
+Graminée fourragère_Vigne,Autre
+Grenadier,Grenadier
+Grenadille,Grenadille
+Groseiller,Groseiller
+Igname,Autre
+Igname_Légume,Autre
+Kaki (Plaqueminier),Kaki (Plaqueminier)
+Kiwi,Kiwi
+Lin,Lin
+Lin_Tournesol,Autre
+Litchi,Litchi
+Légume,Légume
+Légume_Légumineuse fourragère,Autre
+Légume_Légumineuse fourragère_Oléagineux_Tournesol,Mélange fourrager
+Légume_Légumineuse fourragère_Protéagineux,Mélange fourrager
+Légume_Maïs,Autre
+Légume_Maïs_Tournesol,Autre
+Légume_Melon,Légume
+Légume_Oléagineux,Mélange fourrager
+Légume_Oléagineux_Plante aromatique ou médicinale,Autre
+Légume_Oléagineux_Protéagineux,Autre
+Légume_Oléagineux_Protéagineux_Tournesol,Autre
+Légume_Oléagineux_Sorgho,Autre
+Légume_Plante aromatique ou médicinale,Autre
+Légume_Plante aromatique ou médicinale_Pomme de terre,Autre
+Légume_Pomme de terre,Légume
+Légume_Pomme de terre_Protéagineux,Autre
+Légume_Protéagineux,Protéagineux
+Légume_Sorgho,Autre
+Légumineuse fourragère,Prairie temporaire
+Légumineuse fourragère_Maïs,Maïs
+Légumineuse fourragère_Mélange fourrager,Mélange fourrager
+Légumineuse fourragère_Oléagineux,Mélange fourrager
+Légumineuse fourragère_Plante aromatique ou médicinale_Protéagineux,Autre
+Légumineuse fourragère_Poirier_Pommier,Autre
+Légumineuse fourragère_Prairie permanente,Prairie temporaire
+Légumineuse fourragère_Prairie temporaire,Mélange fourrager
+Légumineuse fourragère_Protéagineux,Mélange fourrager
+Légumineuse fourragère_Protéagineux_Sorgho,Mélange fourrager
+Légumineuse fourragère_Sorgho,Mélange fourrager
+Légumineuse fourragère_Tournesol,Tournesol
+Légumineuse fourragère_Vigne,Autre
+Manguier,Manguier
+Manguier_Pitaya,Autre
+Manioc,Autre
+Maïs,Maïs
+Maïs_Prairie temporaire,Autre
+Maïs_Protéagineux,Maïs
+Maïs_Sorgho,Maïs
+Maïs_Tournesol,Autre
+Melon,Légume
+Myrtille et airelles,Myrtille et airelles
+Mélange fourrager,Mélange fourrager
+Mélange fourrager_Prairie permanente,Mélange fourrager
+Mélange fourrager_Protéagineux,Mélange fourrager
+Mélange fourrager_Sorgho,Mélange fourrager
+Mûrier (Arbuste),Petits fruits
+Nashi,Nashi
+Noisetier,Noisetier
+Noyer,Noyer
+Néflier d'Europe,Néflier d'Europe
+Olivier,Olivier
+Olivier_Pommier,Autre
+Oléagineux,Oléagineux (hors Colza et Tournesol)
+Oléagineux_Protéagineux,Autre
+Oléagineux_Protéagineux_Vigne,Autre
+Oranger,Oranger
+Pamplemoussier (Pomelo),Pamplemoussier (Pomelo)
+Papayer,Papayer
+Pistachier,Pistachier
+Pitaya,Pitaya
+Plante aromatique ou médicinale,Plante aromatique ou médicinale
+Plante aromatique ou médicinale_Protéagineux,Autre
+Poirier,Poirier
+Poirier_Pommier,Arbres fruitiers
+Poirier_Pommier_Pêcher,Arbres fruitiers
+Poirier_Pêcher,Autre
+Pomme de terre,Pomme de terre
+Pommier,Pommier
+Pommier_Prunier,Autre
+Pommier_Pêcher,Autre
+Prairie permanente,Prairie temporaire
+Prairie permanente_Prairie temporaire,Prairie temporaire
+Prairie temporaire,Prairie temporaire
+Prairie temporaire_Tournesol,Tournesol
+Protéagineux,Protéagineux
+Protéagineux_Sorgho,Mélange fourrager
+Protéagineux_Tournesol,Tournesol
+Protéagineux_Vigne,Vigne
+Prunier,Prunier
+Pêcher,Pêcher
+Sapin,Sapin
+Sorgho,Maïs
+Sorgho_Tournesol,Autre
+Sorossi,Sorossi
+Tournesol,Tournesol
+Vigne,Vigne
