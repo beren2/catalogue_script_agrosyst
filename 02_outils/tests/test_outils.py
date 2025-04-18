@@ -2,29 +2,125 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
+import geopandas as gpd
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
 from scripts import indicateur
 from scripts import agregation
+from scripts import interoperabilite
 
 
+# def import_df(df_name, path_data, sep, df):
+#     """
+#         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
+#     """
+#     df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep).replace({'\r\n': '\n'}, regex=True)
 
+# def import_dfs(df_names, path_data,  df, sep = ','):
+#     """
+#         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
+#     """
+#     for df_name in df_names : 
+#         import_df(df_name, path_data, sep, df)
 
-def import_df(df_name, path_data, sep, df):
+#     return df
+
+def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
-    df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'csv' :
+        df[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, 
+                                  dtype = {'codeinsee':str,
+                                            'departement':str,
+                                            'codepostal':str,
+                                            'region':str,
+                                            'arrondissement_code':str,
+                                            'bassin_vie':str,
+                                            'zone_emploi':str,
+                                            
+                                            'cell':str})
+    if file_format == 'json' and df_name.startswith('geoVec') :
+        # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'gpkg' :
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
-def import_dfs(df_names, path_data,  df, sep = ','):
+def import_dfs(df_names, data_path, sep = ',', df:dict = {}, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
     for df_name in df_names : 
-        import_df(df_name, path_data, sep, df)
+        import_df(df_name, path_data=data_path, df = df, sep = sep, file_format=file_format)
 
     return df
+
+def import_dfs_withExtension(df_names_withExt:dict, data_path):
+    """
+        stocke dans le dictionnaire df tous les dataframes indiqués dans le dictionnaire df_names_withExt qui prend en key l'extension des fichiers, lié à une liste de nom de fichiers
+    """
+    all_df = {}
+    for x in df_names_withExt :
+        if (isinstance(x, str)) & (x in ['json','gpkg','csv']) :
+            df_names = df_names_withExt[x]
+            df_dict = import_dfs(df_names, data_path, file_format=x)
+            all_df = {**all_df, **df_dict}
+        else :
+            raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
+    return all_df
+
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id', multi_extension:bool = False):
+    """
+        Fonction qui permet de tester 
+    """
+    df_metadonnees = pd.read_csv(metadonnee_file)
+    df_metadonnees = df_metadonnees.loc[df_metadonnees['identifiant_test'] == identifiant_test]
+
+    # dictionnaire donnant pour chaque identifiant d'entité (par exemple intervention_id), les colonnes à tester
+    colonne_to_test_for_ligne = df_metadonnees.groupby('id_ligne').agg({'colonne_testee' : ','.join}).to_dict()['colonne_testee']
+    for (key, value) in colonne_to_test_for_ligne.items():
+        colonne_to_test_for_ligne[key] = value.split(',')
+
+    if multi_extension :
+        donnees_ = import_dfs_withExtension(df_names, data_path = path_data)
+    else :
+        donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees_ref = {}
+    if(not df_ref_names is None):
+        # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
+        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+    donnees = donnees_ | donnees_ref
+    
+    donnees_computed = fonction_to_apply(donnees)
+    #donnees_computed.to_csv('~/Bureau/Datagrosyst/catalogue_script_agrosyst/02_outils/tests/'+'TEST_RESULT_'+ identifiant_test +'.csv')
+
+    res = []
+    for entite_id in list(colonne_to_test_for_ligne.keys()):
+        colonnes_to_test = colonne_to_test_for_ligne[entite_id]
+
+        # valeur trouvée :
+        output = donnees_computed.loc[donnees_computed[key_name] == entite_id]
+        output = output[colonnes_to_test].fillna('').astype('str')
+
+        # valeur attendue :
+        expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
+        expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
+
+        for colonne_to_test in colonnes_to_test:
+            print(output[colonne_to_test].values)
+            print(expected_output[colonne_to_test].values)
+            print(expected_output[colonne_to_test].values == output[colonne_to_test].values)
+            if(len(expected_output[colonne_to_test].values) > 0):
+                is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
+
+            if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
+                res.append(False)
+            else:
+                res.append(True)
+
+    return res
+
 
 def test_debit_chantier_intervention_realise():
     """
@@ -587,3 +683,23 @@ def test_get_aggreged_from_utilisation_intrant_realise():
     res_valeur_ok = (merge['aggreged_utilisation_intrant_realise'] == merge['aggreged_utilisation_intrant_realise_expected']).all()
 
     assert res_valeur_ok
+
+
+def test_get_donnees_spatiales_commune_du_domaine():
+    """
+        Test de l'obtention des informations utiles pour la constitution des fichiers sdc pour la CAN
+    """
+    identifiant_test = 'test_get_donnees_spatiales_commune_du_domaine'
+
+    df_names_withExt = {
+        'csv' : ['commune','domaine','geofla'],
+        'json' : ['geoVec_com2024','geoVec_rmqs'],
+        'gpkg' : ['safran']
+    }
+
+    path_data = '02_outils/tests/data/test_get_donnees_spatiales_commune_du_domaine/'
+
+    fonction_to_apply = interoperabilite.get_donnees_spatiales_commune_du_domaine
+    res = fonction_test(identifiant_test, df_names_withExt, path_data, fonction_to_apply, multi_extension = True, key_name = 'domaine_id')
+
+    assert all(res)

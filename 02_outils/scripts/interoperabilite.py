@@ -29,7 +29,7 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
     Retourne:
         pd.DataFrame:
             - 'codeinsee' : le code insee de la commune
-            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe la commune
+            - 'safran_cell_id' : l'identifiant de la cellule safran où se situe la commune
             - 'rmqs_site_id' = identifiant du site RMS le plus proche du centroide de la commune métropolitaine
             - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
             - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
@@ -49,7 +49,9 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
 
     # Celui utilisé ici est celui de 2024 avec DROMS NON RAPPORCHES trouvé sur BAN Open data !!
     # https://adresse.data.gouv.fr/data/contours-administratifs/2024/geojson
-    gdf_commune = donnees['geoVec_com2024'][['code','geometry','dep']].rename(columns={"code": "codeinsee"})
+    gdf_commune = donnees['geoVec_com2024'][['code','geometry','departement']].\
+        rename(columns={"code": "codeinsee",
+                        'departement': 'dep'})
 
     #Verification de l'unicité des code insee
     if gdf_commune.codeinsee.is_unique : print('index gdf_commune OK') 
@@ -57,11 +59,11 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
 
 
     # Geopackage safran dont la citation est dans le READ ME.txt
-    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran_id"})
+    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "safran_cell_id"})
 
     # Verification de l'unicité des cellules safran
-    if gdf_safran.cellule_safran_id.is_unique : print('index gdf_safran OK') 
-    else : print('ATTENTION cellule_safran_id ne doit pas servir d\'index à gdf_safran !')
+    if gdf_safran.safran_cell_id.is_unique : print('index gdf_safran OK') 
+    else : print('ATTENTION safran_cell_id ne doit pas servir d\'index à gdf_safran !')
     
     # geojson des sites RMQS (GIS Sol : https://entrepot.recherche.data.gouv.fr/dataverse/info_et_sols?q=&types=dataverses%3Adatasets&sort=dateSort&order=desc&page=3)
     gdf_rmqs = donnees['geoVec_rmqs']
@@ -80,28 +82,31 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
     df_spatial = gpd.sjoin(gdf_commune.set_geometry('centroid'), gdf_safran, how='left', predicate='within')
     df_spatial = df_spatial[df_spatial.columns.difference(['dep','index_right'])]
     # 357 communes sans maille rattaché par un within, on fait donc à la maille la plus proche. Besoin de passer en projection
-    join = df_spatial.loc[df_spatial.cellule_safran_id.isna(), ['geometry','centroid']]
-    join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('centroid'), gdf_safran.to_crs(3857), how = 'left', distance_col = "distances").to_crs(4326)
-    print('La distance max de jointure par la maille la plus proche est de '+str(np.ceil(join['distances'].max() / 1000).astype(int))+' km')
+    join = df_spatial.loc[df_spatial.safran_cell_id.isna(), ['geometry','centroid']]
+    join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('centroid'), gdf_safran.to_crs(3857), how = 'left', distance_col = "safran_dist").to_crs(4326)
+    print('La distance max de jointure par la maille la plus proche est de '+str(np.ceil(join['safran_dist'].max() / 1000).astype(int))+' km')
     # On joint les communes rattachées par nearest avec celles rattachés par within
-    df_spatial = df_spatial.combine_first(join[['cellule_safran_id','distances']])
+    df_spatial = df_spatial.combine_first(join[['safran_cell_id','safran_dist']])
+    df_spatial['safran_dist'] = round(df_spatial['safran_dist']/1000, 0)
 
+    df_spatial = gpd.sjoin_nearest(df_spatial.to_crs(3857), gdf_rmqs.set_index('id').to_crs(3857), distance_col="distances_rmqs", how='left').set_index('codeinsee')
+    
+    df_spatial['id_site'] = np.where(pd.isna(df_spatial['id_site']),df_spatial['id_site'],df_spatial['id_site'].astype(str))
 
-    df_spatial = gpd.sjoin_nearest(df_spatial.to_crs(3857), gdf_rmqs.to_crs(3857), distance_col="distances", how='left')\
-        [['codeinsee','id_site','sampling_date','distances']].set_index('codeinsee')
-    df_spatial['distances'] = round(df_spatial['distances']/1000, 1)
+    df_spatial['distances_rmqs'] = np.where(pd.isna(df_spatial['distances_rmqs']),df_spatial['distances_rmqs'],round(df_spatial['distances_rmqs']/1000,0).astype('Int64'))
+
     df_spatial = df_spatial.rename(columns={
         'id_site' : 'rmqs_site_id',
         'sampling_date' : 'rmqs_date_sampl',
-        'distances' : 'rmqs_dist_site'
+        'distances_rmqs' : 'rmqs_dist_site'
     })
-    df_spatial = df_spatial.to_crs(4326)
 
-    # Check et changement cellules safran en int
-    if df_spatial['cellule_safran_id'].isnull().values.any() : 
+
+    # Check et changement cellules safran en int puis de nouveau en str
+    if df_spatial['safran_cell_id'].isnull().values.any() : 
         print('/!\ ATTENTION des communes ne sont pas rattachées à une maille !')
     else :
-        df_spatial['cellule_safran_id'] = df_spatial['cellule_safran_id'].astype('Int64')
+        df_spatial['safran_cell_id'] = df_spatial['safran_cell_id'].astype('Int64').astype('str')
     
     # On ne check pas les sites RMQS car on a pas mis de max distances et surtout certains site n'ont pas de coordonnées !
     
@@ -110,7 +115,7 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
     # m2 = df_spatial.loc[df_spatial.distances.notnull()].set_geometry('centroid').explore(m=m2, color="red", name="Points", marker_type = 'circle')
     # m2 = gdf_safran.explore(m=m2, name="Polygons safran", color="grey")
 
-    df_spatial = df_spatial[['codeinsee','cellule_safran_id','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site']]
+    df_spatial = df_spatial[['safran_cell_id','safran_dist','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site']].reset_index()
 
     # return m
     # return m2
@@ -144,7 +149,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
             - 'domaine_code' : Code du domaine
             - 'commune_id' : Identifiant du référentiel de localisation des communes
             - 'codeinsee' : le code insee
-            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
+            - 'safran_cell_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
             - 'rmqs_site_id' = identifiant du site RMS le plus proche du centroide de la commune métropolitaine
             - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
             - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
@@ -165,7 +170,10 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
         'id' : 'commune_id'
         })
     df_geofla = donnees['geofla']
-    df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees[['safran','geoVec_com2024','geoVec_rmqs']])
+
+    df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(
+        donnees
+    )
 
     # merge
     df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
@@ -199,7 +207,7 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
         pd.DataFrame:
             - 'geopoint_id' : Identifiant du point gps
             - 'domaine_id' : Identifiant du domaine
-            - 'cellule_safran_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
+            - 'safran_cell_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
             - 'rmqs_site_id' = identifiant du site RMS le plus proche du centroide de la commune métropolitaine
             - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
             - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
@@ -215,7 +223,7 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
                                    crs = 'EPSG:4326')
                                 ).drop(columns=['latitude', 'longitude'])
     
-    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "cellule_safran_id"})
+    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "safran_cell_id"})
     gdf_rmqs = donnees['geoVec_rmqs']
     df_geofla = donnees['geofla']
 
@@ -223,10 +231,10 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
     df_coord_gps = gpd.sjoin(gdf_gps.set_geometry('geometry'), gdf_safran, how='left', predicate='within')
     # Si pas le cas on va chercher la cell la plus proche.
     # On pose un distance pax d'appariement de 80km (au jugé, = x10 mailles)
-    join = df_coord_gps.loc[df_coord_gps.cellule_safran_id.isna(), ['geometry']]
+    join = df_coord_gps.loc[df_coord_gps.safran_cell_id.isna(), ['geometry']]
     join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('geometry'), gdf_safran.to_crs(3857).set_geometry('geometry'), how = 'left', max_distance = 80000).to_crs(4326)
     # On joint les communes rattachées par nearest avec celles rattachés par within
-    df_coord_gps = df_coord_gps.combine_first(join[['cellule_safran_id']])
+    df_coord_gps = df_coord_gps.combine_first(join[['safran_cell_id']])
 
     # RMQS
     df_coord_gps = gpd.sjoin_nearest(df_coord_gps.to_crs(3857), gdf_rmqs.to_crs(3857), distance_col="distances", how='left')[['codeinsee','id_site','sampling_date','distances']].set_index('codeinsee')
@@ -243,7 +251,7 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
     df_coord_gps = df_coord_gps.merge(df_geofla, on = 'codeinsee', how='left')
 
 
-    df = df_coord_gps[['geopoint_id','domaine_id','geometry','cellule_safran_id','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site','geofla_2015_id']]\
+    df = df_coord_gps[['geopoint_id','domaine_id','geometry','safran_cell_id','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site','geofla_2015_id']]\
         .rename(columns={"geometry": "coord_gps"})
 
     return df
