@@ -11,18 +11,26 @@ def import_df(df_name, path_data, sep, df, file_format='csv'):
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     if file_format == 'csv' :
-        df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep).replace({'\r\n': '\n'}, regex=True)
-    if file_format == 'json' and df_name.str.startswith('geoVec') :
+        df[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, 
+                                  dtype = {'codeinsee':str,
+                                            'departement':str,
+                                            'codepostal':str,
+                                            'region':str,
+                                            'arrondissement_code':str,
+                                            'bassin_vie':str,
+                                            'zone_emploi':str,
+                                            
+                                            'cell':str})
+    if file_format == 'json' and df_name.startswith('geoVec') :
         # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
         df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
     if file_format == 'gpkg' :
         df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
-def import_dfs(df_names, data_path, sep = ',', file_format='csv'):
+def import_dfs(df_names, data_path, sep = ',', df:dict = {}, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
-    df = {}
     for df_name in df_names : 
         import_df(df_name, path_data=data_path, df = df, sep = sep, file_format=file_format)
 
@@ -36,7 +44,7 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
     for x in df_names_withExt :
         if (isinstance(x, str)) & (x in ['json','gpkg','csv']) :
             df_names = df_names_withExt[x]
-            df_dict = import_dfs(df_names, path_data=data_path, file_format=x)
+            df_dict = import_dfs(df_names, data_path, file_format=x)
             all_df = {**all_df, **df_dict}
         else :
             raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
@@ -55,7 +63,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
         colonne_to_test_for_ligne[key] = value.split(',')
 
     if multi_extension :
-        donnees_ = import_dfs_withExtension(df_names, path_data, sep = ',')
+        donnees_ = import_dfs_withExtension(df_names, data_path = path_data)
     else :
         donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
     donnees_ref = {}
