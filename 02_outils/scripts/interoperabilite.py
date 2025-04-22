@@ -90,7 +90,7 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
     df_spatial['safran_dist'] = round(df_spatial['safran_dist']/1000, 0)
 
     df_spatial = gpd.sjoin_nearest(df_spatial.to_crs(3857), gdf_rmqs.set_index('id').to_crs(3857), distance_col="distances_rmqs", how='left').set_index('codeinsee')
-    
+
     df_spatial['id_site'] = np.where(pd.isna(df_spatial['id_site']),df_spatial['id_site'],df_spatial['id_site'].astype(str))
 
     df_spatial['distances_rmqs'] = np.where(pd.isna(df_spatial['distances_rmqs']),df_spatial['distances_rmqs'],round(df_spatial['distances_rmqs']/1000,0).astype('Int64'))
@@ -104,7 +104,7 @@ def make_spatial_interoperation_btw_codeinsee_and_spatial_id(donnees):
 
     # Check et changement cellules safran en int puis de nouveau en str
     if df_spatial['safran_cell_id'].isnull().values.any() : 
-        print('/!\ ATTENTION des communes ne sont pas rattachées à une maille !')
+        print('!!! ATTENTION des communes ne sont pas rattachées à une maille !!!')
     else :
         df_spatial['safran_cell_id'] = df_spatial['safran_cell_id'].astype('Int64').astype('str')
     
@@ -165,11 +165,11 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     df_domaine = donnees['domaine'][['id','code','commune_id']].rename(columns={
         'id' : 'domaine_id',
         'code' : 'domaine_code'
-        })
+        }).copy()
     df_commune = donnees['commune'][['id','codeinsee']].rename(columns={
         'id' : 'commune_id'
-        })
-    df_geofla = donnees['geofla']
+        }).copy()
+    df_geofla = donnees['geofla'].copy()
 
     df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(
         donnees
@@ -201,21 +201,19 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
             - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
             - safran.gpkg : geopackage safran téléchargé sur le site de SICLIMA
             - geoVec_rmqs.json : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes)
-            - geofla.csv : référentiel avec un code insee (2024) et une liste d'identifiant geofla (2015)
 
     Retourne:
         pd.DataFrame:
             - 'geopoint_id' : Identifiant du point gps
             - 'domaine_id' : Identifiant du domaine
-            - 'safran_cell_id' : l'identifiant de la cellule safran où se situe le centroide de la commune ; ou la cellule la plus proche. Que pour métropole
-            - 'rmqs_site_id' = identifiant du site RMS le plus proche du centroide de la commune métropolitaine
+            - 'safran_cell_id' : l'identifiant de la cellule safran où se situe le point GPS. Que pour métropole
+            - 'rmqs_site_id' = identifiant du site RMS le plus proche du cpoint GPS. Que pour métropole
             - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
-            - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
-            - 'geofla_2015_id' = liste d'identifiant geofla pour chaque code insee. Attention geofla est obsolete !
+            - 'rmqs_dist_site' = distances entre le point GPS le plus proche du site RMQS indiqué et le point du site RMQS indiqué
      """
     
     # import et renommage
-    gdf_gps = donnees['coordonnees_gps_domaine'][['id','domaine_id','latitude','longitude']].rename(columns={"id": "geopoint_id"})
+    gdf_gps = donnees['coordonnees_gps_domaine'][['id','domaine_id','latitude','longitude']].rename(columns={"id": "geopoint_id"}).copy()
     gdf_gps = gpd.GeoDataFrame(gdf_gps,
                                geometry = gpd.points_from_xy(
                                    x = gdf_gps.longitude,
@@ -223,35 +221,45 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
                                    crs = 'EPSG:4326')
                                 ).drop(columns=['latitude', 'longitude'])
     
-    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "safran_cell_id"})
-    gdf_rmqs = donnees['geoVec_rmqs']
-    df_geofla = donnees['geofla']
+    gdf_safran = donnees['safran'][['cell','geometry']].rename(columns={"cell": "safran_cell_id"}).copy()
+    gdf_safran['safran_cell_id'] = gdf_safran['safran_cell_id'].astype(str)
+    gdf_rmqs = donnees['geoVec_rmqs'].copy()
+    gdf_rmqs['id_site'] = gdf_rmqs['id_site'].astype(str)
 
     # On joint la cellule safran si les coord gps du domaine sont à l'intérieur de la cell
-    df_coord_gps = gpd.sjoin(gdf_gps.set_geometry('geometry'), gdf_safran, how='left', predicate='within')
+    df_coord_gps = gpd.sjoin(gdf_gps.set_geometry('geometry'), gdf_safran, how='left', predicate='within').drop(columns='index_right')
+    
     # Si pas le cas on va chercher la cell la plus proche.
     # On pose un distance pax d'appariement de 80km (au jugé, = x10 mailles)
-    join = df_coord_gps.loc[df_coord_gps.safran_cell_id.isna(), ['geometry']]
-    join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('geometry'), gdf_safran.to_crs(3857).set_geometry('geometry'), how = 'left', max_distance = 80000).to_crs(4326)
+    join = df_coord_gps.loc[df_coord_gps.safran_cell_id.isna(), ['geopoint_id','geometry']]
+    join = gpd.sjoin_nearest(join.to_crs(3857).set_geometry('geometry'), gdf_safran.to_crs(3857).set_geometry('geometry'), how = 'left', max_distance = 80000).to_crs(4326).drop(columns='index_right')
     # On joint les communes rattachées par nearest avec celles rattachés par within
     df_coord_gps = df_coord_gps.combine_first(join[['safran_cell_id']])
 
     # RMQS
-    df_coord_gps = gpd.sjoin_nearest(df_coord_gps.to_crs(3857), gdf_rmqs.to_crs(3857), distance_col="distances", how='left')[['codeinsee','id_site','sampling_date','distances']].set_index('codeinsee')
+    df_coord_gps = gpd.sjoin_nearest(df_coord_gps.to_crs(3857), gdf_rmqs.to_crs(3857), distance_col="distances_rmqs", how='left', max_distance = 80000).drop(columns = ['id','index_right'])
 
-    df_coord_gps['distances'] = round(df_coord_gps['distances']/1000, 1)
+    df_coord_gps['id_site'] = np.where(pd.isna(df_coord_gps['id_site']),df_coord_gps['id_site'],df_coord_gps['id_site'].astype(str))
+
+    df_coord_gps['distances_rmqs'] = np.where(pd.isna(df_coord_gps['distances_rmqs']), np.nan, round(df_coord_gps['distances_rmqs']/1000,0).astype(int, errors='ignore'))
+
     df_coord_gps = df_coord_gps.rename(columns={
         'id_site' : 'rmqs_site_id',
         'sampling_date' : 'rmqs_date_sampl',
-        'distances' : 'rmqs_dist_site'
+        'distances_rmqs' : 'rmqs_dist_site'
     })
     df_coord_gps = df_coord_gps.to_crs(4326)
 
     # GEOFLA
-    df_coord_gps = df_coord_gps.merge(df_geofla, on = 'codeinsee', how='left')
+    # df_coord_gps = df_coord_gps.merge(df_geofla, on = 'codeinsee', how='left')
+    # imposssible de faire Geofla car reviendrai à faire ce qui est fait pour commune, en effet on a qu'un référentiel codeinsee-geofla_id. Alors que pour faire selon un point GPS on devrait avoir un fichier geojson (ou vectorisé) qui pointe vers un geofla-id.
 
 
-    df = df_coord_gps[['geopoint_id','domaine_id','geometry','safran_cell_id','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site','geofla_2015_id']]\
+    df = df_coord_gps[['geopoint_id','domaine_id','geometry','safran_cell_id','rmqs_site_id','rmqs_date_sampl','rmqs_dist_site']]\
         .rename(columns={"geometry": "coord_gps"})
+    
+    df.loc[df['coord_gps'].apply(lambda p: np.isinf(p.x) or np.isinf(p.y)), 'coord_gps'] = np.nan
+    df['coord_gps'] = df['coord_gps'].apply(lambda geom: geom.wkt if geom else np.nan)
+    df = pd.DataFrame(df)
 
     return df

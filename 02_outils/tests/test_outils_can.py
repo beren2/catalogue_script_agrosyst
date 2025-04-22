@@ -65,11 +65,11 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
     if multi_extension :
         donnees_ = import_dfs_withExtension(df_names, data_path = path_data)
     else :
-        donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+        donnees_ = import_dfs(df_names, path_data, df = {}, sep = ',')
     donnees_ref = {}
     if(not df_ref_names is None):
         # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
-        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+        donnees_ref = import_dfs(df_ref_names, path_ref, df = {}, sep = ',')
     donnees = donnees_ | donnees_ref
     
     donnees_computed = fonction_to_apply(donnees)

@@ -64,7 +64,7 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
     for x in df_names_withExt :
         if (isinstance(x, str)) & (x in ['json','gpkg','csv']) :
             df_names = df_names_withExt[x]
-            df_dict = import_dfs(df_names, data_path, file_format=x)
+            df_dict = import_dfs(df_names, data_path = data_path, file_format=x)
             all_df = {**all_df, **df_dict}
         else :
             raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
@@ -85,15 +85,15 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
     if multi_extension :
         donnees_ = import_dfs_withExtension(df_names, data_path = path_data)
     else :
-        donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+        donnees_ = import_dfs(df_names, path_data, df = {}, sep = ',')
     donnees_ref = {}
     if(not df_ref_names is None):
         # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
-        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+        donnees_ref = import_dfs(df_ref_names, path_ref, df = {}, sep = ',')
     donnees = donnees_ | donnees_ref
     
     donnees_computed = fonction_to_apply(donnees)
-    #donnees_computed.to_csv('~/Bureau/Datagrosyst/catalogue_script_agrosyst/02_outils/tests/'+'TEST_RESULT_'+ identifiant_test +'.csv')
+    donnees_computed.to_csv('~/Bureau/Datagrosyst/catalogue_script_agrosyst/02_outils/tests/'+'TEST_RESULT_'+ identifiant_test +'.csv')
 
     res = []
     for entite_id in list(colonne_to_test_for_ligne.keys()):
@@ -106,6 +106,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
         # valeur attendue :
         expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
         expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
+        print(expected_output)
 
         for colonne_to_test in colonnes_to_test:
             print(output[colonne_to_test].values)
@@ -139,7 +140,7 @@ def test_debit_chantier_intervention_realise():
     # obtention des données
     df_names = ['intervention_realise']
     path_data = '02_outils/tests/data/test_debit_chantier_intervention_realise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     print(donnees.keys())
     df_intervention_realise = donnees['intervention_realise']
 
@@ -190,7 +191,7 @@ def test_utilisation_intrant_dose_realise():
                     'utilisation_intrant_realise'        
                 ]
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose_realise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     # obtention des référentiels
     path_ref = '02_outils/data/referentiels/'
@@ -203,7 +204,7 @@ def test_utilisation_intrant_dose_realise():
         'ref_acta_traitement_produit'
     ]
 
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
     df_utilisation_intrant_realise = donnees['utilisation_intrant_realise']
 
     # filtration pour les données problématiques
@@ -253,7 +254,7 @@ def test_utilisation_intrant_dose_synthetise():
                     'utilisation_intrant_synthetise'        
                 ]
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     # obtention des référentiels
     path_ref = '02_outils/data/referentiels/'
@@ -266,7 +267,7 @@ def test_utilisation_intrant_dose_synthetise():
         'ref_acta_traitement_produit'
     ]
 
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
     df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise']
 
 
@@ -347,12 +348,12 @@ def test_get_utilisation_intrant_in_unit():
     df_names = [    
                     'utilisation_intrant_realise'     
                 ]
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     path_ref = '02_outils/data/referentiels/'
     refs_names = [
         'conversion_utilisation_intrant'
     ]
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
 
     donnees['utilisation_intrant'] = donnees['utilisation_intrant_realise']
     fonctions_utiles.get_utilisation_intrant_in_unit(donnees)
@@ -385,7 +386,7 @@ def test_get_dose_ref():
                     'connection_synthetise'
                 ]
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
 
     # obtention des référentiels
@@ -398,7 +399,7 @@ def test_get_dose_ref():
         'ref_culture_maa',
         'ref_acta_traitement_produit'
     ]
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
     
     # obtention de la dose de référence à partir de la fonction get_infos_all_utilisation_intrant
     df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(donnees, saisie = 'realise')
@@ -448,7 +449,7 @@ def test_sdc_donnee_attendue():
                     'sdc'
                 ]
     path_data = '02_outils/tests/data/test_sdc_donnee_attendue/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     
     external_data_path = '02_outils/tests/data/test_sdc_donnee_attendue/'
     
@@ -481,7 +482,7 @@ def test_connection_synthetise_restructured():
                     'culture'
                 ]
     path_data = '02_outils/tests/data/test_connection_synthetise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     connection_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'culture_intermediaire_id'][['id_ligne', 'valeur_attendue']]
     connection_synthetise = restructuration.restructuration_connection_synthetise(donnees)
@@ -514,7 +515,7 @@ def test_intervention_synthetise_restructured():
                 'domaine']
 
     path_data = '02_outils/tests/data/test_intervention_synthetise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     intervention_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'combinaison_outil_id'][['id_ligne', 'valeur_attendue']]
     intervention_synthetise = restructuration.restructuration_intervention_synthetise(donnees)
@@ -541,7 +542,7 @@ def test_restructuration_noeuds_realise():
                     'noeuds_realise', 'zone'
                 ]
     path_data = '02_outils/tests/data/test_noeuds_realise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     noeuds_realise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'precedent_noeuds_realise_id'][['id_ligne', 'valeur_attendue']]
     noeuds_realise = restructuration.restructuration_noeuds_realise(donnees)
@@ -574,7 +575,7 @@ def test_restructuration_recolte_rendement_prix():
                 ]
 
     path_data = '02_outils/tests/data/test_recolte_rendement_prix_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][
         ['id_ligne', 'valeur_attendue']
@@ -616,7 +617,7 @@ def test_get_aggreged_from_utilisation_intrant_synthetise():
                 ]
                 
     path_data = '02_outils/tests/data/test_get_aggreged_from_utilisation_intrant_synthetise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     aggreged_utilisation_intrant_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'toutes'][
         ['id_ligne', 'valeur_attendue']
@@ -659,7 +660,7 @@ def test_get_aggreged_from_utilisation_intrant_realise():
                 ]
     
     path_data = '02_outils/tests/data/test_get_aggreged_from_utilisation_intrant_realise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     aggreged_utilisation_intrant_realise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'toutes'][
         ['id_ligne', 'valeur_attendue']
@@ -687,7 +688,7 @@ def test_get_aggreged_from_utilisation_intrant_realise():
 
 def test_get_donnees_spatiales_commune_du_domaine():
     """
-        Test de l'obtention des informations utiles pour la constitution des fichiers sdc pour la CAN
+        Test de l'obtention des informations spatiales (safran, rmqs, geofla) au niveau de la commune rattaché au domaine
     """
     identifiant_test = 'test_get_donnees_spatiales_commune_du_domaine'
 
@@ -701,5 +702,25 @@ def test_get_donnees_spatiales_commune_du_domaine():
 
     fonction_to_apply = interoperabilite.get_donnees_spatiales_commune_du_domaine
     res = fonction_test(identifiant_test, df_names_withExt, path_data, fonction_to_apply, multi_extension = True, key_name = 'domaine_id')
+
+    assert all(res)
+
+
+def test_get_donnees_spatiales_coord_gps_du_domaine():
+    """
+        Test de l'obtention des informations spatiales (safran, rmqs) au niveau des coordonnées gps saisis
+    """
+    identifiant_test = 'test_get_donnees_spatiales_coord_gps_du_domaine'
+
+    df_names_withExt = {
+        'csv' : ['coordonnees_gps_domaine'],
+        'json' : ['geoVec_com2024','geoVec_rmqs'],
+        'gpkg' : ['safran']
+    }
+
+    path_data = '02_outils/tests/data/test_get_donnees_spatiales_coord_gps_du_domaine/'
+
+    fonction_to_apply = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine
+    res = fonction_test(identifiant_test, df_names_withExt, path_data, fonction_to_apply, multi_extension = True, key_name = 'geopoint_id')
 
     assert all(res)
