@@ -724,7 +724,7 @@ def test_extract_good_rotation_diagram():
                     'noeuds_synthetise', 'connection_synthetise'
                 ]
     path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     res_to_test, _ = indicateur.extract_good_rotation_diagram(donnees)
     
     good_to_check = ['fr.inra.agrosyst.api.entities.practiced.PracticedSystem_d4a1b64c-afa0-440f-92e1-30a483871ab4',
