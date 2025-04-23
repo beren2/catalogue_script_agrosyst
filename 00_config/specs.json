@@ -370,6 +370,26 @@
 						"function_name" : "typo_especes_typo_culture"
 					}
 				]
+			},
+			"geospatial_data" : {
+				"geodata_path" : "data/external_data/geospatial_data/",
+				"geojson" : [
+					"geoVec_arrond",
+					"geoVec_com2022",
+					"geoVec_com2024",
+					"geoVec_dep",
+					"geoVec_oldreg",
+					"geoVec_reg",
+					"geoVec_rmqs",
+					"geoVec_viti"
+				],
+				"geopackage" : [
+					"safran"
+				],
+				"csv_geo" : [
+					"referentiel_geographique_fr_esr_unique",
+					"geofla"
+				]
 			}
 		},
 		"categories" : {
