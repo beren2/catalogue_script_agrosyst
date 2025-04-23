@@ -410,6 +410,14 @@
                     "action_synthetise_agrege"
                 ]
             },
+			"interoperabilite" : {
+                "function_name" : "create_category_interoperabilite",
+                "dependances" : [], 
+                "generated" : [
+					"donnees_spatiales_commune_du_domaine",
+                    "donnees_spatiales_coord_gps_du_domaine"
+                ]
+            },
             "restructuration" : {
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
