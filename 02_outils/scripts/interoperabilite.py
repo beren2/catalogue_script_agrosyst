@@ -195,9 +195,8 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
             Les points gps des parcelles seront saisie plutot au niveau de la zone en réalisé.
     
     Arguments:
-        donnees (dict): Contenant les tables suivantes
+        donnees (dict) : Contenant les tables suivantes provenant de l'netrepot mais aussi des données externes geospatiales
             - coordonnees_gps_domaine (entrepot.Contexte => domain_id, latitude, longitude)
-        external_data (dict): 
             - geoVec_com2024 : fichier des contour de communes 2024 en epsg 4326. JSON
             - safran : geopackage safran téléchargé sur le site de SICLIMA. GPKG
             - geoVec_rmqs : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes). JSON
