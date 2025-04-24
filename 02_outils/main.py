@@ -108,11 +108,12 @@ def export_to_db(df, name):
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def convert_to_serializable(obj):
+    """ Permet de convertir un objet pandas en list ou dictionnaire """
     if isinstance(obj, pd.Index):
         return obj.tolist()
-    elif isinstance(obj, pd.Series):
+    if isinstance(obj, pd.Series):
         return obj.tolist()
-    elif isinstance(obj, pd.DataFrame):
+    if isinstance(obj, pd.DataFrame):
         return obj.to_dict(orient='records')
     raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
 
