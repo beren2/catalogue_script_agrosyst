@@ -454,22 +454,30 @@
                     "intervention_synthetise_restructure"
                 ]
             },
-            "indicateur" : {
-                "function_name" : "create_category_indicateur",
+            "indicateur_0" : {
+                "function_name" : "create_category_indicateur_0",
+                "dependances" : [],
+                "generated" : [
+					"couple_connexions_chemins_synthetise_rotation",
+					"poids_connexions_synthetise_rotation",
+					"typologie_can_culture"
+                ]
+            },
+			"indicateur_1" : {
+                "function_name" : "create_category_indicateur_1",
                 "dependances" : [{
 						"source" : "outils", 
 						"category": "restructuration"
 					},{
 						"source" : "outils", 
 						"category": "agregation_complet"
-				}],
+					},{
+						"source" : "outils", 
+						"category": "indicateur_0"
+					}],
                 "generated" : [
-					"couple_connexions_chemins_synthetise_rotation",
-					"poids_connexions_synthetise_rotation",
-					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
-					"typologie_can_culture",
 					"typologie_can_rotation_synthetise", 
 					"parcelle_realise_outils_can",
 					"action_realise_rendement_total", 
@@ -481,8 +489,7 @@
                 "dependances" : [{
                     "source" : "outils", 
                     "category": "restructuration"
-                },
-                {
+                },{
                     "source" : "outils", 
                     "category": "agregation_complet"
                 }],

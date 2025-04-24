@@ -504,9 +504,11 @@ def create_category_restructuration():
     df_intervention_synthetise_restructure = restructuration.restructuration_intervention_synthetise(donnees)
     export_to_db(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
 
-def create_category_indicateur():
+
+def create_category_indicateur_0():
     """
-        Execute les requêtes pour créer les outils des indicateurs
+        Execute les requêtes pour créer les outils des indicateurs uniquement pour les fonctions de poids de connexions !
+        A faire passer avant indicateur_1 qui a besoin de la génération des poids de connexions et de la typologie_can_culture
     """
     _, dict_extract_bad_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
     export_dict_to_catalogue(dict_extract_bad_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
@@ -520,6 +522,14 @@ def create_category_indicateur():
     df_get_connexion_weight_in_synth_rotation, _, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
 
+    df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
+    export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
+
+
+def create_category_indicateur_1():
+    """
+        Execute les requêtes pour créer les outils des indicateurs (sauf poids de conenxions et typo_can_culture, voir create_category_indicateur_0)
+    """
     # df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
     # export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
 
@@ -528,9 +538,6 @@ def create_category_indicateur():
     
     df_identification_pz0 = indicateur.identification_pz0(donnees)
     export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
-
-    df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
-    export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
 
     df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
     export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
@@ -620,7 +627,8 @@ steps = [
     {'source' : 'outils', 'category' : 'agregation'},
     {'source' : 'outils', 'category' : 'agregation_complet'},
     {'source' : 'outils', 'category' : 'restructuration'},
-    {'source' : 'outils', 'category' : 'indicateur'},
+    {'source' : 'outils', 'category' : 'indicateur_0'},
+    {'source' : 'outils', 'category' : 'indicateur_1'},
     {'source' : 'outils', 'category' : 'outils_can'}
 ]
 
