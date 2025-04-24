@@ -44,7 +44,7 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
     """
     all_df = {}
     for x in df_names_withExt :
-        if isinstance(x, str) and x in ['json', 'gpkg', 'csv']:
+        if isinstance(x, str) and x in {'json', 'gpkg', 'csv'}:
             df_names = df_names_withExt[x]
             df_dict = import_dfs(df_names, data_path, file_format=x)
             all_df = {**all_df, **df_dict}
