@@ -107,17 +107,26 @@ def export_to_db(df, name):
         df.to_sql(name=name, con=engine, if_exists='replace')
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
+def convert_to_serializable(obj):
+    if isinstance(obj, pd.Index):
+        return obj.tolist()
+    elif isinstance(obj, pd.Series):
+        return obj.tolist()
+    elif isinstance(obj, pd.DataFrame):
+        return obj.to_dict(orient='records')
+    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+
 def export_dict_to_catalogue(dic, name):
-    """ permet d'exporter un dictionnaire dans le catalgoue 02_outils/data/export_from_functions"""
+    """ permet d'exporter un dictionnaire dans le catalgoue data/export_from_functions"""
     pathway_for_data_to_export = 'data/export_from_functions/'
     if('entrepot_' in name):
         name = name[9:]
     if(TYPE == 'local'):
         with open(DATA_PATH + name + '.json', 'w', encoding="utf-8") as f:
-            json.dump(dic, f)
+            json.dump(dic, f, default=convert_to_serializable, indent=4)
     else :
         with open(pathway_for_data_to_export + name + '.json', 'w', encoding="utf-8") as f:
-            json.dump(dic, f)
+            json.dump(dic, f, default=convert_to_serializable, indent=4)
     print("* CRÉATION DANS LE CATALOGUE DU DICTIONNAIRE ",name, " TERMINEE *")
 
 
