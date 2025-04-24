@@ -109,7 +109,7 @@ def export_to_db(df, name):
 
 def export_dict_to_catalogue(dic, name):
     """ permet d'exporter un dictionnaire dans le catalgoue 02_outils/data/export_from_functions"""
-    pathway_for_data_to_export = '02_outils/data/export_from_functions/'
+    pathway_for_data_to_export = 'data/export_from_functions/'
     if('entrepot_' in name):
         name = name[9:]
     if(TYPE == 'local'):
@@ -133,7 +133,7 @@ def import_df(df_name, path_data, sep, file_format='csv') :
             donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
         else:
             donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
-    if file_format == 'json' and df_name.str.startswith('geoVec') :
+    if file_format == 'json' and df_name.startswith('geoVec') :
         # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
         donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
     if file_format == 'gpkg' :
@@ -599,9 +599,11 @@ def create_category_test():
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
 
-    df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
-    df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
-    export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
+    df_get_connexion_weight_in_synth_rotation, _, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
+
+    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
+
+    print('Fin du test de poids_connexions_synthetise_rotation')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [

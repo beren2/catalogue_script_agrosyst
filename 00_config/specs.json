@@ -504,20 +504,14 @@
 					{
                     	"source" : "outils", 
 						"category": "restructuration"
-					},
-					{
-						"source" : "outils", 
-						"category": "agregation_complet"
 					}
 				],
                 "generated" : [
-                    "recolte_outils_can"
+                    "poids_connexions_synthetise_rotation"
                 ],
                 "entrepot_dependances" : [
-                    "recolte_rendement_prix", "recolte_rendement_prix_restructure",
-					"composant_culture", "culture", "composant_culture_concerne_intervention_synthetise",
-					"ccc_intervention_synthetise_restructure",
-					"action_synthetise"
+					"connection_synthetise",
+                    "noeuds_synthetise"
                 ]
             }
         }
