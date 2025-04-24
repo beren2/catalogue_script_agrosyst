@@ -252,8 +252,11 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # Mettre en évidence synthetises pz0 uniquement monoannuels 
     pz0 = select_df.loc[select_df['donnee_attendue'].str.contains("pz0")].reset_index()
     
-    pz0.loc[pz0['donnee_attendue'].str.contains(","), 'triannuel'] = "pluri"
-    pz0.loc[pz0['triannuel'].isna(), ['triannuel']] = "mono"
+    pz0['triannuel'] = pd.Series()
+    if (pz0['donnee_attendue'].str.contains(",", na=False)).any() :
+        pz0.loc[pz0['donnee_attendue'].str.contains(","), 'triannuel'] = "pluri"
+    
+    pz0.loc[pz0['triannuel'].isna(), 'triannuel'] = "mono"
 
     pz0 = pz0.groupby(['code_dephy']).agg({
         'triannuel' : lambda x: ', '.join(x.unique())
@@ -271,8 +274,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # A) On prefere un pluriannuel plutot que monoannuel si il y a le choix donc :
     # Si le code dephy n'es pas dans dephy_mono, le pz0 mono annuel devient post. on le sauvegarde ensuite dans post
     # (Si il chevauche avec le pz0, il sera traité plus tard)
-    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') 
-                                                                            else x['donnee_attendue'], axis = 1)
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') else x['donnee_attendue'], axis = 1)
  
     # sauvegarde les post
     post = select_df.loc[select_df['donnee_attendue'] == "post"]
@@ -518,8 +520,9 @@ def identification_pz0(donnees):
     #print(identif_pz0.groupby(by='donnee_attendue').size())
 
     # les campagnes synthetise pluriannuelles ont elles des doublons ? 
-    identif_pz0.loc[:,'count_campaign'] = identif_pz0.apply(lambda x : len(x['campagnes'].split(', ')), axis=1)
-    identif_pz0.loc[:,'count_unique_campaign'] = identif_pz0.apply(lambda x : len(set(x['campagnes'].split(', '))), axis=1)
+    identif_pz0['count_campaign'] = identif_pz0['campagnes'].apply(lambda x: len(x.split(', ')))
+
+    identif_pz0['count_unique_campaign'] = identif_pz0['campagnes'].apply(lambda x: len(set(x.split(', '))))
     
     if identif_pz0.loc[identif_pz0['count_campaign'] != identif_pz0['count_unique_campaign']].shape[0] != 0:
         message_error = message_error + "!!! Attention !!! Saisies de synthetises incorrects : campagnes en doubles"
@@ -546,8 +549,8 @@ def identification_pz0(donnees):
     identif_pz0_aucun.loc[identif_pz0_aucun['code_dephy'].isin(saisies_attendues_melt['code_dephy']),'donnee_attendue'] = modalite_pz0_aucun # mais ceux qui sont dans le fichier BDD_donnees_attendues_CAN, sont des "saisies non acceptables"
 
     identif_pz0_non_attendue = identif_pz0.copy()
-    identif_pz0_non_attendue.loc[:,'donnee_attendue_split'] = identif_pz0_non_attendue.apply(lambda x : ', '.join(set(x['donnee_attendue'].split(', '))) , axis = 1)
-    identif_pz0_non_attendue = identif_pz0_non_attendue.loc[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
+    identif_pz0_non_attendue['donnee_attendue_split'] = identif_pz0_non_attendue['donnee_attendue'].apply(lambda x: ', '.join(set(x.split(', '))))
+    identif_pz0_non_attendue = identif_pz0_non_attendue[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
     identif_pz0_non_attendue['donnee_attendue'] = modalite_non_attendu
 
     identif_pz0_non_attendue = identif_pz0_non_attendue.drop(['donnee_attendue_split'], axis = 1)
