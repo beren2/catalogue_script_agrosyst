@@ -135,13 +135,13 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     Arguments:
         donnees (dict): 
             Contenant les tables suivantes de l'entrepot
-                - domaine (entrepot.Contexte => commune_id)
-                - commune (entrepot.Référentiel => codeinsee)
+                - domaine : (entrepot.Contexte => commune_id)
+                - commune : (entrepot.Référentiel => codeinsee)
             Contient aussi les données dont a besoin la fonction make_spatial_interoperation_btw_codeinsee_and_spatial_id()
-                - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
-                - safran.gpkg : geopackage safran téléchargé sur le site de SICLIMA
-                - geoVec_rmqs.json : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes)
-                - geofla.csv : référentiel avec un code insee (2024) et une liste d'identifiant geofla (2015)
+                - geoVec_com2024 : fichier des contour de communes 2024 en epsg 4326. JSON
+                - safran : geopackage safran téléchargé sur le site de SICLIMA. GPKG
+                - geoVec_rmqs : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes). JSON
+                - geofla : référentiel avec un code insee (2024) et une liste d'identifiant geofla (2015)
 
     Retourne:
         pd.DataFrame:
@@ -198,9 +198,9 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
         donnees (dict): Contenant les tables suivantes
             - coordonnees_gps_domaine (entrepot.Contexte => domain_id, latitude, longitude)
         external_data (dict): 
-            - geoVec_com2024.json : fichier des contour de communes 2024 en epsg 4326
-            - safran.gpkg : geopackage safran téléchargé sur le site de SICLIMA
-            - geoVec_rmqs.json : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes)
+            - geoVec_com2024 : fichier des contour de communes 2024 en epsg 4326. JSON
+            - safran : geopackage safran téléchargé sur le site de SICLIMA. GPKG
+            - geoVec_rmqs : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes). JSON
 
     Retourne:
         pd.DataFrame:

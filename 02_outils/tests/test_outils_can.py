@@ -27,10 +27,12 @@ def import_df(df_name, path_data, sep, df, file_format='csv'):
     if file_format == 'gpkg' :
         df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
-def import_dfs(df_names, data_path, sep = ',', df:dict = {}, file_format='csv'):
+def import_dfs(df_names, data_path, sep = ',', df=None, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
+    if df is None:
+        df = {}
     for df_name in df_names : 
         import_df(df_name, path_data=data_path, df = df, sep = sep, file_format=file_format)
 
@@ -42,7 +44,7 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
     """
     all_df = {}
     for x in df_names_withExt :
-        if (isinstance(x, str)) & (x in ['json','gpkg','csv']) :
+        if isinstance(x, str) and x in ['json', 'gpkg', 'csv']:
             df_names = df_names_withExt[x]
             df_dict = import_dfs(df_names, data_path, file_format=x)
             all_df = {**all_df, **df_dict}
