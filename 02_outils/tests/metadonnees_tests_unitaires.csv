@@ -845,3 +845,26 @@ test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_b649d216-567b-422e-828e-7003ee316755,Autre_Crucifère fourragère_Légumineuse fourragère_Oléagineux,,typocan_esp_sans_compagne
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3e57e44a-c2c0-407c-b628-654634b9027a,Protéagineux,,typocan_espece
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3e57e44a-c2c0-407c-b628-654634b9027a,Protéagineux,,typocan_culture
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,"fr.inra.agrosyst.api.entities.referential.RefLocation_ed5330f0-417b-4963-ace4-4c497416751d",,commune_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,"COMMUNE00000000000000016",,geofla_2015_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,,,safran_cell_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"5903",,safran_cell_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"1350",,rmqs_site_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"2007-11-28",,rmqs_date_sampl
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"['COMMUNE00000000000021857', 'COMMUNE00000000000000684']",,geofla_2015_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,10.0,,rmqs_dist_site
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_12c4938a-004b-4e0e-b17f-54d278ef1e69,"[ ""2006-04-06"", ""2017-01-16"" ]",,rmqs_date_sampl
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,"01025",,codeinsee
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,"837",,rmqs_site_id
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,"5631",,safran_cell_id
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_3059742b-3357-4e2a-bcb6-3d1af4636467,,,coord_gps
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_0445d8bc-7638-44c5-8068-f98484618d96,"POINT (5.078887999999999 47.192313)",,coord_gps
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_c9fd2d74-ba29-498d-94e9-0b3f4b68a2ce,"4316",,safran_cell_id
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_2db084b8-e3e8-4b45-92a6-2bb82ac50201,"1112",,rmqs_site_id
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_f3df899b-35d1-4c78-a8a4-6a9b6b23011d,"2007-04-12",,rmqs_date_sampl
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_f3df899b-35d1-4c78-a8a4-6a9b6b23011d,2.0,,rmqs_dist_site
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_2db084b8-e3e8-4b45-92a6-2bb82ac50201,"[ ""2007-06-26"", ""2019-10-21"" ]",,rmqs_date_sampl
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_2fe01906-9247-4e9f-88b4-9b67016c1bd4,"668",,rmqs_site_id
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_24a3300b-82c6-45cc-a893-52d012556a7a,"2284",,rmqs_site_id
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_e5a16a65-5fc8-4f66-adfb-806dc8511dfd,"3919",,safran_cell_id
+test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_24a3300b-82c6-45cc-a893-52d012556a7a,"9632",,safran_cell_id

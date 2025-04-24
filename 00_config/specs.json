@@ -370,6 +370,26 @@
 						"function_name" : "typo_especes_typo_culture"
 					}
 				]
+			},
+			"geospatial_data" : {
+				"geodata_path" : "data/external_data/geospatial_data/",
+				"geojson" : [
+					"geoVec_arrond",
+					"geoVec_com2022",
+					"geoVec_com2024",
+					"geoVec_dep",
+					"geoVec_oldreg",
+					"geoVec_reg",
+					"geoVec_rmqs",
+					"geoVec_viti"
+				],
+				"geopackage" : [
+					"safran"
+				],
+				"csv_geo" : [
+					"referentiel_geographique_fr_esr_unique",
+					"geofla"
+				]
 			}
 		},
 		"categories" : {
@@ -410,6 +430,14 @@
                     "action_synthetise_agrege"
                 ]
             },
+			"interoperabilite" : {
+                "function_name" : "create_category_interoperabilite",
+                "dependances" : [], 
+                "generated" : [
+					"donnees_spatiales_commune_du_domaine",
+                    "donnees_spatiales_coord_gps_du_domaine"
+                ]
+            },
             "restructuration" : {
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
@@ -426,22 +454,30 @@
                     "intervention_synthetise_restructure"
                 ]
             },
-            "indicateur" : {
-                "function_name" : "create_category_indicateur",
+            "indicateur_0" : {
+                "function_name" : "create_category_indicateur_0",
+                "dependances" : [],
+                "generated" : [
+					"couple_connexions_chemins_synthetise_rotation",
+					"poids_connexions_synthetise_rotation",
+					"typologie_can_culture"
+                ]
+            },
+			"indicateur_1" : {
+                "function_name" : "create_category_indicateur_1",
                 "dependances" : [{
 						"source" : "outils", 
 						"category": "restructuration"
 					},{
 						"source" : "outils", 
 						"category": "agregation_complet"
-				}],
+					},{
+						"source" : "outils", 
+						"category": "indicateur_0"
+					}],
                 "generated" : [
-					"couple_connexions_chemins_synthetise_rotation",
-					"poids_connexions_synthetise_rotation",
-					"surface_connection_synthetise",
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
-					"typologie_can_culture",
 					"typologie_can_rotation_synthetise", 
 					"parcelle_realise_outils_can",
 					"action_realise_rendement_total", 
@@ -453,8 +489,7 @@
                 "dependances" : [{
                     "source" : "outils", 
                     "category": "restructuration"
-                },
-                {
+                },{
                     "source" : "outils", 
                     "category": "agregation_complet"
                 }],
@@ -476,20 +511,14 @@
 					{
                     	"source" : "outils", 
 						"category": "restructuration"
-					},
-					{
-						"source" : "outils", 
-						"category": "agregation_complet"
 					}
 				],
                 "generated" : [
-                    "recolte_outils_can"
+                    "poids_connexions_synthetise_rotation"
                 ],
                 "entrepot_dependances" : [
-                    "recolte_rendement_prix", "recolte_rendement_prix_restructure",
-					"composant_culture", "culture", "composant_culture_concerne_intervention_synthetise",
-					"ccc_intervention_synthetise_restructure",
-					"action_synthetise"
+					"connection_synthetise",
+                    "noeuds_synthetise"
                 ]
             }
         }

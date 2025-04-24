@@ -4,6 +4,7 @@
 
 import os
 from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 import pandas as pd
 import numpy as np
 from scripts.utils import fonctions_utiles
@@ -251,8 +252,11 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # Mettre en évidence synthetises pz0 uniquement monoannuels 
     pz0 = select_df.loc[select_df['donnee_attendue'].str.contains("pz0")].reset_index()
     
-    pz0.loc[pz0['donnee_attendue'].str.contains(","), 'triannuel'] = "pluri"
-    pz0.loc[pz0['triannuel'].isna(), ['triannuel']] = "mono"
+    pz0['triannuel'] = pd.Series()
+    if (pz0['donnee_attendue'].str.contains(",", na=False)).any() :
+        pz0.loc[pz0['donnee_attendue'].str.contains(","), 'triannuel'] = "pluri"
+    
+    pz0.loc[pz0['triannuel'].isna(), 'triannuel'] = "mono"
 
     pz0 = pz0.groupby(['code_dephy']).agg({
         'triannuel' : lambda x: ', '.join(x.unique())
@@ -270,8 +274,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # A) On prefere un pluriannuel plutot que monoannuel si il y a le choix donc :
     # Si le code dephy n'es pas dans dephy_mono, le pz0 mono annuel devient post. on le sauvegarde ensuite dans post
     # (Si il chevauche avec le pz0, il sera traité plus tard)
-    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') 
-                                                                            else x['donnee_attendue'], axis = 1)
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') else x['donnee_attendue'], axis = 1)
  
     # sauvegarde les post
     post = select_df.loc[select_df['donnee_attendue'] == "post"]
@@ -517,8 +520,9 @@ def identification_pz0(donnees):
     #print(identif_pz0.groupby(by='donnee_attendue').size())
 
     # les campagnes synthetise pluriannuelles ont elles des doublons ? 
-    identif_pz0.loc[:,'count_campaign'] = identif_pz0.apply(lambda x : len(x['campagnes'].split(', ')), axis=1)
-    identif_pz0.loc[:,'count_unique_campaign'] = identif_pz0.apply(lambda x : len(set(x['campagnes'].split(', '))), axis=1)
+    identif_pz0['count_campaign'] = identif_pz0['campagnes'].apply(lambda x: len(x.split(', ')))
+
+    identif_pz0['count_unique_campaign'] = identif_pz0['campagnes'].apply(lambda x: len(set(x.split(', '))))
     
     if identif_pz0.loc[identif_pz0['count_campaign'] != identif_pz0['count_unique_campaign']].shape[0] != 0:
         message_error = message_error + "!!! Attention !!! Saisies de synthetises incorrects : campagnes en doubles"
@@ -545,8 +549,8 @@ def identification_pz0(donnees):
     identif_pz0_aucun.loc[identif_pz0_aucun['code_dephy'].isin(saisies_attendues_melt['code_dephy']),'donnee_attendue'] = modalite_pz0_aucun # mais ceux qui sont dans le fichier BDD_donnees_attendues_CAN, sont des "saisies non acceptables"
 
     identif_pz0_non_attendue = identif_pz0.copy()
-    identif_pz0_non_attendue.loc[:,'donnee_attendue_split'] = identif_pz0_non_attendue.apply(lambda x : ', '.join(set(x['donnee_attendue'].split(', '))) , axis = 1)
-    identif_pz0_non_attendue = identif_pz0_non_attendue.loc[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
+    identif_pz0_non_attendue['donnee_attendue_split'] = identif_pz0_non_attendue['donnee_attendue'].apply(lambda x: ', '.join(set(x.split(', '))))
+    identif_pz0_non_attendue = identif_pz0_non_attendue[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
     identif_pz0_non_attendue['donnee_attendue'] = modalite_non_attendu
 
     identif_pz0_non_attendue = identif_pz0_non_attendue.drop(['donnee_attendue_split'], axis = 1)
@@ -1085,6 +1089,121 @@ def trouver_chemins(graphe, debut, fins):
     return chemins
 
 
+def process_sy(sy, cx, nd):
+    '''
+    Fonction principale utilisée dans la fonction plus globale get_connexion_weight_in_synth_rotation(). Voir son docstring.
+    La fonction process_sy() est sortie de la fonction globale pour la parrallelsation  !
+
+    sy = liste des synthétisé à faire tourner
+    cx = données des connexions suite a la manipulation dans la fonction gloable
+    nd = données des noeuds suite a la manipulation dans la fonction globale
+    '''
+
+    # Construire le graphe des connexions sous forme de dictionnaire
+    graphe = {}
+    connexions = {}
+
+    for idx, row in cx.iterrows():
+        nd_prec, nd_suiv, conx_id, abs_value, freq = row['nd_prec'], row['nd_suiv'], idx, row['abs'], row['freq']
+        
+        if nd_prec not in graphe:
+            graphe[nd_prec] = []
+        graphe[nd_prec].append(nd_suiv)
+
+        # Stocker les connexions avec leurs IDs et attributs pour un accès rapide
+        connexions[(nd_prec, nd_suiv)] = {
+            'conx_id': conx_id,
+            'abs': abs_value,
+            'freq': freq
+        }
+
+    # Trouver le premier nœud et les nœuds finaux
+    first_node = nd.loc[(nd['rang'] == 0) & (nd['synth_id'] == sy)].index.item()
+    end_nodes = set(nd.loc[(nd['end'] == 't') & (nd['synth_id'] == sy)].index)
+
+    # Obtenir tous les chemins
+    chemins_possibles = trouver_chemins(graphe, first_node, end_nodes)
+
+    #  Associer chaque connexion aux chemins où elle apparaît, en comptant abs='t', sameyear='t', et calculant le poids du chemin
+    lst_couples_connexion_chemins = []
+    lst_chemins = []
+
+    for chemin in chemins_possibles:
+
+        poid_chemin = 1
+        groupe_id = 0
+        groupes_sameyear = {}
+
+        # Déterminer les groupes sameyear chemin par chemin
+        for i, node3 in enumerate(chemin):
+            if i == 0 or nd.loc[node3, 'sameyear'] == 'f':
+                groupe_id += 1  # Nouveau groupe
+            groupes_sameyear[node3] = groupe_id  # Associer le nœud à son groupe
+        # Si le premier noeud est en sameyear on associe son groupe à toutes les connexions qui ont le meme groupe que le dernier neoud
+        if nd.loc[chemin[0], 'sameyear'] == 't':
+            list_node_same_grp_as_last = [key for key, value in groupes_sameyear.items() if value == groupes_sameyear[chemin[-1]]]
+            for key in list_node_same_grp_as_last: groupes_sameyear[key] = groupes_sameyear[chemin[0]]
+
+        # Calculer le poids du chemin (produit) et Ajouter les infos de couples connexions/chemins
+        for i in range(len(chemin) - 1):
+            nd_prec, nd_suiv = chemin[i], chemin[i + 1]
+            if (nd_prec, nd_suiv) in connexions:
+                poid_chemin *= connexions[(nd_prec, nd_suiv)]['freq'] / 100  # Convertir en probabilité
+                lst_couples_connexion_chemins.append({
+                    'connexion_id': connexions[(nd_prec, nd_suiv)]['conx_id'],
+                    'chemin_id': chemin,
+                    'groupe_sameyear': groupes_sameyear[nd_suiv],  # La connexion prend le groupe du noeud suivant
+                    'abs': connexions[(nd_prec, nd_suiv)]['abs']
+                })
+        # Ajout des connexions des nœuds terminaux vers le premier nœud
+        if chemin[-1] in end_nodes and (chemin[-1], chemin[0]) in connexions:
+            poid_chemin *= connexions[(chemin[-1], chemin[0])]['freq'] / 100
+            lst_couples_connexion_chemins.append({
+                'connexion_id': connexions[(chemin[-1], chemin[0])]['conx_id'],
+                'chemin_id': chemin,
+                'groupe_sameyear': groupes_sameyear[chemin[0]],  # La connexion prend le groupe du premier noeud
+                'abs': connexions[(chemin[-1], chemin[0])]['abs']
+            })
+        
+        # Nombre d'année (soit le nombre de groupe sameyear après avoir enlever les connexions absentes)
+        nb_annee = len({entry['groupe_sameyear'] for entry in lst_couples_connexion_chemins if \
+                            (entry['abs'] == 'f') & (entry['chemin_id'] == chemin)})
+        if nb_annee == 0 : nb_annee = 1
+        # Ajouter les infos des chemins, dont le poids des chemins après recalcul sans conx absente
+        lst_chemins.append({
+            'chemin_id': chemin,
+            'pd_chem' : poid_chemin,
+            'poids_conx_agregation': poid_chemin / nb_annee,
+            'synth_id': sy
+        })
+
+    # Convertir en DataFrame
+    df_chemins = pd.DataFrame.from_records(lst_chemins)
+    df_chemins['chemin_id'] = df_chemins['chemin_id'].astype('str')
+    df_couples_connexion_chemins = pd.DataFrame.from_records(lst_couples_connexion_chemins)
+    df_couples_connexion_chemins['chemin_id'] = df_couples_connexion_chemins['chemin_id'].astype('str')
+
+    # Merge chemin sur les couples cx_ch
+    df_couples_connexion_chemins = df_couples_connexion_chemins.merge(df_chemins, on = 'chemin_id', how = 'left')
+
+    # Avoir le compte du nombre de connexions active (abs == 'f') ayant le meme chemin ET le meme groupe_sameyear
+    nb_grp_sameyear_overall = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
+        groupby(['chemin_id', 'groupe_sameyear']).size().reset_index(name='count_grp_sameyear_overall')
+    all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
+
+    # Calculer le vrai poids de connexion final (poids_conx_agregation / count_grp_sameyear_overall)
+    all_df['proba_conx_spatiotemp'] = all_df['poids_conx_agregation'] / all_df['count_grp_sameyear_overall']
+
+    # Supprimer le poids de connexion des connexions absentes
+    all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
+    all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
+
+    # Normalisation des poids de connexions pour l'agrégation
+    all_df['poids_conx_agregation'] = all_df['poids_conx_agregation'] / all_df['poids_conx_agregation'].sum()
+
+    return all_df
+
+
 def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool = True):
     ''' 
     Le but est d'obtenir un Dataframe avec les poids des connexions au sein du stynhétisé.
@@ -1151,126 +1270,19 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     cx = df.loc[df['synth_id'].isin(list_good_synth)].set_index('conx_id').copy()
     nd = noeud.loc[noeud['synth_id'].isin(list_good_synth)].set_index('nd_id').copy()
 
+
     final_data = pd.DataFrame()
 
-    # Fonction principal en mode fonction pour permettre la parrallélisation
-    def process_sy(sy):
-
-        # Construire le graphe des connexions sous forme de dictionnaire
-        graphe = {}
-        connexions = {}
-
-        for idx, row in cx.iterrows():
-            nd_prec, nd_suiv, conx_id, abs_value, freq = row['nd_prec'], row['nd_suiv'], idx, row['abs'], row['freq']
-            
-            if nd_prec not in graphe:
-                graphe[nd_prec] = []
-            graphe[nd_prec].append(nd_suiv)
-
-            # Stocker les connexions avec leurs IDs et attributs pour un accès rapide
-            connexions[(nd_prec, nd_suiv)] = {
-                'conx_id': conx_id,
-                'abs': abs_value,
-                'freq': freq
-            }
-
-        # Trouver le premier nœud et les nœuds finaux
-        first_node = nd.loc[(nd['rang'] == 0) & (nd['synth_id'] == sy)].index.item()
-        end_nodes = set(nd.loc[(nd['end'] == 't') & (nd['synth_id'] == sy)].index)
-
-        # Obtenir tous les chemins
-        chemins_possibles = trouver_chemins(graphe, first_node, end_nodes)
-
-        #  Associer chaque connexion aux chemins où elle apparaît, en comptant abs='t', sameyear='t', et calculant le poids du chemin
-        lst_couples_connexion_chemins = []
-        lst_chemins = []
-
-        for chemin in chemins_possibles:
-
-            poid_chemin = 1
-            groupe_id = 0
-            groupes_sameyear = {}
-
-            # Déterminer les groupes sameyear chemin par chemin
-            for i, node3 in enumerate(chemin):
-                if i == 0 or nd.loc[node3, 'sameyear'] == 'f':
-                    groupe_id += 1  # Nouveau groupe
-                groupes_sameyear[node3] = groupe_id  # Associer le nœud à son groupe
-            # Si le premier noeud est en sameyear on associe son groupe à toutes les connexions qui ont le meme groupe que le dernier neoud
-            if nd.loc[chemin[0], 'sameyear'] == 't':
-                list_node_same_grp_as_last = [key for key, value in groupes_sameyear.items() if value == groupes_sameyear[chemin[-1]]]
-                for key in list_node_same_grp_as_last: groupes_sameyear[key] = groupes_sameyear[chemin[0]]
-
-            # Calculer le poids du chemin (produit) et Ajouter les infos de couples connexions/chemins
-            for i in range(len(chemin) - 1):
-                nd_prec, nd_suiv = chemin[i], chemin[i + 1]
-                if (nd_prec, nd_suiv) in connexions:
-                    poid_chemin *= connexions[(nd_prec, nd_suiv)]['freq'] / 100  # Convertir en probabilité
-                    lst_couples_connexion_chemins.append({
-                        'connexion_id': connexions[(nd_prec, nd_suiv)]['conx_id'],
-                        'chemin_id': chemin,
-                        'groupe_sameyear': groupes_sameyear[nd_suiv],  # La connexion prend le groupe du noeud suivant
-                        'abs': connexions[(nd_prec, nd_suiv)]['abs']
-                    })
-            # Ajout des connexions des nœuds terminaux vers le premier nœud
-            if chemin[-1] in end_nodes and (chemin[-1], chemin[0]) in connexions:
-                poid_chemin *= connexions[(chemin[-1], chemin[0])]['freq'] / 100
-                lst_couples_connexion_chemins.append({
-                    'connexion_id': connexions[(chemin[-1], chemin[0])]['conx_id'],
-                    'chemin_id': chemin,
-                    'groupe_sameyear': groupes_sameyear[chemin[0]],  # La connexion prend le groupe du premier noeud
-                    'abs': connexions[(chemin[-1], chemin[0])]['abs']
-                })
-            
-            # Nombre d'année (soit le nombre de groupe sameyear après avoir enlever les connexions absentes)
-            nb_annee = len({entry['groupe_sameyear'] for entry in lst_couples_connexion_chemins if \
-                                (entry['abs'] == 'f') & (entry['chemin_id'] == chemin)})
-            if nb_annee == 0 : nb_annee = 1
-            # Ajouter les infos des chemins, dont le poids des chemins après recalcul sans conx absente
-            lst_chemins.append({
-                'chemin_id': chemin,
-                'pd_chem' : poid_chemin,
-                'poids_conx_agregation': poid_chemin / nb_annee,
-                'synth_id': sy
-            })
-
-        # Convertir en DataFrame
-        df_chemins = pd.DataFrame.from_records(lst_chemins)
-        df_chemins['chemin_id'] = df_chemins['chemin_id'].astype('str')
-        df_couples_connexion_chemins = pd.DataFrame.from_records(lst_couples_connexion_chemins)
-        df_couples_connexion_chemins['chemin_id'] = df_couples_connexion_chemins['chemin_id'].astype('str')
-
-        # Merge chemin sur les couples cx_ch
-        df_couples_connexion_chemins = df_couples_connexion_chemins.merge(df_chemins, on = 'chemin_id', how = 'left')
-
-        # Avoir le compte du nombre de connexions active (abs == 'f') ayant le meme chemin ET le meme groupe_sameyear
-        nb_grp_sameyear_overall = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
-            groupby(['chemin_id', 'groupe_sameyear']).size().reset_index(name='count_grp_sameyear_overall')
-        all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
-
-        # Calculer le vrai poids de connexion final (poids_conx_agregation / count_grp_sameyear_overall)
-        all_df['proba_conx_spatiotemp'] = all_df['poids_conx_agregation'] / all_df['count_grp_sameyear_overall']
-
-        # Supprimer le poids de connexion des connexions absentes
-        all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
-        all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
-
-        # Normalisation des poids de connexions pour l'agrégation
-        all_df['poids_conx_agregation'] = all_df['poids_conx_agregation'] / all_df['poids_conx_agregation'].sum()
-
-        return all_df
-
-
+    # On parrallelise la fonction principale process_sy() qui fait l'important des calculs.
     # Utilisation de ProcessPoolExecutor avec 70% des cœurs
-    if(parallelization_enabled):
+    if parallelization_enabled:
         # si on est en mode réel, on active la parallélisation
+        partial_process_sy = partial(process_sy, cx=cx, nd=nd)
         with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
-            results = list(executor.map(process_sy, list_good_synth))
+            results = list(executor.map(partial_process_sy, list_good_synth))
     else:
         # si on est en mode TU, on désactive la parralélisation
-        results = []
-        for sy in list(list_good_synth) :
-            results.append(process_sy(sy))
+        results = [process_sy(sy, cx=cx, nd=nd) for sy in list_good_synth]
 
     # Concaténation des résultats
     final_data = pd.concat(results)
