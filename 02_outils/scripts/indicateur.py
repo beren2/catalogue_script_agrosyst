@@ -1278,7 +1278,7 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     if parallelization_enabled:
         # si on est en mode réel, on active la parallélisation
         partial_process_sy = partial(process_sy, cx=cx, nd=nd)
-        with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.7)) ) as executor:
+        with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.5)) ) as executor:
             results = list(executor.map(partial_process_sy, list_good_synth))
     else:
         # si on est en mode TU, on désactive la parralélisation
