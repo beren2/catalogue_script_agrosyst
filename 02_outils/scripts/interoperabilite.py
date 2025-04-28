@@ -180,6 +180,8 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     df = df.merge(df_spatial, on = 'codeinsee', how='left')
     df = df.merge(df_geofla, on = 'codeinsee', how='left')
 
+    df = df.set_index('domaine_id')
+
     return df
 
 
@@ -260,5 +262,7 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
     df.loc[df['coord_gps'].apply(lambda p: np.isinf(p.x) or np.isinf(p.y)), 'coord_gps'] = np.nan
     df['coord_gps'] = df['coord_gps'].apply(lambda geom: geom.wkt if geom else np.nan)
     df = pd.DataFrame(df)
+
+    df = df.set_index('geopoint_id')
 
     return df
