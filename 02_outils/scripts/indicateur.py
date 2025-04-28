@@ -768,8 +768,6 @@ def get_typologie_culture_CAN(donnees):
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
     # Du coup utilisation du nom de la culture pour changement non souhaité
 
-    df = df.set_index('culture_id')
-
     return df
 
 def get_typologie_rotation_CAN_synthetise(donnees):
@@ -913,8 +911,6 @@ def get_typologie_rotation_CAN_synthetise(donnees):
             'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp)  )  
         }))
     
-    # df = df.set_index('synthetise_id') # DEJA FAIT par le groupby
-
     return df
 
 
