@@ -194,10 +194,23 @@ def download_datas(desired_tables, verbose=False):
     """
     copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
 
-def load_datas(desired_tables, verbose=False, path_data=DATA_PATH, file_format='csv'):
-    """ permet de chager les tables dans la variable globale donnees"""
+def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv'):
+    """ permet de charger les tables dans la variable globale donnees"""
     global donnees
-    import_dfs(desired_tables, path_data, verbose=True, file_format=file_format)
+    import_dfs(desired_tables, path_data, verbose=verbose, file_format=file_format)
+
+def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', need_perf=False):
+    """permet de charger les tables de l'entrepôt dans la variable globale donnée"""
+    filtered_tables = []
+    for desired_table in desired_tables:
+        if(not need_perf) :
+            # si on a pas besoin des performances, alors on enlève les tables de cette catégorie
+            if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] != "performance"):
+                filtered_tables.append(desired_table)
+        else :
+            filtered_tables.append(desired_table)
+    load_datas(filtered_tables, verbose=verbose, path_data=DATA_PATH, file_format=file_format)
+
 
 def check_files_exist(tables, path_data=DATA_PATH, verbose=False):
     """
@@ -305,7 +318,8 @@ def test_check_external_data(leaking_tables):
     # load des données externes
     load_datas(
         external_tables_existing, 
-        verbose=True, path_data=SOURCE_SPECS['outils']['external_data']['path']
+        verbose=True, 
+        path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
     
     all_passed = True
@@ -709,7 +723,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
                 # Chargement des données
                 print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, need_perf=False)
                 print("* CHARGEMENT DES DONNÉES EXTERNES *")
                 load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
                 print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
@@ -838,7 +852,11 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 # on vérifie que les données n'ont pas été déjà chargées
                 if('domaine' not in donnees):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                    load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                    load_datas_entrepot(
+                        list(SOURCE_SPECS['entrepot']['tables'].keys()), 
+                        verbose=False,
+                        need_perf=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance']=="True")
+                    )
                     load_ref()
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
