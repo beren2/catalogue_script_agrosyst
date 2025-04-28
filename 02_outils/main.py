@@ -715,6 +715,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                 load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                 load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv'], verbose=False, 
+                path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                 print("* CHARGEMENT DES RÉFÉRENTIELS *")
                 print("Attention, penser à les mettre à jour manuellement.")
                 load_ref()
@@ -825,6 +827,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                 load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                 load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv'], verbose=False, 
+                path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
                 print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
@@ -844,6 +848,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv'], verbose=False, 
+                    path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                     print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
                     
                 print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
