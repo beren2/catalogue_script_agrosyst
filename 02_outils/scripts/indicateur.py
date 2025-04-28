@@ -768,6 +768,8 @@ def get_typologie_culture_CAN(donnees):
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
     # Du coup utilisation du nom de la culture pour changement non souhaité
 
+    df = df.set_index('culture_id')
+
     return df
 
 def get_typologie_rotation_CAN_synthetise(donnees):
@@ -911,6 +913,8 @@ def get_typologie_rotation_CAN_synthetise(donnees):
             'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp)  )  
         }))
     
+    df = df.set_index('synthetise_id')
+
     return df
 
 
@@ -1310,6 +1314,9 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     # On choisit d'arrondir à 5 chiffres après la virgule :
     final_data_conx_level['poids_conx_agregation'] = final_data_conx_level['poids_conx_agregation'].round(5)
     final_data_conx_level['proba_conx_spatiotemp'] = final_data_conx_level['proba_conx_spatiotemp'].round(5)
+
+    final_data_conx_level = final_data_conx_level.set_index('connexion_id')
+    final_data = final_data.set_index('connexion_id')
 
     # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem /// liste synthe somme pas à 1
     return final_data_conx_level, final_data, test_sum_at_100
