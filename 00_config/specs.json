@@ -5,6 +5,7 @@
 			"espece",
 			"intervention_travail_edi",
 			"criteres_selection",
+			"sol_arvalis",
 			"domaine",
 			"coordonnees_gps_domaine",
 			"dispositif",
@@ -53,6 +54,10 @@
 			"acta_substance_active",
 			"acta_traitement_produit",
 			"acta_dosage_spc",
+			"bilan_campagne_sdc_traduction",
+			"groupe_cible",
+			"nuisible_edi",
+			"adventice",
 			"bilan_campagne_sdc",
 			"composition_substance_active_numero_amm",
 			"composant_action_semis",
@@ -62,10 +67,6 @@
 			"critere_qualite_valorisation",
 			"destination_valorisation",
 			"dose_ref_par_groupe_cible",
-			"groupe_cible",
-			"nuisible_edi",
-			"adventice",
-			"bilan_campagne_sdc_traduction",
 			"substances_actives_europeennes",
 			"phrases_de_risque_numero_amm",
 			"prix_intrant_produit_phyto_sanitaire",
@@ -81,268 +82,356 @@
 		],
 		"tables": {
 			"semence" : {
-				"file_name" : "semence"
+				"file_name" : "semence",
+				"category" : "autre"
 			},
 			"plantation_perenne_phases_realise":{
-				"file_name" : "plantation_perenne_realise"
+				"file_name" : "plantation_perenne_realise",
+				"category" : "autre"
 			},
 			"plantation_perenne_phases_synthetise":{
-				"file_name" : "plantation_perenne_synthetise"
+				"file_name" : "plantation_perenne_synthetise",
+				"category" : "autre"
 			},
 			"modele_decisionnel":{
-				"file_name" : "modele_decisionnel"
+				"file_name" : "modele_decisionnel",
+				"category" : "autre"
 			},
  			"composant_culture_concerne_intervention_synthetise":{
-				"file_name" : "composant_culture_concerne_intervention"
+				"file_name" : "composant_culture_concerne_intervention",
+				"category" : "autre"
 			},
 			"domaine":{
-				"file_name" : "domaine"
+				"file_name" : "domaine",
+				"category" : "autre"
 			},
 			"dispositif":{
-				"file_name" : "dispositif"
+				"file_name" : "dispositif",
+				"category" : "autre"
 			},
 			"modele_decisionnel_maitrise":{
-				"file_name" : "modele_decisionnel"
+				"file_name" : "modele_decisionnel",
+				"category" : "autre"
 			},
 			"modele_decisionnel_strategie":{
-				"file_name" : "modele_decisionnel"
+				"file_name" : "modele_decisionnel",
+				"category" : "autre"
 			},
  			"modele_decisionnel_strategie_culture":{
-				"file_name" : "modele_decisionnel"
+				"file_name" : "modele_decisionnel",
+				"category" : "autre"
 			},
  			"plantation_perenne_realise":{
-				"file_name" : "plantation_perenne_realise"
+				"file_name" : "plantation_perenne_realise",
+				"category" : "autre"
 			},
 			"intervention_realise_performance":{
-				"file_name" : "intervention_realise_performance"
+				"file_name" : "intervention_realise_performance",
+				"category" : "performance"
 			},
  			"intervention_synthetise_performance":{
-				"file_name" : "intervention_synthetise_performance"
+				"file_name" : "intervention_synthetise_performance",
+				"category" : "performance"
 			},
 			"bilan_campagne_regional_pressionbioagresseur":{
-				"file_name" : "bilan_campagne_regional"
+				"file_name" : "bilan_campagne_regional",
+				"category" : "autre"
 			},
 			"bilan_campagne_regional_generalites":{
-				"file_name" : "bilan_campagne_regional"
+				"file_name" : "bilan_campagne_regional",
+				"category" : "autre"
 			},
 			"coordonnees_gps_domaine":{
-				"file_name" : "coordonnees_gps_domaine"
+				"file_name" : "coordonnees_gps_domaine",
+				"category" : "autre"
 			},
  			"utilisation_intrant_performance":{
-				"file_name" : "utilisation_intrant_performance"
+				"file_name" : "utilisation_intrant_performance",
+				"category" : "performance"
 			},
 			"zone_realise_performance":{
-				"file_name" : "zone_realise_performance"
+				"file_name" : "zone_realise_performance",
+				"category" : "performance"
 			},
 			"intrant":{
-				"file_name" : "intrant"
+				"file_name" : "intrant",
+				"category" : "autre"
 			},
 			"composant_culture":{
-				"file_name" : "composant_culture"
+				"file_name" : "composant_culture",
+				"category" : "autre"
 			},
 			"culture":{
-				"file_name" : "culture"
+				"file_name" : "culture",
+				"category" : "autre"
 			},
 			"atelier_elevage":{
-				"file_name" : "atelier_elevage"
+				"file_name" : "atelier_elevage",
+				"category" : "autre"
 			},
 			"intervention_synthetise":{
-				"file_name" : "intervention_synthetise"
+				"file_name" : "intervention_synthetise",
+				"category" : "autre"
 			},
 			"commune":{
-				"file_name" : "commune"
+				"file_name" : "commune",
+				"category" : "autre"
 			},
 			"noeuds_realise":{
-				"file_name" : "noeuds_realise"
+				"file_name" : "noeuds_realise",
+				"category" : "autre"
 			},
 			"noeuds_synthetise":{
-				"file_name" : "noeuds_synhtetise"
+				"file_name" : "noeuds_synhtetise",
+				"category" : "autre"
 			},
 			"connection_synthetise":{
-				"file_name" : "connection_synthetise"
+				"file_name" : "connection_synthetise",
+				"category" : "autre"
 			},
 			"intervention_realise":{
-				"file_name" : "intervention_realise"
+				"file_name" : "intervention_realise",
+				"category" : "autre"
 			},
 			"combinaison_outil_action":{
-				"file_name" : "combinaison_outils"
+				"file_name" : "combinaison_outils",
+				"category" : "autre"
 			},
 			"domaine_sol":{
-				"file_name" : "domaine"
+				"file_name" : "domaine",
+				"category" : "autre"
 			},
 			"parcelle_type_voisinage":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_type",
+				"category" : "autre"
 			},
 			"parcelle_type_zonage":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_type",
+				"category" : "autre"
 			},
 			"parcelle_voisinage":{
-				"file_name" : "parcelle_voisinage"
+				"file_name" : "parcelle_voisinage",
+				"category" : "autre"
 			},
 			"parcelle_zonage":{
-				"file_name" : "parcelle_zonage"
+				"file_name" : "parcelle_zonage",
+				"category" : "autre"
 			},
 			"action_synthetise":{
-				"file_name" : "action_synthetise"
+				"file_name" : "action_synthetise",
+				"category" : "autre"
 			},
 			"action_realise":{
-				"file_name" : "action_realise"
+				"file_name" : "action_realise",
+				"category" : "autre"
 			},
 			"synthetise_synthetise_performance":{
-				"file_name" : "synthetise_synthetise_performance"
+				"file_name" : "synthetise_synthetise_performance",
+				"category" : "performance"
 			},
 			"sdc_realise_performance":{
-				"file_name" : "sdc_realise_performance"
+				"file_name" : "sdc_realise_performance",
+				"category" : "performance"
 			},
 			"parcelle_realise_performance":{
-				"file_name" : "parcelle_realise_performance"
+				"file_name" : "parcelle_realise_performance",
+				"category" : "performance"
 			},
 			"domaine_surface_especes_cultivees":{
-				"file_name" : "domaine"
+				"file_name" : "domaine",
+				"category" : "autre"
 			},
 			"sole_realise":{
-				"file_name" : "sole_realise"
+				"file_name" : "sole_realise",
+				"category" : "autre"
 			},
 			"connection_realise":{
-				"file_name" : "connection_realise"
+				"file_name" : "connection_realise",
+				"category" : "autre"
 			},
 			"composition_substance_active_numero_amm":{
-				"file_name" : "composition_substance_active_numero_amm"
+				"file_name" : "composition_substance_active_numero_amm",
+				"category" : "autre"
 			},		
 			"utilisation_intrant_realise":{
-				"file_name" : "utilisation_intrant_realise"
+				"file_name" : "utilisation_intrant_realise",
+				"category" : "autre"
 			},
 			"parcelle":{
-				"file_name" : "parcelle"
+				"file_name" : "parcelle",
+				"category" : "autre"
 			},
 			"synthetise":{
-				"file_name" : "synthetise"
+				"file_name" : "synthetise",
+				"category" : "autre"
 			},
 			"zone":{
-				"file_name" : "zone"
+				"file_name" : "zone",
+				"category" : "autre"
 			},
 			"sdc":{
-				"file_name" : "sdc"
+				"file_name" : "sdc",
+				"category" : "autre"
 			},
 			"plantation_perenne_synthetise":{
-				"file_name" : "plantation_perenne_synthetise"
+				"file_name" : "plantation_perenne_synthetise",
+				"category" : "autre"
 			},
 			"utilisation_intrant_synthetise":{
-				"file_name" : "utilisation_intrant_synthetise"
+				"file_name" : "utilisation_intrant_synthetise",
+				"category" : "autre"
 			},
 			"materiel":{
-				"file_name" : "materiel"
+				"file_name" : "materiel",
+				"category" : "autre"
 			},
 			"combinaison_outil":{
-				"file_name" : "combinaison_outil"
+				"file_name" : "combinaison_outil",
+				"category" : "autre"
 			},
 			"combinaison_outil_materiel":{
-				"file_name" : "combinaison_outil"
+				"file_name" : "combinaison_outil",
+				"category" : "autre"
 			},
 			"utilisation_intrant_cible":{
-				"file_name" : "utilisation_intrant_cible"
+				"file_name" : "utilisation_intrant_cible",
+				"category" : "autre"
 			},
 			"parcelle_type":{
-				"file_name" : "parcelle_type"
+				"file_name" : "parcelle_type",
+				"category" : "autre"
 			},
 			"recolte_rendement_prix":{
-				"file_name" : "recolte_rendement_prix"
+				"file_name" : "recolte_rendement_prix",
+				"category" : "autre"
 			},
 			"itk_realise_performance":{
-				"file_name" : "itk_realise_performance"
+				"file_name" : "itk_realise_performance",
+				"category" : "performance"
 			},
 			"itk_synthetise_performance":{
-				"file_name" : "itk_synthetise_performance"
+				"file_name" : "itk_synthetise_performance",
+				"category" : "performance"
 			},
 			"composant_culture_concerne_intervention_realise":{
-				"file_name" : "composant_culture_concerne_intervention"
+				"file_name" : "composant_culture_concerne_intervention",
+				"category" : "autre"
 			},
-			"BC_sdc_traduction":{
-				"file_name" : "bilan_campagne_sdc_traduction"
+			"bc_sdc_traduction":{
+				"file_name" : "bilan_campagne_sdc_traduction",
+				"category" : "autre"
 			},
-			"BC_sdc_generalites":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_generalites":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_assolee_maitrise_agresseur":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_assolee_maitrise_agresseur":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_assolee_agresseur":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_assolee_agresseur":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_arbo_maitrise_agresseur":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_arbo_maitrise_agresseur":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_arbo_adventice":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_arbo_adventice":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_arbo_ravageur_maladie":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_arbo_ravageur_maladie":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_viti_adventice":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_viti_adventice":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_viti_maladie_ravageur":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_viti_maladie_ravageur":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"entrepot_BC_sdc_viti_ravageur_explication":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_viti_ravageur_explication":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_rendement":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_rendement":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_alimentation":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_alimentation":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_assolee_verse":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_assolee_verse":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_culture_liee":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_culture_liee":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
-			"BC_sdc_especes_liee":{
-				"file_name" : "bilan_campagne_sdc"
+			"bc_sdc_especes_liee":{
+				"file_name" : "bilan_campagne_sdc",
+				"category" : "autre"
 			},
 			"espece":{
-				"file_name" : "espece"
+				"file_name" : "espece",
+				"category" : "autre"
 			},
 			"intervention_travail_edi":{
-				"file_name" : "intervention_travail_edi"
+				"file_name" : "intervention_travail_edi",
+				"category" : "autre"
 			},
 			"variete":{
-				"file_name" : "variete"
+				"file_name" : "variete",
+				"category" : "autre"
 			},
 			"acta_groupe_culture":{
-				"file_name" : "acta_groupe_culture"
+				"file_name" : "acta_groupe_culture",
+				"category" : "autre"
 			},
 			"acta_substance_active":{
-				"file_name" : "acta_substance_active"
+				"file_name" : "acta_substance_active",
+				"category" : "autre"
 			},
 			"acta_traitement_produit":{
-				"file_name" : "acta_traitement_produit"
+				"file_name" : "acta_traitement_produit",
+				"category" : "autre"
 			},
 			"composant_action_semis":{
-				"file_name" : "composant_action_semis"
+				"file_name" : "composant_action_semis",
+				"category" : "autre"
 			},
 			"reseau":{
-				"file_name" : "reseau"
+				"file_name" : "reseau",
+				"category" : "autre"
 			},
 			"liaison_sdc_reseau":{
-				"file_name" : "liaison_sdc_reseau"
+				"file_name" : "liaison_sdc_reseau",
+				"category" : "autre"
 			},
 			"liaison_reseaux":{
-				"file_name" : "liaison_reseau"
+				"file_name" : "liaison_reseau",
+				"category" : "autre"
 			},
 			"nuisible_edi":{
-				"file_name" : "nuisible_edi"
+				"file_name" : "nuisible_edi",
+				"category" : "autre"
 			},
 			"adventice":{
-				"file_name" : "adventice"
+				"file_name" : "adventice",
+				"category" : "autre"
 			},
 			"groupe_cible":{
-				"file_name" : "groupe_cible"
+				"file_name" : "groupe_cible",
+				"category" : "autre"
 			},
 			"sol_arvalis":{
-				"file_name" : "sol_arvalis"
+				"file_name" : "sol_arvalis",
+				"category" : "autre"
 			}
 		}
 	},
@@ -351,7 +440,7 @@
         "external_data" : {
 			"path" : "data/external_data/",
 			"tables" : [
-				"BDD_donnees_attendues_CAN",
+				"BDD_donnees_attendues_CAN", 
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai"
 			],
@@ -369,6 +458,26 @@
 						"function_name" : "typo_especes_typo_culture"
 					}
 				]
+			},
+			"geospatial_data" : {
+				"geodata_path" : "data/external_data/geospatial_data/",
+				"geojson" : [
+					"geoVec_arrond",
+					"geoVec_com2022",
+					"geoVec_com2024",
+					"geoVec_dep",
+					"geoVec_oldreg",
+					"geoVec_reg",
+					"geoVec_rmqs",
+					"geoVec_viti"
+				],
+				"geopackage" : [
+					"safran"
+				],
+				"csv_geo" : [
+					"referentiel_geographique_fr_esr_unique",
+					"geofla"
+				]
 			}
 		},
 		"categories" : {
@@ -379,7 +488,8 @@
                     "intervention_realise_nettoyage", 
                     "utilisation_intrant_realise_nettoyage",
                     "utilisation_intrant_synthetise_nettoyage"
-                ]
+                ], 
+				"need_performance" : "False"
             },
             "agregation" : {
                 "function_name" : "create_category_agregation",
@@ -391,7 +501,8 @@
                     "intervention_realise_manquant_agrege",
                     "action_realise_manquant_agrege", 
                     "action_synthetise_manquant_agrege"
-                ]
+                ], 
+				"need_performance" : "False"
             },
             "agregation_complet" : {
                 "function_name" : "None",
@@ -407,7 +518,17 @@
                     "intervention_realise_agrege",
                     "action_realise_agrege", 
                     "action_synthetise_agrege"
-                ]
+                ], 
+				"need_performance" : "False"
+            },
+			"interoperabilite" : {
+                "function_name" : "create_category_interoperabilite",
+                "dependances" : [], 
+                "generated" : [
+					"donnees_spatiales_commune_du_domaine",
+                    "donnees_spatiales_coord_gps_du_domaine"
+                ], 
+				"need_performance" : "False"
             },
             "restructuration" : {
                 "function_name" : "create_category_restructuration",
@@ -423,25 +544,47 @@
                     "plantation_perenne_synthetise_restructure",
                     "ccc_intervention_synthetise_restructure", 
                     "intervention_synthetise_restructure"
-                ]
+                ], 
+				"need_performance" : "False"
             },
-            "indicateur" : {
-                "function_name" : "create_category_indicateur",
+            "indicateur_0" : {
+                "function_name" : "create_category_indicateur_0",
                 "dependances" : [],
                 "generated" : [
-					"surface_connection_synthetise",
+					"couple_connexions_chemins_synthetise_rotation",
+					"poids_connexions_synthetise_rotation",
+					"typologie_can_culture"
+                ], 
+				"need_performance" : "False"
+            },
+			"indicateur_1" : {
+                "function_name" : "create_category_indicateur_1",
+                "dependances" : [{
+						"source" : "outils", 
+						"category": "restructuration"
+					},{
+						"source" : "outils", 
+						"category": "agregation_complet"
+					},{
+						"source" : "outils", 
+						"category": "indicateur_0"
+					}],
+                "generated" : [
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
-					"typologie_can_culture"
-                ]
+					"typologie_can_rotation_synthetise", 
+					"parcelle_realise_outils_can",
+					"action_realise_rendement_total", 
+					"action_synthetise_rendement_total"
+                ], 
+				"need_performance" : "False"
             },
             "outils_can" : {
                 "function_name" : "create_category_outils_can",
                 "dependances" : [{
                     "source" : "outils", 
                     "category": "restructuration"
-                },
-                {
+                },{
                     "source" : "outils", 
                     "category": "agregation_complet"
                 }],
@@ -455,7 +598,8 @@
                     "zone_realise_outils_can",
                     "sdc_realise_outils_can",
                     "parcelle_realise_outils_can"
-                ]
+                ], 
+				"need_performance" : "False"
             },
             "test" : {
                 "function_name" : "create_category_test",
@@ -463,20 +607,16 @@
 					{
                     	"source" : "outils", 
 						"category": "restructuration"
-					},
-					{
-						"source" : "outils", 
-						"category": "agregation_complet"
 					}
 				],
                 "generated" : [
-                    "recolte_outils_can"
+                    "poids_connexions_synthetise_rotation"
                 ],
                 "entrepot_dependances" : [
-                    "synthetise", "culture", "noeuds_synthetise", "connection_synthetise",
-                    "intervention_synthetise", "plantation_perenne_synthetise", "sdc", "dispositif", "domaine", 
-					"zone", "intervention_synthetise_agrege", "intervention_realise_agrege", "parcelle"
-                ]
+					"connection_synthetise",
+                    "noeuds_synthetise"
+                ], 
+				"need_performance" : "False"
             }
         }
     },

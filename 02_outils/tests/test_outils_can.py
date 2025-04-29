@@ -2,25 +2,57 @@
     Regroupe tous les tests utilisés pour vérifier que les outils "CAN"
     peuvent être constitués conformément au cahier des charges
 """
+import geopandas as gpd
 import pandas as pd
 from scripts import outils_can
 
-def import_df(df_name, path_data, sep, df):
+def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
-    df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'csv' :
+        df[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, 
+                                  dtype = {'codeinsee':str,
+                                            'departement':str,
+                                            'codepostal':str,
+                                            'region':str,
+                                            'arrondissement_code':str,
+                                            'bassin_vie':str,
+                                            'zone_emploi':str,
+                                            
+                                            'cell':str})
+    if file_format == 'json' and df_name.startswith('geoVec') :
+        # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'gpkg' :
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
-def import_dfs(df_names, path_data,  df, sep = ','):
+def import_dfs(df_names, data_path, sep = ',', df=None, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
+    if df is None:
+        df = {}
     for df_name in df_names : 
-        import_df(df_name, path_data, sep, df)
+        import_df(df_name, path_data=data_path, df = df, sep = sep, file_format=file_format)
 
     return df
 
-def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id'):
+def import_dfs_withExtension(df_names_withExt:dict, data_path):
+    """
+        stocke dans le dictionnaire df tous les dataframes indiqués dans le dictionnaire df_names_withExt qui prend en key l'extension des fichiers, lié à une liste de nom de fichiers
+    """
+    all_df = {}
+    for x in df_names_withExt :
+        if isinstance(x, str) and x in {'json', 'gpkg', 'csv'}:
+            df_names = df_names_withExt[x]
+            df_dict = import_dfs(df_names, data_path, file_format=x)
+            all_df = {**all_df, **df_dict}
+        else :
+            raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
+    return all_df
+
+def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id', multi_extension:bool = False):
     """
         Fonction qui permet de tester 
     """
@@ -32,11 +64,14 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
     for (key, value) in colonne_to_test_for_ligne.items():
         colonne_to_test_for_ligne[key] = value.split(',')
 
-    donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+    if multi_extension :
+        donnees_ = import_dfs_withExtension(df_names, data_path = path_data)
+    else :
+        donnees_ = import_dfs(df_names, path_data, df = {}, sep = ',')
     donnees_ref = {}
     if(not df_ref_names is None):
         # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
-        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+        donnees_ref = import_dfs(df_ref_names, path_ref, df = {}, sep = ',')
     donnees = donnees_ | donnees_ref
     
     donnees_computed = fonction_to_apply(donnees)

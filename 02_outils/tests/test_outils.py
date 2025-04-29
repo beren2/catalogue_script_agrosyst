@@ -2,34 +2,64 @@
     Regroupe tous les tests utilisés pour vérifier que le magasin de données "nettoyage" est bien fonctionnel.
 """
 import pandas as pd
+import geopandas as gpd
 from scripts import nettoyage
 from scripts import restructuration
 from scripts.utils import fonctions_utiles
 from scripts import indicateur
 from scripts import agregation
+from scripts import interoperabilite
 
 
-
-
-def import_df(df_name, path_data, sep, df):
+def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
-    df[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'csv' :
+        df[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, 
+                                  dtype = {'codeinsee':str,
+                                            'departement':str,
+                                            'codepostal':str,
+                                            'region':str,
+                                            'arrondissement_code':str,
+                                            'bassin_vie':str,
+                                            'zone_emploi':str,
+                                            
+                                            'cell':str})
+    if file_format == 'json' and df_name.startswith('geoVec') :
+        # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'gpkg' :
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
-def import_dfs(df_names, path_data,  df, sep = ','):
+def import_dfs(df_names, data_path, sep = ',', df=None, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
+    if df is None:
+        df = {}
     for df_name in df_names : 
-        import_df(df_name, path_data, sep, df)
+        import_df(df_name, path_data=data_path, df = df, sep = sep, file_format=file_format)
 
     return df
 
+def import_dfs_withExtension(df_names_withExt:dict, data_path):
+    """
+        stocke dans le dictionnaire df tous les dataframes indiqués dans le dictionnaire df_names_withExt qui prend en key l'extension des fichiers, lié à une liste de nom de fichiers
+    """
+    all_df = {}
+    for x in df_names_withExt :
+        if isinstance(x, str) and x in {'json', 'gpkg', 'csv'}:
+            df_names = df_names_withExt[x]
+            df_dict = import_dfs(df_names, data_path = data_path, file_format=x)
+            all_df = {**all_df, **df_dict}
+        else :
+            raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
+    return all_df
 
 def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
                   metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', \
-                    df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id'):
+                  df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id', multi_extension:bool = False):
     """
         Fonction qui permet de tester 
     """
@@ -41,11 +71,14 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
     for (key, value) in colonne_to_test_for_ligne.items():
         colonne_to_test_for_ligne[key] = value.split(',')
 
-    donnees_ = import_dfs(df_names, path_data, {}, sep = ',')
+    if multi_extension :
+        donnees_ = import_dfs_withExtension(df_names, data_path = path_data)
+    else :
+        donnees_ = import_dfs(df_names, path_data, df = {}, sep = ',')
     donnees_ref = {}
     if(not df_ref_names is None):
         # dans le cas où on a des données sensibles, celles-ci sont encryptées et importées
-        donnees_ref = import_dfs(df_ref_names, path_ref, {}, sep = ',')
+        donnees_ref = import_dfs(df_ref_names, path_ref, df = {}, sep = ',')
     donnees = donnees_ | donnees_ref
     
     donnees_computed = fonction_to_apply(donnees)
@@ -76,6 +109,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
 
     return res
 
+
 def test_debit_chantier_intervention_realise():
     """
         Test du débit de chantier des interventions en réalisé
@@ -93,7 +127,7 @@ def test_debit_chantier_intervention_realise():
     # obtention des données
     df_names = ['intervention_realise']
     path_data = '02_outils/tests/data/test_debit_chantier_intervention_realise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     print(donnees.keys())
     df_intervention_realise = donnees['intervention_realise']
 
@@ -144,7 +178,7 @@ def test_utilisation_intrant_dose_realise():
                     'utilisation_intrant_realise'        
                 ]
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose_realise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     # obtention des référentiels
     path_ref = '02_outils/data/referentiels/'
@@ -157,7 +191,7 @@ def test_utilisation_intrant_dose_realise():
         'ref_acta_traitement_produit'
     ]
 
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
     df_utilisation_intrant_realise = donnees['utilisation_intrant_realise']
 
     # filtration pour les données problématiques
@@ -207,7 +241,7 @@ def test_utilisation_intrant_dose_synthetise():
                     'utilisation_intrant_synthetise'        
                 ]
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     # obtention des référentiels
     path_ref = '02_outils/data/referentiels/'
@@ -220,7 +254,7 @@ def test_utilisation_intrant_dose_synthetise():
         'ref_acta_traitement_produit'
     ]
 
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
     df_utilisation_intrant_synthetise = donnees['utilisation_intrant_synthetise']
 
 
@@ -301,12 +335,12 @@ def test_get_utilisation_intrant_in_unit():
     df_names = [    
                     'utilisation_intrant_realise'     
                 ]
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     path_ref = '02_outils/data/referentiels/'
     refs_names = [
         'conversion_utilisation_intrant'
     ]
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
 
     donnees['utilisation_intrant'] = donnees['utilisation_intrant_realise']
     fonctions_utiles.get_utilisation_intrant_in_unit(donnees)
@@ -339,7 +373,7 @@ def test_get_dose_ref():
                     'connection_synthetise'
                 ]
     path_data = '02_outils/tests/data/test_utilisation_intrant_dose/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
 
     # obtention des référentiels
@@ -352,7 +386,7 @@ def test_get_dose_ref():
         'ref_culture_maa',
         'ref_acta_traitement_produit'
     ]
-    donnees = import_dfs(refs_names, path_ref, donnees, sep = ',')
+    donnees = import_dfs(refs_names, path_ref, df = donnees, sep = ',')
     
     # obtention de la dose de référence à partir de la fonction get_infos_all_utilisation_intrant
     df_utilisation_intrant_realise = fonctions_utiles.get_infos_all_utilisation_intrant(donnees, saisie = 'realise')
@@ -407,8 +441,9 @@ def test_identification_pz0():
                     'intervention_synthetise_agrege',
                     'intervention_realise_agrege'
                 ]
+
     path_data = '02_outils/tests/data/test_identification_pz0/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
     
     external_data_path = '02_outils/tests/data/test_identification_pz0/'
     import_df('BDD_donnees_attendues_CAN', external_data_path, sep = ',', df = donnees)
@@ -442,7 +477,7 @@ def test_connection_synthetise_restructured():
                     'culture'
                 ]
     path_data = '02_outils/tests/data/test_connection_synthetise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     connection_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'culture_intermediaire_id'][['id_ligne', 'valeur_attendue']]
     connection_synthetise = restructuration.restructuration_connection_synthetise(donnees)
@@ -475,7 +510,7 @@ def test_intervention_synthetise_restructured():
                 'domaine']
 
     path_data = '02_outils/tests/data/test_intervention_synthetise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     intervention_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'combinaison_outil_id'][['id_ligne', 'valeur_attendue']]
     intervention_synthetise = restructuration.restructuration_intervention_synthetise(donnees)
@@ -502,7 +537,7 @@ def test_restructuration_noeuds_realise():
                     'noeuds_realise', 'zone'
                 ]
     path_data = '02_outils/tests/data/test_noeuds_realise_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     noeuds_realise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'precedent_noeuds_realise_id'][['id_ligne', 'valeur_attendue']]
     noeuds_realise = restructuration.restructuration_noeuds_realise(donnees)
@@ -535,7 +570,7 @@ def test_restructuration_recolte_rendement_prix():
                 ]
 
     path_data = '02_outils/tests/data/test_recolte_rendement_prix_restructured/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     recolte_rendement_prix_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'composant_culture_id'][
         ['id_ligne', 'valeur_attendue']
@@ -577,7 +612,7 @@ def test_get_aggreged_from_utilisation_intrant_synthetise():
                 ]
                 
     path_data = '02_outils/tests/data/test_get_aggreged_from_utilisation_intrant_synthetise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     aggreged_utilisation_intrant_synthetise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'toutes'][
         ['id_ligne', 'valeur_attendue']
@@ -620,7 +655,7 @@ def test_get_aggreged_from_utilisation_intrant_realise():
                 ]
     
     path_data = '02_outils/tests/data/test_get_aggreged_from_utilisation_intrant_realise/'
-    donnees = import_dfs(df_names, path_data, {}, sep = ',')
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
 
     aggreged_utilisation_intrant_realise_expected = df_metadonnees.loc[df_metadonnees['colonne_testee'] == 'toutes'][
         ['id_ligne', 'valeur_attendue']
@@ -646,17 +681,15 @@ def test_get_aggreged_from_utilisation_intrant_realise():
     assert res_valeur_ok
 
 
-
 def test_get_typologie_culture_CAN():
     """
         Test de l'obtention des typologies d'espece et de cultures 
     """
     identifiant_test = 'test_get_typologie_culture_CAN'
-    df_names = [   
-                    'composant_culture', 'culture', 
-                    'espece_vCAN', # A changer lorsque le refespece sera pret
-                    'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
-                ]
+    df_names = [
+                'composant_culture', 'culture', 'espece',
+                'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
+               ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
     fonction_to_apply = indicateur.get_typologie_culture_CAN
 
@@ -665,3 +698,109 @@ def test_get_typologie_culture_CAN():
     res = pd.Series(res).fillna(False).all()
 
     assert res
+
+def test_get_typologie_rotation_CAN_synthetise():
+    """
+        Test de l'obtention des typologies d'espece et de cultures 
+    """
+    identifiant_test = 'test_get_typologie_rotation_CAN_synthetise'
+    df_names = [
+                'connection_synthetise', 'noeuds_synthetise',
+                'noeuds_synthetise_restructure','poids_connexions_synthetise_rotation', 'typologie_can_culture' # issus d'outils
+               ]
+    path_data = '02_outils/tests/data/test_get_typologie_rotation_CAN_synthetise/'
+    fonction_to_apply = indicateur.get_typologie_rotation_CAN_synthetise
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='synthetise_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
+
+def test_extract_good_rotation_diagram():
+    """
+        Test de l'obtention de la liste de "bon" synthétisé pour la suite (soit la fonction poids des rotations en synthétisé)
+        ATTENTION va prendre les même données d'entrée que la fonction test_get_connexion_weight_in_synth_rotation(. donc path_data ne change pas
+    """
+    df_names = [   
+                    'noeuds_synthetise', 'connection_synthetise'
+                ]
+    path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
+    donnees = import_dfs(df_names, path_data, df = {}, sep = ',')
+    res_to_test, _ = indicateur.extract_good_rotation_diagram(donnees)
+    
+    good_to_check = ['fr.inra.agrosyst.api.entities.practiced.PracticedSystem_d4a1b64c-afa0-440f-92e1-30a483871ab4',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_00b5a0b4-39a6-4822-802b-e81fd44386a2',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_05e5d9d6-ad2b-43b2-b37a-1f32850e37a1',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_61f75804-3823-4fae-9ce1-82bfa3d7e41e',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_41ae9d22-5515-44d8-9a7f-8254c42149eb',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2f68d851-cb30-402f-bfc6-b0abf37c49a8',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_1e606337-4238-437b-9856-a302b2431efd',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_91611752-8cd2-42f1-b19f-97186597ab64',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_445dd407-58f6-403e-8dd6-8352166a0131',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0316e326-6369-4ec7-ab50-b983c3aa0b3d',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_000f911f-5e67-4280-ae77-35098c17aa5d',
+    'fr.inra.agrosyst.api.entities.practiced.PracticedSystem_592b3792-8ad0-4213-ab98-a948f444ed04']
+
+    res = set(list(res_to_test)) == set(good_to_check)
+
+    assert res
+
+
+
+def test_get_connexion_weight_in_synth_rotation():
+    """
+        Test de l'obtention des poids des rotations en synthétisé
+    """
+    identifiant_test = 'test_get_connexion_weight_in_synth_rotation'
+    df_names = [   
+                    'noeuds_synthetise', 'connection_synthetise'
+                ]
+    path_data = '02_outils/tests/data/test_get_connexion_weight_in_synth_rotation/'
+    fonction_to_apply = indicateur.get_connexion_weight_in_synth_rotation_for_test
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='connexion_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
+
+ 
+def test_get_donnees_spatiales_commune_du_domaine():
+    """
+        Test de l'obtention des informations spatiales (safran, rmqs, geofla) au niveau de la commune rattaché au domaine
+    """
+    identifiant_test = 'test_get_donnees_spatiales_commune_du_domaine'
+
+    df_names_withExt = {
+        'csv' : ['commune','domaine','geofla'],
+        'json' : ['geoVec_com2024','geoVec_rmqs'],
+        'gpkg' : ['safran']
+    }
+
+    path_data = '02_outils/tests/data/test_get_donnees_spatiales_commune_du_domaine/'
+
+    fonction_to_apply = interoperabilite.get_donnees_spatiales_commune_du_domaine
+    res = fonction_test(identifiant_test, df_names_withExt, path_data, fonction_to_apply, multi_extension = True, key_name = 'domaine_id')
+
+    assert all(res)
+
+
+def test_get_donnees_spatiales_coord_gps_du_domaine():
+    """
+        Test de l'obtention des informations spatiales (safran, rmqs) au niveau des coordonnées gps saisis
+    """
+    identifiant_test = 'test_get_donnees_spatiales_coord_gps_du_domaine'
+
+    df_names_withExt = {
+        'csv' : ['coordonnees_gps_domaine'],
+        'json' : ['geoVec_com2024','geoVec_rmqs'],
+        'gpkg' : ['safran']
+    }
+
+    path_data = '02_outils/tests/data/test_get_donnees_spatiales_coord_gps_du_domaine/'
+
+    fonction_to_apply = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine
+    res = fonction_test(identifiant_test, df_names_withExt, path_data, fonction_to_apply, multi_extension = True, key_name = 'geopoint_id')
+
+    assert all(res)
