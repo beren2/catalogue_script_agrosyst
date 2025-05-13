@@ -17,6 +17,7 @@
 			"parcelle_type",
 			"synthetise",
 			"culture",
+			"composant_parc_materiel",
 			"materiel",
 			"combinaison_outil",
 			"composant_culture",
@@ -279,6 +280,10 @@
 			},
 			"utilisation_intrant_synthetise":{
 				"file_name" : "utilisation_intrant_synthetise",
+				"category" : "autre"
+			},
+			"composant_parc_materiel":{
+				"file_name" : "composant_parc_materiel",
 				"category" : "autre"
 			},
 			"materiel":{
@@ -754,7 +759,7 @@
 				}, 
 				"materiel" : {
 					"tables" :[
-						"materiel", "combinaison_outil_materiel", "combinaison_outil",
+						"composant_parc_materiel", "combinaison_outil_materiel", "combinaison_outil",
 						"domaine", "domaine_filtres_outils_can"     
 					],
 					"dependances" : []

@@ -666,16 +666,21 @@ def get_intervention_realise_combinaison_outils_can(
             - `combinaison_outil` :
                 - `id` : Identifiant unique de la combinaison d'outils.
                 - `nom` : Nom de la combinaison d'outils.
-                - `tracteur_materiel_id` : Référence au tracteur ou matériel principal.
-            - `materiel` :
+                - `tracteur_composant_parc_materiel_id` : Référence au tracteur ou matériel principal.
+            - `composant_parc_materiel` :
                 - `id` : Identifiant unique du matériel.
                 - `nom` : Nom du matériel.
-                - `type_materiel` : Type du matériel.
-                - `materiel_caracteristique1` : Première caractéristique du matériel 
+                - `type_composant_parc_materiel` : Type du matériel.
+                - `composant_parc_typemateriel1` : Première caractéristique du matériel 
                   (ex. : tracteur ou automoteur, type d'outil).
-            - `combinaison_outil_materiel` :
+            - `combinaison_outil_composant_parc_materiel` :
                 - `combinaison_outil_id` : Référence à une combinaison d'outils.
-                - `materiel_id` : Référence à un matériel spécifique.
+                - `composant_parc_materiel_id` : Référence à un matériel spécifique.
+            - `materiel` :
+                - `id` : Identifiant unique du materiel.
+                - `idtypemateriel` : id du type du materiel
+                - `typemateriel1` : Type primaire du materiel.
+
 
     Returns:
         pd.DataFrame:
@@ -689,46 +694,53 @@ def get_intervention_realise_combinaison_outils_can(
         donnees = {
             'intervention_realise': pd.DataFrame(...),
             'combinaison_outil': pd.DataFrame(...),
-            'materiel': pd.DataFrame(...),
-            'combinaison_outil_materiel': pd.DataFrame(...)
+            'composant_parc_materiel': pd.DataFrame(...),
+            'combinaison_outil_composant_parc_materiel': pd.DataFrame(...)
+            'materiel' : pd.DataFrame(...)
         }
         result = get_intervention_realise_combinaison_outils_can(donnees)
     """
     df_intervention_realise = donnees['intervention_realise']
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
-    df_materiel = donnees['materiel'].set_index('id')
-    df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
+    df_composant_parc_materiel = donnees['composant_parc_materiel'].set_index('id')
+    df_combinaison_outil_composant_parc_materiel = donnees['combinaison_outil_composant_parc_materiel']
+    df_materiel = donnees['materiel']
+
+    # Ajout des donnees caracteristiques à partir du referentiel materiel
+    left = df_composant_parc_materiel
+    right = df_materiel[['id', 'idtypemateriel', 'typemateriel1']]
+    df_composant_parc_materiel_extanded = pd.merge(left, right, left_on='materiel_id', right_on='id', how='left')
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
-    left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'nom_tracteur', 'materiel_caracteristique1' : 'tracteur_ou_automoteur'}
+    left = df_combinaison_outil[['nom', 'tracteur_composant_parc_materiel_id']]
+    right = df_composant_parc_materiel_extanded[['nom', 'typemateriel1']].rename(
+        columns={'nom' : 'nom_tracteur', 'materiel_typemateriel1' : 'tracteur_ou_automoteur'}
     )
     df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
 
-    # Ajout des informations sur le materiel à la combinaison d'outils
-    left = df_combinaison_outil_materiel
-    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
+    # Ajout des informations sur le composant_parc_materiel à la combinaison d'outils
+    left = df_combinaison_outil_composant_parc_materiel
+    right = df_composant_parc_materiel[['nom', 'idtypemateriel', 'typemateriel1']].rename(
+        columns={'nom' : 'combinaison_outils_nom', 'typemateriel1' : 'outils'}
     )
-    df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+    df_combinaison_outil_composant_parc_materiel= pd.merge(left, right, left_on='composant_parc_materiel_id', right_index=True, how='left')
 
     # On considère que si plusieurs matériels ont les mêmes caractéristiques (outils)
     # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
     # (Correction par rapport aux exports en masse historiques)
-    df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
+    df_combinaison_outil_composant_parc_materiel = df_combinaison_outil_composant_parc_materiel.drop_duplicates(
         subset=['combinaison_outil_id', 'outils']
     )
 
-    # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
-    df_combinaison_outil_materiel['outils'] = df_combinaison_outil_materiel['outils'].fillna('')
-    df_combinaison_outil_materiel_grouped = df_combinaison_outil_materiel.groupby('combinaison_outil_id').agg({
+    # On rassemble tous les composant_parc_materiels pour n'avoir qu'une description par combinaison d'outils
+    df_combinaison_outil_composant_parc_materiel['outils'] = df_combinaison_outil_composant_parc_materiel['outils'].fillna('')
+    df_combinaison_outil_composant_parc_materiel_grouped = df_combinaison_outil_composant_parc_materiel.groupby('combinaison_outil_id').agg({
         'outils' : ' ; '.join, # delete NaN
     })
 
     # On mets toutes les informations dans le même dataframe
     left = df_combinaison_outil_extanded
-    right = df_combinaison_outil_materiel_grouped
+    right = df_combinaison_outil_composant_parc_materiel_grouped
     df_combinaison_outil_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # On agrège les informations au dataframe des interventions
@@ -1871,8 +1883,8 @@ def get_intervention_synthetise_combinaison_outils_can(
             Un dictionnaire contenant les DataFrames nécessaires :
             - 'intervention_synthetise' : Données de base sur les interventions synthétisées.
             - 'combinaison_outil' : Détails des combinaisons d'outils.
-            - 'materiel' : Informations sur les matériels associés aux outils.
-            - 'combinaison_outil_materiel' : Lien entre les combinaisons d'outils et les matériels.
+            - 'composant_parc_materiel' : Informations sur les matériels associés aux outils.
+            - 'combinaison_outil_composant_parc_materiel' : Lien entre les combinaisons d'outils et les matériels.
             - 'intervention_synthetise_restructure' : Dataframe restructuré des interventions synthétisé (pour éviter 
             d'avoir à travailler avec des codes)
 
@@ -1887,17 +1899,23 @@ def get_intervention_synthetise_combinaison_outils_can(
         donnees = {
             'intervention_synthetise': pd.DataFrame(...),
             'combinaison_outil': pd.DataFrame(...),
-            'materiel': pd.DataFrame(...),
-            'combinaison_outil_materiel': pd.DataFrame(...),
+            'composant_parc_materiel': pd.DataFrame(...),
+            'combinaison_outil_composant_parc_materiel': pd.DataFrame(...),
             'intervention_synthetise_restructure': pd.DataFrame(...)
         }
         result = get_intervention_synthetise_combinaison_outils_can(donnees)
     """
     df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
-    df_materiel = donnees['materiel'].set_index('id')
-    df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
+    df_composant_parc_materiel = donnees['composant_parc_materiel'].set_index('id')
+    df_combinaison_outil_composant_parc_materiel = donnees['combinaison_outil_composant_parc_materiel']
     df_intervention_synthetise_restructure = donnees['intervention_synthetise_restructure'].set_index('id')
+    df_materiel = donnees['materiel']
+
+    # Ajout des donnees caracteristiques à partir du referentiel materiel
+    left = df_composant_parc_materiel
+    right = df_materiel[['id', 'idtypemateriel', 'typemateriel1']]
+    df_composant_parc_materiel_extanded = pd.merge(left, right, left_on='materiel_id', right_on='id', how='left')
 
     # Ajout du combinaison_outil_id pour ne pas avoir à travailler avec combinaison_outil_code
     left = df_intervention_synthetise
@@ -1905,29 +1923,29 @@ def get_intervention_synthetise_combinaison_outils_can(
     df_intervention_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
-    left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'nom_tracteur', 'materiel_caracteristique1' : 'tracteur_ou_automoteur'}
+    left = df_combinaison_outil[['nom', 'tracteur_composant_parc_materiel_id']]
+    right = df_composant_parc_materiel_extanded[['nom', 'typemateriel1']].rename(
+        columns={'nom' : 'nom_tracteur', 'typemateriel1' : 'tracteur_ou_automoteur'}
     )
-    df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
+    df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_composant_parc_materiel_id', right_index=True, how='left')
 
-    # Ajout des informations sur le materiel à la combinaison d'outils
-    left = df_combinaison_outil_materiel
-    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
+    # Ajout des informations sur le composant_parc_materiel à la combinaison d'outils
+    left = df_combinaison_outil_composant_parc_materiel
+    right = df_composant_parc_materiel_extanded[['nom', 'idtypemateriel', 'typemateriel1']].rename(
+        columns={'nom' : 'combinaison_outils_nom', 'typemateriel1' : 'outils'}
     )
-    df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+    df_combinaison_outil_composant_parc_materiel= pd.merge(left, right, left_on='composant_parc_materiel_id', right_index=True, how='left')
 
     # On considère que si plusieurs matériels ont les mêmes caractéristiques (outils)
     # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
     # (Correction par rapport aux exports en masse historiques)
-    df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
+    df_combinaison_outil_composant_parc_materiel = df_combinaison_outil_composant_parc_materiel.drop_duplicates(
         subset=['combinaison_outil_id', 'outils']
     )
 
-    # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
-    df_combinaison_outil_materiel['outils'] = df_combinaison_outil_materiel['outils'].fillna('')
-    df_combinaison_outil_materiel_grouped = df_combinaison_outil_materiel.groupby('combinaison_outil_id').agg({
+    # On rassemble tous les composant_parc_materiels pour n'avoir qu'une description par combinaison d'outils
+    df_combinaison_outil_composant_parc_materiel['outils'] = df_combinaison_outil_composant_parc_materiel['outils'].fillna('')
+    df_combinaison_outil_composant_parc_materiel_grouped = df_combinaison_outil_composant_parc_materiel.groupby('combinaison_outil_id').agg({
         'outils' : ' ; '.join, # delete NaN
     })
 
