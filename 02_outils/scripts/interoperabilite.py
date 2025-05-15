@@ -178,7 +178,13 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
         donnees
     )
 
-    # merge
+    # Passer les codeinsee en str pour toutes les tables, surtout à cause des None lors du mode DEBUG
+    df_commune['codeinsee'] = df_commune['codeinsee'].astype(str)
+    df_spatial['codeinsee'] = df_spatial['codeinsee'].astype(str)
+    df_geofla['codeinsee'] = df_geofla['codeinsee'].astype(str)
+    df_typoruralite['codeinsee'] = df_typoruralite['codeinsee'].astype(str)
+
+    # Merge
     df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
     df = df.merge(df_spatial, on = 'codeinsee', how='left')
     df = df.merge(df_geofla, on = 'codeinsee', how='left')
