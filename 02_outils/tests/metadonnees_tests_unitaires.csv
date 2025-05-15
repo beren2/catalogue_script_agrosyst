@@ -858,11 +858,11 @@ test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Doma
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"['COMMUNE00000000000021857', 'COMMUNE00000000000000684']",,geofla_2015_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,10.0,,rmqs_dist_site
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_12c4938a-004b-4e0e-b17f-54d278ef1e69,"[ ""2006-04-06"", ""2017-01-16"" ]",,rmqs_date_sampl
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,1025,,codeinsee
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,01025,,codeinsee
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,837,,rmqs_site_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,5631,,safran_cell_id
-,fr.inra.agrosyst.api.entities.Domain_e1ea87ba-46f8-427d-9fd7-bafad401aa80,05,,typo_ruralite
-,fr.inra.agrosyst.api.entities.Domain_cdbb0287-8040-42b0-bef6-d0424eca27c6,02,,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,06,,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,05,,typo_ruralite
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_3059742b-3357-4e2a-bcb6-3d1af4636467,,,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_0445d8bc-7638-44c5-8068-f98484618d96,POINT (5.078887999999999 47.192313),,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_c9fd2d74-ba29-498d-94e9-0b3f4b68a2ce,4316,,safran_cell_id

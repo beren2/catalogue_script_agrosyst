@@ -142,6 +142,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
                 - safran : geopackage safran téléchargé sur le site de SICLIMA. GPKG
                 - geoVec_rmqs : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes). JSON
                 - geofla : référentiel avec un code insee (2024) et une liste d'identifiant geofla (2015)
+                - ruralite : référentiel avec un code insee (2024) et une typologie de ruralité (0 à 9). Si le codeinsee date de 2024, le dvlpmt des typologies de ruralité a été mené par le DATAR en 2003 et 2011.
 
     Retourne:
         pd.DataFrame:
@@ -154,6 +155,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
             - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
             - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
             - 'geofla_2015_id' = liste d'identifiant geofla pour chaque code insee. Attention geofla est obsolete !
+            - 'typo_ruralite" = typologie de ruralité de la commune (0 à 9)
 
     Notes:
         make_spatial_interoperation_btw_codeinsee_and_spatial_id() est une fonction permettant de générer un Dataframe qui donne le rattachement commune/maille safran/site RMQS

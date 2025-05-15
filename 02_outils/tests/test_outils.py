@@ -24,6 +24,8 @@ def import_df(df_name, path_data, sep, df, file_format='csv'):
                                             'arrondissement_code':str,
                                             'bassin_vie':str,
                                             'zone_emploi':str,
+
+                                            'typo_ruralite':str,
                                             
                                             'cell':str})
     if file_format == 'json' and df_name.startswith('geoVec') :
@@ -773,7 +775,7 @@ def test_get_donnees_spatiales_commune_du_domaine():
     identifiant_test = 'test_get_donnees_spatiales_commune_du_domaine'
 
     df_names_withExt = {
-        'csv' : ['commune','domaine','geofla'],
+        'csv' : ['commune','domaine','geofla','ruralite'],
         'json' : ['geoVec_com2024','geoVec_rmqs'],
         'gpkg' : ['safran']
     }
