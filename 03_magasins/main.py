@@ -300,6 +300,10 @@ while True:
     choice_key = list(options.keys())[choice - 1]
     print(choice_key)
 
+    if choice_key == "Quitter":
+        print("Au revoir !")
+        break
+
     if(choice_key == "Générer un magasin"):
         # On demande le magasin à générer
         magasins = list(magasin_specs.keys())

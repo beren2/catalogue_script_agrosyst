@@ -467,9 +467,9 @@ case
 	when yl.yieldobjective is not null then trad1.traduction_interface
 	when yl.yieldobjectiveint is not null then trad2.traduction_interface
 end objectif_rendement_atteint,
-yl.cause1 as cause1,
-yl.cause2 as cause2,
-yl.cause3 as cause3,
+yl.cause1 as cause_1,
+yl.cause2 as cause_2,
+yl.cause3 as cause_3,
 replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid as BC_sdc_generalites_id
@@ -486,9 +486,9 @@ union
 select 
 'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(rgs.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
 trad1.traduction_interface as objectif_rendement_atteint,
-rgs.vitilosscause1 as cause1,
-rgs.vitilosscause2 as cause2,
-rgs.vitilosscause3 as cause3,
+rgs.vitilosscause1 as cause_1,
+rgs.vitilosscause2 as cause_2,
+rgs.vitilosscause3 as cause_3,
 replace(replace(rgs.vitiyieldquality,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid BC_sdc_generalites_id
