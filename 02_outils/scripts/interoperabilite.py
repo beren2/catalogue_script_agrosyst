@@ -170,6 +170,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
         'id' : 'commune_id'
         }).copy()
     df_geofla = donnees['geofla'].copy()
+    df_typoruralite = donnees['ruralite'][['codeinsee','typo_ruralite']].copy()
 
     df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(
         donnees
@@ -179,6 +180,17 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
     df = df.merge(df_spatial, on = 'codeinsee', how='left')
     df = df.merge(df_geofla, on = 'codeinsee', how='left')
+    df = df.merge(df_typoruralite, on = 'codeinsee', how='left')
+    # 0 ==> Hors champ : DOM ou commune urbaine
+    # 1 ==> Les petites polarités industrielles et artisanales
+    # 2 ==> Les petites polarités mixtes
+    # 3 ==> Les ruralités productives agricoles
+    # 4 ==> Les ruralités productives ouvrières
+    # 5 ==> Les ruralités résidentielles aisées
+    # 6 ==> Les ruralités résidentielles mixtes
+    # 7 ==> Les ruralités touristiques à dominante résidentielles
+    # 8 ==> Les ruralités touristiques spécialisées
+    # 9 ==> Communes ayant changé de périmètre depuis la réalisation de la typologie
 
     df = df.set_index('domaine_id')
 
