@@ -125,7 +125,7 @@ def test_get_intervention_realise_combinaison_outils_can():
     """
     identifiant_test = 'test_get_intervention_realise_combinaison_outils_can'
     df_names = [   
-        'combinaison_outil', 'composant_parc_materiel', 'combinaison_outil_composant_parc_materiel', 'intervention_realise'
+        'combinaison_outil', 'composant_parc_materiel', 'combinaison_outil_composant_parc_materiel', 'intervention_realise', 'materiel'
     ]
     path_data = '02_outils/tests/data/test_get_intervention_realise_combinaison_outils_can/'
     fonction_to_apply = outils_can.get_intervention_realise_combinaison_outils_can
@@ -178,7 +178,7 @@ def test_get_intervention_realise_outils_can():
         'noeuds_realise', 'connection_realise', 'plantation_perenne_phases_realise', 'plantation_perenne_realise', 'composant_culture_concerne_intervention_realise',
         'composant_culture', 'espece', 'variete', 'culture', 'intervention_realise_agrege', 'dispositif',
         'combinaison_outil_composant_parc_materiel', 'semence', 'utilisation_intrant_realise', 'intrant', 'recolte_rendement_prix',
-        'utilisation_intrant_cible', 'nuisible_edi', 'adventice'
+        'utilisation_intrant_cible', 'nuisible_edi', 'adventice','materiel'
     ]
 
     path_data = '02_outils/tests/data/test_get_intervention_realise_outils_can/'
@@ -279,7 +279,7 @@ def test_get_intervention_synthetise_combinaison_outils_can():
     identifiant_test = 'test_get_intervention_synthetise_combinaison_outils_can'
     df_names = [
         'intervention_synthetise', 'intervention_synthetise_restructure', 
-        'combinaison_outil', 'composant_parc_materiel', 'combinaison_outil_composant_parc_materiel'
+        'combinaison_outil', 'composant_parc_materiel', 'combinaison_outil_composant_parc_materiel', 'materiel'
     ]
     path_data = '02_outils/tests/data/test_get_intervention_synthetise_combinaison_outils_can/'
     fonction_to_apply = outils_can.get_intervention_synthetise_combinaison_outils_can
@@ -315,7 +315,7 @@ def test_get_intervention_synthetise_outils_can():
         'noeuds_synthetise_restructure', 'plantation_perenne_synthetise_restructure', 'ccc_intervention_synthetise_restructure', 'composant_culture', 'espece', 'variete', 'connection_synthetise_restructure',
         'composant_culture', 'noeuds_synthetise_restructure', 'culture', 'intervention_synthetise_agrege', 'dispositif',
         'combinaison_outil_composant_parc_materiel', 'semence', 'utilisation_intrant_synthetise', 'intrant', 'recolte_rendement_prix', 
-        'recolte_rendement_prix_restructure', 'utilisation_intrant_cible', 'nuisible_edi', 'adventice', 'groupe_cible'
+        'recolte_rendement_prix_restructure', 'utilisation_intrant_cible', 'nuisible_edi', 'adventice', 'groupe_cible','materiel'
     ]
 
     path_data = '02_outils/tests/data/test_get_intervention_synthetise_outils_can/'
