@@ -105,6 +105,7 @@ def export_to_db(df, name):
             update_local_version_table(name)
     else :
         df.to_sql(name=name, con=engine, if_exists='replace')
+        engine.dispose()
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def convert_to_serializable(obj):
