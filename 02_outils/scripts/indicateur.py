@@ -2,10 +2,15 @@
 	Regroupe les fonctions qui consistent en des calculs d'indicateurs 
 """
 
+import os
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 from scripts.utils import fonctions_utiles
 from scripts.utils import get_surfaces_connections_synthetise
+
 
 def get_surface_connexion_synthetise(
         donnees
@@ -251,8 +256,11 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # Mettre en évidence synthetises pz0 uniquement monoannuels 
     pz0 = select_df.loc[select_df['donnee_attendue'].str.contains("pz0")].reset_index()
     
-    pz0.loc[pz0['donnee_attendue'].str.contains(","), 'triannuel'] = "pluri"
-    pz0.loc[pz0['triannuel'].isna(), ['triannuel']] = "mono"
+    pz0['triannuel'] = pd.Series()
+    if (pz0['donnee_attendue'].str.contains(",", na=False)).any() :
+        pz0.loc[pz0['donnee_attendue'].str.contains(","), 'triannuel'] = "pluri"
+    
+    pz0.loc[pz0['triannuel'].isna(), 'triannuel'] = "mono"
 
     pz0 = pz0.groupby(['code_dephy']).agg({
         'triannuel' : lambda x: ', '.join(x.unique())
@@ -270,8 +278,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # A) On prefere un pluriannuel plutot que monoannuel si il y a le choix donc :
     # Si le code dephy n'es pas dans dephy_mono, le pz0 mono annuel devient post. on le sauvegarde ensuite dans post
     # (Si il chevauche avec le pz0, il sera traité plus tard)
-    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') 
-                                                                            else x['donnee_attendue'], axis = 1)
+    select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') else x['donnee_attendue'], axis = 1)
  
     # sauvegarde les "post" (il n'y a plus de post,post)
     post = select_df.loc[select_df['donnee_attendue'] == "post"]
@@ -522,8 +529,9 @@ def identification_pz0(donnees):
     #print(identif_pz0.groupby(by='donnee_attendue').size())
 
     # les campagnes synthetise pluriannuelles ont elles des doublons ? 
-    identif_pz0.loc[:,'count_campaign'] = identif_pz0.apply(lambda x : len(x['campagnes'].split(', ')), axis=1)
-    identif_pz0.loc[:,'count_unique_campaign'] = identif_pz0.apply(lambda x : len(set(x['campagnes'].split(', '))), axis=1)
+    identif_pz0['count_campaign'] = identif_pz0['campagnes'].apply(lambda x: len(x.split(', ')))
+
+    identif_pz0['count_unique_campaign'] = identif_pz0['campagnes'].apply(lambda x: len(set(x.split(', '))))
     
     if identif_pz0.loc[identif_pz0['count_campaign'] != identif_pz0['count_unique_campaign']].shape[0] != 0:
         message_error = message_error + "!!! Attention !!! Saisies de synthetises incorrects : campagnes en doubles"
@@ -550,8 +558,8 @@ def identification_pz0(donnees):
     identif_pz0_aucun.loc[identif_pz0_aucun['code_dephy'].isin(saisies_attendues_melt['code_dephy']),'donnee_attendue'] = modalite_pz0_aucun # mais ceux qui sont dans le fichier BDD_donnees_attendues_CAN, sont des "saisies non acceptables"
 
     identif_pz0_non_attendue = identif_pz0.copy()
-    identif_pz0_non_attendue.loc[:,'donnee_attendue_split'] = identif_pz0_non_attendue.apply(lambda x : ', '.join(set(x['donnee_attendue'].split(', '))) , axis = 1)
-    identif_pz0_non_attendue = identif_pz0_non_attendue.loc[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
+    identif_pz0_non_attendue['donnee_attendue_split'] = identif_pz0_non_attendue['donnee_attendue'].apply(lambda x: ', '.join(set(x.split(', '))))
+    identif_pz0_non_attendue = identif_pz0_non_attendue[identif_pz0_non_attendue['donnee_attendue_split'] == "non-attendu"]
     identif_pz0_non_attendue['donnee_attendue'] = modalite_non_attendu
 
     identif_pz0_non_attendue = identif_pz0_non_attendue.drop(['donnee_attendue_split'], axis = 1)
@@ -682,23 +690,25 @@ def get_typologie_culture_CAN(donnees):
             Voir si on passe en NaN lors de la création du magasin
             ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
     '''
-    cropsp = donnees['composant_culture'][['espece_id','culture_id']]
-    crop = donnees['culture'][['id','type']].rename(columns={
-        'id':'culture_id'})
-    sp = donnees['espece_vCAN'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={
-        'id':'espece_id'})
-    # Tant que le référentiel n'est pas pret (ajout des deux colonnes de la can)
-    # sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']]
-    typo1 = donnees['typo_especes_typo_culture'].rename(columns={
-        'TYPO_ESPECES':'typocan_espece', 'Typo_Culture':'typocan_culture'})
-    typo2 = donnees['typo_especes_typo_culture_marai'].rename(columns={
-        'TYPO_ESPECES_BIS':'typocan_espece_maraich', 'Typo_Culture_bis':'typocan_culture_maraich'})
+    cropsp = donnees['composant_culture'].copy()
+    cropsp = cropsp[['espece_id','culture_id','compagne']]
+    crop = donnees['culture'].copy()
+    crop = crop[['id','type']].rename(columns={'id':'culture_id'})
+    sp = donnees['espece'].copy()
+    sp = sp[['id','typocan_espece','typocan_espece_maraich']].rename(columns={'id':'espece_id'})
+    
+    typo1 = donnees['typo_especes_typo_culture'].copy()
+    typo1 = typo1.rename(columns={'TYPO_ESPECES':'typocan_espece',
+                                  'Typo_Culture':'typocan_culture'})
+    typo2 = donnees['typo_especes_typo_culture_marai'].copy()
+    typo2 = typo2.rename(columns={'TYPO_ESPECES_BIS':'typocan_espece_maraich',
+                                  'Typo_Culture_bis':'typocan_culture_maraich'})
 
     df = cropsp.merge(sp, how = 'left', on = 'espece_id')
 
-    df['nb_espece'] = 1
-    df['nb_typocan_esp'] = df['typocan_espece']
-    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich']
+    df['nb_composant_culture'] = 1
+    df['nb_typocan_esp'] = df['typocan_espece'].copy()
+    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich'].copy()
 
     def concat_unique_sorted(series):
         cleaned = series.dropna().unique()
@@ -711,19 +721,30 @@ def get_typologie_culture_CAN(donnees):
     agg_dict = {
         'typocan_espece': concat_unique_sorted,
         'typocan_espece_maraich': concat_unique_sorted,
-        'nb_espece': 'sum',
+        'nb_composant_culture': 'sum',
         'nb_typocan_esp': get_nb_unique_typo,
         'nb_typocan_esp_maraich': get_nb_unique_typo
     }
-    df = df[['culture_id','typocan_espece','typocan_espece_maraich',
-             'nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
 
+    #  On crée les typologie can culture et les autre variable utiles grace a agg_dict
+    df_base = df[['culture_id','typocan_espece','typocan_espece_maraich',
+                'nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
+    #  On crée une typologie can culture mais sans les cpc qui sont des plantes compagnes
+    df_comp = df.loc[df['compagne'].isna()].copy()
+    df_comp['typocan_esp_sans_compagne'] = df_comp['typocan_espece'].copy()
+    df_comp = df_comp[['culture_id','typocan_esp_sans_compagne']].groupby('culture_id').agg(concat_unique_sorted).reset_index()
 
+    # On repart sur un pd.Df qui est le merge de df_base et df_comp (donc le meme groupby mais sur un version filtré de df_base)
+    del(df)
+    df = df_base.merge(df_comp[['culture_id','typocan_esp_sans_compagne']], on = 'culture_id', how = 'left')
+
+    # On ajoute les culture_id qui n'ont pas de composant de culture et on leur attribue aucune espece renseigné
     df = df.merge(crop, how='left', on='culture_id')
+
     crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
     # ATTENTION_DIFF_CAN_a ::: 2 Lignes
-    crop_only.loc[:,['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
-    crop_only.loc[:,['typocan_espece','typocan_espece_maraich']] = 'Aucune espèce renseignée'
+    crop_only.loc[:,['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
+    crop_only.loc[:,['typocan_espece','typocan_espece_maraich','typocan_esp_sans_compagne']] = 'NoInput-sp'
 
     df = pd.concat([df, crop_only], ignore_index=True)
 
@@ -731,8 +752,16 @@ def get_typologie_culture_CAN(donnees):
 
     df = df.merge(typo2, how='left', on='typocan_espece_maraich')
 
+    df = df.merge(typo1.rename(columns={'typocan_espece':'typocan_esp_sans_compagne',
+                                        'typocan_culture':'typocan_culture_sans_compagne'}), \
+                                            how='left', on='typocan_esp_sans_compagne')
+    
     # ATTENTION_DIFF_CAN_a_bis ::: 1 Lignes
-    df.loc[df['nb_espece'] == 0,['typocan_culture','typocan_culture_maraich']] = 'Aucune espèce renseignée'
+    # le premier c'était pour les composant de culture, ici c'est pour la typo de culture
+    df.loc[df['nb_composant_culture'] == 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']] = 'NoInput-sp'
+
+    # Si pas de correspondance espece <-> culture on l'écrit
+    df.loc[df['nb_composant_culture'] != 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']] = df.loc[df['nb_composant_culture'] != 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']].fillna('NoLink-sp-crop')
 
 
     # ATTENTION_DIFF_CAN_b ::: 2 Lignes
@@ -745,11 +774,577 @@ def get_typologie_culture_CAN(donnees):
                                                    'INTERMEDIATE': 'INTERMEDIAIRE', 
                                                    'CATCH': 'DEROBEE' })
     df['type'] = df['type'].astype('str')
-    df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_espece','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
-    df = df.set_index('culture_id')
-
+    df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
+    
     # Ajout de 'Culture porte-graine' ??
     # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
     # Du coup utilisation du nom de la culture pour changement non souhaité
 
     return df
+
+def get_typologie_rotation_CAN_synthetise(donnees):
+    ''' 
+    Le but est d'obtenir les typologies de rotation utilisées par la Cellule référence.
+    Pour le synthetise
+
+    Echelle :
+        entite_id : synthetise_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+                'connection_synthetise'
+                'noeuds_synthetise'
+            Données d'outils (attention dépendence)
+                'noeuds_synthetise_restructure'
+                'poids_connexions_synthetise_rotation'
+                'typologie_can_culture'
+
+    Returns:
+        pd.DataFrame() contenant le synthetise_id et la typologie de rotation de la CAN
+    '''
+    # OUTILS
+    # Attention on utilise ici l'outil passant de noeuds_synth_id à la culture_id (voir outil restructuration et calcul de frequence de connexion)
+    noeud_with_culture_id = donnees['noeuds_synthetise_restructure'].copy()
+    con_frq = donnees['poids_connexions_synthetise_rotation'][['connexion_id','proba_conx_spatiotemp']].copy()
+    typo_culture = donnees['typologie_can_culture'].copy()
+
+    # ENTREPOT
+    conn = donnees['connection_synthetise'][['id','cible_noeuds_synthetise_id','culture_absente']].copy()
+    conn = conn.loc[conn['culture_absente'] == 'f'].drop('culture_absente', axis=1)
+    noeud = donnees['noeuds_synthetise'][['id','synthetise_id']].copy()
+    noeud = noeud.merge(noeud_with_culture_id, left_on = 'id', right_on = 'id')
+
+    # Renommer les id pour éviter les doublon id_x, id_y, ...
+    noeud = noeud.rename(columns={'id':'cible_noeuds_synthetise_id'})
+    conn = conn.rename(columns={'id':'connexion_id'})
+    typo_culture = typo_culture.rename(columns={'id':'culture_id'})
+
+    # MERGE
+    df = conn.merge(noeud, on = 'cible_noeuds_synthetise_id')
+    df = df.merge(con_frq, on = 'connexion_id')
+    df = df.merge(typo_culture, on = 'culture_id')
+    # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ; et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion rien qu'à eux)
+    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','proba_conx_spatiotemp']].\
+        rename(columns={'proba_conx_spatiotemp' : 'frequence'})
+
+    # Comme la CAN fait, on check à chaque fois une condition, si true on return.
+    # il y a donc un ordre de priorité bien défini
+    # Sans cet ordre de priorité il y aurait des chevauchements, mais quand meme pas dans tout les cas
+    def get_rota_typo(cgrp):
+        # Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
+        # ils aggregent totu avec un return 'Pas de type rotation calculé'
+        # ATTENTION nous ferons le distingo avec les 2 premieres conditions
+        conditions = [
+            (all(cgrp\
+                ['frequence'].isna()), \
+                'aucune fréquence de rotation calculée'),
+            (all(cgrp\
+                ['typocan_culture_sans_compagne'].isna()), \
+                'aucune typologie de culture détectée'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Betterave', 'Lin', 'Légume']), 'frequence']) \
+                >= 0.05, \
+                'succession avec betterave ou lin ou légumes (>= 5 %)'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Pomme de terre']), 'frequence']) \
+                >= 0.05, \
+                'successions avec pomme de terre'),
+            # (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(['Cultures porte graines']), 'frequence']) >= 0.05, 'successions avec cultures porte graine'),
+            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille hiver', 'Colza']), 'frequence']) \
+                >= 0.95) & \
+                (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille printemps']), 'frequence']) \
+                == 0), \
+                'céréales à paille hiver/colza'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza']), 'frequence']) \
+                >= 0.95, \
+                'céréales à paille hiver+printemps/colza'),
+            # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture_sans_compagne
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Maïs']), 'frequence']) \
+                >= 0.95, \
+                'maïs'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Maïs', 'Oléagineux (hors Colza et Tournesol)', 'Protéagineux', 'Mélange fourrager']), 'frequence'])\
+                >= 0.95, \
+                'céréales à paille/colza/maïs ou protéagineux'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), 'frequence']) \
+                >= 0.95, \
+                'céréales à paille/colza/tournesol'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), 'frequence']) \
+                >= 0.95, \
+                'céréales à paille/maïs(/tournesol)'),
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), 'frequence']) \
+                >= 0.95, \
+                'céréales à paille/tournesol'),
+            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Prairie temporaire']), 'frequence']) \
+                < 0.5) & \
+                (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Prairie temporaire']), 'frequence']) \
+                > 0),
+                'prairie temporaire < 50 % assolement'),
+            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+                ['Prairie temporaire']), 'frequence']) \
+                >= 0.5), \
+                'prairie temporaire >= 50 % assolement')
+        ]
+        
+        for condition, message in conditions:
+            if condition:
+                return message
+
+        return 'Autre'
+    
+    # df['list_freq_typoculture'] = (100 * df['frequence']).round(1).astype(str) + '=' + df['typocan_culture_sans_compagne']
+    df = df.drop('connexion_id', axis=1)
+
+    def get_percent_each_typo_culture(cgrp):
+        list_grp = []
+        cgrp['typocan_culture_sans_compagne'] = cgrp['typocan_culture_sans_compagne'].fillna('NOTYPOC')
+        for x in list(cgrp['typocan_culture_sans_compagne'].unique()) : 
+            typoc_sum = cgrp.loc[cgrp['typocan_culture_sans_compagne'] == x, 'frequence'].sum()
+            typoc_sum = typoc_sum * 100
+            typoc_sum = str(typoc_sum.round(1))
+            list_grp.append(x + ':' + typoc_sum)
+        return list_grp
+    
+
+    df = df.groupby('synthetise_id').apply(
+         lambda cgrp: pd.Series({
+            'typocan_rotation': get_rota_typo(cgrp),
+            'frequence_total_rota': cgrp['frequence'].sum(),
+            'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp)  )  
+        }))
+    
+    return df
+
+
+
+
+
+def extract_good_rotation_diagram(donnees):
+    ''' 
+    Le but est d'obtenir une liste de synthetise_id qui ont une bonne structure/ un bon schéma de rotation
+    Par exemple il faut une seule culture (=noeud) en premier rang (rang = 0). Ou bien, il faut que les itk (= connexion) en sortie d'une même culture somme à 100%
+
+    Note(s):
+        Est réutilisé dans le cadre du calcul des poids de connexion au seins du synthétisé
+        Que pour les cultures assolées en synthétisé
+
+    Echelle :
+        synthetise_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'connection_synthetise'
+            - 'noeuds_synthetise'
+
+    Returns:
+        1° : list() des synthetisés qui sont bons
+        2° : dict() des synthetisés mauvais selon leur problèmes
+    '''
+
+    conx = donnees['connection_synthetise'].copy()
+    noeud = donnees['noeuds_synthetise'].copy()
+
+    conx = conx[['id', 'frequence_source','culture_absente','source_noeuds_synthetise_id','cible_noeuds_synthetise_id']]
+    conx = conx.rename(columns={'id' : 'conx_id',
+                                'frequence_source' : 'freq',
+                                'culture_absente' : 'abs',
+                                'source_noeuds_synthetise_id' : 'nd_prec',
+                                'cible_noeuds_synthetise_id' : 'nd_suiv'})
+    noeud = noeud[['id', 'rang', 'fin_cycle','memecampagne_noeudprecedent', 'synthetise_id']]
+    noeud = noeud.rename(columns={'id' : 'nd_id',
+                                  'fin_cycle' : 'end',
+                                  'rang' : 'rang',
+                                  'memecampagne_noeudprecedent' : 'sameyear',
+                                  'synthetise_id' : 'synth_id'})
+
+        
+    # Nombre de premier rang
+    def number_node_rank0(dfgrp):
+        return len(dfgrp.loc[dfgrp['rang']==0,'rang'])
+    # Nombre de noeud terminaux
+    def number_node_end(dfgrp):
+        return len(dfgrp.loc[dfgrp['end']=='t','end'])
+    # Nombre de noeud en premier rang
+    def noeud_end_on_rank0(dfgrp):
+        return any(dfgrp.loc[dfgrp['end']=='t','rang']==0)
+
+    noeud_test = noeud.groupby('synth_id').apply(
+        lambda dfgrp: pd.Series({
+            'nb_noeud_de_rang1': number_node_rank0(dfgrp),
+            'nb_noeud_finaux' : number_node_end(dfgrp),
+            'noeud_finaux_en_rang1' : noeud_end_on_rank0(dfgrp)
+            }), include_groups=False).copy()
+    
+    # Tague des synthétisé qui (n')ont...
+    # ...Aucun noeud en premier rang
+    no_first_node = list(noeud_test.loc[noeud_test['nb_noeud_de_rang1']==0].index)
+    # ...Plusieurs noeuds en premier rang
+    several_first_nodes = list(noeud_test.loc[noeud_test['nb_noeud_de_rang1']>1].index)
+    # ...Aucun noeud terminal
+    no_end_node = list(noeud_test.loc[noeud_test['nb_noeud_finaux']==0].index)
+    # ...Au moins un noeud de premier rang qui est aussi terminal
+    first_node_is_end_node = list(noeud_test.loc[noeud_test['noeud_finaux_en_rang1']>0].index)
+    
+    # Les noeuds qui n'ont pas de précédent OU pas de suivant
+    node_wo_prev_or_next = list(noeud.loc[~((noeud['nd_id'].isin(conx['nd_prec'])) & \
+                                            (noeud['nd_id'].isin(conx['nd_suiv']))),'synth_id'])
+
+    def get_hole_in_rotation(series):
+        ranks_theo = pd.Series(range(min(series)+1, max(series)))
+        if all(ranks_theo.isin(series)) is False :
+            return list(ranks_theo.loc[~(ranks_theo.isin(series))])
+        return None
+    
+    # Les rangs qui sont entierement vide
+    empty_rank = noeud[['rang','synth_id']].groupby('synth_id').agg(get_hole_in_rotation).reset_index()
+    empty_rank = list(empty_rank.loc[empty_rank['rang'].notna(), 'synth_id'])
+
+    # Merge de connexion et noeud (suivant et précédent)
+    df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
+        .drop('nd_id_prec', axis=1)
+    df = df.merge(noeud.add_suffix('_suiv'), left_on='nd_suiv', right_on='nd_id_suiv').\
+        rename(columns={'synth_id_suiv' : 'synth_id'}).drop('nd_id_suiv', axis=1)
+    
+    # Frequence des connexions égales à 0
+        # On augmente un peu le sueil à 0.5% car bizarre d''avoir une connexion avec une fréquence si faible
+    freq_cnx_at_0 = list(df.loc[df['freq'] < 0.5, 'synth_id'])
+
+    # Somme de sortie du noeuf ne faisant pas 100%
+    def get_unique_txt(series):
+        cleaned = series.dropna().unique().copy()
+        return cleaned[0]
+
+    exit_cnx_100 = df[['synth_id','freq','nd_prec']].groupby('nd_prec').agg({
+        'synth_id' : get_unique_txt,
+        'freq' : 'sum'})
+    exit_cnx_100 = list(exit_cnx_100.loc[round(exit_cnx_100['freq'],8) != 100, 'synth_id'])
+
+    # Noeud suivant est forcement sur le rang suivant (pas de 'trou') 
+        # Attention si le rang qui a un trou dans le chemin n'est fait que de culture dérobée et que le noeud suivant n'est pas une dérobée
+
+    test_hole_in_path = df.loc[(df['rang_prec'] != (df['rang_suiv']-1) ) & (df['end_prec'] == 'f'),].copy()
+    test_hole_in_path['empty_rank_are_catch_crop'] = ''
+
+    for idx, row in test_hole_in_path.iterrows() :
+        empty_rank_list = list(range(row['rang_prec']+1, row['rang_suiv']))
+        # Premier if eventuellement redondant (voir avant avec le rang entierement)
+        if not list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear']=='t'):
+            test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'empty_rank'
+        elif (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 't'))) & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv']), 'sameyear'] == 'f'))) \
+        | \
+        (row['sameyear_suiv'] == 'f') & (all(list(noeud.loc[(noeud['synth_id']==row['synth_id']) & (noeud['rang'].isin(empty_rank_list)), 'sameyear'] == 'f'))) & (all(list(noeud.loc[((noeud['synth_id']==row['synth_id']) & (noeud['rang']==row['rang_suiv'])) & (noeud['nd_id']!=row['nd_suiv']), 'sameyear'] == 't'))) :
+            test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'ok'
+        else :
+            test_hole_in_path.at[idx,'empty_rank_are_catch_crop'] = 'hole_in_path'
+
+    def concat_unique_sorted_txt(series):
+        cleaned = series.dropna().unique().copy()
+        return '_&_'.join(sorted(cleaned))
+    
+    test_hole_in_path = test_hole_in_path.groupby('synth_id').agg({'empty_rank_are_catch_crop': concat_unique_sorted_txt}).reset_index()
+
+    hole_in_path = list(test_hole_in_path.loc[test_hole_in_path['empty_rank_are_catch_crop'] != 'ok', 'synth_id'])
+
+    # Noeud terminaux qui ne boucle pas entierement sur un noeud de premier rang
+    end_node_continue = list(df.loc[(df['end_prec'] == 't') & df['rang_suiv'] != 0, 'synth_id'])
+
+
+    # Liste final des BONS synthétisés
+    list_good_synth_rotation = tuple(set(noeud['synth_id']) - set(list(
+        no_first_node + several_first_nodes + no_end_node + first_node_is_end_node + node_wo_prev_or_next + empty_rank + exit_cnx_100 + freq_cnx_at_0 + hole_in_path + end_node_continue
+        )))
+
+    dic_of_bad_synth = {'no_first_node': no_first_node, 
+                        'several_first_nodes' : several_first_nodes,
+                        'no_end_node' : no_end_node, 
+                        'first_node_is_end_node' : first_node_is_end_node, 
+                        'node_wo_prev_or_next' : node_wo_prev_or_next, 
+                        'empty_rank' : empty_rank, 
+                        'exit_cnx_100' : exit_cnx_100, 
+                        'freq_cnx_at_0' : freq_cnx_at_0, 
+                        'hole_in_path' : hole_in_path, 
+                        'end_node_continue' : end_node_continue}
+    
+    return list_good_synth_rotation, dic_of_bad_synth
+            
+
+def trouver_chemins(graphe, debut, fins):
+    ''' 
+    Fonction utile permettant de calculer tout les chemins possibles au seins d'une rotation d'un synthétisé 
+    '''
+    stack = [(debut, [])]  # (node actuel, chemin parcouru)
+    chemins = []
+
+    while stack:
+        node, chemin = stack.pop()
+        chemin.append(node)
+
+        if node in fins:
+            chemins.append(list(chemin))
+            continue
+
+        for voisin in graphe.get(node, []):
+            if voisin not in chemin:  # Éviter les cycles
+                stack.append((voisin, chemin[:]))  # Copie du chemin actuel
+
+    return chemins
+
+
+def process_sy(sy, cx, nd):
+    '''
+    Fonction principale utilisée dans la fonction plus globale get_connexion_weight_in_synth_rotation(). Voir son docstring.
+    La fonction process_sy() est sortie de la fonction globale pour la parrallelsation  !
+
+    sy = liste des synthétisé à faire tourner
+    cx = données des connexions suite a la manipulation dans la fonction gloable
+    nd = données des noeuds suite a la manipulation dans la fonction globale
+    '''
+
+    # Construire le graphe des connexions sous forme de dictionnaire
+    graphe = {}
+    connexions = {}
+
+    for idx, row in cx.iterrows():
+        nd_prec, nd_suiv, conx_id, abs_value, freq = row['nd_prec'], row['nd_suiv'], idx, row['abs'], row['freq']
+        
+        if nd_prec not in graphe:
+            graphe[nd_prec] = []
+        graphe[nd_prec].append(nd_suiv)
+
+        # Stocker les connexions avec leurs IDs et attributs pour un accès rapide
+        connexions[(nd_prec, nd_suiv)] = {
+            'conx_id': conx_id,
+            'abs': abs_value,
+            'freq': freq
+        }
+
+    # Trouver le premier nœud et les nœuds finaux
+    first_node = nd.loc[(nd['rang'] == 0) & (nd['synth_id'] == sy)].index.item()
+    end_nodes = set(nd.loc[(nd['end'] == 't') & (nd['synth_id'] == sy)].index)
+
+    # Obtenir tous les chemins
+    chemins_possibles = trouver_chemins(graphe, first_node, end_nodes)
+
+    #  Associer chaque connexion aux chemins où elle apparaît, en comptant abs='t', sameyear='t', et calculant le poids du chemin
+    lst_couples_connexion_chemins = []
+    lst_chemins = []
+
+    for chemin in chemins_possibles:
+
+        poid_chemin = 1
+        groupe_id = 0
+        groupes_sameyear = {}
+
+        # Déterminer les groupes sameyear chemin par chemin
+        for i, node3 in enumerate(chemin):
+            if i == 0 or nd.loc[node3, 'sameyear'] == 'f':
+                groupe_id += 1  # Nouveau groupe
+            groupes_sameyear[node3] = groupe_id  # Associer le nœud à son groupe
+        # Si le premier noeud est en sameyear on associe son groupe à toutes les connexions qui ont le meme groupe que le dernier neoud
+        if nd.loc[chemin[0], 'sameyear'] == 't':
+            list_node_same_grp_as_last = [key for key, value in groupes_sameyear.items() if value == groupes_sameyear[chemin[-1]]]
+            for key in list_node_same_grp_as_last: groupes_sameyear[key] = groupes_sameyear[chemin[0]]
+
+        # Calculer le poids du chemin (produit) et Ajouter les infos de couples connexions/chemins
+        for i in range(len(chemin) - 1):
+            nd_prec, nd_suiv = chemin[i], chemin[i + 1]
+            if (nd_prec, nd_suiv) in connexions:
+                poid_chemin *= connexions[(nd_prec, nd_suiv)]['freq'] / 100  # Convertir en probabilité
+                lst_couples_connexion_chemins.append({
+                    'connexion_id': connexions[(nd_prec, nd_suiv)]['conx_id'],
+                    'chemin_id': chemin,
+                    'groupe_sameyear': groupes_sameyear[nd_suiv],  # La connexion prend le groupe du noeud suivant
+                    'abs': connexions[(nd_prec, nd_suiv)]['abs']
+                })
+        # Ajout des connexions des nœuds terminaux vers le premier nœud
+        if chemin[-1] in end_nodes and (chemin[-1], chemin[0]) in connexions:
+            poid_chemin *= connexions[(chemin[-1], chemin[0])]['freq'] / 100
+            lst_couples_connexion_chemins.append({
+                'connexion_id': connexions[(chemin[-1], chemin[0])]['conx_id'],
+                'chemin_id': chemin,
+                'groupe_sameyear': groupes_sameyear[chemin[0]],  # La connexion prend le groupe du premier noeud
+                'abs': connexions[(chemin[-1], chemin[0])]['abs']
+            })
+        
+        # Nombre d'année (soit le nombre de groupe sameyear après avoir enlever les connexions absentes)
+        nb_annee = len({entry['groupe_sameyear'] for entry in lst_couples_connexion_chemins if \
+                            (entry['abs'] == 'f') & (entry['chemin_id'] == chemin)})
+        if nb_annee == 0 : nb_annee = 1
+        # Ajouter les infos des chemins, dont le poids des chemins après recalcul sans conx absente
+        lst_chemins.append({
+            'chemin_id': chemin,
+            'pd_chem' : poid_chemin,
+            'poids_conx_standard': poid_chemin / nb_annee,
+            'synth_id': sy
+        })
+
+    # Convertir en DataFrame
+    df_chemins = pd.DataFrame.from_records(lst_chemins)
+    df_chemins['chemin_id'] = df_chemins['chemin_id'].astype('str')
+    df_couples_connexion_chemins = pd.DataFrame.from_records(lst_couples_connexion_chemins)
+    df_couples_connexion_chemins['chemin_id'] = df_couples_connexion_chemins['chemin_id'].astype('str')
+
+    # Merge chemin sur les couples cx_ch
+    df_couples_connexion_chemins = df_couples_connexion_chemins.merge(df_chemins, on = 'chemin_id', how = 'left')
+
+    # Avoir le facteur de normalisation pour chaque chemin soit la somme des poids de connexions standard présentes dans le chemin divisé par le poids du chemin
+    chemin_normalisation = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
+        groupby(['chemin_id']).agg(
+            facteur_normalisation=('poids_conx_standard', lambda x: x.sum() / df_couples_connexion_chemins.loc[x.index, 'pd_chem'].iloc[0])
+            ).reset_index()
+
+    # Avoir le compte du nombre de connexions active (abs == 'f') ayant le meme chemin ET le meme groupe_sameyear
+    nb_grp_sameyear_overall = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
+        groupby(['chemin_id', 'groupe_sameyear']).size().reset_index(name='count_grp_sameyear_overall')
+    
+    all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
+    all_df = all_df.merge(chemin_normalisation, on=['chemin_id'], how='left')
+
+    # Calculer le vrai poids de connexion final (poids_conx_standard / count_grp_sameyear_overall)
+    all_df['proba_conx_spatiotemp'] = all_df['poids_conx_standard'] / all_df['count_grp_sameyear_overall']
+
+    # Normalisation des poids de connexions pour l'agrégation, au niveau des chemins
+    all_df['poids_conx_agregation'] = all_df['poids_conx_standard'] / all_df['facteur_normalisation']
+
+    # Supprimer le poids de connexion des connexions absentes
+    all_df.drop(['pd_chem', 'poids_conx_standard', 'facteur_normalisation'], axis=1, inplace=True)
+    all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
+    all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
+
+    return all_df
+
+
+def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool = True):
+    ''' 
+    Le but est d'obtenir un Dataframe avec les poids des connexions au sein du stynhétisé.
+    Avec le poids des connexions pour l'agrégation (indicateur à l'itk) et la probabilité d'apparition de la connexion (indicateur à l'année, ou proportion spatio-temporelle de la culture). 
+    On exporte aussi le dataframe intermédiaire qui est très utile avec les couples connexions-chemins
+
+    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion annualisé soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. Ce poids de connexion annualisé correspond au poids de la connexion à utiliser pour faire les agrégrations d'indicateurs. On le normalise pour qu'ils somment à 1 (càd diviser chaque poids par la somme des autres).
+    Puis pour chaque connexion on donne ce poids de connexion annualisé divisé par le nombre de connexions dans le groupe de même camapgne qui ne sont pas absente. Nous avons désormais la probabilité d'apparition des cultures.
+    Puis on passe en NA les connexions absentes pour le poids et la probabilité. 
+    Au final on fait une somme de ces indicateurs pour une meme connexion (car on était jusque là au niveau du couple connexion-chemin)
+    Attention, on filtre les synthétisés dont la somme des probabilités d'apparition de culture ne fait pas 1 ! (c'est le cas d'une trentaine de synthétisé qui ont des chemins entierrement composé de culture absentes)
+
+    Note(s):
+        Que pour les cultures assolées en synthétisé
+        Processus parralélisé à 70% des cores de la machine (4h30 --> 45min)
+
+    Echelle :
+        connexion_id
+        couple connexion_id-chemin_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'connection_synthetise'
+            - 'noeuds_synthetise'
+            Fonctions
+            - trouver_chemins(graphe, debut, fins)
+            - extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
+        parallelization_enabled (bool):
+            booléen indiquant si la parralélisation est active ou non
+
+
+
+    Returns:
+        1° : pd.Dataframe() des poids de connexion
+        2° : pd.Dataframe() des poids des couples connexion-chemin (donc avec connexion, chemins de noeuds, groupe de couples ayant la même campagne, connexion absente, poids du couple)
+    '''
+    
+    # Importation des données etmise en forme
+    conx = donnees['connection_synthetise'].copy()
+    noeud = donnees['noeuds_synthetise'].copy()
+
+    conx = conx[['id', 'frequence_source','culture_absente','source_noeuds_synthetise_id','cible_noeuds_synthetise_id']]\
+    .rename(columns={'id' : 'conx_id',
+                     'frequence_source' : 'freq',
+                     'culture_absente' : 'abs',
+                     'source_noeuds_synthetise_id' : 'nd_prec',
+                     'cible_noeuds_synthetise_id' : 'nd_suiv'})
+    noeud = noeud[['id', 'rang', 'fin_cycle','memecampagne_noeudprecedent', 'synthetise_id']]\
+        .rename(columns={'id' : 'nd_id',
+                        'fin_cycle' : 'end',
+                        'rang' : 'rang',
+                        'memecampagne_noeudprecedent' : 'sameyear',
+                        'synthetise_id' : 'synth_id'})
+
+    df = conx.merge(noeud[['nd_id','rang','end']].add_suffix('_prec'), left_on='nd_prec', right_on='nd_id_prec')\
+        .drop('nd_id_prec', axis=1)
+    df = df.merge(noeud.add_suffix('_suiv'), left_on='nd_suiv', right_on='nd_id_suiv').\
+        rename(columns={'synth_id_suiv' : 'synth_id'})\
+            .drop('nd_id_suiv', axis=1)
+
+    list_good_synth, _ = extract_good_rotation_diagram(donnees)
+
+    cx = df.loc[df['synth_id'].isin(list_good_synth)].set_index('conx_id').copy()
+    nd = noeud.loc[noeud['synth_id'].isin(list_good_synth)].set_index('nd_id').copy()
+
+
+    final_data = pd.DataFrame()
+
+    # On parrallelise la fonction principale process_sy() qui fait l'important des calculs.
+    # Utilisation de ProcessPoolExecutor avec X% des cœurs
+    ratio_cpu_use = 0.5
+    if parallelization_enabled:
+        print('Parallélisation de la fonction de calcull des poids de connexion :')
+        # si on est en mode réel, on active la parallélisation
+        partial_process_sy = partial(process_sy, cx=cx, nd=nd)
+        with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * ratio_cpu_use)) ) as executor:
+            results = list(tqdm(executor.map(partial_process_sy, list_good_synth), total=len(list_good_synth)))
+    else:
+        # si on est en mode TU, on désactive la parralélisation
+        results = [process_sy(sy, cx=cx, nd=nd) for sy in list_good_synth]
+
+    # Concaténation des résultats
+    final_data = pd.concat(results)
+
+    # On enleve les données qui ne somme pas à 1
+    test_sum_at_100 = final_data.copy()
+    test_sum_at_100 = test_sum_at_100[['poids_conx_agregation','proba_conx_spatiotemp','synth_id']].groupby('synth_id').agg({
+        'poids_conx_agregation' : 'sum',
+        'proba_conx_spatiotemp' : 'sum'
+    })
+    test_sum_at_100 = test_sum_at_100.loc[(round(test_sum_at_100['poids_conx_agregation'],2) != 1) | \
+                                          (round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1)].index
+
+    # print('Nombre de connexion qui ne somme pas à 100 : ', len(test_sum_at_100).astype('str'))
+
+    final_data = final_data.loc[~(final_data['synth_id'].isin(test_sum_at_100))]
+    final_data = final_data[['connexion_id','chemin_id','synth_id','groupe_sameyear','abs','poids_conx_agregation','proba_conx_spatiotemp']].rename(columns={'synth_id' : 'synthetise_id'})
+
+    # Somme des poids des couples cnx_chem pour aller à l'échelle connexion_id
+    final_data_conx_level = final_data[['connexion_id','synthetise_id','poids_conx_agregation','proba_conx_spatiotemp']].groupby('connexion_id').agg({
+        'synthetise_id' : lambda x : x.iloc[0],
+        'poids_conx_agregation' : lambda x : np.nan if all(x.isna()) else sum(x.dropna()),
+        'proba_conx_spatiotemp' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
+    }).reset_index()
+
+    # On choisit d'arrondir à 5 chiffres après la virgule :
+    final_data_conx_level['poids_conx_agregation'] = final_data_conx_level['poids_conx_agregation'].round(5)
+    final_data_conx_level['proba_conx_spatiotemp'] = final_data_conx_level['proba_conx_spatiotemp'].round(5)
+
+    final_data_conx_level = final_data_conx_level.set_index('connexion_id')
+    final_data = final_data.set_index('connexion_id')
+
+    # final_data_conx_level = échelle connexion /// final_data = échelle couples cnx_chem /// liste synthe somme pas à 1
+    return final_data_conx_level, final_data, test_sum_at_100
+
+
+def get_connexion_weight_in_synth_rotation_for_test(donnees):
+    """
+        Enveloppe pour tester le premier résultat de la fonction get_connexion_weight_in_synth_rotation_first_for plus facilement.
+    """
+    final_data_conx_level, _, _ = get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled=False)
+    return final_data_conx_level

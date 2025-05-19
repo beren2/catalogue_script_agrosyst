@@ -32,7 +32,7 @@ FROM entrepot_intervention_synthetise_manquant_agrege;
 
 
 -- on rajoute les informations sur les culture_id et culture intermediaire_id...
-CREATE TEMPORARY TABLE entrepot_intervention_synthetise_agrege_extanded AS 
+CREATE TEMPORARY TABLE IF NOT EXISTS entrepot_intervention_synthetise_agrege_extanded AS 
 SELECT 
     eisa.id, 
     eisa.plantation_perenne_synthetise_id, 

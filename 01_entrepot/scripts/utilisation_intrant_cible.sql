@@ -28,4 +28,5 @@ select
 	ppt.target as ref_cible_id,
 	ppt.category as categorie, 
 	ppt.codegroupeciblemaa as code_groupe_cible_maa
-	from phytoproducttarget ppt;
+	from phytoproducttarget ppt
+	where ppt.abstractphytoproductinputusage is not null;

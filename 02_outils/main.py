@@ -18,9 +18,11 @@ from scripts import nettoyage
 from scripts import restructuration 
 from scripts import indicateur
 from scripts import agregation
+from scripts import interoperabilite
 from scripts import outils_can
 from sqlalchemy import create_engine
 import pandas as pd
+import geopandas as gpd
 from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
@@ -103,21 +105,55 @@ def export_to_db(df, name):
             update_local_version_table(name)
     else :
         df.to_sql(name=name, con=engine, if_exists='replace')
+        engine.dispose()
     print("* CRÉATION TABLE ",name, " TERMINEE *")
+
+def convert_to_serializable(obj):
+    """ Permet de convertir un objet pandas en list ou dictionnaire """
+    if isinstance(obj, pd.Index):
+        return obj.tolist()
+    if isinstance(obj, pd.Series):
+        return obj.tolist()
+    if isinstance(obj, pd.DataFrame):
+        return obj.to_dict(orient='records')
+    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+
+def export_dict_to_catalogue(dic, name):
+    """ permet d'exporter un dictionnaire dans le catalgoue data/export_from_functions"""
+    pathway_for_data_to_export = 'data/export_from_functions/'
+    if('entrepot_' in name):
+        name = name[9:]
+    if(TYPE == 'local'):
+        with open(DATA_PATH + name + '.json', 'w', encoding="utf-8") as f:
+            json.dump(dic, f, default=convert_to_serializable, indent=4)
+    else :
+        with open(pathway_for_data_to_export + name + '.json', 'w', encoding="utf-8") as f:
+            json.dump(dic, f, default=convert_to_serializable, indent=4)
+    print("* CRÉATION DANS LE CATALOGUE DU DICTIONNAIRE ",name, " TERMINEE *")
+
 
 donnees = {}
 
-def import_df(df_name, path_data, sep):
+def import_df(df_name, path_data, sep, file_format='csv') :
     """
         importe un dataframe au chemin path_data+df_name+'.csv' et le stock dans le dictionnaire 'df' à la clé df_name
     """
     global donnees
-    if(DEBUG):
-        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
-    else:
-        donnees[df_name] = pd.read_csv(path_data+df_name+'.csv', sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'csv' :
+        if(DEBUG):
+            donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
+        else:
+            donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+    if file_format == 'json' and df_name.startswith('geoVec') :
+        # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
+        donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'gpkg' :
+        donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
-def import_dfs(df_names, data_path, sep = ',', verbose=False):
+
+# FAIRE UN IMPORT DF POUR EXTERNAL DATA !
+
+def import_dfs(df_names, data_path, sep = ',', verbose=False, file_format='csv'):
     """
         stocke dans le dictionnaire df tous les dataframes indiqués dans la liste df_names
     """
@@ -125,7 +161,7 @@ def import_dfs(df_names, data_path, sep = ',', verbose=False):
     pbar = tqdm(df_names)
     for df_name in pbar:
         pbar.set_description(f"Import de {df_name}")
-        import_df(df_name, data_path, sep)
+        import_df(df_name, data_path, sep, file_format=file_format)
 
 
 def copy_table_to_csv(table_name, csv_path, csv_name):
@@ -159,10 +195,23 @@ def download_datas(desired_tables, verbose=False):
     """
     copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
 
-def load_datas(desired_tables, verbose=False, path_data=DATA_PATH):
-    """ permet de chager les tables dans la variable globale donnees"""
+def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv'):
+    """ permet de charger les tables dans la variable globale donnees"""
     global donnees
-    import_dfs(desired_tables, path_data, verbose=True)
+    import_dfs(desired_tables, path_data, verbose=verbose, file_format=file_format)
+
+def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', need_perf=False):
+    """permet de charger les tables de l'entrepôt dans la variable globale donnée"""
+    filtered_tables = []
+    for desired_table in desired_tables:
+        if(not need_perf) :
+            # si on a pas besoin des performances, alors on enlève les tables de cette catégorie
+            if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] != "performance"):
+                filtered_tables.append(desired_table)
+        else :
+            filtered_tables.append(desired_table)
+    load_datas(filtered_tables, verbose=verbose, path_data=DATA_PATH, file_format=file_format)
+
 
 def check_files_exist(tables, path_data=DATA_PATH, verbose=False):
     """
@@ -270,7 +319,8 @@ def test_check_external_data(leaking_tables):
     # load des données externes
     load_datas(
         external_tables_existing, 
-        verbose=True, path_data=SOURCE_SPECS['outils']['external_data']['path']
+        verbose=True, 
+        path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
     
     all_passed = True
@@ -470,12 +520,30 @@ def create_category_restructuration():
     df_intervention_synthetise_restructure = restructuration.restructuration_intervention_synthetise(donnees)
     export_to_db(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
 
-def create_category_indicateur():
+
+def create_category_indicateur_0():
     """
-        Execute les requêtes pour créer les outils des indicateurs
+        Execute les requêtes pour créer les outils des indicateurs uniquement pour les fonctions de poids de connexions !
+        A faire passer avant indicateur_1 qui a besoin de la génération des poids de connexions et de la typologie_can_culture
     """
-    df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
-    export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
+    _, dict_extract_bad_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
+    export_dict_to_catalogue(dict_extract_bad_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
+
+    df_get_connexion_weight_in_synth_rotation, df_get_couple_connexion_paths, list_synthe_somme_pas_a_un = indicateur.get_connexion_weight_in_synth_rotation(donnees)
+    export_dict_to_catalogue(list_synthe_somme_pas_a_un, 'list_synthe_somme_pas_a_un')
+    export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')
+    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
+
+    df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
+    export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
+
+
+def create_category_indicateur_1():
+    """
+        Execute les requêtes pour créer les outils des indicateurs (sauf poids de conenxions et typo_can_culture, voir create_category_indicateur_0)
+    """
+    # df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
+    # export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
 
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
@@ -483,8 +551,30 @@ def create_category_indicateur():
     df_identification_pz0 = indicateur.identification_pz0(donnees)
     export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
 
-    df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
-    export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
+    df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
+    export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
+
+    # TODO : on fait appel à une fonction "get_recolte_realise_outils_can" car l'importance pour tout le monde de bénéficier de cet outil a été identifié à posteriori.
+    # Ce n'est pas idéal, il vaudrait mieux créer une fonction qui créer cette outil et faire appel à cet outil dans les outils can / le magasin can
+    df_action_realise_rendement_total = outils_can.get_recolte_realise_outils_can(donnees)
+    df_action_realise_rendement_total = df_action_realise_rendement_total.rename(columns={'action_id' : 'action_realise_id'})
+    export_to_db(df_action_realise_rendement_total, 'entrepot_action_realise_rendement_total')
+    
+    # TODO : cf commentaire plus haut : idem pour "get_recolte_synthetise_outils_can"
+    df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
+    df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
+    export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
+
+
+def create_category_interoperabilite():
+    """
+        Execute les requêtes pour créer les outils d'interopérabilité
+    """
+    df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
+    export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
+
+    df_donnees_spatiales_coord_gps_du_domaine = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
+    export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
 
 def create_category_outils_can():
     """
@@ -536,10 +626,12 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_surface_connexion_synthetise_indicateur = indicateur.get_surface_connexion_synthetise(donnees)
-    export_to_db(df_surface_connexion_synthetise_indicateur, 'entrepot_surface_connection_synthetise_indicateur')
 
+    df_get_connexion_weight_in_synth_rotation, _, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
 
+    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
+
+    print('Fin du test de poids_connexions_synthetise_rotation')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -547,7 +639,8 @@ steps = [
     {'source' : 'outils', 'category' : 'agregation'},
     {'source' : 'outils', 'category' : 'agregation_complet'},
     {'source' : 'outils', 'category' : 'restructuration'},
-    {'source' : 'outils', 'category' : 'indicateur'},
+    {'source' : 'outils', 'category' : 'indicateur_0'},
+    {'source' : 'outils', 'category' : 'indicateur_1'},
     {'source' : 'outils', 'category' : 'outils_can'}
 ]
 
@@ -617,7 +710,6 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         if(TYPE == 'distant'):
             print("* TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             download_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
-
         # Vérification que toutes les données sont présentes pour la première catégorie
         error_code_findable, error_message_findable = test_all_findable_for_category(steps[0]['category'])
         print(error_message_findable)
@@ -632,9 +724,13 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
                 # Chargement des données
                 print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, need_perf=False)
                 print("* CHARGEMENT DES DONNÉES EXTERNES *")
                 load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                 print("* CHARGEMENT DES RÉFÉRENTIELS *")
                 print("Attention, penser à les mettre à jour manuellement.")
                 load_ref()
@@ -742,6 +838,10 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                 print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                 load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                 print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
                 print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
@@ -753,11 +853,19 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 # on vérifie que les données n'ont pas été déjà chargées
                 if('domaine' not in donnees):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                    load_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
+                    load_datas_entrepot(
+                        list(SOURCE_SPECS['entrepot']['tables'].keys()), 
+                        verbose=False,
+                        need_perf=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance']=="True")
+                    )
                     load_ref()
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                    print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False,path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                     print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
                     
                 print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")

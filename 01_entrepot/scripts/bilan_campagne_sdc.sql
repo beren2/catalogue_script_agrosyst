@@ -134,8 +134,8 @@ bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
 from pestmaster pm
 join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle pression adventice assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise adventice assolee') trad2 on pm.masterscale = trad2.nom_base
 where pm.agressor like '%Adventic%'
 union
 select 
@@ -159,8 +159,8 @@ from pestmaster pm
 join croppestmaster cm on pm.croppestmaster = cm.topiaid
 join entrepot_BC_sdc_assolee_maitrise_agresseur bcsama on bcsama.id = pm.croppestmaster 
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur assolee') trad1 on pm.pressurescale = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
 where pm.agressor like '%Nuisible%';
 
 
@@ -195,8 +195,8 @@ replace(replace(vm.advisercomments,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS c
 vm.reportgrowingsystem BC_sdc_generalites_id
 from versemaster vm
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de risque verse') trad1 on vm.riskscale = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de risque verse') trad1 on vm.riskscale = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
 join entrepot_BC_sdc_generalites e on e.id = vm.reportgrowingsystem;
 
 alter table entrepot_BC_sdc_assolee_verse
@@ -279,8 +279,8 @@ ebama.id as BC_sdc_arbo_maitrise_agresseur_id
 from arboadventicemaster a 
 join entrepot_BC_sdc_arbo_maitrise_agresseur ebama on a.arbocropadventicemaster = ebama.id
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise arbo adv') trad1 on a.masterscale = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution enherbement arbo adv') trad2 on a.grassingevolution = trad2.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise arbo adv') trad1 on a.masterscale = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'evolution enherbement arbo adv') trad2 on a.grassingevolution = trad2.nom_base 
 ;
 
 alter table entrepot_BC_sdc_arbo_adventice
@@ -319,13 +319,13 @@ a.arbocroppestmaster as BC_sdc_arbo_maitrise_agresseur_id
 from arbopestmaster a
 join entrepot_BC_sdc_arbo_maitrise_agresseur ebsama on a.arbocroppestmaster = ebsama.id
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur arbo') trad1 on a.pressurescale = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution pression arbo maladie ravageur') trad2 on a.pressureevolution = trad2.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur arbo') trad3 on a.masterscale = trad3.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad4 on a.percentaffectedplots = trad4.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad5 on a.percentaffectedtrees = trad5.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad6 on a.percentdamagefruits = trad6.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad7 on a.percentdamageleafs = trad7.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur arbo') trad1 on a.pressurescale = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'evolution pression arbo maladie ravageur') trad2 on a.pressureevolution = trad2.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur arbo') trad3 on a.masterscale = trad3.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad4 on a.percentaffectedplots = trad4.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad5 on a.percentaffectedtrees = trad5.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad6 on a.percentdamagefruits = trad6.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad7 on a.percentdamageleafs = trad7.nom_base 
 ;
 
 alter table entrepot_BC_sdc_arbo_ravageur_maladie
@@ -365,7 +365,7 @@ from reportgrowingsystem rgs
 join entrepot_sdc es on es.id = rgs.growingsystem
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid 
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle pression adventice viti') trad1 on rgs.vitiadventicepressurescale = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle pression adventice viti') trad1 on rgs.vitiadventicepressurescale = trad1.nom_base 
 where es.filiere = 'VITICULTURE';
 
 alter table entrepot_BC_sdc_viti_adventice
@@ -412,13 +412,13 @@ v.grapediseaseattackrateprecisevalue as notre_intensite_attaque_grappe_EXPE
 from vitipestmaster v
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (v.reportgrowingsystemvitidiseasemaster,v.reportgrowingsystemvitipestmaster)
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque maladie feuille') trad1 on v.leafdiseaseattackrate = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs feuille') trad2 on v.leafpestattackrate = trad2.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque maladie grappe') trad3 on v.grapediseaseattackrate = trad3.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs grappe') trad4 on v.grapepestattackrate = trad4.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur viti') trad5 on v.pressurescale = trad5.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'evolution pression viti maladie ravageur') trad6 on v.pressureevolution = trad6.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur viti') trad7 on v.masterscale = trad7.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'Note globale attaque maladie feuille') trad1 on v.leafdiseaseattackrate = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs feuille') trad2 on v.leafpestattackrate = trad2.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'Note globale attaque maladie grappe') trad3 on v.grapediseaseattackrate = trad3.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'Note globale attaque ravageurs grappe') trad4 on v.grapepestattackrate = trad4.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de pression maladie ravageur viti') trad5 on v.pressurescale = trad5.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'evolution pression viti maladie ravageur') trad6 on v.pressureevolution = trad6.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur viti') trad7 on v.masterscale = trad7.nom_base 
 ;
 
 alter table entrepot_BC_sdc_viti_maladie_ravageur
@@ -467,9 +467,9 @@ case
 	when yl.yieldobjective is not null then trad1.traduction_interface
 	when yl.yieldobjectiveint is not null then trad2.traduction_interface
 end objectif_rendement_atteint,
-yl.cause1 as cause1,
-yl.cause2 as cause2,
-yl.cause3 as cause3,
+yl.cause1 as cause_1,
+yl.cause2 as cause_2,
+yl.cause3 as cause_3,
 replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid as BC_sdc_generalites_id
@@ -479,16 +479,16 @@ left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
 left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
 where gs.sector <> 'VITICULTURE' and (yi.topiaid is not null or yl.topiaid is not null)
 union 
 select 
 'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(rgs.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
 trad1.traduction_interface as objectif_rendement_atteint,
-rgs.vitilosscause1 as cause1,
-rgs.vitilosscause2 as cause2,
-rgs.vitilosscause3 as cause3,
+rgs.vitilosscause1 as cause_1,
+rgs.vitilosscause2 as cause_2,
+rgs.vitilosscause3 as cause_3,
 replace(replace(rgs.vitiyieldquality,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
 rgs.topiaid BC_sdc_generalites_id
@@ -497,7 +497,7 @@ join growingsystem gs on gs.topiaid = rgs.growingsystem
 left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem and yi.sector = 'VITICULTURE'
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on rgs.vitiyieldobjective = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on rgs.vitiyieldobjective = trad1.nom_base 
 where gs.sector = 'VITICULTURE'
 ;
 
@@ -526,10 +526,10 @@ replace(replace(fm.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS commentai
 ebcsg.id BC_sdc_generalites_id
 from foodmaster fm 
 -- traductions des libelles
-left join (select * from BC_sdc_traduction where nom_rubrique = 'irrigation') trad1 on fm.foodirrigation = trad1.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad2 on fm.hydriquestress = trad2.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad3 on fm.azotestress = trad3.nom_base 
-left join (select * from BC_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'irrigation') trad1 on fm.foodirrigation = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad2 on fm.hydriquestress = trad2.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad3 on fm.azotestress = trad3.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = fm.foodmasterreportgrowingsystem ;
 
 alter table entrepot_BC_sdc_alimentation

@@ -1,36 +1,85 @@
 CREATE TABLE entrepot_materiel AS
 SELECT 
-e.topiaid as id,
-e.code,
-e."name" as nom,
-d.campagne,
-CASE e.materieleta
-      WHEN true THEN 'oui'
-      WHEN false THEN 'non'
-END materiel_ETA_CUMA,
-case 
-	when e.refmateriel like '%Traction%' then 'Tracteur'
-	when e.refmateriel like '%Automoteur%' then 'Automoteur'
-	when e.refmateriel like '%Outil%' then 'Outil'
-	when e.refmateriel like '%Irrigation%' then 'Irrigation'
-end categorie_materiel,
-rm.topiaid as ref_materiel_id,
-rm.idtypemateriel type_materiel,
-rm.typemateriel1 as materiel_caracteristique1,
-rm.typemateriel2 as materiel_caracteristique2,
-rm.typemateriel3 as materiel_caracteristique3,
-rm.typemateriel4 as materiel_caracteristique4,
-rm.uniteparan as utilisation_annuelle,
-rm.unite as utilisation_annuelle_unite,
-rm.chargesfixesparunitedevolumedetravailannuel AS cout_par_unite_travail_annuel,
-d.id as domaine_id
-FROM equipment e
-JOIN entrepot_domaine d on e."domain" = d.id -- obtention uniquement des domaines actifs
-JOIN refmateriel rm ON e.refmateriel = rm.topiaid;
+    rm.topiaid as id,
+    case 
+        when rm.topiadiscriminator like '%Traction%' then 'Tracteur'
+        when rm.topiadiscriminator like '%Automoteur%' then 'Automoteur'
+        when rm.topiadiscriminator like '%Outil%' then 'Outil'
+        when rm.topiadiscriminator like '%Irrigation%' then 'Irrigation'
+    end categorie,
+    rm.typemateriel1 as type_materiel_1,
+    rm.typemateriel2 as type_materiel_2,
+    rm.typemateriel3 as type_materiel_3,
+    rm.typemateriel4 as type_materiel_4,
+    rm.uniteparan as unite_par_an,
+    rm.unite,
+    rm.active,
+    rm.idtypemateriel as id_type_materiel,
+    rm.codetype as code_type,
+    rm.idsoustypemateriel as id_sous_type_materiel,
+    rm.commentairesurmateriel as commentaire_sur_materiel,
+    rm.millesime,
+    rm.coderef as code_ref,
+    rm.prixneufunite as prix_neuf_unite,
+    rm.prixmoyenachat as prix_moyen_achat,
+    rm.chargesfixesparan as charges_fixes_par_an,
+    rm.chargesfixesparunitedevolumedetravailannuelunite as charges_fixes_par_unite_de_volume_de_travail_annuel_unite,
+    rm.chargesfixesparunitedevolumedetravailannuel as charges_fixes_par_unite_de_volume_de_travail_annuel,
+    rm.energieunite as energie_unite,
+    rm.coutenergieparunitedetravail as cout_energie_par_unite_de_travail,
+    rm.couttotalunite as cout_total_unite,
+    rm.couttotalparunitedetravailannuel as cout_total_par_unite_de_travail_annuel,
+    rm.code_materiel_gestim,
+    rm.masse,
+    rm.duree_vie_theorique,
+    rm.codeedi as code_edi,
+    rm.source,
+    rm.chargesfixesannuelleunite as charges_fixes_annuelles_unite,
+    rm.reparationsunite as reparations_unite,
+    rm.reparationsparunitedetravailannuel as reparations_par_unite_de_travail_annuel,
+    rm.carburantcoutunite as carburant_cout_unite,
+    rm.carburantparunitedetravail as carburant_par_unite_de_travail,
+    rm.lubrifiantcoutunite as lubrifiant_cout_unite,
+    rm.lubrifiantparunitedetravail as lubrifiant_par_unite_de_travail,
+    rm.couttotalaveccarburantparunitedetravailannuel as cout_total_avec_carburant_par_unite_de_travail_annuel,
+    rm.couttotalsanscarburantparunitedetravailannuel as cout_total_sans_carburant_par_unite_de_travail_annuel,
+    rm.puissancechiso as puissance_ch_iso,
+    rm.volumecarterhuilemoteurunite as volume_carter_huile_moteur_unite,
+    rm.volumecarterhuilemoteur as volume_carter_huile_moteur,
+    rm.performanceunite as performance_unite,
+    rm.performance,
+    rm.performancecouttotalunite as performance_cout_total_unite,
+    rm.performancecouttotalaveccarburantparh as performance_cout_total_avec_carburant_par_h,
+    rm.performancecouttotalsanscarburantparh as performance_cout_total_sans_carburant_par_h,
+    rm.donneestauxdechargemoteur as donnees_taux_de_charge_moteur,
+    rm.donneesamortissement1 as donnees_amortissement_1,
+    rm.donneesamortissement2 as donnees_amortissement_2,
+    rm.donneestransport1unite as donnees_transport_1_unite,
+    rm.donneestransport1 as donnees_transport_1,
+    rm.donneestransport2unite as donnees_transport_2_unite,
+    rm.donneestransport2 as donnees_transport_2,
+    rm.donneestransport3unite as donnees_transport_3_unite,
+    rm.donneestransport3 as donnees_transport_3,
+    rm.puissancechisounite as puissance_ch_iso_unite,
+    rm.pneuscoutunite as pneus_cout_unite,
+    rm.pneusparunitedetravail as pneus_par_unite_de_travail,
+    rm.volumecarterhuilebvunite as volume_carter_huile_bv_unite,
+    rm.volumecarterhuilebv as volume_carter_huile_bv,
+    rm.pneusavtaille as pneus_av_taille,
+    rm.pneusavprix as pneus_av_prix,
+    rm.pneusavprixunite as pneus_av_prix_unite,
+    rm.pneusavdureevieunite as pneus_av_duree_vie_unite,
+    rm.pneusavdureevie as pneus_av_duree_vie,
+    rm.pneusarprixunite as pneus_ar_prix_unite,
+    rm.pneusarprix as pneus_ar_prix,
+    rm.pneusardureevieunite as pneus_ar_duree_vie_unite,
+    rm.pneusardureevie as pneus_ar_duree_vie,
+    rm.performancecouttotal as performance_cout_total,
+    rm.donneespuissance1adequateunite as donnees_puissance_1_adequate_unite,
+    rm.donneespuissance1adequate as donnees_puissance_1_adequate,
+    rm.petitmateriel as petit_materiel
+FROM refmateriel rm;
 
-alter table entrepot_materiel
-add constraint materiel_PK
+ALTER TABLE entrepot_materiel
+ADD CONSTRAINT entrepot_materiel_PK
 PRIMARY KEY (id);
-
-alter table entrepot_materiel
-ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);
