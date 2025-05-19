@@ -17,7 +17,7 @@ select
     em.appartient_eta_cuma,
     em.nom as composant_nom
 from entrepot_composant_parc_materiel em
-left join entrepot_combinaison_outil eco on eco.tracteur_materiel_id = em.id 
+left join entrepot_combinaison_outil eco on eco.tracteur_composant_parc_materiel_id = em.id 
 left join entrepot_domaine ed on ed.id = em.domaine_id
 join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id
 where em.categorie in ('Automoteur', 'Tracteur')
@@ -36,7 +36,7 @@ select
     em.appartient_eta_cuma,
     em.nom as composant_nom
 from entrepot_composant_parc_materiel em 
-left join entrepot_combinaison_outil_materiel ecom on ecom.materiel_id = em.id
+left join entrepot_combinaison_outil_composant_parc_materiel ecom on ecom.composant_parc_materiel_id = em.id
 left join entrepot_combinaison_outil eco on eco.id = ecom.combinaison_outil_id
 left join entrepot_domaine ed on ed.id = em.domaine_id
 join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id
