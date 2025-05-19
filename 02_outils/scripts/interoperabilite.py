@@ -142,6 +142,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
                 - safran : geopackage safran téléchargé sur le site de SICLIMA. GPKG
                 - geoVec_rmqs : geojson des identifiants des sites du projet RMQS (2 campagnes distinctes). JSON
                 - geofla : référentiel avec un code insee (2024) et une liste d'identifiant geofla (2015)
+                - ruralite : référentiel avec un code insee (2024) et une typologie de ruralité (0 à 9). Si le codeinsee date de 2024, le dvlpmt des typologies de ruralité a été mené par le DATAR en 2003 et 2011.
 
     Retourne:
         pd.DataFrame:
@@ -154,6 +155,7 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
             - 'rmqs_date_sampl' = date d'échantillonnage sur le site RMQS en question (attention 2 campagnes distinctes)
             - 'rmqs_dist_site' = distances entre le centroide de la commune métropolitaine la plus proche du site RMQS indiqué et le point du site RMQS indiqué
             - 'geofla_2015_id' = liste d'identifiant geofla pour chaque code insee. Attention geofla est obsolete !
+            - 'typo_ruralite" = typologie de ruralité de la commune (0 à 9)
 
     Notes:
         make_spatial_interoperation_btw_codeinsee_and_spatial_id() est une fonction permettant de générer un Dataframe qui donne le rattachement commune/maille safran/site RMQS
@@ -170,15 +172,33 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
         'id' : 'commune_id'
         }).copy()
     df_geofla = donnees['geofla'].copy()
+    df_typoruralite = donnees['ruralite'][['codeinsee','typo_ruralite']].copy()
 
     df_spatial = make_spatial_interoperation_btw_codeinsee_and_spatial_id(
         donnees
     )
 
-    # merge
+    # Passer les codeinsee en str pour toutes les tables, surtout à cause des None lors du mode DEBUG
+    df_commune['codeinsee'] = df_commune['codeinsee'].astype(str)
+    df_spatial['codeinsee'] = df_spatial['codeinsee'].astype(str)
+    df_geofla['codeinsee'] = df_geofla['codeinsee'].astype(str)
+    df_typoruralite['codeinsee'] = df_typoruralite['codeinsee'].astype(str)
+
+    # Merge
     df = df_domaine.merge(df_commune, on = 'commune_id', how='left')
     df = df.merge(df_spatial, on = 'codeinsee', how='left')
     df = df.merge(df_geofla, on = 'codeinsee', how='left')
+    df = df.merge(df_typoruralite, on = 'codeinsee', how='left')
+    # 0 ==> Hors champ : DOM ou commune urbaine
+    # 1 ==> Les petites polarités industrielles et artisanales
+    # 2 ==> Les petites polarités mixtes
+    # 3 ==> Les ruralités productives agricoles
+    # 4 ==> Les ruralités productives ouvrières
+    # 5 ==> Les ruralités résidentielles aisées
+    # 6 ==> Les ruralités résidentielles mixtes
+    # 7 ==> Les ruralités touristiques à dominante résidentielles
+    # 8 ==> Les ruralités touristiques spécialisées
+    # 9 ==> Communes ayant changé de périmètre depuis la réalisation de la typologie
 
     df = df.set_index('domaine_id')
 

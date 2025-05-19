@@ -7,6 +7,7 @@ from concurrent.futures import ProcessPoolExecutor
 from functools import partial
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 from scripts.utils import fonctions_utiles
 from scripts.utils import get_surfaces_connections_synthetise
 
@@ -1173,7 +1174,7 @@ def process_sy(sy, cx, nd):
         lst_chemins.append({
             'chemin_id': chemin,
             'pd_chem' : poid_chemin,
-            'poids_conx_agregation': poid_chemin / nb_annee,
+            'poids_conx_standard': poid_chemin / nb_annee,
             'synth_id': sy
         })
 
@@ -1186,20 +1187,29 @@ def process_sy(sy, cx, nd):
     # Merge chemin sur les couples cx_ch
     df_couples_connexion_chemins = df_couples_connexion_chemins.merge(df_chemins, on = 'chemin_id', how = 'left')
 
+    # Avoir le facteur de normalisation pour chaque chemin soit la somme des poids de connexions standard présentes dans le chemin divisé par le poids du chemin
+    chemin_normalisation = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
+        groupby(['chemin_id']).agg(
+            facteur_normalisation=('poids_conx_standard', lambda x: x.sum() / df_couples_connexion_chemins.loc[x.index, 'pd_chem'].iloc[0])
+            ).reset_index()
+
     # Avoir le compte du nombre de connexions active (abs == 'f') ayant le meme chemin ET le meme groupe_sameyear
     nb_grp_sameyear_overall = df_couples_connexion_chemins[df_couples_connexion_chemins['abs'] == 'f'].\
         groupby(['chemin_id', 'groupe_sameyear']).size().reset_index(name='count_grp_sameyear_overall')
+    
     all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
+    all_df = all_df.merge(chemin_normalisation, on=['chemin_id'], how='left')
 
-    # Calculer le vrai poids de connexion final (poids_conx_agregation / count_grp_sameyear_overall)
-    all_df['proba_conx_spatiotemp'] = all_df['poids_conx_agregation'] / all_df['count_grp_sameyear_overall']
+    # Calculer le vrai poids de connexion final (poids_conx_standard / count_grp_sameyear_overall)
+    all_df['proba_conx_spatiotemp'] = all_df['poids_conx_standard'] / all_df['count_grp_sameyear_overall']
+
+    # Normalisation des poids de connexions pour l'agrégation, au niveau des chemins
+    all_df['poids_conx_agregation'] = all_df['poids_conx_standard'] / all_df['facteur_normalisation']
 
     # Supprimer le poids de connexion des connexions absentes
+    all_df.drop(['pd_chem', 'poids_conx_standard', 'facteur_normalisation'], axis=1, inplace=True)
     all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
     all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
-
-    # Normalisation des poids de connexions pour l'agrégation
-    all_df['poids_conx_agregation'] = all_df['poids_conx_agregation'] / all_df['poids_conx_agregation'].sum()
 
     return all_df
 
@@ -1274,12 +1284,14 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     final_data = pd.DataFrame()
 
     # On parrallelise la fonction principale process_sy() qui fait l'important des calculs.
-    # Utilisation de ProcessPoolExecutor avec 70% des cœurs
+    # Utilisation de ProcessPoolExecutor avec X% des cœurs
+    ratio_cpu_use = 0.5
     if parallelization_enabled:
+        print('Parallélisation de la fonction de calcull des poids de connexion :')
         # si on est en mode réel, on active la parallélisation
         partial_process_sy = partial(process_sy, cx=cx, nd=nd)
-        with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * 0.5)) ) as executor:
-            results = list(executor.map(partial_process_sy, list_good_synth))
+        with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * ratio_cpu_use)) ) as executor:
+            results = list(tqdm(executor.map(partial_process_sy, list_good_synth), total=len(list_good_synth)))
     else:
         # si on est en mode TU, on désactive la parralélisation
         results = [process_sy(sy, cx=cx, nd=nd) for sy in list_good_synth]
@@ -1299,10 +1311,11 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     # print('Nombre de connexion qui ne somme pas à 100 : ', len(test_sum_at_100).astype('str'))
 
     final_data = final_data.loc[~(final_data['synth_id'].isin(test_sum_at_100))]
-    final_data = final_data[['connexion_id','chemin_id','groupe_sameyear','abs','poids_conx_agregation','proba_conx_spatiotemp']]
+    final_data = final_data[['connexion_id','chemin_id','synth_id','groupe_sameyear','abs','poids_conx_agregation','proba_conx_spatiotemp']].rename(columns={'synth_id' : 'synthetise_id'})
 
     # Somme des poids des couples cnx_chem pour aller à l'échelle connexion_id
-    final_data_conx_level = final_data[['connexion_id','poids_conx_agregation','proba_conx_spatiotemp']].groupby('connexion_id').agg({
+    final_data_conx_level = final_data[['connexion_id','synthetise_id','poids_conx_agregation','proba_conx_spatiotemp']].groupby('connexion_id').agg({
+        'synthetise_id' : lambda x : x.iloc[0],
         'poids_conx_agregation' : lambda x : np.nan if all(x.isna()) else sum(x.dropna()),
         'proba_conx_spatiotemp' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
     }).reset_index()

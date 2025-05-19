@@ -480,7 +480,8 @@
 				],
 				"csv_geo" : [
 					"referentiel_geographique_fr_esr_unique",
-					"geofla"
+					"geofla",
+					"ruralite"
 				]
 			}
 		},
