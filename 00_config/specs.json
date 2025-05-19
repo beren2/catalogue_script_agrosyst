@@ -17,8 +17,8 @@
 			"parcelle_type",
 			"synthetise",
 			"culture",
-			"composant_parc_materiel",
 			"materiel",
+			"composant_parc_materiel",
 			"combinaison_outil",
 			"composant_culture",
 			"atelier_elevage",
@@ -78,8 +78,7 @@
 			"levier",
 			"texture_sol",
 			"fertilisation_organique",
-			"fertilisation_minerale",
-			"adventice"
+			"fertilisation_minerale"
 		],
 		"tables": {
 			"semence" : {
@@ -294,7 +293,7 @@
 				"file_name" : "combinaison_outil",
 				"category" : "autre"
 			},
-			"combinaison_outil_materiel":{
+			"combinaison_outil_composant_parc_materiel":{
 				"file_name" : "combinaison_outil",
 				"category" : "autre"
 			},
