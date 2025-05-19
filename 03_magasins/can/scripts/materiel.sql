@@ -12,22 +12,15 @@ select
     eco.id as combinaison_outil_id,
     eco.code as combinaison_outil_code,
     eco.nom as combinaison_outils_nom,
-    em.ref_materiel_id as materiel_ref_id,
-    em.id as materiel_id,
-    em.materiel_eta_cuma,
-    em.nom as materiel_nom,
-    em.materiel_caracteristique1,
-    em.materiel_caracteristique2,
-    em.materiel_caracteristique3,
-    em.materiel_caracteristique4,
-    em.utilisation_annuelle,
-    em.utilisation_annuelle_unite,
-    em.cout_par_unite_travail_annuel
-from entrepot_materiel em
+    em.materiel_id as materiel_ref_id,
+    em.id as composant_id,
+    em.appartient_eta_cuma,
+    em.nom as composant_nom
+from entrepot_composant_parc_materiel em
 left join entrepot_combinaison_outil eco on eco.tracteur_materiel_id = em.id 
 left join entrepot_domaine ed on ed.id = em.domaine_id
 join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id
-where em.categorie_materiel in ('Automoteur', 'Tracteur')
+where em.categorie in ('Automoteur', 'Tracteur')
 union all
 -- cas 2 : on sélectionne les materiels classiques
 select 
@@ -38,20 +31,13 @@ select
     eco.id as combinaison_outil_id,
     eco.code as combinaison_outil_code,
     eco.nom as combinaison_outils_nom,
-    em.ref_materiel_id as materiel_ref_id,
-    em.id as materiel_id,
-    em.materiel_eta_cuma,
-    em.nom as materiel_nom,
-    em.materiel_caracteristique1,
-    em.materiel_caracteristique2,
-    em.materiel_caracteristique3,
-    em.materiel_caracteristique4,
-    em.utilisation_annuelle,
-    em.utilisation_annuelle_unite,
-    em.cout_par_unite_travail_annuel
-from entrepot_materiel em 
+    em.materiel_id,
+    em.id as composant_id,
+    em.appartient_eta_cuma,
+    em.nom as composant_nom
+from entrepot_composant_parc_materiel em 
 left join entrepot_combinaison_outil_materiel ecom on ecom.materiel_id = em.id
 left join entrepot_combinaison_outil eco on eco.id = ecom.combinaison_outil_id
 left join entrepot_domaine ed on ed.id = em.domaine_id
 join entrepot_domaine_filtres_outils_can edifoc on ed.id = edifoc.id
-where em.categorie_materiel in ('Outil', 'Irrigation');
+where em.categorie in ('Outil', 'Irrigation');

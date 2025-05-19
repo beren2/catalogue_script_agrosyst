@@ -194,28 +194,28 @@ def get_composant_culture_outils_can(donnees):
     df_espece = donnees['espece'].set_index('id')
     df_variete = donnees['variete'].set_index('id')
 
-    # on créer un dataframe df_composant_culture_extanded contenant toutes les informations nécessaires (espece + var)
+    # on créer un dataframe df_composant_culture_extended contenant toutes les informations nécessaires (espece + var)
     left = df_composant_culture
     right = df_espece[
         ['libelle_espece_botanique', 'libelle_qualifiant_aee', 
          'libelle_type_saisonnier_aee', 'libelle_destination_aee']
     ]
-    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+    df_composant_culture_extended = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
 
-    left = df_composant_culture_extanded
+    left = df_composant_culture_extended
     right = df_variete[
         ['denomination']
     ].rename(columns={'denomination' : 'var'})
-    df_composant_culture_extanded = pd.merge(left, right, left_on='variete_id', right_index=True, how='left')
+    df_composant_culture_extended = pd.merge(left, right, left_on='variete_id', right_index=True, how='left')
 
     # On fill les NaN avec ''
-    df_composant_culture_extanded= df_composant_culture_extanded.fillna('')
+    df_composant_culture_extended= df_composant_culture_extended.fillna('')
 
     # On crée la description succinte de l'espèce 
-    df_composant_culture_extanded.loc[:, 'esp'] = df_composant_culture_extanded[['libelle_espece_botanique']]
+    df_composant_culture_extended.loc[:, 'esp'] = df_composant_culture_extended[['libelle_espece_botanique']]
 
     # On créé la chaîne correspondant à la description complète du composant de culture
-    df_composant_culture_extanded.loc[:, 'esp_complet'] = df_composant_culture_extanded[[
+    df_composant_culture_extended.loc[:, 'esp_complet'] = df_composant_culture_extended[[
         'libelle_espece_botanique', 
         'libelle_qualifiant_aee', 
         'libelle_type_saisonnier_aee', 
@@ -223,25 +223,25 @@ def get_composant_culture_outils_can(donnees):
     ]].agg(' '.join, axis=1).str.split().str.join(' ')
 
     # On ajoute l'information de la variété
-    df_composant_culture_extanded.loc[
-        df_composant_culture_extanded['var'] !=  '', 'var'
-    ] = df_composant_culture_extanded.loc[df_composant_culture_extanded['var'] !=  '']['var']
+    df_composant_culture_extended.loc[
+        df_composant_culture_extended['var'] !=  '', 'var'
+    ] = df_composant_culture_extended.loc[df_composant_culture_extended['var'] !=  '']['var']
 
-    df_composant_culture_extanded['var'] = df_composant_culture_extanded['var'].fillna('')
+    df_composant_culture_extended['var'] = df_composant_culture_extended['var'].fillna('')
     
-    df_composant_cutlure_with_var = df_composant_culture_extanded.loc[df_composant_culture_extanded['var'] != '']
-    df_composant_culture_extanded.loc[:,'esp_complet_var'] = df_composant_culture_extanded['esp_complet']
-    df_composant_culture_extanded.loc[df_composant_cutlure_with_var.index,'esp_complet_var'] = df_composant_culture_extanded['esp_complet'] + \
-        ' - '+ df_composant_culture_extanded['var']
+    df_composant_cutlure_with_var = df_composant_culture_extended.loc[df_composant_culture_extended['var'] != '']
+    df_composant_culture_extended.loc[:,'esp_complet_var'] = df_composant_culture_extended['esp_complet']
+    df_composant_culture_extended.loc[df_composant_cutlure_with_var.index,'esp_complet_var'] = df_composant_culture_extended['esp_complet'] + \
+        ' - '+ df_composant_culture_extended['var']
     
 
 
     # On supprime les dupplications pour ne pas avoir plusieurs fois la même information
-    df_composant_culture_extanded = df_composant_culture_extanded[
+    df_composant_culture_extended = df_composant_culture_extended[
         ['culture_id', 'esp_complet_var', 'esp_complet', 'esp', 'var']
     ].drop_duplicates(subset=['esp_complet_var', 'culture_id'], keep='first')
 
-    return df_composant_culture_extanded
+    return df_composant_culture_extended
 
 # FONCTIONS POUR LES FILTRES (ACTIF + DEPHY)
 def dispositif_filtres_outils_can(
@@ -407,34 +407,34 @@ def get_intervention_realise_action_outils_can(
             'psci_phyto_sans_amm' : 'psci_lutte_bio'
         }
     )
-    df_action_realise_extanded = pd.merge(left, right, on='intervention_realise_id', how='left')
+    df_action_realise_extended = pd.merge(left, right, on='intervention_realise_id', how='left')
 
     # On rajoute l'information des types actions tel qu'attendus
     df_type_action = pd.DataFrame.from_records([TYPE_ACTION]).melt().rename(
         columns={'variable' : 'action_agrosyst', 'value' : 'action_str'}
     )
 
-    left = df_action_realise_extanded
+    left = df_action_realise_extended
     right = df_type_action
-    df_action_realise_extanded = pd.merge(left, right, left_on='type', right_on='action_agrosyst', how='left')
+    df_action_realise_extended = pd.merge(left, right, left_on='type', right_on='action_agrosyst', how='left')
 
 
     # # Pour les applications de produits phytosanitaires :
-    df_action_produit_phyto = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES'].copy()
+    df_action_produit_phyto = df_action_realise_extended.loc[df_action_realise_extended['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES'].copy()
     df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
     # Pour la lutte biologique :
-    df_action_lutte_bio = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'LUTTE_BIOLOGIQUE'].copy()
+    df_action_lutte_bio = df_action_realise_extended.loc[df_action_realise_extended['type'] == 'LUTTE_BIOLOGIQUE'].copy()
     df_action_lutte_bio.loc[: ,'proportion_surface_traitee_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee']
 
     # Pour l'irrigation :
-    df_action_irrigation = df_action_realise_extanded.loc[df_action_realise_extanded['type'] == 'IRRIGATION'].copy()
+    df_action_irrigation = df_action_realise_extended.loc[df_action_realise_extended['type'] == 'IRRIGATION'].copy()
     df_action_irrigation.loc[: ,'quantite_eau_mm'] = df_action_irrigation['eau_qte_moy_mm'] 
 
     # Pour les autres :
-    df_action_autres = df_action_realise_extanded.loc[
-        (df_action_realise_extanded['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
-        (df_action_realise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
-        (df_action_realise_extanded['type'] != 'IRRIGATION')
+    df_action_autres = df_action_realise_extended.loc[
+        (df_action_realise_extended['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
+        (df_action_realise_extended['type'] != 'LUTTE_BIOLOGIQUE') &
+        (df_action_realise_extended['type'] != 'IRRIGATION')
     ].copy().groupby(['intervention_realise_id']).agg({
         'label' : ' ; '.join, 
     }).reset_index()
@@ -468,7 +468,7 @@ def get_intervention_realise_action_outils_can(
     .str.strip(' ;')
 
     # on groupe les actions par intervention
-    df_intervention_realise_extanded = df_action_realise_extanded[['action_str', 'intervention_realise_id']].rename(columns={
+    df_intervention_realise_extended = df_action_realise_extended[['action_str', 'intervention_realise_id']].rename(columns={
         'action_str' : 'interventions_actions'
     }).groupby('intervention_realise_id').agg({
         'interventions_actions' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])), 
@@ -476,7 +476,7 @@ def get_intervention_realise_action_outils_can(
 
     # on rajoute à ce dataframe l'information du type d'intervention
     left = merge.reset_index()
-    right = df_intervention_realise_extanded
+    right = df_intervention_realise_extended
     merge = pd.merge(left, right, left_on='intervention_realise_id', right_index=True, how='left')
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
@@ -540,28 +540,28 @@ def get_intervention_realise_semence_outils_can(
     # OBTENTION DES INFORMATIONS POUR LES INTERVENTIONS DE TYPE SEMENCES.
     left = df_semence.rename(columns={'espece_id':'composant_culture_id'}) # attention, on est obligé de corriger car il y a une erreur dans le nom de la colonne sur Datagrosyst.
     right = df_composant_culture[['id', 'espece_id', 'variete_id']].rename(columns={'id' : 'composant_culture_id'})
-    df_semence_extanded = pd.merge(left, right, on='composant_culture_id', how='left')
+    df_semence_extended = pd.merge(left, right, on='composant_culture_id', how='left')
 
-    left = df_semence_extanded
+    left = df_semence_extended
     right = df_espece[['id', 'libelle_espece_botanique', 'libelle_qualifiant_aee', 'libelle_type_saisonnier_aee', 'libelle_destination_aee']].rename(columns={'id' : 'espece_id'})
-    df_semence_extanded = pd.merge(left, right, on='espece_id', how='left')
+    df_semence_extended = pd.merge(left, right, on='espece_id', how='left')
 
-    df_semence_extanded = df_semence_extanded.fillna('')
+    df_semence_extended = df_semence_extended.fillna('')
 
-    df_semence_extanded['description'] = df_semence_extanded[[
+    df_semence_extended['description'] = df_semence_extended[[
         'libelle_espece_botanique', 'libelle_qualifiant_aee', 
         'libelle_type_saisonnier_aee', 'libelle_destination_aee', 
     ]].agg(' '.join, axis=1).str.split().str.join(' ')
 
     # ajout des informations des semences sur les utilsiation d'intrants
     left = df_utilisation_intrant_realise[['intervention_realise_id', 'intrant_id', 'dose', 'unite', 'semence_id']].dropna(subset=['semence_id'])
-    right = df_semence_extanded.rename(columns={'id' : 'semence_id'})
-    df_utilisation_intrant_realise_extanded = pd.merge(left, right, on='semence_id', how='inner')
+    right = df_semence_extended.rename(columns={'id' : 'semence_id'})
+    df_utilisation_intrant_realise_extended = pd.merge(left, right, on='semence_id', how='inner')
 
-    df_utilisation_intrant_realise_extanded['dose'] = df_utilisation_intrant_realise_extanded['dose'].astype('str')
+    df_utilisation_intrant_realise_extended['dose'] = df_utilisation_intrant_realise_extended['dose'].astype('str')
 
     # on groupe par intervention
-    df_intervention_semence = df_utilisation_intrant_realise_extanded.fillna('').groupby([
+    df_intervention_semence = df_utilisation_intrant_realise_extended.fillna('').groupby([
         'intervention_realise_id'
     ]).agg({
         'description' :  ' ; '.join,
@@ -666,16 +666,21 @@ def get_intervention_realise_combinaison_outils_can(
             - `combinaison_outil` :
                 - `id` : Identifiant unique de la combinaison d'outils.
                 - `nom` : Nom de la combinaison d'outils.
-                - `tracteur_materiel_id` : Référence au tracteur ou matériel principal.
-            - `materiel` :
+                - `tracteur_composant_parc_materiel_id` : Référence au tracteur ou matériel principal.
+            - `composant_parc_materiel` :
                 - `id` : Identifiant unique du matériel.
                 - `nom` : Nom du matériel.
-                - `type_materiel` : Type du matériel.
-                - `materiel_caracteristique1` : Première caractéristique du matériel 
+                - `type_composant_parc_materiel` : Type du matériel.
+                - `composant_parc_typemateriel1` : Première caractéristique du matériel 
                   (ex. : tracteur ou automoteur, type d'outil).
-            - `combinaison_outil_materiel` :
+            - `combinaison_outil_composant_parc_materiel` :
                 - `combinaison_outil_id` : Référence à une combinaison d'outils.
-                - `materiel_id` : Référence à un matériel spécifique.
+                - `composant_parc_materiel_id` : Référence à un matériel spécifique.
+            - `materiel` :
+                - `id` : Identifiant unique du materiel.
+                - `idtypemateriel` : id du type du materiel
+                - `typemateriel1` : Type primaire du materiel.
+
 
     Returns:
         pd.DataFrame:
@@ -689,57 +694,66 @@ def get_intervention_realise_combinaison_outils_can(
         donnees = {
             'intervention_realise': pd.DataFrame(...),
             'combinaison_outil': pd.DataFrame(...),
-            'materiel': pd.DataFrame(...),
-            'combinaison_outil_materiel': pd.DataFrame(...)
+            'composant_parc_materiel': pd.DataFrame(...),
+            'combinaison_outil_composant_parc_materiel': pd.DataFrame(...)
+            'materiel' : pd.DataFrame(...)
         }
         result = get_intervention_realise_combinaison_outils_can(donnees)
     """
     df_intervention_realise = donnees['intervention_realise']
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
+    df_composant_parc_materiel = donnees['composant_parc_materiel'].set_index('id')
+    df_combinaison_outil_composant_parc_materiel = donnees['combinaison_outil_composant_parc_materiel']
     df_materiel = donnees['materiel'].set_index('id')
-    df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
+
+    # Ajout des donnees caracteristiques à partir du referentiel materiel
+    left = df_composant_parc_materiel
+    right = df_materiel[['id_type_materiel', 'type_materiel_1']]
+    df_composant_parc_materiel_extended = pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+    df_composant_parc_materiel_extended.index = df_composant_parc_materiel.index 
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
-    left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'nom_tracteur', 'materiel_caracteristique1' : 'tracteur_ou_automoteur'}
+    left = df_combinaison_outil[['nom', 'tracteur_composant_parc_materiel_id']]
+    right = df_composant_parc_materiel_extended[['nom', 'type_materiel_1']].rename(
+        columns={'nom' : 'nom_tracteur', 'type_materiel_1' : 'tracteur_ou_automoteur'}
     )
-    df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
+    df_combinaison_outil_extended = pd.merge(left, right, left_on='tracteur_composant_parc_materiel_id', right_index=True, how='left')
 
     # Ajout des informations sur le materiel à la combinaison d'outils
-    left = df_combinaison_outil_materiel
-    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
+    left = df_combinaison_outil_composant_parc_materiel
+    right = df_composant_parc_materiel_extended[['nom', 'id_type_materiel', 'type_materiel_1']].rename(
+        columns={'nom' : 'combinaison_outils_nom', 'type_materiel_1' : 'outils'}
     )
-    df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+    df_combinaison_outil_composant_parc_materiel= pd.merge(left, right, left_on='composant_parc_materiel_id', right_index=True, how='left')
 
     # On considère que si plusieurs matériels ont les mêmes caractéristiques (outils)
     # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
     # (Correction par rapport aux exports en masse historiques)
-    df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
+    df_combinaison_outil_composant_parc_materiel = df_combinaison_outil_composant_parc_materiel.drop_duplicates(
         subset=['combinaison_outil_id', 'outils']
     )
 
     # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
-    df_combinaison_outil_materiel['outils'] = df_combinaison_outil_materiel['outils'].fillna('')
-    df_combinaison_outil_materiel_grouped = df_combinaison_outil_materiel.groupby('combinaison_outil_id').agg({
+    df_combinaison_outil_composant_parc_materiel['outils'] = df_combinaison_outil_composant_parc_materiel['outils'].fillna('')
+    df_combinaison_outil_composant_parc_materiel_grouped = df_combinaison_outil_composant_parc_materiel.groupby('combinaison_outil_id').agg({
         'outils' : ' ; '.join, # delete NaN
     })
 
     # On mets toutes les informations dans le même dataframe
-    left = df_combinaison_outil_extanded
-    right = df_combinaison_outil_materiel_grouped
-    df_combinaison_outil_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    left = df_combinaison_outil_extended
+    right = df_combinaison_outil_composant_parc_materiel_grouped
+    df_combinaison_outil_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # On agrège les informations au dataframe des interventions
     left = df_intervention_realise[['id', 'combinaison_outil_id']]
-    right = df_combinaison_outil_extanded.rename(columns={'nom' : 'combinaison_outils_nom'})[
+    right = df_combinaison_outil_extended.rename(columns={'nom' : 'combinaison_outils_nom'})[
         ['combinaison_outils_nom', 'tracteur_ou_automoteur', 'outils']
     ]
 
     merge = pd.merge(left, right, left_on='combinaison_outil_id', right_index=True, how='left')
 
     return merge
+
 
 def get_intervention_realise_culture_outils_can(
     donnees
@@ -794,77 +808,77 @@ def get_intervention_realise_culture_outils_can(
     df_connection_realise = donnees['connection_realise'].set_index('id')
 
     # informations sur le composants cultures, dans le format attendu
-    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
+    df_composant_culture_extended = get_composant_culture_outils_can(donnees)
 
     # on ajoute aussi l'information de la culture intermédiaire si il y en a une
     left = df_noeuds_realise.reset_index()
     right = df_connection_realise.reset_index().rename(columns={'id' : 'connection_realise_id'})
-    df_noeuds_realise_extanded = pd.merge(left, right, left_on='id', right_on='cible_noeuds_realise_id', how='left').set_index('id')
+    df_noeuds_realise_extended = pd.merge(left, right, left_on='id', right_on='cible_noeuds_realise_id', how='left').set_index('id')
 
-    left = df_noeuds_realise_extanded.reset_index()
-    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
-    df_noeuds_realise_extanded_ci = pd.merge(left, right, left_on='culture_intermediaire_id', right_on='culture_id', how='left').set_index(
+    left = df_noeuds_realise_extended.reset_index()
+    right = df_composant_culture_extended.reset_index().rename(columns={'id' : 'composant_culture_id'})
+    df_noeuds_realise_extended_ci = pd.merge(left, right, left_on='culture_intermediaire_id', right_on='culture_id', how='left').set_index(
         ['id', 'composant_culture_id']
     )
 
     # informations assolée
-    left = df_noeuds_realise_extanded.reset_index()
-    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
-    df_noeuds_realise_extanded = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left').set_index(
+    left = df_noeuds_realise_extended.reset_index()
+    right = df_composant_culture_extended.reset_index().rename(columns={'id' : 'composant_culture_id'})
+    df_noeuds_realise_extended = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left').set_index(
         ['id', 'composant_culture_id']
     )
 
     # informations perennes
     left = df_plantation_perenne_realise.reset_index()
-    right = df_composant_culture_extanded.reset_index().rename(columns={'id' : 'composant_culture_id'})
-    df_plantation_perenne_realise_extanded = pd.merge(
+    right = df_composant_culture_extended.reset_index().rename(columns={'id' : 'composant_culture_id'})
+    df_plantation_perenne_realise_extended = pd.merge(
         left, right, left_on='culture_id', right_on='culture_id', how='left').set_index(
         ['id', 'composant_culture_id']
     )
 
     left = df_plantation_perenne_phases_realise.reset_index()
-    right = df_plantation_perenne_realise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_realise_id'})
-    df_plantation_perenne_phases_realise_extanded = pd.merge(
+    right = df_plantation_perenne_realise_extended.reset_index().rename(columns={'id' : 'plantation_perenne_realise_id'})
+    df_plantation_perenne_phases_realise_extended = pd.merge(
         left, right, on='plantation_perenne_realise_id', how='left').set_index('id')
 
     # on ajoute l'information du noeuds où porte l'intervention
     left = df_composant_culture_concerne_intervention_realise
     right = df_intervention_realise[['noeuds_realise_id', 'plantation_perenne_phases_realise_id']]
-    df_composant_culture_concerne_intervention_extanded = pd.merge(
+    df_composant_culture_concerne_intervention_extended = pd.merge(
         left, right, left_on='intervention_realise_id', right_index=True, how='left')
 
     # maintenant qu'on a tout, pour l'assolée :
-    left = df_composant_culture_concerne_intervention_extanded.dropna(subset=['noeuds_realise_id'])
-    right = df_noeuds_realise_extanded
-    df_composant_culture_concerne_intervention_extanded_assolee = pd.merge(left, right, 
+    left = df_composant_culture_concerne_intervention_extended.dropna(subset=['noeuds_realise_id'])
+    right = df_noeuds_realise_extended
+    df_composant_culture_concerne_intervention_extended_assolee = pd.merge(left, right, 
         left_on=['noeuds_realise_id', 'composant_culture_id'],
         right_index=True,
         how='inner'
     )
 
-    left = df_composant_culture_concerne_intervention_extanded.dropna(subset=['noeuds_realise_id'])
-    right = df_noeuds_realise_extanded_ci
-    df_composant_culture_concerne_intervention_extanded_assolee_ci = pd.merge(left, right, 
+    left = df_composant_culture_concerne_intervention_extended.dropna(subset=['noeuds_realise_id'])
+    right = df_noeuds_realise_extended_ci
+    df_composant_culture_concerne_intervention_extended_assolee_ci = pd.merge(left, right, 
         left_on=['noeuds_realise_id', 'composant_culture_id'],
         right_index=True,
         how='inner'
     )
 
-    df_composant_culture_concerne_intervention_extanded_assolee = pd.concat([
-        df_composant_culture_concerne_intervention_extanded_assolee,
-        df_composant_culture_concerne_intervention_extanded_assolee_ci
+    df_composant_culture_concerne_intervention_extended_assolee = pd.concat([
+        df_composant_culture_concerne_intervention_extended_assolee,
+        df_composant_culture_concerne_intervention_extended_assolee_ci
     ])
 
     # pour le perenne :
-    left = df_composant_culture_concerne_intervention_extanded.reset_index().dropna(subset=['plantation_perenne_phases_realise_id'])
-    right = df_plantation_perenne_phases_realise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
+    left = df_composant_culture_concerne_intervention_extended.reset_index().dropna(subset=['plantation_perenne_phases_realise_id'])
+    right = df_plantation_perenne_phases_realise_extended.reset_index().rename(columns={'id' : 'plantation_perenne_phases_realise_id'})
 
-    df_composant_culture_concerne_intervention_extanded_perenne = pd.merge(left, right,
+    df_composant_culture_concerne_intervention_extended_perenne = pd.merge(left, right,
         on=['plantation_perenne_phases_realise_id', 'composant_culture_id'],
         how='inner'
     )
 
-    df_final_perenne = df_composant_culture_concerne_intervention_extanded_perenne.groupby([
+    df_final_perenne = df_composant_culture_concerne_intervention_extended_perenne.groupby([
         'intervention_realise_id'
     ]).agg({
         'esp_complet_var' : ' ; '.join, 
@@ -872,7 +886,7 @@ def get_intervention_realise_culture_outils_can(
         'esp': lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'var' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()]))
     })
-    df_final_assolee = df_composant_culture_concerne_intervention_extanded_assolee.groupby([
+    df_final_assolee = df_composant_culture_concerne_intervention_extended_assolee.groupby([
         'intervention_realise_id'
     ]).agg({
         'esp_complet_var' : ' ; '.join,
@@ -922,41 +936,41 @@ def get_intervention_realise_culture_prec_outils_can(
     df_culture = donnees['culture'].set_index('id')
 
     # Obtention des informations sur le composant culture, dans le format attendu par la CAN
-    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
+    df_composant_culture_extended = get_composant_culture_outils_can(donnees)
 
-    df_culture_grouped = df_composant_culture_extanded.groupby('culture_id').agg({
+    df_culture_grouped = df_composant_culture_extended.groupby('culture_id').agg({
         'esp_complet' : ' ; '.join
     })
 
     left = df_culture
     right = df_culture_grouped
-    df_culture_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df_culture_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     left = df_noeuds_realise
-    right = df_culture_extanded[['nom', 'esp_complet']]
-    df_noeuds_realise_extanded = pd.merge(
+    right = df_culture_extended[['nom', 'esp_complet']]
+    df_noeuds_realise_extended = pd.merge(
         left, right, left_on='culture_id', right_index=True, how='left'
     )
 
     left = df_connection_realise.dropna(subset=['source_noeuds_realise_id'])
-    right = df_noeuds_realise_extanded.rename(
+    right = df_noeuds_realise_extended.rename(
         columns={
             'culture_id' : 'precedent_id', 
             'esp_complet' : 'precedent_especes_edi', 
             'nom': 'precedent_nom'
         }
     )
-    df_connection_realise_extanded = pd.merge(
+    df_connection_realise_extended = pd.merge(
         left, right, left_on='source_noeuds_realise_id', right_index=True, how='left'
     )
 
     left = df_intervention_realise.reset_index().dropna(subset=['noeuds_realise_id'])
-    right = df_connection_realise_extanded
-    df_intervention_realise_extanded = pd.merge(
+    right = df_connection_realise_extended
+    df_intervention_realise_extended = pd.merge(
         left, right, left_on='noeuds_realise_id', right_on='cible_noeuds_realise_id', how='inner'
     ).set_index('id')
 
-    final = df_intervention_realise_extanded[
+    final = df_intervention_realise_extended[
         ['precedent_id', 'precedent_nom', 'precedent_especes_edi']
     ]
     return final.reset_index()
@@ -1255,19 +1269,19 @@ def get_intervention_realise_rendement_outils_can(
 
     left = recolte_rendement_prix
     right = action_realise[['intervention_realise_id']]
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
 
-    left = recolte_rendement_prix_extanded
+    left = recolte_rendement_prix_extended
     right = unite_rendement
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
 
 
-    recolte_rendement_prix_extanded['rendement_total'] = '['+recolte_rendement_prix_extanded['destination'].astype('str')+']'+'|'+\
-        recolte_rendement_prix_extanded['rendement_moy'].astype('str')+'|'+\
-            recolte_rendement_prix_extanded['unite_utilisateur'].astype('str')
+    recolte_rendement_prix_extended['rendement_total'] = '['+recolte_rendement_prix_extended['destination'].astype('str')+']'+'|'+\
+        recolte_rendement_prix_extended['rendement_moy'].astype('str')+'|'+\
+            recolte_rendement_prix_extended['unite_utilisateur'].astype('str')
 
     
-    res = recolte_rendement_prix_extanded.groupby('intervention_realise_id').agg({
+    res = recolte_rendement_prix_extended.groupby('intervention_realise_id').agg({
         'rendement_total' : lambda x: '#'.join(dict.fromkeys([item for item in x if item.strip()])),
     })
 
@@ -1376,23 +1390,23 @@ def get_intervention_synthetise_culture_outils_can(
     df_culture = donnees['culture'].set_index('id')
 
     # informations sur les composants cultures, dans le format attendu par la CAN
-    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
+    df_composant_culture_extended = get_composant_culture_outils_can(donnees)
 
     ## ASSOLEES ##
     # avoir culture_intermediaire_id
     left = df_connection_synthetise
     right = df_connection_synthetise_restructure
-    df_connection_synthetise_extanded_prim = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df_connection_synthetise_extended_prim = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # reconstitution du culture_id pour le synthétisé
     left = df_noeuds_synthetise
     right = df_noeuds_synthetise_restructure
-    df_noeuds_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df_noeuds_synthetise_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # noeuds + connections
-    left = df_connection_synthetise_extanded_prim.reset_index()
-    right = df_noeuds_synthetise_extanded.reset_index().rename(columns={'id' : 'noeuds_synthetise_id'})
-    df_connection_synthetise_extanded = pd.merge(
+    left = df_connection_synthetise_extended_prim.reset_index()
+    right = df_noeuds_synthetise_extended.reset_index().rename(columns={'id' : 'noeuds_synthetise_id'})
+    df_connection_synthetise_extended = pd.merge(
         left, right, left_on='cible_noeuds_synthetise_id', right_on='noeuds_synthetise_id', how='left'
     ).set_index('id')
 
@@ -1400,12 +1414,12 @@ def get_intervention_synthetise_culture_outils_can(
     # avoir le culture_id
     left = df_plantation_perenne_synthetise
     right = df_plantation_perenne_synthetise_restructure
-    df_plantation_perenne_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df_plantation_perenne_synthetise_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # ajout des phases
     left = df_plantation_perenne_phases_synthetise.reset_index()
-    right = df_plantation_perenne_synthetise_extanded.reset_index().rename(columns={'id' : 'plantation_perenne_synthetise_id'})
-    df_plantation_perenne_phases_synthetise_extanded = pd.merge(
+    right = df_plantation_perenne_synthetise_extended.reset_index().rename(columns={'id' : 'plantation_perenne_synthetise_id'})
+    df_plantation_perenne_phases_synthetise_extended = pd.merge(
         left, right, on='plantation_perenne_synthetise_id', how='left'
     ).set_index('id')
 
@@ -1420,7 +1434,7 @@ def get_intervention_synthetise_culture_outils_can(
 
     # esp et variété du composant culture concerné par l'intervention
     left = df_composant_culture_intervention_synthetise_restructure
-    right = df_composant_culture_extanded[['esp_complet_var', 'esp_complet', 'esp', 'var']]
+    right = df_composant_culture_extended[['esp_complet_var', 'esp_complet', 'esp', 'var']]
     df_composant_culture_intervention_synthetise_restructure = pd.merge(
         left, right, left_on='composant_culture_id', right_index=True, how='inner'
     ) 
@@ -1428,29 +1442,29 @@ def get_intervention_synthetise_culture_outils_can(
     # ajout à l'intervention les composants culture concernes si il y en a = left 
     left = df_intervention_synthetise[['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id','concerne_ci']]
     right = df_composant_culture_intervention_synthetise_restructure.reset_index()
-    df_intervention_synthetise_extanded = pd.merge(
+    df_intervention_synthetise_extended = pd.merge(
         left, right, left_index = True, right_on='intervention_synthetise_id', how='left').set_index(['intervention_synthetise_id','composant_culture_id'])
 
     # on ajoute à l'intervention l'information de la connection pour les assolees
-    left = df_intervention_synthetise_extanded
-    right = df_connection_synthetise_extanded
-    df_composant_culture_concerne_intervention_extanded_assolee = pd.merge(left, right, 
+    left = df_intervention_synthetise_extended
+    right = df_connection_synthetise_extended
+    df_composant_culture_concerne_intervention_extended_assolee = pd.merge(left, right, 
         left_on='connection_synthetise_id',
         right_index=True,
         how='inner'
     )
 
     # on ajoute à l'intervention l'information de la culture perenne
-    left = df_intervention_synthetise_extanded
-    right = df_plantation_perenne_phases_synthetise_extanded
-    df_composant_culture_concerne_intervention_extanded_perenne = pd.merge(left, right, 
+    left = df_intervention_synthetise_extended
+    right = df_plantation_perenne_phases_synthetise_extended
+    df_composant_culture_concerne_intervention_extended_perenne = pd.merge(left, right, 
         left_on='plantation_perenne_phases_synthetise_id',
         right_index=True,
         how='inner'
     )
 
-    df_composant_culture_assole_perenne = pd.concat([df_composant_culture_concerne_intervention_extanded_assolee, 
-                                                     df_composant_culture_concerne_intervention_extanded_perenne])
+    df_composant_culture_assole_perenne = pd.concat([df_composant_culture_concerne_intervention_extended_assolee, 
+                                                     df_composant_culture_concerne_intervention_extended_perenne])
     df_composant_culture_assole_perenne = df_composant_culture_assole_perenne.fillna('')
 
     df_intervention_synthetise_v1 = df_composant_culture_assole_perenne.reset_index().groupby([
@@ -1528,16 +1542,16 @@ def get_intervention_synthetise_culture_prec_outils_can(
     df_noeuds_synthetise_restructure = donnees['noeuds_synthetise_restructure'].set_index('id')
 
     # Obtention des informations sur le composant culture, dans le format attendu par la CAN
-    df_composant_culture_extanded = get_composant_culture_outils_can(donnees)
+    df_composant_culture_extended = get_composant_culture_outils_can(donnees)
 
-    df_culture_grouped = df_composant_culture_extanded.groupby('culture_id').agg({
+    df_culture_grouped = df_composant_culture_extended.groupby('culture_id').agg({
         'esp_complet' : ' ; '.join
     })
 
     # ajout des infos sur la culture
     left = df_culture
     right = df_culture_grouped
-    df_culture_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df_culture_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # ajout du composant_culture_id pour ne pas avoir à travailler avec le composant_culture_code
     left = df_noeuds_synthetise
@@ -1546,14 +1560,14 @@ def get_intervention_synthetise_culture_prec_outils_can(
 
     # ajout des informations de la culture au noeud
     left = df_noeuds_synthetise
-    right = df_culture_extanded[['nom', 'esp_complet']]
-    df_noeuds_synthetise_extanded = pd.merge(
+    right = df_culture_extended[['nom', 'esp_complet']]
+    df_noeuds_synthetise_extended = pd.merge(
         left, right, left_on='culture_id', right_index=True, how='left'
     )
 
     # ajout des informations du noeud précédent à la connexion
     left = df_connection_synthetise
-    right = df_noeuds_synthetise_extanded.rename(
+    right = df_noeuds_synthetise_extended.rename(
         columns={
             'culture_code' : 'precedent_code', 
             'esp_complet' : 'precedent_especes_edi', 
@@ -1561,18 +1575,18 @@ def get_intervention_synthetise_culture_prec_outils_can(
             'culture_id' : 'precedent_id'
         }
     )
-    df_connection_synthetise_extanded = pd.merge(
+    df_connection_synthetise_extended = pd.merge(
         left, right, left_on='source_noeuds_synthetise_id', right_index=True, how='left'
     )
 
     # ajout des informations de la connexion sur laquelle porte l'intervention
     left = df_intervention_synthetise.reset_index()
-    right = df_connection_synthetise_extanded
-    df_intervention_synthetise_extanded = pd.merge(
+    right = df_connection_synthetise_extended
+    df_intervention_synthetise_extended = pd.merge(
         left, right, left_on='connection_synthetise_id', right_index=True, how='inner'
     ).set_index('id')
 
-    final = df_intervention_synthetise_extanded[
+    final = df_intervention_synthetise_extended[
         ['precedent_code', 'precedent_nom', 'precedent_especes_edi', 'precedent_id']
     ]
     return final.reset_index()
@@ -1626,7 +1640,7 @@ def get_intervention_synthetise_action_outils_can(
             'psci_phyto_sans_amm' : 'psci_lutte_bio'
         }
     )
-    df_action_synthetise_extanded = pd.merge(left, right, on='intervention_synthetise_id', how='left')
+    df_action_synthetise_extended = pd.merge(left, right, on='intervention_synthetise_id', how='left')
 
 
     # On rajoute l'information des types actions tel qu'attendus
@@ -1634,29 +1648,29 @@ def get_intervention_synthetise_action_outils_can(
         columns={'variable' : 'action_agrosyst', 'value' : 'action_str'}
     )
 
-    left = df_action_synthetise_extanded
+    left = df_action_synthetise_extended
     right = df_type_action
-    df_action_synthetise_extanded = pd.merge(left, right, left_on='type', right_on='action_agrosyst', how='left')
+    df_action_synthetise_extended = pd.merge(left, right, left_on='type', right_on='action_agrosyst', how='left')
 
     # On recalcul à présent le psci adapté en fonction du type d'action 
 
     # Pour les applications de produits phytosanitaires :
-    df_action_produit_phyto = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES'].copy()
+    df_action_produit_phyto = df_action_synthetise_extended.loc[df_action_synthetise_extended['type'] == 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES'].copy()
     df_action_produit_phyto.loc[: , 'proportion_surface_traitee_phyto'] = df_action_produit_phyto['proportion_surface_traitee']
 
     # Pour la lutte biologique :
-    df_action_lutte_bio = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'LUTTE_BIOLOGIQUE'].copy()
+    df_action_lutte_bio = df_action_synthetise_extended.loc[df_action_synthetise_extended['type'] == 'LUTTE_BIOLOGIQUE'].copy()
     df_action_lutte_bio.loc[: ,'proportion_surface_traitee_lutte_bio'] = df_action_lutte_bio['proportion_surface_traitee']
 
     # Pour l'irrigation :
-    df_action_irrigation = df_action_synthetise_extanded.loc[df_action_synthetise_extanded['type'] == 'IRRIGATION'].copy()
+    df_action_irrigation = df_action_synthetise_extended.loc[df_action_synthetise_extended['type'] == 'IRRIGATION'].copy()
     df_action_irrigation.loc[: ,'quantite_eau_mm'] = df_action_irrigation['eau_qte_moy_mm'] 
 
     # Pour les autres :
-    df_action_autres = df_action_synthetise_extanded.loc[
-        (df_action_synthetise_extanded['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
-        (df_action_synthetise_extanded['type'] != 'LUTTE_BIOLOGIQUE') &
-        (df_action_synthetise_extanded['type'] != 'IRRIGATION')
+    df_action_autres = df_action_synthetise_extended.loc[
+        (df_action_synthetise_extended['type'] != 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES') &
+        (df_action_synthetise_extended['type'] != 'LUTTE_BIOLOGIQUE') &
+        (df_action_synthetise_extended['type'] != 'IRRIGATION')
     ].copy().groupby(['intervention_synthetise_id']).agg({
         'label' : ' ; '.join
     }).reset_index()
@@ -1688,7 +1702,7 @@ def get_intervention_synthetise_action_outils_can(
     .str.strip(' ;')
 
     # on groupe les actions par intervention
-    df_intervention_synthetise_extanded = df_action_synthetise_extanded[['action_str', 'intervention_synthetise_id']].rename(columns={
+    df_intervention_synthetise_extended = df_action_synthetise_extended[['action_str', 'intervention_synthetise_id']].rename(columns={
         'action_str' : 'interventions_actions'
     }).groupby('intervention_synthetise_id').agg({
         'interventions_actions' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])), 
@@ -1696,7 +1710,7 @@ def get_intervention_synthetise_action_outils_can(
 
     # on rajoute à ce dataframe l'information du type d'intervention
     left = merge.reset_index()
-    right = df_intervention_synthetise_extanded
+    right = df_intervention_synthetise_extended
     merge = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
 
     # À ce stade, on a encore des dupplication d'intervention_id : on doit grouper par intervention_id en joignant le nom des actions, mais en gardant
@@ -1753,28 +1767,28 @@ def get_intervention_synthetise_semence_outils_can(
     # OBTENTION DES INFORMATIONS POUR LES INTERVENTIONS DE TYPE SEMENCES.
     left = df_semence.rename(columns={'espece_id':'composant_culture_id'}) # attention, on est obligé de corriger car il y a une erreur dans le nom de la colonne sur Datagrosyst.
     right = df_composant_culture[['id', 'espece_id', 'variete_id']].rename(columns={'id' : 'composant_culture_id'})
-    df_semence_extanded = pd.merge(left, right, on='composant_culture_id', how='left')
+    df_semence_extended = pd.merge(left, right, on='composant_culture_id', how='left')
 
-    left = df_semence_extanded
+    left = df_semence_extended
     right = df_espece[['id', 'libelle_espece_botanique', 'libelle_qualifiant_aee', 'libelle_type_saisonnier_aee', 'libelle_destination_aee']].rename(columns={'id' : 'espece_id'})
-    df_semence_extanded = pd.merge(left, right, on='espece_id', how='left')
+    df_semence_extended = pd.merge(left, right, on='espece_id', how='left')
 
-    df_semence_extanded = df_semence_extanded.fillna('')
+    df_semence_extended = df_semence_extended.fillna('')
 
-    df_semence_extanded['description'] = df_semence_extanded[[
+    df_semence_extended['description'] = df_semence_extended[[
         'libelle_espece_botanique', 'libelle_qualifiant_aee', 
         'libelle_type_saisonnier_aee', 'libelle_destination_aee', 
     ]].agg(' '.join, axis=1).str.split().str.join(' ')
 
     # ajout des informations des semences sur les utilisations d'intrants
     left = df_utilisation_intrant_synthetise[['intervention_synthetise_id', 'intrant_id', 'dose', 'unite', 'semence_id']]
-    right = df_semence_extanded.rename(columns={'id' : 'semence_id'})
-    df_utilisation_intrant_synthetise_extanded = pd.merge(left, right, on='semence_id', how='inner')
+    right = df_semence_extended.rename(columns={'id' : 'semence_id'})
+    df_utilisation_intrant_synthetise_extended = pd.merge(left, right, on='semence_id', how='inner')
 
-    df_utilisation_intrant_synthetise_extanded['dose'] = df_utilisation_intrant_synthetise_extanded['dose'].astype('str')
+    df_utilisation_intrant_synthetise_extended['dose'] = df_utilisation_intrant_synthetise_extended['dose'].astype('str')
 
     # on groupe par intervention
-    df_intervention_semence = df_utilisation_intrant_synthetise_extanded.fillna('').groupby([
+    df_intervention_semence = df_utilisation_intrant_synthetise_extended.fillna('').groupby([
         'intervention_synthetise_id'
     ]).agg({
         'description' :  ' ; '.join,
@@ -1871,8 +1885,8 @@ def get_intervention_synthetise_combinaison_outils_can(
             Un dictionnaire contenant les DataFrames nécessaires :
             - 'intervention_synthetise' : Données de base sur les interventions synthétisées.
             - 'combinaison_outil' : Détails des combinaisons d'outils.
-            - 'materiel' : Informations sur les matériels associés aux outils.
-            - 'combinaison_outil_materiel' : Lien entre les combinaisons d'outils et les matériels.
+            - 'composant_parc_materiel' : Informations sur les matériels associés aux outils.
+            - 'combinaison_outil_composant_parc_materiel' : Lien entre les combinaisons d'outils et les matériels.
             - 'intervention_synthetise_restructure' : Dataframe restructuré des interventions synthétisé (pour éviter 
             d'avoir à travailler avec des codes)
 
@@ -1887,58 +1901,65 @@ def get_intervention_synthetise_combinaison_outils_can(
         donnees = {
             'intervention_synthetise': pd.DataFrame(...),
             'combinaison_outil': pd.DataFrame(...),
-            'materiel': pd.DataFrame(...),
-            'combinaison_outil_materiel': pd.DataFrame(...),
+            'composant_parc_materiel': pd.DataFrame(...),
+            'combinaison_outil_composant_parc_materiel': pd.DataFrame(...),
             'intervention_synthetise_restructure': pd.DataFrame(...)
         }
         result = get_intervention_synthetise_combinaison_outils_can(donnees)
     """
     df_intervention_synthetise = donnees['intervention_synthetise'].set_index('id')
     df_combinaison_outil = donnees['combinaison_outil'].set_index('id')
-    df_materiel = donnees['materiel'].set_index('id')
-    df_combinaison_outil_materiel = donnees['combinaison_outil_materiel']
+    df_composant_parc_materiel = donnees['composant_parc_materiel'].set_index('id')
+    df_combinaison_outil_composant_parc_materiel = donnees['combinaison_outil_composant_parc_materiel']
     df_intervention_synthetise_restructure = donnees['intervention_synthetise_restructure'].set_index('id')
+    df_materiel = donnees['materiel'].set_index('id')
+
+    # Ajout des donnees caracteristiques à partir du referentiel materiel
+    left = df_composant_parc_materiel
+    right = df_materiel[['id_type_materiel', 'type_materiel_1']]
+    df_composant_parc_materiel_extended = pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+    df_composant_parc_materiel_extended.index = df_composant_parc_materiel.index 
 
     # Ajout du combinaison_outil_id pour ne pas avoir à travailler avec combinaison_outil_code
     left = df_intervention_synthetise
     right = df_intervention_synthetise_restructure
-    df_intervention_synthetise_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df_intervention_synthetise_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # Ajout des informations sur le tracteur à la combinaison d'outils 
-    left = df_combinaison_outil[['nom', 'tracteur_materiel_id']]
-    right = df_materiel[['nom', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'nom_tracteur', 'materiel_caracteristique1' : 'tracteur_ou_automoteur'}
+    left = df_combinaison_outil[['nom', 'tracteur_composant_parc_materiel_id']]
+    right = df_composant_parc_materiel_extended[['nom', 'type_materiel_1']].rename(
+        columns={'nom' : 'nom_tracteur', 'type_materiel_1' : 'tracteur_ou_automoteur'}
     )
-    df_combinaison_outil_extanded = pd.merge(left, right, left_on='tracteur_materiel_id', right_index=True, how='left')
+    df_combinaison_outil_extended = pd.merge(left, right, left_on='tracteur_composant_parc_materiel_id', right_index=True, how='left')
 
-    # Ajout des informations sur le materiel à la combinaison d'outils
-    left = df_combinaison_outil_materiel
-    right = df_materiel[['nom', 'type_materiel', 'materiel_caracteristique1']].rename(
-        columns={'nom' : 'combinaison_outils_nom', 'materiel_caracteristique1' : 'outils'}
+    # Ajout des informations sur le composant_parc_materiel à la combinaison d'outils
+    left = df_combinaison_outil_composant_parc_materiel
+    right = df_composant_parc_materiel_extended[['nom', 'id_type_materiel', 'type_materiel_1']].rename(
+        columns={'nom' : 'combinaison_outils_nom', 'type_materiel_1' : 'outils'}
     )
-    df_combinaison_outil_materiel= pd.merge(left, right, left_on='materiel_id', right_index=True, how='left')
+    df_combinaison_outil_composant_parc_materiel= pd.merge(left, right, left_on='composant_parc_materiel_id', right_index=True, how='left')
 
     # On considère que si plusieurs matériels ont les mêmes caractéristiques (outils)
     # Alors il n'y a pas besoin de remonter plusieurs fois l'information dans l'agrégation 
     # (Correction par rapport aux exports en masse historiques)
-    df_combinaison_outil_materiel = df_combinaison_outil_materiel.drop_duplicates(
+    df_combinaison_outil_composant_parc_materiel = df_combinaison_outil_composant_parc_materiel.drop_duplicates(
         subset=['combinaison_outil_id', 'outils']
     )
 
-    # On rassemble tous les materiels pour n'avoir qu'une description par combinaison d'outils
-    df_combinaison_outil_materiel['outils'] = df_combinaison_outil_materiel['outils'].fillna('')
-    df_combinaison_outil_materiel_grouped = df_combinaison_outil_materiel.groupby('combinaison_outil_id').agg({
+    # On rassemble tous les composant_parc_materiels pour n'avoir qu'une description par combinaison d'outils
+    df_combinaison_outil_composant_parc_materiel['outils'] = df_combinaison_outil_composant_parc_materiel['outils'].fillna('')
+    df_combinaison_outil_composant_parc_materiel_grouped = df_combinaison_outil_composant_parc_materiel.groupby('combinaison_outil_id').agg({
         'outils' : ' ; '.join, # delete NaN
     })
 
     # On mets toutes les informations dans le même dataframe
-    left = df_combinaison_outil_extanded
-    right = df_combinaison_outil_materiel_grouped
-    df_combinaison_outil_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    left = df_combinaison_outil_extended
+    right = df_combinaison_outil_composant_parc_materiel_grouped
+    df_combinaison_outil_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
     # On agrège les informations au dataframe des interventions
-    left = df_intervention_synthetise_extanded[['combinaison_outil_id']]
-    right = df_combinaison_outil_extanded.rename(columns={'nom' : 'combinaison_outils_nom'})[
+    left = df_intervention_synthetise_extended[['combinaison_outil_id']]
+    right = df_combinaison_outil_extended.rename(columns={'nom' : 'combinaison_outils_nom'})[
         ['combinaison_outils_nom', 'tracteur_ou_automoteur', 'outils']
     ]
 
@@ -2303,23 +2324,23 @@ def get_intervention_synthetise_rendement_outils_can(
 
     left = recolte_rendement_prix
     right = recolte_rendement_prix_restructure
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    left = recolte_rendement_prix_extanded
+    left = recolte_rendement_prix_extended
     right = action_synthetise[['intervention_synthetise_id']]
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
 
-    left = recolte_rendement_prix_extanded
+    left = recolte_rendement_prix_extended
     right = unite_rendement
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
 
 
-    recolte_rendement_prix_extanded['rendement_total'] = '['+recolte_rendement_prix_extanded['destination'].astype('str')+']'+'|'+\
-        recolte_rendement_prix_extanded['rendement_moy'].astype('str')+'|'+\
-            recolte_rendement_prix_extanded['unite_utilisateur'].astype('str')
+    recolte_rendement_prix_extended['rendement_total'] = '['+recolte_rendement_prix_extended['destination'].astype('str')+']'+'|'+\
+        recolte_rendement_prix_extended['rendement_moy'].astype('str')+'|'+\
+            recolte_rendement_prix_extended['unite_utilisateur'].astype('str')
 
     
-    res = recolte_rendement_prix_extanded.groupby('intervention_synthetise_id').agg({
+    res = recolte_rendement_prix_extended.groupby('intervention_synthetise_id').agg({
         'rendement_total' : '#'.join
     })
 
@@ -2504,15 +2525,15 @@ def get_culture_outils_can(
     # ajout des informations utiles sur l'espèce au composant de culture
     left = df_composant_culture
     right = df_espece[['complet_espece_edi', 'complet_espece_edi_nettoye']]
-    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+    df_composant_culture_extended = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
 
 
     # ajout des informations utiles sur la variété au composant de culture
-    left = df_composant_culture_extanded
+    left = df_composant_culture_extended
     right = df_variete[['variete_nom']]
-    df_composant_culture_extanded = pd.merge(left, right, left_on='variete_id', right_index=True, how='left').fillna('')
+    df_composant_culture_extended = pd.merge(left, right, left_on='variete_id', right_index=True, how='left').fillna('')
 
-    res = df_composant_culture_extanded.groupby('culture_id').agg({
+    res = df_composant_culture_extended.groupby('culture_id').agg({
         'complet_espece_edi' : lambda x: ' ; '.join(dict.fromkeys([item for item in x if item.strip()])),
         'complet_espece_edi_nettoye' :  lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
         'variete_nom' : lambda x: ', '.join(dict.fromkeys([item for item in x if item.strip()])),
@@ -2571,10 +2592,10 @@ def get_recolte_realise_outils_can(
     # on veut savoir pour chaque composant culture si celui-ci appartient à une culture "melange espece" / "melange variété"
     left = df['composant_culture']
     right = df['culture'][['melange_especes', 'melange_varietes']]
-    df['composant_culture_extanded'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+    df['composant_culture_extended'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
 
     left = df['composant_culture_concerne_intervention_realise']
-    right = df['composant_culture_extanded'][['surface_relative', 'melange_especes', 'melange_varietes']]
+    right = df['composant_culture_extended'][['surface_relative', 'melange_especes', 'melange_varietes']]
     merge = pd.merge(left, right, left_on='composant_culture_id', right_index=True)
 
     # on commence par compter le nombre de composants de culture concernés par l'intervention
@@ -2607,22 +2628,22 @@ def get_recolte_realise_outils_can(
     # on rajoute toutes les informations qu'on doit avoir pour fusionner avec le dataframe merge qu'on vient d'obtenir
     left = df['recolte_rendement_prix']
     right = df['recolte_rendement_prix_restructure']
-    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df['recolte_rendement_prix_extended'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    left = df['recolte_rendement_prix_extanded']
+    left = df['recolte_rendement_prix_extended']
     right = df['action_realise'][['intervention_realise_id']]
-    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
+    df['recolte_rendement_prix_extended'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
 
-    left = df['recolte_rendement_prix_extanded'].reset_index()
+    left = df['recolte_rendement_prix_extended'].reset_index()
     right = merge
-    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, on = ['composant_culture_id', 'intervention_realise_id'], how='left').set_index('id')
+    df['recolte_rendement_prix_extended'] = pd.merge(left, right, on = ['composant_culture_id', 'intervention_realise_id'], how='left').set_index('id')
 
     # on remplace les données manquantes
-    df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']].fillna('t')
-    df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']].fillna('t')
+    df['recolte_rendement_prix_extended'].loc[:, ['melange_especes']] = df['recolte_rendement_prix_extended'].loc[:, ['melange_especes']].fillna('t')
+    df['recolte_rendement_prix_extended'].loc[:, ['melange_varietes']] = df['recolte_rendement_prix_extended'].loc[:, ['melange_varietes']].fillna('t')
 
 
-    left = df['recolte_rendement_prix_extanded']
+    left = df['recolte_rendement_prix_extended']
     right = merge.groupby('intervention_realise_id')['surface_relative_corrigee'].sum().rename('surface_relative_corrigee_totale')
     final_realise = pd.merge(left, right, left_on='intervention_realise_id', right_index=True, how='left')
 
@@ -2733,14 +2754,14 @@ def get_recolte_synthetise_outils_can(
     # on veut savoir pour chaque composant culture si celui-ci appartient à une culture "melange espece" / "melange variété"
     left = df['composant_culture']
     right = df['culture'][['melange_especes', 'melange_varietes']]
-    df['composant_culture_extanded'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
+    df['composant_culture_extended'] = pd.merge(left, right, left_on='culture_id', right_index=True, how='left')
 
     left = df['composant_culture_concerne_intervention_synthetise']
     right = df['ccc_intervention_synthetise_restructure']
-    df['composant_culture_concerne_intervention_synthetise_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df['composant_culture_concerne_intervention_synthetise_extended'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    left = df['composant_culture_concerne_intervention_synthetise_extanded'] 
-    right = df['composant_culture_extanded'][['surface_relative', 'melange_especes', 'melange_varietes']]
+    left = df['composant_culture_concerne_intervention_synthetise_extended'] 
+    right = df['composant_culture_extended'][['surface_relative', 'melange_especes', 'melange_varietes']]
     merge = pd.merge(left, right, left_on='composant_culture_id', right_index=True)
 
     # on commence par compter le nombre de composants de culture concernés par l'intervention
@@ -2773,23 +2794,23 @@ def get_recolte_synthetise_outils_can(
     # on rajoute toutes les informations qu'on doit avoir pour fusionner avec le dataframe merge qu'on vient d'obtenir
     left = df['recolte_rendement_prix']
     right = df['recolte_rendement_prix_restructure']
-    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+    df['recolte_rendement_prix_extended'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
 
-    left = df['recolte_rendement_prix_extanded']
+    left = df['recolte_rendement_prix_extended']
     right = df['action_synthetise'][['intervention_synthetise_id']]
-    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
+    df['recolte_rendement_prix_extended'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
 
 
-    left = df['recolte_rendement_prix_extanded'].reset_index()
+    left = df['recolte_rendement_prix_extended'].reset_index()
     right = merge
-    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, on = ['composant_culture_id', 'intervention_synthetise_id'], how='left').set_index('id')
+    df['recolte_rendement_prix_extended'] = pd.merge(left, right, on = ['composant_culture_id', 'intervention_synthetise_id'], how='left').set_index('id')
 
     # on remplace les données manquantes
-    df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_especes']].fillna('t')
-    df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']] = df['recolte_rendement_prix_extanded'].loc[:, ['melange_varietes']].fillna('t')
+    df['recolte_rendement_prix_extended'].loc[:, ['melange_especes']] = df['recolte_rendement_prix_extended'].loc[:, ['melange_especes']].fillna('t')
+    df['recolte_rendement_prix_extended'].loc[:, ['melange_varietes']] = df['recolte_rendement_prix_extended'].loc[:, ['melange_varietes']].fillna('t')
 
 
-    left = df['recolte_rendement_prix_extanded']
+    left = df['recolte_rendement_prix_extended']
     right = merge.groupby('intervention_synthetise_id')['surface_relative_corrigee'].sum().rename('surface_relative_corrigee_totale')
     final_synthetise = pd.merge(left, right, left_on='intervention_synthetise_id', right_index=True, how='left')
 
@@ -2948,27 +2969,27 @@ def get_zone_realise_rendement_outils_can(
     # on ajoute les informations sur les action
     left = get_recolte_realise_outils_can(donnees)
     right = donnees['action_realise_agrege'].set_index('id')[['zone_id']]
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
 
     unite_rendement = pd.DataFrame.from_records([UNITE_RENDEMENT]).melt().rename(
         columns={'variable' : 'unite_agrosyst', 'value' : 'unite_utilisateur'}
     )
 
-    left = recolte_rendement_prix_extanded
+    left = recolte_rendement_prix_extended
     right = unite_rendement
-    recolte_rendement_prix_extanded = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
+    recolte_rendement_prix_extended = pd.merge(left, right, left_on='rendement_unite', right_on='unite_agrosyst', how='left')
 
     # on effectue la somme pour ceux où n'y a que le rendement_moy qui diffère :  
-    recolte_rendement_prix_extanded = recolte_rendement_prix_extanded.groupby(['zone_id', 'destination', 'unite_utilisateur']).agg({
+    recolte_rendement_prix_extended = recolte_rendement_prix_extended.groupby(['zone_id', 'destination', 'unite_utilisateur']).agg({
         'rendement_moy_corr' : 'sum'
     }).reset_index()
 
-    recolte_rendement_prix_extanded['rendement_total'] = '['+recolte_rendement_prix_extanded['destination'].astype('str')+']'+'|'+\
-        recolte_rendement_prix_extanded['rendement_moy_corr'].astype('str')+'|'+\
-            recolte_rendement_prix_extanded['unite_utilisateur'].astype('str')
+    recolte_rendement_prix_extended['rendement_total'] = '['+recolte_rendement_prix_extended['destination'].astype('str')+']'+'|'+\
+        recolte_rendement_prix_extended['rendement_moy_corr'].astype('str')+'|'+\
+            recolte_rendement_prix_extended['unite_utilisateur'].astype('str')
 
 
-    res = recolte_rendement_prix_extanded.groupby('zone_id').agg({
+    res = recolte_rendement_prix_extended.groupby('zone_id').agg({
         'rendement_total' : lambda x: '#'.join(dict.fromkeys([item for item in x if item.strip()])),
     }).rename(columns={'rendement_total' : 'rendement_culture'})
     
@@ -3031,22 +3052,22 @@ def get_zone_realise_culture_outils_can(
          'libelle_type_saisonnier_aee', 'libelle_destination_aee']
     ]
 
-    df_composant_culture_extanded = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+    df_composant_culture_extended = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
 
-    left = df_composant_culture_extanded
+    left = df_composant_culture_extended
     right = df_variete[['denomination']]
-    df_composant_culture_extanded = pd.merge(left, right, left_on='variete_id', right_index=True, how='left')
+    df_composant_culture_extended = pd.merge(left, right, left_on='variete_id', right_index=True, how='left')
 
     # On fill les NaN avec ''
-    df_composant_culture_extanded= df_composant_culture_extanded.fillna('')
+    df_composant_culture_extended= df_composant_culture_extended.fillna('')
 
     # On crée la description succinte de l'espèce 
-    df_composant_culture_extanded.loc[:, 'esp'] = df_composant_culture_extanded[['libelle_espece_botanique']]
-    df_composant_culture_extanded.loc[:, 'var'] = df_composant_culture_extanded[['denomination']]
+    df_composant_culture_extended.loc[:, 'esp'] = df_composant_culture_extended[['libelle_espece_botanique']]
+    df_composant_culture_extended.loc[:, 'var'] = df_composant_culture_extended[['denomination']]
 
 
     # On créé la chaîne correspondant à la description complète du composant de culture
-    df_composant_culture_extanded.loc[:, 'esp_complet'] = df_composant_culture_extanded[[
+    df_composant_culture_extended.loc[:, 'esp_complet'] = df_composant_culture_extended[[
         'libelle_espece_botanique', 
         'libelle_qualifiant_aee', 
         'libelle_type_saisonnier_aee', 
@@ -3054,16 +3075,16 @@ def get_zone_realise_culture_outils_can(
     ]].agg(' '.join, axis=1).str.split().str.join(' ')
 
     # On ajoute l'information de la variété
-    df_composant_culture_extanded.loc[
-        df_composant_culture_extanded['var'] !=  '', 'var'
-    ] = df_composant_culture_extanded.loc[df_composant_culture_extanded['var'] !=  '']['var']
+    df_composant_culture_extended.loc[
+        df_composant_culture_extended['var'] !=  '', 'var'
+    ] = df_composant_culture_extended.loc[df_composant_culture_extended['var'] !=  '']['var']
 
-    df_composant_culture_extanded['var'] = df_composant_culture_extanded['var'].fillna('')
+    df_composant_culture_extended['var'] = df_composant_culture_extended['var'].fillna('')
     
-    df_composant_cutlure_with_var = df_composant_culture_extanded.loc[df_composant_culture_extanded['var'] != '']
-    df_composant_culture_extanded.loc[:,'esp_complet_var'] = df_composant_culture_extanded['esp_complet']
-    df_composant_culture_extanded.loc[df_composant_cutlure_with_var.index,'esp_complet_var'] = df_composant_culture_extanded['esp_complet'] + \
-        ' - '+ df_composant_culture_extanded['var']
+    df_composant_cutlure_with_var = df_composant_culture_extended.loc[df_composant_culture_extended['var'] != '']
+    df_composant_culture_extended.loc[:,'esp_complet_var'] = df_composant_culture_extended['esp_complet']
+    df_composant_culture_extended.loc[df_composant_cutlure_with_var.index,'esp_complet_var'] = df_composant_culture_extended['esp_complet'] + \
+        ' - '+ df_composant_culture_extended['var']
 
     # on rajoute à la culture l'information de la zone pour les assolées
     left = df_culture.rename(columns={'id' : 'culture_id'})
@@ -3088,7 +3109,7 @@ def get_zone_realise_culture_outils_can(
     merge = pd.concat([merge_assolee, merge_ci, merge_perenne])
 
     # on rajoute aux composants de culture les informations sur les zones :
-    left = df_composant_culture_extanded[['esp', 'var', 'esp_complet', 'esp_complet_var', 'culture_id']]
+    left = df_composant_culture_extended[['esp', 'var', 'esp_complet', 'esp_complet_var', 'culture_id']]
     right = merge[['zone_id', 'noeuds_realise_id', 'plantation_perenne_realise_id', 'culture_id']]
     merge = pd.merge(left, right, on='culture_id', how='inner')
 
@@ -3156,24 +3177,24 @@ def get_sdc_realise_outils_can(
     # la fonction get_zone_realise_culture_outils_can
     left = zone
     right = get_zone_realise_culture_outils_can(donnees)
-    zone_extanded = pd.merge(left, right, on='id', how='left')
+    zone_extended = pd.merge(left, right, on='id', how='left')
 
     # on ajoute l'information du sdc_id à travers la parcelle
-    left = zone_extanded
+    left = zone_extended
     right = parcelle
-    zone_extanded = pd.merge(left, right, left_on='parcelle_id', right_index=True, how='left')
+    zone_extended = pd.merge(left, right, left_on='parcelle_id', right_index=True, how='left')
 
     # on fill les nan avec la chaine de caractère vide : 
-    zone_extanded.loc[:, 'culture_especes_edi'] = zone_extanded['culture_especes_edi'].fillna('')
-    zone_extanded.loc[:, 'variete_nom'] = zone_extanded['variete_nom'].fillna('')
+    zone_extended.loc[:, 'culture_especes_edi'] = zone_extended['culture_especes_edi'].fillna('')
+    zone_extended.loc[:, 'variete_nom'] = zone_extended['variete_nom'].fillna('')
 
     # on groupe par sdc_id :
-    sdc_extanded = zone_extanded.groupby('sdc_id').agg({
+    sdc_extended = zone_extended.groupby('sdc_id').agg({
         'culture_especes_edi': merge_concat, 
         'variete_nom' : merge_concat
     })
 
-    return sdc_extanded.reset_index().rename(columns={
+    return sdc_extended.reset_index().rename(columns={
         'sdc_id' : 'id', 
         'culture_especes_edi' : 'especes', 
         'variete_nom': 'varietes'
@@ -3235,26 +3256,26 @@ def get_parcelle_realise_outils_can(
     # la fonction get_zone_realise_culture_outils_can
     left = zone
     right = get_zone_realise_outils_can(donnees)
-    zone_extanded = pd.merge(left, right, on='id', how='left')
+    zone_extended = pd.merge(left, right, on='id', how='left')
 
-    left = zone_extanded
+    left = zone_extended
     right = parcelle
-    zone_extanded = pd.merge(left, right, left_on='parcelle_id', right_index=True, how='left')
+    zone_extended = pd.merge(left, right, left_on='parcelle_id', right_index=True, how='left')
 
     # on fill les nan avec la chaine de caractère vide : 
-    zone_extanded.loc[:, 'culture_especes_edi'] = zone_extanded['culture_especes_edi'].fillna('')
-    zone_extanded.loc[:, 'variete_nom'] = zone_extanded['variete_nom'].fillna('')
-    zone_extanded.loc[:, 'rendement_culture'] = zone_extanded['rendement_culture'].fillna('')
+    zone_extended.loc[:, 'culture_especes_edi'] = zone_extended['culture_especes_edi'].fillna('')
+    zone_extended.loc[:, 'variete_nom'] = zone_extended['variete_nom'].fillna('')
+    zone_extended.loc[:, 'rendement_culture'] = zone_extended['rendement_culture'].fillna('')
 
 
     # on groupe par sdc_id :
-    sdc_extanded = zone_extanded.groupby('parcelle_id').agg({
+    sdc_extended = zone_extended.groupby('parcelle_id').agg({
         'culture_especes_edi': merge_concat, 
         'variete_nom' : merge_concat,
         'rendement_culture' : merge_concat
     })
 
-    return sdc_extanded.reset_index().rename(columns={
+    return sdc_extended.reset_index().rename(columns={
         'parcelle_id' : 'id', 
         'culture_especes_edi' : 'especes', 
         'variete_nom' : 'varietes',

@@ -1,4 +1,4 @@
-,combinaison_outil_id,materiel_id
+,combinaison_outil_id,composant_parc_materiel_id
 28326,fr.inra.agrosyst.api.entities.ToolsCoupling_73305163-7a59-497d-87a4-eec411c5bc5e,fr.inra.agrosyst.api.entities.Equipment_edad6b67-731e-47e8-b5b5-4c7f8f2d5c20
 63549,fr.inra.agrosyst.api.entities.ToolsCoupling_f7e7c3bd-0e19-4512-adcf-dbdc3af909f6,fr.inra.agrosyst.api.entities.Equipment_c6c3a6b9-1e3d-422c-95b5-4a954123b0a6
 70333,fr.inra.agrosyst.api.entities.ToolsCoupling_ecf06e4e-83a8-48ce-aaad-0c0f0f04d5ae,fr.inra.agrosyst.api.entities.Equipment_95e0272f-51f1-4535-bc97-f93f931b6abf

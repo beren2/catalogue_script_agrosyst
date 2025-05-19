@@ -18,6 +18,7 @@
 			"synthetise",
 			"culture",
 			"materiel",
+			"composant_parc_materiel",
 			"combinaison_outil",
 			"composant_culture",
 			"atelier_elevage",
@@ -77,8 +78,7 @@
 			"levier",
 			"texture_sol",
 			"fertilisation_organique",
-			"fertilisation_minerale",
-			"adventice"
+			"fertilisation_minerale"
 		],
 		"tables": {
 			"semence" : {
@@ -281,6 +281,10 @@
 				"file_name" : "utilisation_intrant_synthetise",
 				"category" : "autre"
 			},
+			"composant_parc_materiel":{
+				"file_name" : "composant_parc_materiel",
+				"category" : "autre"
+			},
 			"materiel":{
 				"file_name" : "materiel",
 				"category" : "autre"
@@ -289,7 +293,7 @@
 				"file_name" : "combinaison_outil",
 				"category" : "autre"
 			},
-			"combinaison_outil_materiel":{
+			"combinaison_outil_composant_parc_materiel":{
 				"file_name" : "combinaison_outil",
 				"category" : "autre"
 			},
@@ -755,7 +759,7 @@
 				}, 
 				"materiel" : {
 					"tables" :[
-						"materiel", "combinaison_outil_materiel", "combinaison_outil",
+						"composant_parc_materiel", "combinaison_outil_materiel", "combinaison_outil",
 						"domaine", "domaine_filtres_outils_can"     
 					],
 					"dependances" : []
