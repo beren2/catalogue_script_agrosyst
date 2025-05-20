@@ -759,7 +759,7 @@
 				"materiel" : {
 					"tables" :[
 						"composant_parc_materiel", "combinaison_outil_composant_parc_materiel", "combinaison_outil",
-						"domaine", "domaine_filtres_outils_can"
+						"domaine", "domaine_filtres_outils_can", "materiel"
 					],
 					"dependances" : []
 				},
