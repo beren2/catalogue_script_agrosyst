@@ -113,12 +113,14 @@ left join refprixirrig rpi on rpi.campaign = d.campaign;
 
 
 -- AJOUT DES INTRANTS MINERAUX : 
-insert into entrepot_intrant (id, type, domaine_id, ref_id, nom_utilisateur,
+insert into entrepot_intrant (id, type, type_produit, ref_nom, domaine_id, ref_id, nom_utilisateur,
 	n, p2o5, k2o, bore, calcium, fer, manganese, molybdene, mgo, oxyde_de_sodium, so3, cuivre, zinc, 
 	prix_saisi, prix_saisi_unite, prix_ref, prix_ref_unite, effet_sdn, unite_teneur_fert, unite_application, forme_fert_min)
 select 	
 	dmpi.topiaid as id,
 	adisu.inputtype as type,
+	rfmu.type_produit,
+	rfmu.type_produit as ref_nom,
 	adisu.domain as domaine_id,
 	dmpi.refinput as ref_id,
 	adisu.inputname as nom_utilisateur,
