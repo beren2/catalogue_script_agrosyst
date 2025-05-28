@@ -306,7 +306,7 @@ while True:
         break
 
     
-    elif choice_key == "Tout générer":
+    if choice_key == "Tout générer":
         magasins = list(magasin_specs.keys())
         print("Début de la génération de tous les magasins...")
         for magasin in magasins:
