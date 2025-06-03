@@ -906,7 +906,7 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     # OUTILS
     # Attention on utilise ici l'outil passant de noeuds_synth_id à la culture_id (voir outil restructuration et calcul de frequence de connexion)
     noeud_with_culture_id = donnees['noeuds_synthetise_restructure'].copy()
-    con_frq = donnees['poids_connexions_synthetise_rotation'][['connexion_id','proba_conx_spatiotemp']].copy()
+    con_frq = donnees['poids_connexions_synthetise_rotation'][['connexion_id','poids_conx_agregation']].copy()
     typo_culture = donnees['typologie_can_culture'].copy()
 
     # ENTREPOT
@@ -926,8 +926,8 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     df = df.merge(typo_culture, on = 'culture_id')
 
     # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ; et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion rien qu'à eux)
-    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','proba_conx_spatiotemp']].\
-        rename(columns={'proba_conx_spatiotemp' : 'frequence'})
+    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','poids_conx_agregation']].\
+        rename(columns={'poids_conx_agregation' : 'frequence'})
 
     df = df.drop('connexion_id', axis=1)  
 
