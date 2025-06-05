@@ -772,92 +772,139 @@ def get_typologie_culture_CAN(donnees):
     return df
 
 def get_rota_typo(cgrp, freq_column='frequence'):
-        
-    # Comme la CAN fait, on check à chaque fois une condition, si true on return.
-    # il y a donc un ordre de priorité bien défini
-    # Sans cet ordre de priorité il y aurait des chevauchements, mais quand meme pas dans tout les cas
-    # Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
-    # ils aggregent totu avec un return 'Pas de type rotation calculé'
-    # ATTENTION nous ferons le distingo avec les 2 premieres conditions
+    '''
+    Comme la CAN fait, on check à chaque fois une condition, si true on return. Il y a donc un ordre de priorité bien défini
+    Sans cet ordre de priorité il y aurait qlq chevauchements
+    Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
+    ils aggregent tout avec un return 'Pas de type rotation calculé'. Nous ferons le distingo avec les 2 premieres conditions
 
-        if freq_column == 'surface_ponderee' or freq_column == 'surface':
-            if all(cgrp[freq_column] == 0):
-                return 'aucune '+freq_column+' renseignée'
-            if all(cgrp[freq_column] == 0):
-                return freq_column+' nulle renseignée'
-            if cgrp[freq_column].sum() < 0.001:
-                return freq_column+' totale < 0.001 ha'
-            cgrp[freq_column] = cgrp[freq_column] / np.nansum(cgrp[freq_column])
-        if freq_column == 'frequence':
-            if all(cgrp[freq_column].isna()):
-                return 'aucune fréquence de rotation calculée'
+    ATTENTION : 
+        - pour le synthétisé, la colonne de fréquence est 'frequence'
+        - pour le réalisé, la colonne de fréquence est 'surface_ponderee' ou 'surface'
+    ATTENTION :
+        - la colonne de typologie de culture est 'typocan_culture_sans_compagne'
+
+    Args:
+        cgrp (pd.Series):
+            Series de données de la rotation pour le synthétisé ou du sdc pour le réalisé.
+        freq_column (str):
+            Nom de la colonne de fréquence à utiliser pour les calculs. Par défaut 'frequence' pour le synthétisé. Peut être 'surface_ponderee' ou 'surface' pour le réalisé.
+    Returns:
+        str: Typologie de culture
+            si pas de surface renseignée, retourne 'aucune surface renseignée'
+            si surface nulle, retourne 'surface nulle renseignée'
+            si surface totale < 0.001 ha, retourne 'surface totale < 0.001 ha'
+            si aucune fréquence de rotation calculée, retourne 'aucune fréquence de rotation calculée'
+            si aucune typologie de culture détectée, retourne 'aucune typologie de culture détectée'
+            Puis les conditions suivantes sont vérifiées dans l'ordre :
+                'succession avec betterave ou lin ou légumes (>= 5 %)'
+                'successions avec pomme de terre'
+                'céréales à paille hiver/colza'
+                'céréales à paille hiver+printemps/colza'
+                'maïs'
+                'céréales à paille/colza/maïs ou protéagineux'
+                'céréales à paille/colza/tournesol'
+                'céréales à paille/maïs(/tournesol)'
+                'céréales à paille/tournesol'
+                'prairie temporaire < 50 % assolement'
+                'prairie temporaire >= 50 % assolement'
+            Si aucune de ces conditions n'est remplie, retourne 'Autre'
+    '''
+
+    if freq_column == 'surface_ponderee' or freq_column == 'surface':
+        if all(cgrp[freq_column] == 0):
+            return 'aucune '+freq_column+' renseignée'
+        if all(cgrp[freq_column] == 0):
+            return freq_column+' nulle renseignée'
+        if cgrp[freq_column].sum() < 0.001:
+            return freq_column+' totale < 0.001 ha'
+        cgrp[freq_column] = cgrp[freq_column] / np.nansum(cgrp[freq_column])
+    if freq_column == 'frequence':
+        if all(cgrp[freq_column].isna()):
+            return 'aucune fréquence de rotation calculée'
 
 
-        conditions = [
-            (all(cgrp\
-                ['typocan_culture_sans_compagne'].isna()), \
-                'aucune typologie de culture détectée'),
+    conditions = [
+        (all(cgrp\
+            ['typocan_culture_sans_compagne'].isna()), \
+            'aucune typologie de culture détectée'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Betterave', 'Lin', 'Légume']), freq_column]) \
+            >= 0.05, \
+            'succession avec betterave ou lin ou légumes (>= 5 %)'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Pomme de terre']), freq_column]) \
+            >= 0.05, \
+            'successions avec pomme de terre'),
+        # (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(['Cultures porte graines']), freq_column]) >= 0.05, 'successions avec cultures porte graine'),
+        ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Colza']), freq_column]) \
+            >= 0.95) & \
             (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Betterave', 'Lin', 'Légume']), freq_column]) \
-                >= 0.05, \
-                'succession avec betterave ou lin ou légumes (>= 5 %)'),
+            ['Céréales à paille printemps']), freq_column]) \
+            == 0), \
+            'céréales à paille hiver/colza'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille hiver+printemps/colza'),
+        # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture_sans_compagne
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Maïs']), freq_column]) \
+            >= 0.95, \
+            'maïs'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Maïs', 'Oléagineux (hors Colza et Tournesol)', 'Protéagineux', 'Mélange fourrager']), freq_column])\
+            >= 0.95, \
+            'céréales à paille/colza/maïs ou protéagineux'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille/colza/tournesol'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille/maïs(/tournesol)'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille/tournesol'),
+        ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Prairie temporaire']), freq_column]) \
+            < 0.5) & \
             (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Pomme de terre']), freq_column]) \
-                >= 0.05, \
-                'successions avec pomme de terre'),
-            # (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(['Cultures porte graines']), freq_column]) >= 0.05, 'successions avec cultures porte graine'),
-            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Colza']), freq_column]) \
-                >= 0.95) & \
-                (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille printemps']), freq_column]) \
-                == 0), \
-                'céréales à paille hiver/colza'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza']), freq_column]) \
-                >= 0.95, \
-                'céréales à paille hiver+printemps/colza'),
-            # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture_sans_compagne
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Maïs']), freq_column]) \
-                >= 0.95, \
-                'maïs'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Maïs', 'Oléagineux (hors Colza et Tournesol)', 'Protéagineux', 'Mélange fourrager']), freq_column])\
-                >= 0.95, \
-                'céréales à paille/colza/maïs ou protéagineux'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
-                >= 0.95, \
-                'céréales à paille/colza/tournesol'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
-                >= 0.95, \
-                'céréales à paille/maïs(/tournesol)'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), freq_column]) \
-                >= 0.95, \
-                'céréales à paille/tournesol'),
-            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Prairie temporaire']), freq_column]) \
-                < 0.5) & \
-                (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Prairie temporaire']), freq_column]) \
-                > 0),
-                'prairie temporaire < 50 % assolement'),
-            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Prairie temporaire']), freq_column]) \
-                >= 0.5), \
-                'prairie temporaire >= 50 % assolement')
-        ]
-        
-        for condition, message in conditions:
-            if condition:
-                return message
+            ['Prairie temporaire']), freq_column]) \
+            > 0),
+            'prairie temporaire < 50 % assolement'),
+        ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Prairie temporaire']), freq_column]) \
+            >= 0.5), \
+            'prairie temporaire >= 50 % assolement')
+    ]
+    
+    for condition, message in conditions:
+        if condition:
+            return message
 
-        return 'Autre'
+    return 'Autre'
 
 def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
+    '''
+    Permet de calculer le pourcentage de chaque typologie de culture dans un groupe de données. Ce groupe de données est généralement un groupe de données de rotation pour le synthétisé ou un sdc pour le réalisé.
+    
+    Args:
+        cgrp (pd.Series):
+            Series de données de la rotation pour le synthétisé ou du sdc pour le réalisé.
+        freq_column (str):
+            Nom de la colonne de fréquence à utiliser pour les calculs. Par défaut 'frequence' pour le synthétisé. Peut être 'surface_ponderee' ou 'surface' pour le réalisé.
+    Returns:
+        list: Liste des pourcentages de chaque typologie de culture dans le groupe de données.
+        Chaque élément de la liste est une chaîne de caractères au format 'typologie: pourcentage'.
+        Si aucune fréquence renseignée, retourne ['aucune frequence renseignée']
+        Si la somme des surfaces est nulle, retourne ['surface nulle renseignée']
+        Si la somme des surfaces est inférieure à 0.001, retourne ['surface totale < 0.001']
+    '''
+
     list_grp = []
     cgrp['typocan_culture_sans_compagne'] = cgrp['typocan_culture_sans_compagne'].fillna('NOTYPOC')
 
@@ -902,6 +949,7 @@ def get_typologie_rotation_CAN_synthetise(donnees):
 
     Returns:
         pd.DataFrame() contenant le synthetise_id et la typologie de rotation de la CAN
+        On prends le poids de connexion utilisé pour l'aggrégation de la rotation.
     '''
     # OUTILS
     # Attention on utilise ici l'outil passant de noeuds_synth_id à la culture_id (voir outil restructuration et calcul de frequence de connexion)
@@ -953,14 +1001,23 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     Args:
         donnees (dict):
             Données d'entrepot
+                'connection_realise'
+                'noeuds_realise'
                 'zone'
                 'parcelle'
-                'sdc'
             Données d'outils (attention dépendence)
                 'typologie_can_culture'
 
     Returns:
-        pd.DataFrame() contenant
+        pd.DataFrame() contenant 
+            'surface_totale_assol_dvlp'
+            'surface_totale_assol'
+            'typocan_assol_dvlp'
+            'typocan_assol'
+            'list_freq_typoculture_dvlp'
+            'list_freq_typoculture'
+            La surface totale de l'assolement est ici la somme de toutes les surfaces des zones des parcelles d'un sdc_id donné, pour cela il faut que les parcelles soit rattachée à un sdc_id (donc aps le sbugs edaplos).
+            La différence entre _dvlp et _ est que _dvlp est la surface totale de l'assolement sans pondération par le nombre de connexion dans une même zone_id. Si la même année il y a 2 cultures sur une meme zone de 30ha, alors la surface totale de l'assolement sera de 60ha pour _dvlp et de 30ha pour _ (car 2 connexions dans la meme zone_id).
     '''
     # OUTILS
     typo_culture = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne']].copy()
@@ -995,8 +1052,8 @@ def get_typologie_rotation_CAN_synthetise(donnees):
 
     df_end = df_end.groupby('sdc_id').apply(
         lambda cgrp: pd.Series({
-        'surface_total_assol_dvlp': cgrp['surface'].sum().round(2),
-        'surface_total_assol': cgrp['surface_ponderee'].sum().round(2),
+        'surface_totale_assol_dvlp': cgrp['surface'].sum().round(2),
+        'surface_totale_assol': cgrp['surface_ponderee'].sum().round(2),
         'typocan_assol_dvlp': get_rota_typo(cgrp, 'surface'),
         'typocan_assol': get_rota_typo(cgrp, 'surface_ponderee'),
         'list_freq_typoculture_dvlp': '_'.join(  get_percent_each_typo_culture(cgrp, freq_column='surface') ),
