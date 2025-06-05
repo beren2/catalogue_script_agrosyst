@@ -891,7 +891,7 @@ def get_rota_typo(cgrp, freq_column='frequence'):
 def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
     '''
     Permet de calculer le pourcentage de chaque typologie de culture dans un groupe de données. Ce groupe de données est généralement un groupe de données de rotation pour le synthétisé ou un sdc pour le réalisé.
-    
+
     Args:
         cgrp (pd.Series):
             Series de données de la rotation pour le synthétisé ou du sdc pour le réalisé.
@@ -906,6 +906,7 @@ def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
     '''
 
     list_grp = []
+    percentages = []
     cgrp['typocan_culture_sans_compagne'] = cgrp['typocan_culture_sans_compagne'].fillna('NOTYPOC')
 
     if pd.isna(cgrp[freq_column]).all() :
@@ -924,9 +925,14 @@ def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
             typoc_sum = typoc_sum * 100
         if freq_column == 'surface_ponderee' or freq_column == 'surface':
             typoc_sum = (typoc_sum / surf_sum) * 100
-        typoc_sum = str(typoc_sum.round(1))
-        list_grp.append(x + ':' + typoc_sum)
-    return list_grp
+        percentages.append(typoc_sum.round(1))
+        list_grp.append(x + ':' + str(typoc_sum.round(1)))
+
+    # Trier les deux listes en fonction des pourcentages
+    sorted_lists = sorted(zip(list_grp, percentages), key=lambda pair: pair[1], reverse=True)
+    list_grp_sorted = [item[0] for item in sorted_lists]
+
+    return list_grp_sorted
 
 
 def get_typologie_rotation_CAN_synthetise(donnees):
@@ -989,7 +995,7 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     return df
 
 
-def get_typologie_rotation_CAN_synthetise(donnees):
+def get_typologie_assol_CAN_realise(donnees):
     ''' 
     Le but est d'obtenir les typologies d'assolement utilisées par la Cellule référence.
     Pour le réalisé
