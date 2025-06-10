@@ -577,7 +577,8 @@
                 "generated" : [
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
-					"typologie_can_rotation_synthetise", 
+					"typologie_can_rotation_synthetise",
+					"typologie_assol_CAN_realise",
 					"parcelle_realise_outils_can",
 					"action_realise_rendement_total", 
 					"action_synthetise_rendement_total"
