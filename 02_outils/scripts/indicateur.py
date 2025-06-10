@@ -1066,7 +1066,9 @@ def get_typologie_assol_CAN_realise(donnees):
         'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp, freq_column='surface_ponderee') )
     }), include_groups=False).reset_index()
 
-    return df_end.set_index('sdc_id')
+    df_end = df_end.set_index('sdc_id')
+
+    return df_end
 
 
 
@@ -1352,16 +1354,21 @@ def process_sy(sy, cx, nd):
     all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
     all_df = all_df.merge(chemin_normalisation, on=['chemin_id'], how='left')
 
-    # Calculer le vrai poids de connexion final (poids_conx_standard / count_grp_sameyear_overall)
+    # Calculer proba_conx_spatiotemp
     all_df['proba_conx_spatiotemp'] = all_df['poids_conx_standard'] / all_df['count_grp_sameyear_overall']
 
     # Normalisation des poids de connexions pour l'agrégation, au niveau des chemins
-    all_df['poids_conx_agregation'] = all_df['poids_conx_standard'] / all_df['facteur_normalisation']
+    all_df['poids_conx_agregation_norm_chemin'] = all_df['poids_conx_standard'] / all_df['facteur_normalisation']
 
     # Supprimer le poids de connexion des connexions absentes
-    all_df.drop(['pd_chem', 'poids_conx_standard', 'facteur_normalisation'], axis=1, inplace=True)
-    all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
+    all_df.loc[all_df['abs'] == 't','poids_conx_agregation_norm_chemin'] = np.nan
+    all_df.loc[all_df['abs'] == 't','poids_conx_standard'] = np.nan
     all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
+
+    # Normalisation des poids de connexions pour l'agrégation au niveau du SDC : AGROSYST et CELLREF
+    all_df['poids_conx_agregation'] = all_df['poids_conx_standard'] / all_df['poids_conx_standard'].sum()
+
+    all_df.drop(['pd_chem', 'poids_conx_standard', 'facteur_normalisation'], axis=1, inplace=True)
 
     return all_df
 
@@ -1372,15 +1379,16 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     Avec le poids des connexions pour l'agrégation (indicateur à l'itk) et la probabilité d'apparition de la connexion (indicateur à l'année, ou proportion spatio-temporelle de la culture). 
     On exporte aussi le dataframe intermédiaire qui est très utile avec les couples connexions-chemins
 
-    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion annualisé soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. Ce poids de connexion annualisé correspond au poids de la connexion à utiliser pour faire les agrégrations d'indicateurs. On le normalise pour qu'ils somment à 1 (càd diviser chaque poids par la somme des autres).
-    Puis pour chaque connexion on donne ce poids de connexion annualisé divisé par le nombre de connexions dans le groupe de même camapgne qui ne sont pas absente. Nous avons désormais la probabilité d'apparition des cultures.
-    Puis on passe en NA les connexions absentes pour le poids et la probabilité. 
-    Au final on fait une somme de ces indicateurs pour une meme connexion (car on était jusque là au niveau du couple connexion-chemin)
+    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion standard soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. 
+    Avec toutes ces variable on détermine :
+        * le poids de connexion d'aggrégation, utilisé dans agrosyst et la cellref. Qui est le poids de connexion standard nomralisé au niveau du synthétisé (soit diviser par la somme de tout les poids de connexion standard du synthé)
+        * la probabilité d'apparittion de la connexion qui est le poids de connexion standard divisé par le nombre de connexion actives au sein de la même campagne (le groupe de connexions de meme campagne)
+        * le poids de connexion d'aggrégation normalisé au chemin. Qui est le poids de connexion standard nomralisé au niveau du chemin (soit diviser par la somme de tout les poids de connexion standard du chemin)
     Attention, on filtre les synthétisés dont la somme des probabilités d'apparition de culture ne fait pas 1 ! (c'est le cas d'une trentaine de synthétisé qui ont des chemins entierrement composé de culture absentes)
 
     Note(s):
         Que pour les cultures assolées en synthétisé
-        Processus parralélisé à 70% des cores de la machine (4h30 --> 45min)
+        Processus parralélisé à 50% des cores de la machine (4h30 --> 45min)
 
     Echelle :
         connexion_id
@@ -1396,8 +1404,6 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
             - extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
         parallelization_enabled (bool):
             booléen indiquant si la parralélisation est active ou non
-
-
 
     Returns:
         1° : pd.Dataframe() des poids de connexion
@@ -1453,28 +1459,32 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
 
     # On enleve les données qui ne somme pas à 1
     test_sum_at_100 = final_data.copy()
-    test_sum_at_100 = test_sum_at_100[['poids_conx_agregation','proba_conx_spatiotemp','synth_id']].groupby('synth_id').agg({
+    test_sum_at_100 = test_sum_at_100[['poids_conx_agregation','proba_conx_spatiotemp','poids_conx_agregation_norm_chemin','synth_id']].groupby('synth_id').agg({
         'poids_conx_agregation' : 'sum',
-        'proba_conx_spatiotemp' : 'sum'
+        'proba_conx_spatiotemp' : 'sum',
+        'poids_conx_agregation_norm_chemin' : 'sum'
     })
     test_sum_at_100 = test_sum_at_100.loc[(round(test_sum_at_100['poids_conx_agregation'],2) != 1) | \
-                                          (round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1)].index
+                                          (round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1) | \
+                                          (round(test_sum_at_100['poids_conx_agregation_norm_chemin'],2) != 1)].index
 
     # print('Nombre de connexion qui ne somme pas à 100 : ', len(test_sum_at_100).astype('str'))
 
     final_data = final_data.loc[~(final_data['synth_id'].isin(test_sum_at_100))]
-    final_data = final_data[['connexion_id','chemin_id','synth_id','groupe_sameyear','abs','poids_conx_agregation','proba_conx_spatiotemp']].rename(columns={'synth_id' : 'synthetise_id'})
+    final_data = final_data[['connexion_id','chemin_id','synth_id','groupe_sameyear','abs','poids_conx_agregation','proba_conx_spatiotemp','poids_conx_agregation_norm_chemin']].rename(columns={'synth_id' : 'synthetise_id'})
 
     # Somme des poids des couples cnx_chem pour aller à l'échelle connexion_id
-    final_data_conx_level = final_data[['connexion_id','synthetise_id','poids_conx_agregation','proba_conx_spatiotemp']].groupby('connexion_id').agg({
+    final_data_conx_level = final_data[['connexion_id','synthetise_id','poids_conx_agregation','proba_conx_spatiotemp','poids_conx_agregation_norm_chemin']].groupby('connexion_id').agg({
         'synthetise_id' : lambda x : x.iloc[0],
         'poids_conx_agregation' : lambda x : np.nan if all(x.isna()) else sum(x.dropna()),
-        'proba_conx_spatiotemp' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
+        'proba_conx_spatiotemp' : lambda x : np.nan if all(x.isna()) else sum(x.dropna()),
+        'poids_conx_agregation_norm_chemin' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
     }).reset_index()
 
     # On choisit d'arrondir à 5 chiffres après la virgule :
     final_data_conx_level['poids_conx_agregation'] = final_data_conx_level['poids_conx_agregation'].round(5)
     final_data_conx_level['proba_conx_spatiotemp'] = final_data_conx_level['proba_conx_spatiotemp'].round(5)
+    final_data_conx_level['poids_conx_agregation_norm_chemin'] = final_data_conx_level['poids_conx_agregation_norm_chemin'].round(5)
 
     final_data_conx_level = final_data_conx_level.set_index('connexion_id')
     final_data = final_data.set_index('connexion_id')
