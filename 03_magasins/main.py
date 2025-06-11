@@ -274,6 +274,7 @@ magasin_specs  = SOURCE_SPECS['magasins']
 options = {
     "Tout générer" : [],
     "Générer un magasin" : [],
+    "Génération de certaines données d'un magasin" : [],
     "Quitter" : []
 }
 
@@ -304,7 +305,19 @@ while True:
         print("Au revoir !")
         break
 
-    if(choice_key == "Générer un magasin"):
+    
+    if choice_key == "Tout générer":
+        magasins = list(magasin_specs.keys())
+        print("Début de la génération de tous les magasins...")
+        for magasin in magasins:
+            print("Magasin :" +magasin)
+            for i, table in enumerate(magasin_specs[magasin]['tables']):
+                print("- " +table)
+                executed_dependances += generate_table(
+                    magasin, table, current_dependances=executed_dependances
+                )
+
+    elif choice_key == "Générer un magasin":
         # On demande le magasin à générer
         magasins = list(magasin_specs.keys())
         print("")
@@ -314,11 +327,24 @@ while True:
                     print(f"{i + 1}. {option_magasin}")
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_magasin = magasins[choice - 1]
-        #print("magasin choisi : ", choosen_magasin)
+        print("Début génération de toute les tables du magasin "+choosen_magasin)
+        for i, table in enumerate(magasin_specs[choosen_magasin]['tables']):
+                print("- " +table)
+                executed_dependances += generate_table(choosen_magasin, table, current_dependances=executed_dependances)
 
-        # On demande la table dans ce magasin à générer (ou toutes)
-        tables = ['tout']
-        tables += list(magasin_specs[choosen_magasin]['tables'].keys())
+    elif(choice_key == "Génération de certaines données d'un magasin"):
+        # On demande le magasin à générer
+        magasins = list(magasin_specs.keys())
+        print("")
+        print("Veuillez choisir le magasin à générer")
+        print("")
+        for i, option_magasin in enumerate(magasins):
+                    print(f"{i + 1}. {option_magasin}")
+        choice = int(input("Entrez votre choix (1, 2 ...) : "))
+        choosen_magasin = magasins[choice - 1]
+
+        # On demande la table dans ce magasin à générer
+        tables = list(magasin_specs[choosen_magasin]['tables'].keys())
         print("")
         print("Veuillez choisir la table à générer")
         print("")
@@ -326,17 +352,5 @@ while True:
                     print(f"{i + 1}. {option_table}")
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_table = tables[choice - 1]
-        if(choosen_table == 'tout') :
-            print("Début génération de toute les tables du magasin "+choosen_magasin)
-            for i, table in enumerate(magasin_specs[choosen_magasin]['tables']):
-                print("- " +table)
-                executed_dependances += generate_table(choosen_magasin, table, current_dependances=executed_dependances)
-        else :
-            executed_dependances += generate_table(choosen_magasin, choosen_table, current_dependances=executed_dependances, verbose=VERBOSE)
-            
-
-
-
-            
-            
-            
+        print("Début génération de la table "+choosen_table)
+        executed_dependances += generate_table(choosen_magasin, choosen_table, current_dependances=executed_dependances, verbose=VERBOSE)

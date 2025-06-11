@@ -577,11 +577,10 @@
                 "generated" : [
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
-					"typologie_can_rotation_synthetise",
-					"typologie_assol_can_realise",
-					"parcelle_realise_outils_can",
-					"action_realise_rendement_total", 
-					"action_synthetise_rendement_total"
+                    "typologie_can_rotation_synthetise",
+                    "typologie_assol_can_realise",
+                    "action_realise_rendement_total", 
+                    "action_synthetise_rendement_total"
                 ], 
 				"need_performance" : "False"
             },
@@ -760,8 +759,8 @@
 				}, 
 				"materiel" : {
 					"tables" :[
-						"composant_parc_materiel", "combinaison_outil_materiel", "combinaison_outil",
-						"domaine", "domaine_filtres_outils_can"     
+						"composant_parc_materiel", "combinaison_outil_composant_parc_materiel", "combinaison_outil",
+						"domaine", "domaine_filtres_outils_can", "materiel"
 					],
 					"dependances" : []
 				},
