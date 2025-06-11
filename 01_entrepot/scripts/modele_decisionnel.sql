@@ -49,7 +49,7 @@ sec.sectiontype type_rubrique,
 case 
 	when refcible.groupe_cible_maa is not null then refcible.groupe_cible_maa
 	when refcible2.groupe_cible_maa is not null then refcible2.groupe_cible_maa
-end grouble_cible,
+end groupe_cible,
 case 
 	when sec.bioagressor like '%RefNuisibleEDI%' then refnui.reference_label
 	when sec.bioagressor like '%RefAdventice%' then refadv.adventice
