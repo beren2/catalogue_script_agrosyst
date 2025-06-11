@@ -622,7 +622,7 @@ def identification_pz0(donnees):
         message_error = message_error + "ATTENTION : il reste des codes dephy avec plusieurs pz0 ce qui est impossible !"
 
     modalites = df_identification_pz0['donnee_attendue'].value_counts().reset_index()['donnee_attendue'].to_list()
-    modalites_list_expected = ["pz0", "post", modalite_pz0_non_acceptable, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs]
+    modalites_list_expected = ["pz0", "post", modalite_pz0_non_acceptable, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs,modalite_pz0_aucun]
     check = [m in modalites for m in modalites_list_expected]
     if all(check) is False:
         message_error = message_error + "ATTENTION : Le nombre de modalités ne correspond pas à celles attendues !"

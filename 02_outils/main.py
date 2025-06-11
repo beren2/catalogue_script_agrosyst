@@ -555,7 +555,7 @@ def create_category_indicateur_1():
     export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
 
     df_typologie_assol_CAN_realise= indicateur.get_typologie_assol_CAN_realise(donnees)
-    export_to_db(df_typologie_assol_CAN_realise, 'entrepot_typologie_assol_CAN_realise')
+    export_to_db(df_typologie_assol_CAN_realise, 'entrepot_typologie_assol_can_realise')
 
     # TODO : on fait appel à une fonction "get_recolte_realise_outils_can" car l'importance pour tout le monde de bénéficier de cet outil a été identifié à posteriori.
     # Ce n'est pas idéal, il vaudrait mieux créer une fonction qui créer cette outil et faire appel à cet outil dans les outils can / le magasin can

@@ -398,7 +398,7 @@ def get_dose_ref(
 
     # Obtention des utilisations d'intrants dans lesquelles on a au moins un code amm de déclaré
     df_utilisation_intrant_complet = df_utilisation_intrant_complet.loc[~df_utilisation_intrant_complet['code_amm'].isna()]
-    df_utilisation_intrant_complet['code_amm'] = df_utilisation_intrant_complet['code_amm'].astype('str')
+    df_utilisation_intrant_complet.loc[:,'code_amm'] = df_utilisation_intrant_complet['code_amm'].astype('str')
 
     # Séparation entres les utilisations où on a un groupe cible de retrouvé et les autres
     total_merge_3_without_cible = df_utilisation_intrant_complet.loc[df_utilisation_intrant_complet['code_groupe_cible_maa'].isna()]
