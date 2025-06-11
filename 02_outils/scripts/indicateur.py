@@ -1445,7 +1445,7 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     # Utilisation de ProcessPoolExecutor avec X% des cœurs
     ratio_cpu_use = 0.5
     if parallelization_enabled:
-        print('Parallélisation de la fonction de calcull des poids de connexion :')
+        print('Parallélisation de la fonction de calcul des poids de connexion :')
         # si on est en mode réel, on active la parallélisation
         partial_process_sy = partial(process_sy, cx=cx, nd=nd)
         with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * ratio_cpu_use)) ) as executor:
