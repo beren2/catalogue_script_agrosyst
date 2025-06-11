@@ -98,13 +98,13 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
         expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
         expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
 
-        for colonne_to_test in colonnes_to_test:
-            print(output[colonne_to_test].values)
-            print(expected_output[colonne_to_test].values)
+        for colonne_to_test in colonnes_to_test:   
             if(len(expected_output[colonne_to_test].values) > 0):
                 is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
 
             if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
+                print(output[colonne_to_test].values)
+                print(expected_output[colonne_to_test].values)
                 res.append(False)
             else:
                 res.append(True)
@@ -701,6 +701,7 @@ def test_get_typologie_culture_CAN():
 
     assert res
 
+
 def test_get_typologie_rotation_CAN_synthetise():
     """
         Test de l'obtention des typologies d'espece et de cultures 
@@ -718,6 +719,26 @@ def test_get_typologie_rotation_CAN_synthetise():
     res = pd.Series(res).fillna(False).all()
 
     assert res
+
+
+def test_get_typologie_assol_CAN_realise():
+    """
+        Test de l'obtention des typologies d'assolement de la CAN pour le réalisé
+    """
+    identifiant_test = 'test_get_typologie_assol_CAN_realise'
+    df_names = [
+                'connection_realise', 'noeuds_realise','zone','parcelle', 
+                'typologie_can_culture' # issus d'outils
+               ]
+    path_data = '02_outils/tests/data/test_get_typologie_assol_CAN_realise/'
+    fonction_to_apply = indicateur.get_typologie_assol_CAN_realise
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
+
 
 def test_extract_good_rotation_diagram():
     """
