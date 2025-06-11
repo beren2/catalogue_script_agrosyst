@@ -822,7 +822,7 @@ def get_rota_typo(cgrp, freq_column='frequence'):
             Si aucune de ces conditions n'est remplie, retourne 'Autre'
     '''
 
-    if freq_column in ('surface_ponderee', 'surface'):
+    if freq_column in {'surface_ponderee', 'surface'}:
         if all(cgrp[freq_column] == 0):
             return 'aucune '+freq_column+' renseignée'
         if all(cgrp[freq_column] == 0):
@@ -923,7 +923,7 @@ def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
     if pd.isna(cgrp[freq_column]).all() :
         return ['aucune '+freq_column+' renseignée']
     
-    if freq_column in ('surface_ponderee', 'surface'):
+    if freq_column in {'surface_ponderee', 'surface'}:
         surf_sum = cgrp[freq_column].sum()
         if surf_sum == 0:
             return [freq_column+' nulle renseignée']
@@ -934,7 +934,7 @@ def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
         typoc_sum = cgrp.loc[cgrp['typocan_culture_sans_compagne'] == x, freq_column].sum()
         if freq_column == 'frequence':
             typoc_sum = typoc_sum * 100
-        if freq_column in ('surface_ponderee', 'surface'):
+        if freq_column in {'surface_ponderee', 'surface'}:
             typoc_sum = (typoc_sum / surf_sum) * 100
         percentages.append(typoc_sum.round(1))
         list_grp.append(x + ':' + str(typoc_sum.round(1)))
