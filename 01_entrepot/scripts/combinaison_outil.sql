@@ -47,7 +47,8 @@ ADD FOREIGN KEY (composant_parc_materiel_id) REFERENCES entrepot_composant_parc_
 -- une combinaison d'outils peut avoir plusieurs actions principales renseignées
 DROP TABLE IF EXISTS entrepot_combinaison_outil_action;
 CREATE TABLE entrepot_combinaison_outil_action AS
-select mtc.toolscoupling combinaison_outil_id,
+select distinct 
+mtc.toolscoupling combinaison_outil_id,
 mtc.mainsactions intervention_travail_edi_id
 from mainsactions_toolscoupling mtc 
 join entrepot_intervention_travail_edi refint on mtc.mainsactions = refint.id ;
