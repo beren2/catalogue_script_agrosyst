@@ -727,7 +727,7 @@ def test_get_typologie_assol_CAN_realise():
     """
     identifiant_test = 'test_get_typologie_assol_CAN_realise'
     df_names = [
-                'connection_realise', 'noeuds_realise','zone','parcelle', 
+                'noeuds_realise','zone','parcelle','intervention_realise',
                 'typologie_can_culture' # issus d'outils
                ]
     path_data = '02_outils/tests/data/test_get_typologie_assol_CAN_realise/'

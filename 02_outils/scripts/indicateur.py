@@ -842,7 +842,7 @@ def get_rota_typo(cgrp, freq_column='frequence'):
         (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
             ['Betterave', 'Lin', 'Légume']), freq_column]) \
             >= 0.05, \
-            'succession avec betterave ou lin ou légumes (>= 5 %)'),
+            'successions avec betterave ou lin ou légumes de plein champ (> 5 % surfaces)'),
         (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
             ['Pomme de terre']), freq_column]) \
             >= 0.05, \
@@ -875,7 +875,7 @@ def get_rota_typo(cgrp, freq_column='frequence'):
         (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
             ['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
             >= 0.95, \
-            'céréales à paille/maïs(/tournesol)'),
+            'céréales à paille/maïs (/tournesol)'),
         (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
             ['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), freq_column]) \
             >= 0.95, \
@@ -1018,8 +1018,8 @@ def get_typologie_assol_CAN_realise(donnees):
     Args:
         donnees (dict):
             Données d'entrepot
-                'connection_realise'
                 'noeuds_realise'
+                'intervention_realise'
                 'zone'
                 'parcelle'
             Données d'outils (attention dépendence)
@@ -1033,31 +1033,34 @@ def get_typologie_assol_CAN_realise(donnees):
             'typocan_assol'
             'list_freq_typoculture_dvlp'
             'list_freq_typoculture'
-            La surface totale de l'assolement est ici la somme de toutes les surfaces des zones des parcelles d'un sdc_id donné, pour cela il faut que les parcelles soit rattachée à un sdc_id (donc aps le sbugs edaplos).
-            La différence entre _dvlp et _ est que _dvlp est la surface totale de l'assolement sans pondération par le nombre de connexion dans une même zone_id. Si la même année il y a 2 cultures sur une meme zone de 30ha, alors la surface totale de l'assolement sera de 60ha pour _dvlp et de 30ha pour _ (car 2 connexions dans la meme zone_id).
+
+        La surface totale de l'assolement est ici la somme de toutes les surfaces des zones des parcelles d'un sdc_id donné, pour cela il faut que les parcelles soit rattachée à un sdc_id (donc aps le sbugs edaplos).
+        La différence entre _dvlp et _ est que _dvlp est la surface totale de l'assolement sans pondération par le nombre de connexion dans une même zone_id. Si la même année il y a 2 cultures sur une meme zone de 30ha, alors la surface totale de l'assolement sera de 60ha pour _dvlp et de 30ha pour _ (car 2 connexions dans la meme zone_id).
+        ATTENTION il faut enlever toutes les zones qui n'ont aucune interventions. Ces zones sont des zones créé par edaplos et jamais reprises par les utilisateurs.
     '''
     # OUTILS
     typo_culture = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne']].copy()
 
     # ENTREPOT
-    connexions = donnees['connection_realise'][['id','cible_noeuds_realise_id']]\
-        .rename(columns={'id':'connexion_realise_id','cible_noeuds_realise_id':'noeuds_realise_id'}).copy()
     noeuds = donnees['noeuds_realise'][['id','culture_id','zone_id']]\
         .rename(columns={'id':'noeuds_realise_id'}).copy()
+    set_interventions_real = set(donnees['intervention_realise']['noeuds_realise_id'])
     zone = donnees['zone'][['id','surface','parcelle_id']]\
         .rename(columns={'id':'zone_id'}).copy()
     # ATTENTION LES PARCELLES QUI NE SONT PAS RATTACHES A UN SDC SONT SUPPRIMES
     parcelle = donnees['parcelle'][['id','sdc_id']]\
         .rename(columns={'id':'parcelle_id'}).copy()
 
+    # On supprime les zones sans interventions
+    noeuds = noeuds.loc[noeuds['noeuds_realise_id'].isin(set_interventions_real),]
+
     # MERGE
-    df = connexions.merge(noeuds, on='noeuds_realise_id', how='left')
-    df = df.merge(typo_culture, on='culture_id', how='left')
+    df = noeuds.merge(typo_culture, on='culture_id', how='left')
     df = df.merge(zone, on='zone_id', how='left')
     df = df.merge(parcelle, on='parcelle_id', how='left')
 
     # Ajouter une transformation de la surface pour que ce soit la surface pondérée : diviser par le nombre de connexion dans une même zone_id
-    df['surface_ponderee'] = df['surface'] / df.groupby('zone_id')['connexion_realise_id'].transform('count')
+    df['surface_ponderee'] = df['surface'] / df.groupby('zone_id')['noeuds_realise_id'].transform('count')
 
     df_end = df.groupby(['sdc_id','typocan_culture_sans_compagne']).agg({
         'surface_ponderee': 'sum',

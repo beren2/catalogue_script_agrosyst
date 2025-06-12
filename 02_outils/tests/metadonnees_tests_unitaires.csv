@@ -915,51 +915,51 @@ test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.Ge
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_24a3300b-82c6-45cc-a893-52d012556a7a,2284,,rmqs_site_id
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_e5a16a65-5fc8-4f66-adfb-806dc8511dfd,3919,,safran_cell_id
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_24a3300b-82c6-45cc-a893-52d012556a7a,9632,,safran_cell_id
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,326.79,,surface_totale_assol_dvlp
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,0.0,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,0.09,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2aff5ae9-50fe-4fdf-9bf3-0a84c9c4ca92,120.13,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2fe3f5bd-f605-4e24-b778-dc0c8dce1919,22.31,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_63ce8da6-14fe-4c98-b74b-714e4f8298c6,58.3,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_8aef0f01-d93d-4d03-88f7-8c911398b414,67.99,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,27.19,,surface_totale_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c3bd784b-5943-4b06-a5df-3bf9acc56bde,33.67,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,0.05,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,152.25,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,94.03,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,85.6,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,196.7,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,60.52,,surface_totale_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,326.79,,surface_totale_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,0.0,,surface_totale_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,0.01,,surface_totale_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2aff5ae9-50fe-4fdf-9bf3-0a84c9c4ca92,107.54,,surface_totale_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2fe3f5bd-f605-4e24-b778-dc0c8dce1919,22.31,,surface_totale_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_63ce8da6-14fe-4c98-b74b-714e4f8298c6,37.9,,surface_totale_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_8aef0f01-d93d-4d03-88f7-8c911398b414,67.99,,surface_totale_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,21.86,,surface_totale_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c3bd784b-5943-4b06-a5df-3bf9acc56bde,33.67,,surface_totale_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,152.25,,surface_totale_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,94.03,,surface_totale_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,63.92,,surface_totale_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,196.7,,surface_totale_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,60.52,,surface_totale_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,céréales à paille/colza/tournesol,,typocan_assol_dvlp
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,aucune surface renseignée,,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,succession avec betterave ou lin ou légumes (>= 5 %),,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2aff5ae9-50fe-4fdf-9bf3-0a84c9c4ca92,prairie temporaire < 50 % assolement,,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2fe3f5bd-f605-4e24-b778-dc0c8dce1919,céréales à paille/colza/maïs ou protéagineux,,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_63ce8da6-14fe-4c98-b74b-714e4f8298c6,prairie temporaire < 50 % assolement,,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_8aef0f01-d93d-4d03-88f7-8c911398b414,maïs,,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,Autre,,typocan_assol_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c3bd784b-5943-4b06-a5df-3bf9acc56bde,Autre,,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,successions avec betterave ou lin ou légumes de plein champ (> 5 % surfaces),,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,Autre,,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,Autre,,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,prairie temporaire < 50 % assolement,,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,céréales à paille/colza/maïs ou protéagineux,,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,prairie temporaire < 50 % assolement,,typocan_assol_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,céréales à paille/colza/tournesol,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,aucune surface_ponderee renseignée,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,Autre,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2aff5ae9-50fe-4fdf-9bf3-0a84c9c4ca92,prairie temporaire < 50 % assolement,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2fe3f5bd-f605-4e24-b778-dc0c8dce1919,céréales à paille/colza/maïs ou protéagineux,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_63ce8da6-14fe-4c98-b74b-714e4f8298c6,prairie temporaire < 50 % assolement,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_8aef0f01-d93d-4d03-88f7-8c911398b414,maïs,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,céréales à paille/colza/maïs ou protéagineux,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c3bd784b-5943-4b06-a5df-3bf9acc56bde,Autre,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,Autre,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,Autre,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,prairie temporaire < 50 % assolement,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,céréales à paille/colza/maïs ou protéagineux,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,prairie temporaire < 50 % assolement,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,Céréales à paille hiver:34.7_Céréales à paille printemps:33.6_Colza:20.8_Tournesol:10.6_Protéagineux:0.3,,list_freq_typoculture_dvlp
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,surface nulle renseignée,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,Culture ornementale:44.4_NoInput-sp:33.3_Légume:11.1_Plante aromatique ou médicinale:11.1,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2aff5ae9-50fe-4fdf-9bf3-0a84c9c4ca92,Maïs:45.9_Céréales à paille hiver:39.0_Prairie temporaire:10.5_Colza:4.6,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2fe3f5bd-f605-4e24-b778-dc0c8dce1919,Maïs:64.2_Céréales à paille hiver:35.8,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_63ce8da6-14fe-4c98-b74b-714e4f8298c6,Maïs:40.5_Prairie temporaire:35.0_Céréales à paille hiver:24.5,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_8aef0f01-d93d-4d03-88f7-8c911398b414,Maïs:100.0,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,Céréales à paille hiver:60.8_Maïs:19.6_Mélange fourrager:12.4_Autre:7.2,,list_freq_typoculture_dvlp
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c3bd784b-5943-4b06-a5df-3bf9acc56bde,Colza:34.2_Céréales à paille printemps:25.4_Maïs:23.6_Protéagineux:10.8_Plante aromatique ou médicinale:6.0,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,Culture ornementale:60.0_Légume:20.0_Plante aromatique ou médicinale:20.0,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,Maïs:87.5_Autre:12.5,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,Céréales à paille hiver:50.1_Colza:26.3_Tournesol:13.3_Protéagineux:10.3,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,Céréales à paille hiver:38.2_Maïs:25.3_Autre:24.5_Mélange fourrager:8.2_Prairie temporaire:3.8,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,Céréales à paille hiver:50.2_Maïs:26.1_Colza:17.2_Céréales à paille printemps:3.7_Protéagineux:2.8,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,Céréales à paille hiver:51.7_Céréales à paille printemps:23.2_Colza:17.4_Prairie temporaire:4.1_Betterave:3.6,,list_freq_typoculture_dvlp
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,Céréales à paille hiver:34.7_Céréales à paille printemps:33.6_Colza:20.8_Tournesol:10.6_Protéagineux:0.3,,list_freq_typoculture
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,surface_ponderee nulle renseignée,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,Culture ornementale:100.0_Légume:0.0_NoInput-sp:0.0_Plante aromatique ou médicinale:0.0,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2aff5ae9-50fe-4fdf-9bf3-0a84c9c4ca92,Maïs:45.4_Céréales à paille hiver:43.6_Prairie temporaire:5.9_Colza:5.1,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2fe3f5bd-f605-4e24-b778-dc0c8dce1919,Maïs:64.2_Céréales à paille hiver:35.8,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_63ce8da6-14fe-4c98-b74b-714e4f8298c6,Céréales à paille hiver:37.6_Maïs:35.5_Prairie temporaire:26.9,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_8aef0f01-d93d-4d03-88f7-8c911398b414,Maïs:100.0,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,Céréales à paille hiver:75.6_Maïs:12.2_Mélange fourrager:7.7_Autre:4.5,,list_freq_typoculture
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c3bd784b-5943-4b06-a5df-3bf9acc56bde,Colza:34.2_Céréales à paille printemps:25.4_Maïs:23.6_Protéagineux:10.8_Plante aromatique ou médicinale:6.0,,list_freq_typoculture
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,Culture ornementale:100.0_Légume:0.0_Plante aromatique ou médicinale:0.0,,list_freq_typoculture
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,Maïs:87.5_Autre:12.5,,list_freq_typoculture
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,Céréales à paille hiver:50.1_Colza:26.3_Tournesol:13.3_Protéagineux:10.3,,list_freq_typoculture
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,Céréales à paille hiver:51.1_Autre:21.3_Maïs:17.0_Mélange fourrager:5.5_Prairie temporaire:5.1,,list_freq_typoculture
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,Céréales à paille hiver:50.2_Maïs:26.1_Colza:17.2_Céréales à paille printemps:3.7_Protéagineux:2.8,,list_freq_typoculture
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,Céréales à paille hiver:51.7_Céréales à paille printemps:23.2_Colza:17.4_Prairie temporaire:4.1_Betterave:3.6,,list_freq_typoculture
