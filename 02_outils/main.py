@@ -526,8 +526,8 @@ def create_category_indicateur_0():
         Execute les requêtes pour créer les outils des indicateurs uniquement pour les fonctions de poids de connexions !
         A faire passer avant indicateur_1 qui a besoin de la génération des poids de connexions et de la typologie_can_culture
     """
-    _, dict_extract_bad_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
-    export_dict_to_catalogue(dict_extract_bad_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
+    _, csv_of_bad_synth = indicateur.extract_good_rotation_diagram(donnees)
+    export_to_db(csv_of_bad_synth, 'entrepot_mauvaise_structure_de_rotation')
 
     df_get_connexion_weight_in_synth_rotation, df_get_couple_connexion_paths, list_synthe_somme_pas_a_un = indicateur.get_connexion_weight_in_synth_rotation(donnees)
     export_dict_to_catalogue(list_synthe_somme_pas_a_un, 'list_synthe_somme_pas_a_un')

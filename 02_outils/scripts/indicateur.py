@@ -1233,7 +1233,15 @@ def extract_good_rotation_diagram(donnees):
                         'hole_in_path' : hole_in_path, 
                         'end_node_continue' : end_node_continue}
     
-    csv_of_bad_synth = pd.DataFrame.from_dict(dic_of_bad_synth, orient='index').transpose()   
+    # Obtenir toutes les valeurs uniques
+    all_values = list(set(value for values in dic_of_bad_synth.values() for value in values))
+
+    # Créer un DataFrame pour les variables muettes
+    csv_of_bad_synth = pd.DataFrame(False, index=all_values, columns=dic_of_bad_synth.keys())
+
+    # Remplir le DataFrame avec True si la valeur est présente dans la liste
+    for key, values in dic_of_bad_synth.items():
+        csv_of_bad_synth.loc[values, key] = True
     
     return list_good_synth_rotation, csv_of_bad_synth
             
