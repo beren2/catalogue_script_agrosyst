@@ -556,6 +556,7 @@
                 "function_name" : "create_category_indicateur_0",
                 "dependances" : [],
                 "generated" : [
+					"mauvaise_structure_de_rotation",
 					"couple_connexions_chemins_synthetise_rotation",
 					"poids_connexions_synthetise_rotation",
 					"typologie_can_culture"

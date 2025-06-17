@@ -85,7 +85,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
     
     donnees_computed = fonction_to_apply(donnees)
     donnees_computed = donnees_computed.reset_index().set_index(key_name).reset_index()
-
+    
     res = []
     for entite_id in list(colonne_to_test_for_ligne.keys()):
         colonnes_to_test = colonne_to_test_for_ligne[entite_id]
