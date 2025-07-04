@@ -55,7 +55,7 @@ VALUES
 Relancer datagrosyst pour appliquer les changements : (Attention, s'assurer que datagrosyst utilise bien l'entrepot modifié, changer la config si nécéssaire : catalogue_script_agrosyst/00_config/config.ini).
 
 ```bash
-ssh jdeleau@147.100.179.66
+ssh ******@*********
 
 cd /opt/docker/datagrosyst-tests/
 
