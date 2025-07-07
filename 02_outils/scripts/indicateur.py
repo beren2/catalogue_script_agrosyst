@@ -872,7 +872,7 @@ def get_rota_typo(cgrp, freq_column='frequence'):
                 'prairie temporaire >= 50 % assolement'
             Si aucune de ces conditions n'est remplie, retourne 'Autre'
     '''
-
+    # Si la colonne de fréquence n'est qu'une surface ou une surface pondérée, on vérifie si cette surface est non nulle et on la normalise afin de pouvoir les comparer par rapport à la totalité de la
     if freq_column in {'surface_ponderee', 'surface'}:
         if all(cgrp[freq_column] == 0):
             return 'aucune '+freq_column+' renseignée'
@@ -1093,7 +1093,7 @@ def get_typologie_assol_CAN_realise(donnees):
         ATTENTION il faut enlever toutes les zones qui n'ont aucune interventions. Ces zones sont des zones créé par edaplos et jamais reprises par les utilisateurs.
     '''
     # OUTILS
-    typo_culture = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne']].copy()
+    typo_culture = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne','typo_cpg']].copy()
 
     # ENTREPOT
     noeuds = donnees['noeuds_realise'][['id','culture_id','zone_id']]\
@@ -1119,6 +1119,7 @@ def get_typologie_assol_CAN_realise(donnees):
     df_end = df.groupby(['sdc_id','typocan_culture_sans_compagne']).agg({
         'surface_ponderee': 'sum',
         'surface': 'sum',
+        'typo_cpg': lambda x: 'Cultures porte graines' if 'Cultures porte graines' in x.values else 'Cultures porte graines et autres destinations' if 'Cultures porte graines et autres destinations' in x.values else None
     }).reset_index()
 
     df_end['surface'] = df_end['surface'].round(2)

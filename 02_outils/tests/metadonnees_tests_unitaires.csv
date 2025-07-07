@@ -943,7 +943,7 @@ test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,Autre,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,Autre,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_815c1c04-23d3-4931-91e4-3ddc441aec1d,Autre,,typocan_assol
-test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,prairie temporaire < 50 % assolement,,typocan_assol
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_96454ec0-d2bd-4c18-8729-ad13f82929be,successions avec cultures porte graine,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_c219484e-1fb8-428d-a89f-14df2d6d459d,céréales à paille/colza/maïs ou protéagineux,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_f46aa0d8-8706-459c-a288-c4e928e80e26,prairie temporaire < 50 % assolement,,typocan_assol
 test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,Céréales à paille hiver:34.7_Céréales à paille printemps:33.6_Colza:20.8_Tournesol:10.6_Protéagineux:0.3,,list_freq_typoculture_dvlp
