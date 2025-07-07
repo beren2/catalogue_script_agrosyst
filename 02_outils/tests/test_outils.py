@@ -103,8 +103,8 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
                 is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
 
             if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
-                print(output[colonne_to_test].values)
-                print(expected_output[colonne_to_test].values)
+                v_obs = output[colonne_to_test].values
+                v_att = expected_output[colonne_to_test].values
                 res.append(False)
             else:
                 res.append(True)
@@ -689,7 +689,7 @@ def test_get_typologie_culture_CAN():
     """
     identifiant_test = 'test_get_typologie_culture_CAN'
     df_names = [
-                'composant_culture', 'culture', 'espece',
+                'composant_culture', 'culture', 'espece', 'recolte_rendement_prix', 'recolte_rendement_prix_restructure',
                 'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
                ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
