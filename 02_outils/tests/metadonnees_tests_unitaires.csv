@@ -890,6 +890,10 @@ test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_b649d216-567b-422e-828e-7003ee316755,Autre_Crucifère fourragère_Légumineuse fourragère_Oléagineux,,typocan_esp_sans_compagne
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3e57e44a-c2c0-407c-b628-654634b9027a,Protéagineux,,typocan_espece
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_3e57e44a-c2c0-407c-b628-654634b9027a,Protéagineux,,typocan_culture
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_cfddbda8-a215-4853-bef8-8fa323613249,True,,is_any_compagne
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e2193f7e-6ba4-464c-816c-b9a14b9612de,Cultures porte graines,,typo_cpg
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_9ef3bf53-e490-4298-99b7-b370fc6fcbb5,Betterave fourragère,,typocan_esp_sans_compagne
+test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_9ef3bf53-e490-4298-99b7-b370fc6fcbb5,Betterave fourragère,,typocan_culture_sans_compagne
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,fr.inra.agrosyst.api.entities.referential.RefLocation_ed5330f0-417b-4963-ace4-4c497416751d,,commune_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,COMMUNE00000000000000016,,geofla_2015_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_bfe3cd67-db1f-40f2-8d86-81710c7e53cb,,,safran_cell_id
