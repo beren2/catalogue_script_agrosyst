@@ -534,11 +534,16 @@ def create_category_indicateur_0():
     export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
 
+def create_category_indicateur_1():
+    """
+        Crée les typologies de culture de base pour les autres indicateurs. 
+        N'a pas besoin des poids de connexions !
+        A faire passer avant indicateur_2 qui a besoin de la génération des poids de connexions et de la typologie_can_culture
+    """
     df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
     export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
 
-
-def create_category_indicateur_1():
+def create_category_indicateur_2():
     """
         Execute les requêtes pour créer les outils des indicateurs (sauf poids de conenxions et typo_can_culture, voir create_category_indicateur_0)
     """
@@ -644,6 +649,7 @@ steps = [
     {'source' : 'outils', 'category' : 'restructuration'},
     {'source' : 'outils', 'category' : 'indicateur_0'},
     {'source' : 'outils', 'category' : 'indicateur_1'},
+    {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'outils_can'}
 ]
 

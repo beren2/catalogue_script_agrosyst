@@ -558,13 +558,20 @@
                 "generated" : [
 					"mauvaise_structure_de_rotation",
 					"couple_connexions_chemins_synthetise_rotation",
-					"poids_connexions_synthetise_rotation",
-					"typologie_can_culture"
+					"poids_connexions_synthetise_rotation"
                 ], 
 				"need_performance" : "False"
             },
 			"indicateur_1" : {
                 "function_name" : "create_category_indicateur_1",
+                "dependances" : [],
+                "generated" : [
+					"typologie_can_culture"
+                ], 
+				"need_performance" : "False"
+            },
+			"indicateur_2" : {
+                "function_name" : "create_category_indicateur_2",
                 "dependances" : [{
 						"source" : "outils", 
 						"category": "restructuration"
@@ -574,6 +581,9 @@
 					},{
 						"source" : "outils", 
 						"category": "indicateur_0"
+					},{
+						"source" : "outils", 
+						"category": "indicateur_1"
 					}],
                 "generated" : [
                     "utilisation_intrant_indicateur", 
