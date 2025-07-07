@@ -1,4 +1,7 @@
 id,culture_id
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_61de72e3-d547-49ae-b392-3f2baa2df4bf,fr.inra.agrosyst.api.entities.CroppingPlanEntry_e33a92f5-8f10-4a3d-ba09-c71a63ee34a2
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_383ada71-7855-4391-b79f-f4e5ea9124bf,fr.inra.agrosyst.api.entities.CroppingPlanEntry_de67591f-5a06-4a95-9c7c-ad8f7c74b88c
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_d802fe57-00ba-4ba6-92b4-f99b6d4f88b4,fr.inra.agrosyst.api.entities.CroppingPlanEntry_eea57ace-c4ba-4f9c-a38c-21404e46d51e
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_0615188c-6f54-4dba-b793-b88c391850e1,fr.inra.agrosyst.api.entities.CroppingPlanEntry_46eb43e4-8fae-41cd-af9c-6b5592aa0c74
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_c3d84fcb-8b6e-4b50-a96a-19ebcdd15746,fr.inra.agrosyst.api.entities.CroppingPlanEntry_d2aeabe7-a996-4986-b626-6c403aea64e7
 fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_f2d7560f-6859-423a-90f3-17ca939c8b20,fr.inra.agrosyst.api.entities.CroppingPlanEntry_46eb43e4-8fae-41cd-af9c-6b5592aa0c74

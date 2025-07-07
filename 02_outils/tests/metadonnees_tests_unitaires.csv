@@ -867,11 +867,6 @@ test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practi
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_51ad41af-3955-4052-95a2-63bd10813603,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_61f75804-3823-4fae-9ce1-82bfa3d7e41e,,synthetise_id
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_6ad4da1b-5713-4ff9-abee-ec67cc3f6dc5,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_445dd407-58f6-403e-8dd6-8352166a0131,,synthetise_id
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_7ddcc7e6-db1e-4703-92aa-ede2e2e0a885,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2f68d851-cb30-402f-bfc6-b0abf37c49a8,,synthetise_id
-test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85cedf6b-df0e-4470-b42b-1232608495aa,prairie temporaire >= 50 % assolement,,typocan_rotation
-test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b142d1f3-cb04-418c-bd77-31ac3922b09b,prairie temporaire < 50 % assolement,,typocan_rotation
-test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c3c050a7-cedb-4071-9a0e-fadcbb311cc2,Autre,,typocan_rotation
-test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85cedf6b-df0e-4470-b42b-1232608495aa,Prairie temporaire:62.5_Maïs:25.0_Céréales à paille hiver:12.5,,list_freq_typoculture
-test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c3c050a7-cedb-4071-9a0e-fadcbb311cc2,Céréales à paille hiver:65.0_Colza:14.4_Tournesol:7.1_Céréales à paille printemps:7.1_Protéagineux:6.2,,list_freq_typoculture
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,Céréales à paille hiver_Protéagineux,,typocan_espece
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,5,,nb_composant_culture
 test_get_typologie_culture_CAN,fr.inra.agrosyst.api.entities.CroppingPlanEntry_a8ea220a-9f21-4103-b2f2-dca005de24a6,2,,nb_typocan_esp
@@ -1068,3 +1063,21 @@ test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practi
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fc55b589-8b91-45b0-87f1-d7af2487b6dc,0.01471,,poids_conx_agregation_norm_synth
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fc6dff67-16ea-4cdf-ab0f-4b5ade4d49e4,0.1,,poids_conx_agregation_norm_synth
 test_get_connexion_weight_in_synth_rotation,fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection_fe240732-e034-4125-b107-bbc611cf7e85,0.16129,,poids_conx_agregation_norm_synth
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3133e31a-e7a8-4a57-b567-9e9bb0636367,céréales à paille/colza/maïs ou protéagineux,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_372ee474-d430-4e3c-8afc-f6814e7a1496,successions avec cultures porte graine,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85cedf6b-df0e-4470-b42b-1232608495aa,prairie temporaire >= 50 % assolement,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_933f1420-44ef-4809-aa4a-99c895b37554,Autre,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b142d1f3-cb04-418c-bd77-31ac3922b09b,prairie temporaire < 50 % assolement,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c3c050a7-cedb-4071-9a0e-fadcbb311cc2,Autre,,typocan_rotation
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3133e31a-e7a8-4a57-b567-9e9bb0636367,1.5,,frequence_total_rota
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_372ee474-d430-4e3c-8afc-f6814e7a1496,1.0,,frequence_total_rota
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85cedf6b-df0e-4470-b42b-1232608495aa,1.33,,frequence_total_rota
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_933f1420-44ef-4809-aa4a-99c895b37554,1.0,,frequence_total_rota
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b142d1f3-cb04-418c-bd77-31ac3922b09b,1.0,,frequence_total_rota
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c3c050a7-cedb-4071-9a0e-fadcbb311cc2,1.0,,frequence_total_rota
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3133e31a-e7a8-4a57-b567-9e9bb0636367,Prairie temporaire:50.0_Maïs:50.0_Céréales à paille hiver:50.0,,list_freq_typoculture
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_372ee474-d430-4e3c-8afc-f6814e7a1496,Céréales à paille hiver:50.0_Prairie temporaire:33.3_Céréales à paille printemps:16.7,,list_freq_typoculture
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85cedf6b-df0e-4470-b42b-1232608495aa,Prairie temporaire:83.3_Maïs:33.3_Céréales à paille hiver:16.7,,list_freq_typoculture
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_933f1420-44ef-4809-aa4a-99c895b37554,Céréales à paille hiver:57.1_Maïs:35.7_Betterave fourragère:7.1,,list_freq_typoculture
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b142d1f3-cb04-418c-bd77-31ac3922b09b,Prairie temporaire:33.3_Mélange fourrager:22.2_Autre:22.2_NoLink-sp-crop:11.1_Tournesol:11.1,,list_freq_typoculture
+test_get_typologie_rotation_CAN_synthetise,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c3c050a7-cedb-4071-9a0e-fadcbb311cc2,Céréales à paille hiver:65.0_Colza:14.4_Tournesol:7.1_Céréales à paille printemps:7.1_Protéagineux:6.2,,list_freq_typoculture
