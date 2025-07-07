@@ -564,7 +564,10 @@
             },
 			"indicateur_1" : {
                 "function_name" : "create_category_indicateur_1",
-                "dependances" : [],
+                "dependances" : [{
+						"source" : "outils", 
+						"category": "restructuration"
+					}],
                 "generated" : [
 					"typologie_can_culture"
                 ], 
