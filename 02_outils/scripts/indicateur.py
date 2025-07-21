@@ -240,10 +240,13 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     ''' Tague les frises des pz0 non acceptables
     arg :
         df : data.frame : issu de join_saisies_with_ref_donnees_attendues()
-        code_dephy : pd.serie, serie de code_dephy à traiter
+        code_dephy_select : pd.serie, serie de code_dephy à traiter
+        pattern_pz0_correct : list de chr, valeurs de la colonne "donnee_attendue" que l'on juge acceptable
+        modalite_pz0_chevauchement : chr, modalite a attribuer
+        modalite_pz0_non_acceptable : chr, modalité a attribuer
     
     return :
-        df : data.frame
+        df_res : data.frame, issu de df, où les données ont été taguées
         dephy_mono : list, liste des codes dephy ayant un pz0 mono annuel
     '''
 
@@ -277,7 +280,7 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     # (Si il chevauche avec le pz0, il sera traité plus tard)
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "post" if (x['code_dephy'] not in (dephy_mono) and x['donnee_attendue'] == 'pz0') else x['donnee_attendue'], axis = 1)
  
-    # sauvegarde les post
+    # sauvegarde les "post" (il n'y a plus de post,post)
     post = select_df.loc[select_df['donnee_attendue'] == "post"]
     select_df = select_df.loc[select_df['donnee_attendue'] != "post"]
 
@@ -293,23 +296,28 @@ def do_tag_pz0_not_correct(df,code_dephy_select,pattern_pz0_correct,modalite_pz0
     
     dephy_correct = select_df.loc[select_df['to_keep'], 'code_dephy'].to_list()
     
+    # si code dephy n'a aucun pz0 qui est dans la liste pattern_pz0_correct : pz0 non acceptable pour toute la frise
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_non_acceptable if (x['code_dephy'] not in (dephy_correct))
                                                                             else x['donnee_attendue'] , axis = 1)
     
+    # si le code dephy est dans dephy_correct, mais que la ligne de select_df to_keep = False => chevauchement pz0, puisqu'il y a mieux
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : modalite_pz0_chevauchement if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is False)
                                                                             else x['donnee_attendue'] , axis = 1)    
     
+    # si le code dephy est dans dephy_correct, mais que la ligne de select_df to_keep = True => c'est le pz0 à choisir
+    # Attention si la frise a deux saisies de même ''valeur'' , ex : 'NA,pz0,pz0', à ce stade ils sont tagués tous les deux pz0
+    # On ne peut pas choisir, ils seront tagués comme non acceptable suite au control_nb_pz0_per_codedephy()
     select_df.loc[:,'donnee_attendue'] = select_df.apply(lambda x : "pz0" if (x['code_dephy'] in (dephy_correct)) & (x['to_keep'] is True)
                                                                             else x['donnee_attendue'] , axis = 1)    
     
     select_df = select_df.drop(['to_keep'], axis = 1)
 
-    # Pour les post sauvegardes à part, les taguer incorrect : saisie pz0 non acceptable" pour des codes dephy concernes
+    # Pour les post sauvegardes à part dont leur code dephy n'a pas de pz0 acceptable, les taguer aussi en pz0 non acceptable"
     code_dephy_nonacceptable = select_df.loc[select_df['donnee_attendue'] == modalite_pz0_non_acceptable,'code_dephy'].to_list()
     post.loc[post['code_dephy'].isin(code_dephy_nonacceptable), 'donnee_attendue'] = modalite_pz0_non_acceptable
 
-    df = pd.concat([unselect_df,select_df,post])
-    return(df,dephy_mono)
+    df_res = pd.concat([unselect_df,select_df,post])
+    return(df_res,dephy_mono)
 
 
 def do_correct_overlap(df,modalite_pz0_chevauchement,dephy_monoannuel):
@@ -488,7 +496,7 @@ def identification_pz0(donnees):
     df_zone = donnees['zone'].set_index('id')
     df_intervention_synthetise_agrege = donnees['intervention_synthetise_agrege'].set_index('id')
     df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
-    saisies_attendues = donnees['BDD_donnees_attendues_CAN']
+    saisies_attendues = donnees['BDD_donnees_attendues_CAN'].copy()
     
     # suppression des colonnes campagne du sdc et dispositif
     df_dispositif = df_dispositif.drop(['campagne'], axis = 1)
@@ -556,13 +564,16 @@ def identification_pz0(donnees):
 
     identif_pz0_non_attendue = identif_pz0_non_attendue.drop(['donnee_attendue_split'], axis = 1)
 
-    # retirer les non attendue du data aucun pz0
+    # aucun pz0 = TOUTE la frise pz0 inconnu OU saisie non acceptable
+    # SAUF pour les non attendue que l'on garde tague comme tel.
+    # On les retire du data aucun pz0 : 
     identif_pz0_aucun = identif_pz0_aucun.drop(identif_pz0_non_attendue.index,errors = 'ignore')
 
     identif_pz0_with_pz0 = identif_pz0.drop(identif_pz0_aucun.index,errors = 'ignore')
     identif_pz0_with_pz0 = identif_pz0_with_pz0.drop(identif_pz0_non_attendue.index,errors = 'ignore')
     
-    ## TRI DES PZ0 NON ACCEPTABLES
+    ## TRI DES PZ0 ACCEPTABLES
+    # Meme si un synthetise contient une campagne pz0, il y en a qui ne sont pas acceptables
     # les pz0 que l'on considere correct sont ceux parfaits : "pz0, pz0, pz0" OU 3 synthetise monoannuels des 3 campagnes pz0 attendues 
     # On accepte les décalages de 1 an avant ou apres donc une mention de non-attendu ou post 1 fois
 
@@ -585,7 +596,7 @@ def identification_pz0(donnees):
     dephy_mono = dephy_mono + dephy_mono_temp
     
     ## CONTROLE DU NB DE PZ0 PAR CODE DEPHY 
-    # si il reste des codes dephy ayant plusieurs pz0, transformer la frise en incorrect. Vu les cas -> cas de saisie reeelle de plusieurs synthetises pz0
+    # si il reste des codes dephy ayant plusieurs pz0, transformer la frise en incorrect. Vu les cas -> cas de saisie reelle de plusieurs synthetises pz0
     dephynb_plusieurspz0_restant = control_nb_pz0_per_codedephy(identif_pz0_with_pz0,dephy_mono)
     identif_pz0_with_pz0.loc[identif_pz0_with_pz0['code_dephy'].isin(dephynb_plusieurspz0_restant),'donnee_attendue'] = modalite_pz0_plusieurs
 
@@ -622,7 +633,7 @@ def identification_pz0(donnees):
         message_error = message_error + "ATTENTION : il reste des codes dephy avec plusieurs pz0 ce qui est impossible !"
 
     modalites = df_identification_pz0['donnee_attendue'].value_counts().reset_index()['donnee_attendue'].to_list()
-    modalites_list_expected = ["pz0", "post", modalite_pz0_non_acceptable, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs]
+    modalites_list_expected = ["pz0", "post", modalite_pz0_non_acceptable, modalite_pz0_chevauchement, modalite_pz0_inconnu, modalite_non_attendu, modalite_pz0_plusieurs,modalite_pz0_aucun]
     check = [m in modalites for m in modalites_list_expected]
     if all(check) is False:
         message_error = message_error + "ATTENTION : Le nombre de modalités ne correspond pas à celles attendues !"
@@ -661,6 +672,8 @@ def get_typologie_culture_CAN(donnees):
             - 'composant_culture'
             - 'culture'
             - 'espece'
+            - 'recolte_rendement_prix'
+            - 'recolte_rendement_prix_restructure'
             Données externe (référentiel CAN):
             - 'typo_especes_typo_culture.csv'
             - 'typo_especes_typo_culture_marai.csv'
@@ -679,13 +692,52 @@ def get_typologie_culture_CAN(donnees):
             Voir si on passe en NaN lors de la création du magasin
             ==> Cela induit que les typologie de culture en NaN sont celles qui nécéssite une MàJ du référentiel !
     '''
+    # Donnes de bases
     cropsp = donnees['composant_culture'].copy()
-    cropsp = cropsp[['espece_id','culture_id','compagne']]
+    cropsp = cropsp[['id','espece_id','culture_id','compagne']].rename(columns={'id':'composant_culture_id'}) # besoin de 'composant_culture_id' que pour les cultures porte-graines
     crop = donnees['culture'].copy()
-    crop = crop[['id','type']].rename(columns={'id':'culture_id'})
+    crop = crop[['id','nom','type']].rename(columns={'id':'culture_id'}) # Besoin de 'nom' que pour les cultures porte-graines
     sp = donnees['espece'].copy()
     sp = sp[['id','typocan_espece','typocan_espece_maraich']].rename(columns={'id':'espece_id'})
     
+    # Donnees de recolte pour les portes graines et les betterave fourrageres
+    recolte = donnees['recolte_rendement_prix'][['id','destination','action_id']].copy()
+    recolte_restr = donnees['recolte_rendement_prix_restructure'].copy()
+
+    recolte = recolte.merge(recolte_restr, on='id', how='left')
+    recolte = recolte.merge(cropsp, on='composant_culture_id', how='left')
+    recolte = recolte.loc[(recolte['composant_culture_id'].notnull()) & \
+                          (recolte['compagne'].isnull()),]
+    recolte = recolte.merge(crop, on='culture_id', how='left')
+
+        # Culture portegraine
+
+        # On cherche les culture portes graines par le nom de la culture et par la destination. Si la destination n'est pas entierement faite de 'Production semences' on retourne 'culture porte-graine et autres'
+    culture_porteG = recolte.groupby('culture_id').apply(
+        lambda clt: pd.Series({
+            'typo_cpg' : 'Cultures porte graines' if all(clt['nom'].str.contains('porte+.graine|semence', case=False)) |\
+                                              all(clt['destination'] == 'Production semences') \
+                    else 'Cultures porte graines et autres destinations' if any(clt['destination'] == 'Production semences') \
+                    else None
+        }), include_groups = False).reset_index()
+
+
+        # Culture betterave fourragere
+
+    culture_bett_fourr = recolte.merge(sp[['espece_id','typocan_espece']], on='espece_id', how='left')
+    culture_bett_fourr = culture_bett_fourr.groupby('composant_culture_id').apply(
+        lambda clt: pd.Series({
+            'typo_bett_fourr' : 'betterave fourragere' if all(clt['typocan_espece'] == 'Betterave') & \
+                                                all(clt['destination'].str.contains('Fourrage')) \
+                                else None
+        }), include_groups = False).reset_index()
+    
+        # On crée la liste des composant de culture qui sont des betteraves fourragères, réutilisé après
+    list_cpc_bett_fourr = list(culture_bett_fourr.loc[culture_bett_fourr['typo_bett_fourr'] == 'betterave fourragere','composant_culture_id'])
+
+    crop = crop.drop(columns=['nom'])
+
+    # Donnees de typologie d'espece et de culture
     typo1 = donnees['typo_especes_typo_culture'].copy()
     typo1 = typo1.rename(columns={'TYPO_ESPECES':'typocan_espece',
                                   'Typo_Culture':'typocan_culture'})
@@ -694,6 +746,12 @@ def get_typologie_culture_CAN(donnees):
                                   'Typo_Culture_bis':'typocan_culture_maraich'})
 
     df = cropsp.merge(sp, how = 'left', on = 'espece_id')
+        # On change directement dans le dataframe les typologies d'espèces de la Betterave si elle est fourragère. Cela impactera la typologie de culture car elle ne reconnaitra pas 'Betterave fourragere' comme un 'Betterave' (la betterave industrielle). => Donc a ajouter dans le referentiel de passage typo_sp <=> typo_culture
+    df.loc[df['composant_culture_id'].isin( list_cpc_bett_fourr ),'typocan_espece'] = 'Betterave fourragère'
+    df.loc[df['composant_culture_id'].isin( list_cpc_bett_fourr ),'typocan_espece_maraich'] = 'Betterave fourragère'
+
+    # Liste des cultures qui contiennent des cultures compagnes
+    list_culture_with_compagne = list(set(df.loc[df['compagne'].notnull(), 'culture_id']))
 
     df['nb_composant_culture'] = 1
     df['nb_typocan_esp'] = df['typocan_espece'].copy()
@@ -730,10 +788,14 @@ def get_typologie_culture_CAN(donnees):
     # On ajoute les culture_id qui n'ont pas de composant de culture et on leur attribue aucune espece renseigné
     df = df.merge(crop, how='left', on='culture_id')
 
+    # Détection des cultures qui contiennent des cultures compagnes
+    df['is_any_compagne'] = np.where(df['culture_id'].isin(list_culture_with_compagne), True, False)
+
     crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
     # ATTENTION_DIFF_CAN_a ::: 2 Lignes
     crop_only.loc[:,['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
     crop_only.loc[:,['typocan_espece','typocan_espece_maraich','typocan_esp_sans_compagne']] = 'NoInput-sp'
+    crop_only['is_any_compagne'] = False
 
     df = pd.concat([df, crop_only], ignore_index=True)
 
@@ -765,11 +827,178 @@ def get_typologie_culture_CAN(donnees):
     df['type'] = df['type'].astype('str')
     df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
     
-    # Ajout de 'Culture porte-graine' ??
-    # Surement un changement de culture au niveau des interventions dans le contexte d'une destination production de semence
-    # Du coup utilisation du nom de la culture pour changement non souhaité
+    # Ajout des tags 'culture porte-graines' dans une colonne à part, voir la détection quelques ligne plus tôt dans cette fonction
+    df = df.merge(culture_porteG[['culture_id','typo_cpg']], how='left', on='culture_id')
 
     return df
+
+def get_rota_typo(cgrp, freq_column='frequence'):
+    '''
+    Comme la CAN fait, on check à chaque fois une condition, si true on return. Il y a donc un ordre de priorité bien défini
+    Sans cet ordre de priorité il y aurait qlq chevauchements
+    Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
+    ils aggregent tout avec un return 'Pas de type rotation calculé'. Nous ferons le distingo avec les 2 premieres conditions
+
+    ATTENTION : 
+        - pour le synthétisé, la colonne de fréquence est 'frequence'
+        - pour le réalisé, la colonne de fréquence est 'surface_ponderee' ou 'surface'
+    ATTENTION :
+        - la colonne de typologie de culture est 'typocan_culture_sans_compagne'
+
+    Args:
+        cgrp (pd.Series):
+            Series de données de la rotation pour le synthétisé ou du sdc pour le réalisé.
+        freq_column (str):
+            Nom de la colonne de fréquence à utiliser pour les calculs. Par défaut 'frequence' pour le synthétisé. Peut être 'surface_ponderee' ou 'surface' pour le réalisé.
+    Returns:
+        str: Typologie de culture
+            si pas de surface renseignée, retourne 'aucune surface renseignée'
+            si surface nulle, retourne 'surface nulle renseignée'
+            si surface totale < 0.001 ha, retourne 'surface totale < 0.001 ha'
+            si aucune fréquence de rotation calculée, retourne 'aucune fréquence de rotation calculée'
+            si aucune typologie de culture détectée, retourne 'aucune typologie de culture détectée'
+            Puis les conditions suivantes sont vérifiées dans l'ordre :
+                'succession avec betterave ou lin ou légumes (>= 5 %)'
+                'successions avec pomme de terre'
+                'successions avec cultures porte graine'
+                'céréales à paille hiver/colza'
+                'céréales à paille hiver+printemps/colza'
+                'maïs'
+                'céréales à paille/colza/maïs ou protéagineux'
+                'céréales à paille/colza/tournesol'
+                'céréales à paille/maïs(/tournesol)'
+                'céréales à paille/tournesol'
+                'prairie temporaire < 50 % assolement'
+                'prairie temporaire >= 50 % assolement'
+            Si aucune de ces conditions n'est remplie, retourne 'Autre'
+    '''
+    # Si la colonne de fréquence n'est qu'une surface ou une surface pondérée, on vérifie si cette surface est non nulle et on la normalise afin de pouvoir les comparer par rapport à la totalité de la
+    if freq_column in {'surface_ponderee', 'surface'}:
+        if all(cgrp[freq_column] == 0):
+            return 'aucune '+freq_column+' renseignée'
+        if all(cgrp[freq_column] == 0):
+            return freq_column+' nulle renseignée'
+        if cgrp[freq_column].sum() < 0.001:
+            return freq_column+' totale < 0.001 ha'
+        cgrp[freq_column] = cgrp[freq_column] / np.nansum(cgrp[freq_column])
+    if freq_column == 'frequence':
+        if all(cgrp[freq_column].isna()):
+            return 'aucune fréquence de rotation calculée'
+
+
+    conditions = [
+        (all(cgrp\
+            ['typocan_culture_sans_compagne'].isna()), \
+            'aucune typologie de culture détectée'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Betterave', 'Lin', 'Légume']), freq_column]) \
+            >= 0.05, \
+            'successions avec betterave ou lin ou légumes de plein champ (> 5 % surfaces)'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Pomme de terre']), freq_column]) \
+            >= 0.05, \
+            'successions avec pomme de terre'),
+        (sum(cgrp.loc[cgrp['typo_cpg'].isin(\
+            ['Cultures porte graines']), freq_column]) \
+            >= 0.05, \
+            'successions avec cultures porte graine'), # attention on va ici chercher dans la colonne 'typo_cpg'
+        ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Colza']), freq_column]) \
+            >= 0.95) & \
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille printemps']), freq_column]) \
+            == 0), \
+            'céréales à paille hiver/colza'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille hiver+printemps/colza'),
+        # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture_sans_compagne
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Maïs']), freq_column]) \
+            >= 0.95, \
+            'maïs'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Maïs', 'Oléagineux (hors Colza et Tournesol)', 'Protéagineux', 'Mélange fourrager']), freq_column])\
+            >= 0.95, \
+            'céréales à paille/colza/maïs ou protéagineux'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille/colza/tournesol'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille/maïs (/tournesol)'),
+        (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), freq_column]) \
+            >= 0.95, \
+            'céréales à paille/tournesol'),
+        ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Prairie temporaire']), freq_column]) \
+            < 0.5) & \
+            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Prairie temporaire']), freq_column]) \
+            > 0),
+            'prairie temporaire < 50 % assolement'),
+        ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
+            ['Prairie temporaire']), freq_column]) \
+            >= 0.5), \
+            'prairie temporaire >= 50 % assolement')
+    ]
+    
+    for condition, message in conditions:
+        if condition:
+            return message
+
+    return 'Autre'
+
+def get_percent_each_typo_culture(cgrp, freq_column='frequence'):
+    '''
+    Permet de calculer le pourcentage de chaque typologie de culture dans un groupe de données. Ce groupe de données est généralement un groupe de données de rotation pour le synthétisé ou un sdc pour le réalisé.
+
+    Args:
+        cgrp (pd.Series):
+            Series de données de la rotation pour le synthétisé ou du sdc pour le réalisé.
+        freq_column (str):
+            Nom de la colonne de fréquence à utiliser pour les calculs. Par défaut 'frequence' pour le synthétisé. Peut être 'surface_ponderee' ou 'surface' pour le réalisé.
+    Returns:
+        list: Liste des pourcentages de chaque typologie de culture dans le groupe de données.
+        Chaque élément de la liste est une chaîne de caractères au format 'typologie: pourcentage'.
+        Si aucune fréquence renseignée, retourne ['aucune frequence renseignée']
+        Si la somme des surfaces est nulle, retourne ['surface nulle renseignée']
+        Si la somme des surfaces est inférieure à 0.001, retourne ['surface totale < 0.001']
+    '''
+
+    list_grp = []
+    percentages = []
+    cgrp['typocan_culture_sans_compagne'] = cgrp['typocan_culture_sans_compagne'].fillna('NoTypoC')
+
+    if pd.isna(cgrp[freq_column]).all() :
+        return ['aucune '+freq_column+' renseignée']
+    
+    if freq_column in {'surface_ponderee', 'surface'}:
+        surf_sum = cgrp[freq_column].sum()
+        if surf_sum == 0:
+            return [freq_column+' nulle renseignée']
+        if surf_sum < 0.001:
+            return [freq_column+' totale < 0.001']
+
+    for x in list(cgrp['typocan_culture_sans_compagne'].unique()) : 
+        typoc_sum = cgrp.loc[cgrp['typocan_culture_sans_compagne'] == x, freq_column].sum()
+        if freq_column == 'frequence':
+            typoc_sum = typoc_sum * 100
+        if freq_column in {'surface_ponderee', 'surface'}:
+            typoc_sum = (typoc_sum / surf_sum) * 100
+        percentages.append(typoc_sum.round(1))
+        list_grp.append(x + ':' + str(typoc_sum.round(1)))
+
+    # Trier les deux listes en fonction des pourcentages
+    sorted_lists = sorted(zip(list_grp, percentages), key=lambda pair: pair[1], reverse=True)
+    list_grp_sorted = [item[0] for item in sorted_lists]
+
+    return list_grp_sorted
+
 
 def get_typologie_rotation_CAN_synthetise(donnees):
     ''' 
@@ -791,11 +1020,12 @@ def get_typologie_rotation_CAN_synthetise(donnees):
 
     Returns:
         pd.DataFrame() contenant le synthetise_id et la typologie de rotation de la CAN
+        On prends le poids de connexion utilisé pour l'aggrégation de la rotation.
     '''
     # OUTILS
     # Attention on utilise ici l'outil passant de noeuds_synth_id à la culture_id (voir outil restructuration et calcul de frequence de connexion)
     noeud_with_culture_id = donnees['noeuds_synthetise_restructure'].copy()
-    con_frq = donnees['poids_connexions_synthetise_rotation'][['connexion_id','proba_conx_spatiotemp']].copy()
+    con_frq = donnees['poids_connexions_synthetise_rotation'][['connexion_id','poids_conx_agregation']].copy()
     typo_culture = donnees['typologie_can_culture'].copy()
 
     # ENTREPOT
@@ -813,108 +1043,101 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     df = conn.merge(noeud, on = 'cible_noeuds_synthetise_id')
     df = df.merge(con_frq, on = 'connexion_id')
     df = df.merge(typo_culture, on = 'culture_id')
+
     # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ; et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion rien qu'à eux)
-    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','proba_conx_spatiotemp']].\
-        rename(columns={'proba_conx_spatiotemp' : 'frequence'})
+    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','typo_cpg','poids_conx_agregation']].\
+        rename(columns={'poids_conx_agregation' : 'frequence'})
 
-    # Comme la CAN fait, on check à chaque fois une condition, si true on return.
-    # il y a donc un ordre de priorité bien défini
-    # Sans cet ordre de priorité il y aurait des chevauchements, mais quand meme pas dans tout les cas
-    def get_rota_typo(cgrp):
-        # Pour la CAN il n'y a pas de distinction entre l'absence de fréquence et l'absence de typo de culture
-        # ils aggregent totu avec un return 'Pas de type rotation calculé'
-        # ATTENTION nous ferons le distingo avec les 2 premieres conditions
-        conditions = [
-            (all(cgrp\
-                ['frequence'].isna()), \
-                'aucune fréquence de rotation calculée'),
-            (all(cgrp\
-                ['typocan_culture_sans_compagne'].isna()), \
-                'aucune typologie de culture détectée'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Betterave', 'Lin', 'Légume']), 'frequence']) \
-                >= 0.05, \
-                'succession avec betterave ou lin ou légumes (>= 5 %)'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Pomme de terre']), 'frequence']) \
-                >= 0.05, \
-                'successions avec pomme de terre'),
-            # (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(['Cultures porte graines']), 'frequence']) >= 0.05, 'successions avec cultures porte graine'),
-            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Colza']), 'frequence']) \
-                >= 0.95) & \
-                (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille printemps']), 'frequence']) \
-                == 0), \
-                'céréales à paille hiver/colza'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza']), 'frequence']) \
-                >= 0.95, \
-                'céréales à paille hiver+printemps/colza'),
-            # Attention la typo_culture de 'Sorgho' est 'Maïs' lorsque seul, sinon 'Autre'. voir référentiel typocan_culture_sans_compagne
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Maïs']), 'frequence']) \
-                >= 0.95, \
-                'maïs'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Maïs', 'Oléagineux (hors Colza et Tournesol)', 'Protéagineux', 'Mélange fourrager']), 'frequence'])\
-                >= 0.95, \
-                'céréales à paille/colza/maïs ou protéagineux'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Colza', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), 'frequence']) \
-                >= 0.95, \
-                'céréales à paille/colza/tournesol'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Maïs', 'Tournesol', 'Oléagineux (hors Colza et Tournesol)', 'Mélange fourrager']), 'frequence']) \
-                >= 0.95, \
-                'céréales à paille/maïs(/tournesol)'),
-            (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Céréales à paille hiver', 'Céréales à paille printemps', 'Tournesol']), 'frequence']) \
-                >= 0.95, \
-                'céréales à paille/tournesol'),
-            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Prairie temporaire']), 'frequence']) \
-                < 0.5) & \
-                (sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Prairie temporaire']), 'frequence']) \
-                > 0),
-                'prairie temporaire < 50 % assolement'),
-            ((sum(cgrp.loc[cgrp['typocan_culture_sans_compagne'].isin(\
-                ['Prairie temporaire']), 'frequence']) \
-                >= 0.5), \
-                'prairie temporaire >= 50 % assolement')
-        ]
-        
-        for condition, message in conditions:
-            if condition:
-                return message
-
-        return 'Autre'
-    
-    # df['list_freq_typoculture'] = (100 * df['frequence']).round(1).astype(str) + '=' + df['typocan_culture_sans_compagne']
-    df = df.drop('connexion_id', axis=1)
-
-    def get_percent_each_typo_culture(cgrp):
-        list_grp = []
-        cgrp['typocan_culture_sans_compagne'] = cgrp['typocan_culture_sans_compagne'].fillna('NOTYPOC')
-        for x in list(cgrp['typocan_culture_sans_compagne'].unique()) : 
-            typoc_sum = cgrp.loc[cgrp['typocan_culture_sans_compagne'] == x, 'frequence'].sum()
-            typoc_sum = typoc_sum * 100
-            typoc_sum = str(typoc_sum.round(1))
-            list_grp.append(x + ':' + typoc_sum)
-        return list_grp
-    
+    df = df.drop('connexion_id', axis=1)  
 
     df = df.groupby('synthetise_id').apply(
          lambda cgrp: pd.Series({
             'typocan_rotation': get_rota_typo(cgrp),
-            'frequence_total_rota': cgrp['frequence'].sum(),
+            'frequence_total_rota': round(cgrp['frequence'].sum(),2),
             'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp)  )  
         }))
     
     return df
 
 
+def get_typologie_assol_CAN_realise(donnees):
+    ''' 
+    Le but est d'obtenir les typologies d'assolement utilisées par la Cellule référence.
+    Pour le réalisé
+    Attention ici on fait l'assolement en prenant l'ensemble des zones et parcelles d'un sdc_id donné, toutes pondérées par leurs surfaces respectives.
+
+    Echelle :
+        entite_id : sdc_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+                'noeuds_realise'
+                'intervention_realise'
+                'zone'
+                'parcelle'
+            Données d'outils (attention dépendence)
+                'typologie_can_culture'
+
+    Returns:
+        pd.DataFrame() contenant 
+            'surface_totale_assol_dvlp'
+            'surface_totale_assol'
+            'typocan_assol_dvlp'
+            'typocan_assol'
+            'list_freq_typoculture_dvlp'
+            'list_freq_typoculture'
+
+        La surface totale de l'assolement est ici la somme de toutes les surfaces des zones des parcelles d'un sdc_id donné, pour cela il faut que les parcelles soit rattachée à un sdc_id (donc aps le sbugs edaplos).
+        La différence entre _dvlp et _ est que _dvlp est la surface totale de l'assolement sans pondération par le nombre de connexion dans une même zone_id. Si la même année il y a 2 cultures sur une meme zone de 30ha, alors la surface totale de l'assolement sera de 60ha pour _dvlp et de 30ha pour _ (car 2 connexions dans la meme zone_id).
+        ATTENTION il faut enlever toutes les zones qui n'ont aucune interventions. Ces zones sont des zones créé par edaplos et jamais reprises par les utilisateurs.
+    '''
+    # OUTILS
+    typo_culture = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne','typo_cpg']].copy()
+
+    # ENTREPOT
+    noeuds = donnees['noeuds_realise'][['id','culture_id','zone_id']]\
+        .rename(columns={'id':'noeuds_realise_id'}).copy()
+    set_interventions_real = set(donnees['intervention_realise']['noeuds_realise_id'])
+    zone = donnees['zone'][['id','surface','parcelle_id']]\
+        .rename(columns={'id':'zone_id'}).copy()
+    # ATTENTION LES PARCELLES QUI NE SONT PAS RATTACHES A UN SDC SONT SUPPRIMES
+    parcelle = donnees['parcelle'][['id','sdc_id']]\
+        .rename(columns={'id':'parcelle_id'}).copy()
+
+    # On supprime les zones sans interventions
+    noeuds = noeuds.loc[noeuds['noeuds_realise_id'].isin(set_interventions_real),]
+
+    # MERGE
+    df = noeuds.merge(typo_culture, on='culture_id', how='left')
+    df = df.merge(zone, on='zone_id', how='left')
+    df = df.merge(parcelle, on='parcelle_id', how='left')
+
+    # Ajouter une transformation de la surface pour que ce soit la surface pondérée : diviser par le nombre de connexion dans une même zone_id
+    df['surface_ponderee'] = df['surface'] / df.groupby('zone_id')['noeuds_realise_id'].transform('count')
+
+    df_end = df.groupby(['sdc_id','typocan_culture_sans_compagne']).agg({
+        'surface_ponderee': 'sum',
+        'surface': 'sum',
+        'typo_cpg': lambda x: 'Cultures porte graines' if 'Cultures porte graines' in x.values else 'Cultures porte graines et autres destinations' if 'Cultures porte graines et autres destinations' in x.values else None
+    }).reset_index()
+
+    df_end['surface'] = df_end['surface'].round(2)
+    df_end['surface_ponderee'] = df_end['surface_ponderee'].round(2)
+
+    df_end = df_end.groupby('sdc_id').apply(
+        lambda cgrp: pd.Series({
+        'surface_totale_assol_dvlp': cgrp['surface'].sum().round(2),
+        'surface_totale_assol': cgrp['surface_ponderee'].sum().round(2),
+        'typocan_assol_dvlp': get_rota_typo(cgrp, 'surface'),
+        'typocan_assol': get_rota_typo(cgrp, 'surface_ponderee'),
+        'list_freq_typoculture_dvlp': '_'.join(  get_percent_each_typo_culture(cgrp, freq_column='surface') ),
+        'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp, freq_column='surface_ponderee') )
+    }), include_groups=False).reset_index()
+
+    df_end = df_end.set_index('sdc_id')
+
+    return df_end
 
 
 
@@ -1065,7 +1288,17 @@ def extract_good_rotation_diagram(donnees):
                         'hole_in_path' : hole_in_path, 
                         'end_node_continue' : end_node_continue}
     
-    return list_good_synth_rotation, dic_of_bad_synth
+    # Obtenir toutes les valeurs uniques
+    all_values = list(set(value for values in dic_of_bad_synth.values() for value in values))
+
+    # Créer un DataFrame pour les variables muettes
+    csv_of_bad_synth = pd.DataFrame(False, index=all_values, columns=dic_of_bad_synth.keys())
+
+    # Remplir le DataFrame avec True si la valeur est présente dans la liste
+    for key, values in dic_of_bad_synth.items():
+        csv_of_bad_synth.loc[values, key] = True
+    
+    return list_good_synth_rotation, csv_of_bad_synth
             
 
 def trouver_chemins(graphe, debut, fins):
@@ -1200,16 +1433,23 @@ def process_sy(sy, cx, nd):
     all_df = df_couples_connexion_chemins.merge(nb_grp_sameyear_overall, on=['chemin_id', 'groupe_sameyear'], how='left')
     all_df = all_df.merge(chemin_normalisation, on=['chemin_id'], how='left')
 
-    # Calculer le vrai poids de connexion final (poids_conx_standard / count_grp_sameyear_overall)
+    # Calculer proba_conx_spatiotemp
     all_df['proba_conx_spatiotemp'] = all_df['poids_conx_standard'] / all_df['count_grp_sameyear_overall']
 
     # Normalisation des poids de connexions pour l'agrégation, au niveau des chemins
-    all_df['poids_conx_agregation'] = all_df['poids_conx_standard'] / all_df['facteur_normalisation']
+    all_df['poids_conx_agregation_norm_chemin'] = all_df['poids_conx_standard'] / all_df['facteur_normalisation']
 
     # Supprimer le poids de connexion des connexions absentes
-    all_df.drop(['pd_chem', 'poids_conx_standard', 'facteur_normalisation'], axis=1, inplace=True)
-    all_df.loc[all_df['abs'] == 't','poids_conx_agregation'] = np.nan
+    all_df.loc[all_df['abs'] == 't','poids_conx_agregation_norm_chemin'] = np.nan
+    all_df.loc[all_df['abs'] == 't','poids_conx_standard'] = np.nan
     all_df.loc[all_df['abs'] == 't','proba_conx_spatiotemp'] = np.nan
+
+    # On donne directement le poids standard de connexion qui est utilisé pour l'agrégation au niveau du synthétisé dans Agrosyst et par 
+    all_df['poids_conx_agregation'] = all_df['poids_conx_standard'].copy()
+    # Normalisation des poids de connexions pour l'agrégation au niveau du SDC
+    all_df['poids_conx_agregation_norm_synth'] = all_df['poids_conx_standard'] / all_df['poids_conx_standard'].sum()
+
+    all_df.drop(['pd_chem', 'poids_conx_standard', 'facteur_normalisation'], axis=1, inplace=True)
 
     return all_df
 
@@ -1220,15 +1460,17 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     Avec le poids des connexions pour l'agrégation (indicateur à l'itk) et la probabilité d'apparition de la connexion (indicateur à l'année, ou proportion spatio-temporelle de la culture). 
     On exporte aussi le dataframe intermédiaire qui est très utile avec les couples connexions-chemins
 
-    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion annualisé soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. Ce poids de connexion annualisé correspond au poids de la connexion à utiliser pour faire les agrégrations d'indicateurs. On le normalise pour qu'ils somment à 1 (càd diviser chaque poids par la somme des autres).
-    Puis pour chaque connexion on donne ce poids de connexion annualisé divisé par le nombre de connexions dans le groupe de même camapgne qui ne sont pas absente. Nous avons désormais la probabilité d'apparition des cultures.
-    Puis on passe en NA les connexions absentes pour le poids et la probabilité. 
-    Au final on fait une somme de ces indicateurs pour une meme connexion (car on était jusque là au niveau du couple connexion-chemin)
+    Le but est d'avoir tout les couples connexions-chemins. Puis on associe chaque couple à un groupe de culture ayant la même campagne (groupe de 1 culture possible). On identifie les connexion absentes. Le poids des chemins est la multiplication de toutes frequences de connexion présentes dans le chemin. On crée un poids de connexion standard soit le poid du chemin divisé par le nombre d'année. Le nombre d'année est le nombre de groupe de même campagne dans le chemin, après avoir filtré les connexions absentes. 
+    Avec toutes ces variable on détermine :
+        * le poids de connexion d'aggrégation, utilisé dans agrosyst et la cellref. Qui est égale au poids standard = multiplication de toutes les fréquences de connexion présentes dans le chemin divisé par le nombre d'année. NE SOMME PAS A 100%
+        * le poids de connexion d'aggrégation. Qui est le poids de connexion standard nomralisé au niveau du synthétisé (soit diviser par la somme de tout les poids de connexion standard du synthé)
+        * la probabilité d'apparittion de la connexion qui est le poids de connexion standard divisé par le nombre de connexion actives au sein de la même campagne (le groupe de connexions de meme campagne)
+        * le poids de connexion d'aggrégation normalisé au chemin. Qui est le poids de connexion standard nomralisé au niveau du chemin (soit diviser par la somme de tout les poids de connexion standard du chemin)
     Attention, on filtre les synthétisés dont la somme des probabilités d'apparition de culture ne fait pas 1 ! (c'est le cas d'une trentaine de synthétisé qui ont des chemins entierrement composé de culture absentes)
 
     Note(s):
         Que pour les cultures assolées en synthétisé
-        Processus parralélisé à 70% des cores de la machine (4h30 --> 45min)
+        Processus parralélisé à 50% des cores de la machine (4h30 --> 45min)
 
     Echelle :
         connexion_id
@@ -1244,8 +1486,6 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
             - extract_good_rotation_diagram(donnees[['connection_synthetise', 'noeuds_synthetise']])
         parallelization_enabled (bool):
             booléen indiquant si la parralélisation est active ou non
-
-
 
     Returns:
         1° : pd.Dataframe() des poids de connexion
@@ -1287,7 +1527,7 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     # Utilisation de ProcessPoolExecutor avec X% des cœurs
     ratio_cpu_use = 0.5
     if parallelization_enabled:
-        print('Parallélisation de la fonction de calcull des poids de connexion :')
+        print('Parallélisation de la fonction de calcul des poids de connexion :')
         # si on est en mode réel, on active la parallélisation
         partial_process_sy = partial(process_sy, cx=cx, nd=nd)
         with ProcessPoolExecutor(max_workers= max(1, int(os.cpu_count() * ratio_cpu_use)) ) as executor:
@@ -1299,30 +1539,31 @@ def get_connexion_weight_in_synth_rotation(donnees, parallelization_enabled:bool
     # Concaténation des résultats
     final_data = pd.concat(results)
 
-    # On enleve les données qui ne somme pas à 1
+    # On enleve les données qui ne somme pas à 1 pour les poids de connexion non utilisé pour l'agrégation de base ( soit poids_conx_agregation_norm_synth, proba_conx_spatiotemp, poids_conx_agregation_norm_chemin)
     test_sum_at_100 = final_data.copy()
-    test_sum_at_100 = test_sum_at_100[['poids_conx_agregation','proba_conx_spatiotemp','synth_id']].groupby('synth_id').agg({
-        'poids_conx_agregation' : 'sum',
-        'proba_conx_spatiotemp' : 'sum'
+    test_sum_at_100 = test_sum_at_100[['proba_conx_spatiotemp','poids_conx_agregation_norm_synth','poids_conx_agregation_norm_chemin','synth_id']].groupby('synth_id').agg({
+        'poids_conx_agregation_norm_synth' : 'sum',
+        'proba_conx_spatiotemp' : 'sum',
+        'poids_conx_agregation_norm_chemin' : 'sum'
     })
-    test_sum_at_100 = test_sum_at_100.loc[(round(test_sum_at_100['poids_conx_agregation'],2) != 1) | \
-                                          (round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1)].index
+    test_sum_at_100 = test_sum_at_100.loc[(round(test_sum_at_100['poids_conx_agregation_norm_synth'],2) != 1) | \
+                                          (round(test_sum_at_100['proba_conx_spatiotemp'],2) != 1) | \
+                                          (round(test_sum_at_100['poids_conx_agregation_norm_chemin'],2) != 1)].index
 
     # print('Nombre de connexion qui ne somme pas à 100 : ', len(test_sum_at_100).astype('str'))
 
     final_data = final_data.loc[~(final_data['synth_id'].isin(test_sum_at_100))]
-    final_data = final_data[['connexion_id','chemin_id','synth_id','groupe_sameyear','abs','poids_conx_agregation','proba_conx_spatiotemp']].rename(columns={'synth_id' : 'synthetise_id'})
+    final_data = final_data[['connexion_id','chemin_id','synth_id','groupe_sameyear','abs','poids_conx_agregation','poids_conx_agregation_norm_synth','proba_conx_spatiotemp','poids_conx_agregation_norm_chemin']].rename(columns={'synth_id' : 'synthetise_id'})
 
     # Somme des poids des couples cnx_chem pour aller à l'échelle connexion_id
-    final_data_conx_level = final_data[['connexion_id','synthetise_id','poids_conx_agregation','proba_conx_spatiotemp']].groupby('connexion_id').agg({
-        'synthetise_id' : lambda x : x.iloc[0],
-        'poids_conx_agregation' : lambda x : np.nan if all(x.isna()) else sum(x.dropna()),
-        'proba_conx_spatiotemp' : lambda x : np.nan if all(x.isna()) else sum(x.dropna())
-    }).reset_index()
-
     # On choisit d'arrondir à 5 chiffres après la virgule :
-    final_data_conx_level['poids_conx_agregation'] = final_data_conx_level['poids_conx_agregation'].round(5)
-    final_data_conx_level['proba_conx_spatiotemp'] = final_data_conx_level['proba_conx_spatiotemp'].round(5)
+    final_data_conx_level = final_data[['connexion_id','synthetise_id','poids_conx_agregation','poids_conx_agregation_norm_synth','proba_conx_spatiotemp','poids_conx_agregation_norm_chemin']].groupby('connexion_id').agg({
+        'synthetise_id' : lambda x : x.iloc[0],
+        'poids_conx_agregation' : lambda x : np.nan if all(x.isna()) else round(sum(x.dropna()),5),
+        'poids_conx_agregation_norm_synth' : lambda x : np.nan if all(x.isna()) else round(sum(x.dropna()),5),
+        'proba_conx_spatiotemp' : lambda x : np.nan if all(x.isna()) else round(sum(x.dropna()),5),
+        'poids_conx_agregation_norm_chemin' : lambda x : np.nan if all(x.isna()) else round(sum(x.dropna()),5)
+    }).reset_index()
 
     final_data_conx_level = final_data_conx_level.set_index('connexion_id')
     final_data = final_data.set_index('connexion_id')

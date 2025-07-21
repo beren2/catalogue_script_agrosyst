@@ -556,14 +556,25 @@
                 "function_name" : "create_category_indicateur_0",
                 "dependances" : [],
                 "generated" : [
+					"mauvaise_structure_de_rotation",
 					"couple_connexions_chemins_synthetise_rotation",
-					"poids_connexions_synthetise_rotation",
-					"typologie_can_culture"
+					"poids_connexions_synthetise_rotation"
                 ], 
 				"need_performance" : "False"
             },
 			"indicateur_1" : {
                 "function_name" : "create_category_indicateur_1",
+                "dependances" : [{
+						"source" : "outils", 
+						"category": "restructuration"
+					}],
+                "generated" : [
+					"typologie_can_culture"
+                ], 
+				"need_performance" : "False"
+            },
+			"indicateur_2" : {
+                "function_name" : "create_category_indicateur_2",
                 "dependances" : [{
 						"source" : "outils", 
 						"category": "restructuration"
@@ -573,13 +584,17 @@
 					},{
 						"source" : "outils", 
 						"category": "indicateur_0"
+					},{
+						"source" : "outils", 
+						"category": "indicateur_1"
 					}],
                 "generated" : [
                     "utilisation_intrant_indicateur", 
                     "identification_pz0",
-					"typologie_can_rotation_synthetise",
-					"action_realise_rendement_total", 
-					"action_synthetise_rendement_total"
+                    "typologie_can_rotation_synthetise",
+                    "typologie_assol_can_realise",
+                    "action_realise_rendement_total", 
+                    "action_synthetise_rendement_total"
                 ], 
 				"need_performance" : "False"
             },
