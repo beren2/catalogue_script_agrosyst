@@ -12,8 +12,5 @@ r.code_scenario as code_scenario,
 r.scenario as scenario, 
 r."source"
 from refharvestingprice r
-where active is true;
-
-alter table entrepot_prix_recolte
-add constraint entrepot_prix_recolte_pk
-PRIMARY KEY (id);
+where active is true
+and code_scenario = '';
