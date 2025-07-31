@@ -10,7 +10,7 @@ r.priceunit as prix_unite,
 r.price as prix,
 r.code_scenario as code_scenario,
 r.scenario as scenario, 
-r."source",
+r."source"
 from refharvestingprice r
 where active is true;
 
