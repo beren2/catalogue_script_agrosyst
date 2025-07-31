@@ -85,7 +85,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
     
     donnees_computed = fonction_to_apply(donnees)
     donnees_computed = donnees_computed.reset_index().set_index(key_name).reset_index()
-
+    
     res = []
     for entite_id in list(colonne_to_test_for_ligne.keys()):
         colonnes_to_test = colonne_to_test_for_ligne[entite_id]
@@ -98,13 +98,13 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
         expected_output = df_metadonnees.loc[(df_metadonnees['id_ligne'] == entite_id) & (df_metadonnees['colonne_testee'].isin(colonnes_to_test))]
         expected_output = expected_output.pivot(columns='colonne_testee', values='valeur_attendue', index='id_ligne').fillna('')
 
-        for colonne_to_test in colonnes_to_test:
-            print(output[colonne_to_test].values)
-            print(expected_output[colonne_to_test].values)
+        for colonne_to_test in colonnes_to_test:   
             if(len(expected_output[colonne_to_test].values) > 0):
                 is_null_value_expected = (expected_output[colonne_to_test].values[0] == '')
 
             if((output[colonne_to_test].values != expected_output[colonne_to_test].values) or (len(output[colonne_to_test].values) == 0 and not is_null_value_expected)):
+                v_obs = output[colonne_to_test].values
+                v_att = expected_output[colonne_to_test].values
                 res.append(False)
             else:
                 res.append(True)
@@ -689,7 +689,7 @@ def test_get_typologie_culture_CAN():
     """
     identifiant_test = 'test_get_typologie_culture_CAN'
     df_names = [
-                'composant_culture', 'culture', 'espece',
+                'composant_culture', 'culture', 'espece', 'recolte_rendement_prix', 'recolte_rendement_prix_restructure',
                 'typo_especes_typo_culture','typo_especes_typo_culture_marai' # referentiel CAN
                ]
     path_data = '02_outils/tests/data/test_get_typologie_culture_CAN/'
@@ -700,6 +700,7 @@ def test_get_typologie_culture_CAN():
     res = pd.Series(res).fillna(False).all()
 
     assert res
+
 
 def test_get_typologie_rotation_CAN_synthetise():
     """
@@ -718,6 +719,26 @@ def test_get_typologie_rotation_CAN_synthetise():
     res = pd.Series(res).fillna(False).all()
 
     assert res
+
+
+def test_get_typologie_assol_CAN_realise():
+    """
+        Test de l'obtention des typologies d'assolement de la CAN pour le réalisé
+    """
+    identifiant_test = 'test_get_typologie_assol_CAN_realise'
+    df_names = [
+                'noeuds_realise','zone','parcelle','intervention_realise',
+                'typologie_can_culture' # issus d'outils
+               ]
+    path_data = '02_outils/tests/data/test_get_typologie_assol_CAN_realise/'
+    fonction_to_apply = indicateur.get_typologie_assol_CAN_realise
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
+
 
 def test_extract_good_rotation_diagram():
     """
