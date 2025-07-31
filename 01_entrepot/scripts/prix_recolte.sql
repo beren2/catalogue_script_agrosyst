@@ -3,15 +3,13 @@ select
 r.topiaid as id,
 r.code_destination_a, --code_destination_a dans destination_valorisation 
 r.code_qualifiant_aee,
-r.produitrecolte,
+r.produitrecolte as libelle_espece_botanique,
 r.organic as bio,
-r.marketingperioddecade as decade_de_vente,
 r.campaign as campagne,
 r.priceunit as prix_unite,
 r.price as prix,
 r.code_scenario as code_scenario,
 r.scenario as scenario, 
-r.marketingperiod as mois_de_vente,
 r."source",
 from refharvestingprice r
 where active is true;
