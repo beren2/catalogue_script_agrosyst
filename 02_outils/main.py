@@ -641,6 +641,7 @@ steps = [
     {'source' : 'outils', 'category' : 'restructuration'},
     {'source' : 'outils', 'category' : 'indicateur_0'},
     {'source' : 'outils', 'category' : 'indicateur_1'},
+    {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'}
 ]
