@@ -526,19 +526,24 @@ def create_category_indicateur_0():
         Execute les requêtes pour créer les outils des indicateurs uniquement pour les fonctions de poids de connexions !
         A faire passer avant indicateur_1 qui a besoin de la génération des poids de connexions et de la typologie_can_culture
     """
-    _, dict_extract_bad_rotation_diagram = indicateur.extract_good_rotation_diagram(donnees)
-    export_dict_to_catalogue(dict_extract_bad_rotation_diagram, 'dict_mauvaise_structure_de_rotation')
+    _, csv_of_bad_synth = indicateur.extract_good_rotation_diagram(donnees)
+    export_to_db(csv_of_bad_synth, 'entrepot_mauvaise_structure_de_rotation')
 
     df_get_connexion_weight_in_synth_rotation, df_get_couple_connexion_paths, list_synthe_somme_pas_a_un = indicateur.get_connexion_weight_in_synth_rotation(donnees)
     export_dict_to_catalogue(list_synthe_somme_pas_a_un, 'list_synthe_somme_pas_a_un')
     export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
 
+def create_category_indicateur_1():
+    """
+        Crée les typologies de culture de base pour les autres indicateurs. 
+        N'a pas besoin des poids de connexions !
+        A faire passer avant indicateur_2 qui a besoin de la génération des poids de connexions et de la typologie_can_culture
+    """
     df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
     export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
 
-
-def create_category_indicateur_1():
+def create_category_indicateur_2():
     """
         Execute les requêtes pour créer les outils des indicateurs (sauf poids de conenxions et typo_can_culture, voir create_category_indicateur_0)
     """
@@ -553,6 +558,9 @@ def create_category_indicateur_1():
 
     df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
     export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
+
+    df_typologie_assol_CAN_realise= indicateur.get_typologie_assol_CAN_realise(donnees)
+    export_to_db(df_typologie_assol_CAN_realise, 'entrepot_typologie_assol_can_realise')
 
     # TODO : on fait appel à une fonction "get_recolte_realise_outils_can" car l'importance pour tout le monde de bénéficier de cet outil a été identifié à posteriori.
     # Ce n'est pas idéal, il vaudrait mieux créer une fonction qui créer cette outil et faire appel à cet outil dans les outils can / le magasin can
@@ -641,6 +649,7 @@ steps = [
     {'source' : 'outils', 'category' : 'restructuration'},
     {'source' : 'outils', 'category' : 'indicateur_0'},
     {'source' : 'outils', 'category' : 'indicateur_1'},
+    {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'}
 ]

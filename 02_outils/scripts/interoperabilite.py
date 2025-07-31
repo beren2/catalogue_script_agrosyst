@@ -200,6 +200,11 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
     # 8 ==> Les ruralités touristiques spécialisées
     # 9 ==> Communes ayant changé de périmètre depuis la réalisation de la typologie
 
+
+    # On drop les duplicats d'identiafiants de points GPS car il peut arriver qu'un point GPS matches avec plusieurs site RMQS par exemple lorsque deux points RMQS sont à même distance du centre du point GPS. Il est possible que ce soit 2 fois le même site RMQS (donc les même coordonnées GPS) mais avec un identifiant différent et des dates de sampling différentes.
+    # Du coup on drop les duplicats en gardant le premier
+    df = df.drop_duplicates(subset=['domaine_id'], keep='first')
+
     df = df.set_index('domaine_id')
 
     return df
@@ -282,6 +287,11 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
     df.loc[df['coord_gps'].apply(lambda p: np.isinf(p.x) or np.isinf(p.y)), 'coord_gps'] = np.nan
     df['coord_gps'] = df['coord_gps'].apply(lambda geom: geom.wkt if geom else np.nan)
     df = pd.DataFrame(df)
+
+
+    # On drop les duplicats d'identiafiants de points GPS car il peut arriver qu'un point GPS matches avec plusieurs site RMQS par exemple lorsque deux points RMQS sont à même distance du centre du point GPS. Il est possible que ce soit 2 fois le même site RMQS (donc les même coordonnées GPS) mais avec un identifiant différent et des dates de sampling différentes.
+    # Du coup on drop les duplicats en gardant le premier
+    df = df.drop_duplicates(subset=['geopoint_id'], keep='first')
 
     df = df.set_index('geopoint_id')
 
