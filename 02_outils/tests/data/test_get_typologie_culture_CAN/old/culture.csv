@@ -1,8 +1,0 @@
-id,nom,melange_especes,melange_varietes,prairie_paturee,prairie_temporaire,prairie_fauchee,code,type,domaine_id
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_48127946-206c-40f4-b69a-206c28019190,PRAIRIE TEMPORAIRE,t,f,f,,f,01a1cc89-d7f4-4144-9e13-d180b495ca7c,MAIN,fr.inra.agrosyst.api.entities.Domain_75c2f1a8-ae17-418d-9f33-8a4330c1f03f
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_94c605bb-a2c5-4f47-833e-c126edc00594,CIPAN,f,f,f,,f,35fc92b6-88d1-43ea-abc4-d27b30582b11,INTERMEDIATE,fr.inra.agrosyst.api.entities.Domain_003f7879-4824-4f4d-9c82-c641db61339a
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_f144f317-25b5-403d-81ca-56ed7809c705,Tomate ronde grappe,f,f,f,,f,75ddd99f-5a5c-4b3e-ba9f-4259dda3dea6,MAIN,fr.inra.agrosyst.api.entities.Domain_000a0ca7-2985-4539-98b1-6052cc6ce406
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_931d7b38-1df6-4e38-bbf5-9661ddb0a81b,Couvert Cipan,f,f,f,,f,abed8d48-7393-9088-2cf9-2b55fa698b97,INTERMEDIATE,fr.inra.agrosyst.api.entities.Domain_005883e1-ecf5-497c-8a01-538e0bc214d9
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_1bb9ef49-7f10-4ce9-87d0-22b36cfe883a,chou rave,f,f,f,,f,89da3d4c-7a92-7f3a-57e3-9f897106f2ae,MAIN,fr.inra.agrosyst.api.entities.Domain_44b91ccd-4efa-48ff-a4c8-0fd7f8c927c1
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_60cc91e5-d085-40c7-a3dc-fc00684b05ad,Bande fleurie,t,f,f,,f,6832abfe-b925-401e-b682-9d04fe3d82c4,MAIN,fr.inra.agrosyst.api.entities.Domain_ee600b35-a0f5-4ab1-9458-d0abbb2a18db
-fr.inra.agrosyst.api.entities.CroppingPlanEntry_3478eb36-740a-40b5-96fa-28d29d931605,Méteil dérobé,t,f,f,,f,e716ef32-faf3-4a41-9d45-849520716294,CATCH,fr.inra.agrosyst.api.entities.Domain_033366cb-62d7-4409-bc24-d95397b483f5
