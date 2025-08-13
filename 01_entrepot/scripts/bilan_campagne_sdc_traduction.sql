@@ -118,7 +118,7 @@ insert into entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interfac
 insert into entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('objectif rendement echelle int','1','MORE_95');
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'MORE_95', 'supérieur ou égal 95% de l''objectif');
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'FROM_75_TO_95', 'de 75% à 95%');
-INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'FROM_50_TO_75', 'de 75% à 95%'); 
+INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'FROM_50_TO_75', 'de 50% à 75%'); 
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif', 'LESS_50', '< 50%');
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '1', 'supérieur ou égal 95% de l''objectif');
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '2', 'de 50% à 75%');
