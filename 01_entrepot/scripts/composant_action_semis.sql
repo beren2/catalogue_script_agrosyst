@@ -30,3 +30,7 @@ select
 	sas.treatment as traitement_chimique,
 	sas.biologicalseedinoculation as inoculation_biologique
 from seedingactionspecies sas;
+
+alter table entrepot_composant_action_semis
+add constraint composant_action_semis_PK
+PRIMARY KEY (id);

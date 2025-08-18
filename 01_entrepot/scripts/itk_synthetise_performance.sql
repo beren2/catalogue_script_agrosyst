@@ -3,6 +3,7 @@
 ---------------------------------------------------------------
 create table entrepot_itk_synthetise_performance AS 
 SELECT
+    coalesce(phase_id, connexion_synthetise_id) AS itk_synthetise_id,
     phase_id AS plantation_perenne_phases_synthetise_id,
     connexion_synthetise_id AS connection_synthetise_id,
 	approche_de_calcul AS approche_de_calcul,
@@ -325,3 +326,7 @@ JOIN entrepot_synthetise es on es.id = sec.id_systeme_synthetise;
 
 -- alter table entrepot_itk_synthetise_performance
 -- add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synhtetise(id);
+
+alter table entrepot_itk_synthetise_performance
+add constraint itk_synthetise_performance_PK
+PRIMARY KEY (itk_synthetise_id);

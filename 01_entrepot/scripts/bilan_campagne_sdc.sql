@@ -454,6 +454,9 @@ insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,
 insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque moyenne','5 % a 10 % de grappes perforées');
 insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque forte','superieur a 10 % de grappes perforées');
 
+alter table entrepot_BC_sdc_viti_ravageur_explication
+add constraint BC_sdc_viti_ravageur_explication_PK
+PRIMARY KEY (type_ravageur,valeur);
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
@@ -585,6 +588,9 @@ join entrepot_culture ec on ec.id = cy.crops
 alter table entrepot_BC_sdc_culture_liee
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
+alter table entrepot_BC_sdc_culture_liee
+add constraint BC_sdc_culture_liee_PK
+PRIMARY KEY (entite_id,culture_id);
 
 DROP TABLE IF EXISTS entrepot_BC_sdc_especes_liee;
 CREATE TABLE entrepot_BC_sdc_especes_liee as
@@ -627,3 +633,7 @@ join entrepot_composant_culture ec on ec.id = sy.species
 
 alter table entrepot_BC_sdc_especes_liee
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
+
+alter table entrepot_BC_sdc_especes_liee
+add constraint BC_sdc_especes_liee_PK
+PRIMARY KEY (entite_id,composant_culture_id);

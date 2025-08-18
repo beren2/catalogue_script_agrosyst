@@ -186,9 +186,9 @@ from entrepot_speciestoarea sp
 join entrepot_domaine e on e.id = sp.domaine_id
 join (select distinct topiaid, code_espece_botanique, libelle_espece_botanique, code_qualifiant_aee, libelle_qualifiant_aee , code_type_saisonnier_aee, libelle_type_saisonnier_aee from refespece) r1 on r1.code_espece_botanique = UPPER(sp.code_espece) and r1.code_qualifiant_aee = UPPER(sp.code_qualifiant) and r1.code_type_saisonnier_aee = UPPER(sp.code_type_saisonnier);
 
---alter table entrepot_domaine_surface_especes_cultivees
---ADD CONSTRAINT domaine_surface_especes_cultivees_PK
---primary key (id);
+alter table entrepot_domaine_surface_especes_cultivees
+ADD CONSTRAINT domaine_surface_especes_cultivees_PK
+primary key (id,espece_id);
 
 alter table entrepot_domaine_surface_especes_cultivees
 add FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

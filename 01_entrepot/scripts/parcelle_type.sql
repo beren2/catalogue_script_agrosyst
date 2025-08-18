@@ -70,6 +70,10 @@ join refparcellezonageedi r on r.topiaid = bp.plotzonings ;
 alter table entrepot_parcelle_type_zonage
 ADD FOREIGN KEY (parcelle_type_id) REFERENCES entrepot_parcelle_type(id);
 
+alter table entrepot_parcelle_type_zonage
+add constraint parcelle_type_zonage_PK
+PRIMARY KEY (parcelle_type_id,libelle_zonage);
+
 -- Voisinage de la parcelle
 drop table if exists entrepot_parcelle_type_voisinage;
 
@@ -83,3 +87,7 @@ join refelementvoisinage r on r.topiaid = ab.adjacentelements ;
 
 alter table entrepot_parcelle_type_voisinage
 ADD FOREIGN KEY (parcelle_type_id) REFERENCES entrepot_parcelle_type(id);
+
+alter table entrepot_parcelle_type_voisinage
+add constraint parcelle_type_voisinage_PK
+PRIMARY KEY (parcelle_type_id,libelle_voisinage);

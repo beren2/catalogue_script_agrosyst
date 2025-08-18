@@ -12,3 +12,7 @@ join refelementvoisinage r on r.topiaid = ab.adjacentelements ;
 
 alter table entrepot_parcelle_voisinage
 ADD FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);
+
+alter table entrepot_parcelle_voisinage
+add constraint parcelle_voisinage_PK
+PRIMARY KEY (parcelle_id,libelle_voisinage);

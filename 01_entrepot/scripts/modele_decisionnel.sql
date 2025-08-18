@@ -116,3 +116,7 @@ ADD FOREIGN KEY (modele_decisionnel_strategie_id) REFERENCES entrepot_modele_dec
 
 alter table entrepot_modele_decisionnel_strategie_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
+
+alter table entrepot_modele_decisionnel_strategie_culture
+add constraint modele_decisionnel_strategie_culture_PK
+PRIMARY KEY (modele_decisionnel_strategie_id,culture_id);

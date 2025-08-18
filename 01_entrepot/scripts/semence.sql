@@ -101,3 +101,6 @@ from
 	) sc
 where es.id = sc.id;
 		
+alter table entrepot_semence
+add constraint semence_PK
+PRIMARY KEY (id);

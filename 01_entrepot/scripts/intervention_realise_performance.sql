@@ -333,9 +333,9 @@ FROM realise_echelle_intervention rei
 JOIN entrepot_intervention_realise eir on eir.id = rei.intervention_id;
 
 
---alter table entrepot_intervention_realise_performance
---add constraint intervention_realise_performance_PK
---PRIMARY KEY (intervention_realise_id);
+alter table entrepot_intervention_realise_performance
+add constraint intervention_realise_performance_PK
+PRIMARY KEY (intervention_realise_id);
 
 
 alter table entrepot_intervention_realise_performance

@@ -78,9 +78,9 @@ JOIN entrepot_bilan_campagne_regional_generalites bcrg on bcrg.id = pp.diseasepr
 LEFT JOIN groupe_cible refgrp on pp.codegroupeciblemaa = refgrp.code_groupe_cible_maa
 left join maladies m on pp.topiaid = m.pestpressure;
 
---alter table entrepot_bilan_campagne_regional_pressionbioagresseur
---add constraint bilan_campagne_regional_pressionbioagresseur_PK
---PRIMARY KEY (id);
+alter table entrepot_bilan_campagne_regional_pressionbioagresseur
+add constraint bilan_campagne_regional_pressionbioagresseur_PK
+PRIMARY KEY (id);
 
 alter table entrepot_bilan_campagne_regional_pressionbioagresseur
 ADD FOREIGN KEY (bilan_campagne_regional_id) REFERENCES entrepot_bilan_campagne_regional_generalites(id);

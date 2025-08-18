@@ -109,13 +109,15 @@ def export_to_db(df, name):
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def add_primary_key(table_name, pk_column):
-        # 1. Ajouter la clé primaire
+        """ Ajouter la clé primaire """
         try:
+            cur.execute("SET statement_timeout = 0;")
             sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
             cur.execute(sql)
             conn.commit()
             print(f"Clé primaire {pk_column} ajoutée à la table {table_name}")
         except Exception as e:
+            conn.rollback()
             print(f"⚠️ Impossible d'ajouter la clé primaire : {e}")
 
 def convert_to_serializable(obj):
@@ -545,7 +547,6 @@ def create_category_restructuration():
     export_to_db(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
     add_primary_key('entrepot_intervention_synthetise_restructure', 'id')
 
-
 def create_category_indicateur_0():
     """
         Execute les requêtes pour créer les outils des indicateurs uniquement pour les fonctions de poids de connexions !
@@ -602,13 +603,13 @@ def create_category_indicateur_2():
     df_action_realise_rendement_total = outils_can.get_recolte_realise_outils_can(donnees)
     df_action_realise_rendement_total = df_action_realise_rendement_total.rename(columns={'action_id' : 'action_realise_id'})
     export_to_db(df_action_realise_rendement_total, 'entrepot_action_realise_rendement_total')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'index')
+    add_primary_key('entrepot_action_realise_rendement_total', 'index')
     
     # TODO : cf commentaire plus haut : idem pour "get_recolte_synthetise_outils_can"
     df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
     df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
     export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'index')
+    add_primary_key('entrepot_action_synthetise_rendement_total', 'index')
 
 
 def create_category_interoperabilite():
@@ -617,11 +618,11 @@ def create_category_interoperabilite():
     """
     df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'domaine_id')
+    add_primary_key('entrepot_donnees_spatiales_commune_du_domaine', 'domaine_id')
 
     df_donnees_spatiales_coord_gps_du_domaine = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'geopoint_id')
+    add_primary_key('entrepot_donnees_spatiales_coord_gps_du_domaine', 'geopoint_id')
 
 def create_category_outils_can():
     """
@@ -631,52 +632,52 @@ def create_category_outils_can():
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
     df_dispositif_filtres_outils_can.set_index('id', inplace=True)
     export_to_db(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_dispositif_filtres_outils_can', 'id')
 
     # création de l'outil permettant de filtrer les entités (domaine)
     df_domaine_filtres_outils_can = outils_can.domaine_filtres_outils_can(donnees)
     df_domaine_filtres_outils_can.set_index('id', inplace=True)
     export_to_db(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_domaine_filtres_outils_can', 'id')
 
     df_parcelle_non_ratachee_outils_can = outils_can.get_parcelles_non_rattachees_outils_can(donnees)
     df_parcelle_non_ratachee_outils_can.set_index('id', inplace=True)
     export_to_db(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_parcelle_non_rattachee_outils_can', 'id')
 
     df_culture_outils_can = outils_can.get_culture_outils_can(donnees)
     df_culture_outils_can.set_index('id', inplace=True)
     export_to_db(df_culture_outils_can, 'entrepot_culture_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_culture_outils_can', 'id')
 
     df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
     df_intervention_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_intervention_realise_outils_can', 'id')
 
     df_intervention_synthetise_outils_can = outils_can.get_intervention_synthetise_outils_can(donnees)
     df_intervention_synthetise_outils_can.set_index('id', inplace=True)
     export_to_db(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_intervention_synthetise_outils_can', 'id')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_db(df_recolte_outils_can, 'entrepot_recolte_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'index')
+    add_primary_key('entrepot_recolte_outils_can', 'action_id, rendement_unite, destination')
 
     df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
     df_zone_outils_can.set_index('id', inplace=True)
     export_to_db(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_zone_realise_outils_can', 'id')
 
     df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
     df_sdc_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_sdc_realise_outils_can', 'id')
 
     df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
     df_parcelle_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
-    add_primary_key('entrepot_typologie_assol_can_realise', 'id')
+    add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
 
 def create_category_test():

@@ -324,10 +324,9 @@ SELECT
 FROM realise_echelle_sdc res
 JOIN entrepot_sdc es on es.id = res.id_sdc;
 
--- il y a 1 ligne en double
---alter table entrepot_sdc_realise_performance
---add constraint sdc_realise_performance_PK
---PRIMARY KEY (sdc_id);
+alter table entrepot_sdc_realise_performance
+add constraint sdc_realise_performance_PK
+PRIMARY KEY (sdc_id);
 
 alter table entrepot_sdc_realise_performance
 add FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);
