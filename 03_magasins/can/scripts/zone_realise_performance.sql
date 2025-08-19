@@ -281,8 +281,6 @@ select
 	ezrp.qsa_soufre_phyto_hts,
 	ezrp.qsa_soufre_ferti,
 	ezrp.nombre_uth_necessaires,
-	ezrp.surface_par_unite_de_travail_humain as surf_unite_de_w_humain,
-	ezrp.surface_par_unite_de_travail_humain_taux_de_completion as surf_unite_de_w_humain_tx_comp,
 	ecps.domaine_nom,
 	ecps.domaine_id ,
 	ecps.domaine_campagne,
