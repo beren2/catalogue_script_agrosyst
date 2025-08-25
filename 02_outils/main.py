@@ -55,8 +55,6 @@ if(TYPE == 'distant'):
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
-    print(DB_USER, DB_PASSWORD, DATABASE_URI_entrepot)
-
     #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
     engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
 
@@ -109,16 +107,26 @@ def export_to_db(df, name):
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def add_primary_key(table_name, pk_column):
-        """ Ajouter la clé primaire """
-        try:
-            cur.execute("SET statement_timeout = 0;")
-            sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
-            cur.execute(sql)
-            conn.commit()
-            print(f"Clé primaire {pk_column} ajoutée à la table {table_name}")
-        except Exception as e:
-            conn.rollback()
-            print(f"⚠️ Impossible d'ajouter la clé primaire : {e}")
+    """Ajoute une clé primaire avec reconnexion forcée après longue attente"""
+
+    global conn, cur
+
+    try:
+        # ⚠️ On force la reconnexion car la session a pu expirer
+        if not conn.closed:
+            conn.close()
+        conn = engine.raw_connection()
+        cur = conn.cursor()
+
+        cur.execute("SET statement_timeout = 0;")
+        sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
+        cur.execute(sql)
+        conn.commit()
+        print(f"✅ Clé primaire {pk_column} ajoutée à {table_name}")
+
+    except Exception as e:
+        print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
+
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
@@ -585,7 +593,7 @@ def create_category_indicateur_2():
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
     add_primary_key('entrepot_utilisation_intrant_indicateur', 'id')
-    
+
     df_identification_pz0 = indicateur.identification_pz0(donnees)
     export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
     add_primary_key('entrepot_identification_pz0', 'entite_id')
@@ -604,7 +612,7 @@ def create_category_indicateur_2():
     df_action_realise_rendement_total = df_action_realise_rendement_total.rename(columns={'action_id' : 'action_realise_id'})
     export_to_db(df_action_realise_rendement_total, 'entrepot_action_realise_rendement_total')
     add_primary_key('entrepot_action_realise_rendement_total', 'index')
-    
+
     # TODO : cf commentaire plus haut : idem pour "get_recolte_synthetise_outils_can"
     df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
     df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})

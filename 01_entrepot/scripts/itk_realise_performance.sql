@@ -338,6 +338,6 @@ add FOREIGN KEY (culture_precedente_id) REFERENCES entrepot_culture(id);
 alter table entrepot_itk_realise_performance
 add FOREIGN KEY (plantation_perenne_phases_realise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
 
--- alter table entrepot_itk_realise_performance
--- add constraint itk_realise_performance_PK
--- PRIMARY KEY (zone_id,culture_id);
+alter table entrepot_itk_realise_performance
+add constraint itk_realise_performance_PK
+PRIMARY KEY (itk_realise_id, culture_id);
