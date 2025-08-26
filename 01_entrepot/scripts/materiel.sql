@@ -80,6 +80,14 @@ SELECT
     rm.petitmateriel as petit_materiel
 FROM refmateriel rm;
 
-ALTER TABLE entrepot_materiel
-ADD CONSTRAINT entrepot_materiel_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        ALTER TABLE entrepot_materiel
+        ADD CONSTRAINT entrepot_materiel_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

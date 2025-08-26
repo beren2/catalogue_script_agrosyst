@@ -14,6 +14,14 @@ r."source"
 from refphrasesrisqueetclassesmentiondangerparamm r 
 where active is true;
 
-alter table entrepot_phraserisque_mentiondanger_numero_amm
-add constraint phraserisque_mentiondanger_numero_amm_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_phraserisque_mentiondanger_numero_amm
+        add constraint phraserisque_mentiondanger_numero_amm_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

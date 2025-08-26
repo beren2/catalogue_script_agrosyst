@@ -9,6 +9,14 @@ SELECT
 	ragc.active
 FROM refactagroupecultures ragc;
 
-alter table entrepot_acta_groupe_culture
-add constraint acta_groupe_culture_PK_
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_acta_groupe_culture
+		add constraint acta_groupe_culture_PK_
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

@@ -25,9 +25,17 @@ CREATE TABLE entrepot_atelier_elevage AS
   JOIN entrepot_domaine d on d.id = l."domain" --fusion pour n'obtenir que des domaines actifs
   JOIN refanimaltype r ON l.refanimaltype = r.topiaid;
 
-alter table entrepot_atelier_elevage
-add constraint atelier_elevage_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+    alter table entrepot_atelier_elevage
+    add constraint atelier_elevage_PK
+    PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_atelier_elevage
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

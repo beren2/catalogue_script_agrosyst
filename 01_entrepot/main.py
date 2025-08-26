@@ -218,6 +218,10 @@ while True:
                 with open(extract_file, "r", encoding="utf8") as file:
                     sql_extract = file.read()
                 cur.execute(sql_extract)    
+                for n in cur.connection.notices:
+                    if "Impossible de créer la primary key" in n:
+                        print(f"{Fore.RED}⚠ {n.strip()}{Style.RESET_ALL}")
+                        cur.connection.notices.clear()
             conn.commit()
             print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
             print(datetime.datetime.now())
@@ -254,7 +258,11 @@ while True:
                 #Get the sql extract file
                 with open(extract_file, "r", encoding="utf8") as file:
                     sql_extract = file.read()
-                cur.execute(sql_extract)    
+                cur.execute(sql_extract)
+                for n in cur.connection.notices:
+                    if "Impossible de créer la primary key" in n:
+                        print(f"{Fore.RED}⚠ {n.strip()}{Style.RESET_ALL}")
+                        cur.connection.notices.clear()    
             conn.commit()
             print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
             print(datetime.datetime.now())
@@ -300,6 +308,12 @@ while True:
             with open(extract_file, "r", encoding="utf8") as file:
                 sql_extract = file.read()
             cur.execute(sql_extract)    
+
+            for n in cur.connection.notices:
+                if "Impossible de créer la primary key" in n:
+                    print(f"{Fore.RED}⚠ {n.strip()}{Style.RESET_ALL}")
+                    cur.connection.notices.clear()
+
         conn.commit()
         print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
         print(datetime.datetime.now())

@@ -25,9 +25,17 @@ sdc.id sdc_id
 from managementmode mm
 join entrepot_sdc sdc on sdc.id = mm.growingsystem ;
 
-alter table entrepot_modele_decisionnel
-add constraint modele_decisionnel_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_modele_decisionnel
+		add constraint modele_decisionnel_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_modele_decisionnel
 ADD FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);
@@ -74,9 +82,17 @@ left join (select distinct code_groupe_cible_maa,groupe_cible_maa from groupe_ci
 end
 left join MD_traduction trad on trad.nom_base = sec.categoryobjective;
 
-alter table entrepot_modele_decisionnel_maitrise
-add constraint modele_decisionnel_maitrise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_modele_decisionnel_maitrise
+		add constraint modele_decisionnel_maitrise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_modele_decisionnel_maitrise
 ADD FOREIGN KEY (modele_decisionnel_id) REFERENCES entrepot_modele_decisionnel(id);
@@ -95,9 +111,17 @@ from strategy s
 join entrepot_modele_decisionnel_maitrise mdm on mdm.id = s."section"
 join refstrategylever reflevier on s.refstrategylever = reflevier.topiaid ;
 
-alter table entrepot_modele_decisionnel_strategie
-add constraint modele_decisionnel_strategie_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_modele_decisionnel_strategie
+		add constraint modele_decisionnel_strategie_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_modele_decisionnel_strategie
 ADD FOREIGN KEY (modele_decisionnel_maitrise_id) REFERENCES entrepot_modele_decisionnel_maitrise(id);
@@ -117,6 +141,14 @@ ADD FOREIGN KEY (modele_decisionnel_strategie_id) REFERENCES entrepot_modele_dec
 alter table entrepot_modele_decisionnel_strategie_culture
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-alter table entrepot_modele_decisionnel_strategie_culture
-add constraint modele_decisionnel_strategie_culture_PK
-PRIMARY KEY (modele_decisionnel_strategie_id,culture_id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_modele_decisionnel_strategie_culture
+		add constraint modele_decisionnel_strategie_culture_PK
+		PRIMARY KEY (modele_decisionnel_strategie_id,culture_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

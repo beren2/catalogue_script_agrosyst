@@ -44,9 +44,17 @@ JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.to
 JOIN practicedintervention pi on pi.topiaid = aa.practicedintervention
 JOIN entrepot_intervention_synthetise eis on eis.id = aa.practicedintervention ;
 
-alter table entrepot_action_synthetise
-add constraint action_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_action_synthetise
+        add constraint action_synthetise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_action_synthetise
 ADD FOREIGN KEY (intervention_synthetise_id) REFERENCES entrepot_intervention_synthetise(id);

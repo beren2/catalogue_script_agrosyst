@@ -125,6 +125,14 @@ INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interfac
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '3', 'de 75% à 95%');
 INSERT INTO entrepot_bc_sdc_traduction(nom_rubrique,nom_base,traduction_interface) VALUES ('rendement echelle objectif expe', '4', '< 50%');
 
-alter table entrepot_bc_sdc_traduction
-add constraint entrepot_bc_sdc_traduction_PK
-PRIMARY KEY (nom_rubrique,nom_base);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_bc_sdc_traduction
+		add constraint entrepot_bc_sdc_traduction_PK
+		PRIMARY KEY (nom_rubrique,nom_base);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

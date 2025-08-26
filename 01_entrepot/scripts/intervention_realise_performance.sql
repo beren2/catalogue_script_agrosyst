@@ -332,10 +332,17 @@ SELECT
 FROM realise_echelle_intervention rei
 JOIN entrepot_intervention_realise eir on eir.id = rei.intervention_id;
 
-
-alter table entrepot_intervention_realise_performance
-add constraint intervention_realise_performance_PK
-PRIMARY KEY (intervention_realise_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_intervention_realise_performance
+        add constraint intervention_realise_performance_PK
+        PRIMARY KEY (intervention_realise_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 
 alter table entrepot_intervention_realise_performance

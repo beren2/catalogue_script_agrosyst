@@ -26,6 +26,14 @@ insert into entrepot_sole_synthetise
 	join entrepot_domaine ed on esdc.domaine_id = ed.id
 	join croppingplanentry cpe on (cpe.code = pccn.croppingplanentrycode and ed.id = cpe.domain);
 
-alter table entrepot_sole_synthetise
-add constraint sole_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_sole_synthetise
+		add constraint sole_synthetise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

@@ -324,9 +324,17 @@ SELECT
 FROM realise_echelle_sdc res
 JOIN entrepot_sdc es on es.id = res.id_sdc;
 
-alter table entrepot_sdc_realise_performance
-add constraint sdc_realise_performance_PK
-PRIMARY KEY (sdc_id);
+DO $$
+BEGIN
+    BEGIN
+        ALTER TABLE entrepot_sdc_realise_performance
+        ADD CONSTRAINT sdc_realise_performance_PK 
+        PRIMARY KEY (sdc_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_sdc_realise_performance
 add FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);

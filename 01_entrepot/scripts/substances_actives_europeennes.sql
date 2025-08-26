@@ -22,6 +22,14 @@ SELECT
 from refsubstancesactivescommissioneuropeenne r
 where active is true;
 
-alter table entrepot_substance_active_europeenne
-add constraint substance_active_europeenne_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_substance_active_europeenne
+        add constraint substance_active_europeenne_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

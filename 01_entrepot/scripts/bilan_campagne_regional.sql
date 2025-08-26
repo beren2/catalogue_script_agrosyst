@@ -39,9 +39,17 @@ join reseaux_bcr r on r.reportregional = rr.topiaid
 join secteurs_bcr sect on sect.owner = rr.topiaid
 left join species_bcr sp on sp.owner = rr.topiaid;
 
-alter table entrepot_bilan_campagne_regional_generalites
-add constraint bilan_campagne_regional_generalites_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+    alter table entrepot_bilan_campagne_regional_generalites
+    add constraint bilan_campagne_regional_generalites_PK
+    PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 -- entrepot_bilan_campagne_regional_pressionbioagresseur : pressions des bioagresseurs. 
 -- !!! Si plusieurs bioagresseurs sont saisis pour une meme observation, les noms des bioagresseurs sont concatenes
@@ -78,9 +86,17 @@ JOIN entrepot_bilan_campagne_regional_generalites bcrg on bcrg.id = pp.diseasepr
 LEFT JOIN groupe_cible refgrp on pp.codegroupeciblemaa = refgrp.code_groupe_cible_maa
 left join maladies m on pp.topiaid = m.pestpressure;
 
-alter table entrepot_bilan_campagne_regional_pressionbioagresseur
-add constraint bilan_campagne_regional_pressionbioagresseur_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+    alter table entrepot_bilan_campagne_regional_pressionbioagresseur
+    add constraint bilan_campagne_regional_pressionbioagresseur_PK
+    PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_bilan_campagne_regional_pressionbioagresseur
 ADD FOREIGN KEY (bilan_campagne_regional_id) REFERENCES entrepot_bilan_campagne_regional_generalites(id);

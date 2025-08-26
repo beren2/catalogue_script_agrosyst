@@ -31,6 +31,14 @@ select
 	from phytoproducttarget ppt
 	where ppt.abstractphytoproductinputusage is not null;
 
-alter table entrepot_utilisation_intrant_cible
-add constraint utilisation_intrant_cible_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_utilisation_intrant_cible
+		add constraint utilisation_intrant_cible_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

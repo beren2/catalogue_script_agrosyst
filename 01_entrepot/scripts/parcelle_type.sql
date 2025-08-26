@@ -49,9 +49,17 @@ from practicedplot pp
 left join refsolprofondeurindigo refsolprof on refsolprof.topiaid = pp.soldepth
 where pp.active is true;
 
-alter table entrepot_parcelle_type
-add constraint parcelle_type_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_parcelle_type
+        add constraint parcelle_type_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_parcelle_type
 ADD FOREIGN KEY (commune_id) REFERENCES entrepot_commune(id);
@@ -70,9 +78,17 @@ join refparcellezonageedi r on r.topiaid = bp.plotzonings ;
 alter table entrepot_parcelle_type_zonage
 ADD FOREIGN KEY (parcelle_type_id) REFERENCES entrepot_parcelle_type(id);
 
-alter table entrepot_parcelle_type_zonage
-add constraint parcelle_type_zonage_PK
-PRIMARY KEY (parcelle_type_id,libelle_zonage);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_parcelle_type_zonage
+        add constraint parcelle_type_zonage_PK
+        PRIMARY KEY (parcelle_type_id,libelle_zonage);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 -- Voisinage de la parcelle
 drop table if exists entrepot_parcelle_type_voisinage;
@@ -88,6 +104,14 @@ join refelementvoisinage r on r.topiaid = ab.adjacentelements ;
 alter table entrepot_parcelle_type_voisinage
 ADD FOREIGN KEY (parcelle_type_id) REFERENCES entrepot_parcelle_type(id);
 
-alter table entrepot_parcelle_type_voisinage
-add constraint parcelle_type_voisinage_PK
-PRIMARY KEY (parcelle_type_id,libelle_voisinage);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_parcelle_type_voisinage
+        add constraint parcelle_type_voisinage_PK
+        PRIMARY KEY (parcelle_type_id,libelle_voisinage);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

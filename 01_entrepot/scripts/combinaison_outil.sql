@@ -17,9 +17,17 @@ from toolscoupling tc
 join entrepot_domaine ed on ed.id = tc."domain" 
 left join entrepot_composant_parc_materiel em on em.id = tc.tractor ;
 
-alter table entrepot_combinaison_outil
-add constraint combinaison_outil_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_combinaison_outil
+        add constraint combinaison_outil_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_combinaison_outil
 ADD FOREIGN KEY (tracteur_composant_parc_materiel_id) REFERENCES entrepot_composant_parc_materiel(id);
@@ -43,9 +51,17 @@ ADD FOREIGN KEY (combinaison_outil_id) REFERENCES entrepot_combinaison_outil(id)
 alter table entrepot_combinaison_outil_composant_parc_materiel
 ADD FOREIGN KEY (composant_parc_materiel_id) REFERENCES entrepot_composant_parc_materiel(id);
 
-alter table entrepot_combinaison_outil_composant_parc_materiel
-add constraint combinaison_outil_composant_parc_materiel_PK
-PRIMARY KEY (combinaison_outil_id,composant_parc_materiel_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_combinaison_outil_composant_parc_materiel
+        add constraint combinaison_outil_composant_parc_materiel_PK
+        PRIMARY KEY (combinaison_outil_id,composant_parc_materiel_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 -- une combinaison d'outils peut avoir plusieurs actions principales renseignées
 DROP TABLE IF EXISTS entrepot_combinaison_outil_action;
@@ -56,6 +72,14 @@ mtc.mainsactions intervention_travail_edi_id
 from mainsactions_toolscoupling mtc 
 join entrepot_intervention_travail_edi refint on mtc.mainsactions = refint.id ;
 
-alter table entrepot_combinaison_outil_action
-add constraint combinaison_outil_action_PK
-PRIMARY KEY (combinaison_outil_id,intervention_travail_edi_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_combinaison_outil_action
+        add constraint combinaison_outil_action_PK
+        PRIMARY KEY (combinaison_outil_id,intervention_travail_edi_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

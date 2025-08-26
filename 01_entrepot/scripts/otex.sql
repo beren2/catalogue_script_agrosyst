@@ -9,6 +9,14 @@ r."source"
 from refotex r 
 where active is true;
 
-alter table entrepot_otex
-add constraint otext_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_otex
+        add constraint otext_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

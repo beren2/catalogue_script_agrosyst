@@ -88,9 +88,17 @@ LEFT JOIN action_realise_phyto_avec_amm aa1 on aa1.effectiveintervention = ei.to
 LEFT JOIN action_realise_phyto_sans_amm aa2 on aa2.effectiveintervention = ei.topiaid 
 JOIN entrepot_plantation_perenne_phases_realise epppr on epppr.id = eccp.topiaid;
 
-alter table entrepot_intervention_realise
-add constraint intervention_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_intervention_realise
+		add constraint intervention_realise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_intervention_realise
 ADD FOREIGN KEY (combinaison_outil_id) REFERENCES entrepot_combinaison_outil(id);

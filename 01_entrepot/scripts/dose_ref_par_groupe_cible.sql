@@ -14,6 +14,14 @@ r.volume_max_bouillie
 from refmaadosesrefpargroupecible r 
 where active is true;
 
-alter table entrepot_dose_ref_par_groupe_cible
-add constraint dose_ref_par_groupe_cible_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_dose_ref_par_groupe_cible
+        add constraint dose_ref_par_groupe_cible_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

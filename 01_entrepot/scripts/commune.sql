@@ -24,7 +24,14 @@ from reflocation refl
 join refcountry refp on refl.refcountry = refp.topiaid 
 where refl.active = true;
 
-alter table entrepot_commune
-add constraint entrepot_commune_PK
-PRIMARY KEY (id);
-
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_commune
+        add constraint entrepot_commune_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

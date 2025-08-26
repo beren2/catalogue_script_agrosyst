@@ -44,9 +44,17 @@ JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.to
 join effectiveintervention ei on ei.topiaid = aa.effectiveintervention
 join entrepot_intervention_realise eir on eir.id = aa.effectiveintervention ;
 
-alter table entrepot_action_realise
-add constraint action_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_action_realise
+        add constraint action_realise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_action_realise
 ADD FOREIGN KEY (intervention_realise_id) REFERENCES entrepot_intervention_realise(id);

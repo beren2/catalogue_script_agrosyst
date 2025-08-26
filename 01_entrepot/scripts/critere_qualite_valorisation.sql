@@ -15,6 +15,14 @@ from
 refqualitycriteria r 
 where active is true;
 
-alter table entrepot_critere_qualite_valorisation
-add constraint critere_qualite_valorisation_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_critere_qualite_valorisation
+        add constraint critere_qualite_valorisation_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

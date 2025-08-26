@@ -107,7 +107,7 @@ def export_to_db(df, name):
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def add_primary_key(table_name, pk_column):
-    """Ajoute une clé primaire avec reconnexion forcée après longue attente"""
+    """Ajoute une clé primaire avec reconnexion forcée"""
 
     global conn, cur
 

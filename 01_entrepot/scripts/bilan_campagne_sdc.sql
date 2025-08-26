@@ -59,9 +59,17 @@ left join (select * from managementmode where category = 'OBSERVED') mm2 on gs.t
 join (select owner, string_agg(sectors,'|') filiere_bcsdc from reportgrowingsystem_sectors group by owner) rgs_sect on rgs_sect.owner = rgs.topiaid 
 join entrepot_sdc es on es.id = gs.topiaid ;
 
-alter table entrepot_BC_sdc_generalites
-add constraint BC_sdc_generalites_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_generalites
+		add constraint BC_sdc_generalites_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_generalites
 ADD FOREIGN KEY (sdc_id) REFERENCES entrepot_sdc(id);
@@ -107,9 +115,17 @@ from croppestmaster c
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (c.croppestmasterreportgrowingsystem, c.cropdiseasemasterreportgrowingsystem,c.cropadventicemasterreportgrowingsystem)
 ;
 
-alter table entrepot_BC_sdc_assolee_maitrise_agresseur
-add constraint BC_sdc_assolee_maitrise_agresseur_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_assolee_maitrise_agresseur
+		add constraint BC_sdc_assolee_maitrise_agresseur_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_assolee_maitrise_agresseur
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -163,10 +179,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echell
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur assolee') trad2 on pm.masterscale = trad2.nom_base
 where pm.agressor like '%Nuisible%';
 
-
-alter table entrepot_BC_sdc_assolee_agresseur
-add constraint BC_sdc_assolee_agresseur_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_assolee_agresseur
+		add constraint BC_sdc_assolee_agresseur_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_assolee_agresseur
 ADD FOREIGN KEY (BC_sdc_assolee_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_assolee_maitrise_agresseur(id);
@@ -199,9 +222,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echell
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise verse') trad2 on vm.masterscale = trad2.nom_base 
 join entrepot_BC_sdc_generalites e on e.id = vm.reportgrowingsystem;
 
-alter table entrepot_BC_sdc_assolee_verse
-add constraint BC_sdc_assolee_verse_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_assolee_verse
+		add constraint BC_sdc_assolee_verse_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_assolee_verse
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -253,9 +284,17 @@ from arbocroppestmaster a
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id in (a.arbodiseasemasterreportgrowingsystem, a.arbopestmastergrowingsystem)
 ;
 
-alter table entrepot_BC_sdc_arbo_maitrise_agresseur
-add constraint BC_sdc_arbo_maitrise_agresseur_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_arbo_maitrise_agresseur
+		add constraint BC_sdc_arbo_maitrise_agresseur_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_arbo_maitrise_agresseur
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -283,9 +322,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echell
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'evolution enherbement arbo adv') trad2 on a.grassingevolution = trad2.nom_base 
 ;
 
-alter table entrepot_BC_sdc_arbo_adventice
-add constraint BC_sdc_arbo_adventice_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_arbo_adventice
+		add constraint BC_sdc_arbo_adventice_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_arbo_adventice
 ADD FOREIGN KEY (BC_sdc_arbo_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
@@ -328,9 +375,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'pct to
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'pct touchee arbo') trad7 on a.percentdamageleafs = trad7.nom_base 
 ;
 
-alter table entrepot_BC_sdc_arbo_ravageur_maladie
-add constraint BC_sdc_arbo_maitrise_ravageur_maladie_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_arbo_ravageur_maladie
+		add constraint BC_sdc_arbo_maitrise_ravageur_maladie_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_arbo_ravageur_maladie
 ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
@@ -368,9 +423,17 @@ join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle pression adventice viti') trad1 on rgs.vitiadventicepressurescale = trad1.nom_base 
 where es.filiere = 'VITICULTURE';
 
-alter table entrepot_BC_sdc_viti_adventice
-add constraint BC_sdc_viti_adventice_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_viti_adventice
+		add constraint BC_sdc_viti_adventice_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_viti_adventice
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -421,9 +484,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'evolut
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'echelle de maitrise maladie ravageur viti') trad7 on v.masterscale = trad7.nom_base 
 ;
 
-alter table entrepot_BC_sdc_viti_maladie_ravageur
-add constraint BC_sdc_viti_maladie_ravageur_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_viti_maladie_ravageur
+		add constraint BC_sdc_viti_maladie_ravageur_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_viti_maladie_ravageur
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -454,9 +525,17 @@ insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,
 insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque moyenne','5 % a 10 % de grappes perforées');
 insert into entrepot_BC_sdc_viti_ravageur_explication(nom_colonne,type_ravageur,valeur,explication) VALUES ('note_attaque_grappe_ravageur','tordeuse','attaque forte','superieur a 10 % de grappes perforées');
 
-alter table entrepot_BC_sdc_viti_ravageur_explication
-add constraint BC_sdc_viti_ravageur_explication_PK
-PRIMARY KEY (type_ravageur,valeur);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_viti_ravageur_explication
+		add constraint BC_sdc_viti_ravageur_explication_PK
+		PRIMARY KEY (type_ravageur,valeur);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 --------------------------------------------------------------------
 -- TOUTES fillieres : Rendement
@@ -504,9 +583,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendem
 where gs.sector = 'VITICULTURE'
 ;
 
-alter table entrepot_BC_sdc_rendement
-add constraint BC_sdc_rendement_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_rendement
+		add constraint BC_sdc_rendement_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_rendement
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -535,9 +622,17 @@ left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'stress
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'stress hydrique mineral temperature') trad4 on fm.tempstress = trad4.nom_base
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = fm.foodmasterreportgrowingsystem ;
 
-alter table entrepot_BC_sdc_alimentation
-add constraint BC_sdc_alimentation_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_alimentation
+		add constraint BC_sdc_alimentation_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_BC_sdc_alimentation
 ADD FOREIGN KEY (BC_sdc_generalites_id) REFERENCES entrepot_BC_sdc_generalites(id);
@@ -588,9 +683,17 @@ join entrepot_culture ec on ec.id = cy.crops
 alter table entrepot_BC_sdc_culture_liee
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-alter table entrepot_BC_sdc_culture_liee
-add constraint BC_sdc_culture_liee_PK
-PRIMARY KEY (entite_id,culture_id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_culture_liee
+		add constraint BC_sdc_culture_liee_PK
+		PRIMARY KEY (entite_id,culture_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 DROP TABLE IF EXISTS entrepot_BC_sdc_especes_liee;
 CREATE TABLE entrepot_BC_sdc_especes_liee as
@@ -634,6 +737,14 @@ join entrepot_composant_culture ec on ec.id = sy.species
 alter table entrepot_BC_sdc_especes_liee
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);
 
-alter table entrepot_BC_sdc_especes_liee
-add constraint BC_sdc_especes_liee_PK
-PRIMARY KEY (entite_id,composant_culture_id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_BC_sdc_especes_liee
+		add constraint BC_sdc_especes_liee_PK
+		PRIMARY KEY (entite_id,composant_culture_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

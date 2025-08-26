@@ -22,6 +22,14 @@ insert into entrepot_sole_realise
 	LEFT JOIN effectivecropcycleconnection eccc_target ON eccn.topiaid = eccc_target.target -- toutes les connections dont on est la destination
 	JOIN entrepot_zone ez on escc.zone =  ez.id;
 
-alter table entrepot_sole_realise
-add constraint sole_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_sole_realise
+		add constraint sole_realise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

@@ -13,9 +13,17 @@ CREATE TABLE entrepot_zone AS
   JOIN entrepot_parcelle p ON z.plot = p.id
   AND z.active is TRUE;
   
-alter table entrepot_zone
-ADD CONSTRAINT zone_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_zone
+        ADD CONSTRAINT zone_PK
+        primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_zone
 add FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);

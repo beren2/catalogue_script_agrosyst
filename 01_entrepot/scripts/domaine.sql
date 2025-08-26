@@ -94,9 +94,17 @@ CREATE TABLE entrepot_domaine AS
   LEFT JOIN refotex ro2 ON d.otex70 = ro2.topiaid
  WHERE d.active = TRUE;
 
-alter table entrepot_domaine
-add constraint domaine_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_domaine
+        add constraint domaine_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 -- Sols du domaine
 drop table if exists entrepot_domaine_sol cascade;
@@ -112,9 +120,17 @@ g.refsolarvalis sol_arvalis_id
 from ground g
 join entrepot_domaine ed on ed.id = g."domain" ;
  
-alter table entrepot_domaine_sol
-ADD CONSTRAINT domaine_sol_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_domaine_sol
+        ADD CONSTRAINT domaine_sol_PK
+        primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_domaine_sol
 add FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);
@@ -186,9 +202,17 @@ from entrepot_speciestoarea sp
 join entrepot_domaine e on e.id = sp.domaine_id
 join (select distinct topiaid, code_espece_botanique, libelle_espece_botanique, code_qualifiant_aee, libelle_qualifiant_aee , code_type_saisonnier_aee, libelle_type_saisonnier_aee from refespece) r1 on r1.code_espece_botanique = UPPER(sp.code_espece) and r1.code_qualifiant_aee = UPPER(sp.code_qualifiant) and r1.code_type_saisonnier_aee = UPPER(sp.code_type_saisonnier);
 
-alter table entrepot_domaine_surface_especes_cultivees
-ADD CONSTRAINT domaine_surface_especes_cultivees_PK
-primary key (id,espece_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_domaine_surface_especes_cultivees
+        ADD CONSTRAINT domaine_surface_especes_cultivees_PK
+        primary key (id,espece_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_domaine_surface_especes_cultivees
 add FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

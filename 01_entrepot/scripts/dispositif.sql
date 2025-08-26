@@ -10,9 +10,17 @@ CREATE TABLE entrepot_dispositif AS
   JOIN entrepot_domaine d on gp."domain" = d.id -- fusion pour n'obtenir que les domaines actifs
   WHERE gp.active is True; -- vérification que le dispositif est actif
 
-alter table entrepot_dispositif
-add constraint dispositif_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_dispositif
+        add constraint dispositif_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_dispositif
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);
