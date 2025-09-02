@@ -693,12 +693,11 @@ def create_category_test():
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
 
-    df_get_connexion_weight_in_synth_rotation, _, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
+    df_identification_pz0 = indicateur.identification_pz0(donnees)
+    export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
+    # add_primary_key('entrepot_identification_pz0', 'entite_id')
 
-    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
-    add_primary_key('entrepot_poids_connexions_synthetise_rotation', 'connexion_id')
-
-    print('Fin du test de poids_connexions_synthetise_rotation')
+    print('Fin du test de entrepot_identification_pz0')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
