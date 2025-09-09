@@ -113,6 +113,8 @@ def add_primary_key(table_name, pk_column):
     if TYPE != "distant":
         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
         return
+    
+    global conn, cur
 
     try:
         # ⚠️ On force la reconnexion car la session a pu expirer
