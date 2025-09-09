@@ -572,9 +572,17 @@ WITH sdc AS (
       ) modes_commercialisation
     FROM sdc;
 
-alter table entrepot_sdc
-ADD CONSTRAINT sdc_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_sdc
+        ADD CONSTRAINT sdc_PK
+        primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_sdc
 add FOREIGN KEY (dispositif_id) REFERENCES entrepot_dispositif(id);

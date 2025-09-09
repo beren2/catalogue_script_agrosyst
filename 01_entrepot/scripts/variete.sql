@@ -36,7 +36,14 @@ UNION
 	from refvarieteplantgrape rvp
 );
 
-
-alter table entrepot_variete
-ADD CONSTRAINT entrepot_variete_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_variete
+		ADD CONSTRAINT entrepot_variete_PK
+		primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

@@ -367,10 +367,17 @@ SELECT
 FROM synthetise_echelle_synthetise ses
 JOIN entrepot_synthetise es on es.id = ses.id_systeme_synthetise;
 
-
-alter table entrepot_synthetise_synthetise_performance
-add constraint synthetise_synthetise_performance_PK
-PRIMARY KEY (synthetise_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_synthetise_synthetise_performance
+        add constraint synthetise_synthetise_performance_PK
+        PRIMARY KEY (synthetise_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_synthetise_synthetise_performance
 add FOREIGN KEY (synthetise_id) REFERENCES entrepot_synthetise(id);

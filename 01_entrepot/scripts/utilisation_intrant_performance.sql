@@ -260,6 +260,14 @@ SELECT
     LEFT JOIN entrepot_utilisation_intrant_synthetise euis on euis.id = ei.id_usage
     where (euir.id is not null and euis.id is null) OR (euir.id is null and euis.id is not null);
 
-alter table entrepot_utilisation_intrant_performance
-add constraint utilisation_intrant_performance_PK
-PRIMARY KEY (utilisation_intrant_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_utilisation_intrant_performance
+        add constraint utilisation_intrant_performance_PK
+        PRIMARY KEY (utilisation_intrant_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

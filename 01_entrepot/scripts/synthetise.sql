@@ -12,9 +12,17 @@ from practicedsystem ps
 join entrepot_sdc es on es.id = ps.growingsystem 
 where ps.active = true;
 
-alter table entrepot_synthetise
-add constraint synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_synthetise
+        add constraint synthetise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 --alter table entrepot_synthetise
 --ADD FOREIGN KEY (parcelle_type_id) REFERENCES entrepot_parcelle_type(id);

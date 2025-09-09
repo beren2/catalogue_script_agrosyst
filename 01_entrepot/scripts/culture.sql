@@ -12,9 +12,18 @@ SELECT
     cpe.domain as domaine_id
 FROM croppingplanentry cpe
 JOIN entrepot_domaine d on cpe."domain" = d.id;
-alter table entrepot_culture
-add constraint culture_PK
-PRIMARY KEY (id);
+
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_culture
+        add constraint culture_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_culture
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

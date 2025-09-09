@@ -20,7 +20,7 @@ from scripts import indicateur
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import pandas as pd
 import geopandas as gpd
 from colorama import Fore, Style
@@ -54,8 +54,6 @@ if(TYPE == 'distant'):
     DB_USER = config.get(BDD_ENTREPOT, 'user')
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
-
-    print(DB_USER, DB_PASSWORD, DATABASE_URI_entrepot)
 
     #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
     engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
@@ -107,6 +105,32 @@ def export_to_db(df, name):
         df.to_sql(name=name, con=engine, if_exists='replace')
         engine.dispose()
     print("* CRÉATION TABLE ",name, " TERMINEE *")
+
+def add_primary_key(table_name, pk_column):
+    """Ajoute une clé primaire avec reconnexion forcée"""
+
+    if TYPE != "distant":
+        print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
+        return
+    
+    global conn, cur
+
+    try:
+        # ⚠️ On force la reconnexion car la session a pu expirer
+        if not conn.closed:
+            conn.close()
+        conn = engine.raw_connection()
+        cur = conn.cursor()
+
+        cur.execute("SET statement_timeout = 0;")
+        sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
+        cur.execute(sql)
+        conn.commit()
+        # print(f"✅ Clé primaire {pk_column} ajoutée à {table_name}")
+
+    except Exception as e:
+        print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
+
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
@@ -367,26 +391,26 @@ def generate_data_agreged(verbose=False):
     global donnees
 
     # Génération de action_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege']
-    df2 = donnees['action_realise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['action_realise_manquant_agrege'].copy()
     donnees['action_realise_agrege'] = generate_leaking_df(df1, df2, 'action_realise_id', columns_difference = ['id'])
     donnees['action_realise_agrege'] = donnees['action_realise_agrege'].reset_index()
 
     # Génération de action_synthétisé_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege']
-    df2 = donnees['action_synthetise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['action_synthetise_manquant_agrege'].copy()
     donnees['action_synthetise_agrege'] = generate_leaking_df(df1, df2, 'action_synthetise_id', columns_difference = ['id'])
     donnees['action_synthetise_agrege'] = donnees['action_synthetise_agrege'].reset_index()
 
     # Génération de intervention_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege']
-    df2 = donnees['intervention_realise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['intervention_realise_manquant_agrege'].copy()
     donnees['intervention_realise_agrege'] = generate_leaking_df(df1, df2, 'intervention_realise_id', columns_difference = ['id', 'action_realise_id'])
     donnees['intervention_realise_agrege'] = donnees['intervention_realise_agrege'].reset_index()
 
     # Génération de intervention_synthetise_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege']
-    df2 = donnees['intervention_synthetise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['intervention_synthetise_manquant_agrege'].copy()
     donnees['intervention_synthetise_agrege'] = generate_leaking_df(df1, df2, 'intervention_synthetise_id', columns_difference = ['id', 'action_synthetise_id'])
     donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
 
@@ -433,6 +457,7 @@ def create_category_nettoyage():
 
     export_to_db(df_nettoyage_intervention_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_intervention_realise.to_csv('entrepot_'+name_table+'_nettoyage.csv')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
 
     # nettoyage_utilisation_intrant_realise
     name_table = 'utilisation_intrant_realise'
@@ -440,12 +465,14 @@ def create_category_nettoyage():
 
     export_to_db(df_nettoyage_utilisation_intrant_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_realise.to_csv(prefixe_source+suffixe_table+'_realise.csv')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
 
     # nettoyage_utilisation_intrant_synthetise
     name_table = 'utilisation_intrant_synthetise'
     df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False, path_metadata='data/')
 
     export_to_db(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
 
 def create_category_agregation():
@@ -458,55 +485,65 @@ def create_category_agregation():
         donnees
     )
     export_to_db(aggreged_utilisation_intrant_synthetise, 'entrepot_utilisation_intrant_synthetise_agrege')
+    add_primary_key('entrepot_utilisation_intrant_synthetise_agrege', 'id')
 
     # permet d'obtenir des tables agrégées pour avoir les niveaux supérieurs depuis les niveaux fins (raccourcis)
     aggreged_utilisation_intrant_realise = agregation.get_aggreged_from_utilisation_intrant_realise(
         donnees
     )
     export_to_db(aggreged_utilisation_intrant_realise, 'entrepot_utilisation_intrant_realise_agrege')
-
+    add_primary_key('entrepot_utilisation_intrant_realise_agrege', 'id')
     
     # toutes les infos manquantes agrégées depuis l'action
     aggreged_leaking_action_realise = agregation.get_leaking_aggreged_from_action_realise(
         aggreged_utilisation_intrant_realise, donnees
     )
     export_to_db(aggreged_leaking_action_realise, 'entrepot_action_realise_manquant_agrege')
+    add_primary_key('entrepot_action_realise_manquant_agrege', 'id')
 
     aggreged_leaking_action_synthetise = agregation.get_leaking_aggreged_from_action_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
     export_to_db(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
-
+    add_primary_key('entrepot_action_synthetise_manquant_agrege', 'id')
+    
 
     # toutes les infos manquantes agrégées depuis l'intervention 
     aggreged_leaking_intervention_realise = agregation.get_leaking_aggreged_from_intervention_realise(
         aggreged_utilisation_intrant_realise, donnees
     )
     export_to_db(aggreged_leaking_intervention_realise, 'entrepot_intervention_realise_manquant_agrege')
-
+    add_primary_key('entrepot_intervention_realise_manquant_agrege', 'id')
+    
     aggreged_leaking_intervention_synthetise = agregation.get_leaking_aggreged_from_intervention_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
     export_to_db(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
-
+    add_primary_key('entrepot_intervention_synthetise_manquant_agrege', 'id')
+    
 def create_category_restructuration():
     """
         Execute les requêtes pour créer les outils de restructuration
     """
     df_noeuds_synthetise_restructured = restructuration.restructuration_noeuds_synthetise(donnees)
     export_to_db(df_noeuds_synthetise_restructured, 'entrepot_noeuds_synthetise_restructure')
+    add_primary_key('entrepot_noeuds_synthetise_restructure', 'id')
 
     df_connection_synthetise_restructured = restructuration.restructuration_connection_synthetise(donnees)
     export_to_db(df_connection_synthetise_restructured, 'entrepot_connection_synthetise_restructure')
+    add_primary_key('entrepot_connection_synthetise_restructure', 'id')
 
     df_noeuds_realise_restructured = restructuration.restructuration_noeuds_realise(donnees)
     export_to_db(df_noeuds_realise_restructured, 'entrepot_noeuds_realise_restructure')
+    add_primary_key('entrepot_noeuds_realise_restructure', 'id')
     
     df_noeuds_realise_restructured = restructuration.restructuration_recolte_rendement_prix(donnees)
     export_to_db(df_noeuds_realise_restructured, 'entrepot_recolte_rendement_prix_restructure')
+    add_primary_key('entrepot_recolte_rendement_prix_restructure', 'id')
 
     df_plantation_perenne_synthetise_restructured = restructuration.restructuration_plantation_perenne_synthetise(donnees)
     export_to_db(df_plantation_perenne_synthetise_restructured, 'entrepot_plantation_perenne_synthetise_restructure')
+    add_primary_key('entrepot_plantation_perenne_synthetise_restructure', 'id')
 
     # Attention, en suivant parfaitement la convention de nommage, on aboutit à des noms de tables trop longs pour être pris en charge
     # par Postgres en tant que nom de table (taille maximum : 63), on raccourci donc : "composant_culture_concerne" en "ccc"
@@ -516,10 +553,11 @@ def create_category_restructuration():
         df_composant_culture_concerne_intervention_synthetise_restructured,
         'entrepot_ccc_intervention_synthetise_restructure'
     )
+    add_primary_key('entrepot_ccc_intervention_synthetise_restructure', 'id')
 
     df_intervention_synthetise_restructure = restructuration.restructuration_intervention_synthetise(donnees)
     export_to_db(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
-
+    add_primary_key('entrepot_intervention_synthetise_restructure', 'id')
 
 def create_category_indicateur_0():
     """
@@ -528,11 +566,16 @@ def create_category_indicateur_0():
     """
     _, csv_of_bad_synth = indicateur.extract_good_rotation_diagram(donnees)
     export_to_db(csv_of_bad_synth, 'entrepot_mauvaise_structure_de_rotation')
+    add_primary_key('entrepot_mauvaise_structure_de_rotation', 'index')
 
     df_get_connexion_weight_in_synth_rotation, df_get_couple_connexion_paths, list_synthe_somme_pas_a_un = indicateur.get_connexion_weight_in_synth_rotation(donnees)
     export_dict_to_catalogue(list_synthe_somme_pas_a_un, 'list_synthe_somme_pas_a_un')
+
     export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')
+    add_primary_key('entrepot_couple_connexions_chemins_synthetise_rotation', 'connexion_id, chemin_id')
+
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
+    add_primary_key('entrepot_poids_connexions_synthetise_rotation', 'connexion_id')
 
 def create_category_indicateur_1():
     """
@@ -542,6 +585,7 @@ def create_category_indicateur_1():
     """
     df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
     export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
+    add_primary_key('entrepot_typologie_can_culture', 'index')
 
 def create_category_indicateur_2():
     """
@@ -549,29 +593,35 @@ def create_category_indicateur_2():
     """
     # df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
     # export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
-
+    
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
-    
+    add_primary_key('entrepot_utilisation_intrant_indicateur', 'id')
+
     df_identification_pz0 = indicateur.identification_pz0(donnees)
     export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
+    add_primary_key('entrepot_identification_pz0', 'entite_id')
 
     df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
     export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
+    add_primary_key('entrepot_typologie_can_rotation_synthetise', 'synthetise_id')
 
     df_typologie_assol_CAN_realise= indicateur.get_typologie_assol_CAN_realise(donnees)
     export_to_db(df_typologie_assol_CAN_realise, 'entrepot_typologie_assol_can_realise')
+    add_primary_key('entrepot_typologie_assol_can_realise', 'sdc_id')
 
     # TODO : on fait appel à une fonction "get_recolte_realise_outils_can" car l'importance pour tout le monde de bénéficier de cet outil a été identifié à posteriori.
     # Ce n'est pas idéal, il vaudrait mieux créer une fonction qui créer cette outil et faire appel à cet outil dans les outils can / le magasin can
     df_action_realise_rendement_total = outils_can.get_recolte_realise_outils_can(donnees)
     df_action_realise_rendement_total = df_action_realise_rendement_total.rename(columns={'action_id' : 'action_realise_id'})
     export_to_db(df_action_realise_rendement_total, 'entrepot_action_realise_rendement_total')
-    
+    add_primary_key('entrepot_action_realise_rendement_total', 'index')
+
     # TODO : cf commentaire plus haut : idem pour "get_recolte_synthetise_outils_can"
     df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
     df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
     export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
+    add_primary_key('entrepot_action_synthetise_rendement_total', 'index')
 
 
 def create_category_interoperabilite():
@@ -580,9 +630,11 @@ def create_category_interoperabilite():
     """
     df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
+    add_primary_key('entrepot_donnees_spatiales_commune_du_domaine', 'domaine_id')
 
     df_donnees_spatiales_coord_gps_du_domaine = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
+    add_primary_key('entrepot_donnees_spatiales_coord_gps_du_domaine', 'geopoint_id')
 
 def create_category_outils_can():
     """
@@ -592,54 +644,63 @@ def create_category_outils_can():
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
     df_dispositif_filtres_outils_can.set_index('id', inplace=True)
     export_to_db(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
+    add_primary_key('entrepot_dispositif_filtres_outils_can', 'id')
 
     # création de l'outil permettant de filtrer les entités (domaine)
     df_domaine_filtres_outils_can = outils_can.domaine_filtres_outils_can(donnees)
     df_domaine_filtres_outils_can.set_index('id', inplace=True)
     export_to_db(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
+    add_primary_key('entrepot_domaine_filtres_outils_can', 'id')
 
     df_parcelle_non_ratachee_outils_can = outils_can.get_parcelles_non_rattachees_outils_can(donnees)
     df_parcelle_non_ratachee_outils_can.set_index('id', inplace=True)
     export_to_db(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
+    add_primary_key('entrepot_parcelle_non_rattachee_outils_can', 'id')
 
     df_culture_outils_can = outils_can.get_culture_outils_can(donnees)
     df_culture_outils_can.set_index('id', inplace=True)
     export_to_db(df_culture_outils_can, 'entrepot_culture_outils_can')
+    add_primary_key('entrepot_culture_outils_can', 'id')
 
     df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
     df_intervention_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
+    add_primary_key('entrepot_intervention_realise_outils_can', 'id')
 
     df_intervention_synthetise_outils_can = outils_can.get_intervention_synthetise_outils_can(donnees)
     df_intervention_synthetise_outils_can.set_index('id', inplace=True)
     export_to_db(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
+    add_primary_key('entrepot_intervention_synthetise_outils_can', 'id')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_db(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+    add_primary_key('entrepot_recolte_outils_can', 'action_id, rendement_unite, destination')
 
     df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
     df_zone_outils_can.set_index('id', inplace=True)
     export_to_db(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+    add_primary_key('entrepot_zone_realise_outils_can', 'id')
 
     df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
     df_sdc_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+    add_primary_key('entrepot_sdc_realise_outils_can', 'id')
 
     df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
     df_parcelle_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
+    add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
 
 def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
+    # df_identification_pz0 = indicateur.identification_pz0(donnees)
+    # export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
+    # add_primary_key('entrepot_identification_pz0', 'entite_id')
 
-    df_get_connexion_weight_in_synth_rotation, _, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
-
-    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
-
-    print('Fin du test de poids_connexions_synthetise_rotation')
+    # print('Fin du test de entrepot_identification_pz0')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -677,7 +738,7 @@ options = {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
-        "Télécharger une catégorie" : [],  
+        "Télécharger une catégorie" : [],
         "Quitter" : []
     }
 }
@@ -714,6 +775,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
     if choice_key == "Quitter":
         print("Au revoir !")
         break
+
     if choice_key == 'Tout générer':
 
         # Téléchargement et chargement des données

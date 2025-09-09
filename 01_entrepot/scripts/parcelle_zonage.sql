@@ -11,3 +11,15 @@ join refparcellezonageedi r on r.topiaid = bp.plotzonings ;
 
 alter table entrepot_parcelle_zonage
 ADD FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);
+
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_parcelle_zonage
+        add constraint parcelle_zonage_PK
+        PRIMARY KEY (parcelle_id,libelle_zonage);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

@@ -21,11 +21,17 @@ insert into entrepot_precision_espece_semis(id, quantite, profondeur, semence_id
 	join seedlotinputusage sliu on ssiu.seedlotinputusage = sliu.topiaid
 	join domainseedlotinput dsli on sliu.domainseedlotinput = dsli.topiaid;
 
-
-alter table entrepot_precision_espece_semis
-add constraint entrepot_precision_espece_semis_pk
-PRIMARY KEY (id);
-
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_precision_espece_semis
+		add constraint entrepot_precision_espece_semis_pk
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
  
 
 

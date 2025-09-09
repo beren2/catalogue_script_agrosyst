@@ -485,17 +485,17 @@ def identification_pz0(donnees):
     modalite_pz0_chevauchement = "incorrect : chevauchement pz0"
     modalite_pz0_inconnu = "incorrect : code dephy inconnu"
     modalite_non_attendu = "incorrect : campagne non-attendue"
-    modalite_pz0_plusieurs = "incorrect : saisie de plusieurs plusieurs pz0"
+    modalite_pz0_plusieurs = "incorrect : saisie de plusieurs pz0"
     modalite_pz0_aucun = "incorrect : aucun pz0 saisi"
 
-    df_domaine = donnees['domaine'].set_index('id')
-    df_dispositif = donnees['dispositif'].set_index('id')
-    df_sdc = donnees['sdc'].set_index('id')
-    df_synthetise = donnees['synthetise'].set_index('id')
-    df_parcelle = donnees['parcelle'].set_index('id')
-    df_zone = donnees['zone'].set_index('id')
-    df_intervention_synthetise_agrege = donnees['intervention_synthetise_agrege'].set_index('id')
-    df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id')
+    df_domaine = donnees['domaine'].set_index('id').copy()
+    df_dispositif = donnees['dispositif'].set_index('id').copy()
+    df_sdc = donnees['sdc'].set_index('id').copy()
+    df_synthetise = donnees['synthetise'].set_index('id').copy()
+    df_parcelle = donnees['parcelle'].set_index('id').copy()
+    df_zone = donnees['zone'].set_index('id').copy()
+    df_intervention_synthetise_agrege = donnees['intervention_synthetise_agrege'].set_index('id').copy()
+    df_intervention_realise_agrege = donnees['intervention_realise_agrege'].set_index('id').copy()
     saisies_attendues = donnees['BDD_donnees_attendues_CAN'].copy()
     
     # suppression des colonnes campagne du sdc et dispositif

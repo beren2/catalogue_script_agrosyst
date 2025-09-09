@@ -27,9 +27,18 @@ insert into entrepot_composant_culture_concerne_intervention_realise (
 	join entrepot_intervention_realise eir  on eir.id = ess.effectiveintervention
 );
 
-alter table entrepot_composant_culture_concerne_intervention_realise
-add constraint composant_culture_concerne_intervention_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_composant_culture_concerne_intervention_realise
+		add constraint composant_culture_concerne_intervention_realise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
+
 
 alter table entrepot_composant_culture_concerne_intervention_realise
 ADD FOREIGN KEY (stade_minimal) REFERENCES refstadeedi(topiaid);
@@ -71,10 +80,18 @@ insert into entrepot_composant_culture_concerne_intervention_synthetise (
 	from practicedspeciesstade pss
 );
 
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_composant_culture_concerne_intervention_synthetise
+		add constraint composant_culture_concerne_intervention_synthetise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
-alter table entrepot_composant_culture_concerne_intervention_synthetise
-add constraint composant_culture_concerne_intervention_synthetise_PK
-PRIMARY KEY (id);
 
 alter table entrepot_composant_culture_concerne_intervention_synthetise
 ADD FOREIGN KEY (stade_minimal) REFERENCES refstadeedi(topiaid);

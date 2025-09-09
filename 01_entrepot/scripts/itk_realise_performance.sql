@@ -3,6 +3,7 @@
 ---------------------------------------------------------------
 create table entrepot_itk_realise_performance AS 
 SELECT
+    coalesce(replace(replace(phase_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>'), noeuds_realise_id) AS itk_realise_id,
     replace(replace(zone_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS zone_id, 
     replace(replace(culture_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS culture_id,
 	replace(replace(culture_precedente_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS culture_precedente_id,
@@ -380,3 +381,15 @@ add FOREIGN KEY (culture_precedente_id) REFERENCES entrepot_culture(id);
 
 alter table entrepot_itk_realise_performance
 add FOREIGN KEY (plantation_perenne_phases_realise_id) REFERENCES entrepot_plantation_perenne_phases_realise(id);
+
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_itk_realise_performance
+        add constraint itk_realise_performance_PK
+        PRIMARY KEY (itk_realise_id, culture_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

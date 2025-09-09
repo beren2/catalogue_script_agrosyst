@@ -102,8 +102,16 @@ LEFT JOIN action_synthetise_phyto_avec_amm aa1 on aa1.practicedintervention = pi
 LEFT JOIN action_synthetise_phyto_sans_amm aa2 on aa2.practicedintervention = pi.topiaid 
 join entrepot_plantation_perenne_phases_synthetise eppps on eppps.id = pccp.topiaid;
     
-alter table entrepot_intervention_synthetise 
-add constraint intervention_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_intervention_synthetise 
+		add constraint intervention_synthetise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 -- Les clés etrangeres qui ne concerne que les assolees ou perennes ne peuvent pas être ajoutees comme contraintes = il y a des NA dans la colonne

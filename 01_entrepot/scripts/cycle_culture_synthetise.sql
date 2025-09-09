@@ -15,9 +15,17 @@ join practicedseasonalcropcycle psc on psc.topiaid = pcn.practicedseasonalcropcy
 join practicedcropcycle pc on pc.topiaid = psc.topiaid 
 join entrepot_synthetise es on es.id = pc.practicedsystem ;
 
-alter table entrepot_noeuds_synthetise
-add constraint noeuds_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_noeuds_synthetise
+        add constraint noeuds_synthetise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_noeuds_synthetise
 ADD FOREIGN KEY (synthetise_id) REFERENCES entrepot_synthetise(id);
@@ -36,9 +44,17 @@ from practicedcropcycleconnection pcc
 join entrepot_noeuds_synthetise ens on ens.id = pcc.source
 join entrepot_noeuds_synthetise ens2 on ens2.id = pcc.target ;
 
-alter table entrepot_connection_synthetise
-add constraint connection_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_connection_synthetise
+        add constraint connection_synthetise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_connection_synthetise
 ADD FOREIGN KEY (source_noeuds_synthetise_id) REFERENCES entrepot_noeuds_synthetise(id);

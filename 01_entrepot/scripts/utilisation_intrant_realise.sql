@@ -297,10 +297,18 @@ UPDATE entrepot_utilisation_intrant_realise eir SET intrant_phyto_cible_nom = (
   FROM phytoproducttarget ppt0
   WHERE ppt0.abstractphytoproductinputusage = eir.id
   AND eir.intrant_type IN ('APPLICATION_DE_PRODUITS_PHYTOSANITAIRES', 'LUTTE_BIOLOGIQUE', 'TRAITEMENT_SEMENCE');
- 
-alter table entrepot_utilisation_intrant_realise
-add constraint utilisation_intrant_realise_PK
-PRIMARY KEY (id);
+
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_utilisation_intrant_realise
+		add constraint utilisation_intrant_realise_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_utilisation_intrant_realise
 ADD FOREIGN KEY (intervention_realise_id) REFERENCES entrepot_intervention_realise(id);

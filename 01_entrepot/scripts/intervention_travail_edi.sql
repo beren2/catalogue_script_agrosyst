@@ -7,6 +7,14 @@ reference_label action_label,
 active actif
 from refinterventionagrosysttravailedi refint  ;
 
-alter table entrepot_intervention_travail_edi
-add constraint intervention_travail_edi_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_intervention_travail_edi
+        add constraint intervention_travail_edi_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

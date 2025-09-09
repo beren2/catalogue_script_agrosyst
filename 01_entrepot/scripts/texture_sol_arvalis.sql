@@ -6,3 +6,15 @@ SELECT
 	r.sol_region AS region
 FROM refsolarvalis r
 WHERE r.active IS true;
+
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_texture_sol_arvalis
+        add constraint texture_sol_arvalis_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

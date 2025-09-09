@@ -12,6 +12,14 @@ SELECT
 	rasa.active
 FROM refactasubstanceactive rasa;
 
-alter table entrepot_acta_substance_active
-add constraint acta_substance_active_PK_
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_acta_substance_active
+		add constraint acta_substance_active_PK_
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

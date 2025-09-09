@@ -305,10 +305,17 @@ SELECT
     connexion_synthetise_id
 FROM synthetise_echelle_culture ses;
 
-
-alter table entrepot_connection_synthetise_performance
-add constraint connection_synthetise_performance_PK
-PRIMARY KEY (connection);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_connection_synthetise_performance
+        add constraint connection_synthetise_performance_PK
+        PRIMARY KEY (connection);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_connection_synthetise_performance
 add FOREIGN KEY (connection_synthetise_id) REFERENCES entrepot_connection_synthetise(id);

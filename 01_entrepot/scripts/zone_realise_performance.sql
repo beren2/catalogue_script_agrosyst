@@ -365,10 +365,17 @@ SELECT
 FROM realise_echelle_zone rez
 JOIN entrepot_zone ez on ez.id = rez.zone_id;
 
-
-alter table entrepot_zone_realise_performance
-add constraint zone_realise_performance_pk
-PRIMARY KEY (zone_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_zone_realise_performance
+        add constraint zone_realise_performance_pk
+        PRIMARY KEY (zone_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_zone_realise_performance
 add FOREIGN KEY (zone_id) REFERENCES entrepot_zone(id);

@@ -11,9 +11,17 @@ join effectiveseasonalcropcycle esc on esc.topiaid = ecn.effectiveseasonalcropcy
 join entrepot_culture ec on ec.id = ecn.croppingplanentry 
 join entrepot_zone ez on ez.id = esc.zone;
 
-alter table entrepot_noeuds_realise
-add constraint noeuds_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_noeuds_realise
+        add constraint noeuds_realise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_noeuds_realise
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
@@ -33,9 +41,17 @@ from effectivecropcycleconnection ecc
 join entrepot_noeuds_realise enr on enr.id = ecc.target 
 left join entrepot_noeuds_realise enr2 on enr2.id = ecc.source;
 
-alter table entrepot_connection_realise
-add constraint connection_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_connection_realise
+        add constraint connection_realise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_connection_realise
 ADD FOREIGN KEY (source_noeuds_realise_id) REFERENCES entrepot_noeuds_realise(id);
