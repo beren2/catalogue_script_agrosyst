@@ -109,6 +109,10 @@ def export_to_db(df, name):
 def add_primary_key(table_name, pk_column):
     """Ajoute une clé primaire avec reconnexion forcée"""
 
+    if TYPE != "distant":
+        print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
+        return
+    
     global conn, cur
 
     try:
@@ -122,7 +126,7 @@ def add_primary_key(table_name, pk_column):
         sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
         cur.execute(sql)
         conn.commit()
-        print(f"✅ Clé primaire {pk_column} ajoutée à {table_name}")
+        # print(f"✅ Clé primaire {pk_column} ajoutée à {table_name}")
 
     except Exception as e:
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
@@ -387,26 +391,26 @@ def generate_data_agreged(verbose=False):
     global donnees
 
     # Génération de action_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege']
-    df2 = donnees['action_realise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['action_realise_manquant_agrege'].copy()
     donnees['action_realise_agrege'] = generate_leaking_df(df1, df2, 'action_realise_id', columns_difference = ['id'])
     donnees['action_realise_agrege'] = donnees['action_realise_agrege'].reset_index()
 
     # Génération de action_synthétisé_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege']
-    df2 = donnees['action_synthetise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['action_synthetise_manquant_agrege'].copy()
     donnees['action_synthetise_agrege'] = generate_leaking_df(df1, df2, 'action_synthetise_id', columns_difference = ['id'])
     donnees['action_synthetise_agrege'] = donnees['action_synthetise_agrege'].reset_index()
 
     # Génération de intervention_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege']
-    df2 = donnees['intervention_realise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['intervention_realise_manquant_agrege'].copy()
     donnees['intervention_realise_agrege'] = generate_leaking_df(df1, df2, 'intervention_realise_id', columns_difference = ['id', 'action_realise_id'])
     donnees['intervention_realise_agrege'] = donnees['intervention_realise_agrege'].reset_index()
 
     # Génération de intervention_synthetise_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege']
-    df2 = donnees['intervention_synthetise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['intervention_synthetise_manquant_agrege'].copy()
     donnees['intervention_synthetise_agrege'] = generate_leaking_df(df1, df2, 'intervention_synthetise_id', columns_difference = ['id', 'action_synthetise_id'])
     donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
 
@@ -589,7 +593,7 @@ def create_category_indicateur_2():
     """
     # df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
     # export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
-
+    
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
     add_primary_key('entrepot_utilisation_intrant_indicateur', 'id')
@@ -692,12 +696,11 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-
-    df_identification_pz0 = indicateur.identification_pz0(donnees)
-    export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
+    # df_identification_pz0 = indicateur.identification_pz0(donnees)
+    # export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
     # add_primary_key('entrepot_identification_pz0', 'entite_id')
 
-    print('Fin du test de entrepot_identification_pz0')
+    # print('Fin du test de entrepot_identification_pz0')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -735,7 +738,7 @@ options = {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
-        "Télécharger une catégorie" : [],  
+        "Télécharger une catégorie" : [],
         "Quitter" : []
     }
 }
@@ -772,6 +775,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
     if choice_key == "Quitter":
         print("Au revoir !")
         break
+
     if choice_key == 'Tout générer':
 
         # Téléchargement et chargement des données

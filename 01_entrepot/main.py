@@ -317,9 +317,6 @@ while True:
         conn.commit()
         print(f"{Fore.GREEN} Ok.{Style.RESET_ALL}")
         print(datetime.datetime.now())
-
-
-
     elif(choice_key == "Vérification cohérence colonnes existantes tables et documentation"):
 
         engine_datagrosyst = create_engine(DATABASE_URI_datagrosyst)
