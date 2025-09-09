@@ -20,7 +20,7 @@ from scripts import indicateur
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 import pandas as pd
 import geopandas as gpd
 from colorama import Fore, Style
@@ -46,6 +46,7 @@ if(DEBUG):
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
 
+DATABASE_URI_entrepot=None
 if(TYPE == 'distant'):
     # On se connecte à la BDD seulement si l'utilisateur veut déclarer à distance
     DB_HOST = config.get(BDD_ENTREPOT, 'host')
@@ -112,8 +113,6 @@ def add_primary_key(table_name, pk_column):
     if TYPE != "distant":
         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
         return
-    
-    global conn, cur
 
     try:
         # ⚠️ On force la reconnexion car la session a pu expirer
