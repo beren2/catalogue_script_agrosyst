@@ -123,12 +123,12 @@ test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_53764c41-64c6-4821-b06d-7d97ea4034ec,incorrect : campagne non-attendue,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_75a9cf63-ce93-4f07-959e-ced39c97aa44,pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b0039d0d-42e3-443b-af15-5497a8aaa16d,post,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_52fbbc87-d675-46a3-b424-2573836265a9,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_dadb8ebc-b2da-4337-b527-33b62aa7f854,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_bda297a1-f4cf-4da1-8281-c1b512359b20,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_86b86082-2a63-412b-bf00-4507d8a9326e,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_db04d57a-868b-4051-975d-5478e3afc31c,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3423ed38-304c-4c03-a7eb-2ec4706dd30b,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_52fbbc87-d675-46a3-b424-2573836265a9,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_dadb8ebc-b2da-4337-b527-33b62aa7f854,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_bda297a1-f4cf-4da1-8281-c1b512359b20,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_86b86082-2a63-412b-bf00-4507d8a9326e,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_db04d57a-868b-4051-975d-5478e3afc31c,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3423ed38-304c-4c03-a7eb-2ec4706dd30b,incorrect : saisie de plusieurs pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2a263a39-4811-484c-aa35-cb805d0ecb86,pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_7ecf458e-1c1d-4e94-a5ba-442f2150b279,incorrect : chevauchement pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3bf5464b-c15d-4305-be3c-48e6325c817e,incorrect : saisie pz0 non acceptable,entite_id,pz0
@@ -137,14 +137,14 @@ test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_626bce3b-807b-4f09-83eb-50b0c1d49359,incorrect : aucun pz0 saisi,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.Zone_834a10d1-d938-469b-9d0e-498b1a7138c8,incorrect : aucun pz0 saisi,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a0ddf4c4-c749-4271-ac71-8132bf167209,pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_efe7a2a9-ed92-4fc8-acb9-5e129de59709,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ecc4e357-aa36-4143-8f59-eb479a9d96e2,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_177439d1-521c-4e6f-9dd0-314f8b425d5e,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_9ae3a8f4-1642-4492-9b65-590a559a26ee,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5efa01dc-4cb0-45a4-8979-7510143d3cb2,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a733a4ea-8b35-4d58-9336-2792eaca9bd7,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_39fd9f3b-1e4a-458f-b642-c1e392eb8e71,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
-test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5a51de16-25c3-4349-8696-3300b2c6ac54,incorrect : saisie de plusieurs plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_efe7a2a9-ed92-4fc8-acb9-5e129de59709,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ecc4e357-aa36-4143-8f59-eb479a9d96e2,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_177439d1-521c-4e6f-9dd0-314f8b425d5e,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_9ae3a8f4-1642-4492-9b65-590a559a26ee,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5efa01dc-4cb0-45a4-8979-7510143d3cb2,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a733a4ea-8b35-4d58-9336-2792eaca9bd7,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_39fd9f3b-1e4a-458f-b642-c1e392eb8e71,incorrect : saisie de plusieurs pz0,entite_id,pz0
+test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5a51de16-25c3-4349-8696-3300b2c6ac54,incorrect : saisie de plusieurs pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ff559761-b943-4d82-aa9a-dafc613e8513,pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_4af04511-174e-49ed-954d-eb8ac8d97bf5,pz0,entite_id,pz0
 test_identification_pz0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3182f04d-97df-401b-8e6c-1113ca75b5c9,post,entite_id,pz0
@@ -898,11 +898,11 @@ test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Doma
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"['COMMUNE00000000000021857', 'COMMUNE00000000000000684']",,geofla_2015_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,10.0,,rmqs_dist_site
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_12c4938a-004b-4e0e-b17f-54d278ef1e69,"[ ""2006-04-06"", ""2017-01-16"" ]",,rmqs_date_sampl
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,01025,,codeinsee
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,1025,,codeinsee
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,837,,rmqs_site_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,5631,,safran_cell_id
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,06,,typo_ruralite
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,05,,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,6,,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,5,,typo_ruralite
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_3059742b-3357-4e2a-bcb6-3d1af4636467,,,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_0445d8bc-7638-44c5-8068-f98484618d96,POINT (5.078887999999999 47.192313),,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_c9fd2d74-ba29-498d-94e9-0b3f4b68a2ce,4316,,safran_cell_id
