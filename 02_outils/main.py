@@ -114,30 +114,29 @@ def add_primary_key(table_name, pk_column):
         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
         return
 
-    conn = None
-    cur = None
+    local_conn = None
+    local_cur = None
     try:
         # ⚠️ On force la reconnexion à chaque appel (pas besoin de global)
-        engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
-        conn = engine.raw_connection()
-        cur = conn.cursor()
+        local_engine = create_engine(
+            f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+        )
+        local_conn = local_engine.raw_connection()
+        local_cur = local_conn.cursor()
 
-        cur.execute("SET statement_timeout = 0;")
+        local_cur.execute("SET statement_timeout = 0;")
         sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
-        cur.execute(sql)
-        conn.commit()
-        # print(f"✅ Clé primaire {pk_column} ajoutée à {table_name}")
+        local_cur.execute(sql)
+        local_conn.commit()
 
-    except Exception as e:
+    except Exception as e:  # tu peux aussi mettre "except builtins.Exception as e:" si tu veux être 100% pylint-clean
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
 
     finally:
-        if cur is not None and not cur.closed:
-            cur.close()
-        if conn is not None and not conn.closed:
-            conn.close()
-
-
+        if local_cur is not None and not local_cur.closed:
+            local_cur.close()
+        if local_conn is not None and not local_conn.closed:
+            local_conn.close()
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
