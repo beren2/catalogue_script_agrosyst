@@ -333,47 +333,58 @@ external : """+str(leaking_tables['external'])+""" ("""+SOURCE_SPECS['outils']['
 
 def test_check_external_data(leaking_tables):
     """
-        Print les résultats des tests effectués dans le fichier défini 
-        dans la spec : outils.external_data.validation.path
-        Retourne 0 si tout s'est bien passé, 1 sinon
+    Print les résultats des tests effectués dans le fichier défini 
+    dans la spec : outils.external_data.validation.path
+    Retourne 0 si tout s'est bien passé, 1 sinon
 
-        leaking_tables : list, fichiers non présents en local
+    leaking_tables : list, fichiers non présents en local
     """
+    import importlib
+    from colorama import Fore, Style
+
     external_tables = SOURCE_SPECS['outils']['external_data']['tables']
     external_tables_existing = [t for t in external_tables if t not in leaking_tables]
 
     external_data_validation = SOURCE_SPECS['outils']['external_data']['validation']
     external_data_validation_path = external_data_validation['path']
-    external_data_validation_checks = [check for check in external_data_validation['checks'] if check['table'] not in leaking_tables]
+    external_data_validation_checks = [
+        check for check in external_data_validation['checks'] 
+        if check['table'] not in leaking_tables
+    ]
 
-    # load des données externes
+    # Chargement des données externes
     load_datas(
         external_tables_existing, 
         verbose=True, 
         path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
-    
+
     all_passed = True
+
     for check in external_data_validation_checks:
         external_data_test_module = importlib.import_module(external_data_validation_path)
         check_function = getattr(external_data_test_module, check['function_name'])
-        message_error = check_function(donnees)
-        
-        if len(message_error) == 0:
-            print(f"{Fore.GREEN}", check['name'], ":", f"validé {Style.RESET_ALL}")
+        messages = check_function(donnees)
+
+        # Détermination du statut
+        if len(messages) == 1 and messages[0].startswith("✅"):
+            print(f"{Fore.GREEN}{check['name']} : validé{Style.RESET_ALL}")
+            # for msg in messages:
+            #     print(msg)
         else:
-            print(f"{Fore.RED}", check['name'], ":", f"échoué {Style.RESET_ALL}")
-            print(message_error)
-            print("\n")
+            print(f"{Fore.RED}{check['name']} : échoué{Style.RESET_ALL}")
+            for msg in messages:
+                print(msg)
             all_passed = False
 
+    # Message global
     if all_passed:
         error_code = 0
         error_message = f"{Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
-    else :
-        error_code = 0
+    else:
+        error_code = 1
         error_message = f"{Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
-    
+
     return error_code, error_message
 
 def generate_leaking_df(df1, df2, id_name, columns_difference):
