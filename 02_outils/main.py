@@ -339,9 +339,6 @@ def test_check_external_data(leaking_tables):
 
     leaking_tables : list, fichiers non présents en local
     """
-    import importlib
-    from colorama import Fore, Style
-
     external_tables = SOURCE_SPECS['outils']['external_data']['tables']
     external_tables_existing = [t for t in external_tables if t not in leaking_tables]
 
