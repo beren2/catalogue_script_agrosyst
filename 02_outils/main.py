@@ -364,7 +364,7 @@ def test_check_external_data(leaking_tables):
         messages = check_function(donnees)
 
         # Détermination du statut
-        if len(messages) == 1 and messages[0].startswith("✅"):
+        if messages and all(str(msg).strip().startswith("✅") for msg in messages):
             print(f"{Fore.GREEN}{check['name']} : validé{Style.RESET_ALL}")
             # for msg in messages:
             #     print(msg)

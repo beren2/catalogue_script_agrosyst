@@ -81,8 +81,52 @@ def check_BDD_donnees_attendues_CAN(donnees):
 
 def typo_especes_typo_culture(donnees):
     """
-        permet de checker la table typo_especes_typo_culture,
-        ie de s'assurer qu'elle correspond au format attendu :
-        TODO
+    Vérifie les tables `typo_especes_typo_culture` et `typo_especes_typo_culture_marai`.
+
+    Vérifications :
+    - Présence des 2 tables
+    - Colonnes exactes attendues :
+        * typo_especes_typo_culture : [TYPO_ESPECES, Typo_Culture]
+        * typo_especes_typo_culture_marai : [TYPO_ESPECES_BIS, Typo_Culture_bis]
+    - Pas de NA
+    - Pas de doublons dans la 1ère colonne
     """
-    return []
+    messages = []
+
+    spec_tables = {
+        "typo_especes_typo_culture": ["TYPO_ESPECES", "Typo_Culture"],
+        "typo_especes_typo_culture_marai": ["TYPO_ESPECES_BIS", "Typo_Culture_bis"]
+    }
+
+    for table_name, expected_cols in spec_tables.items():
+        # --- Présence table ---
+        if table_name not in donnees:
+            messages.append(f"❌ Table manquante : {table_name}")
+            continue
+
+        df = donnees[table_name]
+
+        # --- Colonnes ---
+        if list(df.columns) != expected_cols:
+            messages.append(
+                f"❌ Colonnes incorrectes dans {table_name}.\n"
+                f"   Attendu : {expected_cols}\n"
+                f"   Trouvé : {list(df.columns)}"
+            )
+            continue
+
+        # --- Valeurs manquantes ---
+        if df.isna().any().any():
+            messages.append(f"⚠️ Valeurs manquantes dans {table_name}")
+
+        # --- Doublons sur la première colonne ---
+        col_first = expected_cols[0]
+        if df[col_first].duplicated().any():
+            messages.append(f"⚠️ Doublons trouvés dans {table_name} sur la colonne {col_first}")
+
+        # --- OK si aucun problème ---
+        if not any(msg for msg in messages if table_name in msg):
+            messages.append(f"✅ {table_name} conforme")
+
+    return messages
+
