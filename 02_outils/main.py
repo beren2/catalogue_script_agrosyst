@@ -113,13 +113,12 @@ def add_primary_key(table_name, pk_column):
     if TYPE != "distant":
         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
         return
-    
-    global conn, cur
 
+    conn = None
+    cur = None
     try:
-        # ⚠️ On force la reconnexion car la session a pu expirer
-        if not conn.closed:
-            conn.close()
+        # ⚠️ On force la reconnexion à chaque appel (pas besoin de global)
+        engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
         conn = engine.raw_connection()
         cur = conn.cursor()
 
@@ -131,6 +130,13 @@ def add_primary_key(table_name, pk_column):
 
     except Exception as e:
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
+
+    finally:
+        if cur is not None and not cur.closed:
+            cur.close()
+        if conn is not None and not conn.closed:
+            conn.close()
+
 
 
 def convert_to_serializable(obj):
