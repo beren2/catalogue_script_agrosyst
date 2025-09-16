@@ -117,7 +117,7 @@ def add_primary_key(table_name, pk_column):
     local_conn = None
     local_cur = None
     try:
-        # ⚠️ On force la reconnexion à chaque appel (pas besoin de global)
+        # Reconnexion à chaque appel
         local_engine = create_engine(
             f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
         )
@@ -129,7 +129,7 @@ def add_primary_key(table_name, pk_column):
         local_cur.execute(sql)
         local_conn.commit()
 
-    except Exception as e:  # tu peux aussi mettre "except builtins.Exception as e:" si tu veux être 100% pylint-clean
+    except Exception as e:
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
 
     finally:
