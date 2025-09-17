@@ -20,18 +20,18 @@ def check_BDD_donnees_attendues_CAN(donnees):
     """
     messages = []
 
-    # --- Vérif présence table ---
+    # Vérif présence table 
     if "BDD_donnees_attendues_CAN" not in donnees:
         return ["Table BDD_donnees_attendues_CAN absente des données"]
 
     df = donnees["BDD_donnees_attendues_CAN"]
 
-    # --- Vérif colonnes attendues ---
+    # Vérif colonnes attendues 
     cols_to_keep = [col for col in df.columns if "20" in col]
     if "codes_SdC" not in df.columns or not cols_to_keep:
         return ["Colonnes attendues manquantes dans BDD_donnees_attendues_CAN"]
 
-    # --- Mise en forme longue ---
+    # Mise en forme longue 
     df_melt = pd.melt(
         df[cols_to_keep + ["codes_SdC"]],
         id_vars=["codes_SdC"],
@@ -40,14 +40,14 @@ def check_BDD_donnees_attendues_CAN(donnees):
     )
     df_melt["campagne"] = df_melt["campagne"].astype("int64")
 
-    # --- 1. Contrôle des modalités ---
+    # 1. Contrôle des modalités 
     data_expected = {"Pas de donnees attendues", "PZ0 attendu", "donnees annuelles attendues"}
     data_unexpected = set(df_melt["donnee_attendue"].dropna()) - data_expected
 
     if data_unexpected:
         messages.append(f"⚠ Modalités inattendues trouvées : {sorted(data_unexpected)}")
 
-    # --- 2. Cohérence des PZ0 ---
+    # 2. Cohérence des PZ0 
     df_pz0 = df_melt.loc[df_melt["donnee_attendue"] == "PZ0 attendu"].copy()
 
     if not df_pz0.empty:
@@ -73,7 +73,7 @@ def check_BDD_donnees_attendues_CAN(donnees):
             messages.append("⚠ Incohérences PZ0 détectées :")
             messages.append(incoherences.to_string(index=False))
 
-    # --- Message de validation si aucun problème ---
+    # Message de validation si aucun problème 
     if not messages:
         messages.append("✅ Validation réussie : aucune incohérence détectée")
 
@@ -81,8 +81,52 @@ def check_BDD_donnees_attendues_CAN(donnees):
 
 def typo_especes_typo_culture(donnees):
     """
-        permet de checker la table typo_especes_typo_culture,
-        ie de s'assurer qu'elle correspond au format attendu :
-        TODO
+    Vérifie les tables `typo_especes_typo_culture` et `typo_especes_typo_culture_marai`.
+
+    Vérifications :
+    - Présence des 2 tables
+    - Colonnes exactes attendues :
+        * typo_especes_typo_culture : [TYPO_ESPECES, Typo_Culture]
+        * typo_especes_typo_culture_marai : [TYPO_ESPECES_BIS, Typo_Culture_bis]
+    - Pas de NA
+    - Pas de doublons dans la 1ère colonne
     """
-    return []
+    messages = []
+
+    spec_tables = {
+        "typo_especes_typo_culture": ["TYPO_ESPECES", "Typo_Culture"],
+        "typo_especes_typo_culture_marai": ["TYPO_ESPECES_BIS", "Typo_Culture_bis"]
+    }
+
+    for table_name, expected_cols in spec_tables.items():
+        # Présence table 
+        if table_name not in donnees:
+            messages.append(f"❌ Table manquante : {table_name}")
+            continue
+
+        df = donnees[table_name]
+
+        # Colonnes 
+        if list(df.columns) != expected_cols:
+            messages.append(
+                f"❌ Colonnes incorrectes dans {table_name}.\n"
+                f"   Attendu : {expected_cols}\n"
+                f"   Trouvé : {list(df.columns)}"
+            )
+            continue
+
+        # Valeurs manquantes 
+        if df.isna().any().any():
+            messages.append(f"⚠️ Valeurs manquantes dans {table_name}")
+
+        # Doublons sur la première colonne 
+        col_first = expected_cols[0]
+        if df[col_first].duplicated().any():
+            messages.append(f"⚠️ Doublons trouvés dans {table_name} sur la colonne {col_first}")
+
+        # OK si aucun problème 
+        if not any(msg for msg in messages if table_name in msg):
+            messages.append(f"✅ {table_name} conforme")
+
+    return messages
+

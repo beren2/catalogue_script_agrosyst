@@ -13,6 +13,7 @@ import configparser
 import urllib
 import importlib
 import time
+import re
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -27,7 +28,7 @@ from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
 
-# obtenir les paramètres de connexion pour psycopg2
+# Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
@@ -56,10 +57,10 @@ if(TYPE == 'distant'):
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
-    #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
+    # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
     engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
 
-    # Establish a connection to PostgreSQL
+    # Connexion à PostgreSQL
     conn = engine.raw_connection()
     cur = conn.cursor()
 
@@ -331,6 +332,68 @@ external : """+str(leaking_tables['external'])+""" ("""+SOURCE_SPECS['outils']['
 
     return error_code, error_message
 
+def clean_BDD_donnees_attendues_CAN(path_file):
+    """
+    Corrige le format de la table BDD_donnees_attendues_CAN :
+    - Vérifie encodage (force en UTF-8 si besoin).
+    - Vérifie séparateur (corrige en ',').
+    - Ne garde que 'codes_SdC' + colonnes d'années.
+    - Supprime les autres colonnes.
+    - Réécrit le fichier source corrigé seulement si nécessaire.
+
+    Retourne :
+        - DataFrame corrigé
+        - liste de messages (si corrections faites)
+    """
+    messages = []
+    modified = False
+
+    encodings_to_try = ["utf-8", "iso-8859-1", "latin-1", "cp1252"]
+    separators_to_try = [",", ";", "\t"]
+
+    df = None
+    for enc in encodings_to_try:
+        for sep in separators_to_try:
+            try:
+                df_test = pd.read_csv(path_file, encoding=enc, sep=sep)
+                if df_test.shape[1] == 1 and sep != "\t":
+                    continue
+                df = df_test
+                if enc != "utf-8":
+                    messages.append(f"⚠️ Encodage corrigé : {enc} → utf-8")
+                    modified = True
+                if sep != ",":
+                    messages.append(f"⚠️ Séparateur corrigé : '{sep}' → ','")
+                    modified = True
+                break
+            except Exception:
+                continue
+        if df is not None:
+            break
+
+    if df is None:
+        raise ValueError(f"❌ Impossible de lire {path_file} avec les encodages/séparateurs testés")
+
+    # Vérification des colonnes
+    cols_to_keep = ["codes_SdC"] + [col for col in df.columns if re.fullmatch(r"\d{4}", str(col))]
+    cols_removed = [col for col in df.columns if col not in cols_to_keep]
+
+    if cols_removed:
+        messages.append(f"⚠️ Colonnes supprimées : {cols_removed}")
+        df = df[cols_to_keep]
+        modified = True
+
+    # Réécriture seulement si modifications
+    if modified:
+        try:
+            df.to_csv(path_file, index=False, encoding="utf-8", sep=",")
+            messages.append(f"✅ Fichier corrigé et anonymisé sauvegardé en UTF-8 avec séparateur ',' : {path_file}")
+        except Exception as e:
+            messages.append(f"❌ Impossible de sauvegarder le fichier corrigé et anonymisé : {e}")
+
+    return df, messages
+
+
 def test_check_external_data(leaking_tables):
     """
     Print les résultats des tests effectués dans le fichier défini 
@@ -348,14 +411,27 @@ def test_check_external_data(leaking_tables):
         check for check in external_data_validation['checks'] 
         if check['table'] not in leaking_tables
     ]
+    
+    # Nettoyage préalable de BDD_donnees_attendues_CAN au besoin
+    path_BDD_CAN = os.path.join(
+        SOURCE_SPECS['outils']['external_data']['path'], 
+        "BDD_donnees_attendues_CAN.csv"
+    )
+    if os.path.exists(path_BDD_CAN):
+        df_CAN, messages_CAN = clean_BDD_donnees_attendues_CAN(path_BDD_CAN)
+        for msg in messages_CAN:
+            print(msg)
+    else:
+        print(f"⚠ Le fichier BDD_donnees_attendues_CAN n'existe pas dans {path_BDD_CAN}")
 
+    
     # Chargement des données externes
     load_datas(
         external_tables_existing, 
         verbose=True, 
         path_data=SOURCE_SPECS['outils']['external_data']['path']
     )
-
+    
     all_passed = True
 
     for check in external_data_validation_checks:
@@ -364,7 +440,7 @@ def test_check_external_data(leaking_tables):
         messages = check_function(donnees)
 
         # Détermination du statut
-        if len(messages) == 1 and messages[0].startswith("✅"):
+        if messages and all(str(msg).strip().startswith("✅") for msg in messages):
             print(f"{Fore.GREEN}{check['name']} : validé{Style.RESET_ALL}")
             # for msg in messages:
             #     print(msg)
@@ -377,10 +453,10 @@ def test_check_external_data(leaking_tables):
     # Message global
     if all_passed:
         error_code = 0
-        error_message = f"{Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
+        error_message = f"✅ {Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
     else:
         error_code = 1
-        error_message = f"{Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
+        error_message = f"❌ {Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
 
     return error_code, error_message
 
