@@ -13,6 +13,7 @@ import configparser
 import urllib
 import importlib
 import time
+import re
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -26,7 +27,6 @@ import geopandas as gpd
 from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
-import re
 
 # obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
