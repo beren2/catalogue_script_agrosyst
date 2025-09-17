@@ -589,8 +589,6 @@ select
 	eprp.qsa_soufre_phyto,
 	eprp.qsa_soufre_phyto_hts,
 	eprp.qsa_soufre_ferti,
-	eprp.surface_par_unite_de_travail_humain as surf_unite_de_w_humain,
-	eprp.surface_par_unite_de_travail_humain_taux_de_completion as surf_unite_de_w_humain_tx_comp,
 	eprp.nombre_uth_necessaires,
 	ed.nom as domaine_nom,
 	ed.id as domaine_id ,
