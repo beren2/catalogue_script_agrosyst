@@ -174,6 +174,7 @@ def get_leaking_aggreged_from_action_realise(
     df_parcelle = donnees['parcelle']
     df_sdc = donnees['sdc']
     df_dispositif = donnees['dispositif']
+    df_domaine = donnees['domaine']
     
     # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
     merge = df_action_realise.loc[~df_action_realise['id'].isin(list(aggreged_utilisation_intrant_realise['action_realise_id']))]
@@ -220,7 +221,7 @@ def get_leaking_aggreged_from_action_realise(
 
     # obtention de la parcelle sur laquelle a lieu l'action
     left = merge
-    right = df_parcelle[['id', 'sdc_id']].rename(columns={'id' : 'parcelle_id'})
+    right = df_parcelle[['id', 'domaine_id', 'sdc_id']].rename(columns={'id' : 'parcelle_id'})
     merge = pd.merge(left, right, on = 'parcelle_id', how='left')
 
     # obtention du système de culture sur laquelle a lieu l'action --> cette fois on a une seule campagne de référence
@@ -230,8 +231,12 @@ def get_leaking_aggreged_from_action_realise(
 
     # obtention du dispositif sur lequel a lieu l'action 
     left = merge 
-    right = df_dispositif[['id', 'domaine_id']].rename(columns={'id' : 'dispositif_id'})
+    right = df_dispositif[['id']].rename(columns={'id' : 'dispositif_id'})
     merge = pd.merge(left, right, on = 'dispositif_id', how='left')
+
+    left = merge
+    right = df_domaine[['id', 'campagne']].rename(columns={'id' : 'domaine_id'})
+    merge = pd.merge(left, right, on = 'domaine_id', how='left')
 
     merge = merge.set_index('id')
 
@@ -253,6 +258,8 @@ def get_leaking_aggreged_from_intervention_realise(
     df_parcelle = donnees['parcelle']
     df_sdc = donnees['sdc']
     df_dispositif = donnees['dispositif']
+    df_domaine = donnees['domaine']
+
     # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
     merge = df_intervention_realise.loc[~df_intervention_realise['id'].isin(list(aggreged_utilisation_intrant_realise['intervention_realise_id']))]
 
@@ -293,7 +300,7 @@ def get_leaking_aggreged_from_intervention_realise(
 
     # obtention de la parcelle sur laquelle a lieu l'action
     left = merge
-    right = df_parcelle[['id', 'sdc_id']].rename(columns={'id' : 'parcelle_id'})
+    right = df_parcelle[['id', 'sdc_id', 'domaine_id']].rename(columns={'id' : 'parcelle_id'})
     merge = pd.merge(left, right, on = 'parcelle_id', how='left')
 
     # obtention du système de culture sur laquelle a lieu l'action --> cette fois on a une seule campagne de référence
@@ -303,8 +310,12 @@ def get_leaking_aggreged_from_intervention_realise(
 
     # obtention du dispositif sur lequel a lieu l'action 
     left = merge 
-    right = df_dispositif[['id', 'domaine_id']].rename(columns={'id' : 'dispositif_id'})
+    right = df_dispositif[['id']].rename(columns={'id' : 'dispositif_id'})
     merge = pd.merge(left, right, on = 'dispositif_id', how='left')
+    
+    left = merge
+    right = df_domaine[['id', 'campagne']].rename(columns={'id' : 'domaine_id'})
+    merge = pd.merge(left, right, on = 'domaine_id', how='left')
 
     merge = merge.set_index('id')
 
