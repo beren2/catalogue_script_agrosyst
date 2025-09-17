@@ -28,7 +28,7 @@ from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
 
-# obtenir les paramètres de connexion pour psycopg2
+# Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
@@ -57,10 +57,10 @@ if(TYPE == 'distant'):
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
-    #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
+    # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
     engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
 
-    # Establish a connection to PostgreSQL
+    # Connexion à PostgreSQL
     conn = engine.raw_connection()
     cur = conn.cursor()
 
@@ -412,7 +412,7 @@ def test_check_external_data(leaking_tables):
         if check['table'] not in leaking_tables
     ]
     
-    # --- Nettoyage préalable de BDD_donnees_attendues_CAN ---
+    # Nettoyage préalable de BDD_donnees_attendues_CAN au besoin
     path_BDD_CAN = os.path.join(
         SOURCE_SPECS['outils']['external_data']['path'], 
         "BDD_donnees_attendues_CAN.csv"
