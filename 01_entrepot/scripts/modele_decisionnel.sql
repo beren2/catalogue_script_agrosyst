@@ -102,8 +102,9 @@ DROP TABLE IF EXISTS entrepot_modele_decisionnel_strategie CASCADE;
 CREATE TABLE entrepot_modele_decisionnel_strategie AS
 select 
 s.topiaid id,
-reflevier.lever levier,
-reflevier.strategytype type_strategie,
+reflevier.topiaid levier_id,
+-- reflevier.lever levier,
+-- reflevier.strategytype type_strategie,
 s.explanation explication,
 -- s.croppingplanmanagmentname, -- ne sait pas a quoi correspond
 mdm.id modele_decisionnel_maitrise_id
