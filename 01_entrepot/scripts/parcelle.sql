@@ -73,9 +73,17 @@ CREATE TABLE entrepot_parcelle AS
   )
   AND p.active IS true;
 
-alter table entrepot_parcelle
-ADD CONSTRAINT parcelle_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_parcelle
+        ADD CONSTRAINT parcelle_PK
+        primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_parcelle
 add FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

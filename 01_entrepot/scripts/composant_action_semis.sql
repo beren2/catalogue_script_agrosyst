@@ -30,3 +30,15 @@ select
 	sas.treatment as traitement_chimique,
 	sas.biologicalseedinoculation as inoculation_biologique
 from seedingactionspecies sas;
+
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_composant_action_semis
+		add constraint composant_action_semis_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

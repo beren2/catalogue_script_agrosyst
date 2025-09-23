@@ -16,6 +16,14 @@ SELECT
 	ratp.active
 FROM refactatraitementsproduit ratp;
 
-alter table entrepot_acta_traitement_produit
-add constraint acta_traitement_produit_PK_
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_acta_traitement_produit
+		add constraint acta_traitement_produit_PK_
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

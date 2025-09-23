@@ -101,3 +101,14 @@ from
 	) sc
 where es.id = sc.id;
 		
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_semence
+		add constraint semence_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

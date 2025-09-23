@@ -11,6 +11,14 @@ SELECT
 	rcsapna.active
 FROM refcompositionsubstancesactivesparnumeroamm rcsapna;
 
-alter table entrepot_composition_substance_active_numero_amm
-add constraint composition_substance_active_numero_amm_PK_
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_composition_substance_active_numero_amm
+		add constraint composition_substance_active_numero_amm_PK_
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

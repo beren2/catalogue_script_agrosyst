@@ -4,6 +4,7 @@ on:
   push:
     branches:
         - 'main'
+        - 'Contexte_JD'
     paths:
         - 02_outils/**
         - 00_config/requirements.txt

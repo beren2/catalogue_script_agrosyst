@@ -14,3 +14,15 @@ r."source"
 from refharvestingprice r
 where active is true
 and code_scenario = '';
+
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_prix_recolte
+        add constraint prix_recolte_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

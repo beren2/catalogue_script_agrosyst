@@ -7,7 +7,14 @@ select
 	n.active as actif
 from network n;
 
-
-alter table entrepot_reseau
-add constraint entrepot_reseau_PK_
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_reseau
+		add constraint entrepot_reseau_PK_
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

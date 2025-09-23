@@ -366,9 +366,17 @@ FROM realise_echelle_parcelle rep
 JOIN entrepot_parcelle ep on ep.id = rep.parcelle_id;
 
 
-alter table entrepot_parcelle_realise_performance
-add constraint parcelle_realise_performance_PK
-PRIMARY KEY (parcelle_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_parcelle_realise_performance
+        add constraint parcelle_realise_performance_PK
+        PRIMARY KEY (parcelle_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_parcelle_realise_performance
 add FOREIGN KEY (parcelle_id) REFERENCES entrepot_parcelle(id);

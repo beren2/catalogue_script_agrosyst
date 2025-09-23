@@ -6,6 +6,14 @@ select
 	r.famille_de_culture
 from refadventice r;
 
-alter table entrepot_adventice
-ADD CONSTRAINT entrepot_adventice_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_adventice
+		ADD CONSTRAINT entrepot_adventice_PK
+		primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

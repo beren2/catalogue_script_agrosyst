@@ -242,6 +242,14 @@ and pf.topiaid_hav = e.id
 ;
 
 -- Contraintes 
-alter table entrepot_recolte_rendement_prix
-add constraint rendement_prix_recolte_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_recolte_rendement_prix
+		add constraint rendement_prix_recolte_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

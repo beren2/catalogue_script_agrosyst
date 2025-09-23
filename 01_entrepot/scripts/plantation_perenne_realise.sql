@@ -23,9 +23,17 @@ from effectiveperennialcropcycle epc
 join entrepot_zone z on z.id = epc.zone
 left join reforientationedi refo on refo.topiaid = epc.orientation ;
 
-alter table entrepot_plantation_perenne_realise
-add constraint plantation_perenne_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_plantation_perenne_realise
+        add constraint plantation_perenne_realise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_plantation_perenne_realise
 ADD FOREIGN KEY (zone_id) REFERENCES entrepot_zone(id);
@@ -44,9 +52,17 @@ from effectivecropcyclephase ecp
 join effectiveperennialcropcycle epc on epc.phase = ecp.topiaid 
 join entrepot_plantation_perenne_realise eppr on eppr.id = epc.topiaid;
 
-alter table entrepot_plantation_perenne_phases_realise
-add constraint plantation_perenne_phases_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_plantation_perenne_phases_realise
+        add constraint plantation_perenne_phases_realise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_plantation_perenne_phases_realise
 ADD FOREIGN KEY (plantation_perenne_realise_id) REFERENCES entrepot_plantation_perenne_realise(id);
@@ -68,9 +84,17 @@ left join refvarieteplantgrape refpg on refpg.topiaid = ecs.graftsupport
 join entrepot_composant_culture ecc on ecc.id = ecs.croppingplanspecies 
 join entrepot_plantation_perenne_realise eppr on eppr.id = ecs.effectiveperennialcropcycle ;
 
-alter table entrepot_plantation_perenne_especes_realise
-add constraint plantation_perenne_especes_realise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_plantation_perenne_especes_realise
+        add constraint plantation_perenne_especes_realise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_plantation_perenne_especes_realise
 ADD FOREIGN KEY (composant_culture_id) REFERENCES entrepot_composant_culture(id);

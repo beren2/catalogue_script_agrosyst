@@ -15,6 +15,14 @@ refdestination r
 where active is true
 ;
 
-alter table entrepot_destination_valorisation
-add constraint destination_valorisation_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_destination_valorisation
+        add constraint destination_valorisation_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

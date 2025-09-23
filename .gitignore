@@ -3,6 +3,9 @@
 **/__pycache__/
 02_outils/data/referentiels/*
 02_outils/data/external_data/*
+!02_outils/data/external_data/BDD_donnees_attendues_CAN.csv
+!02_outils/data/external_data/typo_especes_typo_culture.csv
+!02_outils/data/external_data/typo_especes_typo_culture_marai.csv
 .vscode/settings.json
 01_entrepot/.Rhistory
 01_entrepot/documentation_manquante.csv

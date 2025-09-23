@@ -372,10 +372,17 @@ SELECT
 FROM synthetise_echelle_intervention sei
 join entrepot_intervention_synthetise eis on eis.id = sei.intervention_id;
 
-
-alter table entrepot_intervention_synthetise_performance
-add constraint intervention_synthetise_performance_PK
-PRIMARY KEY (intervention_synthetise_id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_intervention_synthetise_performance
+        add constraint intervention_synthetise_performance_PK
+        PRIMARY KEY (intervention_synthetise_id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_intervention_synthetise_performance
 add FOREIGN KEY (intervention_synthetise_id) REFERENCES entrepot_intervention_synthetise(id);

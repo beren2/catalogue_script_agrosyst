@@ -18,7 +18,14 @@ CREATE TABLE entrepot_sol_arvalis AS
 	from refsolarvalis r
 	where r.active is true;
 
-
-alter table entrepot_sol_arvalis
-add constraint sol_arvalis_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_sol_arvalis
+		add constraint sol_arvalis_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

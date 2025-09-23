@@ -12,9 +12,17 @@ CREATE TABLE entrepot_coordonnees_gps_domaine AS
   AND g.latitude !=0
   AND g.validated is true;
 
-alter table entrepot_coordonnees_gps_domaine
-add constraint domaines_coordonnees_gps_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+    alter table entrepot_coordonnees_gps_domaine
+    add constraint domaines_coordonnees_gps_PK
+    PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_coordonnees_gps_domaine
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

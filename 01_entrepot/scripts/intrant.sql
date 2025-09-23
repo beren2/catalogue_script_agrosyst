@@ -301,10 +301,17 @@ select
 	left join domain d on adisu.domain = d.topiaid
 	left join inputprice ip on dsli.seedprice = ip.topiaid;
 	--left join refactatraitementsproduit ratp on ratp.topiaid = dsli.;
-	
 
-alter table entrepot_intrant
-add constraint intrant_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_intrant
+		add constraint intrant_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 

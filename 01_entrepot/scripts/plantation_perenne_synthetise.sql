@@ -25,9 +25,17 @@ join practicedcropcycle pc on pc.topiaid = ppc.topiaid
 join entrepot_synthetise esynth on esynth.id = pc.practicedsystem
 left join reforientationedi refo on refo.topiaid = ppc.orientation ;
 
-alter table entrepot_plantation_perenne_synthetise
-add constraint plantation_perenne_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_plantation_perenne_synthetise
+        add constraint plantation_perenne_synthetise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_plantation_perenne_synthetise
 ADD FOREIGN KEY (synthetise_id) REFERENCES entrepot_synthetise(id);
@@ -42,9 +50,17 @@ epps.id plantation_perenne_synthetise_id
 from practicedcropcyclephase pcp
 join entrepot_plantation_perenne_synthetise epps on epps.id = pcp.practicedperennialcropcycle;
 
-alter table entrepot_plantation_perenne_phases_synthetise
-add constraint plantation_perenne_phases_synthetise_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_plantation_perenne_phases_synthetise
+        add constraint plantation_perenne_phases_synthetise_PK
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_plantation_perenne_phases_synthetise
 ADD FOREIGN KEY (plantation_perenne_synthetise_id) REFERENCES entrepot_plantation_perenne_synthetise(id);

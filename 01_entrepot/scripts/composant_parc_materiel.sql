@@ -20,9 +20,17 @@ FROM equipment e
 JOIN entrepot_domaine d on e."domain" = d.id -- obtention uniquement des domaines actifs
 JOIN refmateriel rm ON e.refmateriel = rm.topiaid;
 
-alter table entrepot_composant_parc_materiel
-add constraint composant_parc_materiel_PK
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+		alter table entrepot_composant_parc_materiel
+		add constraint composant_parc_materiel_PK
+		PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;
 
 alter table entrepot_composant_parc_materiel
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);

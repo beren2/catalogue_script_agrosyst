@@ -9,6 +9,14 @@ r.sector as filiere
 from refstrategylever r 
 where active is true;
 
-alter table entrepot_levier
-ADD CONSTRAINT levier_PK
-primary key (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_levier
+        ADD CONSTRAINT levier_PK
+        primary key (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

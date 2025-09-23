@@ -8,6 +8,14 @@ r."source"
 from refprixcarbu r
 where active is true; -- les lignes ou les scenarios sont mentionnées ne sont pas retires puisque pas de valeurs sinon
 
-alter table entrepot_prix_carburant
-add constraint prix_carburant_pk
-PRIMARY KEY (id);
+DO $$
+BEGIN
+    BEGIN
+        alter table entrepot_prix_carburant
+        add constraint prix_carburant_pk
+        PRIMARY KEY (id);
+    EXCEPTION
+        WHEN others THEN
+            RAISE WARNING '⚠ Impossible de créer la primary key : %', SQLERRM;
+    END;
+END $$;

@@ -13,6 +13,7 @@ import configparser
 import urllib
 import importlib
 import time
+import re
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -27,7 +28,7 @@ from colorama import Fore, Style
 from tqdm import tqdm
 from version import __version__
 
-# obtenir les paramètres de connexion pour psycopg2
+# Obtenir les paramètres de connexion pour psycopg2
 config = configparser.ConfigParser()
 config.read(r'../00_config/config.ini')
 
@@ -46,6 +47,7 @@ if(DEBUG):
 path_metadata = 'data/metadonnees_tests.csv'
 df_metadata = pd.read_csv(path_metadata)
 
+DATABASE_URI_entrepot=None
 if(TYPE == 'distant'):
     # On se connecte à la BDD seulement si l'utilisateur veut déclarer à distance
     DB_HOST = config.get(BDD_ENTREPOT, 'host')
@@ -55,12 +57,10 @@ if(TYPE == 'distant'):
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
 
-    print(DB_USER, DB_PASSWORD, DATABASE_URI_entrepot)
-
-    #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
+    # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
     engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
 
-    # Establish a connection to PostgreSQL
+    # Connexion à PostgreSQL
     conn = engine.raw_connection()
     cur = conn.cursor()
 
@@ -107,6 +107,37 @@ def export_to_db(df, name):
         df.to_sql(name=name, con=engine, if_exists='replace')
         engine.dispose()
     print("* CRÉATION TABLE ",name, " TERMINEE *")
+
+def add_primary_key(table_name, pk_column):
+    """Ajoute une clé primaire avec reconnexion forcée"""
+
+    if TYPE != "distant":
+        print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
+        return
+
+    local_conn = None
+    local_cur = None
+    try:
+        # Reconnexion à chaque appel
+        local_engine = create_engine(
+            f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+        )
+        local_conn = local_engine.raw_connection()
+        local_cur = local_conn.cursor()
+
+        local_cur.execute("SET statement_timeout = 0;")
+        sql = f'ALTER TABLE {table_name} ADD PRIMARY KEY ({pk_column});'
+        local_cur.execute(sql)
+        local_conn.commit()
+
+    except Exception as e:
+        print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
+
+    finally:
+        if local_cur is not None and not local_cur.closed:
+            local_cur.close()
+        if local_conn is not None and not local_conn.closed:
+            local_conn.close()
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
@@ -301,22 +332,100 @@ external : """+str(leaking_tables['external'])+""" ("""+SOURCE_SPECS['outils']['
 
     return error_code, error_message
 
+def clean_BDD_donnees_attendues_CAN(path_file):
+    """
+    Corrige le format de la table BDD_donnees_attendues_CAN :
+    - Vérifie encodage (force en UTF-8 si besoin).
+    - Vérifie séparateur (corrige en ',').
+    - Ne garde que 'codes_SdC' + colonnes d'années.
+    - Supprime les autres colonnes.
+    - Réécrit le fichier source corrigé seulement si nécessaire.
+
+    Retourne :
+        - DataFrame corrigé
+        - liste de messages (si corrections faites)
+    """
+    messages = []
+    modified = False
+
+    encodings_to_try = ["utf-8", "iso-8859-1", "latin-1", "cp1252"]
+    separators_to_try = [",", ";", "\t"]
+
+    df = None
+    for enc in encodings_to_try:
+        for sep in separators_to_try:
+            try:
+                df_test = pd.read_csv(path_file, encoding=enc, sep=sep)
+                if df_test.shape[1] == 1 and sep != "\t":
+                    continue
+                df = df_test
+                if enc != "utf-8":
+                    messages.append(f"⚠️ Encodage corrigé : {enc} → utf-8")
+                    modified = True
+                if sep != ",":
+                    messages.append(f"⚠️ Séparateur corrigé : '{sep}' → ','")
+                    modified = True
+                break
+            except Exception:
+                continue
+        if df is not None:
+            break
+
+    if df is None:
+        raise ValueError(f"❌ Impossible de lire {path_file} avec les encodages/séparateurs testés")
+
+    # Vérification des colonnes
+    cols_to_keep = ["codes_SdC"] + [col for col in df.columns if re.fullmatch(r"\d{4}", str(col))]
+    cols_removed = [col for col in df.columns if col not in cols_to_keep]
+
+    if cols_removed:
+        messages.append(f"⚠️ Colonnes supprimées : {cols_removed}")
+        df = df[cols_to_keep]
+        modified = True
+
+    # Réécriture seulement si modifications
+    if modified:
+        try:
+            df.to_csv(path_file, index=False, encoding="utf-8", sep=",")
+            messages.append(f"✅ Fichier corrigé et anonymisé sauvegardé en UTF-8 avec séparateur ',' : {path_file}")
+        except Exception as e:
+            messages.append(f"❌ Impossible de sauvegarder le fichier corrigé et anonymisé : {e}")
+
+    return df, messages
+
+
 def test_check_external_data(leaking_tables):
     """
-        Print les résultats des tests effectués dans le fichier défini 
-        dans la spec : outils.external_data.validation.path
-        Retourne 0 si tout s'est bien passé, 1 sinon
+    Print les résultats des tests effectués dans le fichier défini 
+    dans la spec : outils.external_data.validation.path
+    Retourne 0 si tout s'est bien passé, 1 sinon
 
-        leaking_tables : list, fichiers non présents en local
+    leaking_tables : list, fichiers non présents en local
     """
     external_tables = SOURCE_SPECS['outils']['external_data']['tables']
     external_tables_existing = [t for t in external_tables if t not in leaking_tables]
 
     external_data_validation = SOURCE_SPECS['outils']['external_data']['validation']
     external_data_validation_path = external_data_validation['path']
-    external_data_validation_checks = [check for check in external_data_validation['checks'] if check['table'] not in leaking_tables]
+    external_data_validation_checks = [
+        check for check in external_data_validation['checks'] 
+        if check['table'] not in leaking_tables
+    ]
+    
+    # Nettoyage préalable de BDD_donnees_attendues_CAN au besoin
+    path_BDD_CAN = os.path.join(
+        SOURCE_SPECS['outils']['external_data']['path'], 
+        "BDD_donnees_attendues_CAN.csv"
+    )
+    if os.path.exists(path_BDD_CAN):
+        df_CAN, messages_CAN = clean_BDD_donnees_attendues_CAN(path_BDD_CAN)
+        for msg in messages_CAN:
+            print(msg)
+    else:
+        print(f"⚠ Le fichier BDD_donnees_attendues_CAN n'existe pas dans {path_BDD_CAN}")
 
-    # load des données externes
+    
+    # Chargement des données externes
     load_datas(
         external_tables_existing, 
         verbose=True, 
@@ -324,26 +433,31 @@ def test_check_external_data(leaking_tables):
     )
     
     all_passed = True
+
     for check in external_data_validation_checks:
         external_data_test_module = importlib.import_module(external_data_validation_path)
         check_function = getattr(external_data_test_module, check['function_name'])
-        message_error = check_function(donnees)
-        
-        if len(message_error) == 0:
-            print(f"{Fore.GREEN}", check['name'], ":", f"validé {Style.RESET_ALL}")
+        messages = check_function(donnees)
+
+        # Détermination du statut
+        if messages and all(str(msg).strip().startswith("✅") for msg in messages):
+            print(f"{Fore.GREEN}{check['name']} : validé{Style.RESET_ALL}")
+            # for msg in messages:
+            #     print(msg)
         else:
-            print(f"{Fore.RED}", check['name'], ":", f"échoué {Style.RESET_ALL}")
-            print(message_error)
-            print("\n")
+            print(f"{Fore.RED}{check['name']} : échoué{Style.RESET_ALL}")
+            for msg in messages:
+                print(msg)
             all_passed = False
 
+    # Message global
     if all_passed:
         error_code = 0
-        error_message = f"{Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
-    else :
-        error_code = 0
-        error_message = f"{Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
-    
+        error_message = f"✅ {Fore.GREEN}Les données externes testées sont conformes{Style.RESET_ALL}"
+    else:
+        error_code = 1
+        error_message = f"❌ {Fore.RED}Certaines des données externes ne sont pas conformes{Style.RESET_ALL}"
+
     return error_code, error_message
 
 def generate_leaking_df(df1, df2, id_name, columns_difference):
@@ -367,26 +481,26 @@ def generate_data_agreged(verbose=False):
     global donnees
 
     # Génération de action_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege']
-    df2 = donnees['action_realise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['action_realise_manquant_agrege'].copy()
     donnees['action_realise_agrege'] = generate_leaking_df(df1, df2, 'action_realise_id', columns_difference = ['id'])
     donnees['action_realise_agrege'] = donnees['action_realise_agrege'].reset_index()
 
     # Génération de action_synthétisé_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege']
-    df2 = donnees['action_synthetise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['action_synthetise_manquant_agrege'].copy()
     donnees['action_synthetise_agrege'] = generate_leaking_df(df1, df2, 'action_synthetise_id', columns_difference = ['id'])
     donnees['action_synthetise_agrege'] = donnees['action_synthetise_agrege'].reset_index()
 
     # Génération de intervention_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege']
-    df2 = donnees['intervention_realise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['intervention_realise_manquant_agrege'].copy()
     donnees['intervention_realise_agrege'] = generate_leaking_df(df1, df2, 'intervention_realise_id', columns_difference = ['id', 'action_realise_id'])
     donnees['intervention_realise_agrege'] = donnees['intervention_realise_agrege'].reset_index()
 
     # Génération de intervention_synthetise_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege']
-    df2 = donnees['intervention_synthetise_manquant_agrege']
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['intervention_synthetise_manquant_agrege'].copy()
     donnees['intervention_synthetise_agrege'] = generate_leaking_df(df1, df2, 'intervention_synthetise_id', columns_difference = ['id', 'action_synthetise_id'])
     donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
 
@@ -433,6 +547,7 @@ def create_category_nettoyage():
 
     export_to_db(df_nettoyage_intervention_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_intervention_realise.to_csv('entrepot_'+name_table+'_nettoyage.csv')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
 
     # nettoyage_utilisation_intrant_realise
     name_table = 'utilisation_intrant_realise'
@@ -440,12 +555,14 @@ def create_category_nettoyage():
 
     export_to_db(df_nettoyage_utilisation_intrant_realise, 'entrepot_'+name_table+'_nettoyage')
     #df_nettoyage_utilisation_intrant_realise.to_csv(prefixe_source+suffixe_table+'_realise.csv')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
 
     # nettoyage_utilisation_intrant_synthetise
     name_table = 'utilisation_intrant_synthetise'
     df_nettoyage_utilisation_intrant_synthetise = nettoyage.nettoyage_utilisation_intrant(donnees, saisie='synthetise', verbose=False, path_metadata='data/')
 
     export_to_db(df_nettoyage_utilisation_intrant_synthetise, 'entrepot_'+name_table+'_nettoyage')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
 
 def create_category_agregation():
@@ -458,55 +575,65 @@ def create_category_agregation():
         donnees
     )
     export_to_db(aggreged_utilisation_intrant_synthetise, 'entrepot_utilisation_intrant_synthetise_agrege')
+    add_primary_key('entrepot_utilisation_intrant_synthetise_agrege', 'id')
 
     # permet d'obtenir des tables agrégées pour avoir les niveaux supérieurs depuis les niveaux fins (raccourcis)
     aggreged_utilisation_intrant_realise = agregation.get_aggreged_from_utilisation_intrant_realise(
         donnees
     )
     export_to_db(aggreged_utilisation_intrant_realise, 'entrepot_utilisation_intrant_realise_agrege')
-
+    add_primary_key('entrepot_utilisation_intrant_realise_agrege', 'id')
     
     # toutes les infos manquantes agrégées depuis l'action
     aggreged_leaking_action_realise = agregation.get_leaking_aggreged_from_action_realise(
         aggreged_utilisation_intrant_realise, donnees
     )
     export_to_db(aggreged_leaking_action_realise, 'entrepot_action_realise_manquant_agrege')
+    add_primary_key('entrepot_action_realise_manquant_agrege', 'id')
 
     aggreged_leaking_action_synthetise = agregation.get_leaking_aggreged_from_action_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
     export_to_db(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
-
+    add_primary_key('entrepot_action_synthetise_manquant_agrege', 'id')
+    
 
     # toutes les infos manquantes agrégées depuis l'intervention 
     aggreged_leaking_intervention_realise = agregation.get_leaking_aggreged_from_intervention_realise(
         aggreged_utilisation_intrant_realise, donnees
     )
     export_to_db(aggreged_leaking_intervention_realise, 'entrepot_intervention_realise_manquant_agrege')
-
+    add_primary_key('entrepot_intervention_realise_manquant_agrege', 'id')
+    
     aggreged_leaking_intervention_synthetise = agregation.get_leaking_aggreged_from_intervention_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
     export_to_db(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
-
+    add_primary_key('entrepot_intervention_synthetise_manquant_agrege', 'id')
+    
 def create_category_restructuration():
     """
         Execute les requêtes pour créer les outils de restructuration
     """
     df_noeuds_synthetise_restructured = restructuration.restructuration_noeuds_synthetise(donnees)
     export_to_db(df_noeuds_synthetise_restructured, 'entrepot_noeuds_synthetise_restructure')
+    add_primary_key('entrepot_noeuds_synthetise_restructure', 'id')
 
     df_connection_synthetise_restructured = restructuration.restructuration_connection_synthetise(donnees)
     export_to_db(df_connection_synthetise_restructured, 'entrepot_connection_synthetise_restructure')
+    add_primary_key('entrepot_connection_synthetise_restructure', 'id')
 
     df_noeuds_realise_restructured = restructuration.restructuration_noeuds_realise(donnees)
     export_to_db(df_noeuds_realise_restructured, 'entrepot_noeuds_realise_restructure')
+    add_primary_key('entrepot_noeuds_realise_restructure', 'id')
     
     df_noeuds_realise_restructured = restructuration.restructuration_recolte_rendement_prix(donnees)
     export_to_db(df_noeuds_realise_restructured, 'entrepot_recolte_rendement_prix_restructure')
+    add_primary_key('entrepot_recolte_rendement_prix_restructure', 'id')
 
     df_plantation_perenne_synthetise_restructured = restructuration.restructuration_plantation_perenne_synthetise(donnees)
     export_to_db(df_plantation_perenne_synthetise_restructured, 'entrepot_plantation_perenne_synthetise_restructure')
+    add_primary_key('entrepot_plantation_perenne_synthetise_restructure', 'id')
 
     # Attention, en suivant parfaitement la convention de nommage, on aboutit à des noms de tables trop longs pour être pris en charge
     # par Postgres en tant que nom de table (taille maximum : 63), on raccourci donc : "composant_culture_concerne" en "ccc"
@@ -516,10 +643,11 @@ def create_category_restructuration():
         df_composant_culture_concerne_intervention_synthetise_restructured,
         'entrepot_ccc_intervention_synthetise_restructure'
     )
+    add_primary_key('entrepot_ccc_intervention_synthetise_restructure', 'id')
 
     df_intervention_synthetise_restructure = restructuration.restructuration_intervention_synthetise(donnees)
     export_to_db(df_intervention_synthetise_restructure, 'entrepot_intervention_synthetise_restructure')
-
+    add_primary_key('entrepot_intervention_synthetise_restructure', 'id')
 
 def create_category_indicateur_0():
     """
@@ -528,11 +656,16 @@ def create_category_indicateur_0():
     """
     _, csv_of_bad_synth = indicateur.extract_good_rotation_diagram(donnees)
     export_to_db(csv_of_bad_synth, 'entrepot_mauvaise_structure_de_rotation')
+    add_primary_key('entrepot_mauvaise_structure_de_rotation', 'index')
 
     df_get_connexion_weight_in_synth_rotation, df_get_couple_connexion_paths, list_synthe_somme_pas_a_un = indicateur.get_connexion_weight_in_synth_rotation(donnees)
     export_dict_to_catalogue(list_synthe_somme_pas_a_un, 'list_synthe_somme_pas_a_un')
+
     export_to_db(df_get_couple_connexion_paths, 'entrepot_couple_connexions_chemins_synthetise_rotation')
+    add_primary_key('entrepot_couple_connexions_chemins_synthetise_rotation', 'connexion_id, chemin_id')
+
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
+    add_primary_key('entrepot_poids_connexions_synthetise_rotation', 'connexion_id')
 
 def create_category_indicateur_1():
     """
@@ -542,6 +675,7 @@ def create_category_indicateur_1():
     """
     df_typologie_culture_CAN= indicateur.get_typologie_culture_CAN(donnees)
     export_to_db(df_typologie_culture_CAN, 'entrepot_typologie_can_culture')
+    add_primary_key('entrepot_typologie_can_culture', 'index')
 
 def create_category_indicateur_2():
     """
@@ -549,29 +683,35 @@ def create_category_indicateur_2():
     """
     # df_surface_connexion_synthetise = indicateur.get_surface_connexion_synthetise(donnees)
     # export_to_db(df_surface_connexion_synthetise, 'entrepot_surface_connection_synthetise')
-
+    
     df_utilsation_intrant_indicateur = indicateur.indicateur_utilisation_intrant(donnees)
     export_to_db(df_utilsation_intrant_indicateur, 'entrepot_utilisation_intrant_indicateur')
-    
+    add_primary_key('entrepot_utilisation_intrant_indicateur', 'id')
+
     df_identification_pz0 = indicateur.identification_pz0(donnees)
     export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
+    add_primary_key('entrepot_identification_pz0', 'entite_id')
 
     df_typologie_rotation_CAN_synthetise= indicateur.get_typologie_rotation_CAN_synthetise(donnees)
     export_to_db(df_typologie_rotation_CAN_synthetise, 'entrepot_typologie_can_rotation_synthetise')
+    add_primary_key('entrepot_typologie_can_rotation_synthetise', 'synthetise_id')
 
     df_typologie_assol_CAN_realise= indicateur.get_typologie_assol_CAN_realise(donnees)
     export_to_db(df_typologie_assol_CAN_realise, 'entrepot_typologie_assol_can_realise')
+    add_primary_key('entrepot_typologie_assol_can_realise', 'sdc_id')
 
     # TODO : on fait appel à une fonction "get_recolte_realise_outils_can" car l'importance pour tout le monde de bénéficier de cet outil a été identifié à posteriori.
     # Ce n'est pas idéal, il vaudrait mieux créer une fonction qui créer cette outil et faire appel à cet outil dans les outils can / le magasin can
     df_action_realise_rendement_total = outils_can.get_recolte_realise_outils_can(donnees)
     df_action_realise_rendement_total = df_action_realise_rendement_total.rename(columns={'action_id' : 'action_realise_id'})
     export_to_db(df_action_realise_rendement_total, 'entrepot_action_realise_rendement_total')
-    
+    add_primary_key('entrepot_action_realise_rendement_total', 'index')
+
     # TODO : cf commentaire plus haut : idem pour "get_recolte_synthetise_outils_can"
     df_action_synthetise_rendement_total = outils_can.get_recolte_synthetise_outils_can(donnees)
     df_action_synthetise_rendement_total = df_action_synthetise_rendement_total.rename(columns={'action_id' : 'action_synthetise_id'})
     export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
+    add_primary_key('entrepot_action_synthetise_rendement_total', 'index')
 
 
 def create_category_interoperabilite():
@@ -580,9 +720,11 @@ def create_category_interoperabilite():
     """
     df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
+    add_primary_key('entrepot_donnees_spatiales_commune_du_domaine', 'domaine_id')
 
     df_donnees_spatiales_coord_gps_du_domaine = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
+    add_primary_key('entrepot_donnees_spatiales_coord_gps_du_domaine', 'geopoint_id')
 
 def create_category_outils_can():
     """
@@ -592,54 +734,63 @@ def create_category_outils_can():
     df_dispositif_filtres_outils_can = outils_can.dispositif_filtres_outils_can(donnees)
     df_dispositif_filtres_outils_can.set_index('id', inplace=True)
     export_to_db(df_dispositif_filtres_outils_can, 'entrepot_dispositif_filtres_outils_can')
+    add_primary_key('entrepot_dispositif_filtres_outils_can', 'id')
 
     # création de l'outil permettant de filtrer les entités (domaine)
     df_domaine_filtres_outils_can = outils_can.domaine_filtres_outils_can(donnees)
     df_domaine_filtres_outils_can.set_index('id', inplace=True)
     export_to_db(df_domaine_filtres_outils_can, 'entrepot_domaine_filtres_outils_can')
+    add_primary_key('entrepot_domaine_filtres_outils_can', 'id')
 
     df_parcelle_non_ratachee_outils_can = outils_can.get_parcelles_non_rattachees_outils_can(donnees)
     df_parcelle_non_ratachee_outils_can.set_index('id', inplace=True)
     export_to_db(df_parcelle_non_ratachee_outils_can, 'entrepot_parcelle_non_rattachee_outils_can')
+    add_primary_key('entrepot_parcelle_non_rattachee_outils_can', 'id')
 
     df_culture_outils_can = outils_can.get_culture_outils_can(donnees)
     df_culture_outils_can.set_index('id', inplace=True)
     export_to_db(df_culture_outils_can, 'entrepot_culture_outils_can')
+    add_primary_key('entrepot_culture_outils_can', 'id')
 
     df_intervention_realise_outils_can = outils_can.get_intervention_realise_outils_can(donnees)
     df_intervention_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_intervention_realise_outils_can, 'entrepot_intervention_realise_outils_can')
+    add_primary_key('entrepot_intervention_realise_outils_can', 'id')
 
     df_intervention_synthetise_outils_can = outils_can.get_intervention_synthetise_outils_can(donnees)
     df_intervention_synthetise_outils_can.set_index('id', inplace=True)
     export_to_db(df_intervention_synthetise_outils_can, 'entrepot_intervention_synthetise_outils_can')
+    add_primary_key('entrepot_intervention_synthetise_outils_can', 'id')
 
     df_recolte_outils_can = outils_can.get_recolte_outils_can(donnees)
     export_to_db(df_recolte_outils_can, 'entrepot_recolte_outils_can')
+    add_primary_key('entrepot_recolte_outils_can', 'action_id, rendement_unite, destination')
 
     df_zone_outils_can = outils_can.get_zone_realise_outils_can(donnees)
     df_zone_outils_can.set_index('id', inplace=True)
     export_to_db(df_zone_outils_can, 'entrepot_zone_realise_outils_can')
+    add_primary_key('entrepot_zone_realise_outils_can', 'id')
 
     df_sdc_realise_outils_can = outils_can.get_sdc_realise_outils_can(donnees)
     df_sdc_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_sdc_realise_outils_can, 'entrepot_sdc_realise_outils_can')
+    add_primary_key('entrepot_sdc_realise_outils_can', 'id')
 
     df_parcelle_realise_outils_can = outils_can.get_parcelle_realise_outils_can(donnees)
     df_parcelle_realise_outils_can.set_index('id', inplace=True)
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
+    add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
 
 def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
+    # df_identification_pz0 = indicateur.identification_pz0(donnees)
+    # export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
+    # add_primary_key('entrepot_identification_pz0', 'entite_id')
 
-    df_get_connexion_weight_in_synth_rotation, _, _ = indicateur.get_connexion_weight_in_synth_rotation(donnees)
-
-    export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
-
-    print('Fin du test de poids_connexions_synthetise_rotation')
+    # print('Fin du test de entrepot_identification_pz0')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -677,7 +828,7 @@ options = {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
-        "Télécharger une catégorie" : [],  
+        "Télécharger une catégorie" : [],
         "Quitter" : []
     }
 }
@@ -714,6 +865,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
     if choice_key == "Quitter":
         print("Au revoir !")
         break
+
     if choice_key == 'Tout générer':
 
         # Téléchargement et chargement des données
