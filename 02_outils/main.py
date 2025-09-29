@@ -422,7 +422,7 @@ def test_check_external_data(leaking_tables):
         for msg in messages_CAN:
             print(msg)
     else:
-        print(f"⚠ Le fichier BDD_donnees_attendues_CAN n'existe pas dans {path_BDD_CAN}")
+        print(f"⚠️ Le fichier BDD_donnees_attendues_CAN n'existe pas dans {path_BDD_CAN}")
 
     
     # Chargement des données externes
