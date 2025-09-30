@@ -438,6 +438,10 @@
 				"file_name" : "sol_arvalis",
 				"category" : "autre"
 			},
+			"levier":{
+				"file_name" : "levier",
+				"category" : "autre"
+      		},
 			"criteres_selection":{
 				"file_name" : "criteres_selection",
 				"category" : "autre"
@@ -635,18 +639,21 @@
             },
             "test" : {
                 "function_name" : "create_category_test",
-                "dependances" : [
-					{
-                    	"source" : "outils", 
-						"category": "restructuration"
-					}
-				],
+                "dependances" : [{
+						"source" : "outils", 
+						"category": "agregation_complet"
+					}],
                 "generated" : [
-                    "poids_connexions_synthetise_rotation"
                 ],
                 "entrepot_dependances" : [
 					"connection_synthetise",
-                    "noeuds_synthetise"
+                    "noeuds_synthetise",
+					"domaine",
+					"dispositif", 
+					"sdc", 
+					"synthetise",
+					"parcelle",
+					"zone"
                 ], 
 				"need_performance" : "False"
             }

@@ -2542,14 +2542,17 @@ def get_culture_outils_can(
 
     return res.reset_index().rename(columns={'culture_id' : 'id'})
 
-
-def get_recolte_realise_outils_can(
+def get_recolte_rendement_prix_realise_outils_can(
         donnees
 ):
     """
-    Permet d'obtenir les informations sur les récoltes en réalisé, en ajustant les rendements et en prenant en compte
+    Permet d'obtenir les informations sur les récoltes rendement_prix en réalisé, en ajustant les rendements et en prenant en compte
     les mélanges d'espèces et de variétés. La fonction corrige les surfaces relatives des récoltes et calcule des valeurs
     agrégées par destination et unité de rendement.
+    
+    Pour apréhender ce que représentent les données retournées par cette fonction, il suffit de se rendre sur Agrosyst. Dans une 
+    opération de récolte, il s'agit de l'encart à droite. La fonction get_recolte_realise_outils_can effectue l'étape d'après, c'est à dire,
+    après corrections des problèmes historiques effectuées, fusion des informations par action_id, unité de rendement et destination. 
 
     Args:
         donnees (dict): 
@@ -2669,8 +2672,64 @@ def get_recolte_realise_outils_can(
     final_realise.loc[final_realise_2.index, 'autoconsommation_pct_corr'] = final_realise_2['autoconsommation_pct']
     final_realise.loc[final_realise_2.index, 'nonvalorisation_pct_corr'] = final_realise_2['nonvalorisation_pct']
 
+    return final_realise[[
+        'destination', 
+        'rendement_unite', 
+        'action_id',
+        'rendement_moyen_corr', 
+        'rendement_median_corr',
+        'rendement_min_corr', 
+        'commercialisation_pct_corr',
+        'autoconsommation_pct_corr', 
+        'non_valorisation_pct_corr'
+    ]]
+
+        
+def get_recolte_realise_outils_can(
+        donnees
+):
+    """
+    Permet d'obtenir les informations sur les récoltes en réalisé, en ajustant les rendements et en prenant en compte
+    les mélanges d'espèces et de variétés. La fonction corrige les surfaces relatives des récoltes et calcule des valeurs
+    agrégées par destination et unité de rendement.
+
+    Pour apréhender ce que représentent les données retournées par cette fonction, il suffit de se rendre sur Agrosyst. Dans une 
+    opération de récolte, il s'agit de l'encart à gauche. La fonction get_recolte_rendement_prix_realise_outils_can effectue l'étape 
+    d'avant, c'est à dire la correction des données historiques (surfaces relatives ne sommant pas à 100, surfaces relatives nulles).
+    
+    Args:
+        donnees (dict): 
+            Un dictionnaire contenant plusieurs DataFrames nécessaires à l'agrégation des informations sur les récoltes réalisées :
+            - 'composant_culture' : Données des composants des cultures.
+            - 'culture' : Données des cultures associées aux composants.
+            - 'composant_culture_concerne_intervention_realise' : Données des composants concernés par les interventions réalisées.
+            - 'recolte_rendement_prix' : Données des rendements des récoltes.
+            - 'recolte_rendement_prix_restructure' : Données des rendements restructurés.
+            - 'action_realise' : Données des actions réalisées associées aux récoltes.
+
+    Returns:
+        pd.DataFrame:
+            Un DataFrame avec des informations agrégées par destination, unité de rendement et action réalisée :
+            - `destination` : La destination des récoltes.
+            - `rendement_unite` : L'unité de mesure du rendement.
+            - `action_id` : L'identifiant de l'action réalisée.
+            - `rendement_moy_corr`, `rendement_median_corr`, `rendement_max_corr`, `rendement_min_corr` : Rendements corrigés par surface relative.
+            - `commercialisation_pct_corr`, `autoconsommation_pct_corr`, `nonvalorisation_pct_corr` : Pourcentages corrigés par surface relative de commercialisation, autoconsommation, et non valorisation.
+
+    Exemple d'utilisation :
+        donnees = {
+            'composant_culture': pd.DataFrame(...),
+            'culture': pd.DataFrame(...),
+            'composant_culture_concerne_intervention_realise': pd.DataFrame(...),
+            'recolte_rendement_prix': pd.DataFrame(...),
+            'recolte_rendement_prix_restructure': pd.DataFrame(...),
+            'action_realise': pd.DataFrame(...),
+        }
+        result = get_recolte_realise_outils_can(donnees)
+    """
+
     # on groupe pour obtenir un seul résultat par action / destination / rendement unite
-    final_realise = final_realise.groupby(['destination', 'rendement_unite', 'action_id']).agg({
+    final_realise = get_recolte_rendement_prix_realise_outils_can(donnees).groupby(['destination', 'rendement_unite', 'action_id']).agg({
         'rendement_moy_corr' : 'sum',
         'rendement_median_corr' : 'sum',
         'rendement_max_corr' : 'sum',
