@@ -13,7 +13,9 @@ def check_BDD_donnees_attendues_CAN(donnees):
        - 3 PZ0 espacés de 2 ans -> OK
        - 2 PZ0 espacés de 1 ou 2 ans -> OK
        - 1 seul PZ0 -> OK
+       - 4 PZ0 espacés de maximum 4 ans et sans 2011 -> OK
        - sinon -> incohérence
+       - 3 PZ0 qui ont 5 PZ0 mais validés quand memes (cf mail Mathieu Babiar 26/09)
     
     Retourne :
         - une liste de messages (erreurs/alertes/validations)
@@ -66,11 +68,25 @@ def check_BDD_donnees_attendues_CAN(donnees):
                 (error_ref["nb_pz0"] == 3) & (error_ref["diff_campagne_pz0"] == 2)
                 | (error_ref["nb_pz0"] == 2) & (error_ref["diff_campagne_pz0"].isin([1, 2]))
                 | (error_ref["nb_pz0"] == 1)
+                # Nouveau cas : 4 PZ0 espacés de max 4 ans ET sans 2011
+                | (
+                    (error_ref["nb_pz0"] == 4)
+                    & (error_ref["diff_campagne_pz0"] <= 4)
+                    & (
+                        ~error_ref["campagnes_pz0"].apply(
+                            lambda x: "2011" in str(x)
+                        )
+                    )
+                )
             )
         ]
 
+        # Exclusion des 3 codes autorisés "normaux" autorisés (cf mail Mathieu Babiar 26/09)
+        codes_acceptes = {"VIF25178", "VIF25650", "VIF26223"}
+        incoherences = incoherences[~incoherences["codes_SdC"].isin(codes_acceptes)]
+
         if not incoherences.empty:
-            messages.append("⚠ Incohérences PZ0 détectées :")
+            messages.append("⚠️ Incohérences PZ0 détectées :")
             messages.append(incoherences.to_string(index=False))
 
     # Message de validation si aucun problème 

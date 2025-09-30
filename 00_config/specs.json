@@ -78,7 +78,6 @@
 			"station_meteo",
 			"levier",
 			"texture_sol",
-			"texture_sol_arvalis",
 			"fertilisation_organique",
 			"fertilisation_minerale"
 		],
@@ -449,10 +448,6 @@
 			},
 			"prix_recolte":{
 				"file_name" : "prix_recolte",
-				"category" : "autre"
-			},
-			"texture_sol_arvalis":{
-				"file_name" : "texture_sol_arvalis",
 				"category" : "autre"
 			},
 			"texture_sol":{
