@@ -453,6 +453,22 @@
 			"texture_sol":{
 				"file_name" : "texture_sol",
 				"category" : "autre"
+			},
+			"fertilisation_minerale":{
+				"file_name" : "fertilisation_minerale",
+				"category" : "autre"
+			},
+			"fertilisation_organique":{
+				"file_name" : "fertilisation_organique",
+				"category" : "autre"
+			},
+			"dose_ref_par_groupe_cible":{
+				"file_name" : "dose_ref_par_groupe_cible",
+				"category" : "autre"
+			},
+			"destination_valorisation":{
+				"file_name" : "destination_valorisation",
+				"category" : "autre"
 			}
 		}
 	},
