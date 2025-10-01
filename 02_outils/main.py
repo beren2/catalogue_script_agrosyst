@@ -209,7 +209,7 @@ def copy_table_to_csv(table_name, csv_path, csv_name):
                 cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
     update_local_version_table(table_name)
 
-def copy_tables_to_csv(table_names, csv_path, verbose=False):
+def copy_tables_to_csv(table_names, csv_path, verbose=False, categ_name=None):
     """
         permet de copier un ensemble de tables depuis la base de données distance dans des fichiers local au csv_path
     """
@@ -217,14 +217,14 @@ def copy_tables_to_csv(table_names, csv_path, verbose=False):
     for table_name in pbar : 
         if(verbose) :
             print("- ", table_name)
-        pbar.set_description(f"Téléchargement de {table_name}")
+        pbar.set_description(f"Téléchargement de {categ_name if categ_name is not None else table_names}")
         copy_table_to_csv('entrepot_'+table_name, csv_path, table_name)
 
-def download_datas(desired_tables, verbose=False):
+def download_datas(desired_tables, verbose=False, categ_name=None):
     """
         Télécharge toutes les données dans la liste tables en local
     """
-    copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
+    copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose, categ_name=categ_name)
 
 def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv'):
     """ permet de charger les tables dans la variable globale donnees"""
@@ -806,11 +806,14 @@ steps = [
 ]
 
 options_categories = {}
+options_categories['Télécharger tout les outils'] = steps
 
 for source_key, source in SOURCE_SPECS.items():
     if(source_key == 'outils'):
         for categorie_key in source['categories']:
-            options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'category' : categorie_key}
+            options_categories[categorie_key] = [
+                {'source' : source_key, 'category' : categorie_key}
+                ]
             categorie = source['categories'][categorie_key]
             dependances = categorie['dependances']
 
@@ -828,7 +831,7 @@ options = {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
-        "Télécharger une catégorie" : [],
+        "Télécharger les outils" : [],
         "Quitter" : []
     }
 }
@@ -919,32 +922,33 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                             load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
         else:
             time.sleep(1)
-    elif choice_key == 'Télécharger une catégorie':
+    elif choice_key == 'Télécharger les outils':
         print("")
         print("Veuillez choisir la catégorie à télécharger")
         print("")
         for i, option_category in enumerate(options_categories.keys()):
                     print(f"{i + 1}. {option_category}")
+                    
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
-        choosen_value = list(options_categories.values())[choice - 1]
-        choosen_source = choosen_value['source']
-        choosen_category = choosen_value['category']
-        choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
-        choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
+        choosen_values = list(options_categories.values())[choice - 1]
 
-        if(choosen_category == 'agregation_complet'):
-            # Attention, dans ce cas les données à télécharger ne sont pas celles stockées, il faut préalablement les reconstituer
-            # Chargement de toutes les données incomplètes
-            print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
-            choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
-            for choosen_dependance in choosen_dependances:
-                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
-                if(len(categorie_dependance['generated']) != 0):
-                    if(categorie_dependance['generated'][0] not in donnees):
-                        print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                        load_datas(categorie_dependance['generated'], verbose=False)
-                        print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                            
+        for step in choosen_values:
+            choosen_source = step['source']
+            choosen_category = step['category']
+            choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
+            choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
+
+            if choosen_category == 'agregation_complet':
+                print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
+                choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
+                for choosen_dependance in choosen_dependances:
+                    categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
+                    if(len(categorie_dependance['generated']) != 0):
+                        if(categorie_dependance['generated'][0] not in donnees):
+                            print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
+                            load_datas(categorie_dependance['generated'], verbose=False)
+                            print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
+
                 print("* FIN DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES*")
                 print("* DÉBUT GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
                 generate_data_agreged(verbose=False)
@@ -953,8 +957,9 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 download_data_agreged(verbose=False)
                 print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES AGREGATION TOTAL *")
 
-        else :
-            download_datas(choosen_generated, verbose=False)
+            else:
+                download_datas(choosen_generated, verbose=False, categ_name=choosen_category)
+            
     elif choice_key == "Générer une catégorie":
         print("")
         print("Veuillez choisir la catégorie à générer")
