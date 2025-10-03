@@ -209,7 +209,7 @@ def copy_table_to_csv(table_name, csv_path, csv_name):
                 cursor.copy_expert("COPY "+table_name+" TO STDOUT WITH CSV DELIMITER ',' HEADER", file=f)
     update_local_version_table(table_name)
 
-def copy_tables_to_csv(table_names, csv_path, verbose=False):
+def copy_tables_to_csv(table_names, csv_path, verbose=False, categ_name=None):
     """
         permet de copier un ensemble de tables depuis la base de données distance dans des fichiers local au csv_path
     """
@@ -217,14 +217,14 @@ def copy_tables_to_csv(table_names, csv_path, verbose=False):
     for table_name in pbar : 
         if(verbose) :
             print("- ", table_name)
-        pbar.set_description(f"Téléchargement de {table_name}")
+        pbar.set_description(f"Téléchargement de {categ_name or table_name}")
         copy_table_to_csv('entrepot_'+table_name, csv_path, table_name)
 
-def download_datas(desired_tables, verbose=False):
+def download_datas(desired_tables, verbose=False, categ_name=None):
     """
         Télécharge toutes les données dans la liste tables en local
     """
-    copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose)
+    copy_tables_to_csv(desired_tables, DATA_PATH, verbose=verbose, categ_name=categ_name)
 
 def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv'):
     """ permet de charger les tables dans la variable globale donnees"""
@@ -806,11 +806,12 @@ steps = [
 ]
 
 options_categories = {}
-
 for source_key, source in SOURCE_SPECS.items():
     if(source_key == 'outils'):
         for categorie_key in source['categories']:
-            options_categories[categorie_key +' ('+ source_key+')'] = {'source' : source_key, 'category' : categorie_key}
+            options_categories[categorie_key] = [
+                {'source' : source_key, 'category' : categorie_key}
+                ]
             categorie = source['categories'][categorie_key]
             dependances = categorie['dependances']
 
@@ -828,7 +829,7 @@ options = {
         "Tout générer" : [],
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
-        "Télécharger une catégorie" : [],
+        "Télécharger les outils" : [],
         "Quitter" : []
     }
 }
@@ -919,32 +920,37 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                             load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
         else:
             time.sleep(1)
-    elif choice_key == 'Télécharger une catégorie':
+    elif choice_key == 'Télécharger les outils':
         print("")
         print("Veuillez choisir la catégorie à télécharger")
         print("")
+
+        options_categories = {'Télécharger tous les outils': steps, 
+                              **options_categories}
+        
         for i, option_category in enumerate(options_categories.keys()):
                     print(f"{i + 1}. {option_category}")
+                    
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_value = list(options_categories.values())[choice - 1]
-        choosen_source = choosen_value['source']
-        choosen_category = choosen_value['category']
-        choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
-        choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
 
-        if(choosen_category == 'agregation_complet'):
-            # Attention, dans ce cas les données à télécharger ne sont pas celles stockées, il faut préalablement les reconstituer
-            # Chargement de toutes les données incomplètes
-            print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
-            choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
-            for choosen_dependance in choosen_dependances:
-                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
-                if(len(categorie_dependance['generated']) != 0):
-                    if(categorie_dependance['generated'][0] not in donnees):
-                        print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                        load_datas(categorie_dependance['generated'], verbose=False)
-                        print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                            
+        for categorie_step in choosen_value:
+            choosen_source = categorie_step['source']
+            choosen_category = categorie_step['category']
+            choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
+            choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
+
+            if choosen_category == 'agregation_complet':
+                print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
+                choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
+                for choosen_dependance in choosen_dependances:
+                    categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
+                    if(len(categorie_dependance['generated']) != 0):
+                        if(categorie_dependance['generated'][0] not in donnees):
+                            print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
+                            load_datas(categorie_dependance['generated'], verbose=False)
+                            print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
+
                 print("* FIN DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES*")
                 print("* DÉBUT GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
                 generate_data_agreged(verbose=False)
@@ -953,8 +959,9 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 download_data_agreged(verbose=False)
                 print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES AGREGATION TOTAL *")
 
-        else :
-            download_datas(choosen_generated, verbose=False)
+            else:
+                download_datas(choosen_generated, verbose=False, categ_name=choosen_category)
+            
     elif choice_key == "Générer une catégorie":
         print("")
         print("Veuillez choisir la catégorie à générer")
@@ -965,61 +972,39 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
         choice = int(input("Entrez votre choix (1, 2 ...) : "))
         choosen_value = list(options_categories.values())[choice - 1]
-        choosen_source = choosen_value['source']
-        choosen_category = choosen_value['category']
-        choosen_function = eval(str(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']))
-        choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
 
-        # Vérification que toutes les données sont présentes pour la catégorie courante
-        error_code_findable, error_message_findable = test_all_findable_for_category(choosen_category)
-        print(error_message_findable)
-        
-        if(error_code_findable == 0):
-            for choosen_dependance in choosen_dependances:
-                categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
-                if(len(categorie_dependance['generated']) != 0):
+        for categorie_step in choosen_value:
+            choosen_source = categorie_step['source']
+            choosen_category = categorie_step['category']
+            choosen_function = eval(str(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']))
+            choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
 
-                    # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
-                    errors = check_existing_files(categorie_dependance['generated'])
-                    if(errors == 1):
-                        break
-                    
-                    if(categorie_dependance['generated'][0] not in donnees):
-                        print("* DÉBUT DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
-                        load_datas(categorie_dependance['generated'], verbose=False)
-                        print("* FIN DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
+            # Vérification que toutes les données sont présentes pour la catégorie courante
+            error_code_findable, error_message_findable = test_all_findable_for_category(choosen_category)
+            print(error_message_findable)
             
-            if(choosen_category == 'agregation_complet'):
-                # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
-                generate_data_agreged(verbose=False)
-                download_data_agreged(verbose=False)
-            elif(choosen_category == 'test'):
-                print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
-                load_ref()
-                print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
-                load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
-                print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
+            if(error_code_findable == 0):
+                for choosen_dependance in choosen_dependances:
+                    categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
+                    if(len(categorie_dependance['generated']) != 0):
 
-                print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
-                choosen_function()
-                if(TYPE == 'distant'):
-                    download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
-                print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
-            else :
-                # on vérifie que les données n'ont pas été déjà chargées
-                if('domaine' not in donnees):
+                        # on check si tous les fichiers requis sont bien présents, sinon on arrête et on fournis la liste des absents.
+                        errors = check_existing_files(categorie_dependance['generated'])
+                        if(errors == 1):
+                            break
+                        
+                        if(categorie_dependance['generated'][0] not in donnees):
+                            print("* DÉBUT DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
+                            load_datas(categorie_dependance['generated'], verbose=False)
+                            print("* FIN DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
+                
+                if(choosen_category == 'agregation_complet'):
+                    # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
+                    generate_data_agreged(verbose=False)
+                    download_data_agreged(verbose=False)
+                elif(choosen_category == 'test'):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                    load_datas_entrepot(
-                        list(SOURCE_SPECS['entrepot']['tables'].keys()), 
-                        verbose=False,
-                        need_perf=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance']=="True")
-                    )
+                    load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
                     load_ref()
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
@@ -1027,14 +1012,38 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
-                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False,path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                     print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
-                    
-                print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
-                choosen_function()
-                if(TYPE == 'distant'):
-                    download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
-                print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
+
+                    print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
+                    choosen_function()
+                    if(TYPE == 'distant'):
+                        download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
+                    print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
+                else :
+                    # on vérifie que les données n'ont pas été déjà chargées
+                    if('domaine' not in donnees):
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+                        load_datas_entrepot(
+                            list(SOURCE_SPECS['entrepot']['tables'].keys()), 
+                            verbose=False,
+                            need_perf=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance']=="True")
+                        )
+                        load_ref()
+                        print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
+                        load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                        print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+                        load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                        load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                        load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False,path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
+                        print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
+                        
+                    print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
+                    choosen_function()
+                    if(TYPE == 'distant'):
+                        download_datas(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated'])
+                    print("* FIN GÉNÉRATION ", choosen_source, choosen_category," *")
 
     elif choice_key == 'Tester la cohérence des données externes':
         print("* DÉBUT DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
