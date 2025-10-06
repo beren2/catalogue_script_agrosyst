@@ -102,7 +102,7 @@ DROP TABLE IF EXISTS entrepot_modele_decisionnel_strategie CASCADE;
 CREATE TABLE entrepot_modele_decisionnel_strategie AS
 select 
 s.topiaid id,
-reflevier.topiaid levier_id,
+levier.id levier_id,
 -- reflevier.lever levier,
 -- reflevier.strategytype type_strategie,
 s.explanation explication,
@@ -110,7 +110,7 @@ s.explanation explication,
 mdm.id modele_decisionnel_maitrise_id
 from strategy s
 join entrepot_modele_decisionnel_maitrise mdm on mdm.id = s."section"
-join refstrategylever reflevier on s.refstrategylever = reflevier.topiaid ;
+join entrepot_levier levier on s.refstrategylever = levier.id ;
 
 DO $$
 BEGIN

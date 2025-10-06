@@ -26,6 +26,6 @@ Afin de tester la génération de votre nouveau magasin, vous pouvez ajouter les
 
 5. Documentation 
 
-Vous n'avez plus qu'à documenter les catégories, tables et colonne de votre magasin. Attention à bien cocher la colonne *generated* dans **entrepot_table**. 
+Vous n'avez plus qu'à documenter les catégories, tables et colonnes de votre magasin. Attention à bien cocher la colonne *generated* dans **entrepot_table**. 
 
 Si votre magasin mobilise des colonnes déjà documentées par ailleurs (dans des outils ou dans l'entrepôt), vous pouvez utiliser la colonne *reference_column_id* pour y faire référence, Datagroyst affichera automatiquement l'explication présente pour cette colonne.
