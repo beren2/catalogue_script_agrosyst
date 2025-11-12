@@ -12,7 +12,6 @@ aa.yealdunit semence_objectif_rendement_unite,
 aa.tillagedepth profondeur_travail_sol,
 aa.othersettingtool autre_outils_reglage,
 -- Application de produits avec AMM 
-aa.proportionoftreatedsurface surface_traite_pct,
 aa.boiledquantity bouillie_volume_moy_hl,
 aa.boiledquantitypertrip bouillie_volume_moy_parvoyage_hl,
 aa.antidriftnozzle buse_anti_derive_pulverisateur,
