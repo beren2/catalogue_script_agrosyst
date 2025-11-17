@@ -543,8 +543,9 @@ END $$;
 
 DROP TABLE IF EXISTS entrepot_BC_sdc_rendement;
 CREATE TABLE entrepot_BC_sdc_rendement AS
+-- dans le cas le yield loss est accessible, on le prend
 select 
-coalesce(yl.topiaid,'') ||''|| coalesce(yi.topiaid,'') id,
+	yl.topiaid id,
 case 
 	when yl.yieldobjective is not null then trad1.traduction_interface
 	when yl.yieldobjectiveint is not null then trad2.traduction_interface
@@ -553,7 +554,7 @@ yl.cause1 as cause_1,
 yl.cause2 as cause_2,
 yl.cause3 as cause_3,
 replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
-replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
+replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
 rgs.topiaid as BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
@@ -563,7 +564,27 @@ join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
-where gs.sector <> 'VITICULTURE' and (yi.topiaid is not null or yl.topiaid is not null)
+where gs.sector <> 'VITICULTURE' and yl.topiaid is not null
+union
+-- dans le cas où il n'y a pas de yieldloss mais uniquement un yield_info, on recréer un yieldlos à partir du yieldinfo.
+select 
+	'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(yi.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
+null as objectif_rendement_atteint,
+null as cause_1,
+null as cause_2,
+null as cause_3,
+null AS qualite_commentaire,
+replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
+rgs.topiaid as BC_sdc_generalites_id
+from reportgrowingsystem rgs
+join growingsystem gs on gs.topiaid = rgs.growingsystem
+left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
+left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
+join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
+-- traductions des libelles
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
+left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
+where gs.sector <> 'VITICULTURE' and (yi.topiaid is not null and yl.topiaid is null)
 union 
 select 
 'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(rgs.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
@@ -572,7 +593,7 @@ rgs.vitilosscause1 as cause_1,
 rgs.vitilosscause2 as cause_2,
 rgs.vitilosscause3 as cause_3,
 replace(replace(rgs.vitiyieldquality,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
-replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendementqualite_commentaire_global,
+replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
 rgs.topiaid BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
