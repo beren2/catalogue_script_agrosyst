@@ -36,7 +36,7 @@ aa.azotequantity azote_qte_kg_ha,
 aa.pasturetype type_paturage,
 aa.pastureload paturage_tete_ha,
 aa.pasturingatnight paturage_presence_nuit,
-aa.cattlecode atelier_elevage_code,
+aa.cattlecode troupeau_code,
 --aa.deepness, = la profondeur de semis avant le local a intrant qui a été déplacé aux usages 
 eir.id intervention_realise_id
 from abstractaction aa
