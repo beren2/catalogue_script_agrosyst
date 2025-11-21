@@ -3,7 +3,7 @@ CREATE TABLE entrepot_atelier_elevage AS
   l.topiaid as id,
   l.code,
   d.campagne,
-  r.animaltype as type_animaux,
+  r.animaltype as type_elevage, -- renommé type_animaux en type_elevage 17-11-25
   l.livestockunitsize as taille_elevage,
   r.animalpopulationunits as taille_elevage_unite,
   l.permanentgrasslandarea as prairie_permanente_paturee_ha,

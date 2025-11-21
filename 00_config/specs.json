@@ -79,7 +79,9 @@
 			"station_meteo",
 			"texture_sol",
 			"fertilisation_organique",
-			"fertilisation_minerale"
+			"fertilisation_minerale",
+			"aliment_ration",
+			"troupeau"
 		],
 		"tables": {
 			"semence" : {
@@ -468,6 +470,14 @@
 			},
 			"destination_valorisation":{
 				"file_name" : "destination_valorisation",
+				"category" : "autre"
+			},
+			"aliment_ration":{
+				"file_name" : "aliment_ration",
+				"category" : "autre"
+			},
+			"troupeau":{
+				"file_name" : "troupeau",
 				"category" : "autre"
 			}
 		}

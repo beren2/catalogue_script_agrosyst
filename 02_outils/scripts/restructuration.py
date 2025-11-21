@@ -471,3 +471,42 @@ def restructuration_noeuds_realise(donnees):
 
     return final
 
+
+# def restructuration_noeuds_realise_BIS(donnees):
+#     """
+#         fonction permettant d'obtenir pour un noeuds en réalisé, le noeuds précédent si celui-ci existe. 
+#         C'est à dire qu'on obtient le noeuds précédent si il existe sur la même zone, ou qu'on obtient le 
+#         dernier noeuds de la zone précédent si le noeuds est le premier et que la zone précédente 
+#         (liée avec le zone_code) existe. LIEN ENTRE PARCELLES ET ZONES
+#     """
+#     donnees = donnees.copy()
+#     node = donnees['noeuds_realise'].rename(columns={
+#         'id':'noeud_realise_id'})
+#     zone = donnees['zone'][['id','code','nom','campagne','surface','parcelle_id']].rename(columns={
+#         'id':'zone_id',
+#         'code':'zone_code',
+#         'nom':'zone_nom',
+#         'surface':'zone_surface'})
+#     parcelle = donnees['parcelle'][['id','code','nom','surface','sdc_id']].rename(
+#         columns={ # ajout 'campagne' 'domaine_id' ?
+#         'id':'parcelle_id',
+#         'code':'parcelle_code',
+#         'nom':'parcelle_nom',
+#         'surface':'parcelle_surface'})
+#     sdc = donnees['sdc'][['id','code','nom','code_dephy']].rename(columns={ # ajout 'campagne' ?
+#         'id':'sdc_id',
+#         'code':'sdc_code',
+#         'nom':'sdc_nom'})
+#     rest_node = restructuration_noeuds_realise(donnees[['noeuds_realise','zone']])
+#     rest_node = rest_node.rename(columns={'id':'noeud_realise_id'})
+#     # Besoin de donnees['intervention_realise']
+#     list_zone_with_at_least_one_interv = node.loc[node['noeud_realise_id'].isin(set(donnees['intervention_realise'][['noeud_realise_id']])), 'zone_id'].unique()
+
+
+
+#     zone = zone.loc[zone['zone_id'].isin(list_zone_with_at_least_one_interv)]
+#     # Attention inner merge pour n'avoir que les noeud de la sélection des zones
+#     df = node.merge(zone, on='zone_id', how='inner')
+#     df = df.merge(parcelle, on='parcelle_id', how='left')
+#     df = df.merge(sdc, on='sdc_id', how='left')
+#     return df
