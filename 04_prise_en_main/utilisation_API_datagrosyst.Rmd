@@ -54,25 +54,6 @@ path_download <- "/chemin/vers/ton/dossier/de/Téléchargements"       # Modifie
 path_workdirectory <- "/chemin/vers/ton/Workdirectory"               # Modifier ici le chemin vers votre dossier de travail
 ```
 
-```{r}
-url <- "https://agrosyst.fr/datagrosyst-tests/export"
-
-# La liste des tables à récupérer
-tables <- c("domaine", "parcelle") # À modifier
-
-# La structure de la requête
-# Modifier "mail" et "token" avec vos informations personnelles disponibles dans le profil de votre compte Datagrosyst
-data_request <- list(
-  mail = "thomas.badie@inrae.fr",      # À modifier
-  token = "6eb61f6f-88eb-4570-b7c0-4b957c18c716",    # À modifier
-  tables = tables
-)
-
-# Les chemins vers vos dossiers locaux
-path_download <- "/home/administrateur/Téléchargements"       # Modifier ici le chemin vers votre dossier de téléchargements
-path_workdirectory <- "/home/administrateur/Bureau/test"               # Modifier ici le chemin vers votre dossier de travail
-```
-
 ## Envoyé la demande à Datagrosyst grace à `httr`
 
 ```{r}
