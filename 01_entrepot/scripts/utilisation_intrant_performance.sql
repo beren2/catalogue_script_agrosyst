@@ -255,7 +255,7 @@ SELECT
     qsa_spirotetramate,
     qsa_spirotetramate_hts,
     qsa_tau_fluvalinate,
-    qsa_tau_fluvalinate_hts
+    qsa_tau_fluvalinate_hts,
     -- GESTIM
     ges_ferti_orga_directes_co2,
     ges_ferti_orga_directes_ch4,
