@@ -40,8 +40,8 @@ CREATE TABLE entrepot_parcelle AS
   p.otherequipment equip_autre,
   ------ Onglet sol de la parcelle
   p.solcomment commentaire_sol,
-  reftextu.classe_indigo texture_surface,
-  reftextu2.classe_indigo texture_sous_sol,
+  reftextu.classes_texturales_gepaa as texture_surface,
+  reftextu2.classes_texturales_gepaa as texture_sous_sol,
   p.solwaterph sol_ph,
   p.solstoniness sol_pierrosite_moyenne,
   refsolprof.libelle_classe sol_profondeur_max_enracinement_classe,
