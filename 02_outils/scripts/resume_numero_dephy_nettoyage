@@ -1,0 +1,101 @@
+Objectif principal :
+Avoir par dispositif DEPHY_FERME un seul et unique numéro DEPHY en DETAILLE
+Nettoyer les code_dephy qui ne sont pas bons, passer les sdc en ALLEGE si ils ont des numéro DEPHY en double dans le dispositif, ou alors créer de nouveau numéro DEPHY, et trouver les numéros DEPHY manquants
+
+
+
+# 0. DEBUT, FILTRE PAR DEPHY_FERME
+
+Niveau sdc avec type de dispositif == DEPHY_FERME
+==> dfferme
+
+Pattern exact = AAA(X|0)0000
+Pattern approx = ...AAA(X|0)0000...
+Pattern bizarre = AAA0000
+
+saisis : 29457 
+vides : 3043 
+allégés mais saisis : 0 >> impossible à faire sur Ags
+allégés et vide : 1950 
+suivant le pattern : 28731 
+ne suivant pas le pattern mais saisis : 726
+
+
+
+
+# 1 NETTOYAGE DES CODE DEPHY
+
+'PPZ', '_', '-', ' ', '\t'  +  Tout en maj  +  '' >> None
+==> dfferme (mais nettoyé)
+
+saisis : 29434 
+vides : 3066 
+allégés et vide : 1950 
+suivant le pattern : 29131 
+ne suivant pas le pattern mais saisis : 303
+
+
+
+
+# 2. CHECK AU SEIN DU DISPOSITIF DES CODE DEPHY VALIDE
+
+Check du nombre de sdc ayant un code dephy valide (pattern exact) par dispositif
+==> sdc_et_dispo
+
+# 2.1. Identification des dispositifs réutilisant des numéros DEPHY valides sur plusieurs sdc.
+
+On identifie les sdc qui ont partagent le même numéro DEPHY avec d'autre sdc du même dispositif_id
+==> sdc_cdephy_for_who
+
+On identifie au sein des dispositifs*numéro_dephy les sdc sans aucune interventions (>> à suppr). Si au sein du dispositif_id*numéro_dephy un seul et unique sdc contient au moins une intervention, alors on renvoi le sdc_id du sdc plein : 'sdc_id_by_nb_intv_sup_0'.
+==> who_cdephy_dispo_lvl
+
+Au final on merge les deux par le dispositif_id et le numéro_dephy. Si le sdc_id == sdc_id_by_nb_intv_sup_0, alors on garde ; attention il est possible qu'un numéro dephy soit attribué à un sdc qui est prolongé puis inutilisé dans les prolongations ! Si différent, alors on supprime. Si null, cela signifie qu'il y a soit plusieurs sdc partageant un numéro DEPHY mais qui sont plein, donc il faut demander un nouveau numéro DEPHY ; soit qu'aucun des sdc n'a d'interventions !
+==> sdc_multiple_cdephy_keep_and_suppr
+$tokeep
+to_suppr                   628 (vide quand un autre contient intv)
+to_keep                    482 (contient des intv quand d'autre sdc vole son numero dephy)
+need_another_code_dephy    378 (besoin d'un autre num dephy OU tout les sdc a suppr car vide)
+
+
+
+# 2.2. Détermination des sdc en DETAILLE qui ne suivent pas le pattern alors qu'il y a d'autre numéro DEPHY dans le même dispositif_id qui eux suivent le pattern
+
+Un sdc sans numéro DEPHY peut etre eventuellement passé en allégé si il existe dans le dispositif un autre sdc qui lui a un numéro dephy valide
+==> sdc_to_allege
+Nombre de sdc sans code DEPHY à passer en ALLEGE car dispositif avec au moins un code DEPHY valide : 962 
+Nombre de sdc sans code DEPHY et sans dispositif avec au moins un code DEPHY valide : 154 
+Nombre de sdc avec code DEPHY invalide à passer en ALLEGE car dispositif avec au moins un code DEPHY valide : 183
+
+
+
+
+# 3. Pour ceux qui restent
+
+Les sdc qu'on arrive pas à tagué en ALLEGE, ni à nettoyer, on va essayer de trouver un numero dephy qui match via le nom ou les autres numéro DEPHY du meme sdc_code
+==> sdc_restant
+
+Nombre de sdc detaillé avec un code DEPHY bizarre à corriger en ajoutant un 'X' : 25 
+Nombre de sdc detaillé avec un code DEPHY bizarre et un code DEPHY trouvé via le nom ou les autres numéro DEPHY du même sdc_code : 6 
+Nombre de sdc detaillé avec un code DEPHY trouvé via le nom ou les autres numéro DEPHY du même sdc_code : 48 
+Ceux là auucne idée de comment faire : 195
+
+
+
+
+# 4. Combinaison de tout les cas
+
+On combine à l'échelle du sdc tout ce dont on viens de voir 
+ca nous donne des colonnes tokeep et des colonne de propositions dans dfferme
+===> export en csv
+
+
+
+
+
+
+
+
+
+
+
