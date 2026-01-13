@@ -554,11 +554,12 @@ yl.cause1 as cause_1,
 yl.cause2 as cause_2,
 yl.cause3 as cause_3,
 replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
-replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
+null as rendement_qualite_commentaire_global,
+--replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
 rgs.topiaid as BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
-left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
+--left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
 left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
