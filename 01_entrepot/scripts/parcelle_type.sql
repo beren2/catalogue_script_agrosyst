@@ -12,7 +12,7 @@ pp.waterflowdistance distance_cours_eau,
 pp.bufferstrip bande_enherbee,
 pp.activityendcomment motif_fin_utilisation,
 ------ Informations sur le zonage de la parcelle
-pp.outofzoning hors_zonage, 
+pp.inzoning dans_zonage, 
 pp.zoningcomment commentaire_zonage,
 ------ onglet equipements
 pp.equipmentcomment equipement_commentaire, 

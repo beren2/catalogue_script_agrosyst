@@ -20,7 +20,7 @@ CREATE TABLE entrepot_parcelle AS
   p.waterflowdistance distance_cours_eau,
   p.bufferstrip bande_enherbee,
   ------ Informations sur le zonage de la parcelle
-  p.outofzoning hors_zonage,
+  p.inzoning dans_zonage,
   p.zoningcomment commentaire_zonage,
  ------ onglet equipements
   p.equipmentcomment equip_commentaire,

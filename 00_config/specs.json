@@ -31,8 +31,8 @@
 			"plantation_perenne_realise",
 			"plantation_perenne_synthetise",
 			"intervention_realise",
-			"composant_culture_concerne_intervention",
 			"intervention_synthetise",
+			"composant_culture_concerne_intervention",
 			"action_realise",
 			"action_synthetise",
 			"intrant",
@@ -80,8 +80,8 @@
 			"texture_sol",
 			"fertilisation_organique",
 			"fertilisation_minerale",
-			"aliment_ration",
-			"troupeau"
+			"troupeau",
+			"aliment_ration"
 		],
 		"tables": {
 			"semence" : {
