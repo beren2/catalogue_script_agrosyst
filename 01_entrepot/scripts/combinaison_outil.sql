@@ -70,7 +70,8 @@ select distinct
 mtc.toolscoupling combinaison_outil_id,
 mtc.mainsactions intervention_travail_edi_id
 from mainsactions_toolscoupling mtc 
-join entrepot_intervention_travail_edi refint on mtc.mainsactions = refint.id ;
+join entrepot_intervention_travail_edi refint on mtc.mainsactions = refint.id
+join entrepot_combinaison_outil eco on eco.id = mtc.toolscoupling;
 
 DO $$
 BEGIN
