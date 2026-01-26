@@ -15,17 +15,25 @@ CREATE TABLE entrepot_composant_culture_concerne_intervention_realise (
 );
 
 
-insert into entrepot_composant_culture_concerne_intervention_realise (
-	select 
-	ess.topiaid id,
-	ess.minstade stade_minimal, 
-	ess.maxstade stade_maximal,
-	ess.effectiveintervention intervention_realise_id, 
-	ess.croppingplanspecies composant_culture_id
+
+INSERT INTO entrepot_composant_culture_concerne_intervention_realise
+    (id, stade_minimal, stade_maximal, intervention_realise_id, composant_culture_id)
+SELECT DISTINCT ON (ess.effectiveintervention, ess.croppingplanspecies, ess.minstade, ess.maxstade)
+	ess.topiaid               AS id,
+	ess.minstade              AS stade_minimal,
+	ess.maxstade              AS stade_maximal,
+	ess.effectiveintervention AS intervention_realise_id,
+	ess.croppingplanspecies   AS composant_culture_id
 	from effectivespeciesstade ess
 	left join entrepot_composant_culture ecc on ecc.id = ess.croppingplanspecies 
 	join entrepot_intervention_realise eir  on eir.id = ess.effectiveintervention
-);
+	order by 
+	  ess.effectiveintervention,
+  	  ess.croppingplanspecies,
+  	  ess.minstade,
+  	  ess.maxstade,
+  	  ess.topiaid;
+;
 
 DO $$
 BEGIN
