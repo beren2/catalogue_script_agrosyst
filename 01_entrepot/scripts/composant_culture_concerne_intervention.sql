@@ -15,17 +15,25 @@ CREATE TABLE entrepot_composant_culture_concerne_intervention_realise (
 );
 
 
-insert into entrepot_composant_culture_concerne_intervention_realise (
-	select 
-	ess.topiaid id,
-	ess.minstade stade_minimal, 
-	ess.maxstade stade_maximal,
-	ess.effectiveintervention intervention_realise_id, 
-	ess.croppingplanspecies composant_culture_id
+
+INSERT INTO entrepot_composant_culture_concerne_intervention_realise
+    (id, stade_minimal, stade_maximal, intervention_realise_id, composant_culture_id)
+SELECT DISTINCT ON (ess.effectiveintervention, ess.croppingplanspecies, ess.minstade, ess.maxstade)
+	ess.topiaid               AS id,
+	ess.minstade              AS stade_minimal,
+	ess.maxstade              AS stade_maximal,
+	ess.effectiveintervention AS intervention_realise_id,
+	ess.croppingplanspecies   AS composant_culture_id
 	from effectivespeciesstade ess
 	left join entrepot_composant_culture ecc on ecc.id = ess.croppingplanspecies 
 	join entrepot_intervention_realise eir  on eir.id = ess.effectiveintervention
-);
+	order by 
+	  ess.effectiveintervention,
+  	  ess.croppingplanspecies,
+  	  ess.minstade,
+  	  ess.maxstade,
+  	  ess.topiaid;
+;
 
 DO $$
 BEGIN
@@ -69,7 +77,21 @@ CREATE TABLE entrepot_composant_culture_concerne_intervention_synthetise (
 	composant_culture_code text null
 );
 
+-- Table temporaire avec unicité sur la colonne code pour join sur ceux présents, pareil pour les interventions
+DROP TABLE IF EXISTS tmp_composant_culture_code_unique;
 
+CREATE TEMP TABLE tmp_composant_culture_code_unique AS
+SELECT DISTINCT ON (code)
+    id,
+    code
+FROM entrepot_composant_culture
+ORDER BY code, id;
+
+ALTER TABLE tmp_composant_culture_code_unique
+ADD CONSTRAINT tmp_composant_culture_code_unique_pk
+PRIMARY KEY (code);
+
+-- Remplissage avec join des 2 tables concernées
 insert into entrepot_composant_culture_concerne_intervention_synthetise (
 	select 
 	pss.topiaid id,
@@ -78,6 +100,8 @@ insert into entrepot_composant_culture_concerne_intervention_synthetise (
 	pss.practicedintervention intervention_synthetise_id, 
 	pss.speciescode composant_culture_code
 	from practicedspeciesstade pss
+	LEFT JOIN tmp_composant_culture_code_unique ecc ON ecc.code = pss.speciescode
+	JOIN entrepot_intervention_synthetise eis ON eis.id = pss.practicedintervention
 );
 
 DO $$

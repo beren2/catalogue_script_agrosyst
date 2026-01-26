@@ -38,7 +38,7 @@ select
 	ep.distance_cours_eau,
 	ep.bande_enherbee as bande_enherbe,
 	ep.sol_nom_ref,
-	CASE CAST(ep.hors_zonage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END parcelle_hors_zonage,
+	CASE CAST(ep.dans_zonage AS BOOLEAN) WHEN true THEN 'non' WHEN false THEN 'oui' END parcelle_hors_zonage,
 	ep.equip_commentaire as equipement_commentaire,
 	CASE CAST(ep.drainage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END drainage,
 	ep.drainage_annee_realisation,

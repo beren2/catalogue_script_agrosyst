@@ -31,8 +31,8 @@
 			"plantation_perenne_realise",
 			"plantation_perenne_synthetise",
 			"intervention_realise",
-			"composant_culture_concerne_intervention",
 			"intervention_synthetise",
+			"composant_culture_concerne_intervention",
 			"action_realise",
 			"action_synthetise",
 			"intrant",
@@ -78,9 +78,10 @@
 			"variete_plante_grappe",
 			"station_meteo",
 			"texture_sol",
-			"texture_sol_arvalis",
 			"fertilisation_organique",
-			"fertilisation_minerale"
+			"fertilisation_minerale",
+			"troupeau",
+			"aliment_ration"
 		],
 		"tables": {
 			"semence" : {
@@ -451,12 +452,32 @@
 				"file_name" : "prix_recolte",
 				"category" : "autre"
 			},
-			"texture_sol_arvalis":{
-				"file_name" : "texture_sol_arvalis",
-				"category" : "autre"
-			},
 			"texture_sol":{
 				"file_name" : "texture_sol",
+				"category" : "autre"
+			},
+			"fertilisation_minerale":{
+				"file_name" : "fertilisation_minerale",
+				"category" : "autre"
+			},
+			"fertilisation_organique":{
+				"file_name" : "fertilisation_organique",
+				"category" : "autre"
+			},
+			"dose_ref_par_groupe_cible":{
+				"file_name" : "dose_ref_par_groupe_cible",
+				"category" : "autre"
+			},
+			"destination_valorisation":{
+				"file_name" : "destination_valorisation",
+				"category" : "autre"
+			},
+			"aliment_ration":{
+				"file_name" : "aliment_ration",
+				"category" : "autre"
+			},
+			"troupeau":{
+				"file_name" : "troupeau",
 				"category" : "autre"
 			}
 		}
