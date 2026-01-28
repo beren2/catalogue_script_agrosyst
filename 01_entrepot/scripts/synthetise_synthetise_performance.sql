@@ -492,7 +492,23 @@ SELECT
     pa_totaux_total_nox,
     pa_totaux_total_nh3,
     energie_totale_indirectes,
-    energie_totale_directes
+    energie_totale_directes,
+    -- Alertes
+    alerte_fertilisation_azotee,
+	alerte_ift_chimique_total_hts,
+	alerte_ift_fongicide,
+	alerte_ift_herbicide,
+	alerte_ift_insecticide,
+	alerte_ift_total_chimique_hts_biocontrole,
+	alerte_irrigation,
+	alerte_marge_semi_nette,
+	alerte_nombre_interventions_phyto,
+	alerte_produit_brut,
+	alerte_rendement,
+	alerte_temps_travail,
+	alertes_charges,
+	alertes_charges_mecanisation,
+	alertes_charges_semis
 FROM synthetise_echelle_synthetise ses
 JOIN entrepot_synthetise es on es.id = ses.id_systeme_synthetise;
 

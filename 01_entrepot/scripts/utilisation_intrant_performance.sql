@@ -361,7 +361,9 @@ SELECT
     pa_totaux_total_nox,
     pa_totaux_total_nh3,
     energie_totale_indirectes,
-    energie_totale_directes
+    energie_totale_directes,
+    -- Alertes
+    alerte_rendement
     FROM echelle_intrant ei
     LEFT JOIN entrepot_utilisation_intrant_realise euir on euir.id = ei.id_usage
     LEFT JOIN entrepot_utilisation_intrant_synthetise euis on euis.id = ei.id_usage

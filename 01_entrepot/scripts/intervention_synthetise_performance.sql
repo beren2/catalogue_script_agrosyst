@@ -497,7 +497,9 @@ SELECT
     pa_totaux_total_nox,
     pa_totaux_total_nh3,
     energie_totale_indirectes,
-    energie_totale_directes
+    energie_totale_directes,
+    -- Alertes
+    alerte_rendement
 FROM synthetise_echelle_intervention sei
 join entrepot_intervention_synthetise eis on eis.id = sei.intervention_id;
 

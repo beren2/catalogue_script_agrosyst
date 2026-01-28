@@ -479,6 +479,10 @@
 			"troupeau":{
 				"file_name" : "troupeau",
 				"category" : "autre"
+			},
+			"alerte":{
+				"file_name" : "alerte",
+				"category" : "autre"
 			}
 		}
 	},

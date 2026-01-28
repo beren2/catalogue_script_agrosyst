@@ -497,7 +497,9 @@ SELECT
     pa_totaux_total_nox,
     pa_totaux_total_nh3,
     energie_totale_indirectes,
-    energie_totale_directes
+    energie_totale_directes,
+    -- Alertes
+    alerte_rendement
 FROM realise_echelle_intervention rei
 JOIN entrepot_intervention_realise eir on eir.id = rei.intervention_id;
 
