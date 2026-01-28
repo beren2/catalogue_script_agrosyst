@@ -15,7 +15,6 @@ from sqlalchemy import inspect
 from colorama import Fore, Style
 from version import __version__
 from tqdm import tqdm
-from collections import Counter
 
 #Fetch the sql files 
 path_sql_files = 'scripts/'
