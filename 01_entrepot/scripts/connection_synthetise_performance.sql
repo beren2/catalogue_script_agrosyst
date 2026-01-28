@@ -1,6 +1,7 @@
 ------------------------------------------------------------------
 -- performances à l'échelle de la connection en synthétisé
 ------------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_connection_synthetise_performance CASCADE;
 
 create table entrepot_connection_synthetise_performance AS
 SELECT

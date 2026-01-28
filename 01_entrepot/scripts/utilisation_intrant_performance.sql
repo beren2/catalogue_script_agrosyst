@@ -1,6 +1,7 @@
 --------------------
 -- performances à l'échelle intrant
 --------------------
+DROP TABLE IF EXISTS entrepot_utilisation_intrant_performance CASCADE;
 
 create table entrepot_utilisation_intrant_performance AS
 SELECT

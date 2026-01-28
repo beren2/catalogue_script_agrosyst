@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle du système de culture en réalisé -- 
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_sdc_realise_performance CASCADE;
 
 create table entrepot_sdc_realise_performance AS
 SELECT

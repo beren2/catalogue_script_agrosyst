@@ -6,6 +6,7 @@
 -- Elle correspond aux actions de types semis, pour lesquelles on peut saisir un détail par composant de culture de la profondeur.
 
 
+DROP TABLE IF EXISTS entrepot_composant_action_semis CASCADE;
 
 create table entrepot_composant_action_semis(
 	id character varying(255), 

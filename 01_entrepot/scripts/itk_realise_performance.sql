@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de l'itk pour les réalisés   --
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_itk_realise_performance CASCADE;
 create table entrepot_itk_realise_performance AS 
 SELECT
     coalesce(replace(replace(phase_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>'), noeuds_realise_id) AS itk_realise_id,

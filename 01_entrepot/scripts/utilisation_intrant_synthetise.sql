@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS exports_agronomes_context_input_usages;
+DROP TABLE IF EXISTS exports_agronomes_context_input_usages cascade;
 
 -- Table usage_id + action_id
 create temporary table exports_agronomes_context_input_usages as 
@@ -49,6 +49,8 @@ CREATE INDEX if not exists exports_agronomes_context_input_usages_idx2 ON export
 -------------------------------
 -- Intrants_Synthetise
 -------------------------------
+DROP TABLE IF EXISTS entrepot_utilisation_intrant_synthetise CASCADE;
+
 CREATE TABLE entrepot_utilisation_intrant_synthetise(
   id character varying(255),
   campagne text,

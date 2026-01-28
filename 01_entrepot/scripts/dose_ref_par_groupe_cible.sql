@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_dose_ref_par_groupe_cible CASCADE;
+
 CREATE TABLE entrepot_dose_ref_par_groupe_cible AS
 select
 r.topiaid as id, 

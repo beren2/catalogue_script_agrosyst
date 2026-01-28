@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de la zone pour les réalisés
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_zone_realise_performance CASCADE;
 
 create table entrepot_zone_realise_performance AS
 SELECT

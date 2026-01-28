@@ -69,9 +69,9 @@
 			"critere_qualite_valorisation",
 			"destination_valorisation",
 			"dose_ref_par_groupe_cible",
-			"substances_actives_europeennes",
-			"phrases_de_risque_numero_amm",
-			"prix_intrant_produit_phyto_sanitaire",
+			"substance_active_europeenne",
+			"phrases_risque_classes_mention_danger_numero_amm",
+			"prix_produit_phyto_sanitaire",
 			"prix_carburant",
 			"prix_recolte",
 			"otex",
@@ -181,15 +181,15 @@
 				"category" : "autre"
 			},
 			"noeuds_realise":{
-				"file_name" : "noeuds_realise",
+				"file_name" : "cycle_culture_realise",
 				"category" : "autre"
 			},
 			"noeuds_synthetise":{
-				"file_name" : "noeuds_synthetise",
+				"file_name" : "cycle_culture_synthetise",
 				"category" : "autre"
 			},
 			"connection_synthetise":{
-				"file_name" : "connection_synthetise",
+				"file_name" : "cycle_culture_synthetise",
 				"category" : "autre"
 			},
 			"intervention_realise":{
@@ -197,7 +197,7 @@
 				"category" : "autre"
 			},
 			"combinaison_outil_action":{
-				"file_name" : "combinaison_outils",
+				"file_name" : "combinaison_outil",
 				"category" : "autre"
 			},
 			"domaine_sol":{
@@ -249,7 +249,7 @@
 				"category" : "autre"
 			},
 			"connection_realise":{
-				"file_name" : "connection_realise",
+				"file_name" : "cycle_culture_realise",
 				"category" : "autre"
 			},
 			"composition_substance_active_numero_amm":{
@@ -309,7 +309,7 @@
 				"category" : "autre"
 			},
 			"recolte_rendement_prix":{
-				"file_name" : "recolte_rendement_prix",
+				"file_name" : "recolte",
 				"category" : "autre"
 			},
 			"itk_realise_performance":{
@@ -421,7 +421,7 @@
 				"category" : "autre"
 			},
 			"liaison_reseaux":{
-				"file_name" : "liaison_reseau",
+				"file_name" : "liaison_reseaux",
 				"category" : "autre"
 			},
 			"nuisible_edi":{
@@ -478,6 +478,46 @@
 			},
 			"troupeau":{
 				"file_name" : "troupeau",
+				"category" : "autre"
+			},
+			"acta_dosage_spc":{
+				"file_name" : "acta_dosage_spc",
+				"category" : "autre"
+			},
+			"critere_qualite_valorisation":{
+				"file_name" : "critere_qualite_valorisation",
+				"category" : "autre"
+			},
+			"otex":{
+				"file_name" : "otex",
+				"category" : "autre"
+			},
+			"phrases_risque_classes_mention_danger_numero_amm":{
+				"file_name" : "phrases_risque_classes_mention_danger_numero_amm",
+				"category" : "autre"
+			},
+			"precision_espece_semis":{
+				"file_name" : "precision_espece_semis",
+				"category" : "autre"
+			},
+			"prix_carburant":{
+				"file_name" : "prix_carburant",
+				"category" : "autre"
+			},
+			"prix_produit_phyto_sanitaire":{
+				"file_name" : "prix_produit_phyto_sanitaire",
+				"category" : "autre"
+			},
+			"station_meteo":{
+				"file_name" : "station_meteo",
+				"category" : "autre"
+			},
+			"substance_active_europeenne":{
+				"file_name" : "substance_active_europeenne",
+				"category" : "autre"
+			},
+			"variete_plante_grappe":{
+				"file_name" : "variete_plante_grappe",
 				"category" : "autre"
 			}
 		}

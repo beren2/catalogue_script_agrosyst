@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_sole_realise CASCADE;
+
 create table entrepot_sole_realise(
 	id character varying(255), 
 	rang integer, 

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_dispositif CASCADE;
+
 CREATE TABLE entrepot_dispositif AS
   select
     gp.topiaid id,

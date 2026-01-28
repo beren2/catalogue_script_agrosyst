@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de l'itk pour les réalisés   --
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_itk_synthetise_performance CASCADE;
 create table entrepot_itk_synthetise_performance AS 
 SELECT
     coalesce(phase_id, connexion_synthetise_id) AS itk_synthetise_id,

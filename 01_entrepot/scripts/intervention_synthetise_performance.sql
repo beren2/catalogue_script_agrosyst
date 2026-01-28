@@ -1,6 +1,8 @@
 ---------------------------------------------------------------
 -- performances à l'échelle intervention pour les synthétisés 
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_intervention_synthetise_performance CASCADE;
+
 create table entrepot_intervention_synthetise_performance AS
 SELECT
     replace(replace(intervention_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS intervention_synthetise_id,

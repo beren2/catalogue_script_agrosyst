@@ -1,6 +1,6 @@
 
 -- Voisinage de la parcelle
-drop table if exists entrepot_parcelle_voisinage;
+drop table if exists entrepot_parcelle_voisinage cascade;
 
 CREATE TABLE entrepot_parcelle_voisinage AS
 select

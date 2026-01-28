@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_liaison_reseaux CASCADE;
+
 CREATE TABLE entrepot_liaison_reseaux AS
 select distinct
 	np.network as reseau_id,

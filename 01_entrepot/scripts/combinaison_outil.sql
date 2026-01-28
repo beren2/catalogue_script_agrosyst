@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_combinaison_outil CASCADE;
+
 CREATE TABLE entrepot_combinaison_outil AS
 select 
 tc.topiaid id,
@@ -36,7 +38,7 @@ alter table entrepot_combinaison_outil
 ADD FOREIGN KEY (domaine_id) REFERENCES entrepot_domaine(id);
 
 -- une combinaison d'outils peut avoir plusieurs outils associé à un outils motorise
-DROP TABLE IF EXISTS entrepot_combinaison_outil_composant_parc_materiel;
+DROP TABLE IF EXISTS entrepot_combinaison_outil_composant_parc_materiel CASCADE;
 CREATE TABLE entrepot_combinaison_outil_composant_parc_materiel AS
 select 
 et.toolscoupling combinaison_outil_id,
@@ -64,7 +66,7 @@ BEGIN
 END $$;
 
 -- une combinaison d'outils peut avoir plusieurs actions principales renseignées
-DROP TABLE IF EXISTS entrepot_combinaison_outil_action;
+DROP TABLE IF EXISTS entrepot_combinaison_outil_action CASCADE;
 CREATE TABLE entrepot_combinaison_outil_action AS
 select distinct 
 mtc.toolscoupling combinaison_outil_id,
