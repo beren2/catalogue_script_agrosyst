@@ -81,7 +81,8 @@
 			"fertilisation_organique",
 			"fertilisation_minerale",
 			"troupeau",
-			"aliment_ration"
+			"aliment_ration",
+			"alerte"
 		],
 		"tables": {
 			"semence" : {
