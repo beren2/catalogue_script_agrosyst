@@ -497,20 +497,20 @@ SELECT
     energie_totale_indirectes,
     energie_totale_directes,
     -- Alertes
-	alerte_fertilisation_azotee,
-	alerte_ift_chimique_total_hts,
-	alerte_ift_fongicide,
-	alerte_ift_herbicide,
-	alerte_ift_insecticide,
-	alerte_ift_total_chimique_hts_biocontrole,
-	alerte_irrigation,
-	alerte_marge_semi_nette,
-	alerte_nombre_interventions_phyto,
-	alerte_produit_brut,
-	alerte_rendement,
-	alertes_charges,
-	alertes_charges_mecanisation,
-	alertes_charges_semis
+    alerte_fertilisation_azotee AS alerte_ferti_N_tot,
+    alerte_ift_chimique_total_hts AS alerte_ift_cible_non_mil_chim_tot_hts,
+    alerte_ift_fongicide AS alerte_ift_cible_non_mil_f,
+    alerte_ift_herbicide AS alerte_ift_cible_non_mil_h,
+    alerte_ift_insecticide AS alerte_ift_cible_non_mil_i,
+    alerte_ift_total_chimique_hts_biocontrole AS alerte_ift_cible_non_mil_biocontrole,
+    alerte_irrigation AS alerte_CO_irrigation_std_mil,
+    alerte_marge_semi_nette AS alerte_MSN_std_mil_avec_autoconso,
+    alerte_nombre_interventions_phyto,
+    alerte_produit_brut AS alerte_PB_std_mil_avec_autoconso,
+    alerte_rendement,
+    alertes_charges,
+    alertes_charges_mecanisation AS alerte_CM_std_mil,
+    alertes_charges_semis AS alerte_CO_semis_std_mil
 FROM realise_echelle_itk rei
 JOIN entrepot_zone ez on ez.id = rei.zone_id;
 
