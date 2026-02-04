@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_alerte CASCADE;
+
 CREATE TABLE entrepot_alerte AS
 SELECT 
 	topiaid as id,
