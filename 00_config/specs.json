@@ -81,7 +81,8 @@
 			"fertilisation_organique",
 			"fertilisation_minerale",
 			"troupeau",
-			"aliment_ration"
+			"aliment_ration",
+			"alerte"
 		],
 		"tables": {
 			"semence" : {
@@ -479,6 +480,10 @@
 			"troupeau":{
 				"file_name" : "troupeau",
 				"category" : "autre"
+			},
+			"alerte":{
+				"file_name" : "alerte",
+        "category" : "autre"
 			},
 			"acta_dosage_spc":{
 				"file_name" : "acta_dosage_spc",

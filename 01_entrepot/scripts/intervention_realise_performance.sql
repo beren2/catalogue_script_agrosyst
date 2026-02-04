@@ -500,6 +500,8 @@ SELECT
     pa_totaux_total_nh3,
     energie_totale_indirectes,
     energie_totale_directes,
+    -- Alertes
+    alerte_rendement,
     -- Recours produits hors bio
     recours_produits_cmr,
     recours_produits_cmr_hts,
