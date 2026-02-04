@@ -1,6 +1,8 @@
 ---------------------------------------------------------------
 -- performances à l'échelle intervention pour les synthétisés 
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_intervention_synthetise_performance CASCADE;
+
 create table entrepot_intervention_synthetise_performance AS
 SELECT
     replace(replace(intervention_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS intervention_synthetise_id,
@@ -499,7 +501,14 @@ SELECT
     energie_totale_indirectes,
     energie_totale_directes,
     -- Alertes
-    alerte_rendement
+    alerte_rendement,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM synthetise_echelle_intervention sei
 join entrepot_intervention_synthetise eis on eis.id = sei.intervention_id;
 

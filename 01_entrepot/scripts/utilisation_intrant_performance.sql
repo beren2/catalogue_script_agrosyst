@@ -1,6 +1,7 @@
 --------------------
 -- performances à l'échelle intrant
 --------------------
+DROP TABLE IF EXISTS entrepot_utilisation_intrant_performance CASCADE;
 
 create table entrepot_utilisation_intrant_performance AS
 SELECT
@@ -363,7 +364,14 @@ SELECT
     energie_totale_indirectes,
     energie_totale_directes,
     -- Alertes
-    alerte_rendement
+    alerte_rendement,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
     FROM echelle_intrant ei
     LEFT JOIN entrepot_utilisation_intrant_realise euir on euir.id = ei.id_usage
     LEFT JOIN entrepot_utilisation_intrant_synthetise euis on euis.id = ei.id_usage

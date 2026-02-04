@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_levier CASCADE;
+
 CREATE TABLE entrepot_levier AS
 select
 r.topiaid as id,

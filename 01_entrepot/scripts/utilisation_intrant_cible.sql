@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS entrepot_utilisation_intrant_cible; -- rattachement dispositif DEPHY actif
+DROP TABLE IF EXISTS entrepot_utilisation_intrant_cible cascade; -- rattachement dispositif DEPHY actif
 
 -------------------------------------
 -- utilisation_intrant_cible

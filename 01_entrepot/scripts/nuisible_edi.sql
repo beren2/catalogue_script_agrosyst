@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_nuisible_edi CASCADE;
+
 CREATE TABLE entrepot_nuisible_edi AS
 select 
 r.topiaid as id, 

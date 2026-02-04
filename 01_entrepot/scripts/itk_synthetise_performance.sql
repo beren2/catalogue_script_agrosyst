@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de l'itk pour les réalisés   --
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_itk_synthetise_performance CASCADE;
 create table entrepot_itk_synthetise_performance AS 
 SELECT
     coalesce(phase_id, connexion_synthetise_id) AS itk_synthetise_id,
@@ -505,7 +506,14 @@ SELECT
     alerte_rendement,
     alertes_charges,
     alertes_charges_mecanisation AS alerte_CM_std_mil,
-    alertes_charges_semis AS alerte_CO_semis_std_mil
+    alertes_charges_semis AS alerte_CO_semis_std_mil,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM synthetise_echelle_culture sec
 JOIN entrepot_synthetise es on es.id = sec.id_systeme_synthetise;
 

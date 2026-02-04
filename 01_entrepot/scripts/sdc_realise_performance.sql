@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle du système de culture en réalisé -- 
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_sdc_realise_performance CASCADE;
 
 create table entrepot_sdc_realise_performance AS
 SELECT
@@ -509,7 +510,14 @@ SELECT
     alertes_charges,
     alertes_charges_mecanisation AS alerte_CM_std_mil,
     alertes_charges_semis AS alerte_CO_semis_std_mil,
-    alerte_temps_travail AS alerte_tps_travail_total
+    alerte_temps_travail AS alerte_tps_travail_total,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM realise_echelle_sdc res
 JOIN entrepot_sdc es on es.id = res.id_sdc;
 

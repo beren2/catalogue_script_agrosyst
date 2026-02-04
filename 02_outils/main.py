@@ -830,6 +830,7 @@ options = {
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
         "Télécharger les outils" : [],
+        "Test" : [],
         "Quitter" : []
     }
 }

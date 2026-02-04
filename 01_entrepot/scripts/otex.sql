@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_otex cascade;
+
 CREATE TABLE entrepot_otex AS
 select 
 r.topiaid as id ,

@@ -1,6 +1,7 @@
 ------------------------------------------------------------------
 -- performances à l'échelle du système synthétisé en synthétisé --
 ------------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_synthetise_synthetise_performance CASCADE;
 
 create table entrepot_synthetise_synthetise_performance AS
 SELECT
@@ -508,7 +509,14 @@ SELECT
     alertes_charges,
     alertes_charges_mecanisation AS alerte_CM_std_mil,
     alertes_charges_semis AS alerte_CO_semis_std_mil,
-    alerte_temps_travail AS alerte_tps_travail_total
+    alerte_temps_travail AS alerte_tps_travail_total,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM synthetise_echelle_synthetise ses
 JOIN entrepot_synthetise es on es.id = ses.id_systeme_synthetise;
 

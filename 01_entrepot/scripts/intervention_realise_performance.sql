@@ -1,6 +1,8 @@
 ---------------------------------------------------------------
 -- performances à l'échelle intervention pour les réalisés
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_intervention_realise_performance CASCADE;
+
 create table entrepot_intervention_realise_performance AS
 SELECT
     replace(replace(intervention_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS intervention_realise_id,
@@ -499,7 +501,14 @@ SELECT
     energie_totale_indirectes,
     energie_totale_directes,
     -- Alertes
-    alerte_rendement
+    alerte_rendement,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM realise_echelle_intervention rei
 JOIN entrepot_intervention_realise eir on eir.id = rei.intervention_id;
 

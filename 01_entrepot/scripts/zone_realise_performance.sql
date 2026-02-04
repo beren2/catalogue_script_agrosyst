@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de la zone pour les réalisés
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_zone_realise_performance CASCADE;
 
 create table entrepot_zone_realise_performance AS
 SELECT
@@ -490,7 +491,14 @@ SELECT
     pa_totaux_total_nox,
     pa_totaux_total_nh3,
     energie_totale_indirectes,
-    energie_totale_directes
+    energie_totale_directes,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM realise_echelle_zone rez
 JOIN entrepot_zone ez on ez.id = rez.zone_id;
 

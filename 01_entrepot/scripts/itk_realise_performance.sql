@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle de l'itk pour les réalisés   --
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_itk_realise_performance CASCADE;
 create table entrepot_itk_realise_performance AS 
 SELECT
     coalesce(replace(replace(phase_id,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>'), noeuds_realise_id) AS itk_realise_id,
@@ -510,7 +511,14 @@ SELECT
     alerte_rendement,
     alertes_charges,
     alertes_charges_mecanisation AS alerte_CM_std_mil,
-    alertes_charges_semis AS alerte_CO_semis_std_mil
+    alertes_charges_semis AS alerte_CO_semis_std_mil,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM realise_echelle_itk rei
 JOIN entrepot_zone ez on ez.id = rei.zone_id;
 

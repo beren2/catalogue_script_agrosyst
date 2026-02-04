@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_aliment_ration CASCADE;
+
 CREATE TABLE entrepot_aliment_ration AS
   select 
   al.topiaid as id,

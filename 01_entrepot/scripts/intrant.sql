@@ -2,6 +2,7 @@
 --------------------
 -- Export local à intrant
 --------------------
+DROP TABLE IF EXISTS entrepot_intrant CASCADE;
 create table entrepot_intrant(
 	id character varying(255), 
 	type character varying(255),

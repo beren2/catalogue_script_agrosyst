@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_culture CASCADE;
+
 CREATE TABLE entrepot_culture AS
 SELECT
     cpe.topiaid AS id,
