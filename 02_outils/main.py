@@ -14,6 +14,7 @@ import urllib
 import importlib
 import time
 import re
+import sys
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -55,14 +56,24 @@ if(TYPE == 'distant'):
     DB_NAME_ENTREPOT = config.get(BDD_ENTREPOT, 'database')
     DB_USER = config.get(BDD_ENTREPOT, 'user')
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
+    TIMEOUT_CONN = 5
+
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+    try:
+        
+        # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
+        engine = create_engine(
+            f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}',
+            connect_args={'connect_timeout': TIMEOUT_CONN}
+        )
 
-    # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
-    engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
-
-    # Connexion à PostgreSQL
-    conn = engine.raw_connection()
-    cur = conn.cursor()
+        # Connexion à PostgreSQL
+        conn = engine.raw_connection()
+        cur = conn.cursor()
+    except Exception as e:
+        print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{e}")
+        print("Essaye de mettre le VPN !\n")
+        sys.exit(1)
 
 def check_existing_files(file_names):
     """vérifie que toutes les tables sont présentes"""
