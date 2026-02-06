@@ -580,9 +580,10 @@
                 "generated" : [
                     "intervention_realise_nettoyage", 
                     "utilisation_intrant_realise_nettoyage",
-                    "utilisation_intrant_synthetise_nettoyage"
+                    "utilisation_intrant_synthetise_nettoyage",
+					"entite_unique_par_sdc_nettoyage"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : "True"
             },
             "agregation" : {
                 "function_name" : "create_category_agregation",

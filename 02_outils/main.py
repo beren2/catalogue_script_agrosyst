@@ -565,6 +565,13 @@ def create_category_nettoyage():
     add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
 
+    # entite_unique_par_sdc
+    name_table = 'entite_unique_par_sdc'
+    df_entite_unique_par_sdc = nettoyage.entite_unique_par_sdc(donnees)
+    export_to_db(df_entite_unique_par_sdc, 'entrepot_'+name_table+'_nettoyage')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'sdc_id')
+
+
 def create_category_agregation():
     """
         Execute les requêtes pour créer les outils d'agregation
