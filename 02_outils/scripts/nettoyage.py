@@ -204,4 +204,4 @@ def entite_unique_par_sdc(donnees):
     df['synthetise_id'] = np.where(df['synthetise_id'].isnull(), "realise_retenu", df['synthetise_id'])
     df.rename(columns={'synthetise_id':'entite_retenue'}, inplace=True)
 
-    return df
+    return df.set_index('sdc_id')
