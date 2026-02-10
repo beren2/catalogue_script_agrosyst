@@ -136,8 +136,8 @@ SELECT
 	ssp.nbre_de_passages_labour as sdc_nbre_de_passages_labour,
 	ssp.nbre_de_passages_tcs as sdc_nbre_de_passages_tcs,
 	ssp.nbre_de_passages_desherbage_meca as sdc_nbre_de_passages_desherbage_meca,
-	ssp.utili_desherbage_meca as noeud_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
-	ssp.type_de_travail_du_sol as noeud_type_de_travail_du_sol,
+	ssp.utili_desherbage_meca as sdc_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
+	ssp.type_de_travail_du_sol as sdc_type_de_travail_du_sol,
 	
 	-- co_std_mil_*
 	ssp.co_tot_std_mil as sdc_co_std_mil_tot,
