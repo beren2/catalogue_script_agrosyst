@@ -7,6 +7,7 @@ import urllib
 import datetime
 import subprocess 
 import os
+import sys
 import json
 import psycopg2 as psycopg
 import pandas as pd
@@ -40,16 +41,23 @@ DB_PORT = config.get(BDD_ENTREPOT, 'port')
 DB_NAME_ENTREPOT = config.get(BDD_ENTREPOT, 'database')
 DB_USER = config.get(BDD_ENTREPOT, 'user')
 DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
+TIMEOUT_CONN = 5
+
 DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST_ENTREPOT}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+try: 
+    #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
+    conn = psycopg.connect(user = DB_USER,
+                    password = config.get(BDD_ENTREPOT, 'password'),
+                    host = DB_HOST_ENTREPOT,
+                    port = DB_PORT,
+                    database = DB_NAME_ENTREPOT,
+                    connect_timeout = TIMEOUT_CONN)
 
-#Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
-conn = psycopg.connect(user = DB_USER,
-                password = config.get(BDD_ENTREPOT, 'password'),
-                host = DB_HOST_ENTREPOT,
-                port = DB_PORT,
-                database = DB_NAME_ENTREPOT)
-
-cur = conn.cursor()
+    cur = conn.cursor()
+except psycopg.OperationalError as e:
+    print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{e}")
+    print("Essaye de mettre le VPN !\n")
+    sys.exit(1)
 
 # La db de datagrosyst
 DB_HOST = config.get('datagrosyst', 'host')
