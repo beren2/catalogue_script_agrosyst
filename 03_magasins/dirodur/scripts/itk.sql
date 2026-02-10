@@ -563,8 +563,8 @@ SELECT
 	itkS.nbre_de_passages_labour as itk_nbre_de_passages_labour,
 	itkS.nbre_de_passages_tcs as itk_nbre_de_passages_tcs,
 	itkS.nbre_de_passages_desherbage_meca as itk_nbre_de_passages_desherbage_meca,
-	itkS.utili_desherbage_meca as noeud_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
-	itkS.type_de_travail_du_sol as noeud_type_de_travail_du_sol,
+	itkS.utili_desherbage_meca as itk_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
+	itkS.type_de_travail_du_sol as itk_type_de_travail_du_sol,
 	
 	-- co_std_mil_*
 	itkS.co_tot_std_mil as itk_co_std_mil_tot,
