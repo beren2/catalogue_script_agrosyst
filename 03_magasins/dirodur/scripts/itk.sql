@@ -98,7 +98,7 @@ SELECT
 	-- domaine_pct_*
 	dom.pct_sau_zone_vulnerable as domaine_pct_sau_zone_vulnerable,
 	dom.pct_sau_zone_excedent_structurel as domaine_pct_sau_zone_excedent_structurel,
-	dom.pct_sau_zone_actions_complementaires as domaine_pct_sau_zone_excedent_structurel,
+	dom.pct_sau_zone_actions_complementaires as domaine_pct_sau_zone_actions_complementaires,
 	dom.pct_sau_zone_natura_2000 as domaine_pct_sau_zone_natura_2000,
 	dom.pct_sau_zone_erosion as domaine_pct_sau_zone_erosion,
 	dom.pct_sau_perimetre_protection_captage as domaine_pct_sau_perimetre_protection_captage,
