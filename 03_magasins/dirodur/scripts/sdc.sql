@@ -262,6 +262,8 @@ LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.do
 LEFT JOIN entrepot_synthetise_synthetise_performance AS ssp ON sub_sdc.entite_retenue = ssp.synthetise_id
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
+-- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
+where sdc.filiere = 'POLYCULTURE_ELEVAGE' or sdc.filiere = 'GRANDES_CULTURES'
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id
 
 UNION
@@ -532,7 +534,9 @@ LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
-LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id;
+LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
+-- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
+where sdc.filiere = 'POLYCULTURE_ELEVAGE' or sdc.filiere = 'GRANDES_CULTURES';
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
 
 

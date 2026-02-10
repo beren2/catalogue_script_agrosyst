@@ -220,7 +220,7 @@ SELECT
 	itkR.co_tot_std_mil as itk_co_std_mil_tot,
 	itkR.co_semis_std_mil as itk_co_std_mil_semis,
 	itkR.co_fertimin_std_mil as itk_co_std_mil_fertimin,
-	itkR.co_epandage_orga_std_mil as itk_co_std_mil_epandage,
+	itkR.co_epandage_orga_std_mil as itk_co_std_mil_epandage_orga,
 	itkR.co_phyto_sans_amm_std_mil as itk_co_std_mil_phyto_sans_amm,
 	itkR.co_phyto_avec_amm_std_mil as itk_co_std_mil_phyto_avec_amm,
 	itkR.co_trait_semence_std_mil as itk_co_std_mil_trait_semence,
@@ -346,6 +346,8 @@ LEFT JOIN entrepot_noeuds_realise AS noeud_prec ON node_res.precedent_noeuds_rea
 LEFT JOIN entrepot_culture AS culture_prec ON culture_prec.id = noeud_prec.culture_id 
 LEFT JOIN entrepot_typologie_can_culture AS typocp ON typocp.culture_id = culture_prec.id 
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
+-- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
+where sdc.filiere = 'POLYCULTURE_ELEVAGE' or sdc.filiere = 'GRANDES_CULTURES'
 
 UNION 
 
@@ -568,7 +570,7 @@ SELECT
 	itkS.co_tot_std_mil as itk_co_std_mil_tot,
 	itkS.co_semis_std_mil as itk_co_std_mil_semis,
 	itkS.co_fertimin_std_mil as itk_co_std_mil_fertimin,
-	itkS.co_epandage_orga_std_mil as itk_co_std_mil_epandage,
+	itkS.co_epandage_orga_std_mil as itk_co_std_mil_epandage_orga,
 	itkS.co_phyto_sans_amm_std_mil as itk_co_std_mil_phyto_sans_amm,
 	itkS.co_phyto_avec_amm_std_mil as itk_co_std_mil_phyto_avec_amm,
 	itkS.co_trait_semence_std_mil as itk_co_std_mil_trait_semence,
@@ -698,5 +700,7 @@ LEFT JOIN entrepot_culture AS culture_i ON culture_i.id = cx_rst.culture_interme
 LEFT JOIN entrepot_typologie_can_culture AS typo_ci ON typo_ci.culture_id = cx_rst.culture_intermediaire_id 
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
-LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id;
+LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
+-- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
+where sdc.filiere = 'POLYCULTURE_ELEVAGE' or sdc.filiere = 'GRANDES_CULTURES';
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
