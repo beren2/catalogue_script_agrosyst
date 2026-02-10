@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_sol_arvalis CASCADE;
+
 CREATE TABLE entrepot_sol_arvalis AS
 	select 
 		r.topiaid as id, 

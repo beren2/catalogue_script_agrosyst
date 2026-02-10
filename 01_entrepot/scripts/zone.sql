@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_zone CASCADE;
+
 CREATE TABLE entrepot_zone AS
   select
     z.topiaid id,
@@ -12,7 +14,7 @@ CREATE TABLE entrepot_zone AS
   FROM zone z
   JOIN entrepot_parcelle p ON z.plot = p.id
   AND z.active is TRUE;
-  
+
 DO $$
 BEGIN
     BEGIN

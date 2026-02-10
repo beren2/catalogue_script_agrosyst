@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_synthetise CASCADE;
+
 CREATE TABLE entrepot_synthetise AS
 select
 ps.topiaid id,
@@ -7,6 +9,7 @@ ps."source" source,
 ps."comment" commentaire,
 ps.practicedplot parcelle_type_id,
 ps.growingsystem sdc_id,
+ps.updatedate as derniere_maj,
 ps.validated as valide
 from practicedsystem ps
 join entrepot_sdc es on es.id = ps.growingsystem 

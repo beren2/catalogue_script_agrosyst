@@ -2676,12 +2676,13 @@ def get_recolte_rendement_prix_realise_outils_can(
         'destination', 
         'rendement_unite', 
         'action_id',
-        'rendement_moyen_corr', 
+        'rendement_moy_corr', 
         'rendement_median_corr',
         'rendement_min_corr', 
+        'rendement_max_corr',
         'commercialisation_pct_corr',
         'autoconsommation_pct_corr', 
-        'non_valorisation_pct_corr'
+        'nonvalorisation_pct_corr'
     ]]
 
         

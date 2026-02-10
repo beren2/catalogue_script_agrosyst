@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_substance_active_europeenne cascade;
+
 CREATE TABLE entrepot_substance_active_europeenne AS
 SELECT 
     r.topiaid as id , 

@@ -11,7 +11,7 @@ select
 	ept.nom as parcelle_type_nom,
 	ept.surface as parcelle_type_surface,
 	ept.commentaire as parcelle_type_commentaire,
-	CASE CAST(ept.hors_zonage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END parcelle_type_hors_zonage,
+	CASE CAST(ept.dans_zonage AS BOOLEAN) WHEN true THEN 'non' WHEN false THEN 'oui' END parcelle_type_hors_zonage,
 	ept.equipement_commentaire as equipement_commentaire,
 	CASE CAST(ept.drainage AS BOOLEAN) WHEN true THEN 'oui' WHEN false THEN 'non' END drainage,
 	ept.drainage_annee_realisation as drainage_annee_realisation,

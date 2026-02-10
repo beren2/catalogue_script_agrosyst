@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_prix_carburant cascade;
+
 CREATE TABLE entrepot_prix_carburant AS
 select
 r.topiaid as id,

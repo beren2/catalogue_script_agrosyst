@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS entrepot_composant_culture CASCADE;
 
 CREATE TABLE entrepot_composant_culture AS
 SELECT 

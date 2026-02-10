@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_materiel CASCADE;
+
 CREATE TABLE entrepot_materiel AS
 SELECT 
     rm.topiaid as id,

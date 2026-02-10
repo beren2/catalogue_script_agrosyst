@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_sdc CASCADE;
+
 CREATE TABLE entrepot_sdc AS
 WITH sdc AS (
   SELECT
