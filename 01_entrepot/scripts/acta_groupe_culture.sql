@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_acta_groupe_culture CASCADE;
+
 CREATE TABLE entrepot_acta_groupe_culture AS 
 SELECT 
 	ragc.topiaid AS id,

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_parcelle CASCADE;
+
 CREATE TABLE entrepot_parcelle AS
   WITH plot_zone AS (
     SELECT z.plot, count(*) nombre_de_zones

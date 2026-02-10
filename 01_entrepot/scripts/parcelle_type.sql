@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_parcelle_type CASCADE;
+
 CREATE TABLE entrepot_parcelle_type AS
 select
 pp.topiaid id,
@@ -65,7 +67,7 @@ alter table entrepot_parcelle_type
 ADD FOREIGN KEY (commune_id) REFERENCES entrepot_commune(id);
 
 -- Zonage de la parcelle
-drop table if exists entrepot_parcelle_type_zonage;
+drop table if exists entrepot_parcelle_type_zonage cascade;
 
 CREATE TABLE entrepot_parcelle_type_zonage AS
 select
@@ -91,7 +93,7 @@ BEGIN
 END $$;
 
 -- Voisinage de la parcelle
-drop table if exists entrepot_parcelle_type_voisinage;
+drop table if exists entrepot_parcelle_type_voisinage cascade;
 
 CREATE TABLE entrepot_parcelle_type_voisinage AS
 select

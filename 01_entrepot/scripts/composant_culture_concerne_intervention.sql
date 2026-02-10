@@ -3,7 +3,7 @@
  -- Réalisé
  ---------------------------
 
-DROP TABLE IF EXISTS entrepot_composant_culture_concerne_intervention_realise;
+DROP TABLE IF EXISTS entrepot_composant_culture_concerne_intervention_realise CASCADE;
 
 CREATE TABLE entrepot_composant_culture_concerne_intervention_realise (
 	id text NULL, 
@@ -65,7 +65,7 @@ ADD FOREIGN KEY (intervention_realise_id) REFERENCES entrepot_intervention_reali
  -- Synthétisé
  ---------------------------
  
-DROP TABLE IF EXISTS entrepot_composant_culture_concerne_intervention_synthetise;
+DROP TABLE IF EXISTS entrepot_composant_culture_concerne_intervention_synthetise CASCADE;
  
  
 CREATE TABLE entrepot_composant_culture_concerne_intervention_synthetise (
@@ -78,7 +78,7 @@ CREATE TABLE entrepot_composant_culture_concerne_intervention_synthetise (
 );
 
 -- Table temporaire avec unicité sur la colonne code pour join sur ceux présents, pareil pour les interventions
-DROP TABLE IF EXISTS tmp_composant_culture_code_unique;
+DROP TABLE IF EXISTS tmp_composant_culture_code_unique CASCADE;
 
 CREATE TEMP TABLE tmp_composant_culture_code_unique AS
 SELECT DISTINCT ON (code)

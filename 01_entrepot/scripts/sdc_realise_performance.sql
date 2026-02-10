@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- performances à l'échelle du système de culture en réalisé -- 
 ---------------------------------------------------------------
+DROP TABLE IF EXISTS entrepot_sdc_realise_performance CASCADE;
 
 create table entrepot_sdc_realise_performance AS
 SELECT
@@ -493,7 +494,30 @@ SELECT
     pa_totaux_total_nox,
     pa_totaux_total_nh3,
     energie_totale_indirectes,
-    energie_totale_directes
+    energie_totale_directes,
+    -- Alertes
+    alerte_fertilisation_azotee AS alerte_ferti_N_tot,
+    alerte_ift_chimique_total_hts AS alerte_ift_cible_non_mil_chim_tot_hts,
+    alerte_ift_fongicide AS alerte_ift_cible_non_mil_f,
+    alerte_ift_herbicide AS alerte_ift_cible_non_mil_h,
+    alerte_ift_insecticide AS alerte_ift_cible_non_mil_i,
+    alerte_ift_total_chimique_hts_biocontrole AS alerte_ift_cible_non_mil_biocontrole,
+    alerte_irrigation AS alerte_CO_irrigation_std_mil,
+    alerte_marge_semi_nette AS alerte_MSN_std_mil_avec_autoconso,
+    alerte_nombre_interventions_phyto,
+    alerte_produit_brut AS alerte_PB_std_mil_avec_autoconso,
+    alerte_rendement,
+    alertes_charges,
+    alertes_charges_mecanisation AS alerte_CM_std_mil,
+    alertes_charges_semis AS alerte_CO_semis_std_mil,
+    alerte_temps_travail AS alerte_tps_travail_total,
+    -- Recours produits hors bio
+    recours_produits_cmr,
+    recours_produits_cmr_hts,
+    recours_produits_toxiques_utilisateurs,
+    recours_produits_toxiques_utilisateurs_hts,
+    recours_produits_danger_environnement,
+    recours_produits_danger_environnement_hts
 FROM realise_echelle_sdc res
 JOIN entrepot_sdc es on es.id = res.id_sdc;
 

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_prix_produit_phyto_sanitaire cascade;
+
 CREATE TABLE entrepot_prix_produit_phyto_sanitaire AS
 select
 r.topiaid as id,

@@ -7,11 +7,11 @@ import urllib
 import datetime
 import subprocess 
 import os
+import sys
 import json
 import psycopg2 as psycopg
 import pandas as pd
 from sqlalchemy import create_engine, text
-from sqlalchemy import inspect
 from colorama import Fore, Style
 from version import __version__
 from tqdm import tqdm
@@ -41,16 +41,23 @@ DB_PORT = config.get(BDD_ENTREPOT, 'port')
 DB_NAME_ENTREPOT = config.get(BDD_ENTREPOT, 'database')
 DB_USER = config.get(BDD_ENTREPOT, 'user')
 DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
+TIMEOUT_CONN = 5
+
 DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST_ENTREPOT}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+try: 
+    #Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
+    conn = psycopg.connect(user = DB_USER,
+                    password = config.get(BDD_ENTREPOT, 'password'),
+                    host = DB_HOST_ENTREPOT,
+                    port = DB_PORT,
+                    database = DB_NAME_ENTREPOT,
+                    connect_timeout = TIMEOUT_CONN)
 
-#Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l entrepot)
-conn = psycopg.connect(user = DB_USER,
-                password = config.get(BDD_ENTREPOT, 'password'),
-                host = DB_HOST_ENTREPOT,
-                port = DB_PORT,
-                database = DB_NAME_ENTREPOT)
-
-cur = conn.cursor()
+    cur = conn.cursor()
+except psycopg.OperationalError as e:
+    print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{e}")
+    print("Essaye de mettre le VPN !\n")
+    sys.exit(1)
 
 # La db de datagrosyst
 DB_HOST = config.get('datagrosyst', 'host')
@@ -183,28 +190,6 @@ while True:
         print("Au revoir !")
         break
     if(choice_key == "Génération de toutes les données de l'entrepôt"):
-
-        #Nettoyage de l'environnement de travail (suppression de toutes les tables commençant par entrepot_)
-        
-        # Récupération des informations sur les tables existantes
-        engine_entrepot = create_engine(DATABASE_URI_entrepot)
-        #metadata = MetaData(bind=engine_entrepot)
-        inspector = inspect(engine_entrepot)
-        schemas = inspector.get_schema_names()
-
-        print("")
-        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
-        print("--")
-        for current_table_name in inspector.get_table_names(schema='public'):
-            associated_file_name = "_".join(current_table_name.split('_')[1:])
-            if(current_table_name.startswith('entrepot_')):
-                print(f"- Suppression de la table : {Fore.RED}"+current_table_name+f"{Style.RESET_ALL}")           
-                drop_request = "DROP TABLE IF EXISTS "+current_table_name+" CASCADE"
-                cur.execute(drop_request)
-        print("")
-        print("GÉNÉRATION DES TABLES DE L'ENTREPÔT :")
-        print("--")
-        #Obtention des fichiers sql
         for i, ordered_file in enumerate(ordered_files):
             current_file = ordered_file+'.sql'
 
@@ -234,16 +219,8 @@ while True:
         choice_key = list(ordered_files)[choice - 1]
         print("choice_key : ", choice_key)
 
-        print("")
-        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
-        
-
         for i in range(choice-1, len(ordered_files)):
             choice_key = list(ordered_files)[i]
-            print("--")
-            print(f"- Suppression de la table : {Fore.RED}entrepot_"+choice_key+f"{Style.RESET_ALL}")           
-            drop_request = "DROP TABLE IF EXISTS entrepot_"+choice_key+" CASCADE"
-            cur.execute(drop_request)
             print("")
             print("GÉNÉRATION DES TABLES DE L'ENTREPÔT :")
             print("--")
@@ -269,7 +246,7 @@ while True:
 
     elif(choice_key == "Génération de certaines données de l'entrepôt"):
         print("")
-        print("Veuillez table particulière à mettre à jour :")
+        print("Veuillez séléctionner le script à executer :")
         print("")
 
         for i, option in enumerate(ordered_files):
@@ -279,20 +256,6 @@ while True:
         choice_key = list(ordered_files)[choice - 1]
         print("choice_key : ", choice_key)
         print(datetime.datetime.now())
-
-
-         # Récupération des informations sur les tables existantes
-        engine_entrepot = create_engine(DATABASE_URI_entrepot)
-        #metadata = MetaData(bind=engine_entrepot)
-        inspector = inspect(engine_entrepot)
-        schemas = inspector.get_schema_names()
-
-        print("")
-        print("NETTOYAGE DE LA BASE DE DONNÉES ("+DB_NAME_ENTREPOT+", "+DB_HOST_ENTREPOT+")")
-        print("--")
-        print(f"- Suppression de la table : {Fore.RED}entrepot_"+choice_key+f"{Style.RESET_ALL}")           
-        drop_request = "DROP TABLE IF EXISTS entrepot_"+choice_key+" CASCADE"
-        cur.execute(drop_request)
         print("")
         print("GÉNÉRATION DES TABLES DE L'ENTREPÔT :")
         print("--")

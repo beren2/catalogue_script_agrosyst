@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_plantation_perenne_synthetise CASCADE;
+
 CREATE TABLE entrepot_plantation_perenne_synthetise AS
 select
 ppc.topiaid id,
@@ -40,7 +42,7 @@ END $$;
 alter table entrepot_plantation_perenne_synthetise
 ADD FOREIGN KEY (synthetise_id) REFERENCES entrepot_synthetise(id);
 
-drop table if exists entrepot_plantation_perenne_phases_synthetise;
+drop table if exists entrepot_plantation_perenne_phases_synthetise cascade;
 CREATE TABLE entrepot_plantation_perenne_phases_synthetise AS
 select
 pcp.topiaid id,
@@ -65,7 +67,7 @@ END $$;
 alter table entrepot_plantation_perenne_phases_synthetise
 ADD FOREIGN KEY (plantation_perenne_synthetise_id) REFERENCES entrepot_plantation_perenne_synthetise(id);
 
-drop table if exists entrepot_plantation_perenne_especes_synthetise;
+drop table if exists entrepot_plantation_perenne_especes_synthetise cascade;
 CREATE TABLE entrepot_plantation_perenne_especes_synthetise AS
 select 
 pcs.topiaid id,

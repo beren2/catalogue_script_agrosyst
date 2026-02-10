@@ -1,4 +1,4 @@
-drop table if exists entrepot_recolte_rendement_prix;
+drop table if exists entrepot_recolte_rendement_prix cascade;
 CREATE TABLE entrepot_recolte_rendement_prix(
     id character varying(255),
 	libelle_culture text,
@@ -91,7 +91,7 @@ Pour ces cas là, la colonne type_agri = NULL
 
 
 -- 1) isoler les informations de la recolte
-drop table if exists recolte_context;
+drop table if exists recolte_context cascade;
 
 create temporary table recolte_context as
 select 
@@ -128,7 +128,7 @@ CREATE INDEX recolte_context_idx4 on recolte_context(beginMarketingPeriod);
 -- dans le cas où la récolte couvre plusieurs decades, la moyenne est faite pour attribuer 1 prix de référence
 
 
-drop table if exists prixref_selection;
+drop table if exists prixref_selection cascade;
 
 create table prixref_selection(
 topiaid_hav character varying(255),

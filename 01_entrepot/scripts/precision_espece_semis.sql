@@ -1,4 +1,5 @@
-DROP TABLE IF EXISTS entrepot_precision_espece_semis;
+DROP TABLE IF EXISTS entrepot_precision_espece_semis cascade;
+
 CREATE TABLE entrepot_precision_espece_semis (
 	id character varying(255),
 	quantite double precision,

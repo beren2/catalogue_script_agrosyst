@@ -827,3 +827,20 @@ def test_get_donnees_spatiales_coord_gps_du_domaine():
     res = fonction_test(identifiant_test, df_names_withExt, path_data, fonction_to_apply, multi_extension = True, key_name = 'geopoint_id')
 
     assert all(res)
+
+def test_entite_unique_par_sdc_nettoyage():
+    """
+        Test de l'obtention entités à retenir pou en avoir une unique par sdc_id
+    """
+    identifiant_test = 'test_entite_unique_par_sdc_nettoyage'
+    df_names = [   
+                    'parcelle', 'synthetise_synthetise_performance', 'synthetise'
+                ]
+    path_data = '02_outils/tests/data/test_entite_unique_par_sdc_nettoyage/'
+    fonction_to_apply = nettoyage.entite_unique_par_sdc
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
+
+    res = pd.Series(res).fillna(False).all()
+
+    assert res
