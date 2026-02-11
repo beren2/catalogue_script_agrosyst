@@ -351,19 +351,19 @@ LEFT JOIN entrepot_culture AS culture_prec ON culture_prec.id = noeud_prec.cultu
 LEFT JOIN entrepot_typologie_can_culture AS typocp ON typocp.culture_id = culture_prec.id 
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 WHERE
-	(itkR.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_co_semis_std_mil is null) AND 
-	(itkR.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
-	(itkR.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_ift_cible_non_mil_f is null) AND
-	(itkR.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_ift_cible_non_mil_h is null) AND	
-	(itkR.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_ift_cible_non_mil_i is null) AND	
-	(itkR.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_ift_cible_non_mil_biocontrole is null) AND	
-	(itkR.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_co_irrigation_std_mil is null) AND	
-	(itkR.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_msn_std_mil_avec_autoconso is null) AND	
-	(itkR.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_pb_std_mil_avec_autoconso is null) AND	
-	(itkR.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_rendement is null) AND	
-	(itkR.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_cm_std_mil is null) AND	
-	(itkR.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alerte_co_semis_std_mil is null) AND	
-	(itkR.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkR.alertes_charges is null)
+	(itkR.alerte_co_semis_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_co_semis_std_mil is null) AND 
+	(itkR.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
+	(itkR.alerte_ift_cible_non_mil_f IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_ift_cible_non_mil_f is null) AND
+	(itkR.alerte_ift_cible_non_mil_h IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_ift_cible_non_mil_h is null) AND	
+	(itkR.alerte_ift_cible_non_mil_i IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_ift_cible_non_mil_i is null) AND	
+	(itkR.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_ift_cible_non_mil_biocontrole is null) AND	
+	(itkR.alerte_co_irrigation_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_co_irrigation_std_mil is null) AND	
+	(itkR.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_msn_std_mil_avec_autoconso is null) AND	
+	(itkR.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_pb_std_mil_avec_autoconso is null) AND	
+	(itkR.alerte_rendement IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_rendement is null) AND	
+	(itkR.alerte_cm_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_cm_std_mil is null) AND	
+	(itkR.alerte_co_semis_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alerte_co_semis_std_mil is null) AND	
+	(itkR.alertes_charges IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkR.alertes_charges is null)
 UNION 
 
 SELECT 
@@ -721,18 +721,18 @@ LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.syn
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
 LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
 WHERE
-	(itkS.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_co_semis_std_mil is null) AND 
-	(itkS.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
-	(itkS.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_ift_cible_non_mil_f is null) AND	
-	(itkS.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_ift_cible_non_mil_h is null) AND	
-	(itkS.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_ift_cible_non_mil_i is null) AND	
-	(itkS.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_ift_cible_non_mil_biocontrole is null) AND	
-	(itkS.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_co_irrigation_std_mil is null) AND	
-	(itkS.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_msn_std_mil_avec_autoconso is null) AND	
-	(itkS.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_pb_std_mil_avec_autoconso is null) AND	
-	(itkS.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_rendement is null) AND	
-	(itkS.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_cm_std_mil is null) AND	
-	(itkS.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_co_semis_std_mil is null) AND	
-	(itkS.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alertes_charges is null);
+	(itkS.alerte_co_semis_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_co_semis_std_mil is null) AND 
+	(itkS.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
+	(itkS.alerte_ift_cible_non_mil_f IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_ift_cible_non_mil_f is null) AND	
+	(itkS.alerte_ift_cible_non_mil_h IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_ift_cible_non_mil_h is null) AND	
+	(itkS.alerte_ift_cible_non_mil_i IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_ift_cible_non_mil_i is null) AND	
+	(itkS.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_ift_cible_non_mil_biocontrole is null) AND	
+	(itkS.alerte_co_irrigation_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_co_irrigation_std_mil is null) AND	
+	(itkS.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_msn_std_mil_avec_autoconso is null) AND	
+	(itkS.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_pb_std_mil_avec_autoconso is null) AND	
+	(itkS.alerte_rendement IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_rendement is null) AND	
+	(itkS.alerte_cm_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_cm_std_mil is null) AND	
+	(itkS.alerte_co_semis_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_co_semis_std_mil is null) AND	
+	(itkS.alertes_charges IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alertes_charges is null);
 
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
