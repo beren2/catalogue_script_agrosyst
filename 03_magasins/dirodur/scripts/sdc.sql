@@ -263,8 +263,23 @@ LEFT JOIN entrepot_synthetise_synthetise_performance AS ssp ON sub_sdc.entite_re
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 -- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
-where sdc.filiere = 'POLYCULTURE_ELEVAGE' or sdc.filiere = 'GRANDES_CULTURES'
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id
+WHERE
+	(sdc.filiere = 'POLYCULTURE_ELEVAGE' OR sdc.filiere = 'GRANDES_CULTURES') AND
+	(ssp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_semis_std_mil is null) AND 
+	(ssp.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
+	(ssp.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_f is null) AND	
+	(ssp.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_h is null) AND	
+	(ssp.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_i is null) AND	
+	(ssp.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_biocontrole is null) AND	
+	(ssp.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_irrigation_std_mil is null) AND	
+	(ssp.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_msn_std_mil_avec_autoconso is null) AND	
+	(ssp.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_pb_std_mil_avec_autoconso is null) AND	
+	(ssp.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_rendement is null) AND	
+	(ssp.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_cm_std_mil is null) AND	
+	(ssp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_semis_std_mil is null) AND	
+	(ssp.alerte_tps_travail_total IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_tps_travail_total is null) AND	
+	(ssp.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alertes_charges is null)
 
 UNION
 -------------
@@ -536,7 +551,22 @@ LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.do
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
 -- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
-where sdc.filiere = 'POLYCULTURE_ELEVAGE' or sdc.filiere = 'GRANDES_CULTURES';
+WHERE
+	(sdc.filiere = 'POLYCULTURE_ELEVAGE' OR sdc.filiere = 'GRANDES_CULTURES') AND
+	(srp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_semis_std_mil is null) AND 
+	(srp.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
+	(srp.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_f is null) AND	
+	(srp.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_h is null) AND	
+	(srp.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_i is null) AND	
+	(srp.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_biocontrole is null) AND	
+	(srp.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_irrigation_std_mil is null) AND	
+	(srp.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_msn_std_mil_avec_autoconso is null) AND	
+	(srp.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_pb_std_mil_avec_autoconso is null) AND	
+	(srp.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_rendement is null) AND	
+	(srp.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_cm_std_mil is null) AND	
+	(srp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_semis_std_mil is null) AND	
+	(srp.alerte_tps_travail_total IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_tps_travail_total is null) AND	
+	(srp.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alertes_charges is null);
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
 
 
