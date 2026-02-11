@@ -733,6 +733,6 @@ WHERE
 	(itkS.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_rendement is null) AND	
 	(itkS.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_cm_std_mil is null) AND	
 	(itkS.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alerte_co_semis_std_mil is null) AND	
-	(itkS.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alertes_charges is null)
+	(itkS.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière') or itkS.alertes_charges is null);
 
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
