@@ -27,9 +27,6 @@ SELECT
 	-- culture_intermediaire_*
 	culture_inter.id as culture_intermediaire_id,
 	culture_inter.nom as culture_intermediaire_nom,
-	culture_inter.melange_especes as culture_intermediaire_est_melange_especes,
-	culture_inter.melange_varietes as culture_intermediaire_est_melange_varietes,
-	culture_inter."type" as culture_intermediaire_type,
 
 	-- culture_intermediaire_typocan_*
 	typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
@@ -54,7 +51,7 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_code_dephy,
+	sdc.code_dephy as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
@@ -160,6 +157,7 @@ SELECT
     null as synthetise_rotation_typo_liste_culture,
     null as synthetise_nom,
     null as synthetise_campagnes,
+	false as synthetise_est_pz0,
 
     -------------
 	-- REALISE --
@@ -394,9 +392,6 @@ SELECT
 	-- culture_intermediaire_*
 	cx_rst.culture_intermediaire_id as culture_intermediaire_id,
 	culture_inter.nom as culture_intermediaire_nom,
-	culture_inter.melange_especes as culture_intermediaire_est_melange_especes,
-	culture_inter.melange_varietes as culture_intermediaire_est_melange_varietes,
-	culture_inter."type" as culture_intermediaire_type,
 
 	-- culture_intermediaire_typocan_*
 	typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
@@ -421,7 +416,7 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_code_dephy,
+	sdc.code_dephy as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
@@ -524,6 +519,8 @@ SELECT
 	typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
 	synth.nom as synthetise_nom,
 	synth.campagnes as synthetise_campagnes,
+	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
+
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
 
     -------------
@@ -720,6 +717,8 @@ LEFT JOIN entrepot_typologie_can_culture AS typo_ci ON typo_ci.culture_id = cx_r
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
 LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
+LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id
+
 WHERE
 	(itkS.alerte_co_semis_std_mil IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_co_semis_std_mil is null) AND 
 	(itkS.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte','Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') or itkS.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 

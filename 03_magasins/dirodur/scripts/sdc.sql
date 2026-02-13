@@ -8,7 +8,7 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_code_dephy,
+	sdc.code_dephy as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
@@ -102,6 +102,7 @@ SELECT
 	typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
 	synth.nom as synthetise_nom,
 	synth.campagnes as synthetise_campagnes,
+	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
 
 	---------------------------------------
@@ -262,6 +263,7 @@ LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.do
 LEFT JOIN entrepot_synthetise_synthetise_performance AS ssp ON sub_sdc.entite_retenue = ssp.synthetise_id
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
+LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = ssp.synthetise_id
 -- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
 --LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id
 WHERE
@@ -295,7 +297,7 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_code_dephy,
+	sdc.code_dephy as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
@@ -391,6 +393,7 @@ SELECT
 	null as synthetise_rotation_typo_liste_culture,
 	null as synthetise_nom,
 	null as synthetise_campagnes,
+	false as synthetise_est_pz0,
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
 
 	---------------------------------------
