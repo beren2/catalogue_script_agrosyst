@@ -85,6 +85,7 @@ SELECT
 	dom.main_oeuvre_non_saisoniere as domaine_main_oeuvre_non_saisoniere,
 	dom.main_oeuvre_saisoniere as domaine_main_oeuvre_saisoniere,
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
+	dom.sau_totale as domaine_sau_totale,
 	interop.typo_ruralite as domaine_typologie_ruralite,
 
     -----------------
@@ -376,6 +377,7 @@ SELECT
 	dom.main_oeuvre_non_saisoniere as domaine_main_oeuvre_non_saisoniere,
 	dom.main_oeuvre_saisoniere as domaine_main_oeuvre_saisoniere,
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
+	dom.sau_totale as domaine_sau_totale,
 	interop.typo_ruralite as domaine_typologie_ruralite,
 
     -----------------
