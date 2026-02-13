@@ -55,7 +55,6 @@ SELECT
 	dom.pct_sau_zone_erosion as domaine_pct_sau_zone_erosion,
 	dom.pct_sau_perimetre_protection_captage as domaine_pct_sau_perimetre_protection_captage,
 	dom.annee_naissance_exploitant as domaine_annee_naissance_exploitant,
-	dom.sau_totale as domaine_sau_totale,
 	dom.cotisation_msa as domaine_cotisation_msa,
 	dom.fermage_moyen as domaine_fermage_moyen,
 	dom.aides_decouplees as domaine_aides_decouplees,
@@ -85,7 +84,7 @@ SELECT
 	dom.main_oeuvre_non_saisoniere as domaine_main_oeuvre_non_saisoniere,
 	dom.main_oeuvre_saisoniere as domaine_main_oeuvre_saisoniere,
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
-	dom.sau_totale as domaine_sau_totale,
+	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
 
     -----------------
@@ -347,7 +346,6 @@ SELECT
 	dom.pct_sau_zone_erosion as domaine_pct_sau_zone_erosion,
 	dom.pct_sau_perimetre_protection_captage as domaine_pct_sau_perimetre_protection_captage,
 	dom.annee_naissance_exploitant as domaine_annee_naissance_exploitant,
-	dom.sau_totale as domaine_sau_totale,
 	dom.cotisation_msa as domaine_cotisation_msa,
 	dom.fermage_moyen as domaine_fermage_moyen,
 	dom.aides_decouplees as domaine_aides_decouplees,
@@ -377,7 +375,7 @@ SELECT
 	dom.main_oeuvre_non_saisoniere as domaine_main_oeuvre_non_saisoniere,
 	dom.main_oeuvre_saisoniere as domaine_main_oeuvre_saisoniere,
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
-	dom.sau_totale as domaine_sau_totale,
+	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
 
     -----------------
