@@ -12,7 +12,6 @@ import json
 import configparser
 import urllib
 import importlib
-import time
 import re
 import sys
 import psycopg2 as psycopg
@@ -934,8 +933,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                         load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
                 else :
                     print("Données manquantes pour la catégorie "+step['category'])
-                    return
-
+                    
     elif choice_key == 'Télécharger les outils':
         print("")
         print("Veuillez choisir la catégorie à télécharger")
