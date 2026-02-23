@@ -131,7 +131,6 @@ SELECT
 	--------------------------------
     null as noeud_est_meme_campagne_noeud_precedent,
 	node_res.precedent_noeuds_realise_id as noeud_precedent_id,
-    null as noeud_precedent_est_fin_cycle,
     null as noeud_precedent_est_meme_campagne_noeud_precedent,
 
     ----------------
@@ -480,7 +479,6 @@ SELECT
 	------------
 	nd_cible.memecampagne_noeudprecedent as noeud_est_meme_campagne_noeud_precedent,
     cx.source_noeuds_synthetise_id as noeud_precedent_id,
-    nd_source.fin_cycle as noeud_precedent_est_fin_cycle,
 	nd_source.memecampagne_noeudprecedent as noeud_precedent_est_meme_campagne_noeud_precedent,
 
     -----------------
