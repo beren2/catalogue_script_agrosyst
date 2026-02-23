@@ -15,7 +15,6 @@ SELECT
 	culture1.nom as culture_nom,
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
-	culture1."type" as culture_type,
 
 	-- culture_typocan_*
 	typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
@@ -38,7 +37,6 @@ SELECT
 	culture_prec.nom as culture_precedente_nom,
 	culture_prec.melange_especes as culture_precedente_est_melange_especes,
 	culture_prec.melange_varietes as culture_precedente_est_melange_varietes,
-	culture_prec."type" as culture_precedente_type,
 
     -- culture_precedente_typocan_*
 	typocp.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
@@ -56,18 +54,6 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
-	-- sdc_typo_*
-	typoassol.surface_totale_assol_dvlp as sdc_typo_surface_totale_assol_dvlp,
-	typoassol.surface_totale_assol as sdc_typo_surface_totale_assol,
-	
-	-- sdc_typocan_*
-	typoassol.typocan_assol_dvlp  as sdc_typo_can_assol_dvlp,
-	typoassol.typocan_assol  as sdc_typo_can_assol,
-
-	-- sdc_typoculture_*
-	typoassol.list_freq_typoculture_dvlp  as sdc_typo_culture_liste_dvlp,
-	typoassol.list_freq_typoculture as sdc_typo_culture_liste,
 
     ----------------
 	-- DISPOSITIF --
@@ -143,7 +129,6 @@ SELECT
     --------------------------------
 	-- NOEUDS_REALISE_RESTRUCTURE --
 	--------------------------------
-    null as noeud_est_fin_cycle,
     null as noeud_est_meme_campagne_noeud_precedent,
 	node_res.precedent_noeuds_realise_id as noeud_precedent_id,
     null as noeud_precedent_est_fin_cycle,
@@ -380,7 +365,6 @@ SELECT
 	culture1.nom as culture_nom,
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
-	culture1."type" as culture_type,
 
 	-- culture_typocan_*
 	typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
@@ -403,7 +387,6 @@ SELECT
 	culture0.nom as culture_precedente_nom,
 	culture0.melange_especes as culture_precedente_est_melange_especes,
 	culture0.melange_varietes as culture_precedente_est_melange_varietes,
-	culture0."type" as culture_precedente_type,
 
 	-- culture_precedente_typocan_*
 	typoc0.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
@@ -421,16 +404,6 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
-	-- sdc_typo_*
-	null as sdc_typo_surface_totale_assol_dvlp,
-	null as sdc_typo_surface_totale_assol,
-	-- sdc_typocan_*
-	null as sdc_typo_can_assol_dvlp,
-	null as sdc_typo_can_assol,
-	-- sdc_typoculture_*
-	null as sdc_typo_culture_liste_dvlp,
-	null as sdc_typo_culture_liste,
 
 	----------------
 	-- DISPOSITIF --
@@ -505,7 +478,6 @@ SELECT
     ------------
 	-- NOEUDS --
 	------------
-	nd_cible.fin_cycle as noeud_est_fin_cycle,
 	nd_cible.memecampagne_noeudprecedent as noeud_est_meme_campagne_noeud_precedent,
     cx.source_noeuds_synthetise_id as noeud_precedent_id,
     nd_source.fin_cycle as noeud_precedent_est_fin_cycle,
