@@ -1584,6 +1584,8 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
     """
     Fonction permettant d'obtenir l'espèce et la variété principale des cultures pérennes présentes dans les sdc en ARBO ou VITI. On exporte également la lsite de toutes les espèces et variétés présentes dans les cultures pérennes des sdc en ARBO ou VITI.
 
+    Attention on ne prend que les plantation_perenne réalisées ou synthétisées. On ne prend pas en compte les cultures saisie comme les assolées, même si elles sont bien en réalité pérennes !
+
     L'échelle de l'indicateur est l'entité (sdc ou synthétisé). On considère que l'espèce et la variété principale d'une entité sont celles de la culture pérenne qui occupe la plus grande surface (pour les données réalisées) ou le plus grand pourcentage d'occupation du sol (pour les données synthétisées). On prend en compte également la surface_relative des composants de culture des cultures pour faire varier l'importante de chaque composant dans le choix de l'espèce et variété principale. S'il y a plusieurs composants de culture mais qu'aucune surface relative n'est renseignée, on considère que les composants ont la même surface relative à part égale (4 composants => 4 * 1/4).
 
     Pour mieux comprendre la logique de la fonction vous pouvez aller voir le docstring de get_major_species_and_variety().
