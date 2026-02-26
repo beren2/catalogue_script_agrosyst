@@ -1606,8 +1606,8 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
         entite_id
         espece_principale
         variete_principale
-        liste_toutes_espece
-        liste_toutes_variete
+        liste_toutes_especes
+        liste_toutes_varietes
     """
 
     ### Création des variables
