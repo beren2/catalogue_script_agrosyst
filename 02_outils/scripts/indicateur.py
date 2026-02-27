@@ -1582,11 +1582,18 @@ def get_connexion_weight_in_synth_rotation_for_test(donnees):
 
 def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
     """
-    Fonction permettant d'obtenir l'espèce et la variété principale des cultures pérennes présentes dans les sdc en ARBO ou VITI. On exporte également la lsite de toutes les espèces et variétés présentes dans les cultures pérennes des sdc en ARBO ou VITI.
-
-    Attention on ne prend que les plantation_perenne réalisées ou synthétisées. On ne prend pas en compte les cultures saisie comme les assolées, même si elles sont bien en réalité pérennes !
-
-    L'échelle de l'indicateur est l'entité (sdc ou synthétisé). On considère que l'espèce et la variété principale d'une entité sont celles de la culture pérenne qui occupe la plus grande surface (pour les données réalisées) ou le plus grand pourcentage d'occupation du sol (pour les données synthétisées). On prend en compte également la surface_relative des composants de culture des cultures pour faire varier l'importante de chaque composant dans le choix de l'espèce et variété principale. S'il y a plusieurs composants de culture mais qu'aucune surface relative n'est renseignée, on considère que les composants ont la même surface relative à part égale (4 composants => 4 * 1/4).
+    Fonction permettant d'obtenir l'espèce et la variété principale des cultures pérennes présentes dans les sdc en ARBO ou VITI. 
+    On exporte également la liste de toutes les espèces et variétés présentes dans les cultures pérennes des sdc en ARBO ou VITI.
+    Attention on ne prend que les plantation_perenne réalisées ou synthétisées. On ne prend pas en compte les cultures saisie 
+    comme des assolées même si elles sont bien en réalité pérennes !
+    
+    L'échelle de l'indicateur est l'entité (sdc ou synthétisé). 
+    On considère que l'espèce et la variété principale d'une entité sont celles de la culture pérenne qui occupe la plus grande
+    surface (pour les données réalisées) ou le plus grand pourcentage d'occupation du sol (pour les données synthétisées). 
+    On prend en compte également la surface_relative des composants de culture des cultures pour faire varier l'importante de 
+    chaque composant dans le choix de l'espèce et variété principale. S'il y a plusieurs composants de culture mais qu'aucune 
+    surface relative n'est renseignée, 
+    on considère que les composants ont la même surface relative à part égale (4 composants => 4 * 1/4).
 
     Pour mieux comprendre la logique de la fonction vous pouvez aller voir le docstring de get_major_species_and_variety().
 
@@ -1631,14 +1638,22 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
 
 
     ### Restructuraion des données
-    plantation_perenne_synthetise = plantation_perenne_synthetise.merge(plantation_perenne_synthetise_restructure, on='id', how='left')
-    plantation_perenne_realise = plantation_perenne_realise.merge(zone.rename(columns={'id': 'zone_id'}), on='zone_id', how='left').merge(parcelle.rename(columns={'id': 'parcelle_id'}), on='parcelle_id', how='left')
+    plantation_perenne_synthetise = plantation_perenne_synthetise.merge(
+        plantation_perenne_synthetise_restructure, on='id', how='left'
+    )
+    plantation_perenne_realise = plantation_perenne_realise.merge(
+        zone.rename(columns={'id': 'zone_id'}), on='zone_id', how='left').merge(
+            parcelle.rename(columns={'id': 'parcelle_id'}), on='parcelle_id', how='left')
 
-    composant_culture = composant_culture.merge(espece.rename(columns={'id': 'espece_id'}), on='espece_id', how='left').merge(variete.rename(columns={'id': 'variete_id'}), on='variete_id', how='left').rename(columns={'id': 'composant_id'})
+    composant_culture = composant_culture.merge(
+        espece.rename(columns={'id': 'espece_id'}), on='espece_id', how='left').merge(
+            variete.rename(columns={'id': 'variete_id'}), on='variete_id', how='left').rename(columns={'id': 'composant_id'})
 
     # Si on veut attraper les données des assolés
     # noeuds_synthetise = noeuds_synthetise.merge(noeuds_synthetise_restructure, on='id', how='left')
-    # noeuds_realise = noeuds_realise.merge(zone.rename(columns={'id': 'zone_id'}), on='zone_id', how='left').merge(parcelle.rename(columns={'id': 'parcelle_id'}), on='parcelle_id', how='left')
+    # noeuds_realise = noeuds_realise.merge(
+    #     zone.rename(columns={'id': 'zone_id'}), on='zone_id', how='left').merge(
+    #         parcelle.rename(columns={'id': 'parcelle_id'}), on='parcelle_id', how='left')
 
     # Concaténation des synthé/réalisé/pérenne
     all_peren= pd.concat([
@@ -1650,25 +1665,40 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
 
     # Ajout des infos
     all_peren['entite_id'] = all_peren['sdc_id'].fillna(all_peren['synthetise_id'])
-    all_peren = all_peren.merge(synthetise[['id', 'sdc_id']].rename(columns={'id': 'synthetise_id', 'sdc_id': 'sdc_id_fromsynth'}), on='synthetise_id', how='left')
+    all_peren = all_peren.merge(
+        synthetise[['id', 'sdc_id']].rename(columns={'id': 'synthetise_id', 'sdc_id': 'sdc_id_fromsynth'}), on='synthetise_id', how='left')
     all_peren['sdc_id'] = all_peren['sdc_id'].fillna(all_peren['sdc_id_fromsynth'])
-    all_peren = all_peren.merge(sdc[['id', 'filiere']].rename(columns={'id': 'sdc_id'}), on='sdc_id', how='left').drop(columns=['sdc_id_fromsynth'], errors='ignore')
+    all_peren = all_peren.merge(
+        sdc[['id', 'filiere']].rename(columns={'id': 'sdc_id'}), on='sdc_id', how='left').drop(columns=['sdc_id_fromsynth'], errors='ignore')
 
     # On ne garde que les filiere ARBO et VITI
     all_peren = all_peren.loc[all_peren['filiere'].isin(['ARBORICULTURE','VITICULTURE'])]
 
-    # On epxlose all_peren pour avoir toutes les composant de culture associé à chaque culture de perenne
+    # On explose all_peren pour avoir toutes les composant de culture associé à chaque culture de perenne
     composant_culture = composant_culture[['composant_id','culture_id','typocan_espece','denomination','surface_relative']]
     df = all_peren.merge(composant_culture, on='culture_id', how='left')
     df['pct_occupation_sol'] = df['pct_occupation_sol'].fillna(100) / 100
     df['surface_relative'] = df['surface_relative'].fillna(100) / 100
     df['surface'] = df['surface'].fillna(1)
 
+    # On ajoute une colonne "surface_relative_totale" à df (résultat de la somme des surface_relatives par plantation pérenne)
+    left = df
+    right = df.groupby("perenne_id").agg({'surface_relative' : 'sum'}).rename(columns={'surface_relative': 'surface_relative_totale'})
+    df = pd.merge(left, right, left_on="perenne_id", right_index=True, how='left')
+
     # Calcul de la proportion pour les zones
-    # Si la culture a plusieurs composant par perenne_id, on multiplie la zone par le ratio entre la sruface relative et la somme des surface relative des composants d'une même perenne_id. Sachant que les surface relatives null ont été remplacées par 1.
-    df["surface_corrigee"] = df["surface"] * (df['surface_relative'] / df.groupby("perenne_id")["surface_relative"].transform("sum"))
-    # PLusieurs culture_id dans la même zone => zone devellopé. On donne simplement la surface de la zone à la culture
-    df["surface_prop"] = df["surface_corrigee"] / df.groupby("entite_id")["surface_corrigee"].transform("sum")
+    # Si la culture a plusieurs composant par perenne_id, on multiplie la zone par le ratio entre la sruface relative et la somme des surface relative des composants d'une même perenne_id. 
+    # Sachant que les surface relatives null ont été remplacées par 1.
+    df["surface_corrigee"] = df["surface"] * (df['surface_relative'] / df['surface_relative_totale'])
+
+
+    # On ajoute une colonne "surface_corrigee_totale" à df (résultat d ela somme des surfaces corrigées par entite_id)
+    left = df
+    right = df.groupby("entite_id").agg({'surface_corrigee' : 'sum'}).rename(columns={'surface_corrigee': 'surface_corrigee_totale'})
+    df = pd.merge(left, right, left_on="entite_id", right_index=True, how='left')
+
+    # PLusieurs culture_id dans la même zone => zone devellopée. On donne simplement la surface de la zone à la culture
+    df["surface_prop"] = df["surface_corrigee"] / df["surface_corrigee_totale"]
 
     # Calcul de la proportion finale au seins de l'entité
     df['proportion_composant'] = df['surface_prop'] * df['pct_occupation_sol']
@@ -1682,7 +1712,8 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
 
     def specify_colnames_of_return(esp_principale, var_principale, list_esp, list_var):
         """
-        Petite fonction pour spécifier les noms de colonnes du return de la fonction get_major_species_and_variety() qui est utilisé dans un groupby.
+        Petite fonction pour spécifier les noms de colonnes du return de la fonction get_major_species_and_variety()
+        qui est utilisé dans un groupby.
         """
         return pd.Series({
             'espece_principale': esp_principale,
@@ -1693,7 +1724,9 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
 
     def get_major_species_and_variety(groupe, typo_sp_arbo, pct_ecart=2):
         """
-        Fonction qui retourne l'espèce principale et la variété principale d'une entité_id. Si il n'y a pas d'espèce ou de variété principale, on retourne une string explicative. On retourne aussi la liste de toutes les espèces et variétés présentes dans l'entité_id.
+        Fonction qui retourne l'espèce principale et la variété principale d'une entité_id. 
+        Si il n'y a pas d'espèce ou de variété principale, on retourne une string explicative. 
+        On retourne aussi la liste de toutes les espèces et variétés présentes dans l'entité_id.
          - Pour l'arboriculture, l'espèce principale est l'espèce majoritaire parmi la liste des espèces arboricoles majoritaires dans DEPHY. Si le pourcentage de l'espèce majoritaire est inférieur de moins de 2% à celui de l'espèce secondaire, alors on considère qu'il s'agit d'un mélange égal d'espèce.
          - Pour la viticulture, l'espèce principale est la vigne. Si aucune vigne n'est détectée parmi la liste d'espèce, alors on retourne une explication.
          - La variété principale est la variété ayant la proportion la plus élevée au sein de l'espèce principale (forcément Vigne pour la filière viticole). Si le pourcentage de l'espèce majoritaire est inférieur de moins de 2% à celui de l'espèce secondaire, alors on considère qu'il s'agit d'un mélange égal de variété.
@@ -1712,9 +1745,9 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
         if filiere not in ["ARBORICULTURE", "VITICULTURE"]:
             raise ValueError(f"Filière non supportée pour entite_id : {groupe.name}")
 
-        # Check qu'il y ait au moins une espèce renseigné
+        # Check qu'il y ait au moins une espèce renseignée
         if groupe["typocan_espece"].nunique() == 0:
-            return specify_colnames_of_return('Erreur aucune espèce renseigné', None, None, None)
+            return specify_colnames_of_return('Erreur aucune espèce renseignée', None, None, None)
 
 
         ### Creation des listes d'espèce et de variété
@@ -1758,7 +1791,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
             if grp_filt.empty : 
                 return specify_colnames_of_return('Erreur aucune vigne', None, None, None)
 
-            # Pour la viti, seule l'espèce vigne est considéré comme espèce princiaple
+            # Pour la viti, seule l'espèce vigne est considérée comme espèce princiaple
             esp_principale = 'Vigne'
 
         # A ce terme, soit la fonction retourne un ensemble de valeur correspondant a une erreur, soit nous avons bien une espèce principale (pure, en mélange égal ou vigne). On vérifie que c'est le cas
@@ -1770,7 +1803,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
         if groupe["denomination"].nunique() == 0 : 
                 return specify_colnames_of_return(esp_principale, 'Aucune variété renseignée', list_esp, list_var)
         
-        # On récupère la variété principale AU SEINS de l'espèce principale, selon la même procédure
+        # On récupère la variété principale AU SEIN de l'espèce principale, selon la même procédure
         if esp_principale != 'Mélange égal d_espèce' :
             grp_by_denom = grp_filt.loc[(grp_filt['typocan_espece'] == esp_principale) & (grp_filt['denomination'].notna())]
             # Cas où l'on a bien une espèce principale mais aucune varitété de renseignée

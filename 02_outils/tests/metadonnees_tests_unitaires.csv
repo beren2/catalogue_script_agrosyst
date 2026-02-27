@@ -1096,14 +1096,14 @@ test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.Growing
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,"['Cabernet franc N', 'Cabernet-Sauvignon N', 'Cot N', 'Merlot N', 'Muscadelle B', 'Sauvignon B', 'Semillon B']",,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_28323105-d6b3-455d-b35c-7588a4e181b3,Pommier,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_2b644d06-0b32-44c0-a65c-05102f8911b2,Erreur aucune des espèces arboricoles majoritaires,,espece_principale
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_324a736c-060a-4d4f-9c57-e9d731df3431,Erreur aucune espèce renseigné,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_324a736c-060a-4d4f-9c57-e9d731df3431,Erreur aucune espèce renseignée,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_8b67367c-0bab-420f-917b-2ce5d6ea4d8b,Aucune variété pour l_espèce principale,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_8b67367c-0bab-420f-917b-2ce5d6ea4d8b,"['Picholine', 'Tom Cot']",,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c846b24-0e7b-421c-af72-b96d0e199ae9,Pêcher,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c846b24-0e7b-421c-af72-b96d0e199ae9,Aucune variété renseignée,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0e46b493-8fcf-4a00-ac8b-57385aaeb6c9,['Vigne'],,liste_toutes_especes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_119179b1-3237-4382-b271-fe13bca44411,Erreur aucune des espèces arboricoles majoritaires,,espece_principale
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_14883d32-c91a-4477-9dd4-9555be09295d,Erreur aucune espèce renseigné,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_14883d32-c91a-4477-9dd4-9555be09295d,Erreur aucune espèce renseignée,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,Mélange égal de variété,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,"['Regina', 'Summit', 'Hâtif Burlat']",,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,['Cerisier'],,liste_toutes_especes
