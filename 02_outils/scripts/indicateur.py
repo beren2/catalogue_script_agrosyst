@@ -1714,7 +1714,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
 
         # Check qu'il y ait au moins une espèce renseigné
         if groupe["typocan_espece"].nunique() == 0:
-            return specify_colnames_of_return('Erreur aucune espèce renseigné', None, None, None)
+            return specify_colnames_of_return('ERREUR_aucune_espece', None, None, None)
 
 
         ### Creation des listes d'espèce et de variété
@@ -1736,7 +1736,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
             # a partir de là on ne regarde plus que les composants présent dans la liste des espèce arboricole majoritaire dans DEPHY
             grp_filt = groupe[groupe['typocan_espece'].isin(typo_sp_arbo)]
             if grp_filt.empty : 
-                return specify_colnames_of_return('Erreur aucune des espèces arboricoles majoritaires', None, None, None)
+                return specify_colnames_of_return('ERREUR_aucune_des_especes_arbo_majoritaires', None, None, None)
 
             # On refait un groupby pour avoir le classement par proportion des différentes espèces
             grp_by_typo = grp_filt.groupby("typocan_espece", as_index=False)["proportion_composant"].sum()
@@ -1749,14 +1749,14 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
                 if esp_top1['proportion_composant'] > 0:
                     esp_top2 = grp_by_typo.iloc[1]
                     pct_diff_esp = (esp_top1['proportion_composant'] - esp_top2['proportion_composant']) / esp_top1['proportion_composant'] * 100
-                    if pct_diff_esp < pct_ecart : esp_principale = 'Mélange égal d_espèce'
-                else : esp_principale = 'Mélange égal d_espèce'
+                    if pct_diff_esp < pct_ecart : esp_principale = 'melange_egal_espece'
+                else : esp_principale = 'melange_egal_espece'
         
         elif filiere == "VITICULTURE":
             # a partir de là on ne regarde plus que les composants présent dans la liste des espèce arboricole majoritaire dans DEPHY
             grp_filt = groupe[groupe['typocan_espece']=='Vigne']
             if grp_filt.empty : 
-                return specify_colnames_of_return('Erreur aucune vigne', None, None, None)
+                return specify_colnames_of_return('ERREUR_aucune_vigne', None, None, None)
 
             # Pour la viti, seule l'espèce vigne est considéré comme espèce princiaple
             esp_principale = 'Vigne'
@@ -1768,14 +1768,14 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
         ### On crée la variété principale
         # On check s'il y a des variétés tout court
         if groupe["denomination"].nunique() == 0 : 
-                return specify_colnames_of_return(esp_principale, 'Aucune variété renseignée', list_esp, list_var)
+                return specify_colnames_of_return(esp_principale, 'ERREUR_aucune_variete', list_esp, list_var)
         
         # On récupère la variété principale AU SEINS de l'espèce principale, selon la même procédure
-        if esp_principale != 'Mélange égal d_espèce' :
+        if esp_principale != 'melange_egal_espece' :
             grp_by_denom = grp_filt.loc[(grp_filt['typocan_espece'] == esp_principale) & (grp_filt['denomination'].notna())]
             # Cas où l'on a bien une espèce principale mais aucune varitété de renseignée
             if grp_by_denom.empty : 
-                return specify_colnames_of_return(esp_principale, 'Aucune variété pour l_espèce principale', list_esp, list_var)
+                return specify_colnames_of_return(esp_principale, 'ERREUR_aucune_variete_pour_espece_principale', list_esp, list_var)
 
             grp_by_denom = grp_by_denom.groupby("denomination", as_index=False)["proportion_composant"].sum()
             grp_by_denom = grp_by_denom.sort_values("proportion_composant", ascending=False).reset_index(drop=True)
@@ -1787,8 +1787,8 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
                 if var_top1['proportion_composant'] > 0:
                     var_top2 = grp_by_denom.iloc[1]
                     pct_diff_var = (var_top1['proportion_composant'] - var_top2['proportion_composant']) / var_top1['proportion_composant'] * 100
-                    if pct_diff_var < pct_ecart : var_principale = 'Mélange égal de variété'
-                else : var_principale = 'Mélange égal de variété'
+                    if pct_diff_var < pct_ecart : var_principale = 'melange_egal_variete'
+                else : var_principale = 'melange_egal_variete'
         else : var_principale = None
         
         return specify_colnames_of_return(esp_principale, var_principale, list_esp, list_var)
@@ -1808,7 +1808,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
                                             pct_ecart=pct_ecart,
                                             include_groups=False)
 
-    df_final['liste_toutes_especes'] = df_final['liste_toutes_especes'].apply(str)
-    df_final['liste_toutes_varietes'] = df_final['liste_toutes_varietes'].apply(str)
+    df_final['liste_toutes_especes'] = df_final['liste_toutes_especes'].apply(lambda x: str(x) if x is not None else x)
+    df_final['liste_toutes_varietes'] = df_final['liste_toutes_varietes'].apply(lambda x: str(x) if x is not None else x)
 
     return df_final
