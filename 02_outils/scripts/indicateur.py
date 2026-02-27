@@ -1808,4 +1808,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
                                             pct_ecart=pct_ecart,
                                             include_groups=False)
 
+    df_final['liste_toutes_especes'] = df_final['liste_toutes_especes'].apply(str)
+    df_final['liste_toutes_varietes'] = df_final['liste_toutes_varietes'].apply(str)
+
     return df_final
