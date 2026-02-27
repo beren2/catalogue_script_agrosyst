@@ -7,7 +7,7 @@ WITH sdc AS (
     gs.code AS code,
     gs.name AS nom,
     edo.campagne,
-    gs.modality AS modalite_suivi_dephy,
+    gs.modalitydephyferme AS modalite_suivi_dephy,
     gs.dephynumber AS code_dephy,
     gs.description AS commentaire,
     CASE gs.validated

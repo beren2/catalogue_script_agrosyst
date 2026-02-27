@@ -683,7 +683,8 @@
                     "typologie_can_rotation_synthetise",
                     "typologie_assol_can_realise",
                     "action_realise_rendement_total", 
-                    "action_synthetise_rendement_total"
+                    "action_synthetise_rendement_total",
+					"espece_variete_perenne_principale"
                 ], 
 				"need_performance" : "False"
             },
@@ -713,19 +714,21 @@
                 "function_name" : "create_category_test",
                 "dependances" : [{
 						"source" : "outils", 
-						"category": "agregation_complet"
+						"category": "restructuration"
 					}],
                 "generated" : [
                 ],
                 "entrepot_dependances" : [
-					"connection_synthetise",
-                    "noeuds_synthetise",
-					"domaine",
-					"dispositif", 
-					"sdc", 
+					"sdc",
 					"synthetise",
+					"plantation_perenne_synthetise",
+					"plantation_perenne_realise",
 					"parcelle",
-					"zone"
+					"zone",
+					"espece",
+					"variete",
+					"composant_culture",
+					"plantation_perenne_synthetise_restructure"
                 ], 
 				"need_performance" : "False"
             }

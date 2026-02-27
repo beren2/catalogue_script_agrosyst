@@ -54,8 +54,8 @@ try:
                     connect_timeout = TIMEOUT_CONN)
 
     cur = conn.cursor()
-except psycopg.OperationalError as e:
-    print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{e}")
+except psycopg.OperationalError as error_connexion:
+    print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{error_connexion}")
     print("Essaye de mettre le VPN !\n")
     sys.exit(1)
 
