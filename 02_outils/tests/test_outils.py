@@ -842,5 +842,30 @@ def test_entite_unique_par_sdc_nettoyage():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
 
     res = pd.Series(res).fillna(False).all()
+    assert res
 
+
+def test_get_espece_variete_perenne_principale():
+    """
+        Test de l'obtention des informations utiles pour la constitution du fichierespece_variete_perenne_principale
+    """
+    identifiant_test = 'test_get_espece_variete_perenne_principale'
+    df_names = ['sdc',
+                'synthetise',
+                'plantation_perenne_synthetise',
+                'plantation_perenne_realise',
+                'parcelle',
+                'zone',
+                'espece',
+                'variete',
+                'composant_culture',
+                'plantation_perenne_synthetise_restructure']
+    
+    path_data = '02_outils/tests/data/test_get_espece_variete_perenne_principale/'
+    fonction_to_apply = indicateur.get_espece_variete_perenne_principale
+
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, 
+                        key_name='entite_id')
+    
+    res = pd.Series(res).fillna(False).all()
     assert res
