@@ -730,6 +730,10 @@ def create_category_indicateur_2():
     export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
     add_primary_key('entrepot_action_synthetise_rendement_total', 'index')
 
+    df_espece_variete_perenne_principale = indicateur.get_espece_variete_perenne_principale(donnees)
+    export_to_db(df_espece_variete_perenne_principale, 'entrepot_espece_variete_perenne_principale')
+    add_primary_key('entrepot_espece_variete_perenne_principale', 'entite_id')
+
 
 def create_category_interoperabilite():
     """
@@ -803,11 +807,11 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    # df_identification_pz0 = indicateur.identification_pz0(donnees)
-    # export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
-    # add_primary_key('entrepot_identification_pz0', 'entite_id')
+    df_espece_variete_perenne_principale = indicateur.get_espece_variete_perenne_principale(donnees)
+    export_to_db(df_espece_variete_perenne_principale, 'entrepot_espece_variete_perenne_principale')
+    add_primary_key('entrepot_espece_variete_perenne_principale', 'entite_id')
 
-    # print('Fin du test de entrepot_identification_pz0')
+    print('Fin du test de entrepot_espece_variete_perenne_principale')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
