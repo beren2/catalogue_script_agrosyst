@@ -1841,7 +1841,7 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
                                             pct_ecart=pct_ecart,
                                             include_groups=False)
 
-    df_final['liste_toutes_especes'] = df_final['liste_toutes_especes'].apply(lambda x: str(x) if x is not None else x)
-    df_final['liste_toutes_varietes'] = df_final['liste_toutes_varietes'].apply(lambda x: str(x) if x is not None else x)
+    df_final['liste_toutes_especes'] = df_final['liste_toutes_especes'].astype('string')
+    df_final['liste_toutes_varietes'] = df_final['liste_toutes_varietes'].astype('string')
 
     return df_final
