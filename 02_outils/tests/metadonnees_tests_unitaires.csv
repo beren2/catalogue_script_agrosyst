@@ -1085,3 +1085,35 @@ test_entite_unique_par_sdc_nettoyage,fr.inra.agrosyst.api.entities.GrowingSystem
 test_entite_unique_par_sdc_nettoyage,fr.inra.agrosyst.api.entities.GrowingSystem_bfd3ba79-d77c-4708-b7a4-021a9d354137,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_82a090cf-ddee-4443-86ed-6bd4643806a7,,entite_retenue
 test_entite_unique_par_sdc_nettoyage,fr.inra.agrosyst.api.entities.GrowingSystem_9ba92d21-f43b-4d8e-9f44-2dad120f7f5d,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_6012145d-74bb-40a9-b37d-d33c817773a7,,entite_retenue
 test_entite_unique_par_sdc_nettoyage,fr.inra.agrosyst.api.entities.GrowingSystem_c57a89fe-9d1a-4a53-ae1a-613c822d7fa0,realise_retenu,,entite_retenue
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_00e0ed65-a1f8-48ae-b1f5-ecb703099dd7,"['Autre', 'Protéagineux', 'Vigne']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_00e0ed65-a1f8-48ae-b1f5-ecb703099dd7,Vigne,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_00e0ed65-a1f8-48ae-b1f5-ecb703099dd7,Merlot N,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1d4a9d61-1eb5-40f7-aa59-6d15bc82af3c,Alval,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,ERREUR_aucune_variete,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,"[]",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_2009e18f-9e69-4485-b8bd-82a3f1bcf166,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,melange_egal_variete,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,"['Cabernet franc N', 'Cabernet-Sauvignon N', 'Cot N', 'Merlot N', 'Muscadelle B', 'Sauvignon B', 'Semillon B']",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_28323105-d6b3-455d-b35c-7588a4e181b3,Pommier,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_2b644d06-0b32-44c0-a65c-05102f8911b2,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_324a736c-060a-4d4f-9c57-e9d731df3431,ERREUR_aucune_espece,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_8b67367c-0bab-420f-917b-2ce5d6ea4d8b,ERREUR_aucune_variete_pour_espece_principale,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_8b67367c-0bab-420f-917b-2ce5d6ea4d8b,"['Picholine', 'Tom Cot']",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c846b24-0e7b-421c-af72-b96d0e199ae9,Pêcher,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c846b24-0e7b-421c-af72-b96d0e199ae9,ERREUR_aucune_variete,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0e46b493-8fcf-4a00-ac8b-57385aaeb6c9,"['Vigne']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_119179b1-3237-4382-b271-fe13bca44411,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_14883d32-c91a-4477-9dd4-9555be09295d,ERREUR_aucune_espece,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,melange_egal_variete,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,"['Regina', 'Summit', 'Hâtif Burlat']",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,"['Cerisier']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,Cerisier,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_34b40970-9d45-47a7-9bf9-6406341c3cb2,Pommier,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_34b40970-9d45-47a7-9bf9-6406341c3cb2,Cripps Pink,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3803d365-e819-4733-a6b4-51465191337c,Pinot noir N,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,melange_egal_espece,,espece_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,ERREUR_aucune_variete,,variete_principale
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,"['Poirier', 'Pommier']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,"[]",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ecf69a40-2a3c-4f9c-8d9d-07f514c52213,"['Abricotier', 'Cognassier', 'Noisetier', 'Prunier', 'Pêcher']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f8b0fa56-a504-4fc4-b98d-d3f9cc93e950,Chenin B,,variete_principale
