@@ -12,7 +12,6 @@ import json
 import configparser
 import urllib
 import importlib
-import time
 import re
 import sys
 import psycopg2 as psycopg
@@ -70,8 +69,8 @@ if(TYPE == 'distant'):
         # Connexion à PostgreSQL
         conn = engine.raw_connection()
         cur = conn.cursor()
-    except Exception as e:
-        print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{e}")
+    except Exception as error_connexion:
+        print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{error_connexion}")
         print("Essaye de mettre le VPN !\n")
         sys.exit(1)
 
@@ -892,53 +891,49 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         if(TYPE == 'distant'):
             print("* TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             download_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
-        # Vérification que toutes les données sont présentes pour la première catégorie
-        error_code_findable, error_message_findable = test_all_findable_for_category(steps[0]['category'])
-        print(error_message_findable)
 
-        
-        # Si toutes les données nécessaires sont disponibles, on peut les charger
-        if(error_code_findable == 0):
-            # Vérification que les données externes vérifient le format attendu
-            error_code_check, error_message_check = test_check_external_data(leaking_tables=[])
-            print(error_message_check)
-            if(error_code_check == 0):
+        # Vérification que les données externes vérifient le format attendu
+        error_code_check, error_message_check = test_check_external_data(leaking_tables=[])
+        print(error_message_check)
+        if(error_code_check == 0):
 
-                # Chargement des données
-                print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, need_perf=False)
-                print("* CHARGEMENT DES DONNÉES EXTERNES *")
-                load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
-                print("* CHARGEMENT DES RÉFÉRENTIELS *")
-                print("Attention, penser à les mettre à jour manuellement.")
-                load_ref()
+            # Chargement des données
+            print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            need_perf_global = any(str(need_perf.get('need_performance', False)).lower() == "true" for need_perf in SOURCE_SPECS['outils']['categories'].values())
+            load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, need_perf=need_perf_global)
+            print("* CHARGEMENT DES DONNÉES EXTERNES *")
+            load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+            print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
+            print("* CHARGEMENT DES RÉFÉRENTIELS *")
+            print("Attention, penser à les mettre à jour manuellement.")
+            load_ref()
 
-                for step in steps :
-                    CURRENT_SOURCE = step['source']
-                    CURRENT_CATEGORY = step['category']
+            for step in steps :
+                CURRENT_SOURCE = step['source']
+                CURRENT_CATEGORY = step['category']
 
-                    # Vérification que toutes les données sont présentes pour la catégorie courante
-                    error_code_findable, error_message_findable = test_all_findable_for_category(step['category'])
-                    print(error_message_findable)
-                    if(error_code_findable == 0):
-                        print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
-                        choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
+                # Vérification que toutes les données sont présentes pour la catégorie courante
+                error_code_findable, error_message_findable = test_all_findable_for_category(step['category'])
+                print(error_message_findable)
+                if(error_code_findable == 0):
+                    print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
+                    choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
 
-                        if(CURRENT_CATEGORY == 'agregation_complet'):
-                            # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
-                            generate_data_agreged(verbose=False)
-                            download_data_agreged(verbose=False)
-                        else :
-                            choosen_function()
-                            if(TYPE == 'distant'):
-                                download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
-                            load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
-        else:
-            time.sleep(1)
+                    if(CURRENT_CATEGORY == 'agregation_complet'):
+                        # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
+                        generate_data_agreged(verbose=False)
+                        download_data_agreged(verbose=False)
+                    else :
+                        choosen_function()
+                        if(TYPE == 'distant'):
+                            download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                        load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                else :
+                    print("Données manquantes pour la catégorie "+step['category'])
+                    
     elif choice_key == 'Télécharger les outils':
         print("")
         print("Veuillez choisir la catégorie à télécharger")
