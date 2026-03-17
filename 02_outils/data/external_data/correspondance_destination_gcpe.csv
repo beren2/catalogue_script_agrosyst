@@ -1,0 +1,37 @@
+code_espece_botanique;code_destination_A;code_qualifiant_AEE;Filière;Espèce;Valorisation_viticulture;Destinations;Unité_rendement;Source;active;id_dirodur;Dirodur;Commentaire
+;GCPE_00022;;grandes_cultures;Toutes;;Paille;t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+ZAP;GCPE_00037;ZAN;grandes_cultures;Betterave;;Sucre et dérivés (t de racines à 16% de richesse);tonne_racines_ha_16_pourc;Agrosyst_2016;t;6;Sucre et dérivés (t de racines à 16% de richesse);
+ZCL;GCPE_00026;ZER;grandes_cultures;Lin;;Fibre;t MS/ha;Agrosyst_2016;t;8;Fibre;
+ZAP;GCPE_00027;ZAN;grandes_cultures;Betterave;;Sucre et dérivés (t de sucre);t sucre/ha;Agrosyst_2016;t;5;Sucre et dérivés (t de sucre);
+ZDV;GCPE_00028;ZLF;grandes_cultures;Radis;;Tous calibres;t/ha;Agrosyst_2016;t;10;Tous calibres;
+ZEN;GCPE_00030;H72;grandes_cultures;Tabac;;Tabac;q/ha (humidité ramenée à la norme);Agrosyst_2016;t;9;Tabac;
+ZEN;GCPE_00031;ZEW;grandes_cultures;Tabac;;Tabac;q/ha (humidité ramenée à la norme);Agrosyst_2016;t;9;Tabac;
+ZEN;GCPE_00032;ZEV;grandes_cultures;Tabac;;Tabac;q/ha (humidité ramenée à la norme);Agrosyst_2016;t;9;Tabac;
+ZEN;GCPE_00033;ZEU;grandes_cultures;Tabac;;Tabac;q/ha (humidité ramenée à la norme);Agrosyst_2016;t;9;Tabac;
+ZCS;GCPE_00036;ZLL;grandes_cultures;Maïs;;Epis;t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+ZAZ;GCPE_00025;;grandes_cultures;Chanvre;;Fibre;t MS/ha;Agrosyst_2016;t;8;Fibre;
+ZNE;GCPE_00034;;grandes_cultures;Sorgho;;Sucre et dérivés (t de biomasse en matière sèche);t MS/ha;Agrosyst_2016;t;7;Sucre et dérivés (t de biomasse en matière sèche);
+ZNE;GCPE_00035;;grandes_cultures;Sorgho;;Sucre et dérivés (t de sucre);t sucre/ha;Agrosyst_2016;t;5;Sucre et dérivés (t de sucre);
+;GCPE_00006;;grandes_cultures;Toutes;;Fourrage (enrubannage);t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+;GCPE_00007;;grandes_cultures;Toutes;;Fourrage (ensilage);t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+;GCPE_00008;;grandes_cultures;Toutes;;Fourrage (foin);t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+;GCPE_00009;;grandes_cultures;Toutes;;Fourrage (distribution en frais);t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+;GCPE_00010;;grandes_cultures;Toutes;;Grain;q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00011;;grandes_cultures;Toutes;;Grain (alimentation animale);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00012;;grandes_cultures;Toutes;;Grain (alimentation humaine);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00013;;grandes_cultures;Toutes;;Grain (amidon);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00014;;grandes_cultures;Toutes;;Grain (biscuiterie);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00015;;grandes_cultures;Toutes;;Grain (ethanol);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00016;;grandes_cultures;Toutes;;Grain (industrie divers);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00017;;grandes_cultures;Toutes;;Grain (malterie);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00018;;grandes_cultures;Toutes;;Grain (meunerie);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00019;;grandes_cultures;Toutes;;Grain (semoule et pâtes alimentaires);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00020;;grandes_cultures;Toutes;;Grain (oléagineux);q/ha (humidité ramenée à la norme);Agrosyst_2016;t;1;Grain;
+;GCPE_00021;;grandes_cultures;Toutes;;Bioénergie;t MS/ha;Agrosyst_2016;t;2;Fourrage et paille;
+;GCPE_00023;;grandes_cultures;Toutes;;Pâturage;t MS/ha;Agrosyst_2016;t;3;Pâturage;
+;GCPE_00024;;grandes_cultures;Toutes;;Production semences;q/ha (humidité ramenée à la norme);Agrosyst_2016;t;4;Production semences;
+;GCPE_00001;;grandes_cultures;Toutes;;A compléter;q/ha;Agrosyst_2016;t;11;NA;eDaplos : pas de prix associés
+;GCPE_00002;;grandes_cultures;Toutes;;A compléter;t/ha;Agrosyst_2016;t;11;NA;eDaplos : pas de prix associés
+;GCPE_00003;;grandes_cultures;Toutes;;A compléter;kg/m²;Agrosyst_2016;t;11;NA;eDaplos : pas de prix associés
+;GCPE_00004;;grandes_cultures;Toutes;;A compléter;unité/ha;Agrosyst_2016;t;11;NA;eDaplos : pas de prix associés
+;GCPE_00005;;grandes_cultures;Toutes;;A compléter;hl/ha;Agrosyst_2016;t;11;NA;eDaplos : pas de prix associés
