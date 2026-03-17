@@ -534,7 +534,8 @@
 			"tables" : [
 				"BDD_donnees_attendues_CAN", 
 				"typo_especes_typo_culture",
-				"typo_especes_typo_culture_marai"
+				"typo_especes_typo_culture_marai", 
+				"correspondance_destination_gcpe_dirodur"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
@@ -710,25 +711,45 @@
                 ], 
 				"need_performance" : "False"
             },
+			"outils_dirodur_0" : {
+                "function_name" : "create_category_dirodur_0",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation_complet"
+                }],
+                "generated" : [
+                    "rendement_realise_filtre_outils_dirodur", 
+					"rendement_synthetise_filtre_outils_dirodur"
+                ], 
+				"need_performance" : "False"
+            },
             "test" : {
                 "function_name" : "create_category_test",
                 "dependances" : [{
-						"source" : "outils", 
-						"category": "restructuration"
-					}],
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation_complet"
+                }],
                 "generated" : [
+					"rendement_realise_filtre_outils_dirodur", 
+					"rendement_synthetise_filtre_outils_dirodur"
                 ],
                 "entrepot_dependances" : [
-					"sdc",
-					"synthetise",
-					"plantation_perenne_synthetise",
-					"plantation_perenne_realise",
-					"parcelle",
-					"zone",
-					"espece",
-					"variete",
-					"composant_culture",
-					"plantation_perenne_synthetise_restructure"
+					"recolte_rendement_prix", 
+					"action_realise",
+					"action_synthetise",
+					"action_realise_agrege", 
+					"action_synthetise_agrege",
+					"destination_valorisation",
+					"recolte_rendement_prix_restructure", 
+					"composant_culture", 
+					"espece", 
+					"variete"
                 ], 
 				"need_performance" : "False"
             }
