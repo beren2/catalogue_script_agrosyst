@@ -56,7 +56,7 @@ select
 	eis.date_debut as intervention_date_debut,
 	eis.date_fin as intervention_date_fin,
 	eis.type as intervention_type,
-	easa.intervention_synthetise_id,
+	easa.intervention_synthetise_id as intervention_id,
 	easa.cible_noeuds_synthetise_id as noeud_id,
 	easa.connection_synthetise_id as connexion_id
 	from entrepot_recolte_rendement_prix errp

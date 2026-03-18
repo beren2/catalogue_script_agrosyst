@@ -55,7 +55,7 @@ select
 	cast(eir.date_debut as text) as intervention_date_debut,
 	cast(eir.date_fin as text) as intervention_date_fin,
 	eir.type as intervention_type,
-	eara.intervention_realise_id,
+	eara.intervention_realise_id as intervention_id,
 	eara.noeuds_realise_id as noeud_id,
 	null as connexion_id
 from entrepot_recolte_rendement_prix errp
