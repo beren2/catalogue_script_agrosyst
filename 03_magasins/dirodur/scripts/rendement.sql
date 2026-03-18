@@ -1,4 +1,5 @@
 -- En réalisé
+with rendement_realise as (
 select 
 	'realise' as mode_saisie,
 	errp.id as recolte_id,
@@ -47,8 +48,8 @@ left join entrepot_rendement_realise_filtre_outils_dirodur errfod on errp.id = e
 -- conditions de présence dans le magasin
 where errfod.destination_have_match_in_ref_dirodur = true
 and errfod.unite_problematic = false
-and errfod.espece_is_na = false
-union
+and errfod.espece_is_na = false),
+rendement_synthetise as (
 select 
 	'synthetise' as mode_saisie,
 	errp.id as recolte_id,
@@ -97,4 +98,7 @@ left join entrepot_rendement_synthetise_filtre_outils_dirodur ersfod on errp.id 
 -- conditions de présence dans le magasin
 where ersfod.destination_have_match_in_ref_dirodur = true
 and ersfod.unite_problematic = false
-and ersfod.espece_is_na = false;
+and ersfod.espece_is_na = false)
+select * from rendement_realise
+union all
+select * from rendement_synthetise;
