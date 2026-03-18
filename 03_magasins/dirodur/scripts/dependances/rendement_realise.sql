@@ -72,4 +72,4 @@ left join entrepot_rendement_realise_filtre_outils_dirodur errfod on errp.id = e
 -- conditions de présence dans le magasin
 where errfod.destination_have_match_in_ref_dirodur = true
 and errfod.unite_problematic = false
-and errfod.espece_is_na = false
+and errfod.espece_is_na = false;
