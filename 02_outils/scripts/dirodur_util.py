@@ -8,13 +8,25 @@ from datetime import datetime
 def filtered_entities_sdc_level(donnees):
     """
     Cette fonction permet de filtrer les entités que l'on veut présente dans le dataframe principale de la table SDC du magasin DIRODUR.
-    Globalement il y a des filtre sur la filiere GCPE ; sur une entité unique par sdc ; sur les années trop veilles (ne devrait pas être présente) ou trop récentes (pas encore assez consolidées) ; et enfin sur les alertes (petite expection si les cultures sont des prairies temporaires plus de 50% du temps).
+    Globalement il y a en premier lieu un filtre sur les entités avec intervention (par construction), puis des filtre sur la filiere GCPE ; sur une entité unique par sdc ; sur les années trop veilles (ne devrait pas être présente) ou trop récentes (pas encore assez consolidées) ; et enfin sur les alertes (petite expection si les cultures sont des prairies temporaires plus de 50% du temps).
 
-    ==> Utilise les outils indicateurs
-    ==> Retourne 2 listes, la premiere étant la liste des sdc retenues pour les réalisés, la seconde pour les synthétisés:
-        sdc_realise, synthetises = filtered_entities_sdc_level(donnees)
+    Entree: 
+        'synthetise',
+        'sdc',
+        'typologie_assol_can_realise',
+        'typologie_can_rotation_synthetise',
+        'entite_unique_par_sdc_nettoyage',
+        'sdc_realise_performance',
+        'synthetise_synthetise_performance',
+        'intervention_synthetise_agrege',
+        'intervention_realise_agrege'
+        ==> Utilise les outils indicateurs, nettoyages et agregations !
+
+    Retourne:
+        2 df << sdc_realise, synthetises = filtered_entities_sdc_level(donnees) >>
+        avec une colonne d'entité : sdc_id ou synthetise_id
+        et la colonne "in_dirodur", un booléen : True -> à garder dans dirodur
     """
-
     lst_alerte_col = ['alerte_ferti_n_tot', 'alerte_ift_cible_non_mil_chim_tot_hts',
         'alerte_ift_cible_non_mil_f', 'alerte_ift_cible_non_mil_h',
         'alerte_ift_cible_non_mil_i', 'alerte_ift_cible_non_mil_biocontrole',
@@ -23,17 +35,24 @@ def filtered_entities_sdc_level(donnees):
         'alerte_rendement', 'alertes_charges', 'alerte_cm_std_mil',
         'alerte_co_semis_std_mil', 'alerte_tps_travail_total']
 
-    unique_entity = donnees['entite_unique_par_sdc_nettoyage']
+    int_r = donnees['intervention_realise_agrege'][['id','sdc_id']]
     sdc_real = donnees['sdc_realise_performance'][['sdc_id']+lst_alerte_col]
+    sdc = donnees['sdc'][['id','filiere','campagne']].rename(columns={'id':'sdc_id'})
+    typo_re = donnees['typologie_assol_can_realise'][['sdc_id','typocan_assol_dvlp']]
+
+    int_s = donnees['intervention_synthetise_agrege'][['id','synthetise_id','sdc_id']]
     sdc_synth = donnees['synthetise_synthetise_performance'][['synthetise_id']+lst_alerte_col]
-    sdc = donnees['sdc'].rename(columns={'id':'sdc_id'})
-    synth = donnees['synthetise'].rename(columns={'id':'synthetise_id'})
-    typo_re = donnees['typologie_assol_can_realise']
-    typo_sy = donnees['typologie_can_rotation_synthetise']
+    typo_sy = donnees['typologie_can_rotation_synthetise'][['synthetise_id','typocan_rotation']]
 
+    synth = donnees['synthetise'][['id']].rename(columns={'id':'synthetise_id'}) # besoin que pour la fin
+    unique_entity = donnees['entite_unique_par_sdc_nettoyage']
 
-    sdc_real = sdc_real.merge(sdc, on='sdc_id', how='left').merge(typo_re, on='sdc_id', how='left')
-    sdc_synth = sdc_synth.merge(synth, on='synthetise_id', how='left').merge(sdc, on='sdc_id', how='left').merge(typo_sy, on='synthetise_id', how='left')
+    # 0. Avant tout : Par le jeu des merge on ne garde que les synthé ou sdc qui ont des interventions !
+    sdc_real = int_r.merge(sdc_real, on='sdc_id', how='left').merge(sdc, on='sdc_id', how='left').merge(typo_re, on='sdc_id', how='left')
+    sdc_real = sdc_real.groupby('sdc_id').first().reset_index().drop(columns='id')
+
+    sdc_synth = int_s.merge(sdc_synth, on='synthetise_id', how='left').merge(sdc, on='sdc_id', how='left').merge(typo_sy, on='synthetise_id', how='left')
+    sdc_synth = sdc_synth.groupby('synthetise_id').first().reset_index().drop(columns='id')
 
     # 1. on filtre selon la filière GCPE
     sdc_real = sdc_real.loc[sdc_real['filiere'].isin(['POLYCULTURE_ELEVAGE','GRANDES_CULTURES'])]
@@ -83,5 +102,12 @@ def filtered_entities_sdc_level(donnees):
     sdc_real = filtrer_alertes(sdc_real, lst_alerte_col, list_alerte_ok, 'typocan_assol_dvlp')
     sdc_synth = filtrer_alertes(sdc_synth, lst_alerte_col, list_alerte_ok, 'typocan_rotation')
 
+    # On prend tout les sdc, et tout les synthetise, on leur tag s'ils appartiennent ou non à dirodur
+    final_real = sdc[['sdc_id']]
+    final_real['in_dirodur'] = np.where(final_real['sdc_id'].isin(sdc_real['sdc_id']), True, False)
+
+    final_synth = synth[['synthetise_id']]
+    final_synth['in_dirodur'] = np.where(final_synth['synthetise_id'].isin(sdc_synth['synthetise_id']), True, False)
+
     # On exporte la liste pour les realise et la liste pour les synthe
-    return sdc_real['sdc_id'], sdc_synth['synthetise_id']
+    return final_real, final_synth
