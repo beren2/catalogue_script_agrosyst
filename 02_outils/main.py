@@ -21,6 +21,7 @@ from scripts import indicateur
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
+from scripts import outils_dirodur
 from sqlalchemy import create_engine
 import pandas as pd
 import geopandas as gpd
@@ -735,6 +736,21 @@ def create_category_indicateur_2():
     add_primary_key('entrepot_espece_variete_perenne_principale', 'entite_id')
 
 
+def create_category_dirodur_0():
+    """
+        Execute les requêtes pour créer la première salve d'outils DiRoDur
+    """
+    df_rendement_realise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_realise_outils_dirodur(donnees)
+    df_rendement_realise_filtre_outils_dirodur.set_index('id', inplace=True)
+    export_to_db(df_rendement_realise_filtre_outils_dirodur, 'entrepot_rendement_realise_filtre_outils_dirodur')
+    add_primary_key('entrepot_rendement_realise_filtre_outils_dirodur', 'id')
+
+    df_rendement_synthetise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_synthetise_outils_dirodur(donnees)
+    df_rendement_synthetise_filtre_outils_dirodur.set_index('id', inplace=True)
+    export_to_db(df_rendement_synthetise_filtre_outils_dirodur, 'entrepot_rendement_synthetise_filtre_outils_dirodur')
+    add_primary_key('entrepot_rendement_synthetise_filtre_outils_dirodur', 'id')
+
+
 def create_category_interoperabilite():
     """
         Execute les requêtes pour créer les outils d'interopérabilité
@@ -807,9 +823,15 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_espece_variete_perenne_principale = indicateur.get_espece_variete_perenne_principale(donnees)
-    export_to_db(df_espece_variete_perenne_principale, 'entrepot_espece_variete_perenne_principale')
-    add_primary_key('entrepot_espece_variete_perenne_principale', 'entite_id')
+    df_rendement_realise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_outils_dirodur(donnees)
+    df_rendement_realise_filtre_outils_dirodur.set_index('id', inplace=True)
+    export_to_db(df_rendement_realise_filtre_outils_dirodur, 'entrepot_rendement_realise_filtre_outils_dirodur')
+    add_primary_key('entrepot_rendement_realise_filtre_outils_dirodur', 'id')
+
+    df_rendement_synthetise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_outils_dirodur(donnees)
+    df_rendement_synthetise_filtre_outils_dirodur.set_index('id', inplace=True)
+    export_to_db(df_rendement_synthetise_filtre_outils_dirodur, 'entrepot_rendement_synthetise_filtre_outils_dirodur')
+    add_primary_key('entrepot_rendement_synthetise_filtre_outils_dirodur', 'id')
 
     print('Fin du test de entrepot_espece_variete_perenne_principale')
 

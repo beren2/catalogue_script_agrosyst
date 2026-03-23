@@ -1,0 +1,6 @@
+,code_espece_botanique,code_destination_A,code_qualifiant_AEE,Filière,Espèce,Valorisation_viticulture,Destinations,Unité_rendement,Source,active,id_dirodur,Dirodur,Commentaire,unite_nl,unite_agrosyst
+3,ZAP,GCPE_00027,ZAN,grandes_cultures,Betterave,,Sucre et dérivés (t de sucre),t sucre/ha,Agrosyst_2016,t,5,Sucre et dérivés (t de sucre),,t sucre/ha,TONNE_SUGAR_HA
+14,,GCPE_00007,,grandes_cultures,Toutes,,Fourrage (ensilage),t MS/ha,Agrosyst_2016,t,2,Fourrage et paille,,t MS/ha,TONNE_MS_HA
+15,,GCPE_00008,,grandes_cultures,Toutes,,Fourrage (foin),t MS/ha,Agrosyst_2016,t,2,Fourrage et paille,,t MS/ha,TONNE_MS_HA
+18,,GCPE_00011,,grandes_cultures,Toutes,,Grain (alimentation animale),q/ha (humidité ramenée à la norme),Agrosyst_2016,t,1,Grain,,q/ha (humidité ramenée à la norme),Q_HA_TO_STANDARD_HUMIDITY
+29,,GCPE_00023,,grandes_cultures,Toutes,,Pâturage,t MS/ha,Agrosyst_2016,t,3,Pâturage,,t MS/ha,TONNE_MS_HA

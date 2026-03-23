@@ -3,9 +3,8 @@
 """
 import geopandas as gpd
 import pandas as pd
-from scripts import dirodur_outil
-from scripts import dirodur_util
-
+from scripts import outils_dirodur
+from scripts.utils import dirodur_utiles
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
@@ -125,7 +124,61 @@ def test_get_temporal_status_for_each_sdc_dirodur():
         'parcelle' # etat_temporel
     ]
     path_data = '02_outils/tests/data/test_get_temporal_status_for_each_sdc_dirodur/'
-    fonction_to_apply = dirodur_outil.get_temporal_status_for_each_sdc_dirodur
+    fonction_to_apply = outils_dirodur.get_temporal_status_for_each_sdc_dirodur
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
+
+def test_get_intervention_realise_culture_outils_can():
+    """
+        Test de l'obtention des qualification de rendement pour le magasin DiRoDur
+    """
+
+    identifiant_test = 'test_get_rendement_realise_filtre_outils_dirodur'
+    df_names = [   
+        'variete',
+        'espece',
+        'composant_culture',
+        'destination_valorisation',
+        'recolte_rendement_prix',
+        'recolte_rendement_prix_restructure',
+        'action_realise',
+        'action_realise_agrege'
+    ]
+    path_data = '02_outils/tests/data/test_get_rendement_realise_filtre_outils_dirodur/'
+
+    path_ref = '02_outils/data/external_data/'
+    refs_names = [
+        'correspondance_destination_gcpe_dirodur'
+    ]
+
+    fonction_to_apply = outils_dirodur.get_rendement_filtre_realise_outils_dirodur    
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = refs_names, path_ref = path_ref)
+
+    assert all(res)
+
+def test_get_intervention_synthetise_culture_outils_can():
+    """
+        Test de l'obtention des qualification de rendement pour le magasin DiRoDur
+    """
+
+    identifiant_test = 'test_get_rendement_synthetise_filtre_outils_dirodur'
+    df_names = [   
+        'variete',
+        'espece',
+        'composant_culture',
+        'destination_valorisation',
+        'recolte_rendement_prix',
+        'recolte_rendement_prix_restructure',
+        'action_synthetise',
+        'action_synthetise_agrege'
+    ]
+    path_data = '02_outils/tests/data/test_get_rendement_synthetise_filtre_outils_dirodur/'
+
+    path_ref = '02_outils/data/external_data/'
+    refs_names = [
+        'correspondance_destination_gcpe_dirodur'
+    ]
+
+    fonction_to_apply = outils_dirodur.get_rendement_filtre_synthetise_outils_dirodur    
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = refs_names, path_ref = path_ref)
 
     assert all(res)
