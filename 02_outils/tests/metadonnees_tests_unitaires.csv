@@ -1090,7 +1090,7 @@ test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.Growing
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_00e0ed65-a1f8-48ae-b1f5-ecb703099dd7,Merlot N,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1d4a9d61-1eb5-40f7-aa59-6d15bc82af3c,Alval,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,ERREUR_aucune_variete,,variete_principale
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,"[]",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,[],,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_2009e18f-9e69-4485-b8bd-82a3f1bcf166,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,melange_egal_variete,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,"['Cabernet franc N', 'Cabernet-Sauvignon N', 'Cot N', 'Merlot N', 'Muscadelle B', 'Sauvignon B', 'Semillon B']",,liste_toutes_varietes
@@ -1101,12 +1101,12 @@ test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.Growing
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_8b67367c-0bab-420f-917b-2ce5d6ea4d8b,"['Picholine', 'Tom Cot']",,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c846b24-0e7b-421c-af72-b96d0e199ae9,Pêcher,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c846b24-0e7b-421c-af72-b96d0e199ae9,ERREUR_aucune_variete,,variete_principale
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0e46b493-8fcf-4a00-ac8b-57385aaeb6c9,"['Vigne']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0e46b493-8fcf-4a00-ac8b-57385aaeb6c9,['Vigne'],,liste_toutes_especes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_119179b1-3237-4382-b271-fe13bca44411,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_14883d32-c91a-4477-9dd4-9555be09295d,ERREUR_aucune_espece,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,melange_egal_variete,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,"['Regina', 'Summit', 'Hâtif Burlat']",,liste_toutes_varietes
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,"['Cerisier']",,liste_toutes_especes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,['Cerisier'],,liste_toutes_especes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_20162792-1cf0-4634-8cc0-27356cee9a49,Cerisier,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_34b40970-9d45-47a7-9bf9-6406341c3cb2,Pommier,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_34b40970-9d45-47a7-9bf9-6406341c3cb2,Cripps Pink,,variete_principale
@@ -1114,6 +1114,23 @@ test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practic
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,melange_egal_espece,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,ERREUR_aucune_variete,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,"['Poirier', 'Pommier']",,liste_toutes_especes
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,"[]",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ae04198b-791b-4be2-aafc-deb7809de537,[],,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ecf69a40-2a3c-4f9c-8d9d-07f514c52213,"['Abricotier', 'Cognassier', 'Noisetier', 'Prunier', 'Pêcher']",,liste_toutes_especes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f8b0fa56-a504-4fc4-b98d-d3f9cc93e950,Chenin B,,variete_principale
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_841ec372-e023-491c-8969-3b40bb7a6f65,,synthetise_id
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,"2009, 2010, 2011",,campagnes
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,pz0,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_90e5596c-ec9a-477e-af5c-00cbb2badd00,GCF10134,,code_dephy
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7df7b91b-a7ee-4a39-b178-55c7d028f40c,2018,,campagne
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7df7b91b-a7ee-4a39-b178-55c7d028f40c,point_I,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1d48c80c-b01c-49ea-8fd3-fd31a8691992,point_B,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b734af83-9a3f-43fe-89c6-c8fafc1e0c50,sans_pz0,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b9c498cf-5bba-46f3-9eb6-8f1f2579aa8e,incorrect : campagne non-attendue,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_453832a6-64f6-4cbb-b369-3f89dc74952f,pz0,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e5dfbb47-b4c6-43bc-9f3a-75ea67d27ae6,incorrect : campagne non-attendue,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f0999629-9f42-450d-8d46-d7f6f37cab29,sans_point_B,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_26fd5252-5b18-4913-806a-e9733c4c2acf,pz0_filtres,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56034341-216b-4b59-9512-05d022b1218d,pz0_filtres_et_sans_point_B,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_9bedb71e-9a8d-4e82-bbd2-3b77c04072b4,incorrect : chevauchement pz0,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2ae9d4c0-5c3e-4a66-a29d-a38a4cad0800,ni_pz0_ni_point_B,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6f683fc0-f21f-4e02-ab9c-1d476335e53c,point_C,,etat_temporel

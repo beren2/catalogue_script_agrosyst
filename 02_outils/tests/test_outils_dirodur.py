@@ -126,6 +126,6 @@ def test_get_temporal_status_for_each_sdc_dirodur():
     ]
     path_data = '02_outils/tests/data/test_get_temporal_status_for_each_sdc_dirodur/'
     fonction_to_apply = dirodur_outil.get_temporal_status_for_each_sdc_dirodur
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
 
     assert all(res)
