@@ -3,7 +3,7 @@
 """
 import pandas as pd
 import numpy as np
-import dirodur_util
+from scripts import dirodur_util
 
 def get_temporal_status_for_each_sdc_dirodur(donnees):
     """
@@ -156,7 +156,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         return df
 
     def get_last_consecutive_years(df):
-        """ fonction principale qui va extraire pour chaque code DEPHY la séquence des dernières années consécutive parmis un df sans les pz0. Puis va checker dans le df (tout compris cette fois) chaque sdc : s'il est un pz0 ou qu'il fait parti des code dephy sans pz0, on ne modifie pas la ligne et on garde en mémoire que le code DEPHY pourrait contenir des points_B mais n'a pas de pz0 ; s'il est autre chose (post ou incorrect uniquement pour le sdc associé) on va chercher la ou les campagnes du sdc, si au moins une est présente dans la liste des années retenues pour être des point_B on modifie l'état temporel en 'point_B'. Enfin on utilise la fonction update_final_status_for_code_dephy_without_point_B(). """
+        """ fonction principale qui va extraire pour chaque code DEPHY la séquence des dernières années consécutive parmis un df sans les pz0. Puis va checker dans le df (tout compris cette fois) chaque sdc : s'il est un pz0 ou qu'il fait parti des code dephy sans pz0, on ne modifie pas la ligne et on garde en mémoire que le code DEPHY pourrait contenir des points_B mais n'a pas de pz0 ; s'il est autre chose (post ou incorrect uniquement pour le sdc associé) on va chercher la ou les campagnes du sdc, si au moins une est présente dans la liste des années retenues pour être des point_B on modifie l'état temporel en 'point_B'. Si une ligne a une année supérieur à l'année maximal du point B, on la tague 'point_C' Enfin on utilise la fonction update_final_status_for_code_dephy_without_point_B(). """
         df_non_pz0 = df[df['etat_temporel'] != 'pz0'].copy()
         df_non_pz0['all_years'] = df_non_pz0.apply(extract_years, axis=1)
         grouped = df_non_pz0.groupby('code_dephy')['all_years'].agg(lambda x: sorted(set().union(*x)))
@@ -173,6 +173,8 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
                 for idx, row in df[mask].iterrows():
                     if any(y in years for y in row['all_years']):
                         df.loc[idx, 'etat_temporel'] = 'point_B'
+                    elif all(y > max(years) for y in row['all_years']):
+                        df.loc[idx, 'etat_temporel'] = 'point_C'
         df = df.reset_index()
 
         df = update_final_status_for_code_dephy_without_point_B(df, codes_with_consecutive)
