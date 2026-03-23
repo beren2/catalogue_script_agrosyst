@@ -1,10 +1,10 @@
 """
-    Regroupe tous les tests utilisés pour vérifier que les outils "DiRoDur"
-    peuvent être constitués conformément au cahier des charges
+    Regroupe tous les tests utilisés pour vérifier que les outils "Dirodur" tournent correctement
 """
+import geopandas as gpd
 import pandas as pd
 from scripts import outils_dirodur
-
+from scripts.utils import dirodur_utiles
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
@@ -102,6 +102,30 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
                 res.append(True)
 
     return res
+
+def test_get_temporal_status_for_each_sdc_dirodur():
+    """
+        Test de l'obtention des informations sur l'etat_temporel des sdc Dirodur
+    """
+
+    identifiant_test = 'test_get_temporal_status_for_each_sdc_dirodur'
+    df_names = [
+        'synthetise', # util + etat_temp
+        'sdc', # util + etat_temp
+        'typologie_assol_can_realise', # util
+        'typologie_can_rotation_synthetise', # util
+        'entite_unique_par_sdc_nettoyage', # util
+        'sdc_realise_performance', # util
+        'synthetise_synthetise_performance', # util
+        'intervention_synthetise_agrege', # util
+        'intervention_realise_agrege', # util
+        'identification_pz0', # etat_temporel
+        'zone', # etat_temporel
+        'parcelle' # etat_temporel
+    ]
+    path_data = '02_outils/tests/data/test_get_temporal_status_for_each_sdc_dirodur/'
+    fonction_to_apply = outils_dirodur.get_temporal_status_for_each_sdc_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
 
 def test_get_intervention_realise_culture_outils_can():
     """
