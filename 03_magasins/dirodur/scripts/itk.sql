@@ -1,3 +1,4 @@
+-- 3min
 SELECT
     'realise' as mode_saisie,
     null as connexion_id,
@@ -307,18 +308,29 @@ SELECT
 	itkR.qsa_silicate_aluminium_hts as itk_qsa_silicate_aluminium_hts,
 	itkR.qsa_spinosad_hts as itk_qsa_spinosad_hts,
 	itkR.qsa_spirotetramate_hts as itk_qsa_spirotetramate_hts,
-	itkR.qsa_tau_fluvalinate_hts as itk_qsa_tau_fluvalinate_hts
-	
+	itkR.qsa_tau_fluvalinate_hts as itk_qsa_tau_fluvalinate_hts,
+	itkR.hri1_tot as itk_hri1_tot,
+	itkR.hri1_g1_tot as itk_hri1_g1_tot,
+	itkR.hri1_g2_tot as itk_hri1_g2_tot,
+	itkR.hri1_g3_tot as itk_hri1_g3_tot,
+	itkR.hri1_g4_tot as itk_hri1_g4_tot,
+	itkR.ges_totaux_directes_co2 as itk_ges_tot_directes_co2,
+	itkR.ges_totaux_directes_ch4 as itk_ges_tot_directes_ch4,
+	itkR.ges_totaux_directes_n2o as itk_ges_tot_directes_n2o,
+	itkR.ges_totaux_directes_ges_total as itk_ges_tot_directes,
+	itkR.ges_totaux_indirectes_co2 as itk_ges_tot_indirectes_co2,
+	itkR.ges_totaux_indirectes_ch4 as itk_ges_tot_indirectes_ch4,
+	itkR.ges_totaux_indirectes_n2o as itk_ges_tot_indirectes_n2o,
+	itkR.ges_totaux_indirectes_ges_total as itk_ges_tot_indirectes
 FROM entrepot_itk_realise_performance AS itkR
+-- filtration dans la dépendance
+JOIN entrepot_itk_filtre itk_filtres ON (itkR.noeuds_realise_id = itk_filtres.noeuds_realise_id) and (itkR.culture_id = itk_filtres.culture_id)
 LEFT JOIN entrepot_noeuds_realise_restructure AS node_res ON node_res.id = itkR.noeuds_realise_id 
 LEFT JOIN entrepot_connection_realise AS cx ON cx.cible_noeuds_realise_id = itkR.noeuds_realise_id
 LEFT JOIN entrepot_zone AS zone ON zone.id = itkR.zone_id 
 LEFT JOIN entrepot_parcelle AS parcelle ON parcelle.id = zone.parcelle_id 
 LEFT JOIN entrepot_sdc sdc on sdc.id = parcelle.sdc_id
-LEFT JOIN entrepot_itk_filtres_outils_dirodur itk_filtres ON (itkR.noeuds_realise_id = itk_filtres.noeuds_realise_id) and (itkR.culture_id = itk_filtres.culture_id)
-JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod ON esstod.sdc_id = sdc.id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = parcelle.domaine_id
---LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.id = parcelle.domaine_sol_id 
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_commune AS comm ON parcelle.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = parcelle.domaine_id
@@ -330,12 +342,7 @@ LEFT JOIN entrepot_noeuds_realise AS noeud_prec ON node_res.precedent_noeuds_rea
 LEFT JOIN entrepot_culture AS culture_prec ON culture_prec.id = noeud_prec.culture_id 
 LEFT JOIN entrepot_typologie_can_culture AS typocp ON typocp.culture_id = culture_prec.id 
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
-WHERE
-	-- les itinéraires techniques doivent être dans la bonne filière et passé les alertes
-	itk_filtres.filtre_filiere = FALSE AND
-	itk_filtres.filtre_alerte = FALSE 
 UNION 
-
 SELECT 
     'synthetise' as mode_saisie,
     --------------------------
@@ -645,15 +652,27 @@ SELECT
 	itkS.qsa_silicate_aluminium_hts as itk_qsa_silicate_aluminium_hts,
 	itkS.qsa_spinosad_hts as itk_qsa_spinosad_hts,
 	itkS.qsa_spirotetramate_hts as itk_qsa_spirotetramate_hts,
-	itkS.qsa_tau_fluvalinate_hts as itk_qsa_tau_fluvalinate_hts
-
+	itkS.qsa_tau_fluvalinate_hts as itk_qsa_tau_fluvalinate_hts,
+	itkS.hri1_tot as itk_hri1_tot,
+	itkS.hri1_g1_tot as itk_hri1_g1_tot,
+	itkS.hri1_g2_tot as itk_hri1_g2_tot,
+	itkS.hri1_g3_tot as itk_hri1_g3_tot,
+	itkS.hri1_g4_tot as itk_hri1_g4_tot,
+	itkS.ges_totaux_directes_co2 as itk_ges_tot_directes_co2,
+	itkS.ges_totaux_directes_ch4 as itk_ges_tot_directes_ch4,
+	itkS.ges_totaux_directes_n2o as itk_ges_tot_directes_n2o,
+	itkS.ges_totaux_directes_ges_total as itk_ges_tot_directes,
+	itkS.ges_totaux_indirectes_co2 as itk_ges_tot_indirectes_co2,
+	itkS.ges_totaux_indirectes_ch4 as itk_ges_tot_indirectes_ch4,
+	itkS.ges_totaux_indirectes_n2o as itk_ges_tot_indirectes_n2o,
+	itkS.ges_totaux_indirectes_ges_total as itk_ges_tot_indirectes
 FROM entrepot_itk_synthetise_performance AS itkS
+-- filtration dans la dépendance
+JOIN entrepot_itk_filtre itk_filtres ON (itkS.connection_synthetise_id = itk_filtres.connection_synthetise_id)
 LEFT JOIN entrepot_connection_synthetise AS cx ON cx.id = itkS.connection_synthetise_id 
 LEFT JOIN entrepot_noeuds_synthetise AS nd_cible ON nd_cible.id = cx.cible_noeuds_synthetise_id    
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = nd_cible.synthetise_id
 LEFT JOIN entrepot_sdc sdc ON sdc.id = synth.sdc_id
-LEFT JOIN entrepot_itk_filtres_outils_dirodur itk_filtres ON (itkS.id = itk_filtres.connection_synthetise_id)
-JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod ON esstod.sdc_id = sdc.id
 LEFT JOIN entrepot_connection_synthetise_restructure AS cx_rst ON cx_rst.id = itkS.connection_synthetise_id 
 LEFT JOIN entrepot_poids_connexions_synthetise_rotation AS poidscx ON poidscx.connexion_id = itkS.connection_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise AS nd_source ON nd_source.id = cx.source_noeuds_synthetise_id
@@ -673,8 +692,4 @@ LEFT JOIN entrepot_typologie_can_culture AS typo_ci ON typo_ci.culture_id = cx_r
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
 LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
-LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id
-WHERE
-	-- les itinéraires techniques doivent être dans la bonne filière et passé les alertes
-	itk_filtres.filtre_filiere = FALSE AND
-	itk_filtres.filtre_alerte = FALSE 
+LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id;

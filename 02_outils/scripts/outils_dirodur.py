@@ -145,6 +145,7 @@ def get_itk_filtre_outils_dirodur(
     df['noeuds_realise'] = df['noeuds_realise'].set_index('id')
     df['parcelle'] = df['parcelle'].set_index('id')
     df['zone'] = df['zone'].set_index('id')
+    df['noeuds_synthetise_restructure'] = df['noeuds_synthetise_restructure'].set_index('id')
 
     # définition des filières retenues pour le magasin DiRoDur
     
@@ -160,6 +161,7 @@ def get_itk_filtre_outils_dirodur(
         "Cette alerte n'existe pas dans cette filière",
         "Cette alerte n'existe pas encore dans cette filière"
     ]
+
     # définition des colonnes d'alertes consultées
     ALERTE_COLUMNS = [
         'alerte_co_semis_std_mil',
@@ -183,7 +185,6 @@ def get_itk_filtre_outils_dirodur(
 
     # en synthétisé 
     # on exclue les plantations perennes
-
     left = df['itk_synthetise_performance']
     right = df['connection_synthetise']
     df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='connection_synthetise_id', right_index=True, how = 'inner')
@@ -192,8 +193,13 @@ def get_itk_filtre_outils_dirodur(
     right = df['connection_synthetise'][['cible_noeuds_synthetise_id']]
     df['synthetise_synthetise_performance_extanded'] = pd.merge(left, right, left_on='connection_synthetise_id', right_index=True, how='left')
 
+
     left = df['itk_synthetise_performance_extanded']
     right = df['noeuds_synthetise'][['synthetise_id']]
+    df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='cible_noeuds_synthetise_id', right_index=True, how='left')
+
+    left = df['itk_synthetise_performance_extanded']
+    right = df['noeuds_synthetise_restructure'][['culture_id']]
     df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='cible_noeuds_synthetise_id', right_index=True, how='left')
 
     left = df['itk_synthetise_performance_extanded']
@@ -203,6 +209,11 @@ def get_itk_filtre_outils_dirodur(
     left = df['itk_synthetise_performance_extanded']
     right = df['sdc'][['filiere']]
     df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
+
+    left = df['itk_synthetise_performance_extanded']
+    right = df['typologie_can_culture']
+    df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left')
+
 
     # en réalisé 
     # on exclue le perenne
@@ -223,16 +234,27 @@ def get_itk_filtre_outils_dirodur(
     right = df['sdc'][['filiere']]
     df['itk_realise_performance_extanded'] = pd.merge(left, right, left_on="sdc_id", right_index=True, how='inner')
 
+    left = df['itk_realise_performance_extanded']
+    right = df['typologie_can_culture']
+    df['itk_realise_performance_extanded'] = pd.merge(left, right, left_on='culture_id', right_on='culture_id', how='left')
+
+
 
     for performance_df in ['itk_realise_performance_extanded', 'itk_synthetise_performance_extanded']:
         # création de la colonne de filtre sur les alertes
         df[performance_df]['filtre_alerte'] = True
+
         # on regarde si l'alerte est négative
+
+        # cas classique
         df[performance_df].loc[
-            df[performance_df][ALERTE_COLUMNS].isin(ALERTE_IS_NO_STRINGS).any(axis=1) |
-            df[performance_df][ALERTE_COLUMNS].isna().any(axis=1),
+            (df[performance_df][ALERTE_COLUMNS].isin(ALERTE_IS_NO_STRINGS).any(axis=1)) |
+            (df[performance_df][ALERTE_COLUMNS].isna().any(axis=1)) |
+            ((df[performance_df]['alerte_cm_std_mil'].str.contains('<', na=False)) & (df[performance_df]['typocan_culture'] == "Prairie temporaire")),
             'filtre_alerte'
         ] = False
+        
+
 
         # création de la colonne de filtre sur la filière
         df[performance_df]['filtre_filiere'] = ~df[performance_df]['filiere'].isin(FILIERES)

@@ -249,13 +249,26 @@ SELECT
 	ssp.qsa_silicate_aluminium_hts as sdc_qsa_silicate_aluminium_hts,
 	ssp.qsa_spinosad_hts as sdc_qsa_spinosad_hts,
 	ssp.qsa_spirotetramate_hts as sdc_qsa_spirotetramate_hts,
-	ssp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts
-
+	ssp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts,
+	ssp.hri1_tot as itk_hri1_tot,
+	ssp.hri1_g1_tot as itk_hri1_g1_tot,
+	ssp.hri1_g2_tot as itk_hri1_g2_tot,
+	ssp.hri1_g3_tot as itk_hri1_g3_tot,
+	ssp.hri1_g4_tot as itk_hri1_g4_tot,
+	ssp.ges_totaux_directes_co2 as itk_ges_tot_directes_co2,
+	ssp.ges_totaux_directes_ch4 as itk_ges_tot_directes_ch4,
+	ssp.ges_totaux_directes_n2o as itk_ges_tot_directes_n2o,
+	ssp.ges_totaux_directes_ges_total as itk_ges_tot_directes,
+	ssp.ges_totaux_indirectes_co2 as itk_ges_tot_indirectes_co2,
+	ssp.ges_totaux_indirectes_ch4 as itk_ges_tot_indirectes_ch4,
+	ssp.ges_totaux_indirectes_n2o as itk_ges_tot_indirectes_n2o,
+	ssp.ges_totaux_indirectes_ges_total as itk_ges_tot_indirectes
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue NOT LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
+JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.synthetise_id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
@@ -264,32 +277,10 @@ LEFT JOIN entrepot_synthetise_synthetise_performance AS ssp ON sub_sdc.entite_re
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = ssp.synthetise_id
--- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
---LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id
-WHERE
-	(sdc.filiere = 'POLYCULTURE_ELEVAGE' OR sdc.filiere = 'GRANDES_CULTURES') AND
-	(ssp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_semis_std_mil is null) AND 
-	(ssp.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
-	(ssp.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_f is null) AND	
-	(ssp.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_h is null) AND	
-	(ssp.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_i is null) AND	
-	(ssp.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_biocontrole is null) AND	
-	(ssp.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_irrigation_std_mil is null) AND	
-	(ssp.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_msn_std_mil_avec_autoconso is null) AND	
-	(ssp.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_pb_std_mil_avec_autoconso is null) AND	
-	(ssp.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_rendement is null) AND	
-	(ssp.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_cm_std_mil is null) AND	
-	(ssp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_semis_std_mil is null) AND	
-	(ssp.alerte_tps_travail_total IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_tps_travail_total is null) AND	
-	(ssp.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alertes_charges is null)
-
 UNION
 -------------
 -- RÉALISÉ --
 -------------
-----------------
--- SYNTHÉTISÉ --
-----------------
 SELECT 
 	---------
 	-- SDC --
@@ -540,38 +531,32 @@ SELECT
 	srp.qsa_silicate_aluminium_hts as sdc_qsa_silicate_aluminium_hts,
 	srp.qsa_spinosad_hts as sdc_qsa_spinosad_hts,
 	srp.qsa_spirotetramate_hts as sdc_qsa_spirotetramate_hts,
-	srp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts
-
+	srp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts,
+	srp.hri1_tot as itk_hri1_tot,
+	srp.hri1_g1_tot as itk_hri1_g1_tot,
+	srp.hri1_g2_tot as itk_hri1_g2_tot,
+	srp.hri1_g3_tot as itk_hri1_g3_tot,
+	srp.hri1_g4_tot as itk_hri1_g4_tot,
+	srp.ges_totaux_directes_co2 as itk_ges_tot_directes_co2,
+	srp.ges_totaux_directes_ch4 as itk_ges_tot_directes_ch4,
+	srp.ges_totaux_directes_n2o as itk_ges_tot_directes_n2o,
+	srp.ges_totaux_directes_ges_total as itk_ges_tot_directes,
+	srp.ges_totaux_indirectes_co2 as itk_ges_tot_indirectes_co2,
+	srp.ges_totaux_indirectes_ch4 as itk_ges_tot_indirectes_ch4,
+	srp.ges_totaux_indirectes_n2o as itk_ges_tot_indirectes_n2o,
+	srp.ges_totaux_indirectes_ges_total as itk_ges_tot_indirectes
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
+JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
-LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
--- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
-WHERE
-	(sdc.filiere = 'POLYCULTURE_ELEVAGE' OR sdc.filiere = 'GRANDES_CULTURES') AND
-	(srp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_semis_std_mil is null) AND 
-	(srp.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
-	(srp.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_f is null) AND	
-	(srp.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_h is null) AND	
-	(srp.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_i is null) AND	
-	(srp.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_biocontrole is null) AND	
-	(srp.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_irrigation_std_mil is null) AND	
-	(srp.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_msn_std_mil_avec_autoconso is null) AND	
-	(srp.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_pb_std_mil_avec_autoconso is null) AND	
-	(srp.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_rendement is null) AND	
-	(srp.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_cm_std_mil is null) AND	
-	(srp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_semis_std_mil is null) AND	
-	(srp.alerte_tps_travail_total IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_tps_travail_total is null) AND	
-	(srp.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alertes_charges is null);
---LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
-
+LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id;
 
 
 
