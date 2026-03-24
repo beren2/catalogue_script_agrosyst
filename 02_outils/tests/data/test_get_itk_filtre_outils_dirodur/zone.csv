@@ -1,0 +1,6 @@
+id,code,nom,campagne,surface,latitude,longitude,type,parcelle_id
+fr.inra.agrosyst.api.entities.Zone_257904f2-d789-421a-a129-d2c9e332396a,2c79f720-78bf-42fc-b25e-8f4119a27d23,Zone principale,2018,1.32,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_0c0f78d8-caa3-49d2-b78b-4592536c49a6
+fr.inra.agrosyst.api.entities.Zone_03ce0d97-5ac5-4832-b06d-f46d24087d17,c8c9df5d-db8b-4adf-a4a6-ba0204d6de3e,thualagant 2,2008,2.6,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_46de4808-f7c7-4e98-b0c0-b6255ca0a7cf
+fr.inra.agrosyst.api.entities.Zone_0fc64f65-849c-4ee7-bb75-e1a982b192fb,709ebf68-0152-4d99-9832-d52be1cb42b4,Zone principale,2023,3.11,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_6b820b0b-b8ff-41f2-a746-5414497b6183
+fr.inra.agrosyst.api.entities.Zone_d029c4ad-2656-4abf-a916-d407abf4cd48,adac96e2-e367-4177-b852-bb130c05039d,Zone principale,2023,15.22,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_723dc1de-a6e6-4833-9b1e-a16620cdc724
+fr.inra.agrosyst.api.entities.Zone_749eef95-fbcb-421a-8c19-fe4535762685,1d379aa6-ee15-471a-b449-fe446fa06465,Zone principale,2022,3.86,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_953022fe-1037-401b-b3c5-d83e6668c989

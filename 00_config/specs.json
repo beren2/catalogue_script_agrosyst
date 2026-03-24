@@ -584,7 +584,13 @@
                     "utilisation_intrant_synthetise_nettoyage",
 					"entite_unique_par_sdc_nettoyage"
                 ], 
-				"need_performance" : "True"
+				"need_performance" : [
+					"utilisation_intrant_performance", 
+					"intervention_realise_performance", 
+					"intervention_synthetise_performance", 
+					"sdc_realise_performance", 
+					"synthetise_synthetise_performance"
+				]
             },
             "agregation" : {
                 "function_name" : "create_category_agregation",
@@ -597,7 +603,7 @@
                     "action_realise_manquant_agrege", 
                     "action_synthetise_manquant_agrege"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "agregation_complet" : {
                 "function_name" : "None",
@@ -614,7 +620,7 @@
                     "action_realise_agrege", 
                     "action_synthetise_agrege"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"interoperabilite" : {
                 "function_name" : "create_category_interoperabilite",
@@ -623,7 +629,7 @@
 					"donnees_spatiales_commune_du_domaine",
                     "donnees_spatiales_coord_gps_du_domaine"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "restructuration" : {
                 "function_name" : "create_category_restructuration",
@@ -640,7 +646,7 @@
                     "ccc_intervention_synthetise_restructure", 
                     "intervention_synthetise_restructure"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "indicateur_0" : {
                 "function_name" : "create_category_indicateur_0",
@@ -650,7 +656,7 @@
 					"couple_connexions_chemins_synthetise_rotation",
 					"poids_connexions_synthetise_rotation"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"indicateur_1" : {
                 "function_name" : "create_category_indicateur_1",
@@ -661,7 +667,7 @@
                 "generated" : [
 					"typologie_can_culture"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"indicateur_2" : {
                 "function_name" : "create_category_indicateur_2",
@@ -687,7 +693,7 @@
                     "action_synthetise_rendement_total",
 					"espece_variete_perenne_principale"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "outils_can" : {
                 "function_name" : "create_category_outils_can",
@@ -709,7 +715,7 @@
                     "sdc_realise_outils_can",
                     "parcelle_realise_outils_can"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"outils_dirodur_0" : {
                 "function_name" : "create_category_dirodur_0",
@@ -719,39 +725,54 @@
                 },{
                     "source" : "outils", 
                     "category": "agregation_complet"
+                },{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_2"
                 }],
                 "generated" : [
                     "rendement_realise_filtre_outils_dirodur", 
-					"rendement_synthetise_filtre_outils_dirodur"
+					"rendement_synthetise_filtre_outils_dirodur", 
+					"sdc_statut_temporel_outils_dirodur", 
+					"itk_filtres_outils_dirodur"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : [
+					"synthetise_synthetise_performance",
+					"sdc_realise_performance", 
+					"itk_realise_performance", 
+					"itk_synthetise_performance"
+				]
             },
             "test" : {
                 "function_name" : "create_category_test",
-                "dependances" : [{
-                    "source" : "outils", 
-                    "category": "restructuration"
-                },{
-                    "source" : "outils", 
-                    "category": "agregation_complet"
-                }],
+                "dependances" : [],
                 "generated" : [
-					"rendement_realise_filtre_outils_dirodur", 
-					"rendement_synthetise_filtre_outils_dirodur"
+					"itk_filtres_outils_dirodur" 
                 ],
                 "entrepot_dependances" : [
-					"recolte_rendement_prix", 
-					"action_realise",
-					"action_synthetise",
-					"action_realise_agrege", 
-					"action_synthetise_agrege",
-					"destination_valorisation",
-					"recolte_rendement_prix_restructure", 
-					"composant_culture", 
-					"espece", 
-					"variete"
-                ], 
-				"need_performance" : "False"
+					"sdc", 
+					"dispositif", 
+					"synthetise", 
+					"connection_synthetise", 
+					"noeuds_synthetise", 
+					"noeuds_realise", 
+					"parcelle", 
+					"zone",
+					"itk_realise_performance", 
+					"itk_synthetise_performance"
+				],
+				"need_performance" : []
             }
         }
     },
