@@ -756,6 +756,9 @@ def create_category_dirodur_0():
     export_to_db(df_sdc_statut_temporel, 'entrepot_sdc_statut_temporel_outils_dirodur')
     add_primary_key('entrepot_sdc_statut_temporel_outils_dirodur', 'sdc_id')
 
+    itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
+    export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
+
 
 def create_category_interoperabilite():
     """
