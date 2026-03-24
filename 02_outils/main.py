@@ -242,15 +242,16 @@ def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='c
     global donnees
     import_dfs(desired_tables, path_data, verbose=verbose, file_format=file_format)
 
-def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', need_perf=False):
+def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', needed_perfs=[]):
     """permet de charger les tables de l'entrepôt dans la variable globale donnée"""
     filtered_tables = []
     for desired_table in desired_tables:
-        if(not need_perf) :
-            # si on a pas besoin des performances, alors on enlève les tables de cette catégorie
-            if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] != "performance"):
+        if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] == "performance"):
+            # si il s'agit d'une table de performance, on doit vérifier que l'utilisateur en veut
+            if(desired_table in needed_perfs):
                 filtered_tables.append(desired_table)
         else :
+            # sinon, on l'ajoute d'office.
             filtered_tables.append(desired_table)
     load_datas(filtered_tables, verbose=verbose, path_data=DATA_PATH, file_format=file_format)
 
@@ -750,6 +751,11 @@ def create_category_dirodur_0():
     export_to_db(df_rendement_synthetise_filtre_outils_dirodur, 'entrepot_rendement_synthetise_filtre_outils_dirodur')
     add_primary_key('entrepot_rendement_synthetise_filtre_outils_dirodur', 'id')
 
+    df_sdc_statut_temporel = outils_dirodur.get_temporal_status_for_each_sdc_dirodur(donnees)
+    df_sdc_statut_temporel.set_index('sdc_id', inplace=True)
+    export_to_db(df_sdc_statut_temporel, 'entrepot_sdc_statut_temporel_outils_dirodur')
+    add_primary_key('entrepot_sdc_statut_temporel_outils_dirodur', 'sdc_id')
+
 
 def create_category_interoperabilite():
     """
@@ -823,17 +829,10 @@ def create_category_test():
     """ 
             Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_rendement_realise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_outils_dirodur(donnees)
-    df_rendement_realise_filtre_outils_dirodur.set_index('id', inplace=True)
-    export_to_db(df_rendement_realise_filtre_outils_dirodur, 'entrepot_rendement_realise_filtre_outils_dirodur')
-    add_primary_key('entrepot_rendement_realise_filtre_outils_dirodur', 'id')
+    itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
+    export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
+    #add_primary_key('entrepot_itk_filtres_outils_dirodur', 'sdc_id')
 
-    df_rendement_synthetise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_outils_dirodur(donnees)
-    df_rendement_synthetise_filtre_outils_dirodur.set_index('id', inplace=True)
-    export_to_db(df_rendement_synthetise_filtre_outils_dirodur, 'entrepot_rendement_synthetise_filtre_outils_dirodur')
-    add_primary_key('entrepot_rendement_synthetise_filtre_outils_dirodur', 'id')
-
-    print('Fin du test de entrepot_espece_variete_perenne_principale')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -925,8 +924,10 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
             # Chargement des données
             print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-            need_perf_global = any(str(need_perf.get('need_performance', False)).lower() == "true" for need_perf in SOURCE_SPECS['outils']['categories'].values())
-            load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, need_perf=need_perf_global)
+            needed_perfs_tables = []
+            for catagory in SOURCE_SPECS['outils']['categories'].values():
+                needed_perfs_tables += catagory.get('need_performance', [])
+            load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, needed_perfs=needed_perfs_tables)
             print("* CHARGEMENT DES DONNÉES EXTERNES *")
             load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
             print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
@@ -1063,11 +1064,12 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 else :
                     # on vérifie que les données n'ont pas été déjà chargées
                     if('domaine' not in donnees):
+
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         load_datas_entrepot(
                             list(SOURCE_SPECS['entrepot']['tables'].keys()), 
                             verbose=False,
-                            need_perf=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance']=="True")
+                            needed_perfs=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance'])
                         )
                         load_ref()
                         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")

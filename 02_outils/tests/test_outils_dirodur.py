@@ -182,3 +182,31 @@ def test_get_intervention_synthetise_culture_outils_can():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, df_ref_names = refs_names, path_ref = path_ref)
 
     assert all(res)
+
+
+def test_get_itk_filtre_outils_dirodur():
+    """
+        Test de l'obtention des fomtres sur les itk pour le magasin DiRoDur
+        TODO : FINALISER CE TEST (normal si ne passe pas 24/06/2026) 
+    """
+
+    identifiant_test = 'test_get_itk_filtre_outils_dirodur'
+    df_names = [   
+        'sdc', 
+        'dispositif',
+        'synthetise',
+        'itk_realise_performance',
+        'itk_synthetise_performance',
+        'connection_synthetise',
+        'noeuds_synthetise',
+        'noeuds_realise',
+        'parcelle',
+        'zone'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_itk_filtre_outils_dirodur/'
+
+    fonction_to_apply = outils_dirodur.get_rendement_filtre_synthetise_outils_dirodur    
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)

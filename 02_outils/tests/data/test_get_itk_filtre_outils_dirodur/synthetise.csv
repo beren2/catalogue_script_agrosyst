@@ -1,0 +1,5 @@
+id,nom,campagnes,source,commentaire,parcelle_type_id,sdc_id,valide
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ff966123-609c-4ce9-83ec-b8b673ed8449,PZ_DUMONT,"2019, 2020, 2021",ENTRETIEN,,,fr.inra.agrosyst.api.entities.GrowingSystem_1ed74694-9ed1-45d5-b1e0-fc2ed984c370,t
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_adf0a8c2-f83e-47eb-bb3c-2287860aa27e,Système synthétisé C Piel,2018,ENTRETIEN,,,fr.inra.agrosyst.api.entities.GrowingSystem_b02e8200-27ca-4d51-b508-b3d51f01ab9f,f
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_85f00651-ef62-43c7-9dca-cf40f791b419,HOF38455 (MALASSE) 2022,2022,ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_bad2017a-c551-40b0-821a-268354e27cc5,f
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_44328131-269d-4c7b-b81a-40f8092eb712,Syst synth HERAUD,2023,ENTRETIEN_ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_7d9ef0b1-2727-43b8-aafc-62dee3d5bf7c,f

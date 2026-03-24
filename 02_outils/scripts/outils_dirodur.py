@@ -122,6 +122,131 @@ def get_rendement_filtre_outils_dirodur(
     ]]
     return res
 
+def get_itk_filtre_outils_dirodur(
+        donnees,
+    ):
+    """
+        Permet d'obtenir les informations permettant de filtrer ou non les itinéraires techniques.
+        Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
+        
+        Attention, l'échelle itk sur Datagrosyst (itk_realise_performance et itk_synthetise_performance)
+        peut présenter + d'une ligne pour un même itk (cas des cultures intermédiaires qui font l'objet d'un ikt à part)
+        La clé unique en réalisé est donc (noeuds_realise_id, culture_id) et en synthétisé (connection_synthetise_id).
+
+        Attention, le dataframe de sortie ne contient pas tous les ITK d'Agrosyst (uniquement les assolées), 
+        On exclue aussi les parcelles non rattachées.
+    """
+    df = donnees.copy()
+    df['sdc'] = df['sdc'].set_index('id')
+    df['dispositif'] = df['dispositif'].set_index('id')
+    df['synthetise'] = df['synthetise'].set_index('id')
+    df['connection_synthetise'] = df['connection_synthetise'].set_index('id')
+    df['noeuds_synthetise'] = df['noeuds_synthetise'].set_index('id')
+    df['noeuds_realise'] = df['noeuds_realise'].set_index('id')
+    df['parcelle'] = df['parcelle'].set_index('id')
+    df['zone'] = df['zone'].set_index('id')
+
+    # définition des filières retenues pour le magasin DiRoDur
+    
+    # définition des filières retenues pour le magasin DiRoDur
+    FILIERES = [
+        'POLYCULTURE_ELEVAGE',
+        'GRANDES_CULTURES'
+    ] 
+
+    # définition des champs pouvant signifier que l'alerte n'est pas levée 
+    ALERTE_IS_NO_STRINGS = [
+        "Pas d'alerte",
+        "Cette alerte n'existe pas dans cette filière",
+        "Cette alerte n'existe pas encore dans cette filière"
+    ]
+    # définition des colonnes d'alertes consultées
+    ALERTE_COLUMNS = [
+        'alerte_co_semis_std_mil',
+        'alerte_ift_cible_non_mil_chim_tot_hts',
+        'alerte_ift_cible_non_mil_f',
+        'alerte_ift_cible_non_mil_h',
+        'alerte_ift_cible_non_mil_i',
+        'alerte_ift_cible_non_mil_biocontrole',
+        'alerte_co_irrigation_std_mil',
+        'alerte_msn_std_mil_avec_autoconso',
+        'alerte_pb_std_mil_avec_autoconso',
+        'alerte_rendement',
+        'alerte_cm_std_mil',
+        'alerte_co_semis_std_mil',
+        'alertes_charges'
+    ]
+
+    # création de la colonne de filtre sur la filière
+    df['itk_synthetise_performance']['filtre_filiere'] = True
+    df['itk_realise_performance']['filtre_filiere'] = True
+
+    # en synthétisé 
+    # on exclue les plantations perennes
+
+    left = df['itk_synthetise_performance']
+    right = df['connection_synthetise']
+    df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='connection_synthetise_id', right_index=True, how = 'inner')
+
+    left = df['itk_synthetise_performance_extanded']
+    right = df['connection_synthetise'][['cible_noeuds_synthetise_id']]
+    df['synthetise_synthetise_performance_extanded'] = pd.merge(left, right, left_on='connection_synthetise_id', right_index=True, how='left')
+
+    left = df['itk_synthetise_performance_extanded']
+    right = df['noeuds_synthetise'][['synthetise_id']]
+    df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='cible_noeuds_synthetise_id', right_index=True, how='left')
+
+    left = df['itk_synthetise_performance_extanded']
+    right = df['synthetise'][['sdc_id']]
+    df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='synthetise_id', right_index=True, how='left')
+
+    left = df['itk_synthetise_performance_extanded']
+    right = df['sdc'][['filiere']]
+    df['itk_synthetise_performance_extanded'] = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
+
+    # en réalisé 
+    # on exclue le perenne
+    left = df['itk_realise_performance']
+    right = df['noeuds_realise'][['rang']]
+    df['itk_realise_performance_extanded'] = pd.merge(left, right, left_on='noeuds_realise_id', right_index=True, how='inner')
+
+    left = df['itk_realise_performance_extanded']
+    right = df['zone'][['parcelle_id']]
+    df['itk_realise_performance_extanded'] = pd.merge(left, right, left_on='zone_id', right_index=True, how='left')
+
+    left = df['itk_realise_performance_extanded']
+    right = df['parcelle'][['sdc_id']]
+    df['itk_realise_performance_extanded'] = pd.merge(left, right, left_on='parcelle_id', right_index=True, how='left')
+
+    # on exclue les parcelles non rattachées
+    left = df['itk_realise_performance_extanded']
+    right = df['sdc'][['filiere']]
+    df['itk_realise_performance_extanded'] = pd.merge(left, right, left_on="sdc_id", right_index=True, how='inner')
+
+
+    for performance_df in ['itk_realise_performance_extanded', 'itk_synthetise_performance_extanded']:
+        # création de la colonne de filtre sur les alertes
+        df[performance_df]['filtre_alerte'] = True
+        # on regarde si l'alerte est négative
+        df[performance_df].loc[
+            df[performance_df][ALERTE_COLUMNS].isin(ALERTE_IS_NO_STRINGS).any(axis=1) |
+            df[performance_df][ALERTE_COLUMNS].isna().any(axis=1),
+            'filtre_alerte'
+        ] = False
+
+        # création de la colonne de filtre sur la filière
+        df[performance_df]['filtre_filiere'] = ~df[performance_df]['filiere'].isin(FILIERES)
+
+
+    res = pd.concat([
+        df['itk_realise_performance_extanded'][['noeuds_realise_id', 'culture_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id']],
+        df['itk_synthetise_performance_extanded'][['connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id']],
+    ])
+
+    return res[[
+        'noeuds_realise_id', 'culture_id', 'connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id'
+    ]]
+
 def get_temporal_status_for_each_sdc_dirodur(donnees):
     """
     Cette fonction permet de définir l'état temporel de chaque sdc_id pour un même numéro DEPHY.

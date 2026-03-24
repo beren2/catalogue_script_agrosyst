@@ -8,7 +8,11 @@ from datetime import datetime
 def filtered_entities_sdc_level(donnees):
     """
     Cette fonction permet de filtrer les entités que l'on veut présente dans le dataframe principale de la table SDC du magasin DIRODUR.
-    Globalement il y a en premier lieu un filtre sur les entités avec intervention (par construction), puis des filtre sur la filiere GCPE ; sur une entité unique par sdc ; sur les années trop veilles (ne devrait pas être présente) ou trop récentes (pas encore assez consolidées) ; et enfin sur les alertes (petite expection si les cultures sont des prairies temporaires plus de 50% du temps).
+    Globalement il y a en premier lieu un filtre sur les entités avec intervention (par construction),
+      puis des filtre sur la filiere GCPE ; 
+      sur une entité unique par sdc ; 
+      sur les années trop veilles (ne devrait pas être présente) ou trop récentes (pas encore assez consolidées) ; 
+      et enfin sur les alertes (petite expection si les cultures sont des prairies temporaires plus de 50% du temps).
 
     Entree: 
         'synthetise',
