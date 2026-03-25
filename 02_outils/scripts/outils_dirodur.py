@@ -250,7 +250,7 @@ def get_itk_filtre_outils_dirodur(
         df[performance_df].loc[
             (df[performance_df][ALERTE_COLUMNS].isin(ALERTE_IS_NO_STRINGS).any(axis=1)) |
             (df[performance_df][ALERTE_COLUMNS].isna().any(axis=1)) |
-            ((df[performance_df]['alerte_cm_std_mil'].str.contains('<', na=False)) & (df[performance_df]['typocan_culture'] == "Prairie temporaire")),
+            ((df[performance_df]['alerte_cm_std_mil'].str.contains('<', na=False)) & (df[performance_df]['typocan_culture'] == "Prairie temporaire" | df[performance_df]['typocan_culture'] == "Prairie permanente")),
             'filtre_alerte'
         ] = False
         

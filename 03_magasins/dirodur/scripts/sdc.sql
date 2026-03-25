@@ -271,6 +271,7 @@ JOIN (
 	WHERE sub_sdc.entite_retenue NOT LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
 JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.synthetise_id = sub_sdc.entite_retenue
+JOIN filtre_sdc_from_itk_dirodur fsfid on fsfid.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
@@ -555,6 +556,7 @@ JOIN (
 	WHERE sub_sdc.entite_retenue LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
 JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = sdc.id and esstod.synthetise_id is null
+JOIN filtre_sdc_from_itk_dirodur fsfid on fsfid.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
