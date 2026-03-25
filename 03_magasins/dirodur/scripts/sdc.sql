@@ -550,7 +550,7 @@ JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
-JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = sdc.id
+JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = sdc.id and esstod.synthetise_id is null
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
