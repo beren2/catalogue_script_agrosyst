@@ -1,206 +1,210 @@
-SELECT 
-	sdc_id
-	sdc_code
-	sdc_nom
-	sdc_numero_dephy
-	sdc_filiere
-	sdc_type_production
-	sdc_type_agriculture
-	sdc_part_sau_domaine
-	sdc_typo_surface_totale_assol_dvlp
-	sdc_typo_surface_totale_assol
-	sdc_typo_can_assol_dvlp
-	sdc_typo_can_assol
-	sdc_typo_culture_liste_dvlp
-	sdc_typo_culture_liste
-	dispositif_id
-	dispositif_code
-	dispositif_nom
-	dispositif_type
-	domaine_id
-	domaine_code
-	domaine_nom
-	domaine_campagne
-	domaine_siret
-	domaine_type_ferme
-	domaine_position_departement
-	domaine_position_commune_id
-	domaine_position_code_insee
-	domaine_position_cellule_safran
-	domaine_position_rmqs_site_id
-	domaine_zonage
-	domaine_pct_sau_zone_vulnerable
-	domaine_pct_sau_zone_excedent_structurel
-	domaine_pct_sau_zone_actions_complementaires
-	domaine_pct_sau_zone_natura_2000
-	domaine_pct_sau_zone_erosion
-	domaine_pct_sau_perimetre_protection_captage
-	domaine_annee_naissance_exploitant
-	domaine_sau
-	domaine_cotisation_msa
-	domaine_fermage_moyen
-	domaine_aides_decouplees
-	domaine_nombre_parcelles
-	domaine_distance_siege_parcelle_max
-	domaine_parcelles_groupees
-	domaine_parcelles_dispersees
-	domaine_parcelles_plutot_dispersees
-	domaine_parcelles_groupees_distinctes
-	domaine_parcelles_plutot_groupees
-	domaine_otex_18_nom
-	domaine_otex_70_nom
-	domaine_statut_juridique_nom
-	domaine_objectifs
-	domaine_atouts
-	domaine_contraintes
-	domaine_perspectives_evolution
-	domaine_est_membre_cooperative
-	domaine_est_membre_groupe_developpement
-	domaine_est_membre_cuma
-	domaine_est_touristique
-	domaine_main_oeuvre_exploitant
-	domaine_main_oeuvre_non_saisoniere
-	domaine_main_oeuvre_saisoniere
-	domaine_main_oeuvre_volontaire
-	domaine_typologie_ruralite
-	domaine_sau
-	synthetise_id
-	synthetise_nom
-	synthetise_campagnes
-	synthetise_est_pz0
-	sdc_utili_desherbage_meca
-	sdc_type_de_travail_du_sol
-	synthetise_rotation_typo_can
-	synthetise_rotation_typo_liste_culture
-	sdc_ift_cible_non_mil_chimique_tot
-	sdc_ift_cible_non_mil_chim_tot_hts
-	sdc_ift_cible_non_mil_h
-	sdc_ift_cible_non_mil_f
-	sdc_ift_cible_non_mil_i
-	sdc_ift_cible_non_mil_ts
-	sdc_ift_cible_non_mil_a
-	sdc_ift_cible_non_mil_hh
-	sdc_ift_cible_non_mil_biocontrole
-	sdc_recours_aux_moyens_biologiques
-	sdc_recours_macroorganismes
-	sdc_recours_produits_biotiques_sans_amm
-	sdc_recours_produits_abiotiques_sans_amm
-	sdc_tps_utilisation_materiel
-	sdc_tps_travail_manuel
-	sdc_tps_travail_meca
-	sdc_tps_travail_total
-	sdc_nbre_de_passages
-	sdc_nbre_de_passages_labour
-	sdc_nbre_de_passages_tcs
-	sdc_nbre_de_passages_desherbage_meca
-	sdc_co_std_mil_tot
-	sdc_co_std_mil_semis
-	sdc_co_std_mil_fertimin
-	sdc_co_std_mil_epandage_orga
-	sdc_co_std_mil_phyto_sans_amm
-	sdc_co_std_mil_phyto_avec_amm
-	sdc_co_std_mil_trait_semence
-	sdc_co_std_mil_irrigation
-	sdc_co_std_mil_intrants_autres
-	sdc_cm_std_mil
-	sdc_c_main_oeuvre_std_mil_tot
-	sdc_c_main_oeuvre_std_mil_tractoriste
-	sdc_c_main_oeuvre_std_mil_manuelle
-	sdc_pb_std_mil_avec_autoconso
-	sdc_pb_std_mil_sans_autoconso
-	sdc_mb_std_mil_avec_autoconso
-	sdc_mb_std_mil_sans_autoconso
-	sdc_msn_std_mil_sans_autoconso
-	sdc_msn_std_mil_avec_autoconso
-	sdc_md_std_mil_sans_autoconso
-	sdc_md_std_mil_avec_autoconso
-	sdc_conso_carburant
-	sdc_conso_eau
-	sdc_ferti_n_mineral
-	sdc_ferti_n_organique
-	sdc_ferti_p2o5_mineral
-	sdc_ferti_p2o5_organique
-	sdc_ferti_k2o_mineral
-	sdc_ferti_k2o_organique
-	sdc_qsa_tot_hts
-	sdc_qsa_tot
-	sdc_qsa_danger_environnement_hts
-	sdc_qsa_toxique_utilisateur_hts
-	sdc_qsa_cmr_hts
-	sdc_qsa_substances_candidates_substitution_hts
-	sdc_qsa_substances_faible_risque_hts
-	sdc_qsa_glyphosate_hts
-	sdc_qsa_chlortoluron_hts
-	sdc_qsa_diflufenican_hts
-	sdc_qsa_prosulfocarbe_hts
-	sdc_qsa_smetolachlore_hts
-	sdc_qsa_boscalid_hts
-	sdc_qsa_fluopyram_hts
-	sdc_qsa_lambda_cyhalothrine_hts
-	sdc_qsa_cuivre_tot_hts
-	sdc_qsa_cuivre_tot
-	sdc_qsa_cuivre_phyto_hts
-	sdc_qsa_cuivre_ferti
-	sdc_qsa_soufre_tot_hts
-	sdc_qsa_soufre_phyto_hts
-	sdc_qsa_soufre_ferti
-	sdc_qsa_bixafen
-	sdc_qsa_dicamba
-	sdc_qsa_mancozeb
-	sdc_qsa_phosmet
-	sdc_qsa_tebuconazole
-	sdc_qsa_dimethenamidp
-	sdc_qsa_pendimethalin
-	sdc_qsa_flufenacet
-	sdc_qsa_aclonifen
-	sdc_qsa_isoxaben
-	sdc_qsa_beflutamid
-	sdc_qsa_isoproturon
-	sdc_qsa_clothianidine
-	sdc_qsa_imidaclopride
-	sdc_qsa_thiamethoxam
-	sdc_qsa_acetamipride
-	sdc_qsa_thiaclopride
-	sdc_qsa_neonicotinoides
-	sdc_qsa_abamectine_hts
-	sdc_qsa_alpha_cypermethrine_hts
-	sdc_qsa_azadirachtine_hts
-	sdc_qsa_beta_cyfluthrine_hts
-	sdc_qsa_chlorpyrifos_methyl_hts
-	sdc_qsa_cyantraniliprole_hts
-	sdc_qsa_cypermethrine_hts
-	sdc_qsa_deltamethrine_hts
-	sdc_qsa_dimethoate_hts
-	sdc_qsa_emamectine_hts
-	sdc_qsa_esfenvalerate_hts
-	sdc_qsa_flonicamide_hts
-	sdc_qsa_huile_de_colza_hts
-	sdc_qsa_huile_de_paraffine_hts
-	sdc_qsa_indoxacarbe_hts
-	sdc_qsa_primicarbe_hts
-	sdc_qsa_pymetrozine_hts
-	sdc_qsa_pyrethrine_hts
-	sdc_qsa_silicate_aluminium_hts
-	sdc_qsa_spinosad_hts
-	sdc_qsa_spirotetramate_hts
-	sdc_qsa_tau_fluvalinate_hts
-	sdc_hri1_tot
-	sdc_hri1_g1_tot
-	sdc_hri1_g2_tot
-	sdc_hri1_g3_tot
-	sdc_hri1_g4_tot
-	sdc_ges_tot_directes_co2
-	sdc_ges_tot_directes_ch4
-	sdc_ges_tot_directes_n2o
-	sdc_ges_tot_directes
-	sdc_ges_tot_indirectes_co2
-	sdc_ges_tot_indirectes_ch4
-	sdc_ges_tot_indirectes_n2o
-	sdc_ges_tot_indirectes
-from entrepot_
-GROUP BY sdc_numero_dephy, ;
+CREATE OR REPLACE FUNCTION string_agg_unique(
+    input_column TEXT,
+    delimiter TEXT DEFAULT ', '
+)
+RETURNS TEXT AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    EXECUTE format('
+        SELECT string_agg_unique(DISTINCT %I, %L)
+        FROM ta_table
+    ', input_column, delimiter) INTO result;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
 
 
+SELECT DISTINCT ON (sdc_numero_dephy, etat_temporel)
+	sdc_numero_dephy,
+	etat_temporel,
+	STRING_AGG(CAST(domaine_campagne AS TEXT), ', ') as liste_campagne_domaine,
+	STRING_AGG(CAST(synthetise_campagnes AS TEXT), ', ') as liste_synthetise_campagnes,
+	COUNT(*) as nombre_sdc_agrege,
 
+	string_agg_unique(sdc_code, ', ') as liste_sdc_code,
+	string_agg_unique(sdc_filiere, ', ') as filieres,
+	string_agg_unique(sdc_type_production, ', ') as types_production,
+	string_agg_unique(sdc_type_agriculture, ', ') as types_agriculture,
+	AVG(sdc_part_sau_domaine) as part_sau_domaine_moy,
+	AVG(sdc_typo_surface_totale_assol_dvlp) as surface_dvlp_real_moy,
+	AVG(sdc_typo_surface_totale_assol) as surface_real_moy,
+	string_agg_unique(sdc_typo_can_assol_dvlp, ', ') as liste_typologie_can_assol_dvlp,
+	string_agg_unique(sdc_typo_can_assol, ', ') as liste_typologie_can_assol,
+	-- string_agg_unique(sdc_typo_culture_liste_dvlp, ', ') as liste_sdc_typo_culture_liste_dvlp,
+	-- string_agg_unique(sdc_typo_culture_liste, ', ') as liste_sdc_typo_culture_liste,
+	string_agg_unique(dispositif_code, ', ') as liste_dispositif_code,
+	string_agg_unique(domaine_code, ', ') as liste_domaine_code,
+	string_agg_unique(domaine_siret, ', ') as liste_siret,
+	string_agg_unique(domaine_type_ferme, ', ') as types_ferme,
+	string_agg_unique(domaine_position_departement, ', ') as departement,
+	string_agg_unique(domaine_position_commune_id, ', ') as commune_id,
+	string_agg_unique(CAST(domaine_position_code_insee AS TEXT), ', ') as code_insee,
+	string_agg_unique(CAST(domaine_position_cellule_safran AS TEXT), ', ') as cellule_safran_id,
+	string_agg_unique(CAST(domaine_position_rmqs_site_id AS TEXT), ', ') as rmqs_site_id,
+	string_agg_unique(domaine_zonage, ', ') as zonages,
+	AVG(domaine_pct_sau_zone_vulnerable) as pct_sau_zone_vulnerable_moy,
+	AVG(domaine_pct_sau_zone_excedent_structurel) as pct_sau_zone_excedent_structurel_moy,
+	AVG(domaine_pct_sau_zone_actions_complementaires) as pct_sau_zone_actions_complementaires_moy,
+	AVG(domaine_pct_sau_zone_natura_2000) as pct_sau_zone_natura_2000_moy,
+	AVG(domaine_pct_sau_zone_erosion) as pct_sau_zone_erosion_moy,
+	AVG(domaine_pct_sau_perimetre_protection_captage)
+	string_agg_unique(domaine_annee_naissance_exploitant, ', ') as liste_annee_naissance_exploitant,
+	AVG(domaine_sau) as domaine_sau_moy,
+	AVG(domaine_cotisation_msa) as cotisation_msa_moy,
+	AVG(domaine_fermage_moyen) as fermage_moy,
+	AVG(domaine_aides_decouplees) as aides_decouplees_moy
+	AVG(domaine_nombre_parcelles) as nb_parcelles_moy
+	MAX(domaine_distance_siege_parcelle_max) as distance_siege_parcelle_max,
 
+	string_agg_unique(domaine_otex_18_nom, ', ') as liste_otex_18,
+	string_agg_unique(domaine_otex_70_nom, ', ') as liste_otex_70,
+	string_agg_unique(domaine_statut_juridique_nom, ', ') as liste_statut_juridique,
+	string_agg_unique(domaine_objectifs, ', ') as liste_objectifs,
+	string_agg_unique(domaine_atouts, ', ') as liste_atouts,
+	string_agg_unique(domaine_contraintes, ', ') as liste_contraintes,
+	string_agg_unique(domaine_perspectives_evolution, ', ') as liste_perspective_evolution,
+	string_agg_unique(CAST(domaine_est_membre_cooperative AS TEXT), ', ') as est_membre_cooperative,
+	string_agg_unique(CAST(domaine_est_membre_groupe_developpement AS TEXT), ', ') as est_membre_groupe_developpement,
+	string_agg_unique(CAST(domaine_est_membre_cuma AS TEXT), ', ') as est_membre_cuma,
+	string_agg_unique(CAST(domaine_est_touristique AS TEXT), ', ') as est_touristique,
+	AVG(domaine_main_oeuvre_exploitant) as domaine_main_oeuvre_exploitant_moy,
+	AVG(domaine_main_oeuvre_non_saisoniere) as domaine_main_oeuvre_non_saisoniere_moy,
+	AVG(domaine_main_oeuvre_saisoniere) as domaine_main_oeuvre_saisoniere_moy,
+	AVG(domaine_main_oeuvre_volontaire) as domaine_main_oeuvre_volontaire_moy,
+	string_agg_unique(domaine_typologie_ruralite) as liste_domaine_typologie_ruralite,
+	AVG(domaine_sau) as domaine_sau_moy,
+	string_agg_unique(CAST(sdc_utili_desherbage_meca AS TEXT), ', ') as liste_utili_desherbage_meca,
+	string_agg_unique(sdc_type_de_travail_du_sol, ', ') as liste_type_de_travail_du_sol,
+	string_agg_unique(synthetise_rotation_typo_can, ', ') as liste_synthetise_rotation_typo_can,
+--	string_agg_unique(synthetise_rotation_typo_liste_culture, ', ') as lsite_synthetise_rotation_typo_liste_culture,
 
+	AVG(sdc_ift_cible_non_mil_chimique_tot) as ift_cible_non_mil_chimique_tot_moy,
+	AVG(sdc_ift_cible_non_mil_chim_tot_hts) as ift_cible_non_mil_chim_tot_hts_moy,
+	AVG(sdc_ift_cible_non_mil_h) as ift_cible_non_mil_h_moy,
+	AVG(sdc_ift_cible_non_mil_f) as ift_cible_non_mil_f_moy,
+	AVG(sdc_ift_cible_non_mil_i) as ift_cible_non_mil_i_moy
+	AVG(sdc_ift_cible_non_mil_ts) as ift_cible_non_mil_ts_moy,
+	AVG(sdc_ift_cible_non_mil_a) as ift_cible_non_mil_a_moy,
+	AVG(sdc_ift_cible_non_mil_hh) as ift_cible_non_mil_hh_moy,
+	AVG(sdc_ift_cible_non_mil_biocontrole) as ift_cible_non_mil_biocontrole_moy,
+	AVG(sdc_recours_aux_moyens_biologiques) as recours_aux_moyens_biologiques_moy,
+	AVG(sdc_recours_macroorganismes) as recours_macroorganismes_moy,
+	AVG(sdc_recours_produits_biotiques_sans_amm) as recours_produits_biotiques_sans_amm_moy,
+	AVG(sdc_recours_produits_abiotiques_sans_amm) as recours_produits_abiotiques_sans_amm_moy,
+	AVG(sdc_tps_utilisation_materiel) as tps_utilisation_materiel_moy,
+	AVG(sdc_tps_travail_manuel) as tps_travail_manuel_moy,
+	AVG(sdc_tps_travail_meca) as tps_travail_meca_moy,
+	AVG(sdc_tps_travail_total) as tps_travail_total_moy,
+	AVG(sdc_nbre_de_passages) as nbre_de_passages_moy,
+	AVG(sdc_nbre_de_passages_labour) as nbre_de_passages_labour_moy,
+	AVG(sdc_nbre_de_passages_tcs) as nbre_de_passages_tcs_moy,
+	AVG(sdc_nbre_de_passages_desherbage_meca) as nbre_de_passages_desherbage_meca_moy,
+	AVG(sdc_co_std_mil_tot) as co_std_mil_tot_moy,
+	AVG(sdc_co_std_mil_semis) as co_std_mil_semis_moy,
+	AVG(sdc_co_std_mil_fertimin) as co_std_mil_fertimin_moy,
+	AVG(sdc_co_std_mil_epandage_orga) as co_std_mil_epandage_orga_moy,
+	AVG(sdc_co_std_mil_phyto_sans_amm) as co_std_mil_phyto_sans_amm_moy,
+	AVG(sdc_co_std_mil_phyto_avec_amm) as co_std_mil_phyto_avec_amm_moy,
+	AVG(sdc_co_std_mil_trait_semence) as co_std_mil_trait_semence_moy,
+	AVG(sdc_co_std_mil_irrigation) as co_std_mil_irrigation_moy,
+	AVG(sdc_co_std_mil_intrants_autres) as co_std_mil_intrants_autres_moy,
+	AVG(sdc_cm_std_mil) as cm_std_mil_moy,
+	AVG(sdc_c_main_oeuvre_std_mil_tot) as c_main_oeuvre_std_mil_tot_moy,
+	AVG(sdc_c_main_oeuvre_std_mil_tractoriste) as c_main_oeuvre_std_mil_tractoriste_moy,
+	AVG(sdc_c_main_oeuvre_std_mil_manuelle) as c_main_oeuvre_std_mil_manuelle_moy,
+	AVG(sdc_pb_std_mil_avec_autoconso) as pb_std_mil_avec_autoconso_moy,
+	AVG(sdc_pb_std_mil_sans_autoconso) as pb_std_mil_sans_autoconso_moy,
+	AVG(sdc_mb_std_mil_avec_autoconso) as mb_std_mil_avec_autoconso_moy,
+	AVG(sdc_mb_std_mil_sans_autoconso) as mb_std_mil_sans_autoconso_moy,
+	AVG(sdc_msn_std_mil_sans_autoconso) as msn_std_mil_sans_autoconso_moy,
+	AVG(sdc_msn_std_mil_avec_autoconso) as msn_std_mil_avec_autoconso_moy,
+	AVG(sdc_md_std_mil_sans_autoconso) as md_std_mil_sans_autoconso_moy,
+	AVG(sdc_md_std_mil_avec_autoconso) as md_std_mil_avec_autoconso_moy,
+	AVG(sdc_conso_carburant) as conso_carburant_moy,
+	AVG(sdc_conso_eau) as conso_eau_moy,
+	AVG(sdc_ferti_n_mineral) as ferti_n_mineral_moy,
+	AVG(sdc_ferti_n_organique) as ferti_n_organique_moy,
+	AVG(sdc_ferti_p2o5_mineral) as ferti_p2o5_mineral_moy,
+	AVG(sdc_ferti_p2o5_organique) as ferti_p2o5_organique_moy,
+	AVG(sdc_ferti_k2o_mineral) as ferti_k2o_mineral_moy,
+	AVG(sdc_ferti_k2o_organique) as ferti_k2o_organique_moy,
+	AVG(sdc_qsa_tot_hts) as qsa_tot_hts_moy,
+	AVG(sdc_qsa_tot) as qsa_tot_moy,
+	AVG(sdc_qsa_danger_environnement_hts) as qsa_danger_environnement_hts_moy,
+	AVG(sdc_qsa_toxique_utilisateur_hts) as qsa_toxique_utilisateur_hts_moy,
+	AVG(sdc_qsa_cmr_hts) as qsa_cmr_hts_moy,
+	AVG(sdc_qsa_substances_candidates_substitution_hts) as qsa_substances_candidates_substitution_hts_moy,
+	AVG(sdc_qsa_substances_faible_risque_hts) as qsa_substances_faible_risque_hts_moy,
+	AVG(sdc_qsa_glyphosate_hts) as qsa_glyphosate_hts_moy,
+	AVG(sdc_qsa_chlortoluron_hts) as qsa_chlortoluron_hts_moy,
+	AVG(sdc_qsa_diflufenican_hts) as qsa_diflufenican_hts_moy,
+	AVG(sdc_qsa_prosulfocarbe_hts) as qsa_prosulfocarbe_hts_moy,
+	AVG(sdc_qsa_smetolachlore_hts) as qsa_smetolachlore_hts_moy,
+	AVG(sdc_qsa_boscalid_hts) as qsa_boscalid_hts_moy,
+	AVG(sdc_qsa_fluopyram_hts) as qsa_fluopyram_hts_moy,
+	AVG(sdc_qsa_lambda_cyhalothrine_hts) as qsa_lambda_cyhalothrine_hts_moy,
+	AVG(sdc_qsa_cuivre_tot_hts) as qsa_cuivre_tot_hts_moy,
+	AVG(sdc_qsa_cuivre_tot) as qsa_cuivre_tot_moy,
+	AVG(sdc_qsa_cuivre_phyto_hts) as qsa_cuivre_phyto_hts_moy,
+	AVG(sdc_qsa_cuivre_ferti) as qsa_cuivre_ferti_moy,
+	AVG(sdc_qsa_soufre_tot_hts) as qsa_soufre_tot_hts_moy,
+	AVG(sdc_qsa_soufre_phyto_hts) as qsa_soufre_phyto_hts_moy,
+	AVG(sdc_qsa_soufre_ferti) as qsa_soufre_ferti_moy,
+	AVG(sdc_qsa_bixafen) as qsa_bixafen_moy,
+	AVG(sdc_qsa_dicamba) as qsa_dicamba_moy,
+	AVG(sdc_qsa_mancozeb) as qsa_mancozeb_moy,
+	AVG(sdc_qsa_phosmet) as qsa_phosmet_moy,
+	AVG(sdc_qsa_tebuconazole) as qsa_tebuconazole_moy,
+	AVG(sdc_qsa_dimethenamidp) as qsa_dimethenamidp_moy,
+	AVG(sdc_qsa_pendimethalin) as qsa_pendimethalin_moy,
+	AVG(sdc_qsa_flufenacet) as qsa_flufenacet_moy,
+	AVG(sdc_qsa_aclonifen) as qsa_aclonifen_moy,
+	AVG(sdc_qsa_isoxaben) as qsa_isoxaben_moy,
+	AVG(sdc_qsa_beflutamid) as qsa_beflutamid_moy,
+	AVG(sdc_qsa_isoproturon) as qsa_isoproturon_moy,
+	AVG(sdc_qsa_clothianidine) as qsa_clothianidine_moy,
+	AVG(sdc_qsa_imidaclopride) as qsa_imidaclopride_moy,
+	AVG(sdc_qsa_thiamethoxam) as qsa_thiamethoxam_moy,
+	AVG(sdc_qsa_acetamipride) as qsa_acetamipride_moy,
+	AVG(sdc_qsa_thiaclopride) as qsa_thiaclopride_moy,
+	AVG(sdc_qsa_neonicotinoides) as qsa_neonicotinoides_moy,
+	AVG(sdc_qsa_abamectine_hts) as qsa_abamectine_hts_moy,
+	AVG(sdc_qsa_alpha_cypermethrine_hts) as qsa_alpha_cypermethrine_hts_moy,
+	AVG(sdc_qsa_azadirachtine_hts) as qsa_azadirachtine_hts_moy,
+	AVG(sdc_qsa_beta_cyfluthrine_hts) as qsa_beta_cyfluthrine_hts_moy,
+	AVG(sdc_qsa_chlorpyrifos_methyl_hts) as qsa_chlorpyrifos_methyl_hts_moy,
+	AVG(sdc_qsa_cyantraniliprole_hts) as qsa_cyantraniliprole_hts_moy,
+	AVG(sdc_qsa_cypermethrine_hts) as qsa_cypermethrine_hts_moy,
+	AVG(sdc_qsa_deltamethrine_hts) as qsa_deltamethrine_hts_moy,
+	AVG(sdc_qsa_dimethoate_hts) as qsa_dimethoate_hts_moy,
+	AVG(sdc_qsa_emamectine_hts) as qsa_emamectine_hts_moy,
+	AVG(sdc_qsa_esfenvalerate_hts) as qsa_esfenvalerate_hts_moy,
+	AVG(sdc_qsa_flonicamide_hts) as qsa_flonicamide_hts_moy,
+	AVG(sdc_qsa_huile_de_colza_hts) as qsa_huile_de_colza_hts_moy,
+	AVG(sdc_qsa_huile_de_paraffine_hts) as qsa_huile_de_paraffine_hts_moy,
+	AVG(sdc_qsa_indoxacarbe_hts) as qsa_indoxacarbe_hts_moy,
+	AVG(sdc_qsa_primicarbe_hts) as qsa_primicarbe_hts_moy,
+	AVG(sdc_qsa_pymetrozine_hts) as qsa_pymetrozine_hts_moy,
+	AVG(sdc_qsa_pyrethrine_hts) as qsa_pyrethrine_hts_moy,
+	AVG(sdc_qsa_silicate_aluminium_hts) as qsa_silicate_aluminium_hts_moy,
+	AVG(sdc_qsa_spinosad_hts) as qsa_spinosad_hts_moy,
+	AVG(sdc_qsa_spirotetramate_hts) as qsa_spirotetramate_hts_moy,
+	AVG(sdc_qsa_tau_fluvalinate_hts) as qsa_tau_fluvalinate_hts_moy,
+	AVG(sdc_hri1_tot) as hri1_tot_moy,
+	AVG(sdc_hri1_g1_tot) as hri1_g1_tot_moy,
+	AVG(sdc_hri1_g2_tot) as hri1_g2_tot_moy,
+	AVG(sdc_hri1_g3_tot) as hri1_g3_tot_moy,
+	AVG(sdc_hri1_g4_tot) as hri1_g4_tot_moy,
+	AVG(sdc_ges_tot_directes_co2) as ges_tot_directes_co2_moy,
+	AVG(sdc_ges_tot_directes_ch4) as ges_tot_directes_ch4_moy,
+	AVG(sdc_ges_tot_directes_n2o) as ges_tot_directes_n2o_moy,
+	AVG(sdc_ges_tot_directes) as ges_tot_directes_moy,
+	AVG(sdc_ges_tot_indirectes_co2) as ges_tot_indirectes_co2_moy,
+	AVG(sdc_ges_tot_indirectes_ch4) as ges_tot_indirectes_ch4_moy,
+	AVG(sdc_ges_tot_indirectes_n2o) as ges_tot_indirectes_n2o_moy,
+	AVG(sdc_ges_tot_indirectes) as ges_tot_indirectes_moy,
+from entrepot_sdc_magasin_dirodur
+GROUP BY sdc_numero_dephy, etat_temporel
+WHERE etat_temporel IN ('pz0','point_I','point_B');
