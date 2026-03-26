@@ -13,9 +13,7 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
 	esstod.etat_temporel as sdc_etat_temporel,
-
 	-- sdc_typo_*
 	null as sdc_typo_surface_totale_assol_dvlp,
 	null as sdc_typo_surface_totale_assol,
@@ -25,7 +23,6 @@ SELECT
 	-- sdc_typoculture_*
 	null as sdc_typo_culture_liste_dvlp,
 	null as sdc_typo_culture_liste,
-
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -33,7 +30,6 @@ SELECT
 	dispo.code as dispositif_code,
 	dispo.nom as dispositif_nom,
 	dispo."type" as dispositif_type,
-
 	-------------
 	-- DOMAINE --
 	-------------
@@ -88,14 +84,12 @@ SELECT
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
 	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
-
     -----------------
 	-- DOMAINE_SOL --
 	-----------------
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-
     -----------------
 	-- SYNTHETISE --
 	----------------
@@ -106,11 +100,9 @@ SELECT
 	synth.campagnes as synthetise_campagnes,
 	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
-
 	---------------------------------------
 	-- SYNTHETISE_SYNTHETISE_PERFORMANCE --
 	---------------------------------------
-
 	-- ift_cible_non_mil_*
 	ssp.ift_cible_non_mil_chimique_tot as sdc_ift_cible_non_mil_chimique_tot,
 	ssp.ift_cible_non_mil_chim_tot_hts as sdc_ift_cible_non_mil_chim_tot_hts,
@@ -121,19 +113,16 @@ SELECT
 	ssp.ift_cible_non_mil_a as sdc_ift_cible_non_mil_a,
 	ssp.ift_cible_non_mil_hh as sdc_ift_cible_non_mil_hh,
 	ssp.ift_cible_non_mil_biocontrole as sdc_ift_cible_non_mil_biocontrole,
-
 	-- recours_*
 	ssp.recours_aux_moyens_biologiques as sdc_recours_aux_moyens_biologiques,
 	ssp.recours_macroorganismes as sdc_recours_macroorganismes,
 	ssp.recours_produits_biotiques_sansamm as sdc_recours_produits_biotiques_sans_amm,
 	ssp.recours_produits_abiotiques_sansamm as sdc_recours_produits_abiotiques_sans_amm,
-
 	-- tps_*
 	ssp.tps_utilisation_materiel as sdc_tps_utilisation_materiel,
 	ssp.tps_travail_manuel as sdc_tps_travail_manuel,
 	ssp.tps_travail_mecanise as sdc_tps_travail_meca,
 	ssp.tps_travail_total as sdc_tps_travail_total,
-
 	-- nbre_de_passages_*
 	ssp.nbre_de_passages as sdc_nbre_de_passages,
 	ssp.nbre_de_passages_labour as sdc_nbre_de_passages_labour,
@@ -152,35 +141,27 @@ SELECT
 	ssp.co_trait_semence_std_mil as sdc_co_std_mil_trait_semence,
 	ssp.co_irrigation_std_mil as sdc_co_std_mil_irrigation,
 	ssp.co_intrants_autres_std_mil as sdc_co_std_mil_intrants_autres,
-
 	-- cm_std_mil
 	ssp.cm_std_mil as sdc_cm_std_mil,
-
 	-- c_main_oeuvre_std_mil_*
 	ssp.c_main_oeuvre_tot_std_mil as sdc_c_main_oeuvre_std_mil_tot,
 	ssp.c_main_oeuvre_tractoriste_std_mil as sdc_c_main_oeuvre_std_mil_tractoriste,
 	ssp.c_main_oeuvre_manuelle_std_mil as sdc_c_main_oeuvre_std_mil_manuelle,
-
 	-- pb_std_mil_*
 	ssp.pb_std_mil_avec_autoconso as sdc_pb_std_mil_avec_autoconso, -- Consigne pour ceux qui n'utilise pas les atelier d'élevage : avec auto
 	ssp.pb_std_mil_sans_autoconso as sdc_pb_std_mil_sans_autoconso,
-
 	-- mb_std_mil_*
 	ssp.mb_std_mil_avec_autoconso as sdc_mb_std_mil_avec_autoconso,
 	ssp.mb_std_mil_sans_autoconso as sdc_mb_std_mil_sans_autoconso,
-
 	-- msn_std_mil_*
 	ssp.msn_std_mil_sans_autoconso as sdc_msn_std_mil_sans_autoconso,
 	ssp.msn_std_mil_avec_autoconso as sdc_msn_std_mil_avec_autoconso,
-
 	-- md_std_mil_*
 	ssp.md_std_mil_sans_autoconso as sdc_md_std_mil_sans_autoconso,
 	ssp.md_std_mil_avec_autoconso as sdc_md_std_mil_avec_autoconso,
-
 	-- conso_* 
 	ssp.conso_carburant as sdc_conso_carburant,
 	ssp.conso_eau as sdc_conso_eau,
-
 	-- ferti_*
 	ssp.ferti_n_mineral as sdc_ferti_n_mineral,
 	ssp.ferti_n_organique as sdc_ferti_n_organique,
@@ -188,7 +169,6 @@ SELECT
 	ssp.ferti_p2o5_organique as sdc_ferti_p2o5_organique,
 	ssp.ferti_k2o_mineral as sdc_ferti_k2o_mineral,
 	ssp.ferti_k2o_organique as sdc_ferti_k2o_organique,
-
 	-- qsa_*
 	ssp.qsa_tot_hts as sdc_qsa_tot_hts,
 	ssp.qsa_tot as sdc_qsa_tot,
@@ -296,21 +276,16 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
 	esstod.etat_temporel as sdc_etat_temporel,
-
 	-- sdc_typo_*
 	typoassol.surface_totale_assol_dvlp as sdc_typo_surface_totale_assol_dvlp,
 	typoassol.surface_totale_assol as sdc_typo_surface_totale_assol,
-
 	-- sdc_typocan_*
 	typoassol.typocan_assol_dvlp  as sdc_typo_can_assol_dvlp,
 	typoassol.typocan_assol  as sdc_typo_can_assol,
-
 	-- sdc_typoculture_*
 	typoassol.list_freq_typoculture_dvlp  as sdc_typoculture_liste_dvlp,
 	typoassol.list_freq_typoculture as sdc_typoculture_liste,
-
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -318,7 +293,6 @@ SELECT
 	dispo.code as dispositif_code,
 	dispo.nom as dispositif_nom,
 	dispo."type" as dispositif_type,
-
 	-------------
 	-- DOMAINE --
 	-------------
@@ -373,14 +347,12 @@ SELECT
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
 	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
-
     -----------------
 	-- DOMAINE_SOL --
 	-----------------
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-
     -----------------
 	-- SYNTHETISE --
 	----------------
@@ -391,11 +363,9 @@ SELECT
 	null as synthetise_campagnes,
 	false as synthetise_est_pz0,
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
-
 	---------------------------------------
 	-- SYNTHETISE_SYNTHETISE_PERFORMANCE --
 	---------------------------------------
-
 	-- ift_cible_non_mil_*
 	srp.ift_cible_non_mil_chimique_tot as sdc_ift_cible_non_mil_chimique_tot,
 	srp.ift_cible_non_mil_chim_tot_hts as sdc_ift_cible_non_mil_chim_tot_hts,
@@ -406,19 +376,16 @@ SELECT
 	srp.ift_cible_non_mil_a as sdc_ift_cible_non_mil_a,
 	srp.ift_cible_non_mil_hh as sdc_ift_cible_non_mil_hh,
 	srp.ift_cible_non_mil_biocontrole as sdc_ift_cible_non_mil_biocontrole,
-
 	-- recours_*
 	srp.recours_aux_moyens_biologiques as sdc_recours_aux_moyens_biologiques,
 	srp.recours_macroorganismes as sdc_recours_macroorganismes,
 	srp.recours_produits_biotiques_sansamm as sdc_recours_produits_biotiques_sans_amm,
 	srp.recours_produits_abiotiques_sansamm as sdc_recours_produits_abiotiques_sans_amm,
-
 	-- tps_*
 	srp.tps_utilisation_materiel as sdc_tps_utilisation_materiel,
 	srp.tps_travail_manuel as sdc_tps_travail_manuel,
 	srp.tps_travail_mecanise as sdc_tps_travail_meca,
 	srp.tps_travail_total as sdc_tps_travail_total,
-
 	-- nbre_de_passages_*
 	srp.nbre_de_passages as sdc_nbre_de_passages,
 	srp.nbre_de_passages_labour as sdc_nbre_de_passages_labour,
@@ -437,35 +404,27 @@ SELECT
 	srp.co_trait_semence_std_mil as sdc_co_std_mil_trait_semence,
 	srp.co_irrigation_std_mil as sdc_co_std_mil_irrigation,
 	srp.co_intrants_autres_std_mil as sdc_co_std_mil_intrants_autres,
-
 	-- cm_std_mil
 	srp.cm_std_mil as sdc_cm_std_mil,
-
 	-- c_main_oeuvre_std_mil_*
 	srp.c_main_oeuvre_tot_std_mil as sdc_c_main_oeuvre_std_mil_tot,
 	srp.c_main_oeuvre_tractoriste_std_mil as sdc_c_main_oeuvre_std_mil_tractoriste,
 	srp.c_main_oeuvre_manuelle_std_mil as sdc_c_main_oeuvre_std_mil_manuelle,
-
 	-- pb_std_mil_*
 	srp.pb_std_mil_avec_autoconso as sdc_pb_std_mil_avec_autoconso, -- Consigne pour ceux qui n'utilise pas les atelier d'élevage : avec auto
 	srp.pb_std_mil_sans_autoconso as sdc_pb_std_mil_sans_autoconso,
-
 	-- mb_std_mil_*
 	srp.mb_std_mil_avec_autoconso as sdc_mb_std_mil_avec_autoconso,
 	srp.mb_std_mil_sans_autoconso as sdc_mb_std_mil_sans_autoconso,
-
 	-- msn_std_mil_*
 	srp.msn_std_mil_sans_autoconso as sdc_msn_std_mil_sans_autoconso,
 	srp.msn_std_mil_avec_autoconso as sdc_msn_std_mil_avec_autoconso,
-
 	-- md_std_mil_*
 	srp.md_std_mil_sans_autoconso as sdc_md_std_mil_sans_autoconso,
 	srp.md_std_mil_avec_autoconso as sdc_md_std_mil_avec_autoconso,
-
 	-- conso_* 
 	srp.conso_carburant as sdc_conso_carburant,
 	srp.conso_eau as sdc_conso_eau,
-
 	-- ferti_*
 	srp.ferti_n_mineral as sdc_ferti_n_mineral,
 	srp.ferti_n_organique as sdc_ferti_n_organique,
@@ -473,7 +432,6 @@ SELECT
 	srp.ferti_p2o5_organique as sdc_ferti_p2o5_organique,
 	srp.ferti_k2o_mineral as sdc_ferti_k2o_mineral,
 	srp.ferti_k2o_organique as sdc_ferti_k2o_organique,
-
 	-- qsa_*
 	srp.qsa_tot_hts as sdc_qsa_tot_hts,
 	srp.qsa_tot as sdc_qsa_tot,
@@ -563,8 +521,5 @@ LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id;
-
-
-
 
 
