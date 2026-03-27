@@ -1,6 +1,6 @@
 SELECT
     sdc_numero_dephy as sdc_numero_dephy,
-    etat_temporel as sdc_etat_temporel,
+    sdc_etat_temporel as sdc_etat_temporel,
     STRING_AGG(CAST(domaine_campagne AS TEXT), ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_campagne_domaine,
     STRING_AGG(synthetise_campagnes_unnested, ', ' ORDER BY synthetise_campagnes_unnested) AS sdc_ag_temp_campagnes_synthetise,
     COUNT(*) AS sdc_ag_temp_nb_sdc,
