@@ -237,14 +237,13 @@ SELECT
 	ssp.hri1_g2_hts as sdc_hri1_g2_hts,
 	ssp.hri1_g3_hts as sdc_hri1_g3_hts,
 	ssp.hri1_g4_hts as sdc_hri1_g4_hts,
-	ssp.ges_totaux_directes_co2 as sdc_ges_tot_directes_co2,
-	ssp.ges_totaux_directes_ch4 as sdc_ges_tot_directes_ch4,
-	ssp.ges_totaux_directes_n2o as sdc_ges_tot_directes_n2o,
-	ssp.ges_totaux_directes_ges_total as sdc_ges_tot_directes,
-	ssp.ges_totaux_indirectes_co2 as sdc_ges_tot_indirectes_co2,
-	ssp.ges_totaux_indirectes_ch4 as sdc_ges_tot_indirectes_ch4,
-	ssp.ges_totaux_indirectes_n2o as sdc_ges_tot_indirectes_n2o,
-	ssp.ges_totaux_indirectes_ges_total as sdc_ges_tot_indirectes
+	ssp.ges_ferti_min_directes_ges_total as sdc_ges_ferti_min_directes_co2eq,
+	ssp.ges_ferti_orga_directes_ges_total as sdc_ges_ferti_orga_directes_co2eq,
+	ssp.ges_carburants_directes_ges_total as sdc_ges_carburants_directes_co2eq,
+	ssp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
+	ssp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
+	ssp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
+	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
@@ -500,14 +499,13 @@ SELECT
 	srp.hri1_g2_hts as sdc_hri1_g2_hts,
 	srp.hri1_g3_hts as sdc_hri1_g3_hts,
 	srp.hri1_g4_hts as sdc_hri1_g4_hts,
-	srp.ges_totaux_directes_co2 as sdc_ges_tot_directes_co2,
-	srp.ges_totaux_directes_ch4 as sdc_ges_tot_directes_ch4,
-	srp.ges_totaux_directes_n2o as sdc_ges_tot_directes_n2o,
-	srp.ges_totaux_directes_ges_total as sdc_ges_tot_directes,
-	srp.ges_totaux_indirectes_co2 as sdc_ges_tot_indirectes_co2,
-	srp.ges_totaux_indirectes_ch4 as sdc_ges_tot_indirectes_ch4,
-	srp.ges_totaux_indirectes_n2o as sdc_ges_tot_indirectes_n2o,
-	srp.ges_totaux_indirectes_ges_total as sdc_ges_tot_indirectes
+	srp.ges_ferti_min_directes_ges_total as sdc_ges_ferti_min_directes_co2eq,
+	srp.ges_ferti_orga_directes_ges_total as sdc_ges_ferti_orga_directes_co2eq,
+	srp.ges_carburants_directes_ges_total as sdc_ges_carburants_directes_co2eq,
+	srp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
+	srp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
+	srp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
+	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc

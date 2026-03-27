@@ -338,14 +338,13 @@ SELECT
 	itkR.hri1_g2_tot as itk_hri1_g2_hts,
 	itkR.hri1_g3_tot as itk_hri1_g3_hts,
 	itkR.hri1_g4_tot as itk_hri1_g4_hts,
-	itkR.ges_totaux_directes_co2 as itk_ges_tot_directes_co2,
-	itkR.ges_totaux_directes_ch4 as itk_ges_tot_directes_ch4,
-	itkR.ges_totaux_directes_n2o as itk_ges_tot_directes_n2o,
-	itkR.ges_totaux_directes_ges_total as itk_ges_tot_directes,
-	itkR.ges_totaux_indirectes_co2 as itk_ges_tot_indirectes_co2,
-	itkR.ges_totaux_indirectes_ch4 as itk_ges_tot_indirectes_ch4,
-	itkR.ges_totaux_indirectes_n2o as itk_ges_tot_indirectes_n2o,
-	itkR.ges_totaux_indirectes_ges_total as itk_ges_tot_indirectes
+	itkR.ges_ferti_min_directes_ges_total as itk_ges_ferti_min_directes_co2eq,
+	itkR.ges_ferti_orga_directes_ges_total as itk_ges_ferti_orga_directes_co2eq,
+	itkR.ges_carburants_directes_ges_total as itk_ges_carburants_directes_co2eq,
+	itkR.ges_ferti_min_indirectes_ges_total as itk_ges_ferti_min_indirectes_co2eq,
+	itkR.ges_phyto_indirectes_ges_total as itk_ges_phyto_indirectes_co2eq,
+	itkR.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
+	itkR.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq
 FROM entrepot_itk_realise_performance AS itkR
 -- filtration dans la dépendance
 JOIN entrepot_itk_filtre itk_filtres ON (itkR.noeuds_realise_id = itk_filtres.noeuds_realise_id) and (itkR.culture_id = itk_filtres.culture_id)
@@ -682,14 +681,13 @@ SELECT
 	itkS.hri1_g2_tot as itk_hri1_g2_hts,
 	itkS.hri1_g3_tot as itk_hri1_g3_hts,
 	itkS.hri1_g4_tot as itk_hri1_g4_hts,
-	itkS.ges_totaux_directes_co2 as itk_ges_tot_directes_co2,
-	itkS.ges_totaux_directes_ch4 as itk_ges_tot_directes_ch4,
-	itkS.ges_totaux_directes_n2o as itk_ges_tot_directes_n2o,
-	itkS.ges_totaux_directes_ges_total as itk_ges_tot_directes,
-	itkS.ges_totaux_indirectes_co2 as itk_ges_tot_indirectes_co2,
-	itkS.ges_totaux_indirectes_ch4 as itk_ges_tot_indirectes_ch4,
-	itkS.ges_totaux_indirectes_n2o as itk_ges_tot_indirectes_n2o,
-	itkS.ges_totaux_indirectes_ges_total as itk_ges_tot_indirectes
+	itkS.ges_ferti_min_directes_ges_total as itk_ges_ferti_min_directes_co2eq,
+	itkS.ges_ferti_orga_directes_ges_total as itk_ges_ferti_orga_directes_co2eq,
+	itkS.ges_carburants_directes_ges_total as itk_ges_carburants_directes_co2eq,
+	itkS.ges_ferti_min_indirectes_ges_total as itk_ges_ferti_min_indirectes_co2eq,
+	itkS.ges_phyto_indirectes_ges_total as itk_ges_phyto_indirectes_co2eq,
+	itkS.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
+	itkS.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq
 FROM entrepot_itk_synthetise_performance AS itkS
 -- filtration dans la dépendance
 JOIN entrepot_itk_filtre itk_filtres ON (itkS.connection_synthetise_id = itk_filtres.connection_synthetise_id)
