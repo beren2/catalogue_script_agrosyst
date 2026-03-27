@@ -167,11 +167,11 @@ SELECT
 	AVG(sdc_qsa_spinosad_hts) AS sdc_ag_temp_qsa_spinosad_hts_moy,
 	AVG(sdc_qsa_spirotetramate_hts) AS sdc_ag_temp_qsa_spirotetramate_hts_moy,
 	AVG(sdc_qsa_tau_fluvalinate_hts) AS sdc_ag_temp_qsa_tau_fluvalinate_hts_moy,
-	AVG(sdc_hri1_tot) AS sdc_ag_temp_hri1_tot_moy,
-	AVG(sdc_hri1_g1_tot) AS sdc_ag_temp_hri1_g1_tot_moy,
-	AVG(sdc_hri1_g2_tot) AS sdc_ag_temp_hri1_g2_tot_moy,
-	AVG(sdc_hri1_g3_tot) AS sdc_ag_temp_hri1_g3_tot_moy,
-	AVG(sdc_hri1_g4_tot) AS sdc_ag_temp_hri1_g4_tot_moy,
+	AVG(sdc_hri1_hts) AS sdc_ag_temp_hri1_tot_moy,
+	AVG(sdc_hri1_g1_hts) AS sdc_ag_temp_hri1_g1_tot_moy,
+	AVG(sdc_hri1_g2_hts) AS sdc_ag_temp_hri1_g2_tot_moy,
+	AVG(sdc_hri1_g3_hts) AS sdc_ag_temp_hri1_g3_tot_moy,
+	AVG(sdc_hri1_g4_hts) AS sdc_ag_temp_hri1_g4_tot_moy,
 	AVG(sdc_ges_tot_directes_co2) AS sdc_ag_temp_ges_tot_directes_co2_moy,
 	AVG(sdc_ges_tot_directes_ch4) AS sdc_ag_temp_ges_tot_directes_ch4_moy,
 	AVG(sdc_ges_tot_directes_n2o) AS sdc_ag_temp_ges_tot_directes_n2o_moy,
@@ -182,5 +182,5 @@ SELECT
 	AVG(sdc_ges_tot_indirectes) AS sdc_ag_temp_ges_tot_indirectes_moy
 from entrepot_sdc_for_agregation_magasin_dirodur
 CROSS JOIN LATERAL UNNEST(string_to_array(synthetise_campagnes, ', ')) AS synthetise_campagnes_unnested
-WHERE etat_temporel IN ('pz0','point_I','point_B')
-GROUP BY sdc_numero_dephy, etat_temporel;
+WHERE sdc_etat_temporel IN ('pz0','point_I','point_B')
+GROUP BY sdc_numero_dephy, sdc_etat_temporel;
