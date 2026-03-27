@@ -180,7 +180,7 @@ SELECT
 	AVG(sdc_ges_tot_indirectes_ch4) AS sdc_ag_temp_ges_tot_indirectes_ch4_moy,
 	AVG(sdc_ges_tot_indirectes_n2o) AS sdc_ag_temp_ges_tot_indirectes_n2o_moy,
 	AVG(sdc_ges_tot_indirectes) AS sdc_ag_temp_ges_tot_indirectes_moy
-from entrepot_sdc_magasin_dirodur
+from entrepot_sdc_for_agregation_magasin_dirodur
 CROSS JOIN LATERAL UNNEST(string_to_array(synthetise_campagnes, ', ')) AS synthetise_campagnes_unnested
 WHERE etat_temporel IN ('pz0','point_I','point_B')
 GROUP BY sdc_numero_dephy, etat_temporel;
