@@ -1,3 +1,39 @@
+-- COPIE DE sdc_filtre.sql dans les dépendances et de sdc dans les scripts
+
+
+-- On ne veut conserver que les sdc qui n'ont que des itk qui passent les filtres
+create temporary table count_itk_dirodur as
+select sdc_id, count(*) from entrepot_itk_filtres_outils_dirodur eifod 
+group by sdc_id;
+
+create temporary table count_itk_realise as
+select sdc_id, count(*) from entrepot_noeuds_realise enr
+left join entrepot_zone z on enr.zone_id = z.id
+left join entrepot_parcelle p on z.parcelle_id = p.id
+left join entrepot_sdc sdc on p.sdc_id = sdc.id
+group by sdc_id;
+
+create temporary table count_itk_synthetise as
+select sdc_id, count(*) from entrepot_connection_synthetise ecs 
+left join entrepot_noeuds_synthetise ens on ecs.cible_noeuds_synthetise_id = ens.id
+left join entrepot_synthetise es on es.id = ens.synthetise_id
+left join entrepot_sdc sdc on sdc.id = es.sdc_id
+group by sdc_id;
+
+create temporary table filtre_sdc_from_itk_dirodur as
+select 
+	sdc.id as sdc_id,
+    COALESCE(cird.count, 0) as count_itk_realise,
+    COALESCE(cisd.count, 0) as count_itk_synthetise,
+    COALESCE(cid.count, 0) as count_itk_dirodur
+from entrepot_sdc sdc
+left join count_itk_realise cird on sdc.id = cird.sdc_id
+left join count_itk_synthetise cisd on sdc.id = cisd.sdc_id
+left join count_itk_dirodur cid on sdc.id = cid.sdc_id
+WHERE (COALESCE(cird.count, 0) + COALESCE(cisd.count, 0)) = COALESCE(cid.count, 0) and cid.count > 0;
+
+
+create temporary table if not exists entrepot_sdc_for_agregation_magasin_dirodur as
 ----------------
 -- SYNTHÉTISÉ --
 ----------------
@@ -237,13 +273,14 @@ SELECT
 	ssp.hri1_g2_hts as sdc_hri1_g2_hts,
 	ssp.hri1_g3_hts as sdc_hri1_g3_hts,
 	ssp.hri1_g4_hts as sdc_hri1_g4_hts,
-	ssp.ges_ferti_min_directes_ges_total as sdc_ges_ferti_min_directes_co2eq,
-	ssp.ges_ferti_orga_directes_ges_total as sdc_ges_ferti_orga_directes_co2eq,
-	ssp.ges_carburants_directes_ges_total as sdc_ges_carburants_directes_co2eq,
-	ssp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
-	ssp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
-	ssp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
-	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
+	ssp.ges_totaux_directes_co2 as sdc_ges_tot_directes_co2,
+	ssp.ges_totaux_directes_ch4 as sdc_ges_tot_directes_ch4,
+	ssp.ges_totaux_directes_n2o as sdc_ges_tot_directes_n2o,
+	ssp.ges_totaux_directes_ges_total as sdc_ges_tot_directes,
+	ssp.ges_totaux_indirectes_co2 as sdc_ges_tot_indirectes_co2,
+	ssp.ges_totaux_indirectes_ch4 as sdc_ges_tot_indirectes_ch4,
+	ssp.ges_totaux_indirectes_n2o as sdc_ges_tot_indirectes_n2o,
+	ssp.ges_totaux_indirectes_ges_total as sdc_ges_tot_indirectes
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
@@ -499,13 +536,14 @@ SELECT
 	srp.hri1_g2_hts as sdc_hri1_g2_hts,
 	srp.hri1_g3_hts as sdc_hri1_g3_hts,
 	srp.hri1_g4_hts as sdc_hri1_g4_hts,
-	srp.ges_ferti_min_directes_ges_total as sdc_ges_ferti_min_directes_co2eq,
-	srp.ges_ferti_orga_directes_ges_total as sdc_ges_ferti_orga_directes_co2eq,
-	srp.ges_carburants_directes_ges_total as sdc_ges_carburants_directes_co2eq,
-	srp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
-	srp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
-	srp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
-	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
+	srp.ges_totaux_directes_co2 as sdc_ges_tot_directes_co2,
+	srp.ges_totaux_directes_ch4 as sdc_ges_tot_directes_ch4,
+	srp.ges_totaux_directes_n2o as sdc_ges_tot_directes_n2o,
+	srp.ges_totaux_directes_ges_total as sdc_ges_tot_directes,
+	srp.ges_totaux_indirectes_co2 as sdc_ges_tot_indirectes_co2,
+	srp.ges_totaux_indirectes_ch4 as sdc_ges_tot_indirectes_ch4,
+	srp.ges_totaux_indirectes_n2o as sdc_ges_tot_indirectes_n2o,
+	srp.ges_totaux_indirectes_ges_total as sdc_ges_tot_indirectes
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
