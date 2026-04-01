@@ -6,7 +6,7 @@ select
 	eirp.culture_id,
     null as connection_synthetise_id
 from entrepot_itk_realise_performance eirp
-left join entrepot_itk_filtres_outils_dirodur eifod on (eirp.noeuds_realise_id = eifod.noeuds_realise_id and eirp.culture_id = eifod.culture_id)
+left join entrepot_itk_filtres_outils_dirodur eifod on (eirp.noeuds_realise_id = eifod.noeuds_realise_id)
 join entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = eifod.sdc_id
 where (eifod.filtre_alerte is false)
 UNION 
@@ -347,7 +347,7 @@ SELECT
 	itkR.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq
 FROM entrepot_itk_realise_performance AS itkR
 -- filtration dans la dépendance
-JOIN entrepot_itk_filtre itk_filtres ON (itkR.noeuds_realise_id = itk_filtres.noeuds_realise_id) and (itkR.culture_id = itk_filtres.culture_id)
+JOIN entrepot_itk_filtre itk_filtres ON (itkR.noeuds_realise_id = itk_filtres.noeuds_realise_id)
 LEFT JOIN entrepot_noeuds_realise_restructure AS node_res ON node_res.id = itkR.noeuds_realise_id 
 LEFT JOIN entrepot_connection_realise AS cx ON cx.cible_noeuds_realise_id = itkR.noeuds_realise_id
 LEFT JOIN entrepot_zone AS zone ON zone.id = itkR.zone_id 
