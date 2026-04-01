@@ -28,6 +28,8 @@ select
 	errp.id as recolte_id,
 	errp.rendement_moy as recolte_rendement,
 	errp.rendement_unite as recolte_unite,
+	errp.destination_id as recolte_destination_id,
+	errp.destination as recolte_destination,
 	errpr.composant_culture_id as composant_culture_id,
 	ee.id as espece_id,
 	ee.code_espece_botanique as espece_code_botanique,
