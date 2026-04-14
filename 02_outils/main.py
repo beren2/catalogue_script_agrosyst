@@ -527,9 +527,6 @@ def generate_data_agreged(verbose=False):
                              df1['plantation_perenne_phases_realise_id'])
     df1 = df1.set_index('itk_id')
 
-    df2['itk_id'] = np.where(df2['noeuds_realise_id'].notna(), 
-                             df2['noeuds_realise_id'], 
-                             df2['plantation_perenne_phases_realise_id'])
     df2 = df2.set_index('itk_id')
 
     donnees['itk_realise_agrege'] = pd.concat([df1, df2], axis=0)
@@ -545,9 +542,6 @@ def generate_data_agreged(verbose=False):
                              df1['plantation_perenne_phases_synthetise_id'])
     df1 = df1.set_index('itk_id')
 
-    df2['itk_id'] = np.where(df2['connection_synthetise_id'].notna(), 
-                             df2['connection_synthetise_id'], 
-                             df2['plantation_perenne_phases_synthetise_id'])
     df2 = df2.set_index('itk_id')
 
     donnees['itk_synthetise_agrege'] = pd.concat([df1, df2], axis=0)
@@ -674,13 +668,13 @@ def create_category_agregation():
         aggreged_utilisation_intrant_realise, donnees
     )
     export_to_db(aggreged_leaking_itk_realise, 'entrepot_itk_realise_manquant_agrege')
-    add_primary_key('entrepot_itk_realise_manquant_agrege', 'id')
+    add_primary_key('entrepot_itk_realise_manquant_agrege', 'itk_id')
     
     aggreged_leaking_itk_synthetise = agregation.get_leaking_aggreged_from_itk_synthetise(
         aggreged_utilisation_intrant_synthetise, donnees
     )
     export_to_db(aggreged_leaking_itk_synthetise, 'entrepot_itk_synthetise_manquant_agrege')
-    add_primary_key('entrepot_itk_synthetise_manquant_agrege', 'id')
+    add_primary_key('entrepot_itk_synthetise_manquant_agrege', 'itk_id')
 
 def create_category_restructuration():
     """

@@ -1,6 +1,7 @@
 # pylint: disable-all
 
 import pandas as pd
+import numpy as np
 
 def get_aggreged_from_utilisation_intrant_synthetise(
     donnees
@@ -382,7 +383,11 @@ def get_leaking_aggreged_from_itk_realise(
     right = df_domaine[['id', 'campagne']].rename(columns={'id' : 'domaine_id'})
     merge = pd.merge(left, right, on = 'domaine_id', how='left')
 
-    merge = merge.set_index('id')
+    merge['itk_id'] = merge['id'].copy()
+    merge['noeuds_realise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode'), merge['id'], np.nan)
+    merge['plantation_perenne_phases_realise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase'), merge['id'], np.nan)
+
+    merge = merge.drop(columns=['id']).set_index('itk_id')
 
     return merge
 
@@ -584,5 +589,10 @@ def get_leaking_aggreged_from_itk_synthetise(
     right = df_dispositif[['id', 'domaine_id']].rename(columns={'id' : 'dispositif_id'})
     merge = pd.merge(left, right, on = 'dispositif_id', how='left')
 
-    merge = merge.set_index('id')
+    merge['itk_id'] = merge['id'].copy()
+    merge['connection_synthetise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection'), merge['id'], np.nan)
+    merge['plantation_perenne_phases_synthetise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase'), merge['id'], np.nan)
+
+    merge = merge.drop(columns=['id']).set_index('itk_id')
+
     return merge
