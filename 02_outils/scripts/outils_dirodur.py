@@ -128,17 +128,12 @@ def get_itk_filtre_outils_dirodur(
     """
         Permet d'obtenir les informations permettant de filtrer ou non les itinéraires techniques.
         Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
-        
-        Attention, l'échelle itk sur Datagrosyst (itk_realise_performance et itk_synthetise_performance)
-        peut présenter + d'une ligne pour un même itk (cas des cultures intermédiaires qui font l'objet d'un ikt à part)
-        La clé unique en réalisé est donc (noeuds_realise_id, culture_id) et en synthétisé (connection_synthetise_id).
-
+    
         Attention, le dataframe de sortie ne contient pas tous les ITK d'Agrosyst (uniquement les assolées), 
         On exclue aussi les parcelles non rattachées.
     """
     df = donnees.copy()
     df['sdc'] = df['sdc'].set_index('id')
-    df['dispositif'] = df['dispositif'].set_index('id')
     df['synthetise'] = df['synthetise'].set_index('id')
     df['connection_synthetise'] = df['connection_synthetise'].set_index('id')
     df['noeuds_synthetise'] = df['noeuds_synthetise'].set_index('id')
@@ -146,6 +141,7 @@ def get_itk_filtre_outils_dirodur(
     df['parcelle'] = df['parcelle'].set_index('id')
     df['zone'] = df['zone'].set_index('id')
     df['noeuds_synthetise_restructure'] = df['noeuds_synthetise_restructure'].set_index('id')
+
 
     # définition des filières retenues pour le magasin DiRoDur
     
@@ -266,7 +262,7 @@ def get_itk_filtre_outils_dirodur(
     ])
 
     return res[[
-        'noeuds_realise_id', 'culture_id', 'connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id'
+        'noeuds_realise_id', 'connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id'
     ]]
 
 def get_temporal_status_for_each_sdc_dirodur(donnees):
