@@ -14,6 +14,7 @@ import urllib
 import importlib
 import re
 import sys
+import numpy as np
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration 
@@ -516,6 +517,37 @@ def generate_data_agreged(verbose=False):
     donnees['intervention_synthetise_agrege'] = generate_leaking_df(df1, df2, 'intervention_synthetise_id', columns_difference = ['id', 'action_synthetise_id'])
     donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
 
+    # Génération de itk_realise_agrege
+    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
+    df2 = donnees['itk_realise_manquant_agrege'].copy()
+
+    df1 = df1[df1.columns.difference(['id', 'action_realise_id','intervention_realise_id'])].drop_duplicates()
+    df1['itk_id'] = np.where(df1['noeuds_realise_id'].notna(), 
+                             df1['noeuds_realise_id'], 
+                             df1['plantation_perenne_phases_realise_id'])
+    df1 = df1.set_index('itk_id')
+
+    df2 = df2.set_index('itk_id')
+
+    donnees['itk_realise_agrege'] = pd.concat([df1, df2], axis=0)
+    donnees['itk_realise_agrege'] = donnees['itk_realise_agrege'].reset_index()
+
+    # Génération de itk_synthetise_agrege
+    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
+    df2 = donnees['itk_synthetise_manquant_agrege'].copy()
+
+    df1 = df1[df1.columns.difference(['id', 'action_synthetise_id','intervention_synthetise_id'])].drop_duplicates()
+    df1['itk_id'] = np.where(df1['connection_synthetise_id'].notna(), 
+                             df1['connection_synthetise_id'], 
+                             df1['plantation_perenne_phases_synthetise_id'])
+    df1 = df1.set_index('itk_id')
+
+    df2 = df2.set_index('itk_id')
+
+    donnees['itk_synthetise_agrege'] = pd.concat([df1, df2], axis=0)
+    donnees['itk_synthetise_agrege'] = donnees['itk_synthetise_agrege'].reset_index()
+
+
 def download_data_agreged(verbose=False):
     """
         permet de télécharger en csv les jeux de données agrégés complets
@@ -525,6 +557,8 @@ def download_data_agreged(verbose=False):
     donnees['action_synthetise_agrege'].to_csv(DATA_PATH+'action_synthetise_agrege.csv')
     donnees['intervention_realise_agrege'].to_csv(DATA_PATH+'intervention_realise_agrege.csv')
     donnees['intervention_synthetise_agrege'].to_csv(DATA_PATH+'intervention_synthetise_agrege.csv')
+    donnees['itk_realise_agrege'].to_csv(DATA_PATH+'itk_realise_agrege.csv')
+    donnees['itk_synthetise_agrege'].to_csv(DATA_PATH+'itk_synthetise_agrege.csv')
 
 
 def load_ref(verbose=False):
@@ -616,7 +650,6 @@ def create_category_agregation():
     export_to_db(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
     add_primary_key('entrepot_action_synthetise_manquant_agrege', 'id')
     
-
     # toutes les infos manquantes agrégées depuis l'intervention 
     aggreged_leaking_intervention_realise = agregation.get_leaking_aggreged_from_intervention_realise(
         aggreged_utilisation_intrant_realise, donnees
@@ -629,7 +662,20 @@ def create_category_agregation():
     )
     export_to_db(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
     add_primary_key('entrepot_intervention_synthetise_manquant_agrege', 'id')
+
+    # toutes les infos manquantes agrégées depuis l'itk 
+    aggreged_leaking_itk_realise = agregation.get_leaking_aggreged_from_itk_realise(
+        aggreged_utilisation_intrant_realise, donnees
+    )
+    export_to_db(aggreged_leaking_itk_realise, 'entrepot_itk_realise_manquant_agrege')
+    add_primary_key('entrepot_itk_realise_manquant_agrege', 'itk_id')
     
+    aggreged_leaking_itk_synthetise = agregation.get_leaking_aggreged_from_itk_synthetise(
+        aggreged_utilisation_intrant_synthetise, donnees
+    )
+    export_to_db(aggreged_leaking_itk_synthetise, 'entrepot_itk_synthetise_manquant_agrege')
+    add_primary_key('entrepot_itk_synthetise_manquant_agrege', 'itk_id')
+
 def create_category_restructuration():
     """
         Execute les requêtes pour créer les outils de restructuration
