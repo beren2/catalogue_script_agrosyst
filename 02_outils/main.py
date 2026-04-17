@@ -894,7 +894,7 @@ steps = [
     {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
-    {'source' : 'outils', 'category' : 'dirodur_0'}
+    {'source' : 'outils', 'category' : 'outils_dirodur_0'}
 ]
 
 options_categories = {}
