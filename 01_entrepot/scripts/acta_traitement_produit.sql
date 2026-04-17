@@ -8,7 +8,6 @@ SELECT
 	ratp.nom_produit,
 	ratp.code_traitement,
 	ratp.nom_traitement,
-	ratp.nodu,
 	ratp.source,
 	ratp.code_amm, 
 	ratp.code_traitement_maa, 
