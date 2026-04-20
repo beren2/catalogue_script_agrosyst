@@ -754,25 +754,69 @@
 					"itk_synthetise_performance"
 				]
             },
-            "test" : {
-                "function_name" : "create_category_test",
-                "dependances" : [],
+			"outils_dephygraph" : {
+                "function_name" : "create_category_outils_dephygraph",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation_complet"
+                },{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_2"
+                }],
                 "generated" : [
-					"itk_filtres_outils_dirodur" 
-                ],
-                "entrepot_dependances" : [
-					"sdc", 
-					"dispositif", 
-					"synthetise", 
-					"connection_synthetise", 
-					"noeuds_synthetise", 
-					"noeuds_realise", 
-					"parcelle", 
-					"zone",
-					"itk_realise_performance", 
-					"itk_synthetise_performance"
-				],
-				"need_performance" : []
+                    "main_dephygraph"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				]
+            },
+            "test" : {
+                "function_name" : "create_category_outils_dephygraph",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation_complet"
+                },{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_2"
+                }],
+                "generated" : [
+                    "main_dephygraph"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				]
             }
         }
     },

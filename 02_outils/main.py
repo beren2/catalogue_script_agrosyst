@@ -16,7 +16,7 @@ import re
 import sys
 import psycopg2 as psycopg
 from scripts import nettoyage
-from scripts import restructuration 
+from scripts import restructuration
 from scripts import indicateur
 from scripts import agregation
 from scripts import interoperabilite
@@ -828,16 +828,24 @@ def create_category_outils_can():
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
     add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
+def create_category_outils_dephygraph():
+    """
+        Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
+    """
+    df_main_dephygraph = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
+    # df_main_dephygraph.set_index('id', inplace=True)
+    export_to_db(df_main_dephygraph, 'entrepot_outils_dephygraph')
+    # add_primary_key('entrepot_outils_dephygraph', 'id')
 
 def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_magasin_dephygraph = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
-    export_to_db(df_magasin_dephygraph, 'entrepot_magasin_dephygraph')
-    # add_primary_key('entrepot_magasin_dephygraph', 'id')
+    df_main_dephygraph = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
+    export_to_db(df_main_dephygraph, 'entrepot_main_dephygraph')
+    # add_primary_key('entrepot_outils_dephygraph', 'id')
 
-    print('Fin du test du magasin DEPHYGraph')
+    print('Fin du test de la table principale DEPHYGraph')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -850,7 +858,8 @@ steps = [
     {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
-    {'source' : 'outils', 'category' : 'dirodur_0'}
+    {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 
 options_categories = {}
