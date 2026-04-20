@@ -22,6 +22,7 @@ from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
 from scripts import outils_dirodur
+from scripts import mag_dephygraph
 from sqlalchemy import create_engine
 import pandas as pd
 import geopandas as gpd
@@ -830,12 +831,13 @@ def create_category_outils_can():
 
 def create_category_test():
     """ 
-            Execute les requêtes pour tester la génération d'outils spécifiques
+        Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
-    export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
-    #add_primary_key('entrepot_itk_filtres_outils_dirodur', 'sdc_id')
+    df_magasin_dephygraph = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
+    export_to_db(df_magasin_dephygraph, 'entrepot_magasin_dephygraph')
+    # add_primary_key('entrepot_magasin_dephygraph', 'id')
 
+    print('Fin du test du magasin DEPHYGraph')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
