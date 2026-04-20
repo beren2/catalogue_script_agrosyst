@@ -803,7 +803,10 @@ def create_category_dirodur_0():
     add_primary_key('entrepot_sdc_statut_temporel_outils_dirodur', 'sdc_id')
 
     itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
+    itk_filtre_outils_dirodur['itk_id'] = itk_filtre_outils_dirodur['noeuds_realise_id'].fillna(itk_filtre_outils_dirodur['connection_synthetise_id'])
+    itk_filtre_outils_dirodur.set_index('itk_id', inplace=True)
     export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
+    add_primary_key('entrepot_itk_filtres_outils_dirodur','itk_id')
 
 
 def create_category_interoperabilite():
