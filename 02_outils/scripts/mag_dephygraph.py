@@ -76,7 +76,7 @@ DICT_VAR_IMPACTED = {
     'nbre_de_passages_desherbage_meca': 
 				[None],
 	'tps_travail_total': 
-				['tps_utilisation_materiel', 'tps_travail_manuel'],
+				[None],
 	'tps_utilisation_materiel': 
 				['tps_travail_total'],
 	'tps_travail_manuel': 
@@ -86,19 +86,19 @@ DICT_VAR_IMPACTED = {
                 
 
 	'ferti_n_tot': 
-				['ferti_n_mineral', 'ferti_n_organique'],
+				[None],
 	'ferti_n_mineral': 
 				['ferti_n_tot'],
 	'ferti_n_organique': 
 				['ferti_n_tot'],
 	'ferti_p2o5_tot': 
-				['ferti_p2o5_mineral', 'ferti_p2o5_organique'],
+				[None],
 	'ferti_p2o5_mineral': 
 				['ferti_p2o5_tot'],
 	'ferti_p2o5_organique': 
 				['ferti_p2o5_tot'],
 	'ferti_k2o_tot': 
-				['ferti_k2o_mineral', 'ferti_k2o_organique'],
+				[None],
 	'ferti_k2o_mineral': 
 				['ferti_k2o_tot'],
 	'ferti_k2o_organique': 
@@ -106,13 +106,13 @@ DICT_VAR_IMPACTED = {
                 
 
 	'pb_std_mil_avec_autoconso': 
-				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso','md_std_mil_avec_autoconso'],
+				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'md_std_mil_avec_autoconso'],
 	'mb_std_mil_avec_autoconso': 
-				['msn_reelle_avec_autoconso', 'co_tot_std_mil', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+				['msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses', 'md_std_mil_avec_autoconso'],
 	'msn_reelle_avec_autoconso': 
-				['pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'co_tot_std_mil', 'cm_std_mil', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+    			[None],
 	'c504_outLabourTotalExpenses': 
-				['msn_reelle_avec_autoconso', 'cm_std_mil', 'co_tot_std_mil','md_std_mil_avec_autoconso'],
+				['msn_reelle_avec_autoconso','md_std_mil_avec_autoconso'],
 	'co_tot_std_mil': 
 				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
 	'c_main_oeuvre_tot_std_mil': 
@@ -124,25 +124,26 @@ DICT_VAR_IMPACTED = {
 
 
 	'ift_cible_non_mil_chim_tot_hts': 
-				['c602_IFT_hh_hts', 'ift_cible_non_mil_a', 'ift_cible_non_mil_i', 'ift_cible_non_mil_f', 'ift_cible_non_mil_h', 
-     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'qsa_tot_hts'],
 	'c602_IFT_hh_hts': 
-				['ift_cible_non_mil_chim_tot_hts', 'ift_cible_non_mil_a', 'ift_cible_non_mil_i', 'ift_cible_non_mil_f', 
-     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'ift_cible_non_mil_chim_tot_hts', 'qsa_tot_hts'],
 	'ift_cible_non_mil_biocontrole': 
-				['qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'qsa_tot_hts'],
 	'ift_cible_non_mil_h': 
-				['ift_cible_non_mil_chim_tot_hts',
-     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'ift_cible_non_mil_chim_tot_hts', 'qsa_tot_hts'],
 	'ift_cible_non_mil_i': 
-				['ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 
-     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 'qsa_tot_hts'],
 	'ift_cible_non_mil_f': 
-				['ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 
-     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 'qsa_tot_hts'],
 	'ift_cible_non_mil_a': 
-				['ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 
-     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+     			'ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 'qsa_tot_hts'],
 	'recours_aux_moyens_biologiques': 
 				[None],
                 
@@ -150,44 +151,45 @@ DICT_VAR_IMPACTED = {
 	'hri1_hts': 
 				['hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts'],
 	'hri1_g1_hts': 
-				[None],
+				['hri1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts'],
 	'hri1_g2_hts': 
-				[None],
+				['hri1_g1_hts','hri1_hts','hri1_g3_hts','hri1_g4_hts'],
 	'hri1_g3_hts': 
-				[None],
+				['hri1_g1_hts','hri1_g2_hts','hri1_hts','hri1_g4_hts'],
 	'hri1_g4_hts': 
-				[None],
+				['hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_hts'],
     
 
 	'qsa_tot_hts': 
-				['qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+				[None],
+                # ['hri1_hts', 'ift_cible_non_mil_chim_tot_hts'],
 	'qsa_cmr_hts': 
-				[None],
+				['qsa_tot_hts'],
 	'qsa_toxique_utilisateur_hts': 
-				[None],
+				['qsa_tot_hts'],
 	'qsa_glyphosate_hts': 
-				[None],
+				['qsa_tot_hts'],
 	'qsa_danger_environnement_hts': 
-				[None],
+				['qsa_tot_hts'],
 	'qsa_cuivre_tot_hts': 
-				[None],
+				['qsa_tot_hts'],
 	'qsa_soufre_tot_hts': 
-				[None]
+				['qsa_tot_hts']
 }
 
 ALERTES_COLS_VAR = {
     'alerte_ferti_n_tot' : "ferti_n_tot",
     'alerte_ift_cible_non_mil_chim_tot_hts' : "ift_cible_non_mil_chim_tot_hts",
-    'alerte_ift_cible_non_mil_f': "alerte_ift_cible_non_mil_f",
+    'alerte_ift_cible_non_mil_f': "ift_cible_non_mil_f",
     'alerte_ift_cible_non_mil_h' : "ift_cible_non_mil_h",
     'alerte_ift_cible_non_mil_i' : "ift_cible_non_mil_i",
     'alerte_ift_cible_non_mil_biocontrole' : "ift_cible_non_mil_biocontrole",
     'alerte_co_irrigation_std_mil' : "co_irrigation_std_mil",
     'alerte_msn_std_mil_avec_autoconso' : "msn_std_mil_avec_autoconso",
-    'alerte_nombre_interventions_phyto' : "????",
+    # 'alerte_nombre_interventions_phyto' : ["???"],
     'alerte_pb_std_mil_avec_autoconso' : "pb_std_mil_avec_autoconso",
-    'alerte_rendement' : "????",
-    'alertes_charges' : "????",
+    # 'alerte_rendement' : ['pb_std_mil_avec_autoconso','mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'md_std_mil_avec_autoconso'],
+    'alertes_charges' : ["co_tot_std_mil","cm_std_mil"],
     'alerte_cm_std_mil' : "cm_std_mil",
     'alerte_co_semis_std_mil' : "co_semis_std_mil"
 }
@@ -697,14 +699,14 @@ def detect_outliers_via_iqr(df, dict_var_impacted, coef=2):
         dict_index_outliers[col] = s[(s < low) | (s > high)].index.tolist()
     return dict_index_outliers
 
-def detect_outliers_via_alerte_can(df, ALERTES_COLS_VAR):
+def detect_outliers_via_alerte_can(df, alertes_cols_var):
     """
     Détecte les valeurs qui ne correspondent pas aux alertes de la CAN.
     Retourne un dictionnaire d'index pour chaque valeur des colonnes dans ALERTES_COLS_VAR s'il y a une alerte dans la colonne des keys de ALERTES_COLS_VAR.
     """
     dict_idx_alerte_can = {}
 
-    for col_alerte, targets in ALERTES_COLS_VAR.items():
+    for col_alerte, targets in alertes_cols_var.items():
         # Si pas de colonne dans le df
         if col_alerte not in df.columns:
             print(f"Une alerte n'est pas dans le dataframe : {col_alerte}")
@@ -806,13 +808,9 @@ def apply_evol(group):
 
 
 
-
-
-
-
-
-
-
+#####################################################
+####### FONCTION MAJEURE QUI RECAP LES ETAPES #######
+#####################################################
 
 
 
@@ -932,7 +930,7 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
 
     # Filtre de valeurs experts
         ## On garde les index des lignes que l'on va supprimé, et on la save
-    dict_idx_alerte_can = detect_outliers_via_alerte_can(df, DICT_VAR_IMPACTED)
+    dict_idx_alerte_can = detect_outliers_via_alerte_can(df, ALERTES_COLS_VAR)
         ## On vire les outliers via les index de dict_idx_iqr
     df = apply_nan(df, DICT_VAR_IMPACTED, dict_idx_alerte_can)
 
