@@ -4,7 +4,7 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
-# import geopandas as gpd
+from ydata_profiling import ProfileReport
 
 GCPE = ['GRANDES_CULTURES','POLYCULTURE_ELEVAGE']
 
@@ -72,31 +72,125 @@ PERFORMANCES_COLS = [
     'qsa_soufre_tot_hts'
     ]
 
-ALERTES_COLS = [
-    'alerte_ferti_n_tot',
-    'alerte_ift_cible_non_mil_chim_tot_hts',
-    'alerte_ift_cible_non_mil_f',
-    'alerte_ift_cible_non_mil_h',
-    'alerte_ift_cible_non_mil_i',
-    'alerte_ift_cible_non_mil_biocontrole',
-    'alerte_co_irrigation_std_mil',
-    'alerte_msn_std_mil_avec_autoconso',
-    'alerte_nombre_interventions_phyto',
-    'alerte_pb_std_mil_avec_autoconso',
-    'alerte_rendement',
-    'alertes_charges',
-    'alerte_cm_std_mil',
-    'alerte_co_semis_std_mil'
-]
+DICT_VAR_IMPACTED = {
+    'nbre_de_passages_desherbage_meca': 
+				[None],
+	'tps_travail_total': 
+				['tps_utilisation_materiel', 'tps_travail_manuel'],
+	'tps_utilisation_materiel': 
+				['tps_travail_total'],
+	'tps_travail_manuel': 
+				['tps_travail_total'],
+	'conso_carburant': 
+				[None],
+                
 
-# def clean_list(lst):
-#     """
-#     Permet de nettoyer une liste en enlevant les valeurs 'nan' (str) et en retournant None si la liste est vide. Si la liste ne contient qu'un seul élément, retourne cet élément directement.
-#     """
-#     cleaned = [x for x in lst if str(x) != 'nan']
-#     if len(cleaned) == 1:
-#         cleaned = cleaned[0]
-#     return cleaned if cleaned else None
+	'ferti_n_tot': 
+				['ferti_n_mineral', 'ferti_n_organique'],
+	'ferti_n_mineral': 
+				['ferti_n_tot'],
+	'ferti_n_organique': 
+				['ferti_n_tot'],
+	'ferti_p2o5_tot': 
+				['ferti_p2o5_mineral', 'ferti_p2o5_organique'],
+	'ferti_p2o5_mineral': 
+				['ferti_p2o5_tot'],
+	'ferti_p2o5_organique': 
+				['ferti_p2o5_tot'],
+	'ferti_k2o_tot': 
+				['ferti_k2o_mineral', 'ferti_k2o_organique'],
+	'ferti_k2o_mineral': 
+				['ferti_k2o_tot'],
+	'ferti_k2o_organique': 
+				['ferti_k2o_tot'],
+                
+
+	'pb_std_mil_avec_autoconso': 
+				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso','md_std_mil_avec_autoconso'],
+	'mb_std_mil_avec_autoconso': 
+				['msn_reelle_avec_autoconso', 'co_tot_std_mil', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+	'msn_reelle_avec_autoconso': 
+				['pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'co_tot_std_mil', 'cm_std_mil', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+	'c504_outLabourTotalExpenses': 
+				['msn_reelle_avec_autoconso', 'cm_std_mil', 'co_tot_std_mil','md_std_mil_avec_autoconso'],
+	'co_tot_std_mil': 
+				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+	'c_main_oeuvre_tot_std_mil': 
+				['md_std_mil_avec_autoconso'],
+	'cm_std_mil': 
+				['msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+    'md_std_mil_avec_autoconso':
+				[None], # si les indicateur éco sont mauvais, on passe la marge directe en NA. L'inverse, on verra plus tard, quand la marge directe sera validée par la CAN                
+
+
+	'ift_cible_non_mil_chim_tot_hts': 
+				['c602_IFT_hh_hts', 'ift_cible_non_mil_a', 'ift_cible_non_mil_i', 'ift_cible_non_mil_f', 'ift_cible_non_mil_h', 
+     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'c602_IFT_hh_hts': 
+				['ift_cible_non_mil_chim_tot_hts', 'ift_cible_non_mil_a', 'ift_cible_non_mil_i', 'ift_cible_non_mil_f', 
+     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'ift_cible_non_mil_biocontrole': 
+				['qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'ift_cible_non_mil_h': 
+				['ift_cible_non_mil_chim_tot_hts',
+     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'ift_cible_non_mil_i': 
+				['ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 
+     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'ift_cible_non_mil_f': 
+				['ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 
+     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'ift_cible_non_mil_a': 
+				['ift_cible_non_mil_chim_tot_hts', 'c602_IFT_hh_hts', 
+     			'qsa_tot_hts', 'qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'recours_aux_moyens_biologiques': 
+				[None],
+                
+
+	'hri1_hts': 
+				['hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts'],
+	'hri1_g1_hts': 
+				[None],
+	'hri1_g2_hts': 
+				[None],
+	'hri1_g3_hts': 
+				[None],
+	'hri1_g4_hts': 
+				[None],
+    
+
+	'qsa_tot_hts': 
+				['qsa_danger_environnement_hts', 'qsa_toxique_utilisateur_hts','qsa_cmr_hts','qsa_glyphosate_hts','qsa_cuivre_tot_hts','qsa_soufre_tot_hts'],
+	'qsa_cmr_hts': 
+				[None],
+	'qsa_toxique_utilisateur_hts': 
+				[None],
+	'qsa_glyphosate_hts': 
+				[None],
+	'qsa_danger_environnement_hts': 
+				[None],
+	'qsa_cuivre_tot_hts': 
+				[None],
+	'qsa_soufre_tot_hts': 
+				[None]
+}
+
+ALERTES_COLS_VAR = {
+    'alerte_ferti_n_tot' : "ferti_n_tot",
+    'alerte_ift_cible_non_mil_chim_tot_hts' : "ift_cible_non_mil_chim_tot_hts",
+    'alerte_ift_cible_non_mil_f': "alerte_ift_cible_non_mil_f",
+    'alerte_ift_cible_non_mil_h' : "ift_cible_non_mil_h",
+    'alerte_ift_cible_non_mil_i' : "ift_cible_non_mil_i",
+    'alerte_ift_cible_non_mil_biocontrole' : "ift_cible_non_mil_biocontrole",
+    'alerte_co_irrigation_std_mil' : "co_irrigation_std_mil",
+    'alerte_msn_std_mil_avec_autoconso' : "msn_std_mil_avec_autoconso",
+    'alerte_nombre_interventions_phyto' : "????",
+    'alerte_pb_std_mil_avec_autoconso' : "pb_std_mil_avec_autoconso",
+    'alerte_rendement' : "????",
+    'alertes_charges' : "????",
+    'alerte_cm_std_mil' : "cm_std_mil",
+    'alerte_co_semis_std_mil' : "co_semis_std_mil"
+}
 
 def list_to_scalar(serie):
     """ 
@@ -110,12 +204,13 @@ def list_to_scalar(serie):
     else:
         return unique_values
 
-def nettoyage_numero_dephy(df, colonne='code_dephy') :
+def nettoyage_numero_dephy(data, colonne='code_dephy') :
     """ 
     Permet de nettoyer les numéros DEPHY présents dans la colonne spécifiée du DataFrame.
     On fait un premier nettoyage en ne gardant que les caractères alphanumériques et en supprimant les mentions "PPZ". Ensuite, on extrait le pattern AAAANNNN ou AAAAXNNN s'il est présent dans la chaîne. Les valeurs non conformes sont remplacées par None.
     """
-    mask = df[colonne].notna()
+    df = data.copy()
+    mask = data[colonne].notna()
 
     ## On fait un premier nettoyage grossier des numéros DEPHY
     df[colonne] = (
@@ -130,7 +225,7 @@ def nettoyage_numero_dephy(df, colonne='code_dephy') :
     df[colonne] = np.where(df[colonne]=='', None, df[colonne])
 
     # On extrait des codes DEPHY le pattern AAAANNNN ou AAAAXNNN s'il est présent
-    pattern = r'[A-Z]{3}(?:[0-9]|X)\d{4}(?!\d)'
+    pattern = r'([A-Z]{3}(?:[0-9]|X)\d{4}(?!\d))'
     df[colonne] = df[colonne].str.extract(pattern, expand=False)
 
     return df[colonne]
@@ -139,12 +234,16 @@ def filtre_1_dispoFermeDetaille_typeAgriNotNull(df):
     """ 
     Filtre les DEPHY FERME DETAILLE et ne gardant que les données avec un type d'agriculture renseigné (AB, Conv, en conversion) 
     """
+    a=len(df)
+
     # On filtre pour ne garder que les DEPHY FERME en détaillés
     df = df.loc[(df['modalite_suivi_dephy']=='DETAILLE') & (df['type']=='DEPHY_FERME')]
 
     # On enleve toute les données n'ayant pas de type d'agriculture (AB, Conv, en conversion)
     df = df.loc[(df['type_agriculture'].notna()) & (df['type_agriculture'] != 'Information obligatoire')]
 
+    b=len(df)
+    print(f"Filtre 1 : -{a-b} lignes")
     return df
 
 def filtre_2_annees(df, annees_trop_vieille=2004, mois_date_butoire_dephy_fin_saisie=4):
@@ -154,6 +253,8 @@ def filtre_2_annees(df, annees_trop_vieille=2004, mois_date_butoire_dephy_fin_sa
     On applique également ce filtrage sur chaque années des synthétisées pluri-annuels. Si toutes les années d'un synthétisé sont filtrées, la ligne correspondante est supprimée.
     Pour l'année maximale autorisée, c'est l'année en cours is on au delà de la date de saisie butoire (le 31 mars habituellement, donc avril=4), sinon c'est l'année qu précède l'année en cours.
     """
+    a=len(df)
+
     # Obtenir l'année maximale autorisée
     if datetime.now().month >= mois_date_butoire_dephy_fin_saisie :
         annees_trop_recente = datetime.now().year
@@ -178,12 +279,17 @@ def filtre_2_annees(df, annees_trop_vieille=2004, mois_date_butoire_dephy_fin_sa
                 (pd.to_numeric(df['campagne'], errors='coerce') > annees_trop_vieille) &
                 (df['synthetise_campagne'].notna())]
     
+    b = len(df)
+    print(f"Filtre 2 : -{a-b} lignes")
     return df
 
 def identificationDesPz0_et_filtrePz0Detecte(df, itk_realise_agrege, identification_pz0):
     """
-    Permet de créer l'identification des pz0 pour les R (passage de zone à sdc) et les S (directement via le synthétisé). On le fait sur des dataframe à part, puis on reconcatène R et S. Enfin on supprime toutes les entités n'étant pas identifié avec un pz0 valide. 
+    Permet de créer l'identification des pz0 pour les R (passage de zone à sdc) et les S (directement via le synthétisé). On le fait sur des dataframe à part, puis on reconcatène R et S. Enfin on supprime toutes les entités n'étant pas identifié avec un pz0 ou un post de manière fiable.
+    Attention cela ne signifie pas que chaque numéro DEPHY ait un pz0 dans ce filtre. Mais cela arrive dans le filtre 3
     """
+    a=len(df)
+
     # Passage des pz0 en R de l'échelle zone à l'échelle sdc
     R_pz0 = itk_realise_agrege.merge(identification_pz0.rename(columns={'entite_id':'zone_id'}), on='zone_id', how='left')[['sdc_id','pz0']].groupby('sdc_id')['pz0'].apply(list_to_scalar, include_groups=False).reset_index() # normalement ils sont tous devenu des scalaires car un sdc ne peut pas avoir plusieurs zones avec des identification de pz0 différentes. On vérifiera quand même.
 
@@ -202,35 +308,110 @@ def identificationDesPz0_et_filtrePz0Detecte(df, itk_realise_agrege, identificat
 
     # On concatene S + R
     df = pd.concat([df_S, df_R], ignore_index=True)
-
-    print(f"Il y a {len(df.loc[~df['pz0'].isin(['pz0','post'])])} synthétisé ou sdc filtrés n'ayant pas de pz0 identifié correctement.")
     
     # On supprime les entités n'ayant pas de pz0 identifié correctement
     df = df.loc[df['pz0'].isin(['pz0','post'])]
 
+    b=len(df)
+    print(f"Identification pz0 : {b-a} lignes")
     return df
 
 def explode_campagne(df):
     """ 
-    Doit contenir les colonnes pz0 + synthetise_campagne + campagne !
-    Explose (duplique) les campagnes multi-annuelles en lignes séparées.
+    Explose (duplique) les campagnes multi-annuelles en lignes séparées. ("2011, 2012, 2013" -> "2011" + "2012" + "2013")
     Utilise la colonne 'synthetise_campagne' pour créer la nouvelle colonne de campagne explosée.
     Si on est en réalisé, on prend la colonne 'campagne' pour la nouvelle colonne.
     """
+    a=len(df)
+
     df['new_campagne'] = df['synthetise_campagne']
     df['new_campagne'] = df['new_campagne'].fillna(df['campagne'])
     df['new_campagne'] = df['new_campagne'].astype(str).str.split(', ')
 
-    # Cas des synthétisé pluri-annuel :
-    # Lorsqu'une entité est un pz0, on ne garde que la dernière année du synthétisé pour ne pas donner plus de poids au point zéro qu'il ne le faudrait (on veut qu'une seule ligne, pas 3). On prendra le max des années dans ce cas.
-    df['new_campagne'] = np.where(df['pz0']=='pz0', 
-                                  df['new_campagne'].apply(lambda x: str(max(int(year) for year in x if year.strip().isdigit())) if isinstance(x, list) else x),
-                                  df['new_campagne'])
-
     df = df.explode('new_campagne')
 
-    # Cas des réalisé ou de synthétisé mono-annuel :
-    # On ne garde que les lignes pz0 les plus récentes.
+    b=len(df)
+    print(f"Ajout de {b-a} lignes par explosion des campagnes.")
+
+    return df
+
+def modification_duplicat_codeDephy_newCampagne(df):
+    """
+    Résout les duplications de code_dephy*new_campagne en suffixant les occurrences non 'pz0'
+    et en dupliquant les lignes 'pz0' correspondantes pour chaque code suffixé.
+    Les doublons hors 'pz0' sont renommés en ajoutant un suffixe (_0, _1, ...)
+    Les lignes 'pz0' associées au code d’origine sont dupliquées pour chaque code suffixé, puis elles même suffixées
+    Le code_dephy final remplace code_dephy_nettoyage
+    """
+    df = df.sort_values(by=['nom','code_dephy','new_campagne'])
+
+    # détection duplicats code_dephy hors pz0
+    mask = (
+        df.duplicated(subset=['code_dephy_nettoyage','new_campagne'], keep=False)
+        & (df["pz0"] != "pz0")
+    )
+
+    # ajout des suffixes 
+    # Exemple : XXXX en 2011 et 2011 devient XXXX_0 en 2011 et XXXX_1 en 2011
+    df.loc[mask, 'code_dephy_nettoyage'] = (
+        df.loc[mask, 'code_dephy_nettoyage'] + '_' +
+        df.loc[mask].groupby(['code_dephy_nettoyage','new_campagne']).cumcount().astype(str)
+    )
+
+    # duplication des pz0 pour les code_dephy qui ont été suffixés
+    mapping = (
+        df.loc[mask]
+        .groupby('code_dephy')['code_dephy_nettoyage']
+        .unique()
+    )
+
+    rows_to_add = []
+
+    for base_code, new_codes in mapping.items():
+        df_pz0 = df[(df['code_dephy'] == base_code) & (df['pz0'] == 'pz0')]
+        if df_pz0.empty:
+            continue
+
+        # dupliquer le pz0 pour chaque code suffixé
+        rows_to_add.append(
+            pd.concat([df_pz0.assign(code_dephy_nettoyage=new_code) for new_code in new_codes])
+        )
+
+    if rows_to_add:
+        df = pd.concat([df] + rows_to_add, ignore_index=True)
+
+    # nettoyage final, on ne garde plus que code_dephy
+    df = df.sort_values(by=['code_dephy_nettoyage','new_campagne'])
+    df.drop(columns=['code_dephy'], inplace=True)
+    df.rename(columns={'code_dephy_nettoyage':'code_dephy'}, inplace=True)
+
+    print(f"Modification de {len(df.loc[df['code_dephy'].str.contains('_'),['code_dephy']])} code_dephy en duplication sur la même campagne. {len(df.loc[df['code_dephy'].str.contains('_')]['code_dephy'].str.extract(r'(.+?)_\d+$', expand=False).unique())} code_dephy différents concernés.")
+
+    return df
+
+
+def unique_pz0_by_code_dephy(df):
+    """
+    Ne garde qu'un seul point zéro par numéro dephy. On ne voudrais pas mettre trop de poids à un pz0 par rapport aux données post dans DG 
+    On fait attention que les point zéro soit bien tous avant les post
+    """
+    df = df.copy()
+    a=len(df)
+
+    # Vérification que tout les pz0 sont bien avant les post
+    grp = df.groupby('code_dephy')
+
+    max_pz0 = grp.apply(lambda x: x.loc[x['pz0'] == 'pz0', 'new_campagne'].max())
+    min_post = grp.apply(lambda x: x.loc[x['pz0'] != 'pz0', 'new_campagne'].min())
+
+    incoherent = (max_pz0 >= min_post)
+    bad_codes = incoherent[incoherent].index
+
+    if len(bad_codes):
+        print(bad_codes)
+        raise ValueError("Erreur au moins un pz0 d'un code_dephy est détecté avec une campagne supérieur à celle du post le plus ancien du code_dephy")
+
+    # On ne garde que les pz0 les plus récent (une seule ligne de pz0 par code_dephy)
     mask_pz0 = (df['pz0'] == 'pz0')
     df['rank'] = df[mask_pz0].groupby('code_dephy')['new_campagne'].rank(ascending=False, method='first')
 
@@ -239,37 +420,8 @@ def explode_campagne(df):
         (~mask_pz0)                         # tous les 'post'
     ].drop(columns=['rank']) 
 
-    return df
-
-def modification_duplicat_codeDephy_newCampagne(df):
-    # On ordonne le df via le nom du sdc et le code_dephy avant nettoyage
-    df = df.sort_values(by=['nom_sdc','code_dephy','new_campagne'])
-    # On crée le mask des code_dephy*new_campagne en dupliqués
-    mask = df.duplicated(subset=['code_dephy_nettoyage','new_campagne'], keep=False)
-    # On ajoute un suffixe _1, _2, etc. aux code_dephy dupliqués pour les différencier
-    df.loc[mask, 'code_dephy_nettoyage'] = (
-        df.loc[mask, 'code_dephy_nettoyage'] + '_' +
-        (df.loc[mask].groupby(['code_dephy_nettoyage','new_campagne']).cumcount()).astype(str)
-        )
-    
-    # On purifie le df
-    df = df.sort_values(by=['code_dephy_nettoyage','new_campagne'])
-    df.drop(columns=['code_dephy'], inplace=True)
-    df.rename(columns={'code_dephy_nettoyage':'code_dephy'}, inplace=True)
-
-    return df
-
-
-def filtre_3_avecUnPz0_et_auMoinsDeuxCampagnes(df):
-    """
-    Suppression des code_dephy avec une seule et unique campagne ainsi que ceux n'ayant aucun pz0 !
-    """
-    # On garde les code_dephy ayant au moins 2 campagnes différentes
-    df = df.groupby('code_dephy').filter(lambda x: x['new_campagne'].nunique() > 1)
-
-    # On garde les code_dephy ayant au moins un pz0 identifié
-    df = df.groupby('code_dephy').filter(lambda x: (x['pz0'] == 'pz0').any())
-
+    b=len(df)
+    print(f"Suppression de {b-a} lignes de pz0 pour ne garder que les plus récents")
     return df
 
 
@@ -311,11 +463,13 @@ def ajout_typologie_simplifiee(df):
     df['c120_arboriculture_typo_sdc'] = np.select(
         [
             df['c111_species'].isna(),
+            df['c111_species'].isin(['ERREUR_aucune_des_especes_arbo_majoritaires','melange_egal_espece','ERREUR_aucune_espece']),
             df['c111_species'].isin(['Pommier', 'Poirier']),
             df['c111_species'].isin(['Abricotier', 'Prunier']),
             ~(df['c111_species'].isin(['Pommier', 'Poirier', 'Abricotier', 'Prunier']))
         ],
         [
+            np.nan,
             np.nan,
             'Pommiers et Poiriers',
             'Abricotiers et Pruniers',
@@ -374,6 +528,12 @@ def ajout_typologie_simplifiee(df):
         None) # vérification variable que en GCPE
     df['c124_gcpe_typo_sdc'] = nan_to_none(df['c124_gcpe_typo_sdc'])
 
+
+    print("c120_arboriculture_typo_sdc :\n",df['c120_arboriculture_typo_sdc'].unique(),"\n")
+    print("c121_maraichage_typo_sdc :\n",df['c121_maraichage_typo_sdc'].unique(),"\n")
+    print("c122_horticulture_typo_sdc :\n",df['c122_horticulture_typo_sdc'].unique(),"\n")
+    print("c123_cult_tropicales_typo_sdc :\n",df['c123_cult_tropicales_typo_sdc'].unique(),"\n")
+    print("c124_gcpe_typo_sdc :\n",df['c124_gcpe_typo_sdc'].unique(),"\n")
     return df
 
 def ajout_infos_geo(df, commune, arrond_data, dep_data):
@@ -392,34 +552,61 @@ def ajout_infos_geo(df, commune, arrond_data, dep_data):
             .drop(columns='departement')
             .rename(columns={'Department_code_name':'departement'}))
 
-    df = df.merge(commune[['id','codeinsee', 'departement', 'region', 'bassin_viticole', 'ancienne_region','latitude', 'longitude','arrondissement']].rename(columns={'id':'commune_id'}), on='commune_id', how='left')
+    df = df.merge(commune[['commune_id','codeinsee', 'departement', 'region', 'bassin_viticole', 'ancienne_region','latitude', 'longitude','arrondissement']].rename(columns={'id':'commune_id'}), on='commune_id', how='left')
+
+    # Besoin de ce mapping car la colonne region n'est pas la bonne dans le referentiel commune
+    mapping = {
+        84: "Auvergne-Rhône-Alpes",
+        32: "Hauts-de-France",
+        93: "Provence-Alpes-Côte d'Azur",
+        44: "Grand Est",
+        76: "Occitanie",
+        28: "Normandie",
+        75: "Nouvelle-Aquitaine",
+        24: "Centre-Val de Loire",
+        27: "Bourgogne-Franche-Comté",
+        53: "Bretagne",
+        94: "Corse",
+        52: "Pays de la Loire",
+        11: "Île-de-France",
+        1: "Guadeloupe",
+        2: "Martinique",
+        3: "Guyane",
+        4: "La Réunion",
+        6: "Mayotte"
+    }
+    df['region'] = df['region'].map(mapping)
 
     return df
 
-def filtre_4_coherence(df):
+def filtre_3_coherence(df):
     """
+    Attention filtre eds valeur et des lignes !
     Permet de vérifier la cohérence entre espèces principales renseignées et filière.
     Permet aussi de vérfiier la cohérence entre le type de travail du sol Semis Direct et la conduite en Agriculture Biologique, ainsi que la cohérence entre un IFT herbicide très bas et le type de travail du sol en Semis Direct.
     Enfin, on vérifie que les lignes ont bien une longitude, latitude, un sdc_id et une information de réalisé ou synthétisé.
     """
+    a=len(df)
+    c=df.isna().sum().sum()
+
     # Filtres des lignes : VITI sans vignes ou ARBO avec vignes
     df = df.loc[~(
-        ((df['c111_species']=='Vigne') & (df['c101_sector']!='VITICULTURE')) | 
-        ((df['c111_species']!='Vigne') & (df['c101_sector']=='VITICULTURE'))
+        ((df['espece_principale']=='Vigne') & (df['filiere']!='VITICULTURE')) | 
+        ((df['espece_principale']!='Vigne') & (df['filiere']=='VITICULTURE'))
         )]
 
-    # Il est fortement peu probable qu’un sdc soit en Semis Direct s’il est en Agriculture Biologique. Lorsque c’est le cas on transforme Semis Direct de c201_groundWorkType en NA, car on part du principe que le type de travail du sol est moins fiable que le type de conduite du sdc.
-    df.loc[(df['c201_groundWorkType'] == 'SEMIS_DIRECT') &
-        (df['c101_sector'].isin(['GRANDES_CULTURES','POLYCULTURE_ELEVAGE'])) &
-        (df['c110_managementType'].isin(["En conversion vers l'agriculture biologique",'Agriculture biologique'])),
-        'c201_groundWorkType'] = np.nan
+    # Il est fortement peu probable qu’un sdc soit en Semis Direct s’il est en Agriculture Biologique. Lorsque c’est le cas on transforme Semis Direct de type_de_travail_du_sol en NA, car on part du principe que le type de travail du sol est moins fiable que le type de conduite du sdc.
+    df.loc[(df['type_de_travail_du_sol'] == 'SEMIS_DIRECT') &
+        (df['filiere'].isin(GCPE)) &
+        (df['type_agriculture'].isin(["En conversion vers l'agriculture biologique",'Agriculture biologique'])),
+        'type_de_travail_du_sol'] = np.nan
 
-    # Si un IFT herbicide (c605_herbicideIFT) est strictement inférieur à 0.5 en GCPE alors que son type de travail du sol renseigné est Semis direct alors on transforme en NA les valeurs des variables c605_herbicideIFT et c601_totalIFT.
-    list_var_a_passer_en_na = ['c605_herbicideIFT','c601_totalIFT']
+    # Si un IFT herbicide (ift_cible_non_mil_h) est strictement inférieur à 0.5 en GCPE alors que son type de travail du sol renseigné est Semis direct alors on transforme en NA les valeurs des variables ift_cible_non_mil_h et ift_cible_non_mil_chim_tot_hts.
+    list_var_a_passer_en_na = ['ift_cible_non_mil_h','ift_cible_non_mil_chim_tot_hts']
 
-    df.loc[(df['c201_groundWorkType'] == 'SEMIS_DIRECT') &
-        (df['c101_sector'].isin(['GRANDES_CULTURES','POLYCULTURE_ELEVAGE'])) &
-        (df['c605_herbicideIFT'] < 0.5),
+    df.loc[(df['type_de_travail_du_sol'] == 'SEMIS_DIRECT') &
+        (df['filiere'].isin(GCPE)) &
+        (df['ift_cible_non_mil_h'] < 0.5),
         list_var_a_passer_en_na] = np.nan
 
     # On veut absolument une valeur pour longitude/latitude/realized/sdc_id. On filtre les lignes qui n'ont pas une des quatre variables
@@ -428,98 +615,194 @@ def filtre_4_coherence(df):
                   (df['realized'].isna()) | 
                   (df['sdc_id'].isna()))]
     
+    b=len(df)
+    d=df.isna().sum().sum()
+    print(f"Filtre 3 : {b-a} lignes ; {(d-c)/df.size*100:.3f}% des valeurs")
+    return df
+
+def filtre_4_avecUnPz0_et_auMoinsDeuxCampagnes(df):
+    """
+    Suppression des code_dephy avec une seule et unique campagne ainsi que ceux n'ayant aucun pz0 !
+    """
+    a=len(df)
+
+    # On garde les code_dephy ayant au moins 2 campagnes différentes
+    df = df.groupby('code_dephy').filter(lambda x: x['new_campagne'].nunique() > 1)
+
+    # On garde les code_dephy ayant au moins un pz0 identifié
+    df = df.groupby('code_dephy').filter(lambda x: (x['pz0'] == 'pz0').any())
+
+    b = len(df)
+    print(f"Filtre 4 : -{a-b} lignes")
     return df
 
 def filtre_5_disponibilite_par_filiere(df):
     """ 
+    Attention ne filtre que des valeurs !
     Filtre les variables qui ne sont pas disponibles pour certaines filières. Par exemple, les variables de performance économique et de travail du sol ne sont disponibles que pour les filières GCPE 
     """
+    a=df.isna().sum().sum()
+
     # Variables économique et travail du sol dispo que pour GCPE
-    df.loc[~df['c101_sector'].isin(GCPE), 
-        ['c201_groundWorkType', 'c203_mechanicalWeeding', 'c204_mechanicalWeedingInterventionFrequency', 'c501_grossProceeds', 'c502_grossProfit', 'c503_semiNetMargin']] = np.nan
+    df.loc[~df['filiere'].isin(GCPE), 
+        ['type_de_travail_du_sol', 'utili_desherbage_meca', 'nbre_de_passages_desherbage_meca', 'pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso']] = np.nan
     
     # Variable de temps de travail manuel que pour ARBO, VITI, MARAICH et CULTURES_TROP
-    df.loc[~df['c101_sector'].isin(['ARBORICULTURE','VITICULTURE','MARAICHAGE','CULTURES_TROPICALES']), 
-        ['c303_labourTime']] = np.nan
+    df.loc[~df['filiere'].isin(['ARBORICULTURE','VITICULTURE','MARAICHAGE','CULTURES_TROPICALES']), 
+        ['tps_travail_manuel']] = np.nan
     
     # Variéble d'espèce principale et variété principale que pour ARBO
-    df.loc[df['c101_sector']!='ARBORICULTURE', 
+    df.loc[df['filiere']!='ARBORICULTURE', 
         ['c111_species','c112_variety']] = np.nan
     
     # Cépage principal que pour VITI
-    df.loc[df['c101_sector']!='VITICULTURE', 
+    df.loc[df['filiere']!='VITICULTURE', 
         ['c113_grapeVar']] = np.nan
     
     # Regle du 2021.11.21
     # Enlever les données relatives au fichier “vartohide” du 21/11/2021. Les experts filières, doutant de la qualité de leur données sur certains type de variables, préfèrent cacher les variables problématiques.
-    df.loc[~df['c101_sector'].isin(GCPE + ['VITICULTURE']),  
-        ['c301_workingTime']] = np.nan
+    df.loc[~df['filiere'].isin(GCPE + ['VITICULTURE']),  
+        ['tps_travail_total']] = np.nan
     
-    df.loc[~df['c101_sector'].isin(GCPE), 
-        ['c401_fertilizationUnityN', 'c402_fertilizationMineralUnityN', 'c403_fertilizationOrganicUnityN',
-            'c404_fertilizationUnityP', 'c405_fertilizationMineralUnityP', 'c406_fertilizationOrganicUnityP',
-            'c407_fertilizationUnityK', 'c408_fertilizationMineralUnityK', 'c409_fertilizationOrganicUnityK',
-            'c302_mechanizationTime',
-            'c504_outLabourTotalExpenses', 'c505_operatingExpenses','c507_mechanizationExpenses']] = np.nan
+    df.loc[~df['filiere'].isin(GCPE), 
+        ['ferti_n_tot', 
+         'ferti_n_mineral', 
+         'ferti_n_organique',
+         'ferti_p2o5_tot', 
+         'ferti_p2o5_mineral', 
+         'ferti_p2o5_organique', 
+         'ferti_k2o_tot',
+         'ferti_k2o_mineral',
+         'ferti_k2o_organique',
+         'tps_utilisation_materiel',
+         'c504_outLabourTotalExpenses',
+         'co_tot_std_mil',
+         'cm_std_mil']] = np.nan
 
+    b=df.isna().sum().sum()
+    print(f"Filtre 5 : {(b-a)/df.size*100:.1f}% des valeurs")
     return df
 
-def filtre_6_outliers(df):
+def detect_outliers_via_iqr(df, dict_var_impacted, coef=2):
+    """
+    Détecte les outliers de chaque colonnes qui sont les keys de DICT_VAR_IMPACTED
+    renvoie un dictionnaire des index qui sont détectés outliers
+    """
+    dict_index_outliers = {}
+    for col in dict_var_impacted:
+        s = df[col]
+        q1, q3 = s.quantile([0.25, 0.75])
+        iqr = q3 - q1
+        low, high = q1 - coef * iqr, q3 + coef * iqr
+        dict_index_outliers[col] = s[(s < low) | (s > high)].index.tolist()
+    return dict_index_outliers
+
+def detect_outliers_via_alerte_can(df, ALERTES_COLS_VAR):
+    """
+    Détecte les valeurs qui ne correspondent pas aux alertes de la CAN.
+    Retourne un dictionnaire d'index pour chaque valeur des colonnes dans ALERTES_COLS_VAR s'il y a une alerte dans la colonne des keys de ALERTES_COLS_VAR.
+    """
+    dict_idx_alerte_can = {}
+
+    for col_alerte, targets in ALERTES_COLS_VAR.items():
+        # Si pas de colonne dans le df
+        if col_alerte not in df.columns:
+            print(f"Une alerte n'est pas dans le dataframe : {col_alerte}")
+            continue
+
+        # On en garde que les index avec des alertes
+        mask = (~df[col_alerte].isin(["Pas d'alerte", "Cette alerte n'existe pas encore dans cette filière"])) | (df[col_alerte].isna())
+        idx = set(df.index[mask])
+
+        # Si aucune alerte
+        if not idx:
+            continue
+
+        # Les targets doivent être sous forme de liste
+        if not isinstance(targets, list):
+            targets = [targets]
+
+        # Pour chaque target on 
+        for t in targets:
+            # si la target n'est pas dans le df, ou s'il n'y en a pas
+            if t is None or t not in df.columns:
+                continue
+            
+            # si la target n'existe pas dans le dictionnaire final, on le crée
+            if t not in dict_idx_alerte_can:
+                dict_idx_alerte_can[t] = set()
+            dict_idx_alerte_can[t] |= idx
+
+    # conversion en list pour compatibilité avec apply_nan()
+    return {k: list(v) for k, v in dict_idx_alerte_can.items()}
+
+def apply_nan(df, dict_var_impacted, dict_index_outliers):
+    """
+    Applique des NAN aux valeur qui ont été détectés comme outliers ou comme alertes
+    Si une des keys dans dict_index_outliers contient des index, cela implique la colonne qui est la keys de dict_var_impacted qui est égale à la keys de dict_index_outliers, mais aussi les valeurs correspodantes dans dict_var_impacted
+    """
+    df = df.copy()
+    a=df.isna().sum().sum()
+
+    for col, idx in dict_index_outliers.items():
+        cols = [col] + [c for c in (dict_var_impacted.get(col) or []) if c in df.columns]
+        df.loc[idx, cols] = np.nan
+
+    b=df.isna().sum().sum()
+    print(f"Filtre outlier : {(b-a)/df.size*100:.1f}% des valeurs (soit {(b-a)} valeurs)")
     return df
 
-def calcul_evolution_ift(df):
-    def get_evol(group, col):
-        mask_pz0 = group['c102_pz0'] == 'pz0'
+def calcul_evolution_ift(group, col):
+    """
+    Permet de calculer les évolutions d'IFT et le nombre d'année entre la ligne pz0 et la ligne en question. Pour l'évolution d'IFT on en fait que des différences !
+    """
+    mask_pz0 = group['pz0'] == 'pz0'
 
-        if mask_pz0.sum() > 1:
-            raise ValueError("Groupe dephy avec trop de pz0. Ils aurait dû être filtrés pour n'en avoir qu'un seul")
-        elif mask_pz0.sum() == 0:
-            raise ValueError('Groupe dephy sans pz0')
+    if mask_pz0.sum() > 1:
+        raise ValueError("Groupe dephy avec trop de pz0. Ils aurait dû être filtrés pour n'en avoir qu'un seul")
+    elif mask_pz0.sum() == 0:
+        raise ValueError('Groupe dephy sans pz0')
 
-        if col == 'c104_campaign_dis':
-            pz0_val = int(group.loc[mask_pz0, col].iloc[0])
-            result = np.where(
-                mask_pz0 | group[col].isna(),
-                np.nan,
-                group[col].astype(int) - pz0_val
-            )
-            result = pd.Series(result, index=group.index)
-            result = result.map(lambda x: (
-                                np.nan if pd.isna(x)
-                                else (f"pz0 + {int(x):02d} an" if int(x) == 1
-                                    else f"pz0 + {int(x):02d} ans")))
-            return result
+    if col == 'new_campagne':
+        pz0_val = int(group.loc[mask_pz0, col].iloc[0])
+        result = np.where(
+            mask_pz0 | group[col].isna(),
+            np.nan,
+            group[col].astype(int) - pz0_val
+        )
+        result = pd.Series(result, index=group.index)
+        result = result.map(lambda x: (
+                            np.nan if pd.isna(x)
+                            else (f"pz0 + {int(x):02d} an" if int(x) == 1
+                                else f"pz0 + {int(x):02d} ans")))
+        return result
 
-        else:
-            pz0_val = group.loc[mask_pz0, col].iloc[0]
-            result = np.where(
-                mask_pz0 | group[col].isna(),
-                np.nan,
-                group[col] - pz0_val
-            )
-            return pd.Series(result, index=group.index)
+    else:
+        pz0_val = group.loc[mask_pz0, col].iloc[0]
+        result = np.where(
+            mask_pz0 | group[col].isna(),
+            np.nan,
+            group[col] - pz0_val
+        )
+        return pd.Series(result, index=group.index)
 
-    def apply_evol(group):
-        group = group.copy()
+def apply_evol(group):
+    """
+    Permet d'appliquer le calcul des évolutions à chaque colonne
+    """
+    group = group.copy()
 
-        group['c103_networkYears'] = get_evol(group, 'c104_campaign_dis')
-        group['c701_totalIFT_evol_diff'] = get_evol(group, 'c601_totalIFT')
-        group['c702_IFT_hh_hts_evol_diff'] = get_evol(group, 'c602_IFT_hh_hts')
-        group['c703_biocontrolIFT_evol_diff'] = get_evol(group, 'c603_biocontrolIFT')
-        group['c705_herbicideIFT_evol_diff'] = get_evol(group, 'c605_herbicideIFT')
-        group['c707_insecticideIFT_evol_diff'] = get_evol(group, 'c607_insecticideIFT')
-        group['c708_fungicideIFT_evol_diff'] = get_evol(group, 'c608_fungicideIFT')
-        group['c709_otherIFT_evol_diff'] = get_evol(group, 'c609_otherIFT')
-        group['c710_biologicalWaysSolution_evol_diff'] = get_evol(group, 'c610_biologicalWaysSolution')
+    group['c103_networkYears'] = calcul_evolution_ift(group, 'new_campagne')
+    group['c701_totalIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_chim_tot_hts')
+    group['c702_IFT_hh_hts_evol_diff'] = calcul_evolution_ift(group, 'c602_IFT_hh_hts')
+    group['c703_biocontrolIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_biocontrole')
+    group['c705_herbicideIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_h')
+    group['c707_insecticideIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_i')
+    group['c708_fungicideIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_f')
+    group['c709_otherIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_a')
+    group['c710_biologicalWaysSolution_evol_diff'] = calcul_evolution_ift(group, 'recours_aux_moyens_biologiques')
 
-        return group
-
-    df = df.groupby('dephyNb').apply(apply_evol).reset_index(drop=True)
-
-    return df
-
-
-
+    return group
 
 
 
@@ -529,14 +812,18 @@ def calcul_evolution_ift(df):
 
 
 
-def all_steps_for_maj_dephygraph(donnees):
+
+
+
+
+def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     """
     Regroupe toutes les étapes nécessaires pour la mise à jour du magasin DEPHYGraph.
     """
     # Chargement des données nécessaires
         ## Performances
-    sdc_realise_performance = donnees["sdc_realise_performance"][['sdc_id'] + PERFORMANCES_COLS + ALERTES_COLS]
-    synthetise_synthetise_performance = donnees["synthetise_synthetise_performance"][['synthetise_id'] + PERFORMANCES_COLS + ALERTES_COLS]
+    sdc_realise_performance = donnees["sdc_realise_performance"][['sdc_id'] + PERFORMANCES_COLS + list(ALERTES_COLS_VAR.keys())]
+    synthetise_synthetise_performance = donnees["synthetise_synthetise_performance"][['synthetise_id'] + PERFORMANCES_COLS + list(ALERTES_COLS_VAR.keys())]
         ## Entrepot
     synthetise = donnees["synthetise"][['id', 'nom', 'campagnes', 'sdc_id']].rename(columns={'id':'synthetise_id', 'campagnes':'synthetise_campagne'})
     sdc = donnees["sdc"][['id','code','nom','modalite_suivi_dephy','code_dephy','filiere','type_production','type_agriculture','part_sau_domaine','reseaux_ir','reseaux_it','dispositif_id','validite']]
@@ -593,14 +880,14 @@ def all_steps_for_maj_dephygraph(donnees):
     # Identification des pz0 et filtrage des entités n'étant pas un état valide (pz0 ou post)
     df = identificationDesPz0_et_filtrePz0Detecte(df, itk_realise_agrege, identification_pz0)
 
-    # On explode les campagnes pluri-annuelles, sauf les pz0 pour lesquels on ne garde que l'année la plus récente du synthétisé
+    # On explode les campagnes pluri-annuelles
     df = explode_campagne(df)
 
     # Modification des duplicats de numéro DEPHY*campagne
     df = modification_duplicat_codeDephy_newCampagne(df)
 
-    # On supprime les code_dephy n'ayant qu'une seule campagne ou n'ayant aucun pz0 identifié
-    df = filtre_3_avecUnPz0_et_auMoinsDeuxCampagnes(df)
+    # On ne garde que les pz0 les plus récent après l'explosion des campagnes et modif des code_dephy
+    df = unique_pz0_by_code_dephy(df)
 
     # Ajout des infos sur les espèces et variétés principales pour les cultures pérennes
     df = df.merge(espece_variete_perenne_principale, on = 'entite_id', how='left')
@@ -614,22 +901,48 @@ def all_steps_for_maj_dephygraph(donnees):
     df['c602_IFT_hh_hts'] = df['ift_cible_non_mil_hh'] - df['ift_cible_non_mil_ts']
         ## Charges totales hors main d'oeuvre
     df['c504_outLabourTotalExpenses'] = df['co_tot_std_mil'] + df['cm_std_mil']
+        ## Type de saisie
+    df['realized'] = np.where(df['synthetise_id'].isna(), 'realise', 'synthetise')
 
     # Ajout des infos géographiques
     df = ajout_infos_geo(df, commune, arrond_data, dep_data)
 
     # Filtre de cohérence (Espèces principales en pérennes, Semis direct en AB ou avec IFT faible)
-    df = filtre_4_coherence(df)
+    df = filtre_3_coherence(df)
+
+    # On supprime les code_dephy n'ayant qu'une seule campagne ou n'ayant aucun pz0 identifié
+    df = filtre_4_avecUnPz0_et_auMoinsDeuxCampagnes(df)
 
     # Filtre sur la disponibilité de certaines variables selon les filières
     df = filtre_5_disponibilite_par_filiere(df)
 
+    # On crée un index code_dephy * new_campagne
+    if df.duplicated(['code_dephy',"new_campagne"]).any():
+        raise ValueError("code_dephy * new_campagne n'est pas unique, pas d'index possible !")
 
+    df["new_campagne_str"] = df["new_campagne"].astype(str)
+    df["code_dephy_for_idx"] = df["code_dephy"].astype(str)
+    df.set_index(['code_dephy_for_idx',"new_campagne_str"], inplace=True)
+    
+    # Filtre de valeurs outliers
+        ## On garde les index des lignes que l'on va supprimé, et on la save
+    dict_idx_iqr = detect_outliers_via_iqr(df, DICT_VAR_IMPACTED, coef=2)
+        ## On vire les outliers via les index de dict_idx_iqr
+    df = apply_nan(df, DICT_VAR_IMPACTED, dict_idx_iqr)
 
+    # Filtre de valeurs experts
+        ## On garde les index des lignes que l'on va supprimé, et on la save
+    dict_idx_alerte_can = detect_outliers_via_alerte_can(df, DICT_VAR_IMPACTED)
+        ## On vire les outliers via les index de dict_idx_iqr
+    df = apply_nan(df, DICT_VAR_IMPACTED, dict_idx_alerte_can)
 
+    # Calculer les évolution d'ift (après les filtres de valeurs !)
+    df = df.groupby('code_dephy').apply(apply_evol).reset_index(drop=True)
 
-    df = filtre_6_outliers(df)
+    # Rapport sur les colonnes numériques principales
+    if demande_rapport :
+        report = ProfileReport(df[list(DICT_VAR_IMPACTED.keys())], 
+                            title="DG - Rapport sur les variables numériques principales")
+        report.to_file("../data/export_from_functions/rapport_var_num_dephygraph.html")
 
-    df = calcul_evolution_ift(df)
-
-    return df
+    return df, dict_idx_iqr, dict_idx_alerte_can
