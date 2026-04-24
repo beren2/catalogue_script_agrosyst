@@ -884,7 +884,6 @@ def create_category_outils_dephygraph():
     df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = mag_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=False)
 
     # Exporte en DB la table principale
-    print(list(df_main_dephygraph.columns))
     df_main_dephygraph.set_index('id', inplace=True)
     export_to_db(df_main_dephygraph, 'entrepot_main_dephygraph')
     add_primary_key('entrepot_main_dephygraph', 'id')
@@ -897,7 +896,8 @@ def create_category_outils_dephygraph():
     with open(directory_export + "dephygraph_dict_valeur_retiree_par_alertes_can.json", "w", encoding="utf-8") as f:
         json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
 
-    rapport.to_file(directory_export + "dephygraph_rapport_variables.html")
+    if rapport :
+        rapport.to_file(directory_export + "dephygraph_rapport_variables.html")
 
 
 def create_category_test():
