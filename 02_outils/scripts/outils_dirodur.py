@@ -3,7 +3,7 @@
 """
 import pandas as pd
 import numpy as np
-from scripts.utils import dirodur_utiles
+from scripts.utils.dirodur_utiles import filtered_entities_sdc_level
 
 # ----------------------------------------- #
 # CRÉATION DU RÉFÉRENTIEL DE MATCH D'UNITÉS #
@@ -313,7 +313,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
     pta = donnees['identification_pz0']
 
     # On importe la fonction de filtration des dataframe SDC en réal et en synth
-    sdc_realise_filt, synthetises_filt = dirodur_utiles.filtered_entities_sdc_level(donnees)
+    sdc_realise_filt, synthetises_filt = filtered_entities_sdc_level(donnees)
 
     # On crée les df, et on les filtre pour qu'ils soient dans dirodur
     df_R = sdc_realise_filt.loc[sdc_realise_filt['in_dirodur']]\
