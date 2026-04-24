@@ -791,24 +791,6 @@
                 "dependances" : [{
                     "source" : "outils", 
                     "category": "restructuration"
-                },{
-                    "source" : "outils", 
-                    "category": "agregation_complet"
-                },{
-                    "source" : "outils", 
-                    "category": "nettoyage"
-                },
-				{
-                    "source" : "outils", 
-                    "category": "indicateur_0"
-                },
-				{
-                    "source" : "outils", 
-                    "category": "indicateur_1"
-                },
-				{
-                    "source" : "outils", 
-                    "category": "indicateur_2"
                 }],
                 "generated" : [
                     "main_dephygraph"
