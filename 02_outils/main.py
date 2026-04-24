@@ -17,12 +17,13 @@ import sys
 import numpy as np
 import psycopg2 as psycopg
 from scripts import nettoyage
-from scripts import restructuration 
+from scripts import restructuration
 from scripts import indicateur
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
 from scripts import outils_dirodur
+from scripts import mag_dephygraph
 from sqlalchemy import create_engine
 import pandas as pd
 import geopandas as gpd
@@ -876,15 +877,35 @@ def create_category_outils_can():
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
     add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
+def create_category_outils_dephygraph():
+    """
+        Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
+    """
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = mag_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=False)
+
+    # Exporte en DB la table principale
+    print(list(df_main_dephygraph.columns))
+    df_main_dephygraph.set_index('id', inplace=True)
+    export_to_db(df_main_dephygraph, 'entrepot_main_dephygraph')
+    add_primary_key('entrepot_main_dephygraph', 'id')
+
+    # Exporter les dictionnaires en JSON et le rapport en HTML
+    directory_export = "./data/export_from_functions/"
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_outliers.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_iqr, f, indent=4, ensure_ascii=False)
+
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_alertes_can.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
+
+    rapport.to_file(directory_export + "dephygraph_rapport_variables.html")
+
 
 def create_category_test():
     """ 
-            Execute les requêtes pour tester la génération d'outils spécifiques
+        Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
-    export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
-    #add_primary_key('entrepot_itk_filtres_outils_dirodur', 'sdc_id')
 
+    print('Aucun test')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -897,7 +918,8 @@ steps = [
     {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
-    {'source' : 'outils', 'category' : 'outils_dirodur_0'}
+    {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 
 options_categories = {}
