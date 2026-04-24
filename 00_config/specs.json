@@ -601,7 +601,9 @@
                     "intervention_synthetise_manquant_agrege", 
                     "intervention_realise_manquant_agrege",
                     "action_realise_manquant_agrege", 
-                    "action_synthetise_manquant_agrege"
+                    "action_synthetise_manquant_agrege",
+					"itk_realise_manquant_agrege",
+					"itk_synthetise_manquant_agrege"
                 ], 
 				"need_performance" : []
             },
@@ -618,7 +620,9 @@
                     "intervention_synthetise_agrege", 
                     "intervention_realise_agrege",
                     "action_realise_agrege", 
-                    "action_synthetise_agrege"
+                    "action_synthetise_agrege",
+					"itk_realise_agrege",
+					"itk_synthetise_agrege"
                 ], 
 				"need_performance" : []
             },
