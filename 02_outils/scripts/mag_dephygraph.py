@@ -938,9 +938,119 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     df = df.groupby('code_dephy').apply(apply_evol).reset_index(drop=True)
 
     # Rapport sur les colonnes numériques principales
+    report = None
     if demande_rapport :
         report = ProfileReport(df[list(DICT_VAR_IMPACTED.keys())], 
                             title="DG - Rapport sur les variables numériques principales")
-        report.to_file("../data/export_from_functions/rapport_var_num_dephygraph.html")
+        
+    # Epurer les colonnes non-indispensable pour ne pas saturer le stockage
+    df = df[
+        'code_dephy',
+        'realized',
+        'sdc_id',
+        'synthetise_id',
+        'entite_id',
+        'dispositif_id',
+        'domaine_id',
+        'commune_id',
 
-    return df, dict_idx_iqr, dict_idx_alerte_can
+        'new_campagne',
+        'pz0',
+        'c103_networkYears',
+
+        'codeinsee',
+        'departement',
+        'region',
+        'bassin_viticole',
+        'ancienne_region',
+        'latitude',
+        'longitude',
+        'arrondissement',
+
+        'filiere',
+        'type_production',
+        'type_agriculture',
+
+        'reseaux_ir',
+        'reseaux_it',
+
+        'c111_species',
+        'c112_variety',
+        'c113_grapeVar',
+
+        'c120_arboriculture_typo_sdc',
+        'c121_maraichage_typo_sdc',
+        'c122_horticulture_typo_sdc',
+        'c123_cult_tropicales_typo_sdc',
+        'c124_gcpe_typo_sdc',
+
+        'ift_cible_non_mil_chimique_tot',
+        'ift_cible_non_mil_chim_tot_hts',
+        'ift_cible_non_mil_hh',
+        'c602_IFT_hh_hts',
+        'ift_cible_non_mil_h',
+        'ift_cible_non_mil_f',
+        'ift_cible_non_mil_i',
+        'ift_cible_non_mil_ts',
+        'ift_cible_non_mil_a',
+        'ift_cible_non_mil_biocontrole',
+        'recours_aux_moyens_biologiques',
+
+        'hri1_hts',
+        'hri1_g1_hts',
+        'hri1_g2_hts',
+        'hri1_g3_hts',
+        'hri1_g4_hts',
+        
+        'qsa_tot_hts',
+        'qsa_danger_environnement_hts',
+        'qsa_toxique_utilisateur_hts',
+        'qsa_cmr_hts',
+        'qsa_glyphosate_hts',
+        'qsa_cuivre_tot_hts',
+        'qsa_soufre_tot_hts',
+
+        'ferti_n_tot',
+        'ferti_n_mineral',
+        'ferti_n_organique',
+        'ferti_p2o5_tot',
+        'ferti_p2o5_mineral',
+        'ferti_p2o5_organique',
+        'ferti_k2o_tot',
+        'ferti_k2o_mineral',
+        'ferti_k2o_organique',
+
+        'pb_std_mil_avec_autoconso',
+        'mb_std_mil_avec_autoconso',
+        'msn_reelle_avec_autoconso',
+        'md_std_mil_avec_autoconso',
+
+        'c504_outLabourTotalExpenses',
+        'co_tot_std_mil',
+        'cm_std_mil',
+        'c_main_oeuvre_tot_std_mil',
+        'c_main_oeuvre_tractoriste_std_mil',
+        'c_main_oeuvre_manuelle_std_mil',
+        'conso_carburant',
+
+        'tps_utilisation_materiel',
+        'tps_travail_manuel',
+        'tps_travail_total',
+
+        'surface_par_unite_de_travail_humain',
+        'nombre_uth_necessaires',
+        'nbre_de_passages_desherbage_meca',
+        'utili_desherbage_meca',
+        'type_de_travail_du_sol',
+
+        'c701_totalIFT_evol_diff',
+        'c702_IFT_hh_hts_evol_diff',
+        'c703_biocontrolIFT_evol_diff',
+        'c705_herbicideIFT_evol_diff',
+        'c707_insecticideIFT_evol_diff',
+        'c708_fungicideIFT_evol_diff',
+        'c709_otherIFT_evol_diff',
+        'c710_biologicalWaysSolution_evol_diff'
+    ]
+
+    return df, dict_idx_iqr, dict_idx_alerte_can, (report if demande_rapport else None)
