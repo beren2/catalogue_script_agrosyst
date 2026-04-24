@@ -244,6 +244,9 @@ def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='c
 
 def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', needed_perfs=[]):
     """permet de charger les tables de l'entrepôt dans la variable globale donnée"""
+    if needed_perfs is None:
+        needed_perfs = []
+
     filtered_tables = []
     for desired_table in desired_tables:
         if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] == "performance"):
