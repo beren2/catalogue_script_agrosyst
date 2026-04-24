@@ -936,15 +936,9 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
 
     # Calculer les évolution d'ift (après les filtres de valeurs !)
     df = df.groupby('code_dephy').apply(apply_evol).reset_index(drop=True)
-
-    # Rapport sur les colonnes numériques principales
-    report = None
-    if demande_rapport :
-        report = ProfileReport(df[list(DICT_VAR_IMPACTED.keys())], 
-                            title="DG - Rapport sur les variables numériques principales")
         
     # Epurer les colonnes non-indispensable pour ne pas saturer le stockage
-    df = df[
+    colonnes_to_keep = [
         'code_dephy',
         'realized',
         'sdc_id',
@@ -1052,5 +1046,15 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
         'c709_otherIFT_evol_diff',
         'c710_biologicalWaysSolution_evol_diff'
     ]
+
+    df = df.reset_index()
+    df['id'] = df['code_dephy_str'].str.cat(df['new_campagne_str'], sep='_')
+    df = df[['id'] + colonnes_to_keep]
+
+    # Rapport sur le magasin DEPHYGraph
+    report = None
+    if demande_rapport :
+        report = ProfileReport(df[colonnes_to_keep], 
+                            title="DEPHYGraph, rapport sur les variables")
 
     return df, dict_idx_iqr, dict_idx_alerte_can, (report if demande_rapport else None)

@@ -832,20 +832,29 @@ def create_category_outils_dephygraph():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
     """
-    df_main_dephygraph = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
-    # df_main_dephygraph.set_index('id', inplace=True)
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
+
+    # Exporter les dictionnaires en JSON et le rapport en HTML
+    with open("../data/export_from_functions/"+"dict_idx_iqr.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_iqr, f, indent=4, ensure_ascii=False)
+
+    with open("../data/export_from_functions/"+"dict_idx_alerte_can.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
+
+    with open("../data/export_from_functions/"+"rapport.html", "w", encoding="utf-8") as f:
+        f.write(rapport)
+
+    # Exporte en DB la table principale
+    df_main_dephygraph.set_index('id', inplace=True)
     export_to_db(df_main_dephygraph, 'entrepot_outils_dephygraph')
-    # add_primary_key('entrepot_outils_dephygraph', 'id')
+    add_primary_key('entrepot_outils_dephygraph', 'id')
 
 def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_main_dephygraph = mag_dephygraph.all_steps_for_maj_dephygraph(donnees)
-    export_to_db(df_main_dephygraph, 'entrepot_main_dephygraph')
-    # add_primary_key('entrepot_outils_dephygraph', 'id')
 
-    print('Fin du test de la table principale DEPHYGraph')
+    print('Aucun test')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
