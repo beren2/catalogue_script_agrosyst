@@ -1,9 +1,10 @@
 """
 	Regroupe les fonctions permettant de générer les outils utils lors de la génération du magasin "DiRoDur".
 """
+from datetime import datetime
 import pandas as pd
 import numpy as np
-from datetime import datetime
+
 
 def filtered_entities_sdc_level(donnees):
     """

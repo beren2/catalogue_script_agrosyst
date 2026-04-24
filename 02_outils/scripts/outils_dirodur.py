@@ -3,7 +3,8 @@
 """
 import pandas as pd
 import numpy as np
-from scripts.utils import dirodur_utiles
+
+from scripts.utils.dirodur_utiles import filtered_entities_sdc_level
 
 # ----------------------------------------- #
 # CRÉATION DU RÉFÉRENTIEL DE MATCH D'UNITÉS #
@@ -236,7 +237,7 @@ def get_itk_filtre_outils_dirodur(
 
 
 
-    for performance_df in ['itk_realise_performance_extanded', 'itk_synthetise_performance_extanded']:
+    for performance_df in ('itk_realise_performance_extanded', 'itk_synthetise_performance_extanded'):
         # création de la colonne de filtre sur les alertes
         df[performance_df]['filtre_alerte'] = True
 
@@ -309,7 +310,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
     pta = donnees['identification_pz0']
 
     # On importe la fonction de filtration des dataframe SDC en réal et en synth
-    sdc_realise_filt, synthetises_filt = dirodur_utiles.filtered_entities_sdc_level(donnees)
+    sdc_realise_filt, synthetises_filt = filtered_entities_sdc_level(donnees)
 
     # On crée les df, et on les filtre pour qu'ils soient dans dirodur
     df_R = sdc_realise_filt.loc[sdc_realise_filt['in_dirodur']]\
@@ -327,10 +328,9 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         unique_values = list(serie.dropna().unique())
         if len(unique_values) == 0:
             return None
-        elif len(unique_values) == 1:
+        if len(unique_values) == 1:
             return unique_values[0]
-        else:
-            return unique_values
+        return unique_values
         
     zones_w_pz0 = zone.merge(parcelle, on='parcelle_id', how='left').merge(pta, on='entite_id', how='left')
     zones_w_pz0 = zones_w_pz0.groupby('sdc_id')['pz0'].apply(list_to_scalar, include_groups=False).reset_index()

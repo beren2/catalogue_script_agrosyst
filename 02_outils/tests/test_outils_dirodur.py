@@ -4,7 +4,6 @@
 import geopandas as gpd
 import pandas as pd
 from scripts import outils_dirodur
-from scripts.utils import dirodur_utiles
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
