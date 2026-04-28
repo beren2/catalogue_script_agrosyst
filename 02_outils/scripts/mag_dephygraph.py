@@ -1100,14 +1100,14 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
         'utili_desherbage_meca',
         'type_de_travail_du_sol',
 
-        'c701_totalIFT_evol_diff',
-        'c702_IFT_hh_hts_evol_diff',
-        'c703_biocontrolIFT_evol_diff',
-        'c705_herbicideIFT_evol_diff',
-        'c707_insecticideIFT_evol_diff',
-        'c708_fungicideIFT_evol_diff',
-        'c709_otherIFT_evol_diff',
-        'c710_biologicalWaysSolution_evol_diff'
+        'c701_totalIFT_evol_ratio',
+        'c702_IFT_hh_hts_evol_ratio',
+        'c703_biocontrolIFT_evol_ratio',
+        'c705_herbicideIFT_evol_ratio',
+        'c707_insecticideIFT_evol_ratio',
+        'c708_fungicideIFT_evol_ratio',
+        'c709_otherIFT_evol_ratio',
+        'c710_biologicalWaysSolution_evol_ratio'
     ]
 
     df = df.reset_index(drop=True)
