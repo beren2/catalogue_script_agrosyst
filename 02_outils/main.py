@@ -902,6 +902,13 @@ def create_category_outils_dephygraph():
     if rapport :
         rapport.to_file(directory_export + "dephygraph_rapport_variables.html")
 
+    # Exporter les tables à UNION pour faire le magasin 
+    # IPMGraph (pas d'id)
+    df_ipmgraph_for_dephygraph = mag_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
+    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_data_ipmgraph_for_dephygraph')
+    # IPMGraph (pas d'id)
+    df_culture_trop_for_dephygraph = mag_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
+    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_data_culture_trop_for_dephygraph')
 
 def create_category_test():
     """ 
@@ -1128,6 +1135,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
@@ -1153,6 +1162,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                        load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                         print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
