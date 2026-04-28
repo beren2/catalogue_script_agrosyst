@@ -756,7 +756,7 @@ def apply_nan(df, dict_var_impacted, dict_index_outliers, name='outlier'):
 
 def calcul_evolution_ift(group, col):
     """
-    Permet de calculer les évolutions d'IFT et le nombre d'année entre la ligne pz0 et la ligne en question. Pour l'évolution d'IFT on en fait que des différences !
+    Permet de calculer les évolutions d'IFT et le nombre d'année entre la ligne pz0 et la ligne en question. Pour l'évolution d'IFT : que les ratios soit (post-pz0)/pz0 * 100
     """
     mask_pz0 = group['pz0'] == 'pz0'
 
@@ -780,12 +780,18 @@ def calcul_evolution_ift(group, col):
         return result
 
     else:
+        col_values = group[col]
         pz0_val = group.loc[mask_pz0, col].iloc[0]
-        result = np.where(
-            mask_pz0 | group[col].isna(),
-            np.nan,
-            group[col] - pz0_val
-        )
+        conditions = [
+            mask_pz0 | col_values.isna(),
+            (pz0_val == 0) & (col_values == 0),
+            (pz0_val == 0) & (col_values != 0)
+        ]
+        choices = [np.nan, 
+                   0,
+                   100]
+        result = np.select(conditions, choices, 
+            default= (col_values - pz0_val) / pz0_val * 100)
         return pd.Series(result, index=group.index)
 
 def apply_evol(group):
@@ -795,22 +801,85 @@ def apply_evol(group):
     group = group.copy()
 
     group['c103_networkYears'] = calcul_evolution_ift(group, 'new_campagne')
-    group['c701_totalIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_chim_tot_hts')
-    group['c702_IFT_hh_hts_evol_diff'] = calcul_evolution_ift(group, 'c602_IFT_hh_hts')
-    group['c703_biocontrolIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_biocontrole')
-    group['c705_herbicideIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_h')
-    group['c707_insecticideIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_i')
-    group['c708_fungicideIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_f')
-    group['c709_otherIFT_evol_diff'] = calcul_evolution_ift(group, 'ift_cible_non_mil_a')
-    group['c710_biologicalWaysSolution_evol_diff'] = calcul_evolution_ift(group, 'recours_aux_moyens_biologiques')
+    group['c701_totalIFT_evol_ratio'] = calcul_evolution_ift(group, 'ift_cible_non_mil_chim_tot_hts')
+    group['c702_IFT_hh_hts_evol_ratio'] = calcul_evolution_ift(group, 'c602_IFT_hh_hts')
+    group['c703_biocontrolIFT_evol_ratio'] = calcul_evolution_ift(group, 'ift_cible_non_mil_biocontrole')
+    group['c705_herbicideIFT_evol_ratio'] = calcul_evolution_ift(group, 'ift_cible_non_mil_h')
+    group['c707_insecticideIFT_evol_ratio'] = calcul_evolution_ift(group, 'ift_cible_non_mil_i')
+    group['c708_fungicideIFT_evol_ratio'] = calcul_evolution_ift(group, 'ift_cible_non_mil_f')
+    group['c709_otherIFT_evol_ratio'] = calcul_evolution_ift(group, 'ift_cible_non_mil_a')
+    group['c710_biologicalWaysSolution_evol_ratio'] = calcul_evolution_ift(group, 'recours_aux_moyens_biologiques')
 
     return group
+
+
+def modif_modalite(df):
+    """
+    Modifie les modalités de toutes les colonnes du df
+    """
+    df["pz0"] = df["pz0"].replace({
+        "pz0": "Systèmes avant l'entrée dans le réseau DEPHY",
+        "post": "Systèmes évoluant au sein du réseau DEPHY"
+    })
+
+    df["filiere"] = df["filiere"].replace({
+        "ARBORICULTURE": "Arboriculture",
+        "CULTURES_TROPICALES": "Cultures tropicales",
+        "GRANDES_CULTURES": "Grandes cultures Polyculture-élevage",
+        "HORTICULTURE": "Horticulture",
+        "MARAICHAGE": "Maraîchage",
+        "POLYCULTURE_ELEVAGE": "Grandes cultures Polyculture-élevage",
+        "VITICULTURE": "Viticulture"
+    })
+
+    df["type_de_travail_du_sol"] = df["type_de_travail_du_sol"].replace({
+        "LABOUR_SYSTEMATIQUE": "1 - Labour systématique",
+        "LABOUR_FREQUENT": "2 - Labour fréquent",
+        "LABOUR_OCCASIONNEL": "3 - Labour occasionnel",
+        "TCS": "4 - Techniques culturales simplifiées",
+        "SEMIS_DIRECT": "5 - Semis direct"
+    })
+
+    df["utili_desherbage_meca"] = df["utili_desherbage_meca"].replace({
+        "f": "Non",
+        "t": "Oui"
+    })
+
+    # .str.replace au lieu de .replace car on change les 'pz0' DANS la valeur.
+    df['c103_networkYears'] = df['c103_networkYears'].str.replace("pz0", "État initial")
+
+    df['c111_species'] = df['c111_species'].replace({
+        "ERREUR_aucune_des_especes_arbo_majoritaires": None,
+        "ERREUR_aucune_espece": None,
+        "melange_egal_espece": "Mélange équivalent d'espèces"
+    })
+
+    df['c112_variety'] = df['c112_variety'].replace({
+        "melange_egal_variete": "Mélange équivalent de variétés",
+        "ERREUR_aucune_variete": None
+    })
+
+    df['c113_grapeVar'] = df['c113_grapeVar'].replace({
+        "melange_egal_variete": "Mélange équivalent de cépages",
+        "ERREUR_aucune_variete": None
+    })
+
+    return df
+
+
+
+
 
 
 
 #####################################################
 ####### FONCTION MAJEURE QUI RECAP LES ETAPES #######
 #####################################################
+
+
+
+
+
 
 
 
@@ -927,7 +996,10 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
 
     # Calculer les évolution d'ift (après les filtres de valeurs !)
     df = df.groupby('code_dephy').apply(apply_evol)
-        
+
+    # Modifier les modalités des colonnes
+    df = modif_modalite(df)
+
     # Epurer les colonnes non-indispensable pour ne pas saturer le stockage
     colonnes_to_keep = [
         'code_dephy',
