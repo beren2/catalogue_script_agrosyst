@@ -1121,3 +1121,16 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
                             title="DEPHYGraph, rapport sur les variables")
 
     return df, dict_idx_iqr, dict_idx_alerte_can, (report if demande_rapport else None)
+
+
+def get_ipm_works_data_for_dephygraph(donnees):
+    """
+    Permet de créer une BDD IPMworks pour DEPHYGraph à partir du référentiel
+    """
+    return donnees['data_ipmgraph_for_dephygraph']
+
+def get_culture_trop_data_for_dephygraph(donnees):
+    """
+    Permet de créer une BDD Cultures Tropicales pour DEPHYGraph à partir du référentiel
+    """
+    return donnees['data_culture_trop_for_dephygraph']

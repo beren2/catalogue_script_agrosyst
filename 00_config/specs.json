@@ -572,6 +572,13 @@
 					"geofla",
 					"ruralite"
 				]
+			},
+			"dephygraph_data" : {
+				"path" : "data/external_data/dephygraph/",
+				"tables" : [
+					"data_ipmgraph_for_dephygraph",
+					"data_culture_trop_for_dephygraph"
+				]
 			}
 		},
 		"categories" : {
@@ -783,7 +790,9 @@
                     "category": "indicateur_2"
                 }],
                 "generated" : [
-                    "main_dephygraph"
+                    "main_dephygraph",
+					"data_ipmgraph_for_dephygraph",
+					"data_culture_trop_for_dephygraph"
                 ], 
 				"need_performance" : [
 					"sdc_realise_performance",

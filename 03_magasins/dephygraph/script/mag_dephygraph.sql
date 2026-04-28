@@ -229,7 +229,7 @@ SELECT
 	null as "c9635_hri1g2hts_ipm",
 	null as "c9636_hri1g3hts_ipm",
 	null as "c9637_hri1g4hts_ipm",
-from culture_trop
+from entrepot_data_culture_trop_for_dephygraph
 
 UNION
 
@@ -327,4 +327,4 @@ SELECT
 	"c9503_semiNetMargin",
 	"c9506_labourExpenses",
 	"c1001_networksource"
-from ipm_works;
+from entrepot_data_ipmgraph_for_dephygraph;
