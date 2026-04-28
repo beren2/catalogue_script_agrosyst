@@ -239,6 +239,7 @@ def filtre_1_dispoFermeDetaille_typeAgriNotNull(df):
     a=len(df)
 
     # On filtre pour ne garder que les DEPHY FERME en détaillés
+    # Il est normal qu'il y ai beaucoup de sdc en réalisé saisi en allégé (modalité de suivi en na) car c'était la consigne historique
     df = df.loc[(df['modalite_suivi_dephy']=='DETAILLE') & (df['type']=='DEPHY_FERME')]
 
     # On enleve toute les données n'ayant pas de type d'agriculture (AB, Conv, en conversion)
@@ -275,12 +276,12 @@ def filtre_2_annees(df, annees_trop_vieille=2004, mois_date_butoire_dephy_fin_sa
     # Appliquer la fonction de filtrage des années aux campagnes en synthétisé
     df['synthetise_campagne'] = df['synthetise_campagne'].apply(filtrer_annees)
 
-    # Si toutes les années d'un synthétisé ont été filtrées, on supprime la ligne
-    # Pareil pour les réalisés dont la campagne est trop récente ou trop vieille
+    # On supprime les entités dont la campagne est trop récente ou trop vieille (vaut surtout pour les réalisés)
     df = df.loc[(pd.to_numeric(df['campagne'], errors='coerce') < annees_trop_recente) &
-                (pd.to_numeric(df['campagne'], errors='coerce') > annees_trop_vieille) &
-                (df['synthetise_campagne'].notna())]
-    
+                (pd.to_numeric(df['campagne'], errors='coerce') > annees_trop_vieille)]
+    # Si toutes les années d'un synthétisé ont été filtrées, on supprime la ligne
+    df = df.loc[~((df['synthetise_id'].notna()) & (df['synthetise_campagne'].isna()))]
+
     b = len(df)
     print(f"Filtre 2 : -{a-b} lignes")
     return df
@@ -953,7 +954,7 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
 
     # Ajout des typologie de systèmes simplifiées
     df = ajout_typologie_simplifiee(df)
-    
+
     # Ajout de variables supplémentaires
         ## IFT hors herbicide et hors TS
     df['c602_IFT_hh_hts'] = df['ift_cible_non_mil_hh'] - df['ift_cible_non_mil_ts']
@@ -981,7 +982,7 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     df["new_campagne_str"] = df["new_campagne"].astype(str)
     df["code_dephy_for_idx"] = df["code_dephy"].astype(str)
     df.set_index(['code_dephy_for_idx',"new_campagne_str"], inplace=True)
-    
+
     # Filtre de valeurs outliers
         ## On garde les index des lignes que l'on va supprimé, et on la save
     dict_idx_iqr = detect_outliers_via_iqr(df, DICT_VAR_IMPACTED, coef=2)
