@@ -72,7 +72,7 @@ if(TYPE == 'distant'):
         # Connexion à PostgreSQL
         conn = engine.raw_connection()
         cur = conn.cursor()
-    except Exception as error_connexion:
+    except Exception as error_connexion: # pylint: disable=broad-exception-caught
         print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{error_connexion}")
         print("Essaye de mettre le VPN !\n")
         sys.exit(1)
@@ -143,7 +143,7 @@ def add_primary_key(table_name, pk_column):
         local_cur.execute(sql)
         local_conn.commit()
 
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-exception-caught
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
 
     finally:
@@ -151,6 +151,54 @@ def add_primary_key(table_name, pk_column):
             local_cur.close()
         if local_conn is not None and not local_conn.closed:
             local_conn.close()
+
+# def add_primary_key(table_name, pk_column):
+#     """Ajoute une clé primaire avec reconnexion forcée.
+#     Lève une ValueError si la colonne pk_column n'existe pas dans la table.
+#     """
+#     if TYPE != "distant":
+#         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
+#         return
+
+#     local_conn = None
+#     try:
+#         # Reconnexion à chaque appel
+#         local_engine = create_engine(
+#             f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+#         )
+#         local_conn = local_engine.raw_connection()
+
+#         # Vérifier si la colonne existe dans la table
+#         with local_conn.cursor() as local_cur:
+#             # Vérification de l'existence de la colonne
+#             check_query = sql.SQL("""
+#                 SELECT 1
+#                 FROM information_schema.columns
+#                 WHERE table_name = %s AND column_name = %s
+#             """)
+#             local_cur.execute(check_query, (table_name, pk_column))
+#             if not local_cur.fetchone():
+#                 raise ValueError(f"La colonne '{pk_column}' n'existe pas dans la table '{table_name}'")
+
+#             # Exécution de la requête ALTER TABLE
+#             local_cur.execute("SET statement_timeout = 0;")
+#             alter_query = sql.SQL("ALTER TABLE {} ADD PRIMARY KEY ({});").format(
+#                 sql.Identifier(table_name),
+#                 sql.Identifier(pk_column)
+#             )
+#             local_cur.execute(alter_query)
+#             local_conn.commit()
+
+#     except ValueError as e:
+#         print(f"⚠️ Erreur de validation : {e}")
+#     except (SQLAlchemyError, errors.Error) as e:
+#         print(f"⚠️ Erreur PostgreSQL lors de l'ajout de la clé primaire sur {table_name} : {e}")
+#     except Exception as e:  # pylint: disable=broad-exception-caught
+#         print(f"⚠️ Erreur inattendue lors de l'ajout de la clé primaire sur {table_name} : {e}")
+#     finally:
+#         # Fermeture propre de la connexion
+#         if local_conn is not None:
+#             local_conn.close()
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
@@ -383,7 +431,7 @@ def clean_BDD_donnees_attendues_CAN(path_file):
                     messages.append(f"⚠️ Séparateur corrigé : '{sep}' → ','")
                     modified = True
                 break
-            except Exception:
+            except Exception: # pylint: disable=broad-exception-caught
                 continue
         if df is not None:
             break
@@ -405,7 +453,7 @@ def clean_BDD_donnees_attendues_CAN(path_file):
         try:
             df.to_csv(path_file, index=False, encoding="utf-8", sep=",")
             messages.append(f"✅ Fichier corrigé et anonymisé sauvegardé en UTF-8 avec séparateur ',' : {path_file}")
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-exception-caught
             messages.append(f"❌ Impossible de sauvegarder le fichier corrigé et anonymisé : {e}")
 
     return df, messages

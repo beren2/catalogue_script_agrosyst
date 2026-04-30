@@ -78,7 +78,7 @@ def store_response(r, *args, **kwargs):
                 with open(df_path, 'w', encoding='utf-8') as file:
                     file.write(r.text)
                 print("Écriture de ", df_name, " terminé !")
-            except Exception as e:
+            except Exception as e: # pylint: disable=broad-exception-caught
                 print(f"Error processing response for {df_name}: {str(e)}")
         else:
             print(f"Request for {df_name} failed with status code: {r.status_code}")
