@@ -1,9 +1,9 @@
 """
 	Regroupe les fonctions permettant de générer le magasin DEPHYGraph.
 """
+from datetime import datetime
 import pandas as pd
 import numpy as np
-from datetime import datetime
 from ydata_profiling import ProfileReport
 
 GCPE = ['GRANDES_CULTURES','POLYCULTURE_ELEVAGE']
@@ -201,10 +201,9 @@ def list_to_scalar(serie):
     unique_values = list(serie.dropna().unique())
     if len(unique_values) == 0:
         return None
-    elif len(unique_values) == 1:
+    if len(unique_values) == 1:
         return unique_values[0]
-    else:
-        return unique_values
+    return unique_values
 
 def nettoyage_numero_dephy(data, colonne='code_dephy') :
     """ 
@@ -764,7 +763,7 @@ def calcul_evolution_ift(group, col):
 
     if mask_pz0.sum() > 1:
         raise ValueError("Groupe dephy avec trop de pz0. Ils aurait dû être filtrés pour n'en avoir qu'un seul")
-    elif mask_pz0.sum() == 0:
+    if mask_pz0.sum() == 0:
         raise ValueError('Groupe dephy sans pz0')
 
     if col == 'new_campagne':
@@ -774,27 +773,26 @@ def calcul_evolution_ift(group, col):
             np.nan,
             group[col].astype(int) - pz0_val
         )
-        result = pd.Series(result, index=group.index)
-        result = result.map(lambda x: (
+        result2 = pd.Series(result, index=group.index)
+        result3 = result2.map(lambda x: (
                             np.nan if pd.isna(x)
                             else (f"pz0 + {int(x):02d} an" if int(x) == 1
                                 else f"pz0 + {int(x):02d} ans")))
-        return result
+        return result3
 
-    else:
-        col_values = group[col]
-        pz0_val = group.loc[mask_pz0, col].iloc[0]
-        conditions = [
-            mask_pz0 | col_values.isna(),
-            (pz0_val == 0) & (col_values == 0),
-            (pz0_val == 0) & (col_values != 0)
-        ]
-        choices = [np.nan, 
-                   0,
-                   100]
-        result = np.select(conditions, choices, 
-            default= (col_values - pz0_val) / pz0_val * 100)
-        return pd.Series(result, index=group.index)
+    col_values = group[col]
+    pz0_val = group.loc[mask_pz0, col].iloc[0]
+    conditions = [
+        mask_pz0 | col_values.isna(),
+        (pz0_val == 0) & (col_values == 0),
+        (pz0_val == 0) & (col_values != 0)
+    ]
+    choices = [np.nan, 
+                0,
+                100]
+    result = np.select(conditions, choices, 
+        default= (col_values - pz0_val) / pz0_val * 100)
+    return pd.Series(result, index=group.index)
 
 def apply_evol(group):
     """
