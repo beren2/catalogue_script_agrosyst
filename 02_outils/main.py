@@ -1115,7 +1115,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
 
     elif choice_key == "Test":
         print("* DÉBUT DE LA GÉNÉRATION TEST *")
-        # create_category_restructuration()
+        # create_category_indicateur_1()
         print("* FIN DE LA GÉNÉRATION TEST *")
 
 
