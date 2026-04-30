@@ -11,3 +11,5 @@
 01_entrepot/.Rhistory
 01_entrepot/documentation_manquante.csv
 05_tests_locaux/*
+02_outils/data/export_from_functions/dephygraph_dict_valeur_retiree_par_outliers.json
+02_outils/data/export_from_functions/dephygraph_dict_valeur_retiree_par_alertes_can.json

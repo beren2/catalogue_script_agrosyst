@@ -48,7 +48,7 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
             df_dict = import_dfs(df_names, data_path, file_format=x)
             all_df = {**all_df, **df_dict}
         else :
-            raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
+            raise ValueError("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
     return all_df
 
 def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id', multi_extension:bool = False):

@@ -17,12 +17,13 @@ import sys
 import numpy as np
 import psycopg2 as psycopg
 from scripts import nettoyage
-from scripts import restructuration 
+from scripts import restructuration
 from scripts import indicateur
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
 from scripts import outils_dirodur
+from scripts import outils_dephygraph
 from sqlalchemy import create_engine
 import pandas as pd
 import geopandas as gpd
@@ -71,7 +72,7 @@ if(TYPE == 'distant'):
         # Connexion à PostgreSQL
         conn = engine.raw_connection()
         cur = conn.cursor()
-    except Exception as error_connexion:
+    except Exception as error_connexion: # pylint: disable=broad-exception-caught
         print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{error_connexion}")
         print("Essaye de mettre le VPN !\n")
         sys.exit(1)
@@ -142,7 +143,7 @@ def add_primary_key(table_name, pk_column):
         local_cur.execute(sql)
         local_conn.commit()
 
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-exception-caught
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
 
     finally:
@@ -150,6 +151,54 @@ def add_primary_key(table_name, pk_column):
             local_cur.close()
         if local_conn is not None and not local_conn.closed:
             local_conn.close()
+
+# def add_primary_key(table_name, pk_column):
+#     """Ajoute une clé primaire avec reconnexion forcée.
+#     Lève une ValueError si la colonne pk_column n'existe pas dans la table.
+#     """
+#     if TYPE != "distant":
+#         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
+#         return
+
+#     local_conn = None
+#     try:
+#         # Reconnexion à chaque appel
+#         local_engine = create_engine(
+#             f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+#         )
+#         local_conn = local_engine.raw_connection()
+
+#         # Vérifier si la colonne existe dans la table
+#         with local_conn.cursor() as local_cur:
+#             # Vérification de l'existence de la colonne
+#             check_query = sql.SQL("""
+#                 SELECT 1
+#                 FROM information_schema.columns
+#                 WHERE table_name = %s AND column_name = %s
+#             """)
+#             local_cur.execute(check_query, (table_name, pk_column))
+#             if not local_cur.fetchone():
+#                 raise ValueError(f"La colonne '{pk_column}' n'existe pas dans la table '{table_name}'")
+
+#             # Exécution de la requête ALTER TABLE
+#             local_cur.execute("SET statement_timeout = 0;")
+#             alter_query = sql.SQL("ALTER TABLE {} ADD PRIMARY KEY ({});").format(
+#                 sql.Identifier(table_name),
+#                 sql.Identifier(pk_column)
+#             )
+#             local_cur.execute(alter_query)
+#             local_conn.commit()
+
+#     except ValueError as e:
+#         print(f"⚠️ Erreur de validation : {e}")
+#     except (SQLAlchemyError, errors.Error) as e:
+#         print(f"⚠️ Erreur PostgreSQL lors de l'ajout de la clé primaire sur {table_name} : {e}")
+#     except Exception as e:  # pylint: disable=broad-exception-caught
+#         print(f"⚠️ Erreur inattendue lors de l'ajout de la clé primaire sur {table_name} : {e}")
+#     finally:
+#         # Fermeture propre de la connexion
+#         if local_conn is not None:
+#             local_conn.close()
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
@@ -382,7 +431,7 @@ def clean_BDD_donnees_attendues_CAN(path_file):
                     messages.append(f"⚠️ Séparateur corrigé : '{sep}' → ','")
                     modified = True
                 break
-            except Exception:
+            except Exception: # pylint: disable=broad-exception-caught
                 continue
         if df is not None:
             break
@@ -404,7 +453,7 @@ def clean_BDD_donnees_attendues_CAN(path_file):
         try:
             df.to_csv(path_file, index=False, encoding="utf-8", sep=",")
             messages.append(f"✅ Fichier corrigé et anonymisé sauvegardé en UTF-8 avec séparateur ',' : {path_file}")
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-exception-caught
             messages.append(f"❌ Impossible de sauvegarder le fichier corrigé et anonymisé : {e}")
 
     return df, messages
@@ -879,15 +928,42 @@ def create_category_outils_can():
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
     add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
+def create_category_outils_dephygraph():
+    """
+        Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
+    """
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = outils_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=False)
+
+    # Exporte en DB la table principale
+    df_main_dephygraph.set_index('id', inplace=True)
+    export_to_db(df_main_dephygraph, 'entrepot_main_dephygraph')
+    add_primary_key('entrepot_main_dephygraph', 'id')
+
+    # Exporter les dictionnaires en JSON et le rapport en HTML
+    directory_export = "./data/export_from_functions/"
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_outliers.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_iqr, f, indent=4, ensure_ascii=False)
+
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_alertes_can.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
+
+    if rapport :
+        rapport.to_file(directory_export + "dephygraph_rapport_variables.html")
+
+    # Exporter les tables à UNION pour faire le magasin 
+    # IPMGraph (pas d'id)
+    df_ipmgraph_for_dephygraph = outils_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
+    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_data_ipmgraph_for_dephygraph')
+    # IPMGraph (pas d'id)
+    df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
+    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_data_culture_trop_for_dephygraph')
 
 def create_category_test():
     """ 
-            Execute les requêtes pour tester la génération d'outils spécifiques
+        Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
-    export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
-    #add_primary_key('entrepot_itk_filtres_outils_dirodur', 'sdc_id')
 
+    print('Aucun test')
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
@@ -900,7 +976,8 @@ steps = [
     {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
-    {'source' : 'outils', 'category' : 'outils_dirodur_0'}
+    {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 
 options_categories = {}
@@ -1106,6 +1183,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
@@ -1131,6 +1210,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                        load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                         print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
