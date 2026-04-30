@@ -388,7 +388,8 @@ def modification_duplicat_codeDephy_newCampagne(df):
     df.drop(columns=['code_dephy'], inplace=True)
     df.rename(columns={'code_dephy_nettoyage':'code_dephy'}, inplace=True)
 
-    print(f"Modification de {len(df.loc[df['code_dephy'].str.contains('_'),['code_dephy']])} code_dephy en duplication sur la même campagne. {len(df.loc[df['code_dephy'].str.contains('_')]['code_dephy'].str.extract(r'(.+?)_\d+$', expand=False).unique())} code_dephy différents concernés.")
+    pattern_0 = r'(.+?)_\d+$'
+    print(f"Modification de {len(df.loc[df['code_dephy'].str.contains('_'),['code_dephy']])} code_dephy en duplication sur la même campagne. {len(df.loc[df['code_dephy'].str.contains('_')]['code_dephy'].str.extract(pattern_0, expand=False).unique())} code_dephy différents concernés.")
 
     return df
 
