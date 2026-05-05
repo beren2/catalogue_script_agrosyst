@@ -35,7 +35,10 @@ select
     errd.intervention_type,
     errd.intervention_id,
     errd.noeud_id,
-    errd.connexion_id
+    errd.connexion_id,
+    destination_est_conforme,
+	unite_est_conforme,
+	espece_est_conforme
 from entrepot_rendement_realise_dirodur errd
 union all
 select
@@ -74,6 +77,9 @@ select
     ersd.intervention_type,
     ersd.intervention_id,
     ersd.noeud_id,
-    ersd.connexion_id
+    ersd.connexion_id,
+    destination_est_conforme,
+	unite_est_conforme,
+	espece_est_conforme
 from entrepot_rendement_synthetise_dirodur ersd;
 
