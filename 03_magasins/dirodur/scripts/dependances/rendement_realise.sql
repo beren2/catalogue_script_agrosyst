@@ -73,4 +73,6 @@ left join entrepot_culture ec on ecc.culture_id = ec.id
 left join entrepot_typologie_can_culture etcc on etcc.culture_id = ec.id
 left join entrepot_action_realise_agrege eara on ear.id = eara.id
 left join entrepot_intervention_realise eir on eir.id = ear.intervention_realise_id
-left join entrepot_rendement_realise_filtre_outils_dirodur errfod on errp.id = errfod.id;
+left join entrepot_rendement_realise_filtre_outils_dirodur errfod on errp.id = errfod.id
+left join entrepot_sdc_realise_filtre_outils_dirodur esrfod on eara.sdc_id = esrfod.sdc_id
+where esrfod.in_dirodur is true;

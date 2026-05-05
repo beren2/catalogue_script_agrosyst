@@ -74,4 +74,6 @@ left join entrepot_culture ec on ecc.culture_id = ec.id
 left join entrepot_typologie_can_culture etcc on etcc.culture_id = ec.id
 left join entrepot_action_synthetise_agrege easa on eas.id = easa.id
 left join entrepot_intervention_synthetise eis on eis.id = eas.intervention_synthetise_id 
-left join entrepot_rendement_synthetise_filtre_outils_dirodur ersfod on errp.id = ersfod.id;
+left join entrepot_rendement_synthetise_filtre_outils_dirodur ersfod on errp.id = ersfod.id
+left join entrepot_synthetise_filtre_outils_dirodur esfod on easa.synthetise_id = esfod.synthetise_id
+where esfod.in_dirodur is true;
