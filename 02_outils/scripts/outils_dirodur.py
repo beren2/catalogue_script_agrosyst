@@ -189,11 +189,11 @@ def get_itk_filtre_outils_dirodur(
     # définition des colonnes d'alertes consultées
     ALERTE_COLUMNS = [
         'alerte_co_semis_std_mil',
-        'alerte_ift_cible_non_mil_chim_tot_hts',
-        'alerte_ift_cible_non_mil_f',
-        'alerte_ift_cible_non_mil_h',
-        'alerte_ift_cible_non_mil_i',
-        'alerte_ift_cible_non_mil_biocontrole',
+        'alerte_ift_cible_mil_chim_tot_hts',
+        'alerte_ift_cible_mil_f',
+        'alerte_ift_cible_mil_h',
+        'alerte_ift_cible_mil_i',
+        'alerte_ift_cible_mil_biocontrole',
         'alerte_co_irrigation_std_mil',
         'alerte_msn_std_mil_avec_autoconso',
         'alerte_pb_std_mil_avec_autoconso',
