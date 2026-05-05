@@ -243,7 +243,8 @@ SELECT
 	ssp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
 	ssp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
 	ssp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
-	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
+	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq,
+	esfod.nombre_itk_alerte
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
@@ -506,7 +507,8 @@ SELECT
 	srp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
 	srp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
 	srp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
-	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
+	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq,
+	esrfod.nombre_itk_alerte
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
