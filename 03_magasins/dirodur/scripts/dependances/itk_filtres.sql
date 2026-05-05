@@ -1,6 +1,7 @@
--- On constitue un jeu de données qui nous permet de savoir quels sont les itks conservés d'après les filtres
+-- Le seul filtre appliqué est à présent la vérification que le sdc ou le synthétisé lié est bien retenu dans DiRoDur
+-- (à travers les outils sdc_realise_filtre_outils_dirodur et synthetise_filtre_outils_dirodur)
 
--- 3min
+-- 2min
 create temporary table if not exists entrepot_itk_filtre_final as
 SELECT
     'realise' as mode_saisie,
@@ -325,11 +326,11 @@ SELECT
 	itkR.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
 	itkR.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq,
 	itkR.alerte_ferti_n_tot as itk_alert_ferti_n_tot,
-	itkR.alerte_ift_cible_non_mil_chim_tot_hts as itk_alerte_ift_cible_non_mil_chim_tot_hts,
-	itkR.alerte_ift_cible_non_mil_f as itk_alerte_ift_cible_non_mil_f,
-	itkR.alerte_ift_cible_non_mil_i as itk_alerte_ift_cible_non_mil_i,
-	itkR.alerte_ift_cible_non_mil_h as itk_alerte_ift_cible_non_mil_h,
-	itkR.alerte_ift_cible_non_mil_biocontrole as itk_alerte_ift_cible_non_mil_biocontrole,
+	itkR.alerte_ift_cible_mil_chim_tot_hts as itk_alerte_ift_cible_mil_chim_tot_hts,
+	itkR.alerte_ift_cible_mil_f as itk_alerte_ift_cible_mil_f,
+	itkR.alerte_ift_cible_mil_i as itk_alerte_ift_cible_mil_i,
+	itkR.alerte_ift_cible_mil_h as itk_alerte_ift_cible_mil_h,
+	itkR.alerte_ift_cible_mil_biocontrole as itk_alerte_ift_cible_mil_biocontrole,
 	itkR.alerte_co_irrigation_std_mil as itk_alerte_co_irrigation_std_mil,
 	itkR.alerte_msn_std_mil_avec_autoconso as itk_alerte_msn_std_mil_avec_autoconso,
 	itkR.alerte_nombre_interventions_phyto as itk_alerte_nombre_interventions_phyto,
@@ -683,11 +684,11 @@ SELECT
 	itkS.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
 	itkS.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq,
 	itkS.alerte_ferti_n_tot as itk_alert_ferti_n_tot,
-	itkS.alerte_ift_cible_non_mil_chim_tot_hts as itk_alerte_ift_cible_non_mil_chim_tot_hts,
-	itkS.alerte_ift_cible_non_mil_f as itk_alerte_ift_cible_non_mil_f,
-	itkS.alerte_ift_cible_non_mil_i as itk_alerte_ift_cible_non_mil_i,
-	itkS.alerte_ift_cible_non_mil_h as itk_alerte_ift_cible_non_mil_h,
-	itkS.alerte_ift_cible_non_mil_biocontrole as itk_alerte_ift_cible_non_mil_biocontrole,
+	itkS.alerte_ift_cible_mil_chim_tot_hts as itk_alerte_ift_cible_mil_chim_tot_hts,
+	itkS.alerte_ift_cible_mil_f as itk_alerte_ift_cible_mil_f,
+	itkS.alerte_ift_cible_mil_i as itk_alerte_ift_cible_mil_i,
+	itkS.alerte_ift_cible_mil_h as itk_alerte_ift_cible_mil_h,
+	itkS.alerte_ift_cible_mil_biocontrole as itk_alerte_ift_cible_mil_biocontrole,
 	itkS.alerte_co_irrigation_std_mil as itk_alerte_co_irrigation_std_mil,
 	itkS.alerte_msn_std_mil_avec_autoconso as itk_alerte_msn_std_mil_avec_autoconso,
 	itkS.alerte_nombre_interventions_phyto as itk_alerte_nombre_interventions_phyto,
@@ -698,7 +699,6 @@ SELECT
 	itkS.alertes_charges as itk_alertes_charges
 FROM entrepot_itk_synthetise_performance AS itkS
 -- filtration dans la dépendance
-JOIN entrepot_itk_filtre itk_filtres ON (itkS.connection_synthetise_id = itk_filtres.connection_synthetise_id)
 LEFT JOIN entrepot_connection_synthetise AS cx ON cx.id = itkS.connection_synthetise_id 
 LEFT JOIN entrepot_noeuds_synthetise AS nd_cible ON nd_cible.id = cx.cible_noeuds_synthetise_id    
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = nd_cible.synthetise_id
@@ -723,5 +723,5 @@ LEFT JOIN entrepot_typologie_can_culture AS typo_ci ON typo_ci.culture_id = cx_r
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
 LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
-LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id;
-
+LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id
+WHERE esfod.in_dirodur is true;
