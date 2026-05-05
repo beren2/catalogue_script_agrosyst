@@ -1,25 +1,4 @@
 -- On constitue un jeu de données qui nous permet de savoir quels sont les itks conservés d'après les filtres
--- celui-ci sera modifié lorsque 
-create temporary table if not exists entrepot_itk_filtre as
-select 
-	eirp.noeuds_realise_id, 
-	eirp.culture_id,
-    null as connection_synthetise_id
-from entrepot_itk_realise_performance eirp
-left join entrepot_itk_filtres_outils_dirodur eifod on (eirp.noeuds_realise_id = eifod.noeuds_realise_id)
-join entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = eifod.sdc_id
-where (eifod.filtre_alerte is false)
-UNION 
-select 
-    null as noeuds_realise_id,
-    null as culture_id,
-	eisp.connection_synthetise_id
-from entrepot_itk_synthetise_performance eisp
-left join entrepot_itk_filtres_outils_dirodur eifod on (eisp.connection_synthetise_id = eifod.connection_synthetise_id)
-join entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = eifod.sdc_id
-where (eifod.filtre_alerte is false);
-
-
 
 -- 3min
 create temporary table if not exists entrepot_itk_filtre_final as
@@ -344,15 +323,29 @@ SELECT
 	itkR.ges_ferti_min_indirectes_ges_total as itk_ges_ferti_min_indirectes_co2eq,
 	itkR.ges_phyto_indirectes_ges_total as itk_ges_phyto_indirectes_co2eq,
 	itkR.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
-	itkR.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq
+	itkR.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq,
+	itkR.alerte_ferti_n_tot as itk_alert_ferti_n_tot,
+	itkR.alerte_ift_cible_non_mil_chim_tot_hts as itk_alerte_ift_cible_non_mil_chim_tot_hts,
+	itkR.alerte_ift_cible_non_mil_f as itk_alerte_ift_cible_non_mil_f,
+	itkR.alerte_ift_cible_non_mil_i as itk_alerte_ift_cible_non_mil_i,
+	itkR.alerte_ift_cible_non_mil_h as itk_alerte_ift_cible_non_mil_h,
+	itkR.alerte_ift_cible_non_mil_biocontrole as itk_alerte_ift_cible_non_mil_biocontrole,
+	itkR.alerte_co_irrigation_std_mil as itk_alerte_co_irrigation_std_mil,
+	itkR.alerte_msn_std_mil_avec_autoconso as itk_alerte_msn_std_mil_avec_autoconso,
+	itkR.alerte_nombre_interventions_phyto as itk_alerte_nombre_interventions_phyto,
+	itkR.alerte_pb_std_mil_avec_autoconso as itk_alerte_pb_std_mil_avec_autoconso,
+	itkR.alerte_rendement as itk_alerte_rendement,
+	itkR.alerte_cm_std_mil as itk_alerte_cm_std_mil,
+	itkR.alerte_co_semis_std_mil as itk_alerte_co_semis_std_mil,
+	itkR.alertes_charges as itk_alertes_charges
 FROM entrepot_itk_realise_performance AS itkR
 -- filtration dans la dépendance
-JOIN entrepot_itk_filtre itk_filtres ON (itkR.noeuds_realise_id = itk_filtres.noeuds_realise_id)
 LEFT JOIN entrepot_noeuds_realise_restructure AS node_res ON node_res.id = itkR.noeuds_realise_id 
 LEFT JOIN entrepot_connection_realise AS cx ON cx.cible_noeuds_realise_id = itkR.noeuds_realise_id
 LEFT JOIN entrepot_zone AS zone ON zone.id = itkR.zone_id 
 LEFT JOIN entrepot_parcelle AS parcelle ON parcelle.id = zone.parcelle_id 
 LEFT JOIN entrepot_sdc sdc on sdc.id = parcelle.sdc_id
+LEFT JOIN entrepot_sdc_realise_filtre_outils_dirodur esrfod ON esrfod.sdc_id = sdc.id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = parcelle.domaine_id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_commune AS comm ON parcelle.commune_id = comm.id
@@ -365,6 +358,7 @@ LEFT JOIN entrepot_noeuds_realise AS noeud_prec ON node_res.precedent_noeuds_rea
 LEFT JOIN entrepot_culture AS culture_prec ON culture_prec.id = noeud_prec.culture_id 
 LEFT JOIN entrepot_typologie_can_culture AS typocp ON typocp.culture_id = culture_prec.id 
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
+WHERE esrfod.in_dirodur is true
 UNION 
 SELECT 
     'synthetise' as mode_saisie,
@@ -687,13 +681,28 @@ SELECT
 	itkS.ges_ferti_min_indirectes_ges_total as itk_ges_ferti_min_indirectes_co2eq,
 	itkS.ges_phyto_indirectes_ges_total as itk_ges_phyto_indirectes_co2eq,
 	itkS.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
-	itkS.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq
+	itkS.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq,
+	itkS.alerte_ferti_n_tot as itk_alert_ferti_n_tot,
+	itkS.alerte_ift_cible_non_mil_chim_tot_hts as itk_alerte_ift_cible_non_mil_chim_tot_hts,
+	itkS.alerte_ift_cible_non_mil_f as itk_alerte_ift_cible_non_mil_f,
+	itkS.alerte_ift_cible_non_mil_i as itk_alerte_ift_cible_non_mil_i,
+	itkS.alerte_ift_cible_non_mil_h as itk_alerte_ift_cible_non_mil_h,
+	itkS.alerte_ift_cible_non_mil_biocontrole as itk_alerte_ift_cible_non_mil_biocontrole,
+	itkS.alerte_co_irrigation_std_mil as itk_alerte_co_irrigation_std_mil,
+	itkS.alerte_msn_std_mil_avec_autoconso as itk_alerte_msn_std_mil_avec_autoconso,
+	itkS.alerte_nombre_interventions_phyto as itk_alerte_nombre_interventions_phyto,
+	itkS.alerte_pb_std_mil_avec_autoconso as itk_alerte_pb_std_mil_avec_autoconso,
+	itkS.alerte_rendement as itk_alerte_rendement,
+	itkS.alerte_cm_std_mil as itk_alerte_cm_std_mil,
+	itkS.alerte_co_semis_std_mil as itk_alerte_co_semis_std_mil,
+	itkS.alertes_charges as itk_alertes_charges
 FROM entrepot_itk_synthetise_performance AS itkS
 -- filtration dans la dépendance
 JOIN entrepot_itk_filtre itk_filtres ON (itkS.connection_synthetise_id = itk_filtres.connection_synthetise_id)
 LEFT JOIN entrepot_connection_synthetise AS cx ON cx.id = itkS.connection_synthetise_id 
 LEFT JOIN entrepot_noeuds_synthetise AS nd_cible ON nd_cible.id = cx.cible_noeuds_synthetise_id    
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = nd_cible.synthetise_id
+LEFT JOIN entrepot_synthetise_filtre_outils_dirodur esfod ON esfod.synthetise_id = synth.id
 LEFT JOIN entrepot_sdc sdc ON sdc.id = synth.sdc_id
 LEFT JOIN entrepot_connection_synthetise_restructure AS cx_rst ON cx_rst.id = itkS.connection_synthetise_id 
 LEFT JOIN entrepot_poids_connexions_synthetise_rotation AS poidscx ON poidscx.connexion_id = itkS.connection_synthetise_id

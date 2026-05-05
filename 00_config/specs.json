@@ -755,8 +755,9 @@
                 "generated" : [
                     "rendement_realise_filtre_outils_dirodur", 
 					"rendement_synthetise_filtre_outils_dirodur", 
-					"sdc_statut_temporel_outils_dirodur", 
-					"itk_filtres_outils_dirodur"
+					"sdc_realise_filtre_outils_dirodur",
+					"synthetise_filtre_outils_dirodur",
+					"sdc_statut_temporel_outils_dirodur"
                 ], 
 				"need_performance" : [
 					"synthetise_synthetise_performance",
@@ -800,18 +801,26 @@
 				]
             },
             "test" : {
-                "function_name" : "create_category_outils_dephygraph",
+                "function_name" : "create_category_test",
+				"entrepot_dependances" : [
+					"sdc", "synthetise_synthetise_performance",
+					"sdc_realise_performance",
+					"intervention_realise_agrege", "intervention_synthetise_agrege", 
+					"typologie_assol_can_realise", "typologie_can_rotation_synthetise", 
+					"synthetise", "entite_unique_par_sdc_nettoyage", "sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				],
                 "dependances" : [{
                     "source" : "outils", 
                     "category": "restructuration"
                 }],
                 "generated" : [
-                    "main_dephygraph"
-                ], 
-				"need_performance" : [
-					"sdc_realise_performance",
-					"synthetise_synthetise_performance"
-				]
+                    "rendement_realise_filtre_outils_dirodur", 
+					"rendement_synthetise_filtre_outils_dirodur", 
+					"sdc_realise_filtre_outils_dirodur",
+					"synthetise_filtre_outils_dirodur",
+					"sdc_statut_temporel_outils_dirodur"
+                ]
             }
         }
     },

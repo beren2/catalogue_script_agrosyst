@@ -123,15 +123,42 @@ def get_rendement_filtre_outils_dirodur(
     ]]
     return res
 
+def get_sdc_realise_filtre_outils_dirodur(
+        donnees,
+    ):
+    """
+        Permet d'obtenir les informations permettant de filtrer ou non les sdc en réalisé
+        Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
+    """
+    sdc_realise_filtre, _ = filtered_entities_sdc_level(donnees)
+    return sdc_realise_filtre
+
+def get_synthetise_filtre_outils_dirodur(
+        donnees
+    ):
+    """
+        Permet d'obtenir les informations permettant de filtrer ou non les systèmes synthétisés.
+        Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
+    """
+    _, synthetises_filtre = filtered_entities_sdc_level(donnees)
+    return synthetises_filtre
+
 def get_itk_filtre_outils_dirodur(
         donnees,
     ):
     """
+        
         Permet d'obtenir les informations permettant de filtrer ou non les itinéraires techniques.
         Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
     
         Attention, le dataframe de sortie ne contient pas tous les ITK d'Agrosyst (uniquement les assolées), 
         On exclue aussi les parcelles non rattachées.
+
+        OBSOLÈTE : la fonction n'est plus utilisée à partir du 04/05/2026 car il est décidé qu'on veut un jeu de données 
+        cohérent entre les échelles (ne pas avoir des valeurs d'indicateurs différents entre l'échelle itk et l'échelle sdc
+        dans le cas où certains itk seraient supprimés)
+
+        TODO : à revoir lorsque le module de correction sera en place.
     """
     df = donnees.copy()
     df['sdc'] = df['sdc'].set_index('id')
