@@ -127,21 +127,50 @@ def get_sdc_realise_filtre_outils_dirodur(
         donnees,
     ):
     """
-        Permet d'obtenir les informations permettant de filtrer ou non les sdc en réalisé
+        Permet d'obtenir les informations pour filtrer ou non les sdc en réalisé
         Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
     """
+    # obtention des filtres sur les systèmes de cultures    
     sdc_realise_filtre, _ = filtered_entities_sdc_level(donnees)
-    return sdc_realise_filtre
+
+    # obtention des filtres à l'échelle itk
+    itk_filtre_outils_dirodur = get_itk_filtre_outils_dirodur(donnees)
+
+    # constitution de la colonne "nombre_itk_alerte"
+    left = sdc_realise_filtre
+    right = itk_filtre_outils_dirodur.groupby('sdc_id').agg({'filtre_alerte':'sum'}).rename(
+        columns={'filtre_alerte':'nombre_itk_alerte'}
+    ).fillna(0)
+
+    res = pd.merge(left, right, left_on='sdc_id', right_on='sdc_id', how='left').fillna(0)
+
+    return res
 
 def get_synthetise_filtre_outils_dirodur(
         donnees
     ):
     """
-        Permet d'obtenir les informations permettant de filtrer ou non les systèmes synthétisés.
+        Permet d'obtenir les informations pour filtrer ou non les systèmes synthétisés.
         Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
     """
     _, synthetises_filtre = filtered_entities_sdc_level(donnees)
-    return synthetises_filtre
+
+    print(synthetises_filtre.columns)
+
+    # obtention des filtres à l'échelle itk
+    itk_filtre_outils_dirodur = get_itk_filtre_outils_dirodur(donnees)
+    print(itk_filtre_outils_dirodur.columns)
+
+
+    # constitution de la colonne "nombre_itk_alerte"
+    left = synthetises_filtre
+    right = itk_filtre_outils_dirodur.groupby('synthetise_id').agg({'filtre_alerte':'sum'}).rename(
+        columns={'filtre_alerte':'nombre_itk_alerte'}
+    ).fillna(0)
+
+    res = pd.merge(left, right, left_on='synthetise_id', right_on='synthetise_id', how='left').fillna(0)
+
+    return res
 
 def get_itk_filtre_outils_dirodur(
         donnees,
@@ -153,12 +182,6 @@ def get_itk_filtre_outils_dirodur(
     
         Attention, le dataframe de sortie ne contient pas tous les ITK d'Agrosyst (uniquement les assolées), 
         On exclue aussi les parcelles non rattachées.
-
-        OBSOLÈTE : la fonction n'est plus utilisée à partir du 04/05/2026 car il est décidé qu'on veut un jeu de données 
-        cohérent entre les échelles (ne pas avoir des valeurs d'indicateurs différents entre l'échelle itk et l'échelle sdc
-        dans le cas où certains itk seraient supprimés)
-
-        TODO : à revoir lorsque le module de correction sera en place.
     """
     df = donnees.copy()
     df['sdc'] = df['sdc'].set_index('id')
@@ -183,7 +206,8 @@ def get_itk_filtre_outils_dirodur(
     ALERTE_IS_NO_STRINGS = [
         "Pas d'alerte",
         "Cette alerte n'existe pas dans cette filière",
-        "Cette alerte n'existe pas encore dans cette filière"
+        "Cette alerte n'existe pas encore dans cette filière",
+        np.nan
     ]
 
     # définition des colonnes d'alertes consultées
@@ -270,10 +294,11 @@ def get_itk_filtre_outils_dirodur(
 
         # on regarde si l'alerte est négative
 
+        # si toutes les colonnes contiennent uniquement des "ALERTE_IS_NO_STRINGS" alors on considère que l'itk est en alerte.
         # cas classique
         df[performance_df].loc[
-            (df[performance_df][ALERTE_COLUMNS].isin(ALERTE_IS_NO_STRINGS).any(axis=1)) |
-            (df[performance_df][ALERTE_COLUMNS].isna().any(axis=1)) |
+            (df[performance_df][ALERTE_COLUMNS].isin(ALERTE_IS_NO_STRINGS).all(axis=1)) |
+            (df[performance_df][ALERTE_COLUMNS].isna().all(axis=1)) |
             ((df[performance_df]['alerte_cm_std_mil'].str.contains('<', na=False)) & ((df[performance_df]['typocan_culture'] == "Prairie temporaire") | (df[performance_df]['typocan_culture'] == "Prairie permanente"))),
             'filtre_alerte'
         ] = False
@@ -286,11 +311,13 @@ def get_itk_filtre_outils_dirodur(
 
     res = pd.concat([
         df['itk_realise_performance_extanded'][['noeuds_realise_id', 'culture_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id']],
-        df['itk_synthetise_performance_extanded'][['connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id']],
+        df['itk_synthetise_performance_extanded'][['connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id', 'synthetise_id']],
     ])
 
+    res.to_csv('~/Bureau/utils/data/test_dirodur_itk_filtre.csv')
+
     return res[[
-        'noeuds_realise_id', 'connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id'
+        'noeuds_realise_id', 'connection_synthetise_id', 'filtre_filiere', 'filtre_alerte', 'sdc_id', 'synthetise_id'
     ]]
 
 def get_temporal_status_for_each_sdc_dirodur(donnees):
