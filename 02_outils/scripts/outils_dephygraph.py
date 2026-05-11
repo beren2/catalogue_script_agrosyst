@@ -179,11 +179,11 @@ DICT_VAR_IMPACTED = {
 
 ALERTES_COLS_VAR = {
     'alerte_ferti_n_tot' : "ferti_n_tot",
-    'alerte_ift_cible_non_mil_chim_tot_hts' : "ift_cible_non_mil_chim_tot_hts",
-    'alerte_ift_cible_non_mil_f': "ift_cible_non_mil_f",
-    'alerte_ift_cible_non_mil_h' : "ift_cible_non_mil_h",
-    'alerte_ift_cible_non_mil_i' : "ift_cible_non_mil_i",
-    'alerte_ift_cible_non_mil_biocontrole' : "ift_cible_non_mil_biocontrole",
+    'alerte_ift_cible_mil_chim_tot_hts' : "ift_cible_non_mil_chim_tot_hts",
+    'alerte_ift_cible_mil_f': "ift_cible_non_mil_f",
+    'alerte_ift_cible_mil_h' : "ift_cible_non_mil_h",
+    'alerte_ift_cible_mil_i' : "ift_cible_non_mil_i",
+    'alerte_ift_cible_mil_biocontrole' : "ift_cible_non_mil_biocontrole",
     'alerte_co_irrigation_std_mil' : "co_irrigation_std_mil",
     'alerte_msn_std_mil_avec_autoconso' : "msn_std_mil_avec_autoconso",
     # 'alerte_nombre_interventions_phyto' : ["???"],
