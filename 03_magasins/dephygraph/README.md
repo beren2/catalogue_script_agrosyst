@@ -1,10 +1,10 @@
-# Documentation - mag_dephygraph.py
+# Documentation - donnees_dephygraph.py
 
 ## Objectif Général
 Script de génération du magasin DEPHYGraph : traitement, nettoyage et agrégation des données de performances agricoles du réseau DEPHY.
 
 ## Source des Données
-Les données proviennent du script `02_outils/scripts/mag_dephygraph.py` qui traite :
+Les données proviennent du script `02_outils/scripts/outils_dephygraph.py` qui traite :
 - **Entrepôt** : données synthétisées et réalisées (SDC, dispositifs, domaines)
 - **Performances** : indicateurs IFT, économiques, fertilisation, temps de travail
 - **Référentiel géographique** : les geoVec utilisés par DEPHYGraph pour la carto. Afin d'être sur d'uiliser les bonnes propriétés
@@ -60,10 +60,10 @@ Agrège toutes les étapes ci-dessus. Retourne le DataFrame final, les index des
 ## Fichier SQL
 
 ### Renommage
-Le magasin généré est ensuite renommé selon les conventions définies dans `03_magasins/dephygraph/scripts/rename_dephygraph.sql` pour l'intégration finale dans le système.
+Le magasin généré est ensuite renommé selon les conventions définies dans `03_magasins/dephygraph/scripts/donnees_dephygraph.sql` pour l'intégration finale dans le système.
 
 ### Ajout Culture tropicales
-Dans `03_magasins/dephygraph/scripts/rename_dephygraph.sql`.  
+Dans `03_magasins/dephygraph/scripts/donnees_dephygraph.sql`.  
 Ajout des données de culture tropicales qui est préparé et qui n'a plus qu'a être concaténé.
 Les données de Cultures tropicales sont encore peu ou mal renseignés dans Agrosyst, et ce à cause du fait que l’outil est peu adapté à cette filière. Cependant les données ont été récupérées dans une table Excel, compilées et mises au format par la Cellule Référence. Ces données ne concernent que les IFT et ont été vérifié par l’expert filière, il n’y a donc pas besoin de passer par les filtres et nettoyages. Le fichier en question : dephygraph_CAN_files/Ajouts_donnees_TROP_enquete_format_magasin_donnees_10102022.xlsx.  
 Pour plus d’infos, voir le mail du lun. 10/10/2022 16:57.  

@@ -126,8 +126,8 @@ select
     null::double precision as "c9635_hri1g2hts_ipm",
     null::double precision as "c9636_hri1g3hts_ipm",
     null::double precision as "c9637_hri1g4hts_ipm"
-from entrepot_main_dephygraph
-where entrepot_main_dephygraph.filiere != 'Cultures tropicales'
+from entrepot_donnees_dephyferme_pour_dephygraph
+where entrepot_donnees_dephyferme_pour_dephygraph.filiere != 'Cultures tropicales'
 UNION ALL
 SELECT
 	cast(uuid_generate_v4() as text) as "id",
@@ -235,7 +235,7 @@ SELECT
 	null::double precision as "c9635_hri1g2hts_ipm",
 	null::double precision as "c9636_hri1g3hts_ipm",
 	null::double precision as "c9637_hri1g4hts_ipm"
-from entrepot_data_culture_trop_for_dephygraph
+from entrepot_donnees_culture_trop_pour_dephygraph
 UNION ALL
 SELECT
 	cast(uuid_generate_v4() as text) as "id", 
@@ -343,4 +343,4 @@ SELECT
 	"c9635_hri1g2hts_ipm",
 	"c9636_hri1g3hts_ipm",
 	"c9637_hri1g4hts_ipm"
-from entrepot_data_ipmgraph_for_dephygraph;
+from entrepot_donnees_ipmgraph_pour_dephygraph;

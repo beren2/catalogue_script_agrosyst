@@ -790,9 +790,9 @@
                     "category": "indicateur_2"
                 }],
                 "generated" : [
-                    "main_dephygraph",
-					"data_ipmgraph_for_dephygraph",
-					"data_culture_trop_for_dephygraph"
+                    "donnees_dephyferme_pour_dephygraph",
+					"donnees_ipmgraph_pour_dephygraph",
+					"donnees_culture_trop_pour_dephygraph"
                 ], 
 				"need_performance" : [
 					"sdc_realise_performance",
@@ -806,7 +806,7 @@
                     "category": "restructuration"
                 }],
                 "generated" : [
-                    "main_dephygraph"
+                    "donnees_dephyferme_pour_dephygraph"
                 ], 
 				"need_performance" : [
 					"sdc_realise_performance",
