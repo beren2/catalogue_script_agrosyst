@@ -434,15 +434,15 @@ def ajout_especes_et_varietes_principales(df):
         ## Espèce arboricutulture
     df['c111_species'] = np.where((df['filiere']=='ARBORICULTURE'), 
                                   df['espece_principale'], 
-                                  np.nan)
+                                  None)
         ## Variété arboricutulture
     df['c112_variety'] = np.where((df['filiere']=='ARBORICULTURE'), 
                                   df['variete_principale'], 
-                                  np.nan)
+                                  None)
         ## Variété viticulture
     df['c113_grapeVar'] = np.where((df['filiere']=='VITICULTURE'), 
                                    df['variete_principale'], 
-                                   np.nan)
+                                   None)
     
     return df
 
@@ -452,10 +452,10 @@ def ajout_typologie_simplifiee(df):
     def add_type_agri(df, col):
         """ permet d'ajouter le type d'agriculture à la typologie, elle même composé d'espèce ou de type de production """
         return np.where(
-            (df['type_agriculture'] == 'Agriculture conventionnelle') & (df[col] != np.nan),
+            (df['type_agriculture'] == 'Agriculture conventionnelle') & (pd.notna(df[col])),
             df[col] + ' conventionnels', 
             np.where(
-                (df['type_agriculture'].isin(["En conversion vers l'agriculture biologique",'Agriculture biologique'])) & (df[col] != np.nan),
+                (df['type_agriculture'].isin(["En conversion vers l'agriculture biologique",'Agriculture biologique'])) & (pd.notna(df[col])),
                 df[col] + ' biologiques', 
                 df[col]))
     # Fonction qui remplace les valeurs 'nan' (str) ou np.nan par None
@@ -472,13 +472,13 @@ def ajout_typologie_simplifiee(df):
             ~(df['c111_species'].isin(['Pommier', 'Poirier', 'Abricotier', 'Prunier']))
         ],
         [
-            np.nan,
-            np.nan,
+            None,
+            None,
             'Pommiers et Poiriers',
             'Abricotiers et Pruniers',
             df['c111_species'] + 's'
         ],
-        default=np.nan)
+        default=None)
 
     df['c120_arboriculture_typo_sdc'] = add_type_agri(df, 'c120_arboriculture_typo_sdc')
     df['c120_arboriculture_typo_sdc'] = np.where(df['filiere']=='ARBORICULTURE',
@@ -505,13 +505,13 @@ def ajout_typologie_simplifiee(df):
             df['type_production'] == 'POT_PLANTS'
         ],
         [
-            np.nan,
+            None,
             'Pépinière hors sol, en conteneur',
             'Pépinières pleine terre',
             'Pépinières mixte',
             'Plantes en pot'
         ],
-        default=np.nan)
+        default=None)
     df['c122_horticulture_typo_sdc'] = np.where(df['filiere']=='HORTICULTURE',
                                         df['c122_horticulture_typo_sdc'],
                                         None) # vérification variable que en HORTI
@@ -531,12 +531,6 @@ def ajout_typologie_simplifiee(df):
         None) # vérification variable que en GCPE
     df['c124_gcpe_typo_sdc'] = nan_to_none(df['c124_gcpe_typo_sdc'])
 
-
-    print("c120_arboriculture_typo_sdc :\n",df['c120_arboriculture_typo_sdc'].unique(),"\n")
-    print("c121_maraichage_typo_sdc :\n",df['c121_maraichage_typo_sdc'].unique(),"\n")
-    print("c122_horticulture_typo_sdc :\n",df['c122_horticulture_typo_sdc'].unique(),"\n")
-    print("c123_cult_tropicales_typo_sdc :\n",df['c123_cult_tropicales_typo_sdc'].unique(),"\n")
-    print("c124_gcpe_typo_sdc :\n",df['c124_gcpe_typo_sdc'].unique(),"\n")
     return df
 
 def ajout_infos_geo(df, commune, arrond_data, dep_data):
@@ -602,7 +596,7 @@ def filtre_3_coherence(df):
     df.loc[(df['type_de_travail_du_sol'] == 'SEMIS_DIRECT') &
         (df['filiere'].isin(GCPE)) &
         (df['type_agriculture'].isin(["En conversion vers l'agriculture biologique",'Agriculture biologique'])),
-        'type_de_travail_du_sol'] = np.nan
+        'type_de_travail_du_sol'] = None
 
     # Si un IFT herbicide (ift_cible_non_mil_h) est strictement inférieur à 0.5 en GCPE alors que son type de travail du sol renseigné est Semis direct alors on transforme en NA les valeurs des variables ift_cible_non_mil_h et ift_cible_non_mil_chim_tot_hts.
     list_var_a_passer_en_na = ['ift_cible_non_mil_h','ift_cible_non_mil_chim_tot_hts']
@@ -648,7 +642,9 @@ def filtre_5_disponibilite_par_filiere(df):
 
     # Variables économique et travail du sol dispo que pour GCPE
     df.loc[~df['filiere'].isin(GCPE), 
-        ['type_de_travail_du_sol', 'utili_desherbage_meca', 'nbre_de_passages_desherbage_meca', 'pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso']] = np.nan
+        ['type_de_travail_du_sol', 'utili_desherbage_meca']] = None
+    df.loc[~df['filiere'].isin(GCPE), 
+        ['nbre_de_passages_desherbage_meca', 'pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso']] = np.nan
     
     # Variable de temps de travail manuel que pour ARBO, VITI, MARAICH et CULTURES_TROP
     df.loc[~df['filiere'].isin(['ARBORICULTURE','VITICULTURE','MARAICHAGE','CULTURES_TROPICALES']), 
@@ -656,11 +652,11 @@ def filtre_5_disponibilite_par_filiere(df):
     
     # Variéble d'espèce principale et variété principale que pour ARBO
     df.loc[df['filiere']!='ARBORICULTURE', 
-        ['c111_species','c112_variety']] = np.nan
+        ['c111_species','c112_variety']] = None
     
     # Cépage principal que pour VITI
     df.loc[df['filiere']!='VITICULTURE', 
-        ['c113_grapeVar']] = np.nan
+        ['c113_grapeVar']] = None
     
     # Regle du 2021.11.21
     # Enlever les données relatives au fichier “vartohide” du 21/11/2021. Les experts filières, doutant de la qualité de leur données sur certains type de variables, préfèrent cacher les variables problématiques.
