@@ -243,14 +243,14 @@ SELECT
 	ssp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
 	ssp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
 	ssp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
-	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
+	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq,
+	esfod.nombre_itk_alerte
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue NOT LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
 JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.synthetise_id = sub_sdc.entite_retenue
-JOIN filtre_sdc_from_itk_dirodur fsfid on fsfid.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
@@ -259,6 +259,8 @@ LEFT JOIN entrepot_synthetise_synthetise_performance AS ssp ON sub_sdc.entite_re
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = ssp.synthetise_id
+LEFT JOIN entrepot_synthetise_filtre_outils_dirodur AS esfod on esfod.synthetise_id = synth.id
+WHERE esfod.in_dirodur is true
 UNION
 -------------
 -- RÉALISÉ --
@@ -505,19 +507,21 @@ SELECT
 	srp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
 	srp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
 	srp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
-	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
+	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq,
+	esrfod.nombre_itk_alerte
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
 JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = sdc.id and esstod.synthetise_id is null
-JOIN filtre_sdc_from_itk_dirodur fsfid on fsfid.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
-LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id;
+LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
+LEFT JOIN entrepot_sdc_realise_filtre_outils_dirodur AS esrfod on esrfod.sdc_id = sdc.id
+WHERE esrfod.in_dirodur is true;
 
 

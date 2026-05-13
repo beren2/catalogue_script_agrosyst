@@ -59,7 +59,10 @@ select
 	eir.type as intervention_type,
 	eara.intervention_realise_id as intervention_id,
 	eara.noeuds_realise_id as noeud_id,
-	null as connexion_id
+	null as connexion_id,
+	errfod.destination_have_match_in_ref_dirodur as destination_est_conforme,
+	not errfod.unite_problematic as unite_est_conforme,
+	not errfod.espece_is_na as espece_est_conforme
 from entrepot_recolte_rendement_prix errp
 join entrepot_action_realise ear on errp.action_id = ear.id
 left join entrepot_recolte_rendement_prix_restructure errpr on errp.id = errpr.id
@@ -71,7 +74,5 @@ left join entrepot_typologie_can_culture etcc on etcc.culture_id = ec.id
 left join entrepot_action_realise_agrege eara on ear.id = eara.id
 left join entrepot_intervention_realise eir on eir.id = ear.intervention_realise_id
 left join entrepot_rendement_realise_filtre_outils_dirodur errfod on errp.id = errfod.id
--- conditions de présence dans le magasin
-where errfod.destination_have_match_in_ref_dirodur = true
-and errfod.unite_problematic = false
-and errfod.espece_is_na = false;
+left join entrepot_sdc_realise_filtre_outils_dirodur esrfod on eara.sdc_id = esrfod.sdc_id
+where esrfod.in_dirodur is true;

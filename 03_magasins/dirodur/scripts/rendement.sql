@@ -35,9 +35,11 @@ select
     errd.intervention_type,
     errd.intervention_id,
     errd.noeud_id,
-    errd.connexion_id
+    errd.connexion_id,
+    destination_est_conforme,
+	unite_est_conforme,
+	espece_est_conforme
 from entrepot_rendement_realise_dirodur errd
-join entrepot_itk_filtre eif on (errd.noeud_id = eif.noeuds_realise_id and errd.culture_id = eif.culture_id)
 union all
 select
 	ersd.mode_saisie,
@@ -75,8 +77,9 @@ select
     ersd.intervention_type,
     ersd.intervention_id,
     ersd.noeud_id,
-    ersd.connexion_id
-from entrepot_rendement_synthetise_dirodur ersd
-join entrepot_itk_filtre eif on (ersd.connexion_id = eif.connection_synthetise_id);
-
+    ersd.connexion_id,
+    destination_est_conforme,
+	unite_est_conforme,
+	espece_est_conforme
+from entrepot_rendement_synthetise_dirodur ersd;
 
