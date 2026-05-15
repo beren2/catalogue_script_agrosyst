@@ -1110,6 +1110,8 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     df['id'] = df['code_dephy'].str.cat(df['new_campagne'], sep='_')
     df = df[['id'] + colonnes_to_keep]
 
+    df.columns = df.columns.str.lower()
+
     # Rapport sur le magasin DEPHYGraph
     report = None
     if demande_rapport :
@@ -1123,10 +1125,14 @@ def get_ipm_works_data_for_dephygraph(donnees):
     """
     Permet de créer une BDD IPMworks pour DEPHYGraph à partir du référentiel
     """
-    return donnees['data_ipmgraph_for_dephygraph']
+    df = donnees['data_ipmgraph_for_dephygraph']
+    df.columns = df.columns.str.lower()
+    return df
 
 def get_culture_trop_data_for_dephygraph(donnees):
     """
     Permet de créer une BDD Cultures Tropicales pour DEPHYGraph à partir du référentiel
     """
-    return donnees['data_culture_trop_for_dephygraph']
+    df = donnees['data_culture_trop_for_dephygraph']
+    df.columns = df.columns.str.lower()
+    return df
