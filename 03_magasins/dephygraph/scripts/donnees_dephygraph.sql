@@ -16,7 +16,7 @@ select
 	codeinsee::text as "codeinsee",
 	"arrondissement"::text,
 	---------
-	'dephy ferme' as "c100_networksource",
+	'DEPHY Ferme' as "c100_networksource",
 	filiere::text as "c101_sector",
 	pz0::text as "c102_pz0",
 	"c103_networkyears"::text,
@@ -25,7 +25,7 @@ select
 	ancienne_region::text as "c106_regionpre2015",
 	departement::text as "c107_departement",
 	bassin_viticole::text as "c108_winebasin",
-    'france' as "c109_country",
+    'France' as "c109_country",
 	---------
 	type_agriculture::text as "c110_managementtype",
 	"c111_species"::text,
@@ -116,7 +116,7 @@ select
 	"c710_biologicalwayssolution_evol_ratio",
 	-- c640_stdtotalift
 	------- pour ipm
-    'dephy ferme' as "c1001_networksource",
+    'DEPHY Ferme' as "c1001_networksource",
     null::double precision as "c9303_labourtime",
     null::double precision as "c9502_grossprofit",
     null::double precision as "c9503_seminetmargin",
@@ -143,7 +143,7 @@ select
 	null::text as "codeinsee",
 	c107_departement::text as "arrondissement",
 	--------
-	'dephy ferme' as "c100_networksource",
+	'DEPHY Ferme' as "c100_networksource",
 	"c101_sector"::text,
 	"c102_pz0"::text,
 	"c103_networkyears"::text,
@@ -152,7 +152,7 @@ select
 	"c106_regionpre2015"::text,
 	"c107_departement"::text,
 	null::text as "c108_winebasin",
-	'france' as "c109_country",
+	'France' as "c109_country",
 	---------
 	"c110_managementtype"::text,
 	"c111_species"::text,
@@ -225,7 +225,7 @@ select
 	"c709_otherift_evol_ratio",
 	"c710_biologicalwayssolution_evol_ratio",
 	------- pour ipm
-	'dephy ferme' as "c1001_networksource",
+	'DEPHY Ferme' as "c1001_networksource",
 	null::double precision as "c9303_labourtime",
 	null::double precision as "c9502_grossprofit",
 	null::double precision as "c9503_seminetmargin",
