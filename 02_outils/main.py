@@ -936,8 +936,8 @@ def create_category_outils_dephygraph():
 
     # Exporte en DB la table principale
     df_main_dephygraph.set_index('id', inplace=True)
-    export_to_db(df_main_dephygraph, 'entrepot_main_dephygraph')
-    add_primary_key('entrepot_main_dephygraph', 'id')
+    export_to_db(df_main_dephygraph, 'entrepot_donnees_dephyferme_pour_dephygraph')
+    add_primary_key('entrepot_donnees_dephyferme_pour_dephygraph', 'id')
 
     # Exporter les dictionnaires en JSON et le rapport en HTML
     directory_export = "./data/export_from_functions/"
@@ -953,10 +953,10 @@ def create_category_outils_dephygraph():
     # Exporter les tables à UNION pour faire le magasin 
     # IPMGraph (pas d'id)
     df_ipmgraph_for_dephygraph = outils_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
-    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_data_ipmgraph_for_dephygraph')
+    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_donnees_ipmgraph_pour_dephygraph')
     # IPMGraph (pas d'id)
     df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
-    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_data_culture_trop_for_dephygraph')
+    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_donnees_culture_trop_pour_dephygraph')
 
 def create_category_test():
     """ 
