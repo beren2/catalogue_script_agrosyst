@@ -854,10 +854,7 @@ def create_category_dirodur_0():
     export_to_db(df_sdc_statut_temporel, 'entrepot_sdc_statut_temporel_outils_dirodur')
     add_primary_key('entrepot_sdc_statut_temporel_outils_dirodur', 'sdc_id')
 
-
     sdc_realise_filtre_outils_dirodur = outils_dirodur.get_sdc_realise_filtre_outils_dirodur(donnees)
-    print("coucou =============================")
-    print(sdc_realise_filtre_outils_dirodur)
     sdc_realise_filtre_outils_dirodur.set_index('sdc_id', inplace=True)
     export_to_db(sdc_realise_filtre_outils_dirodur, 'entrepot_sdc_realise_filtre_outils_dirodur')
     add_primary_key('entrepot_sdc_realise_filtre_outils_dirodur','sdc_id')

@@ -808,7 +808,9 @@
 					"intervention_realise_agrege", "intervention_synthetise_agrege", 
 					"typologie_assol_can_realise", "typologie_can_rotation_synthetise", 
 					"synthetise", "entite_unique_par_sdc_nettoyage", "sdc_realise_performance",
-					"synthetise_synthetise_performance"
+					"synthetise_synthetise_performance", "connection_synthetise", "noeuds_synthetise",
+					"noeuds_realise", "parcelle", "zone", "itk_synthetise_performance", "itk_realise_performance",
+					"typologie_can_culture"
 				],
                 "dependances" : [{
                     "source" : "outils", 
