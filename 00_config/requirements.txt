@@ -11,3 +11,4 @@ numpy==2.1.2
 sqlalchemy==2.0.21
 tqdm==4.66.1
 geopandas==1.0.1
+ydata_profiling

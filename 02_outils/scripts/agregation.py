@@ -1,6 +1,7 @@
 # pylint: disable-all
 
 import pandas as pd
+import numpy as np
 
 def get_aggreged_from_utilisation_intrant_synthetise(
     donnees
@@ -163,7 +164,7 @@ def get_leaking_aggreged_from_action_realise(
     aggreged_utilisation_intrant_realise, donnees
 ):
     """ 
-        Permet d'obtenir toutes les actions qui ne sont pas déjà dans les utilisations d'intrants agrégées.
+        Permet d'obtenir toutes les actions qui ne sont pas déjà dans les utilisations d'intrants agrégées en réalisé.
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
@@ -322,6 +323,75 @@ def get_leaking_aggreged_from_intervention_realise(
     return merge
 
 
+def get_leaking_aggreged_from_itk_realise(
+    aggreged_utilisation_intrant_realise, donnees
+):
+    """ 
+        Permet d'obtenir tous les ITK qui ne sont pas déjà dans les interventions agrégées.
+    """
+    df_noeud_realise = donnees['noeuds_realise']
+    df_plantation_perenne_phases_realise = donnees['plantation_perenne_phases_realise']
+    df_plantation_perenne_realise = donnees['plantation_perenne_realise']
+    df_zone = donnees['zone']
+    df_parcelle = donnees['parcelle']
+    df_sdc = donnees['sdc']
+    df_dispositif = donnees['dispositif']
+    df_domaine = donnees['domaine']
+
+    # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
+    merge_assolee = df_noeud_realise.loc[~df_noeud_realise['id'].isin(list(aggreged_utilisation_intrant_realise['noeuds_realise_id']))]
+    merge_perenne = df_plantation_perenne_phases_realise.loc[~df_plantation_perenne_phases_realise['id'].isin(list(aggreged_utilisation_intrant_realise['plantation_perenne_phases_realise_id']))]
+
+    #----------#
+    # ASSOLÉES #
+    #----------#
+    # Pas besoin on a deja les infos de la zone dans la table noeud en réalisé
+
+    #----------#
+    # PERENNES #
+    #----------#
+    # obtention de la zone sur laquelle a lieu l'itk (phase)
+    left = merge_perenne
+    right = df_plantation_perenne_realise[['id', 'zone_id']].rename(columns={'id' : 'plantation_perenne_realise_id'})
+    merge_perenne = pd.merge(left, right, on = 'plantation_perenne_realise_id', how='left')
+
+
+    # Concaténation des pérennes et assolées
+    merge = pd.concat([merge_assolee, merge_perenne], axis=0)
+
+    # obtention de la zone sur laquelle a lieu l'action
+    left = merge
+    right = df_zone[['id', 'parcelle_id']].rename(columns={'id' : 'zone_id'})
+    merge = pd.merge(left, right, on = 'zone_id', how='left')
+
+    # obtention de la parcelle sur laquelle a lieu l'action
+    left = merge
+    right = df_parcelle[['id', 'sdc_id', 'domaine_id']].rename(columns={'id' : 'parcelle_id'})
+    merge = pd.merge(left, right, on = 'parcelle_id', how='left')
+
+    # obtention du système de culture sur laquelle a lieu l'action --> cette fois on a une seule campagne de référence
+    left = merge
+    right = df_sdc[['id', 'campagne', 'dispositif_id']].rename(columns={'id' :'sdc_id', 'campagne' : 'sdc_campagne'})
+    merge = pd.merge(left, right, on = 'sdc_id', how='left')
+
+    # obtention du dispositif sur lequel a lieu l'action 
+    left = merge 
+    right = df_dispositif[['id']].rename(columns={'id' : 'dispositif_id'})
+    merge = pd.merge(left, right, on = 'dispositif_id', how='left')
+    
+    left = merge
+    right = df_domaine[['id', 'campagne']].rename(columns={'id' : 'domaine_id'})
+    merge = pd.merge(left, right, on = 'domaine_id', how='left')
+
+    merge['itk_id'] = merge['id'].copy()
+    merge['noeuds_realise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.effective.EffectiveCropCycleNode'), merge['id'], np.nan)
+    merge['plantation_perenne_phases_realise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase'), merge['id'], np.nan)
+
+    merge = merge.drop(columns=['id']).set_index('itk_id')
+
+    return merge
+
+
 def get_leaking_aggreged_from_action_synthetise(
     aggreged_utilisation_intrant_synthetise, donnees
 ):
@@ -399,10 +469,10 @@ def get_leaking_aggreged_from_action_synthetise(
 
 
 def get_leaking_aggreged_from_intervention_synthetise(
-    aggreged_utilisation_intrant_realise, donnees
+    aggreged_utilisation_intrant_synthetise, donnees
 ):
     """
-        Permet d'obtenir toutes les actions qui ne sont pas déjà dans les interventions agrégées en synthétisé.
+        Permet d'obtenir toutes les interventions qui ne sont pas déjà dans les utilisation d'intrants agrégées en synthétisé.
     """
     df_intervention_synthetise = donnees['intervention_synthetise']
     df_connection_synthetise = donnees['connection_synthetise']
@@ -412,7 +482,7 @@ def get_leaking_aggreged_from_intervention_synthetise(
     df_synthetise = donnees['synthetise']
     df_sdc = donnees['sdc']
     df_dispositif = donnees['dispositif']
-    merge = df_intervention_synthetise.loc[~df_intervention_synthetise['id'].isin(list(aggreged_utilisation_intrant_realise['intervention_synthetise_id']))]
+    merge = df_intervention_synthetise.loc[~df_intervention_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['intervention_synthetise_id']))]
 
     # obtention de l'intervention sur laquelle a lieu l'action
     merge = merge[['id', 'connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
@@ -464,4 +534,65 @@ def get_leaking_aggreged_from_intervention_synthetise(
     merge = pd.merge(left, right, on = 'dispositif_id', how='left')
 
     merge = merge.set_index('id')
+    return merge
+
+def get_leaking_aggreged_from_itk_synthetise(
+    aggreged_utilisation_intrant_synthetise, donnees
+):
+    """
+        Permet d'obtenir tous les ITK (connexions et plantations pérennes) qui ne sont pas déjà dans les interventions agrégées en synthétisé.
+    """
+    df_connection_synthetise = donnees['connection_synthetise']
+    df_noeud_synthetise = donnees['noeuds_synthetise']
+    df_plantation_perenne_phases_synthetise = donnees['plantation_perenne_phases_synthetise']
+    df_plantation_perenne_synthetise = donnees['plantation_perenne_synthetise']
+    df_synthetise = donnees['synthetise']
+    df_sdc = donnees['sdc']
+    df_dispositif = donnees['dispositif']
+
+    # On ne prends que les connexions et les phases qui ne sont pas déjà dans l'agrégation au niveau de l'intervention
+    merge_assolee = df_connection_synthetise.loc[~df_connection_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['connection_synthetise_id']))]
+    merge_perenne = df_plantation_perenne_phases_synthetise.loc[~df_plantation_perenne_phases_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['plantation_perenne_phases_synthetise_id']))]
+
+    #----------#
+    # ASSOLÉES #
+    #----------#
+    # obtention du synthétisé sur lequel a lieu l'itk (la connexion)
+    left = merge_assolee
+    right = df_noeud_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'cible_noeuds_synthetise_id'})
+    merge_assolee = pd.merge(left, right, on = 'cible_noeuds_synthetise_id', how='left')
+
+    #----------#
+    # PERENNES #
+    #----------#
+    # obtention du synthétisé sur lequel a lieu l'itk (la phase perenne)
+    left = merge_perenne
+    right = df_plantation_perenne_synthetise[['id', 'synthetise_id']].rename(columns={'id' : 'plantation_perenne_synthetise_id'})
+    merge_perenne = pd.merge(left, right, on = 'plantation_perenne_synthetise_id', how='left')
+
+
+    # Concatenation des perennes et assolés
+    merge = pd.concat([merge_assolee, merge_perenne], axis=0)
+
+    # obtention du synthétisé sur lequel a lieu l'action --> attention, dans "campagnes", on a les campagnes concernées par le synthétisé, mais pas la campagne du sdc de référence !
+    left = merge
+    right = df_synthetise[['id', 'sdc_id']].rename(columns={'id' : 'synthetise_id'})
+    merge = pd.merge(left, right, on = 'synthetise_id', how='left')
+
+    # obtention du système de culture sur laquelle a lieu l'action --> cette fois on a une seule campagne de référence
+    left = merge
+    right = df_sdc[['id', 'campagne', 'dispositif_id']].rename(columns={'id' :'sdc_id', 'campagne' : 'sdc_campagne'})
+    merge = pd.merge(left, right, on = 'sdc_id', how='left')
+
+    # obtention du dispositif sur lequel a lieu l'action 
+    left = merge 
+    right = df_dispositif[['id', 'domaine_id']].rename(columns={'id' : 'dispositif_id'})
+    merge = pd.merge(left, right, on = 'dispositif_id', how='left')
+
+    merge['itk_id'] = merge['id'].copy()
+    merge['connection_synthetise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleConnection'), merge['id'], np.nan)
+    merge['plantation_perenne_phases_synthetise_id'] = np.where(merge['id'].str.startswith('fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase'), merge['id'], np.nan)
+
+    merge = merge.drop(columns=['id']).set_index('itk_id')
+
     return merge

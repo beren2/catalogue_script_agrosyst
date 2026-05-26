@@ -1,0 +1,9 @@
+,code_espece_botanique,code_destination_A,code_qualifiant_AEE,Filière,Espèce,Valorisation_viticulture,Destinations,Unité_rendement,Source,active,id_dirodur,Dirodur,Commentaire,unite_nl,unite_agrosyst
+14,,GCPE_00007,,grandes_cultures,Toutes,,Fourrage (ensilage),t MS/ha,Agrosyst_2016,t,2,Fourrage et paille,,t MS/ha,TONNE_MS_HA
+15,,GCPE_00008,,grandes_cultures,Toutes,,Fourrage (foin),t MS/ha,Agrosyst_2016,t,2,Fourrage et paille,,t MS/ha,TONNE_MS_HA
+17,,GCPE_00010,,grandes_cultures,Toutes,,Grain,q/ha (humidité ramenée à la norme),Agrosyst_2016,t,1,Grain,,q/ha (humidité ramenée à la norme),Q_HA_TO_STANDARD_HUMIDITY
+19,,GCPE_00012,,grandes_cultures,Toutes,,Grain (alimentation humaine),q/ha (humidité ramenée à la norme),Agrosyst_2016,t,1,Grain,,q/ha (humidité ramenée à la norme),Q_HA_TO_STANDARD_HUMIDITY
+23,,GCPE_00016,,grandes_cultures,Toutes,,Grain (industrie divers),q/ha (humidité ramenée à la norme),Agrosyst_2016,t,1,Grain,,q/ha (humidité ramenée à la norme),Q_HA_TO_STANDARD_HUMIDITY
+27,,GCPE_00020,,grandes_cultures,Toutes,,Grain (oléagineux),q/ha (humidité ramenée à la norme),Agrosyst_2016,t,1,Grain,,q/ha (humidité ramenée à la norme),Q_HA_TO_STANDARD_HUMIDITY
+29,,GCPE_00023,,grandes_cultures,Toutes,,Pâturage,t MS/ha,Agrosyst_2016,t,3,Pâturage,,t MS/ha,TONNE_MS_HA
+32,,GCPE_00002,,grandes_cultures,Toutes,,A compléter,t/ha,Agrosyst_2016,t,11,,eDaplos : pas de prix associés,t/ha,TONNE_HA

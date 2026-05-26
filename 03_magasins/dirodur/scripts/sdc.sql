@@ -13,7 +13,7 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
+	esstod.etat_temporel as sdc_etat_temporel,
 	-- sdc_typo_*
 	null as sdc_typo_surface_totale_assol_dvlp,
 	null as sdc_typo_surface_totale_assol,
@@ -23,7 +23,6 @@ SELECT
 	-- sdc_typoculture_*
 	null as sdc_typo_culture_liste_dvlp,
 	null as sdc_typo_culture_liste,
-
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -31,7 +30,6 @@ SELECT
 	dispo.code as dispositif_code,
 	dispo.nom as dispositif_nom,
 	dispo."type" as dispositif_type,
-
 	-------------
 	-- DOMAINE --
 	-------------
@@ -86,14 +84,12 @@ SELECT
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
 	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
-
     -----------------
 	-- DOMAINE_SOL --
 	-----------------
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-
     -----------------
 	-- SYNTHETISE --
 	----------------
@@ -104,11 +100,9 @@ SELECT
 	synth.campagnes as synthetise_campagnes,
 	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
-
 	---------------------------------------
 	-- SYNTHETISE_SYNTHETISE_PERFORMANCE --
 	---------------------------------------
-
 	-- ift_cible_non_mil_*
 	ssp.ift_cible_non_mil_chimique_tot as sdc_ift_cible_non_mil_chimique_tot,
 	ssp.ift_cible_non_mil_chim_tot_hts as sdc_ift_cible_non_mil_chim_tot_hts,
@@ -119,19 +113,16 @@ SELECT
 	ssp.ift_cible_non_mil_a as sdc_ift_cible_non_mil_a,
 	ssp.ift_cible_non_mil_hh as sdc_ift_cible_non_mil_hh,
 	ssp.ift_cible_non_mil_biocontrole as sdc_ift_cible_non_mil_biocontrole,
-
 	-- recours_*
 	ssp.recours_aux_moyens_biologiques as sdc_recours_aux_moyens_biologiques,
 	ssp.recours_macroorganismes as sdc_recours_macroorganismes,
 	ssp.recours_produits_biotiques_sansamm as sdc_recours_produits_biotiques_sans_amm,
 	ssp.recours_produits_abiotiques_sansamm as sdc_recours_produits_abiotiques_sans_amm,
-
 	-- tps_*
 	ssp.tps_utilisation_materiel as sdc_tps_utilisation_materiel,
 	ssp.tps_travail_manuel as sdc_tps_travail_manuel,
 	ssp.tps_travail_mecanise as sdc_tps_travail_meca,
 	ssp.tps_travail_total as sdc_tps_travail_total,
-
 	-- nbre_de_passages_*
 	ssp.nbre_de_passages as sdc_nbre_de_passages,
 	ssp.nbre_de_passages_labour as sdc_nbre_de_passages_labour,
@@ -150,35 +141,27 @@ SELECT
 	ssp.co_trait_semence_std_mil as sdc_co_std_mil_trait_semence,
 	ssp.co_irrigation_std_mil as sdc_co_std_mil_irrigation,
 	ssp.co_intrants_autres_std_mil as sdc_co_std_mil_intrants_autres,
-
 	-- cm_std_mil
 	ssp.cm_std_mil as sdc_cm_std_mil,
-
 	-- c_main_oeuvre_std_mil_*
 	ssp.c_main_oeuvre_tot_std_mil as sdc_c_main_oeuvre_std_mil_tot,
 	ssp.c_main_oeuvre_tractoriste_std_mil as sdc_c_main_oeuvre_std_mil_tractoriste,
 	ssp.c_main_oeuvre_manuelle_std_mil as sdc_c_main_oeuvre_std_mil_manuelle,
-
 	-- pb_std_mil_*
 	ssp.pb_std_mil_avec_autoconso as sdc_pb_std_mil_avec_autoconso, -- Consigne pour ceux qui n'utilise pas les atelier d'élevage : avec auto
 	ssp.pb_std_mil_sans_autoconso as sdc_pb_std_mil_sans_autoconso,
-
 	-- mb_std_mil_*
 	ssp.mb_std_mil_avec_autoconso as sdc_mb_std_mil_avec_autoconso,
 	ssp.mb_std_mil_sans_autoconso as sdc_mb_std_mil_sans_autoconso,
-
 	-- msn_std_mil_*
 	ssp.msn_std_mil_sans_autoconso as sdc_msn_std_mil_sans_autoconso,
 	ssp.msn_std_mil_avec_autoconso as sdc_msn_std_mil_avec_autoconso,
-
 	-- md_std_mil_*
 	ssp.md_std_mil_sans_autoconso as sdc_md_std_mil_sans_autoconso,
 	ssp.md_std_mil_avec_autoconso as sdc_md_std_mil_avec_autoconso,
-
 	-- conso_* 
 	ssp.conso_carburant as sdc_conso_carburant,
 	ssp.conso_eau as sdc_conso_eau,
-
 	-- ferti_*
 	ssp.ferti_n_mineral as sdc_ferti_n_mineral,
 	ssp.ferti_n_organique as sdc_ferti_n_organique,
@@ -186,7 +169,6 @@ SELECT
 	ssp.ferti_p2o5_organique as sdc_ferti_p2o5_organique,
 	ssp.ferti_k2o_mineral as sdc_ferti_k2o_mineral,
 	ssp.ferti_k2o_organique as sdc_ferti_k2o_organique,
-
 	-- qsa_*
 	ssp.qsa_tot_hts as sdc_qsa_tot_hts,
 	ssp.qsa_tot as sdc_qsa_tot,
@@ -249,13 +231,26 @@ SELECT
 	ssp.qsa_silicate_aluminium_hts as sdc_qsa_silicate_aluminium_hts,
 	ssp.qsa_spinosad_hts as sdc_qsa_spinosad_hts,
 	ssp.qsa_spirotetramate_hts as sdc_qsa_spirotetramate_hts,
-	ssp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts
-
+	ssp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts,
+	ssp.hri1_hts as sdc_hri1_hts,
+	ssp.hri1_g1_hts as sdc_hri1_g1_hts,
+	ssp.hri1_g2_hts as sdc_hri1_g2_hts,
+	ssp.hri1_g3_hts as sdc_hri1_g3_hts,
+	ssp.hri1_g4_hts as sdc_hri1_g4_hts,
+	ssp.ges_ferti_min_directes_ges_total as sdc_ges_ferti_min_directes_co2eq,
+	ssp.ges_ferti_orga_directes_ges_total as sdc_ges_ferti_orga_directes_co2eq,
+	ssp.ges_carburants_directes_ges_total as sdc_ges_carburants_directes_co2eq,
+	ssp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
+	ssp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
+	ssp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
+	ssp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue NOT LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
+JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.synthetise_id = sub_sdc.entite_retenue
+JOIN filtre_sdc_from_itk_dirodur fsfid on fsfid.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
@@ -264,32 +259,10 @@ LEFT JOIN entrepot_synthetise_synthetise_performance AS ssp ON sub_sdc.entite_re
 LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = ssp.synthetise_id
--- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
---LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id
-WHERE
-	(sdc.filiere = 'POLYCULTURE_ELEVAGE' OR sdc.filiere = 'GRANDES_CULTURES') AND
-	(ssp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_semis_std_mil is null) AND 
-	(ssp.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
-	(ssp.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_f is null) AND	
-	(ssp.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_h is null) AND	
-	(ssp.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_i is null) AND	
-	(ssp.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_ift_cible_non_mil_biocontrole is null) AND	
-	(ssp.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_irrigation_std_mil is null) AND	
-	(ssp.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_msn_std_mil_avec_autoconso is null) AND	
-	(ssp.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_pb_std_mil_avec_autoconso is null) AND	
-	(ssp.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_rendement is null) AND	
-	(ssp.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_cm_std_mil is null) AND	
-	(ssp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_co_semis_std_mil is null) AND	
-	(ssp.alerte_tps_travail_total IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alerte_tps_travail_total is null) AND	
-	(ssp.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR ssp.alertes_charges is null)
-
 UNION
 -------------
 -- RÉALISÉ --
 -------------
-----------------
--- SYNTHÉTISÉ --
-----------------
 SELECT 
 	---------
 	-- SDC --
@@ -302,19 +275,16 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
+	esstod.etat_temporel as sdc_etat_temporel,
 	-- sdc_typo_*
 	typoassol.surface_totale_assol_dvlp as sdc_typo_surface_totale_assol_dvlp,
 	typoassol.surface_totale_assol as sdc_typo_surface_totale_assol,
-
 	-- sdc_typocan_*
 	typoassol.typocan_assol_dvlp  as sdc_typo_can_assol_dvlp,
 	typoassol.typocan_assol  as sdc_typo_can_assol,
-
 	-- sdc_typoculture_*
 	typoassol.list_freq_typoculture_dvlp  as sdc_typoculture_liste_dvlp,
 	typoassol.list_freq_typoculture as sdc_typoculture_liste,
-
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -322,7 +292,6 @@ SELECT
 	dispo.code as dispositif_code,
 	dispo.nom as dispositif_nom,
 	dispo."type" as dispositif_type,
-
 	-------------
 	-- DOMAINE --
 	-------------
@@ -377,14 +346,12 @@ SELECT
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
 	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
-
     -----------------
 	-- DOMAINE_SOL --
 	-----------------
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-
     -----------------
 	-- SYNTHETISE --
 	----------------
@@ -395,11 +362,9 @@ SELECT
 	null as synthetise_campagnes,
 	false as synthetise_est_pz0,
 	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
-
 	---------------------------------------
 	-- SYNTHETISE_SYNTHETISE_PERFORMANCE --
 	---------------------------------------
-
 	-- ift_cible_non_mil_*
 	srp.ift_cible_non_mil_chimique_tot as sdc_ift_cible_non_mil_chimique_tot,
 	srp.ift_cible_non_mil_chim_tot_hts as sdc_ift_cible_non_mil_chim_tot_hts,
@@ -410,19 +375,16 @@ SELECT
 	srp.ift_cible_non_mil_a as sdc_ift_cible_non_mil_a,
 	srp.ift_cible_non_mil_hh as sdc_ift_cible_non_mil_hh,
 	srp.ift_cible_non_mil_biocontrole as sdc_ift_cible_non_mil_biocontrole,
-
 	-- recours_*
 	srp.recours_aux_moyens_biologiques as sdc_recours_aux_moyens_biologiques,
 	srp.recours_macroorganismes as sdc_recours_macroorganismes,
 	srp.recours_produits_biotiques_sansamm as sdc_recours_produits_biotiques_sans_amm,
 	srp.recours_produits_abiotiques_sansamm as sdc_recours_produits_abiotiques_sans_amm,
-
 	-- tps_*
 	srp.tps_utilisation_materiel as sdc_tps_utilisation_materiel,
 	srp.tps_travail_manuel as sdc_tps_travail_manuel,
 	srp.tps_travail_mecanise as sdc_tps_travail_meca,
 	srp.tps_travail_total as sdc_tps_travail_total,
-
 	-- nbre_de_passages_*
 	srp.nbre_de_passages as sdc_nbre_de_passages,
 	srp.nbre_de_passages_labour as sdc_nbre_de_passages_labour,
@@ -441,35 +403,27 @@ SELECT
 	srp.co_trait_semence_std_mil as sdc_co_std_mil_trait_semence,
 	srp.co_irrigation_std_mil as sdc_co_std_mil_irrigation,
 	srp.co_intrants_autres_std_mil as sdc_co_std_mil_intrants_autres,
-
 	-- cm_std_mil
 	srp.cm_std_mil as sdc_cm_std_mil,
-
 	-- c_main_oeuvre_std_mil_*
 	srp.c_main_oeuvre_tot_std_mil as sdc_c_main_oeuvre_std_mil_tot,
 	srp.c_main_oeuvre_tractoriste_std_mil as sdc_c_main_oeuvre_std_mil_tractoriste,
 	srp.c_main_oeuvre_manuelle_std_mil as sdc_c_main_oeuvre_std_mil_manuelle,
-
 	-- pb_std_mil_*
 	srp.pb_std_mil_avec_autoconso as sdc_pb_std_mil_avec_autoconso, -- Consigne pour ceux qui n'utilise pas les atelier d'élevage : avec auto
 	srp.pb_std_mil_sans_autoconso as sdc_pb_std_mil_sans_autoconso,
-
 	-- mb_std_mil_*
 	srp.mb_std_mil_avec_autoconso as sdc_mb_std_mil_avec_autoconso,
 	srp.mb_std_mil_sans_autoconso as sdc_mb_std_mil_sans_autoconso,
-
 	-- msn_std_mil_*
 	srp.msn_std_mil_sans_autoconso as sdc_msn_std_mil_sans_autoconso,
 	srp.msn_std_mil_avec_autoconso as sdc_msn_std_mil_avec_autoconso,
-
 	-- md_std_mil_*
 	srp.md_std_mil_sans_autoconso as sdc_md_std_mil_sans_autoconso,
 	srp.md_std_mil_avec_autoconso as sdc_md_std_mil_avec_autoconso,
-
 	-- conso_* 
 	srp.conso_carburant as sdc_conso_carburant,
 	srp.conso_eau as sdc_conso_eau,
-
 	-- ferti_*
 	srp.ferti_n_mineral as sdc_ferti_n_mineral,
 	srp.ferti_n_organique as sdc_ferti_n_organique,
@@ -477,7 +431,6 @@ SELECT
 	srp.ferti_p2o5_organique as sdc_ferti_p2o5_organique,
 	srp.ferti_k2o_mineral as sdc_ferti_k2o_mineral,
 	srp.ferti_k2o_organique as sdc_ferti_k2o_organique,
-
 	-- qsa_*
 	srp.qsa_tot_hts as sdc_qsa_tot_hts,
 	srp.qsa_tot as sdc_qsa_tot,
@@ -540,40 +493,31 @@ SELECT
 	srp.qsa_silicate_aluminium_hts as sdc_qsa_silicate_aluminium_hts,
 	srp.qsa_spinosad_hts as sdc_qsa_spinosad_hts,
 	srp.qsa_spirotetramate_hts as sdc_qsa_spirotetramate_hts,
-	srp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts
-
+	srp.qsa_tau_fluvalinate_hts as sdc_qsa_tau_fluvalinate_hts,
+	srp.hri1_hts as sdc_hri1_hts,
+	srp.hri1_g1_hts as sdc_hri1_g1_hts,
+	srp.hri1_g2_hts as sdc_hri1_g2_hts,
+	srp.hri1_g3_hts as sdc_hri1_g3_hts,
+	srp.hri1_g4_hts as sdc_hri1_g4_hts,
+	srp.ges_ferti_min_directes_ges_total as sdc_ges_ferti_min_directes_co2eq,
+	srp.ges_ferti_orga_directes_ges_total as sdc_ges_ferti_orga_directes_co2eq,
+	srp.ges_carburants_directes_ges_total as sdc_ges_carburants_directes_co2eq,
+	srp.ges_ferti_min_indirectes_ges_total as sdc_ges_ferti_min_indirectes_co2eq,
+	srp.ges_phyto_indirectes_ges_total as sdc_ges_phyto_indirectes_co2eq,
+	srp.ges_semis_indirectes_ges_total as sdc_ges_semis_indirectes_co2eq,
+	srp.ges_carburants_indirectes_ges_total as sdc_ges_carburants_indirectes_co2eq
 FROM entrepot_sdc AS sdc
 JOIN (
 	SELECT * FROM entrepot_entite_unique_par_sdc_nettoyage sub_sdc
 	WHERE sub_sdc.entite_retenue LIKE 'realise_retenu'
 ) AS sub_sdc ON sdc.id = sub_sdc.sdc_id	
+JOIN entrepot_sdc_statut_temporel_outils_dirodur esstod on esstod.sdc_id = sdc.id and esstod.synthetise_id is null
+JOIN filtre_sdc_from_itk_dirodur fsfid on fsfid.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
-LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
--- filtration sur les systèmes de cultures en grandes cultures et polyculture-élevage
-WHERE
-	(sdc.filiere = 'POLYCULTURE_ELEVAGE' OR sdc.filiere = 'GRANDES_CULTURES') AND
-	(srp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_semis_std_mil is null) AND 
-	(srp.alerte_ift_cible_non_mil_chim_tot_hts IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_chim_tot_hts is null) AND 
-	(srp.alerte_ift_cible_non_mil_f IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_f is null) AND	
-	(srp.alerte_ift_cible_non_mil_h IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_h is null) AND	
-	(srp.alerte_ift_cible_non_mil_i IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_i is null) AND	
-	(srp.alerte_ift_cible_non_mil_biocontrole IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_ift_cible_non_mil_biocontrole is null) AND	
-	(srp.alerte_co_irrigation_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_irrigation_std_mil is null) AND	
-	(srp.alerte_msn_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_msn_std_mil_avec_autoconso is null) AND	
-	(srp.alerte_pb_std_mil_avec_autoconso IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_pb_std_mil_avec_autoconso is null) AND	
-	(srp.alerte_rendement IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_rendement is null) AND	
-	(srp.alerte_cm_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_cm_std_mil is null) AND	
-	(srp.alerte_co_semis_std_mil IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_co_semis_std_mil is null) AND	
-	(srp.alerte_tps_travail_total IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alerte_tps_travail_total is null) AND	
-	(srp.alertes_charges IN ('Pas d''alerte', 'Cette alerte n''existe pas dans cette filière', 'Cette alerte n''existe pas encore dans cette filière') OR srp.alertes_charges is null);
---LEFT JOIN entrepot_domaine_sol AS domsol ON domsol.domaine_id = dom.id;
-
-
-
-
+LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id;
 
 
