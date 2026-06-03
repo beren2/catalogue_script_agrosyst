@@ -453,3 +453,150 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         return df.sort_values(['code_dephy','campagne'])
     
     return add_etat_temporel_column(df)
+
+
+
+
+def get_typologie_culture_CAN(donnees):
+    ''' 
+    Le but est d'obtenir les typologies d'espece et de culture utilisées par la Cellule référence.
+
+    Echelle :
+        culture_id
+
+    Args:
+        donnees (dict):
+            Données d'entrepot
+            - 'composant_culture'
+            - 'culture'
+            - 'espece'
+            - 'recolte_rendement_prix'
+            - 'recolte_rendement_prix_restructure'
+            Données externe (référentiel CAN):
+            - 'typo_especes_typo_culture.csv'
+            - 'typo_especes_typo_culture_marai.csv'
+
+    Returns:
+        pd.DataFrame() contenant la culture_id et la typologie de culture de la CAN
+    '''
+    # Donnes de bases
+    cropsp = donnees['composant_culture'][['espece_id','culture_id','compagne']].copy()
+    crop = donnees['culture'][['id','nom','type']].rename(columns={'id':'culture_id'}).copy()
+    sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={'id':'espece_id'}).copy()
+    
+    # Donnees d'intervention pour les dates de semis
+    intv_S = donnees['intervention_synthetise'][['id','type','date_debut','date_fin','concerne_ci','connection_synthetise_id']].copy()
+    intv_R = donnees['intervention_synthetise'][['id','type','date_debut','date_fin','concerne_ci','noeud_realise_id']].copy()
+    conx_S = donnees['connection_synthetise'][['id','cible_noeuds_synthetise_id']].rename(columns={'id':'connection_synthetise_id', 'cible_noeuds_synthetise_id':'noeud_synthetise_id'}).copy()
+    noeud_w_culture_id_S = donnees['noeuds_synthetise_restructure'][['id','culture_id']].rename(columns={'id':'noeud_synthetise_id'}).copy()
+    noeuds_w_culture_id_R = donnees['noeuds_realise'][['id','culture_id']].rename(columns={'id':'noeud_realise_id'}).copy()
+
+    intv_S = intv_S.merge(conx_S, on='connection_synthetise_id', how='left')
+    intv_S = intv_S.merge(noeud_w_culture_id_S, on='noeud_synthetise_id', how='left')
+    intv_R = intv_R.merge(noeuds_w_culture_id_R, on='noeud_realise_id', how='left')
+
+    intv = pd.concat([intv_S, intv_R], ignore_index=True)
+
+    intv.groupby('culture_id').apply(
+        lambda clt: pd.Series({
+            'typo_cpg' : 'Cultures porte graines' if all(clt['nom'].str.contains('porte+.graine|semence', case=False)) |\
+                                              all(clt['destination'] == 'Production semences') \
+                    else 'Cultures porte graines et autres destinations' if any(clt['destination'] == 'Production semences') \
+                    else None
+        }), include_groups = False).reset_index()
+
+
+    # Donnees de typologie d'espece et de culture
+    typo1 = donnees['typo_especes_typo_culture'].copy()
+    typo1 = typo1.rename(columns={'TYPO_ESPECES':'typocan_espece',
+                                  'Typo_Culture':'typocan_culture'})
+    typo2 = donnees['typo_especes_typo_culture_marai'].copy()
+    typo2 = typo2.rename(columns={'TYPO_ESPECES_BIS':'typocan_espece_maraich',
+                                  'Typo_Culture_bis':'typocan_culture_maraich'})
+
+    df = cropsp.merge(sp, how = 'left', on = 'espece_id')
+        # On change directement dans le dataframe les typologies d'espèces de la Betterave si elle est fourragère. Cela impactera la typologie de culture car elle ne reconnaitra pas 'Betterave fourragere' comme un 'Betterave' (la betterave industrielle). => Donc a ajouter dans le referentiel de passage typo_sp <=> typo_culture
+    df.loc[df['composant_culture_id'].isin( list_cpc_bett_fourr ),'typocan_espece'] = 'Betterave fourragère'
+    df.loc[df['composant_culture_id'].isin( list_cpc_bett_fourr ),'typocan_espece_maraich'] = 'Betterave fourragère'
+
+    # Liste des cultures qui contiennent des cultures compagnes
+    list_culture_with_compagne = list(set(df.loc[df['compagne'].notnull(), 'culture_id']))
+
+    df['nb_composant_culture'] = 1
+    df['nb_typocan_esp'] = df['typocan_espece'].copy()
+    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich'].copy()
+
+    def concat_unique_sorted(series):
+        cleaned = series.dropna().unique()
+        if len(cleaned) == 0:
+            return np.nan
+        return '_'.join(sorted(cleaned))
+    def get_nb_unique_typo(series):
+        cleaned = series.dropna().unique()
+        return len(cleaned)
+    agg_dict = {
+        'typocan_espece': concat_unique_sorted,
+        'typocan_espece_maraich': concat_unique_sorted,
+        'nb_composant_culture': 'sum',
+        'nb_typocan_esp': get_nb_unique_typo,
+        'nb_typocan_esp_maraich': get_nb_unique_typo
+    }
+
+    #  On crée les typologie can culture et les autre variable utiles grace a agg_dict
+    df_base = df[['culture_id','typocan_espece','typocan_espece_maraich',
+                'nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
+    #  On crée une typologie can culture mais sans les cpc qui sont des plantes compagnes
+    df_comp = df.loc[df['compagne'].isna()].copy()
+    df_comp['typocan_esp_sans_compagne'] = df_comp['typocan_espece'].copy()
+    df_comp = df_comp[['culture_id','typocan_esp_sans_compagne']].groupby('culture_id').agg(concat_unique_sorted).reset_index()
+
+    # On repart sur un pd.Df qui est le merge de df_base et df_comp (donc le meme groupby mais sur un version filtré de df_base)
+    del(df)
+    df = df_base.merge(df_comp[['culture_id','typocan_esp_sans_compagne']], on = 'culture_id', how = 'left')
+
+    # On ajoute les culture_id qui n'ont pas de composant de culture et on leur attribue aucune espece renseigné
+    df = df.merge(crop, how='left', on='culture_id')
+
+    # Détection des cultures qui contiennent des cultures compagnes
+    df['is_any_compagne'] = np.where(df['culture_id'].isin(list_culture_with_compagne), True, False)
+
+    crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
+    # ATTENTION_DIFF_CAN_a ::: 2 Lignes
+    crop_only.loc[:,['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
+    crop_only.loc[:,['typocan_espece','typocan_espece_maraich','typocan_esp_sans_compagne']] = 'NoInput-sp'
+    crop_only['is_any_compagne'] = False
+
+    df = pd.concat([df, crop_only], ignore_index=True)
+
+    df = df.merge(typo1, how='left', on='typocan_espece')
+
+    df = df.merge(typo2, how='left', on='typocan_espece_maraich')
+
+    df = df.merge(typo1.rename(columns={'typocan_espece':'typocan_esp_sans_compagne',
+                                        'typocan_culture':'typocan_culture_sans_compagne'}), \
+                                            how='left', on='typocan_esp_sans_compagne')
+    
+    # ATTENTION_DIFF_CAN_a_bis ::: 1 Lignes
+    # le premier c'était pour les composant de culture, ici c'est pour la typo de culture
+    df.loc[df['nb_composant_culture'] == 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']] = 'NoInput-sp'
+
+    # Si pas de correspondance espece <-> culture on l'écrit
+    df.loc[df['nb_composant_culture'] != 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']] = df.loc[df['nb_composant_culture'] != 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']].fillna('NoLink-sp-crop')
+
+
+    # ATTENTION_DIFF_CAN_b ::: 2 Lignes
+    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
+    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = [np.nan, np.nan]
+
+
+    df['type'] = df['type'].astype('category')
+    df['type'] = df['type'].cat.rename_categories({'MAIN': 'PRINCIPALE', 
+                                                   'INTERMEDIATE': 'INTERMEDIAIRE', 
+                                                   'CATCH': 'DEROBEE' })
+    df['type'] = df['type'].astype('str')
+    df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
+    
+    # Ajout des tags 'culture porte-graines' dans une colonne à part, voir la détection quelques ligne plus tôt dans cette fonction
+    df = df.merge(culture_porteG[['culture_id','typo_cpg']], how='left', on='culture_id')
+
+    return df
