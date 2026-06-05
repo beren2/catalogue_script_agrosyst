@@ -160,11 +160,11 @@ def get_aggreged_from_utilisation_intrant_realise(
     return merge
 
 
-def get_leaking_aggreged_from_action_realise(
-    aggreged_utilisation_intrant_realise, donnees
+def get_aggreged_from_action_realise(
+    donnees
 ):
     """ 
-        Permet d'obtenir toutes les actions qui ne sont pas déjà dans les utilisations d'intrants agrégées en réalisé.
+        Permet d'obtenir un dataframe agrégé de toutes les actions en réalisé
     """
     df_action_realise = donnees['action_realise']
     df_intervention_realise = donnees['intervention_realise']
@@ -176,15 +176,9 @@ def get_leaking_aggreged_from_action_realise(
     df_sdc = donnees['sdc']
     df_dispositif = donnees['dispositif']
     df_domaine = donnees['domaine']
-    
-    # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
-    merge = df_action_realise.loc[~df_action_realise['id'].isin(list(aggreged_utilisation_intrant_realise['action_realise_id']))]
 
     # obtention de l'intervention sur laquelle a lieu l'action
-    merge = merge[['id', 'intervention_realise_id']]
-
-    # obtention de l'intervention sur laquelle a lieu l'action
-    left = merge
+    left = df_action_realise[['id', 'intervention_realise_id']]
     right = df_intervention_realise[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']].rename(columns={'id' : 'intervention_realise_id'})
     merge = pd.merge(left, right, on = 'intervention_realise_id', how='left')
 
@@ -245,8 +239,8 @@ def get_leaking_aggreged_from_action_realise(
 
 
 
-def get_leaking_aggreged_from_intervention_realise(
-    aggreged_utilisation_intrant_realise, donnees
+def get_aggreged_from_intervention_realise(
+    donnees
 ):
     """ 
         Permet d'obtenir toutes les interventions qui ne sont pas déjà dans les utilisations d'intrants agrégées.
@@ -261,11 +255,8 @@ def get_leaking_aggreged_from_intervention_realise(
     df_dispositif = donnees['dispositif']
     df_domaine = donnees['domaine']
 
-    # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
-    merge = df_intervention_realise.loc[~df_intervention_realise['id'].isin(list(aggreged_utilisation_intrant_realise['intervention_realise_id']))]
-
     # obtention de l'intervention sur laquelle a lieu l'action
-    merge = merge[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']]
+    merge = df_intervention_realise[['id', 'noeuds_realise_id', 'plantation_perenne_phases_realise_id']]
 
     merge_perenne = merge.loc[merge['noeuds_realise_id'].isna()]
     merge_assolee = merge.loc[merge['plantation_perenne_phases_realise_id'].isna()]
@@ -323,8 +314,8 @@ def get_leaking_aggreged_from_intervention_realise(
     return merge
 
 
-def get_leaking_aggreged_from_itk_realise(
-    aggreged_utilisation_intrant_realise, donnees
+def get_aggreged_from_itk_realise(
+    donnees
 ):
     """ 
         Permet d'obtenir tous les ITK qui ne sont pas déjà dans les interventions agrégées.
@@ -339,8 +330,8 @@ def get_leaking_aggreged_from_itk_realise(
     df_domaine = donnees['domaine']
 
     # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
-    merge_assolee = df_noeud_realise.loc[~df_noeud_realise['id'].isin(list(aggreged_utilisation_intrant_realise['noeuds_realise_id']))]
-    merge_perenne = df_plantation_perenne_phases_realise.loc[~df_plantation_perenne_phases_realise['id'].isin(list(aggreged_utilisation_intrant_realise['plantation_perenne_phases_realise_id']))]
+    merge_assolee = df_noeud_realise
+    merge_perenne = df_plantation_perenne_phases_realise
 
     #----------#
     # ASSOLÉES #
@@ -392,8 +383,8 @@ def get_leaking_aggreged_from_itk_realise(
     return merge
 
 
-def get_leaking_aggreged_from_action_synthetise(
-    aggreged_utilisation_intrant_synthetise, donnees
+def get_aggreged_from_action_synthetise(
+    donnees
 ):
     """
         Permet d'obtenir toutes les actions qui ne sont pas déjà dans les utilisations d'intrants agrégées en synthétisé.
@@ -408,7 +399,7 @@ def get_leaking_aggreged_from_action_synthetise(
     df_sdc = donnees['sdc']
     df_dispositif = donnees['dispositif']
     # sélection uniquement de celles qui ne sont pas déjà dans l'échelle agrégée depuis intrant.
-    merge = df_action_synthetise.loc[~df_action_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['action_synthetise_id']))]
+    merge = df_action_synthetise
 
     # obtention de l'intervention sur laquelle a lieu l'action
     merge = merge[['id', 'intervention_synthetise_id']]
@@ -468,8 +459,8 @@ def get_leaking_aggreged_from_action_synthetise(
     return merge
 
 
-def get_leaking_aggreged_from_intervention_synthetise(
-    aggreged_utilisation_intrant_synthetise, donnees
+def get_aggreged_from_intervention_synthetise(
+    donnees
 ):
     """
         Permet d'obtenir toutes les interventions qui ne sont pas déjà dans les utilisation d'intrants agrégées en synthétisé.
@@ -482,10 +473,8 @@ def get_leaking_aggreged_from_intervention_synthetise(
     df_synthetise = donnees['synthetise']
     df_sdc = donnees['sdc']
     df_dispositif = donnees['dispositif']
-    merge = df_intervention_synthetise.loc[~df_intervention_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['intervention_synthetise_id']))]
 
-    # obtention de l'intervention sur laquelle a lieu l'action
-    merge = merge[['id', 'connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
+    merge = df_intervention_synthetise[['id', 'connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
 
     merge_perenne = merge.loc[merge['connection_synthetise_id'].isna()]
     merge_assolee = merge.loc[merge['plantation_perenne_phases_synthetise_id'].isna()]
@@ -536,8 +525,8 @@ def get_leaking_aggreged_from_intervention_synthetise(
     merge = merge.set_index('id')
     return merge
 
-def get_leaking_aggreged_from_itk_synthetise(
-    aggreged_utilisation_intrant_synthetise, donnees
+def get_aggreged_from_itk_synthetise(
+    donnees
 ):
     """
         Permet d'obtenir tous les ITK (connexions et plantations pérennes) qui ne sont pas déjà dans les interventions agrégées en synthétisé.
@@ -551,8 +540,8 @@ def get_leaking_aggreged_from_itk_synthetise(
     df_dispositif = donnees['dispositif']
 
     # On ne prends que les connexions et les phases qui ne sont pas déjà dans l'agrégation au niveau de l'intervention
-    merge_assolee = df_connection_synthetise.loc[~df_connection_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['connection_synthetise_id']))]
-    merge_perenne = df_plantation_perenne_phases_synthetise.loc[~df_plantation_perenne_phases_synthetise['id'].isin(list(aggreged_utilisation_intrant_synthetise['plantation_perenne_phases_synthetise_id']))]
+    merge_assolee = df_connection_synthetise
+    merge_perenne = df_plantation_perenne_phases_synthetise
 
     #----------#
     # ASSOLÉES #
