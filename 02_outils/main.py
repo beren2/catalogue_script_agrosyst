@@ -536,70 +536,6 @@ def generate_leaking_df(df1, df2, id_name, columns_difference):
     df2 = df2.set_index('id')
     return pd.concat([df1, df2], axis=0)
 
-def generate_data_agreged(verbose=False):
-    """
-        génère l'ensemble des données agrégées
-        utile car on ne stocke pas en base les jeux de données agrégés
-        on ne stock que les différences à chaque étape pour limiter 
-        la redondance d'informations
-    """
-    global donnees
-
-    # Génération de action_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
-    df2 = donnees['action_realise_manquant_agrege'].copy()
-    donnees['action_realise_agrege'] = generate_leaking_df(df1, df2, 'action_realise_id', columns_difference = ['id'])
-    donnees['action_realise_agrege'] = donnees['action_realise_agrege'].reset_index()
-
-    # Génération de action_synthétisé_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
-    df2 = donnees['action_synthetise_manquant_agrege'].copy()
-    donnees['action_synthetise_agrege'] = generate_leaking_df(df1, df2, 'action_synthetise_id', columns_difference = ['id'])
-    donnees['action_synthetise_agrege'] = donnees['action_synthetise_agrege'].reset_index()
-
-    # Génération de intervention_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
-    df2 = donnees['intervention_realise_manquant_agrege'].copy()
-    donnees['intervention_realise_agrege'] = generate_leaking_df(df1, df2, 'intervention_realise_id', columns_difference = ['id', 'action_realise_id'])
-    donnees['intervention_realise_agrege'] = donnees['intervention_realise_agrege'].reset_index()
-
-    # Génération de intervention_synthetise_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
-    df2 = donnees['intervention_synthetise_manquant_agrege'].copy()
-    donnees['intervention_synthetise_agrege'] = generate_leaking_df(df1, df2, 'intervention_synthetise_id', columns_difference = ['id', 'action_synthetise_id'])
-    donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
-
-    # Génération de itk_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
-    df2 = donnees['itk_realise_manquant_agrege'].copy()
-
-    df1 = df1[df1.columns.difference(['id', 'action_realise_id','intervention_realise_id'])].drop_duplicates()
-    df1['itk_id'] = np.where(df1['noeuds_realise_id'].notna(), 
-                             df1['noeuds_realise_id'], 
-                             df1['plantation_perenne_phases_realise_id'])
-    df1 = df1.set_index('itk_id')
-
-    df2 = df2.set_index('itk_id')
-
-    donnees['itk_realise_agrege'] = pd.concat([df1, df2], axis=0)
-    donnees['itk_realise_agrege'] = donnees['itk_realise_agrege'].reset_index()
-
-    # Génération de itk_synthetise_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
-    df2 = donnees['itk_synthetise_manquant_agrege'].copy()
-
-    df1 = df1[df1.columns.difference(['id', 'action_synthetise_id','intervention_synthetise_id'])].drop_duplicates()
-    df1['itk_id'] = np.where(df1['connection_synthetise_id'].notna(), 
-                             df1['connection_synthetise_id'], 
-                             df1['plantation_perenne_phases_synthetise_id'])
-    df1 = df1.set_index('itk_id')
-
-    df2 = df2.set_index('itk_id')
-
-    donnees['itk_synthetise_agrege'] = pd.concat([df1, df2], axis=0)
-    donnees['itk_synthetise_agrege'] = donnees['itk_synthetise_agrege'].reset_index()
-
-
 def download_data_agreged(verbose=False):
     """
         permet de télécharger en csv les jeux de données agrégés complets
@@ -690,43 +626,43 @@ def create_category_agregation():
     add_primary_key('entrepot_utilisation_intrant_realise_agrege', 'id')
     
     # toutes les infos manquantes agrégées depuis l'action
-    aggreged_leaking_action_realise = agregation.get_leaking_aggreged_from_action_realise(
-        aggreged_utilisation_intrant_realise, donnees
+    aggreged_action_realise = agregation.get_aggreged_from_action_realise(
+        donnees
     )
-    export_to_db(aggreged_leaking_action_realise, 'entrepot_action_realise_manquant_agrege')
-    add_primary_key('entrepot_action_realise_manquant_agrege', 'id')
+    export_to_db(aggreged_action_realise, 'entrepot_action_realise_agrege')
+    add_primary_key('entrepot_action_realise_agrege', 'id')
 
-    aggreged_leaking_action_synthetise = agregation.get_leaking_aggreged_from_action_synthetise(
-        aggreged_utilisation_intrant_synthetise, donnees
+    aggreged_action_synthetise = agregation.get_aggreged_from_action_synthetise(
+        donnees
     )
-    export_to_db(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
-    add_primary_key('entrepot_action_synthetise_manquant_agrege', 'id')
+    export_to_db(aggreged_action_synthetise, 'entrepot_action_synthetise_agrege')
+    add_primary_key('entrepot_action_synthetise_agrege', 'id')
     
     # toutes les infos manquantes agrégées depuis l'intervention 
-    aggreged_leaking_intervention_realise = agregation.get_leaking_aggreged_from_intervention_realise(
-        aggreged_utilisation_intrant_realise, donnees
+    aggreged_intervention_realise = agregation.get_aggreged_from_intervention_realise(
+        donnees
     )
-    export_to_db(aggreged_leaking_intervention_realise, 'entrepot_intervention_realise_manquant_agrege')
-    add_primary_key('entrepot_intervention_realise_manquant_agrege', 'id')
+    export_to_db(aggreged_intervention_realise, 'entrepot_intervention_realise_agrege')
+    add_primary_key('entrepot_intervention_realise_agrege', 'id')
     
-    aggreged_leaking_intervention_synthetise = agregation.get_leaking_aggreged_from_intervention_synthetise(
-        aggreged_utilisation_intrant_synthetise, donnees
+    aggreged_intervention_synthetise = agregation.get_aggreged_from_intervention_synthetise(
+        donnees
     )
-    export_to_db(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
-    add_primary_key('entrepot_intervention_synthetise_manquant_agrege', 'id')
+    export_to_db(aggreged_intervention_synthetise, 'entrepot_intervention_synthetise_agrege')
+    add_primary_key('entrepot_intervention_synthetise_agrege', 'id')
 
     # toutes les infos manquantes agrégées depuis l'itk 
-    aggreged_leaking_itk_realise = agregation.get_leaking_aggreged_from_itk_realise(
-        aggreged_utilisation_intrant_realise, donnees
+    aggreged_itk_realise = agregation.get_aggreged_from_itk_realise(
+        donnees
     )
-    export_to_db(aggreged_leaking_itk_realise, 'entrepot_itk_realise_manquant_agrege')
-    add_primary_key('entrepot_itk_realise_manquant_agrege', 'itk_id')
+    export_to_db(aggreged_itk_realise, 'entrepot_itk_realise_agrege')
+    add_primary_key('entrepot_itk_realise_agrege', 'itk_id')
     
-    aggreged_leaking_itk_synthetise = agregation.get_leaking_aggreged_from_itk_synthetise(
-        aggreged_utilisation_intrant_synthetise, donnees
+    aggreged_itk_synthetise = agregation.get_aggreged_from_itk_synthetise(
+        donnees
     )
-    export_to_db(aggreged_leaking_itk_synthetise, 'entrepot_itk_synthetise_manquant_agrege')
-    add_primary_key('entrepot_itk_synthetise_manquant_agrege', 'itk_id')
+    export_to_db(aggreged_itk_synthetise, 'entrepot_itk_synthetise_agrege')
+    add_primary_key('entrepot_itk_synthetise_agrege', 'itk_id')
 
 def create_category_restructuration():
     """
@@ -969,7 +905,6 @@ def create_category_test():
 steps = [
     {'source' : 'outils', 'category' : 'nettoyage'},
     {'source' : 'outils', 'category' : 'agregation'},
-    {'source' : 'outils', 'category' : 'agregation_complet'},
     {'source' : 'outils', 'category' : 'restructuration'},
     {'source' : 'outils', 'category' : 'indicateur_0'},
     {'source' : 'outils', 'category' : 'indicateur_1'},
@@ -1081,16 +1016,10 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 if(error_code_findable == 0):
                     print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
                     choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
-
-                    if(CURRENT_CATEGORY == 'agregation_complet'):
-                        # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
-                        generate_data_agreged(verbose=False)
-                        download_data_agreged(verbose=False)
-                    else :
-                        choosen_function()
-                        if(TYPE == 'distant'):
-                            download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
-                        load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                    choosen_function()
+                    if(TYPE == 'distant'):
+                        download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                    load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
                 else :
                     print("Données manquantes pour la catégorie "+step['category'])
                     
@@ -1113,28 +1042,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             choosen_category = categorie_step['category']
             choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
             choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
-
-            if choosen_category == 'agregation_complet':
-                print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
-                choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
-                for choosen_dependance in choosen_dependances:
-                    categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
-                    if(len(categorie_dependance['generated']) != 0):
-                        if(categorie_dependance['generated'][0] not in donnees):
-                            print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                            load_datas(categorie_dependance['generated'], verbose=False)
-                            print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-
-                print("* FIN DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES*")
-                print("* DÉBUT GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
-                generate_data_agreged(verbose=False)
-                print("* FIN GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
-                print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES AGREGATION TOTAL *")
-                download_data_agreged(verbose=False)
-                print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES AGREGATION TOTAL *")
-
-            else:
-                download_datas(choosen_generated, verbose=False, categ_name=choosen_category)
+            download_datas(choosen_generated, verbose=False, categ_name=choosen_category)
             
     elif choice_key == "Générer une catégorie":
         print("")
@@ -1172,11 +1080,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                             load_datas(categorie_dependance['generated'], verbose=False)
                             print("* FIN DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
                 
-                if(choosen_category == 'agregation_complet'):
-                    # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
-                    generate_data_agreged(verbose=False)
-                    download_data_agreged(verbose=False)
-                elif(choosen_category == 'test'):
+                if(choosen_category == 'test'):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
                     load_ref()
