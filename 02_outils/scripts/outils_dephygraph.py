@@ -68,7 +68,7 @@ PERFORMANCES_COLS = [
     'qsa_toxique_utilisateur_hts',
     'qsa_cmr_hts',
     'qsa_glyphosate_hts',
-    'qsa_cuivre_tot_hts',
+    'qsa_cuivre_metal_tot_hts',
     'qsa_soufre_tot_hts'
     ]
 
@@ -171,7 +171,7 @@ DICT_VAR_IMPACTED = {
 				['qsa_tot_hts'],
 	'qsa_danger_environnement_hts': 
 				['qsa_tot_hts'],
-	'qsa_cuivre_tot_hts': 
+	'qsa_cuivre_metal_tot_hts': 
 				['qsa_tot_hts'],
 	'qsa_soufre_tot_hts': 
 				['qsa_tot_hts']
@@ -1060,7 +1060,7 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
         'qsa_toxique_utilisateur_hts',
         'qsa_cmr_hts',
         'qsa_glyphosate_hts',
-        'qsa_cuivre_tot_hts',
+        'qsa_cuivre_metal_tot_hts',
         'qsa_soufre_tot_hts',
 
         'ferti_n_tot',
