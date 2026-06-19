@@ -94,7 +94,7 @@ select
 	qsa_toxique_utilisateur_hts as "c642_qtesubsttoxique",                -- invisible
 	qsa_glyphosate_hts as "c643_qtesubstglyphosate",                      -- invisible
 	qsa_danger_environnement_hts as "c644_qtesubstdangerenvironnement",   -- invisible
-	qsa_cuivre_tot_hts as "c645_qtesubstcuivre",                          -- invisible
+	qsa_cuivre_metal_tot_hts as "c645_qtesubstcuivre",                          -- invisible
 	qsa_soufre_tot_hts as "c646_qtesubstsoufre",                          -- invisible
 	---------
 	-- "c701_totalift_evol_diff",
