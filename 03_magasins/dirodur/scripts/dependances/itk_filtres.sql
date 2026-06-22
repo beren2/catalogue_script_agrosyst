@@ -683,7 +683,7 @@ SELECT
 	itkS.ges_phyto_indirectes_ges_total as itk_ges_phyto_indirectes_co2eq,
 	itkS.ges_semis_indirectes_ges_total as itk_ges_semis_indirectes_co2eq,
 	itkS.ges_carburants_indirectes_ges_total as itk_ges_carburants_indirectes_co2eq,
-	itkS.alerte_ferti_n_tot as itk_alert_ferti_n_tot,
+	itkS.alerte_ferti_n_tot as itk_alerte_ferti_n_tot,
 	itkS.alerte_ift_cible_mil_chim_tot_hts as itk_alerte_ift_cible_mil_chim_tot_hts,
 	itkS.alerte_ift_cible_mil_f as itk_alerte_ift_cible_mil_f,
 	itkS.alerte_ift_cible_mil_i as itk_alerte_ift_cible_mil_i,
