@@ -605,25 +605,6 @@
                 "generated" : [
                     "utilisation_intrant_realise_agrege",
                     "utilisation_intrant_synthetise_agrege", 
-                    "intervention_synthetise_manquant_agrege", 
-                    "intervention_realise_manquant_agrege",
-                    "action_realise_manquant_agrege", 
-                    "action_synthetise_manquant_agrege",
-					"itk_realise_manquant_agrege",
-					"itk_synthetise_manquant_agrege"
-                ], 
-				"need_performance" : []
-            },
-            "agregation_complet" : {
-                "function_name" : "None",
-                "dependances" : [{
-                    "source" : "outils", 
-                    "category": "agregation"
-                }
-                ],
-                "generated" : [
-                    "utilisation_intrant_realise_agrege", 
-                    "utilisation_intrant_synthetise_agrege",
                     "intervention_synthetise_agrege", 
                     "intervention_realise_agrege",
                     "action_realise_agrege", 
@@ -646,7 +627,7 @@
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 }],
                 "generated" : [
                     "noeuds_synthetise_restructure", 
@@ -687,7 +668,7 @@
 						"category": "restructuration"
 					},{
 						"source" : "outils", 
-						"category": "agregation_complet"
+						"category": "agregation"
 					},{
 						"source" : "outils", 
 						"category": "indicateur_0"
@@ -713,7 +694,7 @@
                     "category": "restructuration"
                 },{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 }],
                 "generated" : [
                     "dispositif_filtres_outils_can",
@@ -735,7 +716,7 @@
                     "category": "restructuration"
                 },{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 },{
                     "source" : "outils", 
                     "category": "nettoyage"
@@ -773,7 +754,7 @@
                     "category": "restructuration"
                 },{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 },{
                     "source" : "outils", 
                     "category": "nettoyage"
@@ -791,9 +772,9 @@
                     "category": "indicateur_2"
                 }],
                 "generated" : [
-                    "main_dephygraph",
-					"data_ipmgraph_for_dephygraph",
-					"data_culture_trop_for_dephygraph"
+                    "donnees_dephyferme_pour_dephygraph",
+					"donnees_ipmgraph_pour_dephygraph",
+					"donnees_culture_trop_pour_dephygraph"
                 ], 
 				"need_performance" : [
 					"sdc_realise_performance",
@@ -817,12 +798,12 @@
                     "category": "restructuration"
                 }],
                 "generated" : [
-                    "rendement_realise_filtre_outils_dirodur", 
-					"rendement_synthetise_filtre_outils_dirodur", 
-					"sdc_realise_filtre_outils_dirodur",
-					"synthetise_filtre_outils_dirodur",
-					"sdc_statut_temporel_outils_dirodur"
-                ]
+                    "donnees_dephyferme_pour_dephygraph"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				]
             }
         }
     },
