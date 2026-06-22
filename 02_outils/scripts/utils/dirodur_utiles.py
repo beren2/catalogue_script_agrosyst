@@ -84,7 +84,11 @@ def filtered_entities_sdc_level(donnees):
 
 
     # 4. on filtre par alertes
-    list_alerte_ok = ["Pas d'alerte", "Cette alerte n'existe pas dans cette filière", "Cette alerte n'existe pas encore dans cette filière"]
+    list_alerte_ok = [
+        "Pas d'alerte", 
+        "Cette alerte n'existe pas dans cette filière", 
+        "Cette alerte n'existe pas encore dans cette filière"
+    ]
 
     def filtrer_alertes(df, lst_alerte_col, list_alerte_ok, name_culture_col):
         # Masque pour les colonnes d'alertes sauf 1
