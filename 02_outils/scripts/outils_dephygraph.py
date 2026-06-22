@@ -398,7 +398,7 @@ def unique_pz0_by_code_dephy(df):
     Ne garde qu'un seul point zéro par numéro dephy. On ne voudrais pas mettre trop de poids à un pz0 par rapport aux données post dans DG 
     On fait attention que les point zéro soit bien tous avant les post
     """
-    df = df.copy()
+    df = df.copy().reset_index(drop=True)
     a=len(df)
 
     # Vérification que tout les pz0 sont bien avant les post
