@@ -14,7 +14,6 @@ import urllib
 import importlib
 import re
 import sys
-import numpy as np
 import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration
@@ -431,7 +430,7 @@ def clean_BDD_donnees_attendues_CAN(path_file):
                     messages.append(f"⚠️ Séparateur corrigé : '{sep}' → ','")
                     modified = True
                 break
-            except Exception: # pylint: disable=broad-exception-caught
+            except Exception:
                 continue
         if df is not None:
             break
