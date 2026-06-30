@@ -1221,3 +1221,7 @@ test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.ap
 test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_44af5b78-1a10-4e3a-bf88-6c752f8c9e3a,IT_GUIET|IT_SORIN,,reseaux_it
 test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_84ce9e04-0664-4b64-8efe-365c2ca8e69e,IR_MOUIREN|IR_PIFFADY,,reseaux_ir
 test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_3a9712f2-6848-47df-a672-28d3c26a7915,IR_CORNET,,reseaux_ir
+test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_2cd31387-7423-4a70-9b14-1547a3357e83,5.7,,surface_sdc
+test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_63dd16da-8e5c-4d00-a1e2-d9e26899743c,3.2,,surface_sdc
+test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_8fcc4cc3-e82f-4cc8-a9d9-376f6574d085,0.96,,surface_sdc
+test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_d7df80b0-8f3e-44f8-a029-ba147732a2b6,2.7,,surface_sdc

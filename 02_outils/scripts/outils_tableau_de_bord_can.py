@@ -4,9 +4,6 @@
 import pandas as pd
 import numpy as np
 
-from scripts.utils.dirodur_utiles import filtered_entities_sdc_level
-
-
 
 def get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(
     donnees
@@ -61,8 +58,6 @@ def get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(
 
     # on ajoute les informations sur le réseau parent
     left = df['liaison_sdc_reseau_extanded'] 
-    print("LEFT")
-    print(left.columns)
     right = df['reseau'].rename(columns={
             'nom' : 'nom_reseau_parent', 
             'code_convention_dephy' : 'code_convention_dephy_reseau_parent'
@@ -80,3 +75,36 @@ def get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(
         'code_convention_dephy' : 'codes_convention_dephy'
     })
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
+
+
+
+def get_surface_sdc_realise_outils_tableau_de_bord_can(
+    donnees
+):
+    """
+    Permet d'obtenir la SAU des sdc en réalisé en sommant les surfaces des parcelles contenues dans le sdc
+    Args:
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'parcelle' : Données des parcelles
+            
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations agrégées sur les sdc avec les colonnes suivantes :
+            - `id` : Identifiant du sdc.
+            - `surface_sdc` : Surface du système de culture 
+
+    Exemple d'utilisation :
+        donnees = {
+            'parcelle': pd.DataFrame(...),
+        }
+        result = get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
+    """
+    df = donnees.copy()
+    df['parcelle'] = df['parcelle'].set_index('id')
+
+    # pour chaque parcelle
+    res = df['parcelle'].groupby('sdc_id').agg({'surface' : 'sum'}).rename(columns={'surface' : 'surface_sdc'})
+
+    return res.reset_index().rename(columns={'sdc_id' : 'id'})
+3

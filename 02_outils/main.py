@@ -23,6 +23,7 @@ from scripts import interoperabilite
 from scripts import outils_can
 from scripts import outils_dirodur
 from scripts import outils_dephygraph
+from scripts import outils_tableau_de_bord_can
 from sqlalchemy import create_engine
 import pandas as pd
 import geopandas as gpd
@@ -818,6 +819,23 @@ def create_category_interoperabilite():
     export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
     add_primary_key('entrepot_donnees_spatiales_coord_gps_du_domaine', 'geopoint_id')
 
+def create_category_outils_tableau_de_bord_can():
+    """
+        Execute les requêtes pour créer les outils nécessaires à la génération du magasin de données "tableau_de_bord_can"
+    """
+    # création de l'outil permettant de filtrer les entités (dispositifs)
+    reseaux_rattachement = outils_tableau_de_bord_can.get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(donnees)
+    reseaux_rattachement.set_index('id', inplace=True)
+    export_to_db(reseaux_rattachement, 'entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can', 'id')
+
+    surface_sdc = outils_tableau_de_bord_can.get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
+    surface_sdc.set_index('id', inplace=True)
+    export_to_db(surface_sdc, 'entrepot_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_sdc_realise_outils_tableau_de_bord_can', 'id')
+
+
+    
 def create_category_outils_can():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
@@ -929,6 +947,7 @@ steps = [
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
     {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_tableau_de_bord_can'},
     {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 

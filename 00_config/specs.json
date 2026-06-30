@@ -709,6 +709,15 @@
                 ], 
 				"need_performance" : []
             },
+			"outils_tableau_de_bord_can" : {
+                "function_name" : "create_category_outils_tableau_de_bord_can",
+                "dependances" : [],
+                "generated" : [
+                    "reseaux_rattachement_sdc_outils_tableau_de_bord_can"
+                ], 
+				"need_performance" : [
+				]
+            },
 			"outils_dirodur_0" : {
                 "function_name" : "create_category_dirodur_0",
                 "dependances" : [{

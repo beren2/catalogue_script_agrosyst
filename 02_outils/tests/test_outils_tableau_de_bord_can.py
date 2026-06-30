@@ -3,6 +3,7 @@
 """
 import pandas as pd
 from scripts import outils_tableau_de_bord_can
+import geopandas as gpd
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
@@ -104,7 +105,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, meta
 
 def test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can():
     """
-        Test de l'obtention des qualification de rendement pour le magasin DiRoDur
+        Test de l'obtention des réseaux de rattachement
     """
 
     identifiant_test = 'test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can'
@@ -122,3 +123,20 @@ def test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can():
 
     assert all(res)
 
+def test_get_surface_sdc_realise_outils_tableau_de_bord_can():
+    """
+        Test de l'obtention des surfaces des systèmes de cultures en réalisé
+    """
+
+    identifiant_test = 'test_get_surface_sdc_realise_outils_tableau_de_bord_can'
+
+    df_names = [   
+        'sdc', 
+        'parcelle'
+    ]
+    path_data = '02_outils/tests/data/test_get_surface_sdc_realise_outils_tableau_de_bord_can/'
+
+    fonction_to_apply = outils_tableau_de_bord_can.get_surface_sdc_realise_outils_tableau_de_bord_can   
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
