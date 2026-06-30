@@ -898,11 +898,11 @@ test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Doma
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"['COMMUNE00000000000021857', 'COMMUNE00000000000000684']",,geofla_2015_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,10.0,,rmqs_dist_site
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_12c4938a-004b-4e0e-b17f-54d278ef1e69,"[ ""2006-04-06"", ""2017-01-16"" ]",,rmqs_date_sampl
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,"01025",,codeinsee
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,1025,,codeinsee
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,837,,rmqs_site_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,5631,,safran_cell_id
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,"06",,typo_ruralite
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,"05",,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,6,,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,5,,typo_ruralite
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_3059742b-3357-4e2a-bcb6-3d1af4636467,,,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_0445d8bc-7638-44c5-8068-f98484618d96,POINT (5.078887999999999 47.192313),,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_c9fd2d74-ba29-498d-94e9-0b3f4b68a2ce,4316,,safran_cell_id
@@ -1090,7 +1090,7 @@ test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.Growing
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_00e0ed65-a1f8-48ae-b1f5-ecb703099dd7,Merlot N,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1d4a9d61-1eb5-40f7-aa59-6d15bc82af3c,Alval,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,ERREUR_aucune_variete,,variete_principale
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,"[]",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,[],,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_2009e18f-9e69-4485-b8bd-82a3f1bcf166,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,melange_egal_variete,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,"['Cabernet franc N', 'Cabernet-Sauvignon N', 'Cot N', 'Merlot N', 'Muscadelle B', 'Sauvignon B', 'Semillon B']",,liste_toutes_varietes
@@ -1215,3 +1215,9 @@ test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.Grow
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_9bedb71e-9a8d-4e82-bbd2-3b77c04072b4,incorrect : chevauchement pz0,,etat_temporel
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2ae9d4c0-5c3e-4a66-a29d-a38a4cad0800,ni_pz0_ni_point_B,,etat_temporel
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6f683fc0-f21f-4e02-ab9c-1d476335e53c,point_C,,etat_temporel
+test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_a361b3c6-7c09-41a7-840d-b7f926d16f05,IT_MARCANT|IT_GUYOT|IT_LACZ,,reseaux_it
+test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_de71f0e8-ab12-4cbd-bb36-7db5ad18f8ab,IT_MARCANT|IT_ECKERT,,reseaux_it
+test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_85c4e5e0-04e0-4186-b3db-1f4472c797cd,IT_POIROT,,reseaux_it
+test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_44af5b78-1a10-4e3a-bf88-6c752f8c9e3a,IT_GUIET|IT_SORIN,,reseaux_it
+test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_84ce9e04-0664-4b64-8efe-365c2ca8e69e,IR_MOUIREN|IR_PIFFADY,,reseaux_ir
+test_get_reseaux_rattachement_sdc_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_3a9712f2-6848-47df-a672-28d3c26a7915,IR_CORNET,,reseaux_ir

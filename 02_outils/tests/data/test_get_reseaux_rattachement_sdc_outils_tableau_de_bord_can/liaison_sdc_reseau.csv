@@ -1,0 +1,15 @@
+,sdc_id,reseau_id
+431,fr.inra.agrosyst.api.entities.GrowingSystem_44af5b78-1a10-4e3a-bf88-6c752f8c9e3a,fr.inra.agrosyst.api.entities.Network_cd4ae0db-5dfe-40f9-ad84-2f9379ef30ef
+6010,fr.inra.agrosyst.api.entities.GrowingSystem_8a41e87a-7527-44c1-8e43-d1420b8f7a6e,fr.inra.agrosyst.api.entities.Network_0dbd161e-c1f5-4eb3-acce-0042fafd8b19
+9475,fr.inra.agrosyst.api.entities.GrowingSystem_cac5ade4-ada5-407c-9f0c-9c909db3c18b,fr.inra.agrosyst.api.entities.Network_acb905c9-085b-428b-bd07-e77af9696a4a
+11888,fr.inra.agrosyst.api.entities.GrowingSystem_84ce9e04-0664-4b64-8efe-365c2ca8e69e,fr.inra.agrosyst.api.entities.Network_77d93c7d-fbec-416c-8fc8-258f81ec50cb
+11893,fr.inra.agrosyst.api.entities.GrowingSystem_84ce9e04-0664-4b64-8efe-365c2ca8e69e,fr.inra.agrosyst.api.entities.Network_b68d32fb-c19e-436f-81e7-cc0862283dce
+11895,fr.inra.agrosyst.api.entities.GrowingSystem_84ce9e04-0664-4b64-8efe-365c2ca8e69e,fr.inra.agrosyst.api.entities.Network_c539a76d-9cf2-4406-b33f-50eb9f6b4aa3
+12213,fr.inra.agrosyst.api.entities.GrowingSystem_3a9712f2-6848-47df-a672-28d3c26a7915,fr.inra.agrosyst.api.entities.Network_36d9c312-542c-49bf-8920-09af568db571
+12215,fr.inra.agrosyst.api.entities.GrowingSystem_3a9712f2-6848-47df-a672-28d3c26a7915,fr.inra.agrosyst.api.entities.Network_77d93c7d-fbec-416c-8fc8-258f81ec50cb
+22422,fr.inra.agrosyst.api.entities.GrowingSystem_85c4e5e0-04e0-4186-b3db-1f4472c797cd,fr.inra.agrosyst.api.entities.Network_24ff5448-c7d4-48cf-b450-d24098b13d20
+37176,fr.inra.agrosyst.api.entities.GrowingSystem_de71f0e8-ab12-4cbd-bb36-7db5ad18f8ab,fr.inra.agrosyst.api.entities.Network_2356e2b6-f0cf-4eff-9bf0-564342a0bcba
+38727,fr.inra.agrosyst.api.entities.GrowingSystem_7bc43c70-db9e-4faf-936b-d69cc5767894,fr.inra.agrosyst.api.entities.Network_708b9703-04bb-4f1c-90bc-cd91fdc40cbd
+39297,fr.inra.agrosyst.api.entities.GrowingSystem_eb7e27c5-5e37-4c51-bd61-701bd36bcb04,fr.inra.agrosyst.api.entities.Network_243deee8-8f60-48d3-bbf2-48eb7c7843f7
+39699,fr.inra.agrosyst.api.entities.GrowingSystem_a361b3c6-7c09-41a7-840d-b7f926d16f05,fr.inra.agrosyst.api.entities.Network_b7b31597-b04e-43ae-be20-ac6ac4f84832
+42256,fr.inra.agrosyst.api.entities.GrowingSystem_51695536-4214-4b61-b95f-7de6ea051c6e,fr.inra.agrosyst.api.entities.Network_4ccfbb11-076b-43fc-b77f-872230c161f6

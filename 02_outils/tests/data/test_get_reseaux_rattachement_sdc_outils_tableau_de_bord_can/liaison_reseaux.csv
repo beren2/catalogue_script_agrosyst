@@ -1,0 +1,17 @@
+,reseau_id,reseau_parent_id
+36,fr.inra.agrosyst.api.entities.Network_b7b31597-b04e-43ae-be20-ac6ac4f84832,fr.inra.agrosyst.api.entities.Network_eac1185f-63c1-453b-bf34-879ab77ac531
+96,fr.inra.agrosyst.api.entities.Network_b7b31597-b04e-43ae-be20-ac6ac4f84832,fr.inra.agrosyst.api.entities.Network_b738151e-87f6-488c-8f51-6547fc81deac
+194,fr.inra.agrosyst.api.entities.Network_36d9c312-542c-49bf-8920-09af568db571,fr.inra.agrosyst.api.entities.Network_2f197d43-2007-4751-91ac-d833cdd95be8
+240,fr.inra.agrosyst.api.entities.Network_708b9703-04bb-4f1c-90bc-cd91fdc40cbd,fr.inra.agrosyst.api.entities.Network_2ceb5194-d0dc-46f3-a21f-c8b9f0c35cce
+252,fr.inra.agrosyst.api.entities.Network_c539a76d-9cf2-4406-b33f-50eb9f6b4aa3,fr.inra.agrosyst.api.entities.Network_2ceb5194-d0dc-46f3-a21f-c8b9f0c35cce
+270,fr.inra.agrosyst.api.entities.Network_243deee8-8f60-48d3-bbf2-48eb7c7843f7,fr.inra.agrosyst.api.entities.Network_7cbb5352-26e9-449b-8b4b-b92f00f71a26
+321,fr.inra.agrosyst.api.entities.Network_2356e2b6-f0cf-4eff-9bf0-564342a0bcba,fr.inra.agrosyst.api.entities.Network_eac1185f-63c1-453b-bf34-879ab77ac531
+322,fr.inra.agrosyst.api.entities.Network_b7b31597-b04e-43ae-be20-ac6ac4f84832,fr.inra.agrosyst.api.entities.Network_bd37734e-3e2b-41bc-938c-158de9b7ed97
+363,fr.inra.agrosyst.api.entities.Network_24ff5448-c7d4-48cf-b450-d24098b13d20,fr.inra.agrosyst.api.entities.Network_e922b1c2-b424-444e-af79-88f13c0f464b
+452,fr.inra.agrosyst.api.entities.Network_2356e2b6-f0cf-4eff-9bf0-564342a0bcba,fr.inra.agrosyst.api.entities.Network_035948d7-d5e2-4aca-84c2-7a06e771cc03
+572,fr.inra.agrosyst.api.entities.Network_b68d32fb-c19e-436f-81e7-cc0862283dce,fr.inra.agrosyst.api.entities.Network_2ceb5194-d0dc-46f3-a21f-c8b9f0c35cce
+580,fr.inra.agrosyst.api.entities.Network_acb905c9-085b-428b-bd07-e77af9696a4a,fr.inra.agrosyst.api.entities.Network_0c5f4bca-c5aa-4339-b84c-f07efeb29523
+640,fr.inra.agrosyst.api.entities.Network_4ccfbb11-076b-43fc-b77f-872230c161f6,fr.inra.agrosyst.api.entities.Network_b892fd2d-ae99-423a-a46d-8ae918a5f9e7
+683,fr.inra.agrosyst.api.entities.Network_0dbd161e-c1f5-4eb3-acce-0042fafd8b19,fr.inra.agrosyst.api.entities.Network_e922b1c2-b424-444e-af79-88f13c0f464b
+687,fr.inra.agrosyst.api.entities.Network_cd4ae0db-5dfe-40f9-ad84-2f9379ef30ef,fr.inra.agrosyst.api.entities.Network_ccac152c-f348-4b83-aa46-d6b103021e00
+693,fr.inra.agrosyst.api.entities.Network_cd4ae0db-5dfe-40f9-ad84-2f9379ef30ef,fr.inra.agrosyst.api.entities.Network_aa2492a7-bcb3-4f6d-a115-36fd48f72046
