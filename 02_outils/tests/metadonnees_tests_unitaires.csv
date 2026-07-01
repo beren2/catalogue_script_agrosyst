@@ -1225,3 +1225,7 @@ test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.ent
 test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_63dd16da-8e5c-4d00-a1e2-d9e26899743c,3.2,,surface_sdc
 test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_8fcc4cc3-e82f-4cc8-a9d9-376f6574d085,0.96,,surface_sdc
 test_get_surface_sdc_realise_outils_tableau_de_bord_can,fr.inra.agrosyst.api.entities.GrowingSystem_d7df80b0-8f3e-44f8-a029-ba147732a2b6,2.7,,surface_sdc
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_02bd19e7-f9bd-4ccc-abad-05ef0871911d,11,,nb_culture_sdc
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_1ef6d531-74bf-4396-8b18-3bbfb449eb22,1,,nb_culture_sdc
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_288c3360-04b0-4b39-9bd5-06a45a705110,5,,nb_culture_sdc
+test_get_typologie_assol_CAN_realise,fr.inra.agrosyst.api.entities.GrowingSystem_2ffa8e71-1c9b-4ea2-b706-c96be0e4ea72,11,,nb_culture_sdc

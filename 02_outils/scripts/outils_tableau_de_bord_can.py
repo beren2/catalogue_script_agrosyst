@@ -107,4 +107,3 @@ def get_surface_sdc_realise_outils_tableau_de_bord_can(
     res = df['parcelle'].groupby('sdc_id').agg({'surface' : 'sum'}).rename(columns={'surface' : 'surface_sdc'})
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
-3
