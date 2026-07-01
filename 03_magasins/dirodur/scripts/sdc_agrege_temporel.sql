@@ -1,13 +1,28 @@
 SELECT
     sdc_numero_dephy as sdc_numero_dephy,
-    sdc_etat_temporel as sdc_etat_temporel,
+    sdc_etat_temporel as sdc_etat_temporel,    
     STRING_AGG(CAST(domaine_campagne AS TEXT), ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_campagne_domaine,
     STRING_AGG(synthetise_campagnes_unnested, ', ' ORDER BY synthetise_campagnes_unnested) AS sdc_ag_temp_campagnes_synthetise,
     COUNT(*) AS sdc_ag_temp_nb_sdc,
+    COUNT(DISTINCT campagnes.annee) AS sdc_ag_temp_nb_distinct_campagnes,
+    STRING_AGG(
+        campagnes.annee,
+        ', '
+        ORDER BY campagnes.annee::int
+    ) AS sdc_ag_temp_liste_campagnes,
+    STRING_AGG(
+        DISTINCT campagnes.annee,
+        ', '
+        ORDER BY campagnes.annee::int
+    ) AS sdc_ag_temp_liste_distinct_campagnes,
     STRING_AGG(DISTINCT(sdc_code), ', ') AS sdc_ag_temp_sdc_code,
     STRING_AGG(DISTINCT(sdc_filiere), ', ') AS sdc_ag_temp_filieres,
     STRING_AGG(DISTINCT(sdc_type_production), ', ') AS sdc_ag_temp_types_production,
-    STRING_AGG(DISTINCT(sdc_type_agriculture), ', ') AS sdc_ag_temp_types_agriculture,
+    STRING_AGG(
+        sdc_type_agriculture,
+        ', '
+        ORDER BY campagnes.annee::int
+    ) AS sdc_ag_temp_types_agriculture
     AVG(sdc_part_sau_domaine) AS sdc_ag_temp_part_sau_domaine_moy,
     AVG(sdc_typo_surface_totale_assol_dvlp) AS sdc_ag_temp_surface_dvlp_real_moy,
     AVG(sdc_typo_surface_totale_assol) AS sdc_ag_temp_surface_real_moy,
@@ -52,8 +67,6 @@ SELECT
     AVG(domaine_main_oeuvre_saisoniere) AS sdc_ag_temp_main_oeuvre_saisoniere_moy,
     AVG(domaine_main_oeuvre_volontaire) AS sdc_ag_temp_main_oeuvre_volontaire_moy,
     STRING_AGG(DISTINCT(CAST(domaine_typologie_ruralite AS TEXT)), ', ') AS sdc_ag_temp_typologie_ruralite,
-    STRING_AGG(DISTINCT(CAST(sdc_utili_desherbage_meca AS TEXT)), ', ') AS sdc_ag_temp_utili_desherbage_meca,
-    STRING_AGG(DISTINCT(sdc_type_de_travail_du_sol), ', ') AS sdc_ag_temp_type_de_travail_du_sol,
     STRING_AGG(DISTINCT(synthetise_rotation_typo_can), ', ') AS sdc_ag_temp_synthetise_rotation_typo_can,
     AVG(sdc_ift_cible_non_mil_chimique_tot) AS sdc_ag_temp_ift_cible_non_mil_chimique_tot_moy,
     AVG(sdc_ift_cible_non_mil_chim_tot_hts) AS sdc_ag_temp_ift_cible_non_mil_chim_tot_hts_moy,
@@ -73,8 +86,21 @@ SELECT
     AVG(sdc_tps_travail_meca) AS sdc_ag_temp_tps_travail_meca_moy,
     AVG(sdc_tps_travail_total) AS sdc_ag_temp_tps_travail_total_moy,
     AVG(sdc_nbre_de_passages) AS sdc_ag_temp_nbre_de_passages_moy,
+    CASE
+        WHEN BOOL_AND(COALESCE(sdc_nbre_de_passages_labour, 0) > 0.5)
+            THEN 'LABOUR_SYSTEMATIQUE'
+        WHEN AVG(COALESCE(sdc_nbre_de_passages_labour, 0)) >= 0.67
+            THEN 'LABOUR_FREQUENT'
+        WHEN AVG(COALESCE(sdc_nbre_de_passages_labour, 0)) >= 0.02
+            THEN 'LABOUR_OCCASIONNEL'
+        WHEN AVG(COALESCE(sdc_nbre_de_passages_labour, 0)) < 0.02
+            AND AVG(COALESCE(sdc_nbre_de_passages_tcs, 0)) >= 0.02
+            THEN 'TCS'
+        ELSE 'SEMIS_DIRECT'
+    END AS sdc_ag_temp_type_de_travail_du_sol,
     AVG(sdc_nbre_de_passages_labour) AS sdc_ag_temp_nbre_de_passages_labour_moy,
     AVG(sdc_nbre_de_passages_tcs) AS sdc_ag_temp_nbre_de_passages_tcs_moy,
+    SUM(COALESCE(sdc_nbre_de_passages_desherbage_meca, 0)) > 0 AS sdc_ag_temp_utili_desherbage_meca,
     AVG(sdc_nbre_de_passages_desherbage_meca) AS sdc_ag_temp_nbre_de_passages_desherbage_meca_moy,
     AVG(sdc_co_std_mil_tot) AS sdc_ag_temp_co_std_mil_tot_moy,
     AVG(sdc_co_std_mil_semis) AS sdc_ag_temp_co_std_mil_semis_moy,
@@ -181,6 +207,13 @@ SELECT
 	AVG(sdc_ges_tot_indirectes_n2o) AS sdc_ag_temp_ges_tot_indirectes_n2o_moy,
 	AVG(sdc_ges_tot_indirectes) AS sdc_ag_temp_ges_tot_indirectes_moy
 from entrepot_sdc_for_agregation_magasin_dirodur
-CROSS JOIN LATERAL UNNEST(string_to_array(synthetise_campagnes, ', ')) AS synthetise_campagnes_unnested
-WHERE sdc_etat_temporel IN ('pz0','point_I','point_B')
+CROSS JOIN LATERAL UNNEST(
+    CASE
+        WHEN synthetise_campagnes IS NOT NULL
+             AND synthetise_campagnes <> ''
+        THEN string_to_array(synthetise_campagnes, ', ')
+        ELSE ARRAY[domaine_campagne]
+    END
+) AS campagnes(annee)
+WHERE sdc_etat_temporel IN ('pz0','point_A','point_I','point_B','point_C')
 GROUP BY sdc_numero_dephy, sdc_etat_temporel;
