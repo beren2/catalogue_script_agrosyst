@@ -1215,3 +1215,30 @@ test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.Grow
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_9bedb71e-9a8d-4e82-bbd2-3b77c04072b4,incorrect : chevauchement pz0,,etat_temporel
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2ae9d4c0-5c3e-4a66-a29d-a38a4cad0800,ni_pz0_ni_point_B,,etat_temporel
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6f683fc0-f21f-4e02-ab9c-1d476335e53c,point_C,,etat_temporel
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,"[324, 56, 56, 59]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,"[97, 118]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,"[61, 61]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,"[178, 178, 188, 280, 280, 295]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,"[138, 138, 138, 138, 138, 138, 143, 143, 143, 143, 143, 143]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,"[85, 220]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,"[315, 315, 61, 61]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,"[103, 120]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,"[228]",,dates_nbjr_triees
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,"31/12",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,"16/04",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,"01/03",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,"20/08",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,"19/05",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,"31/05",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,"10/12",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,"20/04",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,"15/08",,date_moyenne
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,"hiver",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,"ete",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,"printemps",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,"automne",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,"ete",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,"ete",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,"hiver",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,"ete",,saison_semis_detect_via_intv
+test_get_saison_semis,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,"automne",,saison_semis_detect_via_intv
