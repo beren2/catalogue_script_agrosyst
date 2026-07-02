@@ -1,0 +1,4 @@
+id,rang,fin_cycle,culture_code,memecampagne_noeudprecedent,fq_initial_noeud,synthetise_id,ordonnee_interface
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_848b58a4-e72f-46f1-83f6-bba1cb9f2685,0,f,918cf45e-dff5-4ca3-ba84-378f0dd38fa0,f,100.0,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c7f5d445-ba14-4e12-b494-d6b1dfffa621,0
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_66b7ece0-3386-4fe1-b7ad-2c734d078fcf,1,f,918cf45e-dff5-4ca3-ba84-378f0dd38fa0,f,,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c7f5d445-ba14-4e12-b494-d6b1dfffa621,0
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_0a90b4fe-06fb-44e1-937d-20f104dd3ea3,2,f,918cf45e-dff5-4ca3-ba84-378f0dd38fa0,f,,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c7f5d445-ba14-4e12-b494-d6b1dfffa621,0

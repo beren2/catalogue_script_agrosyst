@@ -1,6 +1,7 @@
 """
 	Regroupe les fonctions permettant de générer les outils utiles lors de la génération du magasin "DiRoDur".
 """
+from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from scripts.utils import dirodur_utiles
@@ -455,148 +456,184 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
     return add_etat_temporel_column(df)
 
 
+def get_saison_semis(donnees):
+    """
+    Donne, à partir des dates d'interventions, les saisons de semis pour chaque cultures (seulement pour les cultures GCPE).
+    Calcule d'abord une date moyenne de semis par culture à partir des interventions date_din et date_début 
+    des interventions de semis en réalisées et synthétisées.
+    Puis calcul une date de semis moyenne des dates de semis moyennnes par culture.
+    On fait bien attention de prendre en compte le passage au nouvel an pour les date en synthétisé (format jj/mm). 
+    En réalisé plus simple : (format aaaa-mm-jj).
+    Enfin on applique une saison en fonction de cette date !
 
-
-def get_typologie_culture_CAN(donnees):
-    ''' 
-    Le but est d'obtenir les typologies d'espece et de culture utilisées par la Cellule référence.
-
-    Echelle :
-        culture_id
-
-    Args:
-        donnees (dict):
-            Données d'entrepot
-            - 'composant_culture'
-            - 'culture'
-            - 'espece'
-            - 'recolte_rendement_prix'
-            - 'recolte_rendement_prix_restructure'
-            Données externe (référentiel CAN):
-            - 'typo_especes_typo_culture.csv'
-            - 'typo_especes_typo_culture_marai.csv'
-
-    Returns:
-        pd.DataFrame() contenant la culture_id et la typologie de culture de la CAN
-    '''
-    # Donnes de bases
-    cropsp = donnees['composant_culture'][['espece_id','culture_id','compagne']].copy()
-    crop = donnees['culture'][['id','nom','type']].rename(columns={'id':'culture_id'}).copy()
-    sp = donnees['espece'][['id','typocan_espece','typocan_espece_maraich']].rename(columns={'id':'espece_id'}).copy()
-    
-    # Donnees d'intervention pour les dates de semis
+    Dépendance : 
+        - outils.restructuration
+    Besoin de ces tables en entrée : 
+        'intervention_synthetise',
+        'intervention_realise',
+        'noeuds_realise',
+        'noeuds_synthetise',
+        'noeuds_synthetise_restructure',
+        'connection_synthetise',
+        'zone',
+        'parcelle',
+        'synthetise',
+        'sdc'
+    """
+    # Chargement des tables utiles nottament les interventions
     intv_S = donnees['intervention_synthetise'][['id','type','date_debut','date_fin','concerne_ci','connection_synthetise_id']].copy()
-    intv_R = donnees['intervention_synthetise'][['id','type','date_debut','date_fin','concerne_ci','noeud_realise_id']].copy()
-    conx_S = donnees['connection_synthetise'][['id','cible_noeuds_synthetise_id']].rename(columns={'id':'connection_synthetise_id', 'cible_noeuds_synthetise_id':'noeud_synthetise_id'}).copy()
-    noeud_w_culture_id_S = donnees['noeuds_synthetise_restructure'][['id','culture_id']].rename(columns={'id':'noeud_synthetise_id'}).copy()
-    noeuds_w_culture_id_R = donnees['noeuds_realise'][['id','culture_id']].rename(columns={'id':'noeud_realise_id'}).copy()
+    intv_R = donnees['intervention_realise'][['id','type','date_debut','date_fin','concerne_ci','noeuds_realise_id']].copy()
+    conx_S = donnees['connection_synthetise'][['id','cible_noeuds_synthetise_id']].rename(columns={'id':'connection_synthetise_id', 'cible_noeuds_synthetise_id':'noeuds_synthetise_id'}).copy()
+    noeud_w_culture_id_S = donnees['noeuds_synthetise_restructure'][['id','culture_id']].rename(columns={'id':'noeuds_synthetise_id'}).copy()
+    noeuds_w_culture_id_R = donnees['noeuds_realise'][['id','culture_id','zone_id']].rename(columns={'id':'noeuds_realise_id'}).copy()
 
+    node_S = donnees['noeuds_synthetise'][['id','synthetise_id']].rename(columns={'id':'noeuds_synthetise_id'}).copy()
+    synthe = donnees['synthetise'][['id','sdc_id']].rename(columns={'id':'synthetise_id'}).copy()
+    zone = donnees['zone'][['id','parcelle_id']].rename(columns={'id':'zone_id'}).copy()
+    parcelle = donnees['parcelle'][['id','sdc_id']].rename(columns={'id':'parcelle_id'}).copy()
+    sdc = donnees['sdc'][['id','filiere']].rename(columns={'id':'sdc_id'}).copy()
+
+    # Filtre sur les interventions de semis hors CI
+    intv_S = intv_S.loc[(intv_S['type'] == 'SEMIS') & 
+                        (intv_S['connection_synthetise_id'].notna()) & 
+                        (intv_S['concerne_ci'] == 'f')]
+    intv_R = intv_R.loc[(intv_R['type'] == 'SEMIS') & 
+                        (intv_R['noeuds_realise_id'].notna()) & 
+                        (intv_R['concerne_ci'] == 'f')]
+
+    # Rattachement des cultures
     intv_S = intv_S.merge(conx_S, on='connection_synthetise_id', how='left')
-    intv_S = intv_S.merge(noeud_w_culture_id_S, on='noeud_synthetise_id', how='left')
-    intv_R = intv_R.merge(noeuds_w_culture_id_R, on='noeud_realise_id', how='left')
+    intv_S = intv_S.merge(noeud_w_culture_id_S, on='noeuds_synthetise_id', how='left')
+    intv_R = intv_R.merge(noeuds_w_culture_id_R, on='noeuds_realise_id', how='left')
 
+
+    def moyenne_dates(start_series, end_series, methode = 'R'):
+        """ 
+        Calcule la date moyenne entre date_debut et date_fin.
+        """
+
+        def parse_S_date(s):
+            """ 
+            Créer une date au format date. 
+            Affecter une année pour avoir une vrai date. 
+            On corrige le jour dans le cas des années bissextile et des erreurs de saisie 
+            """
+            j, m = map(int, s.split('/'))
+            try :
+                return datetime(2025, m, j)
+            except ValueError:
+                try : 
+                    return datetime(2025, m, j-1)
+                except ValueError:
+                    return datetime(2025, m, j-2)
+                
+        def parse_R_date(s):
+            """ 
+            Créer une date au format date. 
+            """
+            y, m, j = map(int, s.split('-'))
+            return datetime(y, m, j)
+        
+        # Cas ou les dates de fin sont antérieures aux dates de début
+        if methode == 'S':
+            start_dates = start_series.apply(parse_S_date)
+            end_dates = end_series.apply(parse_S_date)
+
+            mask = end_dates < start_dates
+            end_dates.loc[mask] = end_dates.loc[mask].apply(lambda x: datetime(2026, x.month, x.day))
+
+        elif methode == 'R':
+            start_dates = start_series.apply(parse_R_date)
+            end_dates = end_series.apply(parse_R_date)
+
+        # Moyenne
+        moyennes = start_dates + ((end_dates - start_dates) / 2)
+
+        # Retourne la date au format jj/mm
+        return moyennes.dt.strftime('%d/%m')
+
+    # Date de semis moyenne par intervention
+    intv_R['date_semis'] = moyenne_dates(intv_R['date_debut'], intv_R['date_fin'], methode='R')
+    intv_S['date_semis'] = moyenne_dates(intv_S['date_debut'], intv_S['date_fin'], methode='S')
+
+    # Fusion des données réalisées et synthétisées
     intv = pd.concat([intv_S, intv_R], ignore_index=True)
 
-    intv.groupby('culture_id').apply(
-        lambda clt: pd.Series({
-            'typo_cpg' : 'Cultures porte graines' if all(clt['nom'].str.contains('porte+.graine|semence', case=False)) |\
-                                              all(clt['destination'] == 'Production semences') \
-                    else 'Cultures porte graines et autres destinations' if any(clt['destination'] == 'Production semences') \
-                    else None
-        }), include_groups = False).reset_index()
+    # Rattachement au SDC puis filtrage sur GCPE
+    intv = intv.merge(node_S, on='noeuds_synthetise_id',how='left')
+    intv = intv.merge(synthe, on='synthetise_id',how='left')
+    intv = intv.merge(zone, on='zone_id',how='left')
+    intv = intv.merge(parcelle, on='parcelle_id',how='left')
+    intv['sdc_id'] = np.where(intv['sdc_id_x'].notna(), intv['sdc_id_x'], intv['sdc_id_y'])
+    intv = intv[['id','culture_id','date_semis','sdc_id']]
+    intv = intv.merge(sdc, on='sdc_id',how='left')
+    intv = intv.loc[intv['filiere'].isin(['POLYCULTURE_ELEVAGE','GRANDES_CULTURES'])]
 
+    # Conversion en jour de l'année pour calcul circulaire
+    # PS : Ajouter une année bissextile (2020) pour parser les dates
+    intv['_dayofyear'] = pd.to_datetime(
+        intv['date_semis'].astype(str) + '/2020',
+        format='%d/%m/%Y'
+    ).dt.dayofyear
 
-    # Donnees de typologie d'espece et de culture
-    typo1 = donnees['typo_especes_typo_culture'].copy()
-    typo1 = typo1.rename(columns={'TYPO_ESPECES':'typocan_espece',
-                                  'Typo_Culture':'typocan_culture'})
-    typo2 = donnees['typo_especes_typo_culture_marai'].copy()
-    typo2 = typo2.rename(columns={'TYPO_ESPECES_BIS':'typocan_espece_maraich',
-                                  'Typo_Culture_bis':'typocan_culture_maraich'})
+    def circular_mean_date(group):
+        """
+        Moyenne de dates moyennes en tenant compte du passage au nouvel an (ex: 30/12, 01/01, 02/01 => date moyenne = 01/01).
+        """
 
-    df = cropsp.merge(sp, how = 'left', on = 'espece_id')
-        # On change directement dans le dataframe les typologies d'espèces de la Betterave si elle est fourragère. Cela impactera la typologie de culture car elle ne reconnaitra pas 'Betterave fourragere' comme un 'Betterave' (la betterave industrielle). => Donc a ajouter dans le referentiel de passage typo_sp <=> typo_culture
-    df.loc[df['composant_culture_id'].isin( list_cpc_bett_fourr ),'typocan_espece'] = 'Betterave fourragère'
-    df.loc[df['composant_culture_id'].isin( list_cpc_bett_fourr ),'typocan_espece_maraich'] = 'Betterave fourragère'
+        days = group['_dayofyear'].values
+        if len(list(set(days))) == 1:
+            return pd.Series({
+                'dates_nbjr_triees': days.tolist(),
+                'date_moyenne': group['date_semis'].values[0]
+            })
 
-    # Liste des cultures qui contiennent des cultures compagnes
-    list_culture_with_compagne = list(set(df.loc[df['compagne'].notnull(), 'culture_id']))
+        # Trouve l'écart maximal entre 2 dates consécutives (en boucle)
+        sorted_days = np.sort(days)
+        diffs = np.diff(np.r_[sorted_days, sorted_days[0] + 366])  # +366 pour gérer 29/02
+        cut = np.argmax(diffs)+1
+        # Réordonne en partant après la coupure
+        order = np.roll(sorted_days, -cut)
 
-    df['nb_composant_culture'] = 1
-    df['nb_typocan_esp'] = df['typocan_espece'].copy()
-    df['nb_typocan_esp_maraich'] = df['typocan_espece_maraich'].copy()
+        # Retourne la date moyenne
+        asc_list = [y + order[0] if y < order[0] else y for y in order]
+        moy = np.mean(asc_list)
+        if moy > 366:
+            moy -= 366
+        date_moy = datetime(2020, 1, 1) + timedelta(days=moy-1)
+        date_moy = date_moy.strftime('%d/%m') 
 
-    def concat_unique_sorted(series):
-        cleaned = series.dropna().unique()
-        if len(cleaned) == 0:
-            return np.nan
-        return '_'.join(sorted(cleaned))
-    def get_nb_unique_typo(series):
-        cleaned = series.dropna().unique()
-        return len(cleaned)
-    agg_dict = {
-        'typocan_espece': concat_unique_sorted,
-        'typocan_espece_maraich': concat_unique_sorted,
-        'nb_composant_culture': 'sum',
-        'nb_typocan_esp': get_nb_unique_typo,
-        'nb_typocan_esp_maraich': get_nb_unique_typo
-    }
-
-    #  On crée les typologie can culture et les autre variable utiles grace a agg_dict
-    df_base = df[['culture_id','typocan_espece','typocan_espece_maraich',
-                'nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].groupby('culture_id').agg(agg_dict).reset_index()
-    #  On crée une typologie can culture mais sans les cpc qui sont des plantes compagnes
-    df_comp = df.loc[df['compagne'].isna()].copy()
-    df_comp['typocan_esp_sans_compagne'] = df_comp['typocan_espece'].copy()
-    df_comp = df_comp[['culture_id','typocan_esp_sans_compagne']].groupby('culture_id').agg(concat_unique_sorted).reset_index()
-
-    # On repart sur un pd.Df qui est le merge de df_base et df_comp (donc le meme groupby mais sur un version filtré de df_base)
-    del(df)
-    df = df_base.merge(df_comp[['culture_id','typocan_esp_sans_compagne']], on = 'culture_id', how = 'left')
-
-    # On ajoute les culture_id qui n'ont pas de composant de culture et on leur attribue aucune espece renseigné
-    df = df.merge(crop, how='left', on='culture_id')
-
-    # Détection des cultures qui contiennent des cultures compagnes
-    df['is_any_compagne'] = np.where(df['culture_id'].isin(list_culture_with_compagne), True, False)
-
-    crop_only = crop.loc[~crop['culture_id'].isin(df['culture_id']),:]
-    # ATTENTION_DIFF_CAN_a ::: 2 Lignes
-    crop_only.loc[:,['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = 0
-    crop_only.loc[:,['typocan_espece','typocan_espece_maraich','typocan_esp_sans_compagne']] = 'NoInput-sp'
-    crop_only['is_any_compagne'] = False
-
-    df = pd.concat([df, crop_only], ignore_index=True)
-
-    df = df.merge(typo1, how='left', on='typocan_espece')
-
-    df = df.merge(typo2, how='left', on='typocan_espece_maraich')
-
-    df = df.merge(typo1.rename(columns={'typocan_espece':'typocan_esp_sans_compagne',
-                                        'typocan_culture':'typocan_culture_sans_compagne'}), \
-                                            how='left', on='typocan_esp_sans_compagne')
+        return pd.Series({
+            'dates_nbjr_triees': order.tolist(),
+            'date_moyenne': date_moy
+        })
     
-    # ATTENTION_DIFF_CAN_a_bis ::: 1 Lignes
-    # le premier c'était pour les composant de culture, ici c'est pour la typo de culture
-    df.loc[df['nb_composant_culture'] == 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']] = 'NoInput-sp'
+    # Applique la fonction circular_mean_date et retourner l'objet
+    result = intv.groupby('culture_id', group_keys = False).apply(circular_mean_date, include_groups=False)
 
-    # Si pas de correspondance espece <-> culture on l'écrit
-    df.loc[df['nb_composant_culture'] != 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']] = df.loc[df['nb_composant_culture'] != 0,['typocan_culture','typocan_culture_maraich','typocan_culture_sans_compagne']].fillna('NoLink-sp-crop')
+    def transforme_date_en_saison(date_str):
+        """ 
+        A partir d'une date au format jj/mm, retourne la saison de semis correspondante.
+        """
+
+        j, m = map(int, date_str.split('/'))
+        date = datetime(2024, m, j)
+        if datetime(2024, 1, 16) <= date <= datetime(2024, 4, 15):
+            return 'printemps'
+        elif datetime(2024, 4, 16) <= date <= datetime(2024, 6, 15):
+            return 'ete'
+        elif datetime(2024, 6, 16) <= date <= datetime(2024, 9, 15):
+            return 'automne'
+        else:
+            return 'hiver'
+
+    result['saison_semis_detect_via_intv'] = result['date_moyenne'].apply(transforme_date_en_saison)
+
+    return result[['culture_id', 'dates_nbjr_triees', 'date_moyenne', 'saison_semis_detect_via_intv']]
 
 
-    # ATTENTION_DIFF_CAN_b ::: 2 Lignes
-    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = ['Culture intermédiaire', 'Culture intermédiaire']
-    # df.loc[df.type == 'INTERMEDIATE', ['typocan_culture','typocan_culture_maraich']] = [np.nan, np.nan]
 
-
-    df['type'] = df['type'].astype('category')
-    df['type'] = df['type'].cat.rename_categories({'MAIN': 'PRINCIPALE', 
-                                                   'INTERMEDIATE': 'INTERMEDIAIRE', 
-                                                   'CATCH': 'DEROBEE' })
-    df['type'] = df['type'].astype('str')
-    df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']] = df[['nb_composant_culture','nb_typocan_esp','nb_typocan_esp_maraich']].astype('int64')
-    
-    # Ajout des tags 'culture porte-graines' dans une colonne à part, voir la détection quelques ligne plus tôt dans cette fonction
-    df = df.merge(culture_porteG[['culture_id','typo_cpg']], how='left', on='culture_id')
+def get_typologie_culture_DIRODUR(donnees):
+   
 
     return df

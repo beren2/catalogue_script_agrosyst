@@ -759,6 +759,10 @@ def create_category_dirodur_0():
     itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
     export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
 
+    df_date_de_semis = outils_dirodur.get_date_de_semis_outils_dirodur(donnees)
+    export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')
+    add_primary_key('entrepot_date_de_semis_outils_dirodur', 'culture_id')
+
 
 def create_category_interoperabilite():
     """
