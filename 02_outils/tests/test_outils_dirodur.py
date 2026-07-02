@@ -218,16 +218,16 @@ def test_get_saison_semis():
 
     identifiant_test = 'test_get_saison_semis'
     df_names = [   
-        'sdc', 
-        'dispositif',
-        'synthetise',
-        'itk_realise_performance',
-        'itk_synthetise_performance',
-        'connection_synthetise',
-        'noeuds_synthetise',
+        'intervention_synthetise',
+        'intervention_realise',
         'noeuds_realise',
+        'noeuds_synthetise',
+        'noeuds_synthetise_restructure',
+        'connection_synthetise',
+        'zone',
         'parcelle',
-        'zone'
+        'synthetise',
+        'sdc'
     ]
 
     path_data = '02_outils/tests/data/test_get_saison_semis/'
