@@ -24,6 +24,7 @@ SELECT
 	re.num_groupe_gnis,
 	re.nom_gnis, 
 	re.nom_latin_gnis,
+	re.id_culture_acta,
 	re.nom_culture_acta, 
 	re.remarque_culture_acta,
 	re.typocan_espece,

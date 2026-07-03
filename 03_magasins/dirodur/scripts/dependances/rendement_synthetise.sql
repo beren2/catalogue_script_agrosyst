@@ -60,7 +60,10 @@ select
 	eis.type as intervention_type,
 	easa.intervention_synthetise_id as intervention_id,
 	easa.cible_noeuds_synthetise_id as noeud_id,
-	easa.connection_synthetise_id as connexion_id
+	easa.connection_synthetise_id as connexion_id,
+	ersfod.destination_have_match_in_ref_dirodur as destination_est_conforme,
+	not ersfod.unite_problematic as unite_est_conforme,
+	not ersfod.espece_is_na as espece_est_conforme
 	from entrepot_recolte_rendement_prix errp
 join entrepot_action_synthetise eas on errp.action_id = eas.id
 left join entrepot_recolte_rendement_prix_restructure errpr on errp.id = errpr.id
@@ -72,7 +75,5 @@ left join entrepot_typologie_can_culture etcc on etcc.culture_id = ec.id
 left join entrepot_action_synthetise_agrege easa on eas.id = easa.id
 left join entrepot_intervention_synthetise eis on eis.id = eas.intervention_synthetise_id 
 left join entrepot_rendement_synthetise_filtre_outils_dirodur ersfod on errp.id = ersfod.id
--- conditions de présence dans le magasin
-where ersfod.destination_have_match_in_ref_dirodur = true
-and ersfod.unite_problematic = false
-and ersfod.espece_is_na = false;
+left join entrepot_synthetise_filtre_outils_dirodur esfod on easa.synthetise_id = esfod.synthetise_id
+where esfod.in_dirodur is true;

@@ -6,6 +6,7 @@ CREATE TABLE entrepot_dispositif AS
     gp.code code,
     gp.name nom,
     gp.type "type",
+    gp.codesite as code_site,
     d.campagne,
     d.id as domaine_id
   FROM growingplan gp

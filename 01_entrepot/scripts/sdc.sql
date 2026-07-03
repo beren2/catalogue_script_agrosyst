@@ -8,7 +8,8 @@ WITH sdc AS (
     gs.name AS nom,
     edo.campagne,
     gs.modalitydephyferme AS modalite_suivi_dephy,
-    gs.dephynumber AS code_dephy,
+    gs.modalitydephyexpe AS modalite_experimentation,
+    COALESCE(gs.dephynumber, gs.codedephyexpe) AS code_dephy,
     gs.description AS commentaire,
     CASE gs.validated
       WHEN true then 'oui'
