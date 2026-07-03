@@ -4,7 +4,6 @@
 import geopandas as gpd
 import pandas as pd
 from scripts import outils_dirodur
-from scripts.utils import dirodur_utiles
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
@@ -49,7 +48,7 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
             df_dict = import_dfs(df_names, data_path, file_format=x)
             all_df = {**all_df, **df_dict}
         else :
-            raise Exception("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
+            raise ValueError("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
     return all_df
 
 def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, metadonnee_file='02_outils/tests/metadonnees_tests_unitaires.csv', df_ref_names = None, path_ref = '02_outils/data/referentiels/', key_name='id', multi_extension:bool = False):
@@ -193,20 +192,21 @@ def test_get_itk_filtre_outils_dirodur():
     identifiant_test = 'test_get_itk_filtre_outils_dirodur'
     df_names = [   
         'sdc', 
-        'dispositif',
         'synthetise',
         'itk_realise_performance',
         'itk_synthetise_performance',
         'connection_synthetise',
         'noeuds_synthetise',
+        'noeuds_synthetise_restructure',
         'noeuds_realise',
         'parcelle',
+        'typologie_can_culture',
         'zone'
     ]
 
     path_data = '02_outils/tests/data/test_get_itk_filtre_outils_dirodur/'
 
-    fonction_to_apply = outils_dirodur.get_rendement_filtre_synthetise_outils_dirodur    
+    fonction_to_apply = outils_dirodur.get_itk_filtre_outils_dirodur
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)

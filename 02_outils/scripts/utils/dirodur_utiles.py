@@ -1,9 +1,10 @@
 """
 	Regroupe les fonctions permettant de générer les outils utils lors de la génération du magasin "DiRoDur".
 """
+from datetime import datetime
 import pandas as pd
 import numpy as np
-from datetime import datetime
+
 
 def filtered_entities_sdc_level(donnees):
     """
@@ -31,9 +32,9 @@ def filtered_entities_sdc_level(donnees):
         avec une colonne d'entité : sdc_id ou synthetise_id
         et la colonne "in_dirodur", un booléen : True -> à garder dans dirodur
     """
-    lst_alerte_col = ['alerte_ferti_n_tot', 'alerte_ift_cible_non_mil_chim_tot_hts',
-        'alerte_ift_cible_non_mil_f', 'alerte_ift_cible_non_mil_h',
-        'alerte_ift_cible_non_mil_i', 'alerte_ift_cible_non_mil_biocontrole',
+    lst_alerte_col = ['alerte_ferti_n_tot', 'alerte_ift_cible_mil_chim_tot_hts',
+        'alerte_ift_cible_mil_f', 'alerte_ift_cible_mil_h',
+        'alerte_ift_cible_mil_i', 'alerte_ift_cible_mil_biocontrole',
         'alerte_co_irrigation_std_mil', 'alerte_msn_std_mil_avec_autoconso',
         'alerte_nombre_interventions_phyto', 'alerte_pb_std_mil_avec_autoconso',
         'alerte_rendement', 'alertes_charges', 'alerte_cm_std_mil',
@@ -83,7 +84,11 @@ def filtered_entities_sdc_level(donnees):
 
 
     # 4. on filtre par alertes
-    list_alerte_ok = ["Pas d'alerte", "Cette alerte n'existe pas dans cette filière", "Cette alerte n'existe pas encore dans cette filière"]
+    list_alerte_ok = [
+        "Pas d'alerte", 
+        "Cette alerte n'existe pas dans cette filière", 
+        "Cette alerte n'existe pas encore dans cette filière"
+    ]
 
     def filtrer_alertes(df, lst_alerte_col, list_alerte_ok, name_culture_col):
         # Masque pour les colonnes d'alertes sauf 1

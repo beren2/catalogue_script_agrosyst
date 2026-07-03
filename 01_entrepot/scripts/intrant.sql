@@ -239,7 +239,7 @@ select
 		ratp.nom_produit as ref_nom,
 		adisu.inputname as nom_utilisateur,
 		ratp.code_amm as code_amm,
-		ratp.nodu biocontrole,
+		ratp.biocontrole as biocontrole,
 		ip.price as prix_saisi,
 		ip.priceunit as prix_saisi_unite,
 		rpp.price as prix_ref,

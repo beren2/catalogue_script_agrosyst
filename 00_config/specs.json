@@ -572,6 +572,13 @@
 					"geofla",
 					"ruralite"
 				]
+			},
+			"dephygraph_data" : {
+				"path" : "data/external_data/dephygraph/",
+				"tables" : [
+					"data_ipmgraph_for_dephygraph",
+					"data_culture_trop_for_dephygraph"
+				]
 			}
 		},
 		"categories" : {
@@ -598,27 +605,12 @@
                 "generated" : [
                     "utilisation_intrant_realise_agrege",
                     "utilisation_intrant_synthetise_agrege", 
-                    "intervention_synthetise_manquant_agrege", 
-                    "intervention_realise_manquant_agrege",
-                    "action_realise_manquant_agrege", 
-                    "action_synthetise_manquant_agrege"
-                ], 
-				"need_performance" : []
-            },
-            "agregation_complet" : {
-                "function_name" : "None",
-                "dependances" : [{
-                    "source" : "outils", 
-                    "category": "agregation"
-                }
-                ],
-                "generated" : [
-                    "utilisation_intrant_realise_agrege", 
-                    "utilisation_intrant_synthetise_agrege",
                     "intervention_synthetise_agrege", 
                     "intervention_realise_agrege",
                     "action_realise_agrege", 
-                    "action_synthetise_agrege"
+                    "action_synthetise_agrege",
+					"itk_realise_agrege",
+					"itk_synthetise_agrege"
                 ], 
 				"need_performance" : []
             },
@@ -635,7 +627,7 @@
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 }],
                 "generated" : [
                     "noeuds_synthetise_restructure", 
@@ -676,7 +668,7 @@
 						"category": "restructuration"
 					},{
 						"source" : "outils", 
-						"category": "agregation_complet"
+						"category": "agregation"
 					},{
 						"source" : "outils", 
 						"category": "indicateur_0"
@@ -702,7 +694,7 @@
                     "category": "restructuration"
                 },{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 }],
                 "generated" : [
                     "dispositif_filtres_outils_can",
@@ -724,7 +716,7 @@
                     "category": "restructuration"
                 },{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 },{
                     "source" : "outils", 
                     "category": "nettoyage"
@@ -744,6 +736,8 @@
                 "generated" : [
                     "rendement_realise_filtre_outils_dirodur", 
 					"rendement_synthetise_filtre_outils_dirodur", 
+					"sdc_realise_filtre_outils_dirodur",
+					"synthetise_filtre_outils_dirodur",
 					"sdc_statut_temporel_outils_dirodur", 
 					"itk_filtres_outils_dirodur",
 					"date_de_semis_outils_dirodur",
@@ -756,25 +750,63 @@
 					"itk_synthetise_performance"
 				]
             },
+			"outils_dephygraph" : {
+                "function_name" : "create_category_outils_dephygraph",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation"
+                },{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_2"
+                }],
+                "generated" : [
+                    "donnees_dephyferme_pour_dephygraph",
+					"donnees_ipmgraph_pour_dephygraph",
+					"donnees_culture_trop_pour_dephygraph"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				]
+            },
             "test" : {
                 "function_name" : "create_category_test",
-                "dependances" : [],
-                "generated" : [
-					"itk_filtres_outils_dirodur" 
-                ],
-                "entrepot_dependances" : [
-					"sdc", 
-					"dispositif", 
-					"synthetise", 
-					"connection_synthetise", 
-					"noeuds_synthetise", 
-					"noeuds_realise", 
-					"parcelle", 
-					"zone",
-					"itk_realise_performance", 
-					"itk_synthetise_performance"
+				"entrepot_dependances" : [
+					"sdc", "synthetise_synthetise_performance",
+					"sdc_realise_performance",
+					"intervention_realise_agrege", "intervention_synthetise_agrege", 
+					"typologie_assol_can_realise", "typologie_can_rotation_synthetise", 
+					"synthetise", "entite_unique_par_sdc_nettoyage", "sdc_realise_performance",
+					"synthetise_synthetise_performance", "connection_synthetise", "noeuds_synthetise",
+					"noeuds_realise", "parcelle", "zone", "itk_synthetise_performance", "itk_realise_performance",
+					"typologie_can_culture"
 				],
-				"need_performance" : []
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                }],
+                "generated" : [
+                    "donnees_dephyferme_pour_dephygraph"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				]
             }
         }
     },
