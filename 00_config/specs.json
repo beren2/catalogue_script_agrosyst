@@ -746,7 +746,8 @@
 					"rendement_synthetise_filtre_outils_dirodur", 
 					"sdc_statut_temporel_outils_dirodur", 
 					"itk_filtres_outils_dirodur",
-					"date_de_semis_outils_dirodur"
+					"date_de_semis_outils_dirodur",
+					"typologie_culture_dirodur_outils_dirodur"
                 ], 
 				"need_performance" : [
 					"synthetise_synthetise_performance",

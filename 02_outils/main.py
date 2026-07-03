@@ -763,6 +763,10 @@ def create_category_dirodur_0():
     export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')
     add_primary_key('entrepot_date_de_semis_outils_dirodur', 'culture_id')
 
+    df_typologie_culture_dirodur = outils_dirodur.get_typologie_culture_DIRODUR(donnees)
+    export_to_db(df_typologie_culture_dirodur, 'entrepot_typologie_culture_dirodur_outils_dirodur')
+    add_primary_key('entrepot_typologie_culture_dirodur_outils_dirodur', 'culture_id')
+    
 
 def create_category_interoperabilite():
     """
