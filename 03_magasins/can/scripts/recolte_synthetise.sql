@@ -22,7 +22,7 @@ select
 	errp.nonvalorisation_pct_corr as nonvalorisation_pct
 from entrepot_recolte_outils_can errp
 join entrepot_action_synthetise ear on errp.action_id = ear.id
-left join entrepot_action_synthetise_manquant_agrege earma on errp.action_id = earma.id
+left join entrepot_action_synthetise_agrege earma on errp.action_id = earma.id
 left join entrepot_domaine ed on earma.domaine_id = ed.id
 left join entrepot_sdc esdc on earma.sdc_id = esdc.id
 left join entrepot_synthetise es on es.id = earma.synthetise_id
