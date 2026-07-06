@@ -235,7 +235,20 @@ def import_df(df_name, path_data, sep, file_format='csv') :
         if(DEBUG):
             donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
         else:
-            donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+            if(df_name == 'utilisation_intrant_performance'):
+                # Pour cette table, on ne garde que les colonnes utiles pour l'outil de performance
+                cols_to_keep = ['utilisation_intrant_id']
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, usecols=cols_to_keep)
+            elif(df_name == 'intervention_realise_performance'):
+                # Pour cette table, on ne garde que les colonnes utiles pour l'outil de performance
+                cols_to_keep = ['intervention_realise_id']
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, usecols=cols_to_keep)
+            elif(df_name == 'intervention_synthetise_performance'):
+                # Pour cette table, on ne garde que les colonnes utiles pour l'outil de performance
+                cols_to_keep = ['intervention_synthetise_id']
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, usecols=cols_to_keep)
+            else:
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
     if file_format == 'json' and df_name.startswith('geoVec') :
         # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
         donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
@@ -834,7 +847,11 @@ def create_category_outils_tableau_de_bord_can():
     export_to_db(surface_sdc, 'entrepot_sdc_realise_outils_tableau_de_bord_can')
     add_primary_key('entrepot_sdc_realise_outils_tableau_de_bord_can', 'id')
 
-
+    # stc = surface_typo_culture
+    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(surface_typo_culture_sdc_realise_outils_tableau_de_bord_can, 'entrepot_stc_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_stc_sdc_realise_outils_tableau_de_bord_can', 'id')
     
 def create_category_outils_can():
     """
@@ -925,15 +942,11 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    sdc_realise_filtre_outils_dirodur = outils_dirodur.get_sdc_realise_filtre_outils_dirodur(donnees)
-    sdc_realise_filtre_outils_dirodur.set_index('sdc_id', inplace=True)
-    export_to_db(sdc_realise_filtre_outils_dirodur, 'entrepot_sdc_realise_filtre_outils_dirodur')
-    add_primary_key('entrepot_sdc_realise_filtre_outils_dirodur','sdc_id')
-
-    synthetise_filtre_outils_dirodur = outils_dirodur.get_synthetise_filtre_outils_dirodur(donnees)
-    synthetise_filtre_outils_dirodur.set_index('synthetise_id', inplace=True)
-    export_to_db(synthetise_filtre_outils_dirodur, 'entrepot_synthetise_filtre_outils_dirodur')
-    add_primary_key('entrepot_synthetise_filtre_outils_dirodur','synthetise_id')
+    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    # stc = surface_typo_culture
+    export_to_db(surface_typo_culture_sdc_realise_outils_tableau_de_bord_can, 'entrepot_stc_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_stc_sdc_realise_outils_tableau_de_bord_can', 'id')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
@@ -1029,8 +1042,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             # Chargement des données
             print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             needed_perfs_tables = []
-            for catagory in SOURCE_SPECS['outils']['categories'].values():
-                needed_perfs_tables += catagory.get('need_performance', [])
+            for category in SOURCE_SPECS['outils']['categories'].values():
+                needed_perfs_tables += category.get('need_performance', [])
             load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, needed_perfs=needed_perfs_tables)
             print("* CHARGEMENT DES DONNÉES EXTERNES *")
             load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
@@ -1123,8 +1136,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                    #print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
-                    #load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     #load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                     #load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
@@ -1150,8 +1163,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                        #print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
-                        #load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                        load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                         print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')

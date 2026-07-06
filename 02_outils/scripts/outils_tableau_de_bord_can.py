@@ -167,7 +167,8 @@ def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
         Retourne pour chaque système de culture en realise, la surface par typologie de culture (une colonne par typologie de culture)
 
         > Attention, toutes les culture déclarées "porte-graines" ne doivent pas être décomptées dans les autres typologies de culture. 
-    
+        > Attention, en base de données,on est obligé de nommer la table "entrepot_stc_sdc_realise_outils_tableau_de_bord_can", sinon trop de caractères.
+        
         Tables nécessaires :
         - noeuds_realise
         - itk_realise_agrege
