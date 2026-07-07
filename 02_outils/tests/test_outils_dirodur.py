@@ -211,12 +211,13 @@ def test_get_itk_filtre_outils_dirodur():
 
     assert all(res)
 
-def test_get_saison_semis():
+def test_get_date_de_semis_outils_dirodur():
     """
         Test de l'obtention des saisons de semis pour le magasin DiRoDur
     """
 
-    identifiant_test = 'test_get_saison_semis'
+    identifiant_test = 'test_get_date_de_semis_outils_dirodur'
+
     df_names = [   
         'intervention_synthetise',
         'intervention_realise',
@@ -230,9 +231,9 @@ def test_get_saison_semis():
         'sdc'
     ]
 
-    path_data = '02_outils/tests/data/test_get_saison_semis/'
+    path_data = '02_outils/tests/data/test_get_date_de_semis_outils_dirodur/'
 
-    fonction_to_apply = outils_dirodur.get_saison_semis
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+    fonction_to_apply = outils_dirodur.get_date_de_semis_outils_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
 
     assert all(res)
