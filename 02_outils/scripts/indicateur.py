@@ -1044,19 +1044,33 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     df = df.merge(con_frq, on = 'connexion_id')
     df = df.merge(typo_culture, on = 'culture_id')
 
-    # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ; et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion rien qu'à eux)
-    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','typo_cpg','poids_conx_agregation']].\
-        rename(columns={'poids_conx_agregation' : 'frequence'})
+    # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les 
+    # CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ;
+    #  et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion
+    #  rien qu'à eux)
+    df = df[
+        [
+            'connexion_id',
+            'synthetise_id',
+            'culture_id',
+            'typocan_culture_sans_compagne',
+            'typo_cpg',
+            'poids_conx_agregation',
+        ]
+    ].rename(columns={'poids_conx_agregation' : 'frequence'})
 
     df = df.drop('connexion_id', axis=1)  
 
     df = df.groupby('synthetise_id').apply(
          lambda cgrp: pd.Series({
+            'culture_id' :  cgrp['culture_id'].nunique(),
             'typocan_rotation': get_rota_typo(cgrp),
             'frequence_total_rota': round(cgrp['frequence'].sum(),2),
             'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp)  )  
-        }))
-    
+        })).rename(columns={
+            'culture_id' : 'nb_culture_synthetise'
+        })
+        
     return df
 
 
