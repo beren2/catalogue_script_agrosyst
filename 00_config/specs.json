@@ -24,6 +24,7 @@
 			"atelier_elevage",
 			"bilan_campagne_regional",
 			"levier",
+			"levier_filiere",
 			"modele_decisionnel",
 			"sole_realise",
 			"cycle_culture_realise",
@@ -443,6 +444,10 @@
 			},
 			"levier":{
 				"file_name" : "levier",
+				"category" : "autre"
+      		},
+			"levier_filiere":{
+				"file_name" : "levier_filiere",
 				"category" : "autre"
       		},
 			"criteres_selection":{
