@@ -442,9 +442,13 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         return sorted(years)
 
     def label_pz0_status(df):
-        """ on modifie un peu les label de l'outil d'identification des pz0 pour crée le début de 'état_temporel'. 
-        Typiquement on check s'il y a bien au moins 2 pz0 tagué pour un numéro DEPHY, si ce n'est pas le cas on regarde si ils ont été filtré par la fonction util ou si l'outil était déjà sans pz0 pour ce code DEPHY. """
+        """ 
+        On modifie un peu les label de l'outil d'identification des pz0 pour crée le début de 'état_temporel'. 
+        Typiquement on check s'il y a bien au moins 2 pz0 tagué pour un numéro DEPHY, si ce n'est pas le cas on regarde si ils ont été filtré par la fonction util ou si l'outil était déjà sans pz0 pour ce code DEPHY.
+        """
         df_pz0 = df[df['pz0'] == 'pz0'].copy()
+        df_pz0
+
         df_pz0['all_years'] = df_pz0.apply(extract_years, axis=1)
         grouped = df_pz0.groupby('code_dephy')['all_years'].agg(lambda x: set().union(*x))
         valid_groups = grouped[grouped.apply(len) >= 2].index.tolist()
@@ -547,6 +551,18 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
 
     def add_etat_temporel_column(df):
         """ Dernière fonction qui wrap le tout et crée les point_I intermédiaire, et met en forme le df final (drop et sort). """
+
+        # On rajoute une regle avant tout : si le type_agriculture est différent au seins du pz0, on supprime le pz0 !
+        # on entend par différent AB != AConv. Information obligatoire et En conversion ne sont pas considéré comme différent de l'un ou de l'autre.
+        type_agri_pz0 = (
+            df[df["pz0"] == "pz0"].groupby(["numero_dephy"])["type_agriculture"]
+            .apply(lambda x: {"Agriculture conventionnelle", "Agriculture biologique"}.issubset(set(x.dropna())))
+        )
+        print(f"Il y a {len(type_agri_pz0['numero_dephy'].unique())} numéros DEPHY qui ont des entités pz0 ayant des types d'agricultures différentes (AB vs AConv, les autres types n'étant ni considérés comme l'un ni comme l'autre)")
+        df = df[
+            ~((df["pz0"] == "pz0") & (df["numero_dephy"].isin(type_agri_pz0['numero_dephy'])))
+        ]
+
         df['serie_tempo'] = pd.NA
         df['etat_temporel'] = df['pz0']
 
