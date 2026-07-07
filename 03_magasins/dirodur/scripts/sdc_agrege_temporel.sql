@@ -203,14 +203,14 @@ campagnes AS (
         sdc_numero_dephy,
         sdc_etat_temporel,
         COUNT(DISTINCT annee) AS sdc_ag_temp_nb_distinct_campagnes,
-        STRING_AGG(annee, ', ' ORDER BY annee::int) AS sdc_ag_temp_liste_campagnes,
-        STRING_AGG(DISTINCT annee, ', ' ORDER BY annee::int) AS sdc_ag_temp_liste_distinct_campagnes
+        STRING_AGG(annee, ', ' ORDER BY annee) AS sdc_ag_temp_liste_campagnes,
+        STRING_AGG(DISTINCT annee, ', ' ORDER BY annee) AS sdc_ag_temp_liste_distinct_campagnes
     FROM entrepot_sdc_for_agregation_magasin_dirodur
     CROSS JOIN LATERAL UNNEST(
         CASE
             WHEN synthetise_campagnes IS NOT NULL AND synthetise_campagnes <> ''
             THEN string_to_array(synthetise_campagnes, ', ')
-            ELSE ARRAY[domaine_campagne]
+            ELSE ARRAY[domaine_campagne::text]
         END
     ) AS campagnes(annee)
     WHERE sdc_etat_temporel IN ('pz0','point_A','point_I','point_B','point_C')
@@ -226,7 +226,7 @@ ecart_pz0_point_b AS (
                 THEN annee::int
             END) AS annee_max_pz0,
         MIN(CASE
-                WHEN sdc_etat_temporel = 'point_B'
+                WHEN sdc_etat_temporel in ('point_B', 'point_C')
                 THEN annee::int
             END) AS annee_min_point_b
     FROM entrepot_sdc_for_agregation_magasin_dirodur
@@ -238,7 +238,7 @@ ecart_pz0_point_b AS (
             ELSE ARRAY[domaine_campagne::text]
         END
     ) AS campagnes(annee)
-    WHERE sdc_etat_temporel IN ('pz0', 'point_B')
+    WHERE sdc_etat_temporel IN ('pz0', 'point_B', 'point_C')
     GROUP BY sdc_numero_dephy
 )
 -- On combine les deux

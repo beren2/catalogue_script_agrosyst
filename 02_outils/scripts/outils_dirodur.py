@@ -369,7 +369,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
     """
 
     # On importe les données
-    sdc = donnees['sdc'][['id','code','campagne','modalite_suivi_dephy','code_dephy']].rename(columns={'id':'sdc_id','code':'sdc_code'})
+    sdc = donnees['sdc'][['id','code','campagne','modalite_suivi_dephy','code_dephy','type_agriculture']].rename(columns={'id':'sdc_id','code':'sdc_code'})
     synthetise = donnees['synthetise'][['id','campagnes','sdc_id']].rename(columns={'id':'synthetise_id'})
     zone = donnees['zone'][['id','parcelle_id']].rename(columns={'id':'entite_id'})
     parcelle = donnees['parcelle'][['id','sdc_id']].rename(columns={'id':'parcelle_id'})
@@ -414,19 +414,24 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
                         df_S['pz0'], 
                         np.where(df_S['modalite_suivi_dephy'].isna(),'non_DEPHY', 'non_suivi'))
     df = pd.concat([
-        df_S[['sdc_id', 'sdc_code', 'code_dephy', 'campagne', 'pz0', 'synthetise_id', 'campagnes']],
-        df_R[['sdc_id', 'sdc_code', 'code_dephy', 'campagne', 'pz0']]
+        df_S[['sdc_id', 'sdc_code', 'code_dephy', 'type_agriculture', 'campagne', 'pz0', 'synthetise_id', 'campagnes']],
+        df_R[['sdc_id', 'sdc_code', 'code_dephy', 'type_agriculture', 'campagne', 'pz0']]
         ])
 
     df.pz0 = df.pz0.fillna('non_DEPHY') # ceux dont la modalité de suivi est NA
 
     # On modifie les modalités incorrectes de pz0 pour qu'elles soient regroupées sous la modalité 'post'. Seulement pour celles qui ne détecte pas de pz0 fiable.
-    # Les modalités incorrects de camapgne non attendue ou de code dephy inconnue sont conservées car même les points_B peuvent être faux.
     df['pz0'] = np.where(df['pz0'].isin([
         'incorrect : saisie pz0 non acceptable',
         'incorrect : aucun pz0 saisi',
         'incorrect : chevauchement pz0',
         'incorrect : saisie de plusieurs pz0']), 'post', df['pz0'])
+    # Les modalités incorrects de camapgne non attendue ou de code dephy inconnue sont enlevé car même les points_B peuvent être faux. Par exemple le cas de GCF10181 qui a des points_B avant les pz0 si on laisse passer ces incorrects !
+    df = df.loc[~df['pz0'].isin([
+        "incorrect : campagne non-attendue",
+        "incorrect : code dephy inconnu"
+    ])]
+
 
 
     ### CREATION DES FONCTIONS PERMETTANT L'IDENTIFICATION DES ETATS TEMPORELS ###
@@ -555,12 +560,12 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         # On rajoute une regle avant tout : si le type_agriculture est différent au seins du pz0, on supprime le pz0 !
         # on entend par différent AB != AConv. Information obligatoire et En conversion ne sont pas considéré comme différent de l'un ou de l'autre.
         type_agri_pz0 = (
-            df[df["pz0"] == "pz0"].groupby(["numero_dephy"])["type_agriculture"]
+            df[df["pz0"] == "pz0"].groupby(["code_dephy"])["type_agriculture"]
             .apply(lambda x: {"Agriculture conventionnelle", "Agriculture biologique"}.issubset(set(x.dropna())))
         )
-        print(f"Il y a {len(type_agri_pz0['numero_dephy'].unique())} numéros DEPHY qui ont des entités pz0 ayant des types d'agricultures différentes (AB vs AConv, les autres types n'étant ni considérés comme l'un ni comme l'autre)")
+        print(f"Il y a {len(type_agri_pz0.unique())} numéros DEPHY qui ont des entités pz0 ayant des types d'agricultures différentes (AB vs AConv, les autres types n'étant ni considérés comme l'un ni comme l'autre)")
         df = df[
-            ~((df["pz0"] == "pz0") & (df["numero_dephy"].isin(type_agri_pz0['numero_dephy'])))
+            ~((df["pz0"] == "pz0") & (df["code_dephy"].isin(type_agri_pz0)))
         ]
 
         df['serie_tempo'] = pd.NA
