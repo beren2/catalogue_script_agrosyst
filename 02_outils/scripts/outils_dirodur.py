@@ -686,7 +686,7 @@ def get_date_de_semis_outils_dirodur(donnees):
 
 
 
-def get_typologie_culture_dirodur(donnees):
+def get_typologie_culture_outils_dirodur(donnees):
     """
     Besoin de :
         - La matrice de typologie DIRODUR dans les data externes
@@ -705,8 +705,8 @@ def get_typologie_culture_dirodur(donnees):
     
     cropsp = donnees['composant_culture'][['id','espece_id','culture_id','compagne']].rename(columns={'id':'composant_culture_id'}).copy()
     crop = donnees['culture'][['id','nom','type']].rename(columns={'id':'culture_id'}).copy()
-    sp = donnees['ref_espece_gcpe_thomas'][['id','typodirodur_espece','typodirodur_espece_precise','typodirodur_espece_famille_bota','typodirodur_espece_periode_semis']].rename(columns={'id':'espece_id'}).copy()
-    matrice = donnees['ref_matrice_to_complete'][['typodirodur_espece', 'typodirodur_culture', 'culture_est_avec_compagne', 'culture_est_annuelle_asso', 'culture_est_prairie', 'culture_principale', 'besoin_saison']].copy()
+    sp = donnees['espece'][['id','typodirodur_espece','typodirodur_espece_precise','typodirodur_espece_famille_bota','typodirodur_espece_periode_semis']].rename(columns={'id':'espece_id'}).copy()
+    matrice = donnees['matrice_typologie_culture_dirodur'][['typodirodur_espece', 'typodirodur_culture', 'culture_est_avec_compagne', 'culture_est_annuelle_asso', 'culture_est_prairie', 'besoin_saison']].copy()
     date_semis = donnees['date_de_semis_outils_dirodur'][['culture_id','saison_semis_detect_via_intv']].copy()
     typocan = donnees['typologie_can_culture'][['culture_id','typo_cpg']].copy()
 
@@ -759,13 +759,20 @@ def get_typologie_culture_dirodur(donnees):
     # 1. On récupère les date de semis réel (vu via l'intervention) au cas où nous avons besoin de la saison et qu'elle ne soit pas dispo dans le referentiel espece
     df = df.merge(date_semis, how='left', on='culture_id')
     df['typodirodur_espece_periode_semis'] = df['typodirodur_espece_periode_semis'].fillna(df['saison_semis_detect_via_intv'])
+    df.drop(columns='saison_semis_detect_via_intv', inplace=True)
 
     # 2. On regarde les cultures qui ont un besoin de saison pour faire le merge avec la matrice
     # Pour le savoir on regarde si la matrice a une valeur non nulle dans la colonne typodirodur_espece_periode_semis. Si c'est le cas, on merge avec la matrice pour récupérer le typodirodur_culture correspondant.
     # Dans le cas ou l'on a besoin de savoir la saison mais que la saison n'est pas renseigné dans le referentiel espece, on prend la saison détecté via les interventions.
-    matrice_saison_needed = matrice.loc[matrice['besoin_saison'].notna()].rename(columns={'besoin_saison': 'typodirodur_espece_periode_semis'})
+    matrice_saison_needed = matrice.loc[matrice['besoin_saison'].notna()]
+    typo_espece_en_pluriannuelle = matrice_saison_needed.loc[matrice_saison_needed['besoin_saison'] == 'pluriannuelle', 'typodirodur_espece'].to_list()
 
     df_saison_needed = df.copy()
+    df_saison_needed['typodirodur_espece_periode_semis'] = np.where(
+        (df_saison_needed['typodirodur_espece'].isin(typo_espece_en_pluriannuelle)) & (df_saison_needed['typodirodur_espece_periode_semis'].str.contains('pluriannuelle')),
+        'pluriannuelle', 
+        df_saison_needed['typodirodur_espece_periode_semis'])
+    matrice_saison_needed.rename(columns={'besoin_saison' : 'typodirodur_espece_periode_semis'}, inplace=True)
     df_saison_needed = df_saison_needed.merge(matrice_saison_needed, how='inner', on=['typodirodur_espece', 'typodirodur_espece_periode_semis'])
     df_saison_needed = df_saison_needed.loc[df_saison_needed['typodirodur_culture'].notna()]
 
@@ -790,6 +797,7 @@ def get_typologie_culture_dirodur(donnees):
     df['type'] = df['type'].astype('str')
 
     df[['nb_typodirodur_espece','nb_composant_culture','nb_typodirodur_espece_precise','nb_typodirodur_espece_famille_bota']] = df[['nb_typodirodur_espece','nb_composant_culture','nb_typodirodur_espece_precise','nb_typodirodur_espece_famille_bota']].astype('int64')
+    
     return df
 
 
