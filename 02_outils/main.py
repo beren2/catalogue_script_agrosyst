@@ -852,6 +852,11 @@ def create_category_outils_tableau_de_bord_can():
     surface_typo_culture_sdc_realise_outils_tableau_de_bord_can.set_index('id', inplace=True)
     export_to_db(surface_typo_culture_sdc_realise_outils_tableau_de_bord_can, 'entrepot_stc_sdc_realise_outils_tableau_de_bord_can')
     add_primary_key('entrepot_stc_sdc_realise_outils_tableau_de_bord_can', 'id')
+
+    surface_typo_culture_synthetise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_synthetise_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(surface_typo_culture_synthetise_outils_tableau_de_bord_can, 'entrepot_stc_synthetise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_stc_synthetise_outils_tableau_de_bord_can', 'id')
     
 def create_category_outils_can():
     """
@@ -942,13 +947,12 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
-    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can.set_index('id', inplace=True)
-    # stc = surface_typo_culture
-    export_to_db(surface_typo_culture_sdc_realise_outils_tableau_de_bord_can, 'entrepot_stc_sdc_realise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_stc_sdc_realise_outils_tableau_de_bord_can', 'id')
+    surface_typo_culture_synthetise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_synthetise_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(surface_typo_culture_synthetise_outils_tableau_de_bord_can, 'entrepot_stc_synthetise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_stc_synthetise_outils_tableau_de_bord_can', 'id')
 
-
+    
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
     {'source' : 'outils', 'category' : 'nettoyage'},

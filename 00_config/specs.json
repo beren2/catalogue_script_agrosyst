@@ -722,7 +722,8 @@
                 "generated" : [
                     "reseaux_rattachement_sdc_outils_tableau_de_bord_can",
 					"sdc_realise_outils_tableau_de_bord_can",
-					"stc_sdc_realise_outils_tableau_de_bord_can"
+					"stc_sdc_realise_outils_tableau_de_bord_can",
+					"stc_synthetise_outils_tableau_de_bord_can"
                 ], 
 				"need_performance" : [
 				]
@@ -802,8 +803,15 @@
             "test" : {
                 "function_name" : "create_category_test",
 				"entrepot_dependances" : [
-					"noeuds_realise", "itk_realise_agrege",
-					"zone", "typologie_can_culture"
+					"noeuds_synthetise", "connection_synthetise",
+					"noeuds_synthetise_restructure", "itk_synthetise_agrege",
+					"typologie_can_culture",
+					"poids_connexions_synthetise_rotation",
+					"sdc",
+					"domaine",
+					"plantation_perenne_phases_synthetise",
+					"plantation_perenne_synthetise",
+					"plantation_perenne_synthetise_restructure"
 				],
                 "dependances" : [{
                     "source" : "outils", 
