@@ -152,11 +152,43 @@ def test_get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can():
         'noeuds_realise',
         'itk_realise_agrege',
         'zone',
-        'typologie_can_culture'
+        'typologie_can_culture',
+        'domaine', 
+        'sdc', 
+        'plantation_perenne_realise',
+        'plantation_perenne_phases_realise',
     ]
     path_data = '02_outils/tests/data/test_get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can/'
 
     fonction_to_apply = outils_tableau_de_bord_can.get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can   
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+def test_get_surface_typo_culture_synthetise_outils_tableau_de_bord_can():
+    """
+        Test de l'obtention des surfaces de toutes les typo de culture pour chaque sdc en réalisé
+    """
+
+    identifiant_test = 'test_get_surface_typo_culture_synthetise_outils_tableau_de_bord_can'
+
+    df_names = [   
+        'typologie_can_culture',
+        'plantation_perenne_synthetise_restructure',
+        'noeuds_synthetise_restructure', 
+        'poids_connexions_synthetise_rotation',
+        'itk_synthetise_agrege', 
+        'connection_synthetise_restructure',
+        'noeuds_synthetise',
+        'connection_synthetise',
+        'plantation_perenne_phases_synthetise',
+        'plantation_perenne_synthetise', 
+        'sdc', 
+        'domaine'
+    ]
+    path_data = '02_outils/tests/data/test_get_surface_typo_culture_synthetise_outils_tableau_de_bord_can/'
+
+    fonction_to_apply = outils_tableau_de_bord_can.get_surface_typo_culture_synthetise_outils_tableau_de_bord_can   
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
