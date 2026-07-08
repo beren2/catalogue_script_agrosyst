@@ -1,0 +1,6 @@
+id,culture_id
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_710fa751-068b-4f11-9b0d-77fbeec30702,fr.inra.agrosyst.api.entities.CroppingPlanEntry_508f5758-cca8-4ce7-beed-bd40751282bd
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_33f90b41-f8e8-4728-8d9c-537dd7dbba12,fr.inra.agrosyst.api.entities.CroppingPlanEntry_508f5758-cca8-4ce7-beed-bd40751282bd
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_e6acb207-f0cf-45ca-9690-2df3a3211e15,fr.inra.agrosyst.api.entities.CroppingPlanEntry_9dcc5df9-a496-4918-96a4-7306d3dafc26
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_b42fd43e-9090-4ef7-a726-ee0e5113545f,fr.inra.agrosyst.api.entities.CroppingPlanEntry_9dcc5df9-a496-4918-96a4-7306d3dafc26
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCycleNode_865fb89f-39b7-41a0-baf7-06d4a1f08d03,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0e9ada58-c35a-4fba-bddb-df75de74cecf

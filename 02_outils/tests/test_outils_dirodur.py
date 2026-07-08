@@ -237,3 +237,35 @@ def test_get_date_de_semis_outils_dirodur():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
 
     assert all(res)
+
+def test_get_typologie_culture_outils_dirodur():
+    """
+        Test de l'obtention des typologies de culture utilisés pour Dirodur
+    """
+
+    identifiant_test = 'test_get_typologie_culture_outils_dirodur'
+
+    df_names = [   
+        'composant_culture', 
+        'culture',
+        'connection_synthetise',
+        'noeuds_synthetise_restructure',
+        'noeuds_realise',
+        'entite_unique_par_sdc_nettoyage', 
+        'noeuds_synthetise',
+        'synthetise',
+        'zone',
+        'parcelle',
+        'sdc',
+        'date_de_semis_outils_dirodur',
+        'typologie_can_culture',
+        'espece',
+        'matrice_typologie_culture_dirodur'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_typologie_culture_outils_dirodur/'
+
+    fonction_to_apply = outils_dirodur.get_typologie_culture_outils_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
+
+    assert all(res)
