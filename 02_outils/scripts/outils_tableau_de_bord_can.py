@@ -161,6 +161,51 @@ def get_surface_sdc_realise_outils_tableau_de_bord_can(
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
 
+def get_surface_synthetise_outils_tableau_de_bord_can(
+    donnees
+):
+    """
+    Permet d'obtenir la SAU des sdc en synthetisé en repartant du domaine 
+    et en pondérant par la part de SAU du domaine dans le sdc
+        donnees (dict):
+            Un dictionnaire contenant les DataFrames nécessaires pour l'agrégation des informations :
+            - 'parcelle' : Données des parcelles
+            
+    Returns:
+        pd.DataFrame:
+            Un DataFrame contenant les informations agrégées sur les sdc avec les colonnes suivantes :
+            - `id` : Identifiant du sdc.
+            - `surface_sdc` : Surface du système de culture 
+
+    Exemple d'utilisation :
+        donnees = {
+            'parcelle': pd.DataFrame(...),
+        }
+        result = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
+    """
+    df = donnees.copy()
+    df['synthetise'] = df['synthetise'].set_index('id')
+    df['sdc'] = df['sdc'].set_index('id')
+    df['dispositif'] = df['dispositif'].set_index('id')
+    df['domaine'] = df['domaine'].set_index('id')
+
+    left = df['synthetise']
+    right = df['sdc'][['dispositif_id', 'part_sau_domaine']]
+    df['synthetise_extanded'] = pd.merge(left, right, left_on='sdc_id', right_index=True, how='left')
+
+    left = df['synthetise_extanded']
+    right = df['dispositif'][['domaine_id']]
+    df['synthetise_extanded'] = pd.merge(left, right, left_on='dispositif_id', right_index=True, how='left')
+
+    left = df['synthetise_extanded']
+    right = df['domaine'][['sau_totale']]
+    df['synthetise_extanded'] = pd.merge(left, right, left_on='domaine_id', right_index=True, how='left')
+
+    df['synthetise_extanded'].loc[:, 'surface'] = np.round(df['synthetise_extanded']['sau_totale'] * df['synthetise_extanded']['part_sau_domaine'] / 100, 2)
+
+    df['synthetise_extanded'].to_csv('synthetise_extanded.csv')
+    return df['synthetise_extanded'][['surface']].reset_index().rename(columns={'sdc_id' : 'id'})
+
 
 def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
     """
