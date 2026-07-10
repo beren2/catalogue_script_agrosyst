@@ -810,6 +810,17 @@ def create_category_dirodur_0():
     export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')
     add_primary_key('entrepot_date_de_semis_outils_dirodur', 'culture_id')
 
+    df_poids_noeuds_realise = outils_dirodur.get_poids_noeuds_realise_outils_dirodur(donnees)
+    df_poids_noeuds_realise.set_index('noeuds_realise_id', inplace=True)
+    export_to_db(df_poids_noeuds_realise, 'entrepot_poids_noeuds_realise_outils_dirodur')
+    add_primary_key('entrepot_poids_noeuds_realise_outils_dirodur', 'noeuds_realise_id')
+
+
+def create_category_dirodur_1():
+    """
+        Execute les requêtes pour créer la seconde salve d'outils DiRoDur
+    """
+
     df_typologie_culture_dirodur = outils_dirodur.get_typologie_culture_outils_dirodur(donnees)
     df_typologie_culture_dirodur.set_index('culture_id', inplace=True)
     export_to_db(df_typologie_culture_dirodur, 'entrepot_typologie_culture_outils_dirodur')
@@ -939,6 +950,7 @@ steps = [
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
     {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_dirodur_1'},
     {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 

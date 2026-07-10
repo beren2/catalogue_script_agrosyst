@@ -740,15 +740,32 @@
 					"sdc_realise_filtre_outils_dirodur",
 					"synthetise_filtre_outils_dirodur",
 					"sdc_statut_temporel_outils_dirodur", 
-					"itk_filtres_outils_dirodur",
+
 					"date_de_semis_outils_dirodur",
-					"typologie_culture_outils_dirodur"
+					"poids_noeuds_realise_outils_dirodur"
                 ], 
 				"need_performance" : [
 					"synthetise_synthetise_performance",
 					"sdc_realise_performance", 
 					"itk_realise_performance", 
 					"itk_synthetise_performance"
+				]
+            },
+			"outils_dirodur_1" : {
+                "function_name" : "create_category_dirodur_1",
+                "dependances" : [
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_0"
+                }],
+                "generated" : [
+					"typologie_culture_outils_dirodur"
+                ], 
+				"need_performance" : [
 				]
             },
 			"outils_dephygraph" : {

@@ -238,6 +238,27 @@ def test_get_date_de_semis_outils_dirodur():
 
     assert all(res)
 
+def test_get_poids_noeuds_realise_outils_dirodur():
+    """
+        Test de l'obtention des poids des noeuds realisé au seins de leur sdc_id (prenant en compte seulement les surface des zones, donc aucunement les interactions avec les ITK en synthétisés).
+    """
+
+    identifiant_test = 'test_get_poids_noeuds_realise_outils_dirodur'
+
+    df_names = [   
+        'noeuds_realise',
+        'zone',
+        'parcelle'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_poids_noeuds_realise_outils_dirodur/'
+
+    fonction_to_apply = outils_dirodur.get_poids_noeuds_realise_outils_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='noeuds_realise_id')
+
+    assert all(res)
+
+
 def test_get_typologie_culture_outils_dirodur():
     """
         Test de l'obtention des typologies de culture utilisés pour Dirodur

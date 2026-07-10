@@ -782,6 +782,7 @@ def get_typologie_culture_outils_dirodur(donnees):
     df_no_saison_needed = df_no_saison_needed.loc[~df_no_saison_needed['culture_id'].isin(df_saison_needed['culture_id'])]
     df_no_saison_needed = df_no_saison_needed.merge(matrice.loc[matrice['besoin_saison'].isna()], how='left', on=['typodirodur_espece'])
     df_no_saison_needed = df_no_saison_needed.loc[df_no_saison_needed['typodirodur_culture'].notna()]
+    df_no_saison_needed.drop(columns = 'besoin_saison', inplace = True)
 
     # 4. On concat les deux df pour avoir le df final
     df = pd.concat([df_no_saison_needed, df_saison_needed], ignore_index=True)
@@ -798,6 +799,42 @@ def get_typologie_culture_outils_dirodur(donnees):
 
     df[['nb_typodirodur_espece','nb_composant_culture','nb_typodirodur_espece_precise','nb_typodirodur_espece_famille_bota']] = df[['nb_typodirodur_espece','nb_composant_culture','nb_typodirodur_espece_precise','nb_typodirodur_espece_famille_bota']].astype('int64')
     
+    return df
+
+
+def get_poids_noeuds_realise_outils_dirodur(donnees):
+    """
+    Obtient les poids de chaque itk au seins de son sdc_id. 
+    On prend tout les noeud realisé, donc meme ceux au seins d'un sdc_id qui contiennent également des synthétisés. Par contre, le pourcentage n'est calculé que par rapport aux zones en réalisé, le synthétisé n'ont aucun impacte sur les poids ici !
+    Mais vu qu'on merge en left sur les noeuds realisé cela veut aussi dire qu'on prend toutes les zones contennant au moins un itk, donc au moins une culture !
+    On crée 3 poids différents :
+
+    - poids_surface_ponderee : si X itk sont conduit sur la meme zone durant une année, la surface affecté à chacune est la surface de la zone divisé par X. Et cela divisé par la surface totale du sdc_id qui est la somme des surface de chaque zone (compté chacune 1 seule fois !)
+
+    - poids_surface_developpee_agreg : si X itk sont conduit sur la meme zone durant une année, la surface affecté à chacune est la surface de la zone. Cela fait qu'on développe X fois la surface. Et cela divisé par la surface totale des zones du sdc_id qui est la somme des surface de chaque zone (compté chacune 1 seule fois !). Donc si on prends X fois la surface en numérateur mais que la surface de la zone n'est décompté qu'1 seule fois en dénominateur ==> les valeurs PEUVENT dépasser 100% !
+
+    - poids_surface_developpee_normalisee : si X itk sont conduit sur la meme zone durant une année, la surface affecté à chacune est la surface de la zone. Cela fait qu'on développe X fois la surface. Et cela divisé par la surface totale des zones développées du sdc_id (donc si la somme de toutes les X*surface du sdc_id). ==> les valeurs NE peuvent PAS dépasser 100% !
+    """
+
+    nd = donnees['noeuds_realise'][['id','culture_id','zone_id']].rename(columns={'id':'noeuds_realise_id'})
+    zone = donnees['zone'][['id','surface','parcelle_id']].rename(columns={'id':'zone_id'})
+    parcelle = donnees['parcelle'][['id','surface','sdc_id']].rename(columns={'id':'parcelle_id', 'surface':'surface_parcelle'})
+
+    df = nd.merge(zone, on = 'zone_id', how = 'left').merge(parcelle, on = 'parcelle_id', how = 'left')
+    df = df.loc[(df['sdc_id'].notna()) & (df['surface'] != 0)]
+
+    df['nb_itk_mm_zone'] = df.groupby("zone_id")["noeuds_realise_id"].transform("count")
+    df['surface_ponderee_zone'] = df['surface'] / df['nb_itk_mm_zone']
+
+    df['surface_ponderee_totale'] = df.groupby("sdc_id")["surface_ponderee_zone"].transform("sum")
+    df["surface_developpee_totale"] = df.groupby("sdc_id")["surface"].transform("sum")
+
+    df['poids_surface_ponderee'] = df['surface_ponderee_zone'] / df['surface_ponderee_totale']
+    df['poids_surface_developpee_agreg'] = df['surface'] / df['surface_ponderee_totale']
+    df['poids_surface_developpee_normalisee'] = df['surface'] / df['surface_developpee_totale']
+
+    df = df[['noeuds_realise_id', 'culture_id', 'sdc_id', 'poids_surface_ponderee', 'poids_surface_developpee_agreg', 'poids_surface_developpee_normalisee']]
+
     return df
 
 
