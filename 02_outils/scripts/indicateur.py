@@ -1845,3 +1845,8 @@ def get_espece_variete_perenne_principale(donnees: dict) -> pd.DataFrame:
     df_final['liste_toutes_varietes'] = df_final['liste_toutes_varietes'].astype('string')
 
     return df_final
+
+
+def get_poids_noeuds_realise(donnees: dict):
+
+    return donnees
