@@ -535,7 +535,8 @@
 				"BDD_donnees_attendues_CAN", 
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai", 
-				"correspondance_destination_gcpe_dirodur"
+				"correspondance_destination_gcpe_dirodur",
+				"matrice_typologie_culture_dirodur"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
