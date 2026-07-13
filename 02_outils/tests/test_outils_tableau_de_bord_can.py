@@ -213,3 +213,26 @@ def test_get_surface_typo_culture_synthetise_outils_tableau_de_bord_can():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
+
+def test_get_rendement_viti_sdc_realise_outils_tableau_de_bord_can():
+    """
+        Test de l'obtention des rendements en viticulture
+    """
+
+    identifiant_test = 'test_get_rendement_viti_sdc_realise_outils_tableau_de_bord_can'
+
+    df_names = [   
+        'recolte_rendement_prix',
+        'recolte_rendement_prix_restructure',
+        'sdc', 
+        'action_realise',
+        'action_realise_agrege',
+        'composant_culture',
+        'espece'
+    ]
+    path_data = '02_outils/tests/data/test_get_rendement_viti_sdc_realise_outils_tableau_de_bord_can/'
+
+    fonction_to_apply = outils_tableau_de_bord_can.get_rendement_viti_sdc_realise_outils_tableau_de_bord_can   
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
