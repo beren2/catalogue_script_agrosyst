@@ -647,7 +647,8 @@
                 "generated" : [
 					"mauvaise_structure_de_rotation",
 					"couple_connexions_chemins_synthetise_rotation",
-					"poids_connexions_synthetise_rotation"
+					"poids_connexions_synthetise_rotation",
+					"poids_noeuds_realise"
                 ], 
 				"need_performance" : []
             },
@@ -741,8 +742,7 @@
 					"synthetise_filtre_outils_dirodur",
 					"sdc_statut_temporel_outils_dirodur", 
 
-					"date_de_semis_outils_dirodur",
-					"poids_noeuds_realise_outils_dirodur"
+					"date_de_semis_outils_dirodur"
                 ], 
 				"need_performance" : [
 					"synthetise_synthetise_performance",

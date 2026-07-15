@@ -869,3 +869,24 @@ def test_get_espece_variete_perenne_principale():
     
     res = pd.Series(res).fillna(False).all()
     assert res
+
+
+def test_get_poids_noeuds_realise():
+    """
+        Test de l'obtention des poids des noeuds realisé au seins de leur sdc_id (prenant en compte seulement les surface des zones, donc aucunement les interactions avec les ITK en synthétisés).
+    """
+
+    identifiant_test = 'test_get_poids_noeuds_realise'
+
+    df_names = [   
+        'noeuds_realise',
+        'zone',
+        'parcelle'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_poids_noeuds_realise/'
+
+    fonction_to_apply = indicateur.get_poids_noeuds_realise
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='noeuds_realise_id')
+
+    assert all(res)

@@ -719,6 +719,11 @@ def create_category_indicateur_0():
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
     add_primary_key('entrepot_poids_connexions_synthetise_rotation', 'connexion_id')
 
+    df_poids_noeuds_realise = indicateur.get_poids_noeuds_realise(donnees)
+    df_poids_noeuds_realise.set_index('noeuds_realise_id', inplace=True)
+    export_to_db(df_poids_noeuds_realise, 'entrepot_poids_noeuds_realise')
+    add_primary_key('entrepot_poids_noeuds_realise', 'noeuds_realise_id')
+    
 def create_category_indicateur_1():
     """
         Crée les typologies de culture de base pour les autres indicateurs. 
@@ -809,11 +814,6 @@ def create_category_dirodur_0():
     df_date_de_semis.set_index('culture_id', inplace=True)
     export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')
     add_primary_key('entrepot_date_de_semis_outils_dirodur', 'culture_id')
-
-    df_poids_noeuds_realise = outils_dirodur.get_poids_noeuds_realise_outils_dirodur(donnees)
-    df_poids_noeuds_realise.set_index('noeuds_realise_id', inplace=True)
-    export_to_db(df_poids_noeuds_realise, 'entrepot_poids_noeuds_realise_outils_dirodur')
-    add_primary_key('entrepot_poids_noeuds_realise_outils_dirodur', 'noeuds_realise_id')
 
 
 def create_category_dirodur_1():
