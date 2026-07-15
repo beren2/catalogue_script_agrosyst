@@ -236,3 +236,27 @@ def test_get_rendement_viti_sdc_realise_outils_tableau_de_bord_can():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
+
+def test_get_gestion_enherbement_sdc_outils_tableau_de_bord_can():
+    """
+        Test de l'obtention de l'enherbement au niveau du système de culture.
+    """
+
+    identifiant_test = 'test_get_gestion_enherbement_sdc_outils_tableau_de_bord_can'
+
+    df_names = [   
+        'sdc',
+        'itk_synthetise_agrege', 
+        'itk_realise_agrege',
+        'plantation_perenne_phases_realise',
+        'plantation_perenne_phases_synthetise',
+        'plantation_perenne_realise',
+        'plantation_perenne_synthetise'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_gestion_enherbement_sdc_outils_tableau_de_bord_can/'
+
+    fonction_to_apply = outils_tableau_de_bord_can.get_gestion_enherbement_sdc_outils_tableau_de_bord_can   
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)

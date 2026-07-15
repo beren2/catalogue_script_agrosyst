@@ -863,9 +863,16 @@ def create_category_outils_tableau_de_bord_can():
     export_to_db(surface_typo_culture_synthetise_outils_tableau_de_bord_can, 'entrepot_stc_synthetise_outils_tableau_de_bord_can')
     add_primary_key('entrepot_stc_synthetise_outils_tableau_de_bord_can', 'id')
 
+    rendement_viti = outils_tableau_de_bord_can.get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
+    rendement_viti.set_index('id', inplace=True)
+    export_to_db(rendement_viti, 'entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can', 'id')
+    
+    enherbement = outils_tableau_de_bord_can.get_gestion_enherbement_sdc_outils_tableau_de_bord_can(donnees)
+    enherbement.set_index('id', inplace=True)
+    export_to_db(enherbement, 'entrepot_gestion_enherbement_sdc_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_gestion_enherbement_sdc_outils_tableau_de_bord_can', 'id')
 
-    
-    
 def create_category_outils_can():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
@@ -955,10 +962,10 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    surface_synthetise = outils_tableau_de_bord_can.get_surface_synthetise_outils_tableau_de_bord_can(donnees)
-    surface_synthetise.set_index('id', inplace=True)
-    export_to_db(surface_synthetise, 'entrepot_surface_synthetise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_surface_synthetise_outils_tableau_de_bord_can', 'id')
+    rendement_viti = outils_tableau_de_bord_can.get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
+    rendement_viti.set_index('id', inplace=True)
+    export_to_db(rendement_viti, 'entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can', 'id')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
@@ -1192,6 +1199,9 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
     elif choice_key == 'Tester la cohérence des données externes':
         print("* DÉBUT DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
         tables_to_check = SOURCE_SPECS['outils']['external_data']['tables']
+
+        print(tables_to_check)
+        print(SOURCE_SPECS['outils']['external_data']['path'])
         leaking_tables_ext = check_files_exist(
             tables_to_check, 
             path_data=SOURCE_SPECS['outils']['external_data']['path']

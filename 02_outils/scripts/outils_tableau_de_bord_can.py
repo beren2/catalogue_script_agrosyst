@@ -3,7 +3,7 @@
 """
 import pandas as pd
 import numpy as np
-
+import copy
 
 def get_percent_each_typo_culture(cgrp, freq_column='frequence', normalize=True):
     '''
@@ -89,7 +89,7 @@ def get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(
         }
         result = get_reseaux_rattachement_sdc(donnees)
     """
-    df = donnees.copy()
+    df = copy.deepcopy(donnees)
     df['reseau'] = donnees['reseau'].set_index('id')
     df['liaison_reseaux'] = donnees['liaison_reseaux']
     df['liaison_sdc_reseau'] = donnees['liaison_sdc_reseau']
@@ -153,7 +153,7 @@ def get_surface_sdc_realise_outils_tableau_de_bord_can(
         }
         result = get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
     """
-    df = donnees.copy()
+    df = copy.deepcopy(donnees)
     df['parcelle'] = df['parcelle'].set_index('id')
 
     # pour chaque parcelle
@@ -183,7 +183,7 @@ def get_surface_synthetise_outils_tableau_de_bord_can(
         }
         result = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
     """
-    df = donnees.copy()
+    df = copy.deepcopy(donnees)
     df['synthetise'] = df['synthetise'].set_index('id')
     df['sdc'] = df['sdc'].set_index('id')
     df['dispositif'] = df['dispositif'].set_index('id')
@@ -204,7 +204,7 @@ def get_surface_synthetise_outils_tableau_de_bord_can(
     df['synthetise_extanded'].loc[:, 'surface_synthetise'] = np.round(df['synthetise_extanded']['sau_totale'] * df['synthetise_extanded']['part_sau_domaine'] / 100, 2)
 
     df['synthetise_extanded'].to_csv('synthetise_extanded.csv')
-    return df['synthetise_extanded'][['surface']].reset_index().rename(columns={'sdc_id' : 'id'})
+    return df['synthetise_extanded'][['surface_synthetise']].reset_index().rename(columns={'sdc_id' : 'id'})
 
 
 def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
@@ -221,7 +221,7 @@ def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
         - typologie_can_culture
     
     """
-    df = donnees.copy()
+    df = copy.deepcopy(donnees)
 
     #--------------#
     #    COMMUN    #
@@ -386,7 +386,7 @@ def get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees):
     #    COMMUN    #
     #--------------#
 
-    df = donnees.copy()
+    df = copy.deepcopy(donnees)
 
     # On créé une nouvelle colonne "typocan_culture_corrige" qui réaffecte les culture porte graine à une typologie dédiée (volonté Cellule Ref)
     df['typologie_can_culture']['typocan_culture_sans_compagne_corrige'] = df['typologie_can_culture']['typocan_culture']
@@ -593,7 +593,7 @@ def get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(
             - 'composant_culture'
             - 'espece'
     """
-    df = donnees.copy()
+    df = copy.deepcopy(donnees)
     df['recolte_rendement_prix'].set_index('id', inplace=True)
     df['action_realise'].set_index('id', inplace=True)
     df['action_realise_agrege'].set_index('id', inplace=True)
@@ -693,14 +693,101 @@ def get_rendement_viti_synthetise_outils_tableau_de_bord_can(
     """
     return 
 
-
-
-def get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(
+def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
     donnees
 ):
     """
-        permet d'obtenir, pour chaque système de culture, l'IFT moyen de sa région (enquête pratique culturale) correspondant à sa typologie.
-        Attention, la typologie d'un système de culture, c'es 
+        permet d'obtenir, pour chaque système de culture, la typologie de gestion de l'enherbement
 
+        - on regarde juste champs "gestion_enherbement" au niveau de la plantation perenne et on fait remonter l'information jusqu'au sdc.
+            le champ peut valoir "TOTAL" "PARTIEL" ou "PAS_D_ENHERBEMENT". 
+        - si au moins un itk du sdc mobilise un "PARTIEL", alors la variable use_enherbement sera à True.
+
+        TODO : Attention, le lexique des indicateurs de la cellure ref n'est pas clair à ce sujet, on parle de déclaratif mais on explicite une
+        procédure pour retrouver l'information dans l'ITK ?
+    
+        Tables nécessaires :
+            - 'plantation_perenne_phases_realise',
+            - 'plantation_perenne_phases_synthetise',
+            - 'plantation_perenne_realise',
+            - 'plantation_perenne_synthetise',
+            - 'itk_realise_agrege',
+            - 'itk_synthetise_agrege',
+            - 'sdc'
     """
-    return 
+    df = copy.deepcopy(donnees)
+    df['plantation_perenne_phases_realise'].set_index('id', inplace=True)
+    df['plantation_perenne_realise'].set_index('id', inplace=True)
+    df['sdc'].set_index('id', inplace=True)
+    df['plantation_perenne_phases_synthetise'].set_index('id', inplace=True)
+    df['plantation_perenne_synthetise'].set_index('id', inplace=True)
+    
+    # EN RÉALISÉ
+
+    # ajout des informations sur le type d'enherbement de l'itk
+    left = df['plantation_perenne_phases_realise']
+    right = df['plantation_perenne_realise'][['type_enherbement']]
+    df['plantation_perenne_phases_realise_extanded'] = pd.merge(left, right, left_on = 'plantation_perenne_realise_id', right_index=True, how='left')
+
+    # ajout des clés étrangères des entités mères
+    left = df['plantation_perenne_phases_realise_extanded'].reset_index()
+    right = df['itk_realise_agrege'][['itk_id', 'sdc_id']]
+    df['plantation_perenne_phases_realise_extanded'] = pd.merge(left, right, left_on='id', right_on='itk_id', how='inner').set_index('id').dropna(subset='sdc_id')
+
+    # on créé une variable booléenne indiquant si l'itk mobilise de l'enherbement
+    df['plantation_perenne_phases_realise_extanded'].loc[:, 'use_enherbement'] = False
+    df['plantation_perenne_phases_realise_extanded'].loc[
+        df['plantation_perenne_phases_realise_extanded']['type_enherbement'].isin([
+            'PARTIEL', 'TOTAL'
+        ])    
+    , 'use_enherbement'] = True
+
+    # on fait remonter l'information jusqu'au sdc avec un max sur tous les itks contenus.
+    df['sdc_realise_enherbement'] = df['plantation_perenne_phases_realise_extanded'].groupby('sdc_id').agg(
+        use_enherbement = ('use_enherbement', 'max')
+    )
+
+    # EN SYNTEHTISE
+
+    # ajout des informations sur le type d'enherbement de l'itk
+    left = df['plantation_perenne_phases_synthetise']
+    right = df['plantation_perenne_synthetise'][['type_enherbement']]
+    df['plantation_perenne_phases_synthetise_extanded'] = pd.merge(left, right, left_on = 'plantation_perenne_synthetise_id', right_index=True, how='left')
+
+    # ajout des clés étrangères des entités mères
+    left = df['plantation_perenne_phases_synthetise_extanded'].reset_index()
+    right = df['itk_synthetise_agrege'][['itk_id', 'sdc_id']]
+    df['plantation_perenne_phases_synthetise_extanded'] = pd.merge(left, right, left_on='id', right_on='itk_id', how='inner').set_index('id').dropna(subset='sdc_id')
+
+    # on créé une variable booléenne indiquant si l'itk mobilise de l'enherbement
+    df['plantation_perenne_phases_synthetise_extanded'].loc[:, 'use_enherbement'] = False
+    df['plantation_perenne_phases_synthetise_extanded'].loc[
+        df['plantation_perenne_phases_synthetise_extanded']['type_enherbement'].isin([
+            'PARTIEL', 'TOTAL'
+        ])    
+    , 'use_enherbement'] = True
+
+    # on fait remonter l'information jusqu'au sdc avec un max sur tous les itks contenus.
+    df['sdc_synthetise_enherbement'] = df['plantation_perenne_phases_synthetise_extanded'].groupby('sdc_id').agg(
+        use_enherbement = ('use_enherbement', 'max')
+    )
+
+    # on groupe les informations entre le réalisé ete le synthétisé
+    left = df['sdc_synthetise_enherbement'].rename(columns={
+        'use_enherbement' : 'use_enherbement_synthetise'
+    })
+    right = df['sdc_realise_enherbement'].rename(columns={
+        'use_enherbement' : 'use_enherbement_realise'
+    })
+    df['sdc_enherbement'] = pd.merge(left, right, left_index=True, right_index=True, how='outer').fillna(False)
+    df['sdc_enherbement'].loc[
+        :, 'use_enherbement'
+    ] = df['sdc_enherbement']['use_enherbement_realise']+ df['sdc_enherbement']['use_enherbement_synthetise']
+
+    # on s'assure d'avoir une valeur par sdc.
+    left = df['sdc']
+    right = df['sdc_enherbement']
+    res = pd.merge(left, right, left_index=True, right_index=True, how='left')[['use_enherbement']].fillna(False)
+
+    return res.reset_index().rename(columns={'sdc_id' : 'id'})
+

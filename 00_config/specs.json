@@ -535,7 +535,8 @@
 				"BDD_donnees_attendues_CAN", 
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai", 
-				"correspondance_destination_gcpe_dirodur"
+				"correspondance_destination_gcpe_dirodur",
+				"pk_gcpe_ift_anciennes_regions"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
@@ -549,6 +550,11 @@
 						"name" : "check_typo_especes_typo_culture", 
 						"table" : "typo_especes_typo_culture", 
 						"function_name" : "typo_especes_typo_culture"
+					},
+					{
+						"name" : "check_pk_gcpe_ift_anciennes_regions", 
+						"table" : "pk_gcpe_ift_anciennes_regions", 
+						"function_name" : "pk_gcpe_ift_anciennes_regions"
 					}
 				]
 			},
@@ -578,6 +584,12 @@
 				"tables" : [
 					"data_ipmgraph_for_dephygraph",
 					"data_culture_trop_for_dephygraph"
+				]
+			},
+			"pk_data" : {
+				"path" : "data/external_data/",
+				"tables" : [
+					"pk_gcpe_ift_anciennes_regions"
 				]
 			}
 		},
@@ -718,12 +730,22 @@
 				{
                     "source" : "outils", 
                     "category": "agregation"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
                 }],
                 "generated" : [
                     "reseaux_rattachement_sdc_outils_tableau_de_bord_can",
 					"sdc_realise_outils_tableau_de_bord_can",
 					"stc_sdc_realise_outils_tableau_de_bord_can",
-					"stc_synthetise_outils_tableau_de_bord_can"
+					"stc_synthetise_outils_tableau_de_bord_can",
+                    "rendement_viti_sdc_realise_outils_tableau_de_bord_can",
+					"gestion_enherbement_sdc_outils_tableau_de_bord_can"
                 ], 
 				"need_performance" : [
 				]
@@ -803,26 +825,12 @@
             "test" : {
                 "function_name" : "create_category_test",
 				"entrepot_dependances" : [
-					"noeuds_synthetise", "connection_synthetise",
-					"noeuds_synthetise_restructure", "itk_synthetise_agrege",
-					"typologie_can_culture",
-					"poids_connexions_synthetise_rotation",
-					"sdc",
-					"domaine",
-					"plantation_perenne_phases_synthetise",
-					"plantation_perenne_synthetise",
-					"plantation_perenne_synthetise_restructure"
+					"recolte_rendement_prix", "action_realise", "action_realise_agrege", "sdc", 
+					"recolte_rendement_prix_restructure", "composant_culture", "espece"
 				],
-                "dependances" : [{
-                    "source" : "outils", 
-                    "category": "restructuration"
-                },
-				{
-                    "source" : "outils", 
-                    "category": "agregation"
-                }],
+                "dependances" : [],
                 "generated" : [
-                    "stc_sdc_realise_outils_tableau_de_bord_can"
+                    "rendement_viti_sdc_realise_outils_tableau_de_bord_can"
                 ], 
 				"need_performance" : [
 				]
