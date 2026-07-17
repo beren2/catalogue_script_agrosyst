@@ -793,10 +793,6 @@
 				{
                     "source" : "outils", 
                     "category": "outils_dirodur_1"
-                },
-				{
-                    "source" : "outils", 
-                    "category": "outils_dirodur_0"
                 }],
                 "generated" : [
 					"indicateur_diversite_outils_dirodur"
