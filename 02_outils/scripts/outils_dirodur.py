@@ -890,15 +890,6 @@ def get_indicateur_diversite_outils_dirodur(donnees):
             return np.nan
         return 1 / s
 
-    def proportions(p, typology_col):
-        return (
-            p.pivot(index='sdc_id',
-                    columns=typology_col,
-                    values=p.index)
-            .fillna(0)
-            .add_prefix("prop_")
-        )
-
     def compute_typology_metrics(df, typology_col, prefix, cols_needed_for_proportion=None):
         # Il a certaines cultures en absentes (==> poids = NaN) comme souvent pour les Précédents fictifs par exemple
         df = df[df["poids_composant_dans_sdc"].notna()]
