@@ -1,0 +1,135 @@
+culture_id,dates_nbjr_triees,date_moyenne,saison_semis_detect_via_intv
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_00f392da-bae9-45eb-b5cf-8d60bc5f9e14,[101],10/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_026f1cab-bceb-446a-9a6c-cfaab54e134d,[226],13/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_0d9de046-7b85-4259-b21b-5787f429de71,"[280, 280, 280, 280, 280, 280, 280, 280, 280]",06/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_0da412ba-6350-41a2-9c60-b43321c9c510,[127],06/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_0f28e346-9750-4758-bc72-5351f48a01a6,"[287, 287, 287]",13/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_0f37de49-8eea-4f01-9d18-ed1411281869,[289],15/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_10b3c408-2f17-4ff6-9da7-c61be4f55e68,"[151, 200, 200]",01/07,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_114404a4-b511-4886-bcda-b06d091ca6e9,[241],28/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_13d64f86-855e-4311-b7c7-d4bb1d82590a,[105],14/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_162ad136-8d19-4c76-9496-2a38c5f87111,[320],15/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_1747b0ba-80ca-49ec-9d3e-4177f82daab3,[284],10/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_177ccd05-ebff-4186-8995-0ebcccaa683f,"[315, 315, 325]",13/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_18721d54-56ba-4c32-811f-b8ccaf33616d,"[97, 97, 97]",06/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_197aebd0-42b5-4527-b0a3-339f2688f907,[132],11/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_1be0be29-7088-4a12-8264-8a4f65ad44f0,"[122, 122]",01/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_1c689caf-867a-4c5d-860f-754116272063,[303],29/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_1f9e6731-6fbd-4573-ba06-3875c1abc752,"[93, 93]",02/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_228d6412-9025-4965-a527-5be06430201a,[68],08/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_248f39aa-1e26-4d45-b980-0e0eeb167f81,[233],20/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2555e689-a9bc-4e86-949d-969528454aa9,"[299, 299, 299]",25/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2748c07e-e155-46e4-8cf8-edfaad56343e,"[82, 82, 82, 82, 259, 259, 259]",05/06,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2812211d-777f-4cff-8e91-65b34680d157,[303],29/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_29e7c191-80f8-4842-b7e5-591c0ae3471d,[308],03/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2ad8f491-4473-4c8f-b272-89c4c59b7c03,[131],10/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2bca5372-efc4-4e7b-81bf-043cb602e410,[172],20/06,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2d891fec-6797-451d-a85e-0b8a6b2895cd,[291],17/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_320d0478-7b27-414e-ba3b-a111c6b8505b,[244],31/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_324da77c-3cf0-42cb-bdce-05e05f0df5ca,[308],03/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_330d897f-8057-4be2-bc09-247d95ca6f0a,[245],01/09,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_332f307b-1a21-4355-8f01-63aa5ef7cae8,"[289, 289]",15/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_35749643-ec75-43e7-a11b-8c650100342b,[106],15/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_3753789a-0719-408d-8fd2-1479123c92cc,"[129, 129, 129, 129, 141, 141, 141, 141, 142, 142, 142, 142]",16/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_3b23d951-54ed-4604-a684-7f7f1e6b72d7,[119],28/04,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_3dccf1e0-c2d4-4505-84fd-9a4d998a45b5,"[301, 301]",27/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_3f89a2a8-06a4-49ff-8988-b547350d388f,[294],20/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_3fcee0de-3e25-483b-9973-1cce755159ca,[297],23/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_4ae9e7f3-57fb-415b-8f9e-0bfe8c6bb000,[97],06/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_4de236dd-a17b-4d67-922c-3fccc93fed73,[67],07/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_4f0fda91-ed79-41be-a43c-34e30668f679,[96],05/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_537b3ae3-6bd8-4058-a6af-4ffe2d42c200,[284],10/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_557683ce-0fc1-4f53-a0e3-92c9ebe0060e,"[80, 80, 80]",20/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_55dd001a-d616-4407-b4ad-3befc0480b6e,[90],30/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_580c1456-4fa3-470e-9b19-1911dd499c3f,"[299, 299]",25/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_5850291d-5312-44b8-b5b6-c82becd10e90,[294],20/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_59e59f92-8c56-44b6-b482-805dd605e063,[138],17/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_5bb0d298-52e9-465e-aa54-0f364dfc042c,"[122, 122, 122, 122, 122]",01/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_614627d1-e9bf-45aa-84cd-21cba7bffc8a,[126],05/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_61693781-4b07-478a-bdab-153efb21e933,[127],06/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_62568986-6ebe-480a-8fe3-c30dadb19148,[304],30/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_62892042-2ece-4b03-aba3-6f4650457b7c,[299],25/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_65b67736-69ae-4edd-9a45-644fb4a2b6f5,"[136, 136]",15/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_696f4c99-7c1e-4f30-a152-8105989be9ed,[284],10/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_69f998b2-f988-474f-8fdf-3337e65fd55e,[254],10/09,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_6a2d090f-e673-48c1-994f-93e223ce9b7c,[284],10/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_71bc0942-4858-4581-82ce-b007c9b9646d,[239],26/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_721accf0-a21e-4bb4-9fd8-c161e861756a,[366],31/12,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_74a1e77a-de11-4b14-aa75-eb843807b23a,"[317, 324]",15/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_74d44287-f41b-49ff-bee1-cff7da56615d,[85],25/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_75c3c29c-afaf-4bf8-a858-4a52039b52d9,"[109, 109, 109, 109]",18/04,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_767c5ffd-25d6-4e2f-8d9f-4726c885e491,[254],10/09,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_795f183d-80a1-4f79-bb31-5eebee7a8a98,"[296, 296, 296, 296, 296, 307]",23/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_800248a7-98b7-4663-954c-15336d21e184,[317],12/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_807c44aa-5625-47d3-b963-9f4020bcc69b,[97],06/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8324bb89-c8c9-450b-952a-3805b46dfd80,[134],13/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_860b7f95-0d18-4bf1-af43-64fbc7e08957,"[119, 119, 119, 138, 138, 138]",07/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8ab6c020-4a1b-40b4-a0fb-04c39d1040bd,"[305, 305, 305, 305]",31/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8b61733a-aed0-466a-924c-985f10c31d18,"[183, 237]",28/07,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8d2970c5-fe35-4276-b1d4-1ee60b25a812,"[103, 235]",17/06,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8eb77baf-fb1c-431d-970b-4b6d93ed535c,[293],19/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_8ed4601f-f61e-4fa7-8d36-c3376cb88fec,[143],22/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_91a6900a-70ef-45e2-b06a-4c4acb7d9b1a,[297],23/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_92c42fa5-3eb5-4606-be3a-cf4d597900ba,"[101, 101]",10/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_9448e1c9-490b-4974-9022-5fd8a0028ec9,[306],01/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_965617fc-ac64-4480-ae26-4c1b9c023f42,"[290, 292, 292, 293, 313, 341]",29/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_966340fd-bcac-4c20-a9fe-0ac4b38f5c7e,"[243, 243, 243]",30/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_984ad10a-26dd-41d1-8f09-f07077aeeaa8,"[144, 144, 144, 144]",23/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_9a6da594-2ed9-4f0a-aa67-340ac7bdceec,[284],10/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_9b99f1bb-a183-49c0-807c-c7e8e3974666,"[68, 94]",21/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_9e71e7b0-510d-4a3e-87c0-950134305aca,[101],10/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_9eb327c4-94cc-4f08-b77f-e55374dd6be7,[74],14/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_a270105f-56ad-4341-aa81-46341dbfc85f,[289],15/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_a4fe97bd-2c82-45fa-86b8-23f88003a23a,"[313, 313]",08/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_a664d92c-a4f5-4e49-88e2-9b45de6c103d,"[310, 310, 312]",05/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_a89fa457-753d-4396-a112-f615427017e2,"[75, 80, 82]",19/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_aab59774-abda-4012-b0f5-0303b8bde07e,"[58, 58, 58, 58, 58]",27/02,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_aac4e4a4-75d7-4074-897b-6f94cd90188f,[279],05/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ad229365-4905-4e25-bddc-058e5c25af49,[82],22/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_afeb7430-a099-47a5-be24-b469728025a3,"[291, 291]",17/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b0470b34-3703-4970-b9bb-a7e225962174,[237],24/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b04f5c9e-7aa0-4138-9957-c797344b35f8,[336],01/12,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b236c060-d36f-4516-af2c-8255f8d5cb31,[96],05/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b4e29082-921f-44c5-a074-7ef810f7d89b,[65],05/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b6436c2f-bd3e-442a-9752-3b71869fd125,"[263, 263, 263, 271, 271]",22/09,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b78a0db3-1219-40f8-b4a4-4efd3d0c2873,"[85, 88, 89, 96, 96, 111, 141]",09/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_b84aa120-9f9f-41ea-ab83-0d59786a8dcd,[59],28/02,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ba17cad0-249f-41b8-a705-442d7d2d4db3,[122],01/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ba6e2a77-04ab-4af7-9ded-52f3b9202521,[215],02/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_bb03d887-7467-4d0f-a2a3-b24a5884099e,[300],26/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_bb85e30f-1b2e-4365-879b-ef2e20a438af,[289],15/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c307cd02-9ea8-4ed6-9620-f00ee207f52a,[289],15/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c6cac24e-4180-471c-80c8-08796163e3aa,"[143, 147]",24/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c6f6540a-ebe4-402f-a855-1651ae8cec3d,"[123, 123, 125, 125, 135, 135]",06/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c8bff6ed-c289-4246-be71-32ff4114c753,[11],11/01,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_c9c50f92-836c-41f4-b8ee-49bb9ea35ba4,"[255, 255]",11/09,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_cd615baa-4844-4797-b2f8-320c56ae1856,[289],15/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_cdc5cd24-df21-4f7c-9faa-36023d180194,[291],17/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_d193c620-29d7-4c87-8b1a-a76e3a0e3603,"[52, 53, 76]",29/02,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_d3d70692-05ae-4c6f-9838-6dadf325fe43,"[126, 127]",05/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_d565ce61-72c3-4ba3-9faf-d75de53370b5,[87],27/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_d63eb3dd-178f-49a6-9593-04cfeef2a1eb,[238],25/08,automne
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_d6d764d7-b700-40af-84ae-3883f0febc2e,"[116, 116]",25/04,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_d72493c4-08f2-4574-867b-338982494c0d,[121],30/04,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_dc8d2e55-3557-4001-9cdc-73a66f20ce48,"[142, 143, 149]",23/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_deb74708-a497-43d4-ac74-682e7f6fb5d3,"[137, 137, 137, 137]",16/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_e5afff89-f17b-42a4-abec-cef2fcfc882b,"[110, 110]",19/04,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_e757bdf5-71d5-488d-986d-7c7d6577d5db,[141],20/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_e9f78287-a70c-4e43-ad23-68168aae6eb4,[287],13/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ea076e8d-dc19-4af1-b89a-cdcc598343de,"[117, 129]",02/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ecb00c44-8cdf-4a5b-97ae-06c605116f8c,"[294, 295]",20/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ed459239-1921-4988-a061-6c034582a038,"[122, 122, 130, 130]",05/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_edabd27c-123d-48a6-991e-120315f374bf,"[122, 122]",01/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_ee235c75-2e03-4ae1-9230-eec561640fa6,"[284, 291]",13/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_eec90175-7501-4a1e-a922-35b640cff8e9,"[312, 318, 318, 318]",11/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_eedada74-f483-4d3b-9d20-c26d901cfff3,"[320, 320, 320]",15/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f14dd55f-6fda-4b4c-9fbd-999af05c0a48,"[76, 76]",16/03,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f24d7203-af9f-481a-ad3c-7665cb755ce5,"[156, 156, 156]",04/06,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f2cf54f8-5b2a-44f3-8614-fd8a70a36220,[58],27/02,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f439650a-11ba-47f5-bdf5-fe4f01ba2cb1,[325],20/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f43d673f-1e91-4ff0-818f-73554ba185f7,"[132, 132, 132, 132, 132, 132, 132, 132, 132, 141, 141, 141]",13/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f571104c-4f76-4890-bc86-34f838794ecf,[106],15/04,printemps
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f5fa51d2-d42e-40e6-8997-c3c979389410,"[300, 300, 300, 342, 342]",11/11,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_f6188387-f36b-4e4f-9a42-e445ce9c843a,[126],05/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_fa3ed058-75ae-449a-9389-ef5de04461bf,[162],10/06,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_fc522cf8-04c5-47a9-b140-7ba8975878fe,[284],10/10,hiver
