@@ -768,6 +768,42 @@
 				"need_performance" : [
 				]
             },
+			"outils_dirodur_2" : {
+                "function_name" : "create_category_dirodur_2",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_0"
+                }],
+                "generated" : [
+					"indicateur_diversite_outils_dirodur"
+                ], 
+				"need_performance" : [
+				]
+            },
 			"outils_dephygraph" : {
                 "function_name" : "create_category_outils_dephygraph",
                 "dependances" : [{

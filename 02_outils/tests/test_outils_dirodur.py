@@ -269,3 +269,37 @@ def test_get_typologie_culture_outils_dirodur():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='culture_id')
 
     assert all(res)
+
+def test_get_indicateur_diversite_outils_dirodur():
+    """
+        Test de l'obtention des indicateurs de diversités utilisés pour Dirodur
+    """
+
+    identifiant_test = 'test_get_indicateur_diversite_outils_dirodur'
+
+    df_names = [
+    'sdc',
+    'synthetise',
+    'connection_synthetise',
+    'noeuds_synthetise',
+    'connection_realise',
+    'noeuds_realise',
+    'zone',
+    'parcelle',
+    'composant_culture',
+    'espece',
+    'entite_unique_par_sdc_nettoyage',
+    'connection_synthetise_restructure',
+    'noeuds_synthetise_restructure',
+    'poids_connexions_synthetise_rotation',
+    'poids_noeuds_realise',
+    'typologie_culture_outils_dirodur',
+    'date_de_semis_outils_dirodur'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_indicateur_diversite_outils_dirodur/'
+
+    fonction_to_apply = outils_dirodur.get_indicateur_diversite_outils_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
+
+    assert all(res)

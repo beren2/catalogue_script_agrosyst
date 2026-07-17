@@ -801,25 +801,188 @@ def get_typologie_culture_outils_dirodur(donnees):
     
     return df
 
-def get_percoutage_chaque_typologie(donnees):
-    """ """
-    sdc = donnees['sdc'].rename(columns={'id':'sdc_id'}).copy()
+def get_indicateur_diversite_outils_dirodur(donnees):
+    """ 
+    A COMPELTE
+    """
+    ### IMPORT DES DONNEES ###
+
+    poids_S = donnees['poids_connexions_synthetise_rotation'][['connexion_id','poids_conx_agregation_norm_synth']].rename(columns={'connexion_id':'connection_synthetise_id'}).copy()
+    poids_R = donnees['poids_noeuds_realise'][['noeuds_realise_id','poids_surface_developpee_normalisee']].copy()
+    date_semis = donnees['date_de_semis_outils_dirodur'][['culture_id','saison_semis_detect_via_intv']].copy()
+
+    sdc = donnees['sdc'][['id','filiere']].rename(columns={'id':'sdc_id'}).copy()
 
     unique_sdc = donnees['entite_unique_par_sdc_nettoyage'].copy()
-    sdc_real = sdc.loc[sdc['sdc_id'].isin(unique_sdc.loc[unique_sdc['synthetise_id'].isnull(),'sdc_id'])]
-    synthetise = donnees['synthetise'].rename(columns={'id':'synthetise_id'}).copy()
-    synthetise = synthetise.loc[synthetise['synthetise_id'].isin(unique_sdc['synthetise_id'].unique())]
+    sdc_real = sdc.loc[sdc['sdc_id'].isin(unique_sdc.loc[unique_sdc['entite_retenue'] == 'realise_retenu','sdc_id'])]
+    synthetise = donnees['synthetise'][['id','sdc_id']].rename(columns={'id':'synthetise_id'}).copy()
+    synthetise = synthetise.loc[synthetise['synthetise_id'].isin(unique_sdc['entite_retenue'].unique())]
 
-    cnx_s = donnees['connection_synthetise'].rename(columns={'id':'connection_synthetise_id', 'cible_noeuds_synthetise_id':'noeuds_synthetise_id'}).copy()
+    cnx_s = donnees['connection_synthetise'][['id','cible_noeuds_synthetise_id']].rename(columns={'id':'connection_synthetise_id', 'cible_noeuds_synthetise_id':'noeuds_synthetise_id'}).copy()
+    cnx_s_rest = donnees['connection_synthetise_restructure'].rename(columns={'id':'connection_synthetise_id'}).copy()
     nd_s = donnees['noeuds_synthetise'][['id','synthetise_id']].rename(columns={'id':'noeuds_synthetise_id'}).copy()
+    nd_s_rest = donnees['noeuds_synthetise_restructure'].rename(columns={'id':'noeuds_synthetise_id'}).copy()
+
+    cnx_r = donnees['connection_realise'][['id','cible_noeuds_realise_id','culture_intermediaire_id']].rename(columns={'id':'connexion_realise_id','cible_noeuds_realise_id':'noeuds_realise_id'})
     nd_r = donnees['noeuds_realise'].rename(columns={'id':'noeuds_realise_id'}).copy()
+    zone = donnees['zone'][['id','parcelle_id']].rename(columns={'id':'zone_id'}).copy()
+    parcelle = donnees['parcelle'][['id','sdc_id']].rename(columns={'id':'parcelle_id'}).copy()
 
     cropsp = donnees['composant_culture'][['id','espece_id','culture_id']].rename(columns={'id':'composant_culture_id'}).copy()
     sp = donnees['espece'][['id','libelle_espece_botanique','typodirodur_espece','typodirodur_espece_precise','typodirodur_espece_famille_bota','typodirodur_espece_periode_semis']].rename(columns={'id':'espece_id'}).copy()
+    typo_dirodur = donnees['typologie_culture_outils_dirodur'][['culture_id', 'typodirodur_culture', 'culture_est_avec_compagne', 
+                                                                'culture_est_annuelle_asso', 'culture_est_prairie', 'typo_cpg']].copy()
+    
+
+    ### MISE EN PLACE DU DF PRINCIPAL ###
+
     sp = cropsp.merge(sp, how = 'left', on = 'espece_id')
 
-    sp['ponderation_composant'] = 1/sp.groupby('culture_id').transform("count")
-    sp
+    sp['ponderation_composant'] = 1/sp.groupby('culture_id')['composant_culture_id'].transform("count")
+
+    # merge outer pour les noeud sur les connexion en réalisé car tous les noeuds n'ont pas forcément de connexion
+    # merge inner avec synthetise et sdc pour n'avoir que les entite unique par sdc !
+    itk_s = cnx_s.merge(cnx_s_rest, how='left', on='connection_synthetise_id').merge(nd_s, how='left', on='noeuds_synthetise_id').merge(nd_s_rest, how='left', on='noeuds_synthetise_id').merge(synthetise, how='inner', on='synthetise_id')
+    itk_r = cnx_r.merge(nd_r, how='outer', on ='noeuds_realise_id').merge(zone, how='left', on='zone_id').merge(parcelle, how='left', on='parcelle_id').merge(sdc_real, how='inner', on='sdc_id')
+    itk = pd.concat([itk_s, itk_r])
+
+    itk = itk[['connection_synthetise_id', 'noeuds_realise_id', 'culture_id', 'culture_intermediaire_id', 'synthetise_id', 'sdc_id']]
+    composant_itk = itk.merge(sp, on='culture_id', how='left').merge(typo_dirodur, how = 'left', on = 'culture_id')
+    composant_itk = composant_itk.merge(poids_S, how='left', on='connection_synthetise_id')
+    composant_itk = composant_itk.merge(poids_R, how='left', on='noeuds_realise_id')
+
+    composant_itk = composant_itk.merge(date_semis, how='left', on='culture_id')
+    composant_itk['saison_semis_detect_via_intv'] = composant_itk['typodirodur_espece_periode_semis'].fillna(composant_itk['saison_semis_detect_via_intv'])
+    composant_itk.drop(columns = 'saison_semis_detect_via_intv', inplace=True)
+
+    # On calcule les poids par composant au seins du sdc (ou synthetise). On prends le poids de connexion ou le poids de noeuds selon la méthode de saisie (R ou S)
+    composant_itk['poids_composant_dans_sdc'] = np.where(composant_itk['connection_synthetise_id'].notna(),
+                                                        composant_itk['ponderation_composant'] * composant_itk['poids_conx_agregation_norm_synth'],
+                                                        composant_itk['ponderation_composant'] * composant_itk['poids_surface_developpee_normalisee'])
+
+    # On garde en mémoire composant_itk
+    df = composant_itk.copy()
 
 
-    return final_df
+    ### MISE EN PLACE DES FONCTION CALCULANT LES INDICATEURS ###
+
+    def richness(p):
+        return len(p.index)
+
+    def shannon(p):
+        sh = -(p * np.log2(p)).sum()
+        if sh == -0:
+            return 0
+        return sh
+
+    def evenness(p):
+        s = len(p)
+        if s <= 1:
+            return np.nan
+        return shannon(p) / np.log2(s)
+
+    def simpson(p):
+        return (p**2).sum()
+
+    def inverse_simpson(p):
+        s = simpson(p)
+        if pd.isna(s) or s == 0:
+            return np.nan
+        return 1 / s
+
+    def proportions(p, typology_col):
+        return (
+            p.pivot(index='sdc_id',
+                    columns=typology_col,
+                    values=p.index)
+            .fillna(0)
+            .add_prefix("prop_")
+        )
+
+    def compute_typology_metrics(df, typology_col, prefix, cols_needed_for_proportion=None):
+        # Il a certaines cultures en absentes (==> poids = NaN) comme souvent pour les Précédents fictifs par exemple
+        df = df[df["poids_composant_dans_sdc"].notna()]
+
+        # On ajoute la modalité Inconnu pour ne pas sous ou sur estimé les proportions des autres modalités (groupby excluant par défaut les NaN dasn la typology_col)
+        df.loc[:,typology_col] = df[typology_col].fillna("Inconnu")
+        proportions = df.groupby(typology_col)["poids_composant_dans_sdc"].sum()
+
+        # Il y a potentiellement des modalité avec une somme de proportion à 0%, on les retire
+        proportions =  proportions[proportions > 0]
+
+        # Le sdc n'a pas les poids associés à chaque culture ou n'avait que des poids à 0% ou que des Nan
+        if proportions.empty and typology_col == 'typodirodur_espece' :       
+            return pd.Series({
+                f"{prefix}_richesse": int(0),
+                f"{prefix}_shannon": np.nan,
+                f"{prefix}_evenness": np.nan,
+                f"{prefix}_simpson": np.nan,
+                f"{prefix}_inverse_simpson": np.nan,
+            })
+        elif proportions.empty and typology_col != 'typodirodur_espece' :       
+            return pd.Series({
+                f"{prefix}_richesse": int(0),
+                f"{prefix}_shannon": np.nan,
+            })
+        
+        # Calculs des indicateurs
+        proportions = proportions / proportions.sum()
+
+        if typology_col == 'typodirodur_espece' :
+            metrics = {
+                f"{prefix}_richesse": int(richness(proportions)),
+                f"{prefix}_shannon": shannon(proportions),
+                f"{prefix}_evenness": evenness(proportions),
+                f"{prefix}_simpson": simpson(proportions),
+                f"{prefix}_inverse_simpson": inverse_simpson(proportions),
+                f"{prefix}_proportion_max": max(proportions),
+            }
+        else : 
+            metrics = {
+                f"{prefix}_richesse": int(richness(proportions)),
+                f"{prefix}_shannon": shannon(proportions),
+            }
+
+        # Calculs des proportions
+        # Cas des famille botanique, on combine la proportion de toutes les autres familles qu les 3 principales
+        if typology_col == 'typodirodur_espece_famille_bota' :
+            mask = proportions.index.isin(["Poaceae", "Fabaceae", "Brassicaceae"])
+            others = proportions[~mask].sum()
+            proportions = proportions[mask].copy()
+            proportions["Autres"] = others
+
+        if cols_needed_for_proportion is not None:
+            for category, proportion in proportions.items():
+                if category in cols_needed_for_proportion:
+                    metrics[f"{prefix}_{category}"] = proportion
+
+        return metrics
+    
+
+    ### UTILISATION DES FONCTION D'INDICATEURS ###
+
+    result = (
+        df.groupby("sdc_id")
+        .apply(
+            lambda sdc: pd.DataFrame([
+                {
+                    **compute_typology_metrics(sdc, "typodirodur_espece", "typo_espece"),
+                    **compute_typology_metrics(sdc, "libelle_espece_botanique", "espece_bota"),
+                    **compute_typology_metrics(sdc, "typodirodur_espece_famille_bota", "famille_bota", ["Poaceae", "Fabaceae", "Brassicaceae", 'Autres']),
+                    **compute_typology_metrics(sdc, "typodirodur_espece_periode_semis", "saison_semis", ["printemps", "ete", "automne", 'hiver', 'pluriannuel']),
+                    "prop_culture_avec_compagne": sdc.loc[sdc["culture_est_avec_compagne"] == "oui", "poids_composant_dans_sdc"].sum(),
+                    "prop_association": sdc.loc[sdc["culture_est_annuelle_asso"] == "oui", "poids_composant_dans_sdc"].sum(),
+                    "prop_prairie": sdc.loc[sdc["culture_est_prairie"] == "oui", "poids_composant_dans_sdc"].sum(),
+                    "prop_culture_intermédiaire": sdc.loc[sdc["culture_intermediaire_id"].notna(), "poids_composant_dans_sdc"].sum(),
+                    "prop_culture_porte_graine": sdc.loc[sdc["typo_cpg"].notna(), "poids_composant_dans_sdc"].sum(),
+                }
+            ]),
+            include_groups=False,
+        )
+        .reset_index()
+    ).drop(columns='level_1')
+
+    for col in [col for col in result.columns if 'richesse' in col.lower()]:
+        result[col] = result[col].astype('Int64')
+        
+    return result#, composant_itk

@@ -825,6 +825,16 @@ def create_category_dirodur_1():
     df_typologie_culture_dirodur.set_index('culture_id', inplace=True)
     export_to_db(df_typologie_culture_dirodur, 'entrepot_typologie_culture_outils_dirodur')
     add_primary_key('entrepot_typologie_culture_outils_dirodur', 'culture_id')
+
+def create_category_dirodur_2():
+    """
+        Execute les requêtes pour créer la troisieme salve d'outils DiRoDur
+    """
+
+    df_typologie_culture_dirodur = outils_dirodur.get_indicateur_diversite_outils_dirodur(donnees)
+    df_typologie_culture_dirodur.set_index('sdc_id', inplace=True)
+    export_to_db(df_typologie_culture_dirodur, 'entrepot_indicateur_diversite_outils_dirodur')
+    add_primary_key('entrepot_indicateur_diversite_outils_dirodur', 'sdc_id')
     
 
 def create_category_interoperabilite():
