@@ -803,7 +803,34 @@ def get_typologie_culture_outils_dirodur(donnees):
 
 def get_indicateur_diversite_outils_dirodur(donnees):
     """ 
-    A COMPELTE
+    Outil permettant de calculer les indicateurs de diversités à l'échelle du sdc (pour les réalisé uniquement) et du système synthétisé (pour les synthétisé). Un filtres sur ceux ci est appliqué via l'outils entite_unique_par_sdc_nettoyage.
+    L'échelle de base est le noeud pour y récupérer les culture_id. Puis on les décompose en plusieurs composant de culture pour le même noeud. Pour un même noeud, on attribue la même proportion à chaque composant de culture. On appelle cette proportion 'ponderation_composant'.
+    Ensuite on multiplie ce 'ponderation_composant' avec 
+        - 'poids_surface_developpee_normalisee' pour les noeuds réalisés, obtenu via l'outil "poids_noeuds_realise"
+        - 'poids_conx_agregation_norm_synth' pour les noeuds synthétisés, obtenu via l'outil "poids_connexions_synthetise_rotation"
+    Cela nous donne la proportion d'un composant de culture au seins du sdc : 'poids_composant_dans_sdc'
+
+    Grace aux différentes typologies qui sont associé au niveau de l'espèce, on peut calculer les indicateurs de diversités. Voici les différentes typologies qu'on utilise pour le calcul d'indicateurs :
+        - la 'typodirodur_espece' qui est la typologie d'espece utile pour DIRODUR. Echelle : composant culture
+        - le 'libelle_espece_botanique' qui est le nom classique de l'espèce dans Agrosyst. Echelle : composant culture
+        - la 'typodirodur_espece_famille_bota' qui est la famille de l'espèce, utile pour DIRODUR. Echelle : composant culture
+        - la 'typodirodur_espece_periode_semis' qui est la période de semis habituelle de l'espèce, utile pour DIRODUR. Echelle : composant culture. [attention lorsque la période de semis est absente dans le référentiel espece pour dirodur, on récupère les dates de interventions de la culture_id, disponible via l'outil 'date_de_semis_outils_dirodur']
+
+    On utilise également des infos supplémentaires disponibles dans la matrice de passage pour avoir des indicateur de proportions. Ces infos proviennent en majorité de la matrice de passage mais également de la typologie de culture de la CAN qui aller chercher si la culture était potentiellement une culutre prote-graine ou non ; et également des connexions du noeuds pour savoir si le noeud est précédé par une culture intermédiaire. Ces données sont donc calculées à partir de l'échelle de la culture ou du noeud :
+        - 'prop_culture_avec_compagne'
+        - 'prop_association'
+        - 'prop_prairie'
+        - 'prop_culture_intermédiaire'
+        - 'prop_culture_porte_graine'
+
+    Pour toutes les typologies le shannon (diversité) et la richesse spécifique sont calculés. Pour la typologie d'espèce DIORDUR 'typodirodur_espece', on calcul plus d'indicateurs que les autres typologies.
+    Voici les indicateurs calculé :
+        - richesse spécifique (tous)
+        - diversité de shannon (tous)
+        - evenness
+        - simpson
+        - inverse simpson
+    
     """
     ### IMPORT DES DONNEES ###
 
@@ -902,7 +929,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         proportions =  proportions[proportions > 0]
 
         # Le sdc n'a pas les poids associés à chaque culture ou n'avait que des poids à 0% ou que des Nan
-        if proportions.empty and typology_col == 'typodirodur_espece' :       
+        if proportions.empty and typology_col == 'typodirodur_culture' :       
             return pd.Series({
                 f"{prefix}_richesse": int(0),
                 f"{prefix}_shannon": np.nan,
@@ -910,7 +937,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
                 f"{prefix}_simpson": np.nan,
                 f"{prefix}_inverse_simpson": np.nan,
             })
-        elif proportions.empty and typology_col != 'typodirodur_espece' :       
+        elif proportions.empty and typology_col != 'typodirodur_culture' :       
             return pd.Series({
                 f"{prefix}_richesse": int(0),
                 f"{prefix}_shannon": np.nan,
@@ -919,7 +946,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         # Calculs des indicateurs
         proportions = proportions / proportions.sum()
 
-        if typology_col == 'typodirodur_espece' :
+        if typology_col == 'typodirodur_culture' :
             metrics = {
                 f"{prefix}_richesse": int(richness(proportions)),
                 f"{prefix}_shannon": shannon(proportions),
@@ -940,12 +967,12 @@ def get_indicateur_diversite_outils_dirodur(donnees):
             mask = proportions.index.isin(["Poaceae", "Fabaceae", "Brassicaceae"])
             others = proportions[~mask].sum()
             proportions = proportions[mask].copy()
-            proportions["Autres"] = others
+            proportions["Autres_familles"] = others
 
         if cols_needed_for_proportion is not None:
             for category, proportion in proportions.items():
                 if category in cols_needed_for_proportion:
-                    metrics[f"{prefix}_{category}"] = proportion
+                    metrics[f"prop_{category}"] = proportion
 
         return metrics
     
@@ -957,9 +984,10 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         .apply(
             lambda sdc: pd.DataFrame([
                 {
+                    **compute_typology_metrics(sdc, "typodirodur_culture", "typo_culture"),
                     **compute_typology_metrics(sdc, "typodirodur_espece", "typo_espece"),
                     **compute_typology_metrics(sdc, "libelle_espece_botanique", "espece_bota"),
-                    **compute_typology_metrics(sdc, "typodirodur_espece_famille_bota", "famille_bota", ["Poaceae", "Fabaceae", "Brassicaceae", 'Autres']),
+                    **compute_typology_metrics(sdc, "typodirodur_espece_famille_bota", "famille_bota", ["Poaceae", "Fabaceae", "Brassicaceae", 'Autres_familles']),
                     **compute_typology_metrics(sdc, "typodirodur_espece_periode_semis", "saison_semis", ["printemps", "ete", "automne", 'hiver', 'pluriannuel']),
                     "prop_culture_avec_compagne": sdc.loc[sdc["culture_est_avec_compagne"] == "oui", "poids_composant_dans_sdc"].sum(),
                     "prop_association": sdc.loc[sdc["culture_est_annuelle_asso"] == "oui", "poids_composant_dans_sdc"].sum(),
@@ -976,4 +1004,40 @@ def get_indicateur_diversite_outils_dirodur(donnees):
     for col in [col for col in result.columns if 'richesse' in col.lower()]:
         result[col] = result[col].astype('Int64')
         
+    result = result[[
+        # Index
+        'sdc_id',
+        # Typo culture
+        'typo_culture_richesse',
+        'typo_culture_shannon',
+        'typo_culture_evenness',
+        'typo_culture_simpson',
+        'typo_culture_inverse_simpson',
+        'typo_culture_proportion_max',
+        'prop_association',
+        'prop_culture_avec_compagne',
+        'prop_prairie',
+        'prop_culture_intermédiaire',
+        'prop_culture_porte_graine',
+        # Typo espece
+        'typo_espece_richesse',
+        'typo_espece_shannon',
+        # Espece bota
+        'espece_bota_richesse',
+        'espece_bota_shannon',
+        # Famille bota
+        'famille_bota_richesse',
+        'famille_bota_shannon',
+        'prop_Poaceae',
+        'prop_Fabaceae',
+        'prop_Brassicaceae',
+        'prop_Autres_familles',
+        # Saison semis
+        'saison_semis_richesse',
+        'saison_semis_shannon',
+        'prop_printemps',
+        'prop_ete',
+        'prop_automne',
+        'prop_hiver']]
+
     return result#, composant_itk
