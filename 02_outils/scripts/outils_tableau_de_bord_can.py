@@ -665,11 +665,11 @@ def get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(
     df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
     return df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'})
 
-def get_rendement_viti_synthetise_outils_tableau_de_bord_can(
+def get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(
     donnees
 ):
     """
-        permet d'obtenir, pour chaque système de culture, le rendement en viticulture
+        permet d'obtenir, pour chaque système de culture, le rendement en viticulture (pour les systèmes synthétisés)
 
         - on part de l'opération de récolte, on ajoute les informations relatives à l'action, à la filière...
         - on agrége une première fois à l'échelle de l'itk en effectuant une somme
@@ -684,14 +684,84 @@ def get_rendement_viti_synthetise_outils_tableau_de_bord_can(
         
         Tables nécessaires :
             - 'recolte_rendement_prix',
-            - 'action_realise',
-            - 'action_realise_agrege',
+            - 'action_synthetise',
+            - 'action_synthetise_agrege',
             - 'sdc',
             - 'recolte_rendement_prix_restructure'
             - 'composant_culture'
             - 'espece'
     """
-    return 
+    df = copy.deepcopy(donnees)
+    df['recolte_rendement_prix'].set_index('id', inplace=True)
+    df['action_synthetise'].set_index('id', inplace=True)
+    df['action_synthetise_agrege'].set_index('id', inplace=True)
+    df['sdc'].set_index('id', inplace=True)
+    df['recolte_rendement_prix_restructure'].set_index('id', inplace=True)
+    df['composant_culture'].set_index('id', inplace=True)
+    df['espece'].set_index('id', inplace=True)
+
+    # ajout de la colonne pour savoir si le composant de culture est une vigne
+    left = df['composant_culture']
+    right = df['espece']['typocan_espece']
+    df['composant_culture_extanded'] = pd.merge(left, right, left_on='espece_id', right_index=True, how='left')
+
+    # ajout du composant_culture_id
+    left = df['recolte_rendement_prix']
+    right = df['recolte_rendement_prix_restructure']
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    # ajout des informations liées à l'action
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_synthetise']
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='inner')
+
+    # ajout des clés étrangères liées à l'action (échelles supérieures)
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_synthetise_agrege'][['sdc_id', 'plantation_perenne_phases_synthetise_id']]
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='action_id', right_index=True, how='left')
+
+    # attention, on supprime les parcelles non rattachées.
+    left = df['recolte_rendement_prix_extanded']
+    right = df['sdc'][['filiere']]
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='sdc_id', right_index=True, how='inner')
+
+    # ajout des informations liées au composant de culutre (pour pouvoir identifier ce qui est relatif au vigne seulement)
+    left = df['recolte_rendement_prix_extanded']
+    right = df['composant_culture_extanded']['typocan_espece']
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on='composant_culture_id', right_index=True, how='inner')
+
+    # première agrégation pour avoir un rendent au niveau itk.
+    df['plantation_perenne_phases_synthetise_recolte_viti'] = df['recolte_rendement_prix_extanded'].loc[
+        (df['recolte_rendement_prix_extanded']['filiere'] == 'VITICULTURE') & 
+        (df['recolte_rendement_prix_extanded']['typocan_espece'] == 'Vigne')
+    ].groupby('plantation_perenne_phases_synthetise_id').agg(
+        destinations_uniques=('destination', lambda x: list(x.unique())),
+        rendements_unites_uniques=('rendement_unite', lambda x: list(x.unique())),
+        rendement_unite=('rendement_unite', 'first'),
+        rendement_moyen=('rendement_moy', 'sum'),
+        nb_rendements_unite_uniques=('rendement_unite', 'nunique'), # on s'assure avec cette colonne qu'on a bien un 1 dans toutes lignes (qu'il n'y a pas de sdc qui utilisnt plusieurs unités différentes)
+        nb_destinations_uniques=('destination', 'nunique'),
+        sdc_id=('sdc_id', 'first')
+    )
+
+    # pour l'instant, on exclu toutes les itk dans lesquels il y a plusieurs unités de rendement 
+    # en effet, on ne dispose pas, à priori, de tableau de conversion.
+    df['plantation_perenne_phases_synthetise_recolte_viti'] = df['plantation_perenne_phases_synthetise_recolte_viti'].loc[
+        (df['plantation_perenne_phases_synthetise_recolte_viti']['nb_rendements_unite_uniques'] == 1) 
+    ]
+
+    # deuxième agrégation pour avoir un rendement au niveau des sdc, cette fois on somme.
+    df['sdc_recolte_viti'] = df['plantation_perenne_phases_synthetise_recolte_viti'].groupby('sdc_id').agg(
+        destinations_uniques=('destinations_uniques', lambda x: list(set().union(*x))),
+        rendements_unites_uniques=('rendements_unites_uniques', lambda x: list(set().union(*x))),
+        rendement_unite=('rendement_unite', 'first'),
+        nb_destinations_uniques=('destinations_uniques', lambda x: len(list(set().union(*x)))),
+        rendement_moyen=('rendement_moyen', 'mean'),
+        nb_rendements_unite_uniques=('rendement_unite', lambda x: len(list(set().union(*x))))
+    )
+
+    df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
+    return df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'})
 
 def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
     donnees
@@ -791,3 +861,30 @@ def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
 
+def get_sdc_outils_tableau_de_bord(
+    donnees
+):
+    """
+       Permet de regrouper dans un seul dataframe les différentes données calculées à l'échelle du système de culture
+    """
+
+    gestion_enherbement = get_gestion_enherbement_sdc_outils_tableau_de_bord_can(donnees)
+    rendement_viti_synthetise = get_rendement_viti_synthetise_outils_tableau_de_bord_can(donnees)
+    rendement_viti_realise = get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
+    reseaux_rattachement = get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(donnees)
+    surface_sdc_realise = get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
+    surface_synthetise = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_realise = get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
+    #surface_typo_culture_synthetise = get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
+
+    res = pd.concat([
+        gestion_enherbement,
+        rendement_viti_synthetise,
+        rendement_viti_realise, 
+        reseaux_rattachement,
+        surface_sdc_realise,
+        surface_synthetise,
+        surface_typo_culture_realise
+    ])
+
+    return res
