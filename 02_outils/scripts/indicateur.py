@@ -1157,6 +1157,7 @@ def get_typologie_assol_CAN_realise(donnees):
     df_end = df_end.set_index('sdc_id')
     
     # ajout du nombre de culture unique (avec des itk déclarés) dans le sdc :
+    # ici, même si le culture_id est mobilisé sur plusieurs zones, il ne sera comptabilisé qu'une seule fois.
     df_nombre_culture = df.groupby('sdc_id').agg({'culture_id' : lambda x : x.nunique()}).rename(columns={
         'culture_id' : 'nb_culture_sdc'
     })
@@ -1164,8 +1165,6 @@ def get_typologie_assol_CAN_realise(donnees):
     left = df_end
     right = df_nombre_culture
     merge = pd.merge(left, right, left_index=True, right_index=True, how='left')
-
-    merge.to_csv('test_typologie_assol_CAN_realise.csv', index=True)
 
     return merge
 
