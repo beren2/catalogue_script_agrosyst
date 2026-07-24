@@ -639,8 +639,8 @@ def get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(
     ].groupby('plantation_perenne_phases_realise_id').agg(
         destinations_uniques=('destination', lambda x: list(x.unique())),
         rendements_unites_uniques=('rendement_unite', lambda x: list(x.unique())),
-        rendement_unite=('rendement_unite', 'first'),
-        rendement_moyen=('rendement_moy', 'sum'),
+        rendement_unite_realise=('rendement_unite', 'first'),
+        rendement_moyen_realise=('rendement_moy', 'sum'),
         nb_rendements_unite_uniques=('rendement_unite', 'nunique'), # on s'assure avec cette colonne qu'on a bien un 1 dans toutes lignes (qu'il n'y a pas de sdc qui utilisnt plusieurs unités différentes)
         nb_destinations_uniques=('destination', 'nunique'),
         sdc_id=('sdc_id', 'first')
@@ -656,14 +656,14 @@ def get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(
     df['sdc_recolte_viti'] = df['plantation_perenne_phases_realise_recolte_viti'].groupby('sdc_id').agg(
         destinations_uniques=('destinations_uniques', lambda x: list(set().union(*x))),
         rendements_unites_uniques=('rendements_unites_uniques', lambda x: list(set().union(*x))),
-        rendement_unite=('rendement_unite', 'first'),
+        rendement_unite_realise=('rendement_unite_realise', 'first'),
         nb_destinations_uniques=('destinations_uniques', lambda x: len(list(set().union(*x)))),
-        rendement_moyen=('rendement_moyen', 'mean'),
-        nb_rendements_unite_uniques=('rendement_unite', lambda x: len(list(set().union(*x))))
+        rendement_moyen_realise=('rendement_moyen_realise', 'mean'),
+        nb_rendements_unite_uniques=('rendement_unite_realise', lambda x: len(list(set().union(*x))))
     )
 
-    df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
-    return df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'})
+    df['sdc_recolte_viti'][['rendement_moyen_realise', 'rendement_unite_realise']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
+    return df['sdc_recolte_viti'][['rendement_moyen_realise', 'rendement_unite_realise']].reset_index().rename(columns={'sdc_id' : 'id'})
 
 def get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(
     donnees
@@ -737,8 +737,8 @@ def get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(
     ].groupby('plantation_perenne_phases_synthetise_id').agg(
         destinations_uniques=('destination', lambda x: list(x.unique())),
         rendements_unites_uniques=('rendement_unite', lambda x: list(x.unique())),
-        rendement_unite=('rendement_unite', 'first'),
-        rendement_moyen=('rendement_moy', 'sum'),
+        rendement_unite_synthetise=('rendement_unite', 'first'),
+        rendement_moyen_synthetise=('rendement_moy', 'sum'),
         nb_rendements_unite_uniques=('rendement_unite', 'nunique'), # on s'assure avec cette colonne qu'on a bien un 1 dans toutes lignes (qu'il n'y a pas de sdc qui utilisnt plusieurs unités différentes)
         nb_destinations_uniques=('destination', 'nunique'),
         sdc_id=('sdc_id', 'first')
@@ -754,14 +754,14 @@ def get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(
     df['sdc_recolte_viti'] = df['plantation_perenne_phases_synthetise_recolte_viti'].groupby('sdc_id').agg(
         destinations_uniques=('destinations_uniques', lambda x: list(set().union(*x))),
         rendements_unites_uniques=('rendements_unites_uniques', lambda x: list(set().union(*x))),
-        rendement_unite=('rendement_unite', 'first'),
+        rendement_unite_synthetise=('rendement_unite_synthetise', 'first'),
         nb_destinations_uniques=('destinations_uniques', lambda x: len(list(set().union(*x)))),
-        rendement_moyen=('rendement_moyen', 'mean'),
-        nb_rendements_unite_uniques=('rendement_unite', lambda x: len(list(set().union(*x))))
+        rendement_moyen_synthetise=('rendement_moyen_synthetise', 'mean'),
+        nb_rendements_unite_uniques=('rendement_unite_synthetise', lambda x: len(list(set().union(*x))))
     )
 
-    df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
-    return df['sdc_recolte_viti'][['rendement_moyen', 'rendement_unite']].reset_index().rename(columns={'sdc_id' : 'id'})
+    df['sdc_recolte_viti'][['rendement_moyen_synthetise', 'rendement_unite_synthetise']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
+    return df['sdc_recolte_viti'][['rendement_moyen_synthetise', 'rendement_unite_synthetise']].reset_index().rename(columns={'sdc_id' : 'id'})
 
 def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
     donnees
@@ -806,6 +806,7 @@ def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
 
     # on créé une variable booléenne indiquant si l'itk mobilise de l'enherbement
     df['plantation_perenne_phases_realise_extanded'].loc[:, 'use_enherbement'] = False
+
     df['plantation_perenne_phases_realise_extanded'].loc[
         df['plantation_perenne_phases_realise_extanded']['type_enherbement'].isin([
             'PARTIEL', 'TOTAL'
@@ -861,33 +862,58 @@ def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
 
-def get_sdc_outils_tableau_de_bord_can(
+def get_sdc_realise_synthetise_outils_tableau_de_bord_can(
     donnees
 ):
     """
        Permet de regrouper dans un seul dataframe les différentes données calculées à l'échelle du système de culture
     """
+    df = copy.deepcopy(donnees)
+    df['sdc'].set_index('id', inplace=True)
+    df['synthetise'].set_index('id', inplace=True)
 
     gestion_enherbement = get_gestion_enherbement_sdc_outils_tableau_de_bord_can(donnees)
     rendement_viti_synthetise = get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(donnees)
     rendement_viti_realise = get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
     reseaux_rattachement = get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(donnees)
     surface_sdc_realise = get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
-    surface_synthetise = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
     surface_typo_culture_realise = get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
+    surface_synthetise = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
     surface_typo_culture_synthetise = get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
 
-    res = pd.concat([
+    # Liste des DataFrames à joindre
+    dataframes_sdc_to_join = [
         gestion_enherbement,
         rendement_viti_synthetise,
-        rendement_viti_realise, 
+        rendement_viti_realise,
         reseaux_rattachement,
         surface_sdc_realise,
-        surface_synthetise,
         surface_typo_culture_realise,
+    ]
+
+    dataframes_synthetise_to_join = [
+        surface_synthetise,
         surface_typo_culture_synthetise
-    ])
+    ]
 
-    res.to_csv('~/Bureau/test.csv')
+    # TODO : ici, on devra spliter les synthétisé et les réalisé 
+    # en effet, les 
 
-    return res
+    # Initialisation avec la colonne 'sdc'
+    result_sdc = df['sdc'][['campagne']].reset_index()
+
+    # Jointure successive de tous les DataFrames
+    for right_df in dataframes_sdc_to_join:
+        result_sdc = pd.merge(result_sdc, right_df, left_on='id', right_on='id', how='left')
+
+    # Initialisation avec la colonne 'sdc'
+    result_synthetise = df['synthetise'][['campagnes']].reset_index()
+
+    # Jointure successive de tous les DataFrames
+    for right_df in dataframes_synthetise_to_join:
+        result_synthetise = pd.merge(result_synthetise, right_df, left_on='id', right_on='id', how='left')
+
+    result_sdc.to_csv('~/Bureau/result_sdc.csv')
+    result_synthetise.to_csv('~/Bureau/result_synthetise.csv')
+
+    return result_sdc, result_synthetise

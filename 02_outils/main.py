@@ -837,41 +837,11 @@ def create_category_outils_tableau_de_bord_can():
         Execute les requêtes pour créer les outils nécessaires à la génération du magasin de données "tableau_de_bord_can"
     """
     # création de l'outil permettant de filtrer les entités (dispositifs)
-    reseaux_rattachement = outils_tableau_de_bord_can.get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(donnees)
-    reseaux_rattachement.set_index('id', inplace=True)
-    export_to_db(reseaux_rattachement, 'entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can', 'id')
-
-    surface_sdc = outils_tableau_de_bord_can.get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
-    surface_sdc.set_index('id', inplace=True)
-    export_to_db(surface_sdc, 'entrepot_sdc_realise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_sdc_realise_outils_tableau_de_bord_can', 'id')
-
-    surface_synthetise = outils_tableau_de_bord_can.get_surface_synthetise_outils_tableau_de_bord_can(donnees)
-    surface_synthetise.set_index('id', inplace=True)
-    export_to_db(surface_synthetise, 'entrepot_surface_synthetise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_surface_synthetise_outils_tableau_de_bord_can', 'id')
-
-    # stc = surface_typo_culture
-    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
-    surface_typo_culture_sdc_realise_outils_tableau_de_bord_can.set_index('id', inplace=True)
-    export_to_db(surface_typo_culture_sdc_realise_outils_tableau_de_bord_can, 'entrepot_stc_sdc_realise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_stc_sdc_realise_outils_tableau_de_bord_can', 'id')
-
-    surface_typo_culture_synthetise_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
-    surface_typo_culture_synthetise_outils_tableau_de_bord_can.set_index('id', inplace=True)
-    export_to_db(surface_typo_culture_synthetise_outils_tableau_de_bord_can, 'entrepot_stc_synthetise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_stc_synthetise_outils_tableau_de_bord_can', 'id')
-
-    rendement_viti = outils_tableau_de_bord_can.get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
-    rendement_viti.set_index('id', inplace=True)
-    export_to_db(rendement_viti, 'entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can', 'id')
-    
-    enherbement = outils_tableau_de_bord_can.get_gestion_enherbement_sdc_outils_tableau_de_bord_can(donnees)
-    enherbement.set_index('id', inplace=True)
-    export_to_db(enherbement, 'entrepot_gestion_enherbement_sdc_outils_tableau_de_bord_can')
-    add_primary_key('entrepot_gestion_enherbement_sdc_outils_tableau_de_bord_can', 'id')
+    sdc_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_sdc_outils_tableau_de_bord_can(donnees)
+    sdc_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(sdc_outils_tableau_de_bord_can, 'entrepot_sdc_outils_tableau_de_bord_can')
+    #add_primary_key('entrepot_sdc_outils_tableau_de_bord_can', 'id')
+    sdc_outils_tableau_de_bord_can.to_csv('~/Bureau/entrepot_sdc_outils_tableau_de_bord_can.csv')
 
 def create_category_outils_can():
     """
