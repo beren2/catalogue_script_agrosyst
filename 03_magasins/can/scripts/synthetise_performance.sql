@@ -272,11 +272,11 @@ SELECT
 	essp.qsa_fluopyram_hts,
 	essp.qsa_lambda_cyhalothrine,
 	essp.qsa_lambda_cyhalothrine_hts,
-	essp.qsa_cuivre_metal_tot,
-	essp.qsa_cuivre_metal_tot_hts,
-	essp.qsa_cuivre_metal_phyto,
-	essp.qsa_cuivre_metal_phyto_hts,
-	essp.qsa_cuivre_metal_ferti,
+	essp.qsa_cuivre_metal_tot as qsa_cuivre_tot,
+	essp.qsa_cuivre_metal_tot_hts as qsa_cuivre_tot_hts,
+	essp.qsa_cuivre_metal_phyto as qsa_cuivre_phyto,
+	essp.qsa_cuivre_metal_phyto_hts as qsa_cuivre_phyto_hts,
+	essp.qsa_cuivre_metal_ferti as qsa_cuivre_ferti,
 	essp.qsa_soufre_tot,
 	essp.qsa_soufre_tot_hts,
 	essp.qsa_soufre_phyto,
@@ -304,6 +304,5 @@ SELECT
 FROM entrepot_synthetise_synthetise_performance essp
 left join entrepot_synthetise es on essp.synthetise_id = es.id
 left join entrepot_context_performance_sdc sdc_context on sdc_context.sdc_id = es.sdc_id;
-
 
 
