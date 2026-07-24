@@ -157,7 +157,7 @@ def get_surface_sdc_realise_outils_tableau_de_bord_can(
     df['parcelle'] = df['parcelle'].set_index('id')
 
     # pour chaque parcelle
-    res = df['parcelle'].groupby('sdc_id').agg({'surface' : 'sum'}).rename(columns={'surface' : 'surface_sdc'})
+    res = df['parcelle'].groupby('sdc_id').agg({'surface' : 'sum'}).rename(columns={'surface' : 'surface_sdc_realise'})
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
 
@@ -204,7 +204,7 @@ def get_surface_synthetise_outils_tableau_de_bord_can(
     df['synthetise_extanded'].loc[:, 'surface_synthetise'] = np.round(df['synthetise_extanded']['sau_totale'] * df['synthetise_extanded']['part_sau_domaine'] / 100, 2)
 
     df['synthetise_extanded'].to_csv('synthetise_extanded.csv')
-    return df['synthetise_extanded'][['surface_synthetise']].reset_index().rename(columns={'sdc_id' : 'id'})
+    return df['synthetise_extanded'][['surface_synthetise']].reset_index().rename(columns={'sdc_id' : 'id', 'surface_synthetise' : 'surface_sdc_synthetise'})
 
 
 def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
@@ -301,53 +301,53 @@ def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
     df['result_realise'] = pd.concat([result_assole, result_perenne])
 
     result_df = df['result_realise'].apply(pd.Series).fillna(0).rename(columns={
-        'Betterave' : 'surface_betterave', 
-        'Céréales à paille printemps' : 'surface_cereale_a_paille_printemps',
-        'Céréales à paille hiver' : 'surface_cereale_a_paille_hiver',
-        'Colza' : 'surface_colza',
-        'Légume' : 'surface_legume', # Attention, légume plein champs
-        'Lin' : 'surface_lin', # Attention, Lin fibre
-        'Maïs' : 'surface_mais', # ATtention, Maïs Sorgho
-        'Mélange fourrager' : 'surface_melange_fourrager',
-        'Oléagineux (hors Colza et Tournesol)' : 'surface_oleagineux', # Attention, Olea
-        'Pomme de terre' : 'surface_pomme_de_terre', 
-        'Porte graine': 'surface_porte_graine', 
-        'Prairie temporaire' : 'surface_prairie_temporaire',
-        'Protéagineux' : 'surface_proteagineux',
-        'Tournesol' : 'surface_tournesol',
-        'Autre' : 'surface_autre',
-        'Pommier' : 'surface_pommier', 
-        'Vigne' : 'surface_vigne', 
-        'Plante aromatique ou médicinale' : 'surface_plante_aromatique_ou_medicinale', 
-        'Fraisier' : 'surface_fraisier', 
-        'NoInput-sp' : 'surface_NoInput-sp', 
-        'Prunier' : 'surface_prunier',
-        'Culture ornementale' : 'surface_culture_ornementale',
-        'NoTypoC' : 'surface_NoTypoC',
-        'erreur' : 'surface_erreur;', 
-        'Pêcher' : 'surface_pecher', 
-        'Litchi': 'surface_litchi', 
-        'Ananas' : 'surface_ananas',
-        'Bananier' : 'surface_bananier', 
-        'Attier' : 'surface_attier', 
-        'Fruit de la passion' : 'surface_fruit_de_la_passion', 
-        'Cerisier' : 'surface_cerisier', 
-        'Poirier' : 'surface_poirier',
-        'Papayer' : 'surface_papayer', 
-        'Cacaoyer' : 'surface_cacaoyer', 
-        'Framboisier' : 'surface_framboisier', 
-        'Petits fruits' : 'surface_petits_fruits',
-        'Arbre à pain' : 'surface_arbre_a_pain',
-        'Figuier' : 'surface_figuier',
-        'Sapin' : 'surface_sapin', 
-        'Canne à sucre' : 'surface_canne_a_sucre',
-        'Groseiller' : 'surface_groseiller', 
-        'Grenadille' : 'surface_grenadille',
-        'Manguier' : 'surface_manguier', 
-        'Noyer' : 'surface_noyer', 
-        'Cassissier' : 'surface_casssissier',
-        'Citronnier' : 'surface_citronnier',
-        'Châtaignier' : 'surface_chataigner'
+        'Betterave' : 'surface_betterave_realise', 
+        'Céréales à paille printemps' : 'surface_cereale_a_paille_printemps_realise',
+        'Céréales à paille hiver' : 'surface_cereale_a_paille_hiver_realise',
+        'Colza' : 'surface_colza_realise',
+        'Légume' : 'surface_legume_realise', # Attention, légume plein champs
+        'Lin' : 'surface_lin_realise', # Attention, Lin fibre
+        'Maïs' : 'surface_mais_realise', # ATtention, Maïs Sorgho
+        'Mélange fourrager' : 'surface_melange_fourrager_realise',
+        'Oléagineux (hors Colza et Tournesol)' : 'surface_oleagineux_realise', # Attention, Olea
+        'Pomme de terre' : 'surface_pomme_de_terre_realise', 
+        'Porte graine': 'surface_porte_graine_realise', 
+        'Prairie temporaire' : 'surface_prairie_temporaire_realise',
+        'Protéagineux' : 'surface_proteagineux_realise',
+        'Tournesol' : 'surface_tournesol_realise',
+        'Autre' : 'surface_autre_realise',
+        'Pommier' : 'surface_pommier_realise', 
+        'Vigne' : 'surface_vigne_realise', 
+        'Plante aromatique ou médicinale' : 'surface_plante_aromatique_ou_medicinale_realise', 
+        'Fraisier' : 'surface_fraisier_realise', 
+        'NoInput-sp' : 'surface_NoInput-sp_realise', 
+        'Prunier' : 'surface_prunier_realise',
+        'Culture ornementale' : 'surface_culture_ornementale_realise',
+        'NoTypoC' : 'surface_NoTypoC_realise',
+        'erreur' : 'surface_erreur_realise', 
+        'Pêcher' : 'surface_pecher_realise', 
+        'Litchi': 'surface_litchi_realise', 
+        'Ananas' : 'surface_ananas_realise',
+        'Bananier' : 'surface_bananier_realise', 
+        'Attier' : 'surface_attier_realise', 
+        'Fruit de la passion' : 'surface_fruit_de_la_passion_realise', 
+        'Cerisier' : 'surface_cerisier_realise', 
+        'Poirier' : 'surface_poirier_realise',
+        'Papayer' : 'surface_papayer_realise', 
+        'Cacaoyer' : 'surface_cacaoyer_realise', 
+        'Framboisier' : 'surface_framboisier_realise', 
+        'Petits fruits' : 'surface_petits_fruits_realise',
+        'Arbre à pain' : 'surface_arbre_a_pain_realise',
+        'Figuier' : 'surface_figuier_realise',
+        'Sapin' : 'surface_sapin_realise', 
+        'Canne à sucre' : 'surface_canne_a_sucre_realise',
+        'Groseiller' : 'surface_groseiller_realise', 
+        'Grenadille' : 'surface_grenadille_realise',
+        'Manguier' : 'surface_manguier_realise', 
+        'Noyer' : 'surface_noyer_realise', 
+        'Cassissier' : 'surface_casssissier_realise',
+        'Citronnier' : 'surface_citronnier_realise',
+        'Châtaignier' : 'surface_chataigner_realise'
     })
 
     return result_df.reset_index().rename(columns={'sdc_id' : 'id'})
@@ -508,60 +508,60 @@ def get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees):
     df['result_synthetise'] = pd.concat([result_assole, result_perenne])
 
     result= df['result_synthetise'].apply(pd.Series).fillna(0).rename(columns={
-        'Betterave' : 'surface_betterave', 
-        'Céréales à paille printemps' : 'surface_cereale_a_paille_printemps',
-        'Céréales à paille hiver' : 'surface_cereale_a_paille_hiver',
-        'Colza' : 'surface_colza',
-        'Légume' : 'surface_legume', # Attention, légume plein champs
-        'Lin' : 'surface_lin', # Attention, Lin fibre
-        'Maïs' : 'surface_mais', # ATtention, Maïs Sorgho
-        'Mélange fourrager' : 'surface_melange_fourrager',
-        'Oléagineux (hors Colza et Tournesol)' : 'surface_oleagineux', # Attention, Olea
-        'Pomme de terre' : 'surface_pomme_de_terre', 
-        'Porte graine': 'surface_porte_graine', 
-        'Prairie temporaire' : 'surface_prairie_temporaire',
-        'Protéagineux' : 'surface_proteagineux',
-        'Tournesol' : 'surface_tournesol',
-        'Autre' : 'surface_autre',
-        'Pommier' : 'surface_pommier', 
-        'Vigne' : 'surface_vigne', 
-        'Plante aromatique ou médicinale' : 'surface_plante_aromatique_ou_medicinale', 
-        'Fraisier' : 'surface_fraisier', 
-        'NoInput-sp' : 'surface_NoInput-sp', 
-        'Prunier' : 'surface_prunier',
-        'Culture ornementale' : 'surface_culture_ornementale',
-        'NoTypoC' : 'surface_NoTypoC',
-        'erreur' : 'surface_erreur;', 
-        'Pêcher' : 'surface_pecher', 
-        'Litchi': 'surface_litchi', 
-        'Arbres fruitiers' : 'surface_arbres_fruitiers',
-        'Ananas' : 'surface_ananas',
-        'Bananier' : 'surface_bananier', 
-        'Attier' : 'surface_attier', 
-        'Fruit de la passion' : 'surface_fruit_de_la_passion', 
-        'Cerisier' : 'surface_cerisier', 
-        'Poirier' : 'surface_poirier',
-        'Papayer' : 'surface_papayer', 
-        'Cacaoyer' : 'surface_cacaoyer', 
-        'Framboisier' : 'surface_framboisier', 
-        'Petits fruits' : 'surface_petits_fruits',
-        'Arbre à pain' : 'surface_arbre_a_pain',
-        'Figuier' : 'surface_figuier',
-        'Sapin' : 'surface_sapin', 
-        'Canne à sucre' : 'surface_canne_a_sucre',
-        'Groseiller' : 'surface_groseiller', 
-        'Grenadille' : 'surface_grenadille',
-        'Manguier' : 'surface_manguier', 
-        'Noyer' : 'surface_noyer', 
-        'Cassissier' : 'surface_casssissier',
-        'Citronnier' : 'surface_citronnier',
-        'Myrtille et airelles' : 'surface_myrtille_et_airelles',
-        'Amandier' : 'surface_amandier',
-        'Sorossi' : 'surface_sorossi',
-        'Olivier' : 'surface_olivier',
-        'Clémentinier' : 'surface_clementiner',
-        'Abricotier' : 'surface_abricotier',
-        'Kiwi' : 'surface_kiwi'
+        'Betterave' : 'surface_betterave_synthetise', 
+        'Céréales à paille printemps' : 'surface_cereale_a_paille_printemps_synthetise',
+        'Céréales à paille hiver' : 'surface_cereale_a_paille_hiver_synthetise',
+        'Colza' : 'surface_colza_synthetise',
+        'Légume' : 'surface_legume_synthetise', # Attention, légume plein champs
+        'Lin' : 'surface_lin_synthetise', # Attention, Lin fibre
+        'Maïs' : 'surface_mais_synthetise', # ATtention, Maïs Sorgho
+        'Mélange fourrager' : 'surface_melange_fourrager_synthetise',
+        'Oléagineux (hors Colza et Tournesol)' : 'surface_oleagineux_synthetise', # Attention, Olea
+        'Pomme de terre' : 'surface_pomme_de_terre_synthetise', 
+        'Porte graine': 'surface_porte_graine_synthetise', 
+        'Prairie temporaire' : 'surface_prairie_temporaire_synthetise',
+        'Protéagineux' : 'surface_proteagineux_synthetise',
+        'Tournesol' : 'surface_tournesol_synthetise',
+        'Autre' : 'surface_autre_synthetise',
+        'Pommier' : 'surface_pommier_synthetise', 
+        'Vigne' : 'surface_vigne_synthetise', 
+        'Plante aromatique ou médicinale' : 'surface_plante_aromatique_ou_medicinale_synthetise', 
+        'Fraisier' : 'surface_fraisier_synthetise', 
+        'NoInput-sp' : 'surface_NoInput-sp_synthetise', 
+        'Prunier' : 'surface_prunier_synthetise',
+        'Culture ornementale' : 'surface_culture_ornementale_synthetise',
+        'NoTypoC' : 'surface_NoTypoC_synthetise',
+        'erreur' : 'surface_erreur_synthetise', 
+        'Pêcher' : 'surface_pecher_synthetise', 
+        'Litchi': 'surface_litchi_synthetise', 
+        'Arbres fruitiers' : 'surface_arbres_fruitiers_synthetise',
+        'Ananas' : 'surface_ananas_synthetise',
+        'Bananier' : 'surface_bananier_synthetise', 
+        'Attier' : 'surface_attier_synthetise', 
+        'Fruit de la passion' : 'surface_fruit_de_la_passion_synthetise', 
+        'Cerisier' : 'surface_cerisier_synthetise', 
+        'Poirier' : 'surface_poirier_synthetise',
+        'Papayer' : 'surface_papayer_synthetise', 
+        'Cacaoyer' : 'surface_cacaoyer_synthetise', 
+        'Framboisier' : 'surface_framboisier_synthetise', 
+        'Petits fruits' : 'surface_petits_fruits_synthetise',
+        'Arbre à pain' : 'surface_arbre_a_pain_synthetise',
+        'Figuier' : 'surface_figuier_synthetise',
+        'Sapin' : 'surface_sapin_synthetise', 
+        'Canne à sucre' : 'surface_canne_a_sucre_synthetise',
+        'Groseiller' : 'surface_groseiller_synthetise', 
+        'Grenadille' : 'surface_grenadille_synthetise',
+        'Manguier' : 'surface_manguier_synthetise', 
+        'Noyer' : 'surface_noyer_synthetise', 
+        'Cassissier' : 'surface_casssissier_synthetise',
+        'Citronnier' : 'surface_citronnier_synthetise',
+        'Myrtille et airelles' : 'surface_myrtille_et_airelles_synthetise',
+        'Amandier' : 'surface_amandier_synthetise',
+        'Sorossi' : 'surface_sorossi_synthetise',
+        'Olivier' : 'surface_olivier_synthetise',
+        'Clémentinier' : 'surface_clementiner_synthetise',
+        'Abricotier' : 'surface_abricotier_synthetise',
+        'Kiwi' : 'surface_kiwi_synthetise'
     })
     return result.reset_index().rename(columns={'synthetise_id' : 'id'})
 
@@ -861,7 +861,7 @@ def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
 
-def get_sdc_outils_tableau_de_bord(
+def get_sdc_outils_tableau_de_bord_can(
     donnees
 ):
     """
@@ -869,13 +869,13 @@ def get_sdc_outils_tableau_de_bord(
     """
 
     gestion_enherbement = get_gestion_enherbement_sdc_outils_tableau_de_bord_can(donnees)
-    rendement_viti_synthetise = get_rendement_viti_synthetise_outils_tableau_de_bord_can(donnees)
+    rendement_viti_synthetise = get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(donnees)
     rendement_viti_realise = get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
     reseaux_rattachement = get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(donnees)
     surface_sdc_realise = get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
     surface_synthetise = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
     surface_typo_culture_realise = get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
-    #surface_typo_culture_synthetise = get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_synthetise = get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
 
     res = pd.concat([
         gestion_enherbement,
@@ -884,7 +884,10 @@ def get_sdc_outils_tableau_de_bord(
         reseaux_rattachement,
         surface_sdc_realise,
         surface_synthetise,
-        surface_typo_culture_realise
+        surface_typo_culture_realise,
+        surface_typo_culture_synthetise
     ])
+
+    res.to_csv('~/Bureau/test.csv')
 
     return res
