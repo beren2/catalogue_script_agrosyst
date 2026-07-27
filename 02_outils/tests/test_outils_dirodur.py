@@ -293,6 +293,7 @@ def test_get_indicateur_diversite_outils_dirodur():
     'noeuds_synthetise_restructure',
     'poids_connexions_synthetise_rotation',
     'poids_noeuds_realise',
+    'typologie_can_culture',
     'typologie_culture_outils_dirodur',
     'date_de_semis_outils_dirodur'
     ]

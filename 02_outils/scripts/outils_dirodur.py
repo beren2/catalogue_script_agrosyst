@@ -811,6 +811,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
     Cela nous donne la proportion d'un composant de culture au seins du sdc : 'poids_composant_dans_sdc'
 
     Grace aux différentes typologies qui sont associé au niveau de l'espèce, on peut calculer les indicateurs de diversités. Voici les différentes typologies qu'on utilise pour le calcul d'indicateurs :
+        - la 'typodirodur_culture' qui est la typologie de culture utile pour DIRODUR. Echelle : culture
         - la 'typodirodur_espece' qui est la typologie d'espece utile pour DIRODUR. Echelle : composant culture
         - le 'libelle_espece_botanique' qui est le nom classique de l'espèce dans Agrosyst. Echelle : composant culture
         - la 'typodirodur_espece_famille_bota' qui est la famille de l'espèce, utile pour DIRODUR. Echelle : composant culture
@@ -823,14 +824,13 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         - 'prop_culture_intermédiaire'
         - 'prop_culture_porte_graine'
 
-    Pour toutes les typologies le shannon (diversité) et la richesse spécifique sont calculés. Pour la typologie d'espèce DIORDUR 'typodirodur_espece', on calcul plus d'indicateurs que les autres typologies.
+    Pour toutes les typologies le shannon (diversité) et la richesse spécifique sont calculés. Pour la typologie de culture DIORDUR 'typodirodur_culture', on calcul plus d'indicateurs que les autres typologies.
     Voici les indicateurs calculé :
         - richesse spécifique (tous)
         - diversité de shannon (tous)
         - evenness
         - simpson
         - inverse simpson
-    
     """
     ### IMPORT DES DONNEES ###
 
@@ -859,6 +859,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
     sp = donnees['espece'][['id','libelle_espece_botanique','typodirodur_espece','typodirodur_espece_precise','typodirodur_espece_famille_bota','typodirodur_espece_periode_semis']].rename(columns={'id':'espece_id'}).copy()
     typo_dirodur = donnees['typologie_culture_outils_dirodur'][['culture_id', 'typodirodur_culture', 'culture_est_avec_compagne', 
                                                                 'culture_est_annuelle_asso', 'culture_est_prairie', 'typo_cpg']].copy()
+    typo_can = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne']].copy()
     
 
     ### MISE EN PLACE DU DF PRINCIPAL ###
@@ -874,7 +875,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
     itk = pd.concat([itk_s, itk_r])
 
     itk = itk[['connection_synthetise_id', 'noeuds_realise_id', 'culture_id', 'culture_intermediaire_id', 'synthetise_id', 'sdc_id']]
-    composant_itk = itk.merge(sp, on='culture_id', how='left').merge(typo_dirodur, how = 'left', on = 'culture_id')
+    composant_itk = itk.merge(sp, on='culture_id', how='left').merge(typo_dirodur, how = 'left', on = 'culture_id').merge(typo_can, how = 'left', on = 'culture_id')
     composant_itk = composant_itk.merge(poids_S, how='left', on='connection_synthetise_id')
     composant_itk = composant_itk.merge(poids_R, how='left', on='noeuds_realise_id')
 
@@ -917,6 +918,23 @@ def get_indicateur_diversite_outils_dirodur(donnees):
             return np.nan
         return 1 / s
 
+    list_typo_can = [
+                'Céréales à paille hiver',
+                'Céréales à paille printemps',
+                'Mélange fourrager',
+                'Légume',
+                'Protéagineux',
+                'Maïs',
+                'Prairie temporaire',
+                'Colza',
+                'Tournesol',
+                'Oléagineux (hors Colza et Tournesol)',
+                'Pomme de terre',
+                'Lin',
+                'Betterave',
+                'NoInput-sp'
+            ]
+
     def compute_typology_metrics(df, typology_col, prefix, cols_needed_for_proportion=None):
         # Il a certaines cultures en absentes (==> poids = NaN) comme souvent pour les Précédents fictifs par exemple
         df = df[df["poids_composant_dans_sdc"].notna()]
@@ -929,7 +947,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         proportions =  proportions[proportions > 0]
 
         # Le sdc n'a pas les poids associés à chaque culture ou n'avait que des poids à 0% ou que des Nan
-        if proportions.empty and typology_col == 'typodirodur_culture' :       
+        if proportions.empty and typology_col in ['typocan_culture_sans_compagne', 'typodirodur_culture'] :       
             return pd.Series({
                 f"{prefix}_richesse": int(0),
                 f"{prefix}_shannon": np.nan,
@@ -937,7 +955,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
                 f"{prefix}_simpson": np.nan,
                 f"{prefix}_inverse_simpson": np.nan,
             })
-        elif proportions.empty and typology_col != 'typodirodur_culture' :       
+        elif proportions.empty and typology_col not in ['typocan_culture_sans_compagne', 'typodirodur_culture']  :       
             return pd.Series({
                 f"{prefix}_richesse": int(0),
                 f"{prefix}_shannon": np.nan,
@@ -946,7 +964,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         # Calculs des indicateurs
         proportions = proportions / proportions.sum()
 
-        if typology_col == 'typodirodur_culture' :
+        if typology_col in ['typocan_culture_sans_compagne', 'typodirodur_culture'] :
             metrics = {
                 f"{prefix}_richesse": int(richness(proportions)),
                 f"{prefix}_shannon": shannon(proportions),
@@ -969,23 +987,33 @@ def get_indicateur_diversite_outils_dirodur(donnees):
             proportions = proportions[mask].copy()
             proportions["Autres_familles"] = others
 
+        if typology_col == 'typocan_culture_sans_compagne' :
+            mask = proportions.index.isin(list_typo_can)
+            others = proportions[~mask].sum()
+            proportions = proportions[mask].copy()
+            proportions["Autres_cultures_can"] = others
+
+        prefix_proportion = 'prop'
+        if typology_col == 'typocan_culture_sans_compagne' :
+            prefix_proportion = 'prop_surface_can'
+
         if cols_needed_for_proportion is not None:
-            for category, proportion in proportions.items():
-                if category in cols_needed_for_proportion:
-                    metrics[f"prop_{category}"] = proportion
+            for category in cols_needed_for_proportion:
+                metrics[f"{prefix_proportion}_{category}"] = proportions.get(category, 0)
 
         return metrics
-    
+
 
     ### UTILISATION DES FONCTION D'INDICATEURS ###
 
     result = (
-        df.groupby("sdc_id")
+        df.groupby(["sdc_id"])
         .apply(
             lambda sdc: pd.DataFrame([
                 {
-                    **compute_typology_metrics(sdc, "typodirodur_culture", "typo_culture"),
-                    **compute_typology_metrics(sdc, "typodirodur_espece", "typo_espece"),
+                    'synthetise_id': sdc['synthetise_id'].iloc[0] if any(sdc['synthetise_id'].notna()) else None,
+                    **compute_typology_metrics(sdc, "typodirodur_culture", "typodirodur_culture"),
+                    **compute_typology_metrics(sdc, "typodirodur_espece", "typodirodur_espece"),
                     **compute_typology_metrics(sdc, "libelle_espece_botanique", "espece_bota"),
                     **compute_typology_metrics(sdc, "typodirodur_espece_famille_bota", "famille_bota", ["Poaceae", "Fabaceae", "Brassicaceae", 'Autres_familles']),
                     **compute_typology_metrics(sdc, "typodirodur_espece_periode_semis", "saison_semis", ["printemps", "ete", "automne", 'hiver', 'pluriannuel']),
@@ -994,6 +1022,8 @@ def get_indicateur_diversite_outils_dirodur(donnees):
                     "prop_prairie": sdc.loc[sdc["culture_est_prairie"] == "oui", "poids_composant_dans_sdc"].sum(),
                     "prop_culture_intermédiaire": sdc.loc[sdc["culture_intermediaire_id"].notna(), "poids_composant_dans_sdc"].sum(),
                     "prop_culture_porte_graine": sdc.loc[sdc["typo_cpg"].notna(), "poids_composant_dans_sdc"].sum(),
+                    # pour la CAN (pas dispo dans la doc datagrosyst)
+                    **compute_typology_metrics(sdc, "typocan_culture_sans_compagne", "typocan_culture", (list_typo_can+['Autres_cultures_can'])),
                 }
             ]),
             include_groups=False,
@@ -1007,21 +1037,22 @@ def get_indicateur_diversite_outils_dirodur(donnees):
     result = result[[
         # Index
         'sdc_id',
+        'synthetise_id',
         # Typo culture
-        'typo_culture_richesse',
-        'typo_culture_shannon',
-        'typo_culture_evenness',
-        'typo_culture_simpson',
-        'typo_culture_inverse_simpson',
-        'typo_culture_proportion_max',
+        'typodirodur_culture_richesse',
+        'typodirodur_culture_shannon',
+        'typodirodur_culture_evenness',
+        'typodirodur_culture_simpson',
+        'typodirodur_culture_inverse_simpson',
+        'typodirodur_culture_proportion_max',
         'prop_association',
         'prop_culture_avec_compagne',
         'prop_prairie',
         'prop_culture_intermédiaire',
         'prop_culture_porte_graine',
         # Typo espece
-        'typo_espece_richesse',
-        'typo_espece_shannon',
+        'typodirodur_espece_richesse',
+        'typodirodur_espece_shannon',
         # Espece bota
         'espece_bota_richesse',
         'espece_bota_shannon',
@@ -1038,6 +1069,28 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         'prop_printemps',
         'prop_ete',
         'prop_automne',
-        'prop_hiver']]
+        'prop_hiver',
+        # typologie CAN
+        'typocan_culture_richesse',
+        'typocan_culture_shannon',
+        'typocan_culture_evenness',
+        'typocan_culture_simpson',
+        'typocan_culture_inverse_simpson',
+        # Proportion CAN
+        'prop_surface_can_Céréales à paille hiver',
+        'prop_surface_can_Céréales à paille printemps',
+        'prop_surface_can_Maïs',
+        'prop_surface_can_Colza',
+        'prop_surface_can_Tournesol',
+        'prop_surface_can_Oléagineux (hors Colza et Tournesol)',
+        'prop_surface_can_Protéagineux',
+        'prop_surface_can_Mélange fourrager',
+        'prop_surface_can_Lin',
+        'prop_surface_can_Pomme de terre',
+        'prop_surface_can_Betterave',
+        'prop_surface_can_Légume',
+        'prop_surface_can_Prairie temporaire',
+        'prop_surface_can_Autres_cultures_can'
+        ]]
 
     return result#, composant_itk
