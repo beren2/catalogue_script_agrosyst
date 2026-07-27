@@ -719,6 +719,11 @@ def create_category_indicateur_0():
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
     add_primary_key('entrepot_poids_connexions_synthetise_rotation', 'connexion_id')
 
+    df_poids_noeuds_realise = indicateur.get_poids_noeuds_realise(donnees)
+    df_poids_noeuds_realise.set_index('noeuds_realise_id', inplace=True)
+    export_to_db(df_poids_noeuds_realise, 'entrepot_poids_noeuds_realise')
+    add_primary_key('entrepot_poids_noeuds_realise', 'noeuds_realise_id')
+    
 def create_category_indicateur_1():
     """
         Crée les typologies de culture de base pour les autres indicateurs. 
@@ -805,6 +810,32 @@ def create_category_dirodur_0():
     # export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
     # add_primary_key('entrepot_itk_filtres_outils_dirodur','itk_id')
 
+    df_date_de_semis = outils_dirodur.get_date_de_semis_outils_dirodur(donnees)
+    df_date_de_semis.set_index('culture_id', inplace=True)
+    export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')
+    add_primary_key('entrepot_date_de_semis_outils_dirodur', 'culture_id')
+
+
+def create_category_dirodur_1():
+    """
+        Execute les requêtes pour créer la seconde salve d'outils DiRoDur
+    """
+
+    df_typologie_culture_dirodur = outils_dirodur.get_typologie_culture_outils_dirodur(donnees)
+    df_typologie_culture_dirodur.set_index('culture_id', inplace=True)
+    export_to_db(df_typologie_culture_dirodur, 'entrepot_typologie_culture_outils_dirodur')
+    add_primary_key('entrepot_typologie_culture_outils_dirodur', 'culture_id')
+
+def create_category_dirodur_2():
+    """
+        Execute les requêtes pour créer la troisieme salve d'outils DiRoDur
+    """
+
+    df_typologie_culture_dirodur = outils_dirodur.get_indicateur_diversite_outils_dirodur(donnees)
+    df_typologie_culture_dirodur.set_index('sdc_id', inplace=True)
+    export_to_db(df_typologie_culture_dirodur, 'entrepot_indicateur_diversite_outils_dirodur')
+    add_primary_key('entrepot_indicateur_diversite_outils_dirodur', 'sdc_id')
+    
 
 def create_category_interoperabilite():
     """
@@ -929,6 +960,7 @@ steps = [
     {'source' : 'outils', 'category' : 'interoperabilite'},
     {'source' : 'outils', 'category' : 'outils_can'},
     {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_dirodur_1'},
     {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 
