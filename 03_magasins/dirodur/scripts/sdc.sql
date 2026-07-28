@@ -90,12 +90,42 @@ SELECT
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-    -----------------
+	-----------------------
+	-- TYPOLOGIE DIRODUR --
+	-----------------------
+	eidods.typodirodur_culture_richesse as diversite_typodirodur_culture_richesse,
+	eidods.typodirodur_culture_shannon as diversite_typodirodur_culture_shannon,
+	eidods.typodirodur_culture_evenness as diversite_typodirodur_culture_evenness,
+	eidods.typodirodur_culture_simpson as diversite_typodirodur_culture_simpson,
+	eidods.typodirodur_culture_inverse_simpson as diversite_typodirodur_culture_inverse_simpson,
+	eidods.typodirodur_culture_proportion_max as diversite_typodirodur_culture_proportion_max,
+	eidods.prop_association as diversite_prop_association,
+	eidods.prop_culture_avec_compagne as diversite_prop_culture_avec_compagne,
+	eidods.prop_prairie as diversite_prop_prairie,
+	eidods.prop_culture_intermédiaire as prop_culture_intermédiaire,
+	eidods.prop_culture_porte_graine as diversite_prop_culture_porte_graine,
+	eidods.typodirodur_espece_richesse as diversite_typodirodur_espece_richesse,
+	eidods.typodirodur_espece_shannon as diversite_typodirodur_espece_shannon,
+	eidods.espece_bota_richesse as diversite_espece_bota_richesse,
+	eidods.espece_bota_shannon as diversite_espece_bota_shannon,
+	eidods.famille_bota_richesse as diversite_famille_bota_richesse,
+	eidods.famille_bota_shannon as diversite_famille_bota_shannon,
+	eidods.prop_Poaceae as diversite_prop_poaceae,
+	eidods.prop_Fabaceae as diversite_prop_fabaceae,
+	eidods.prop_Brassicaceae as diversite_prop_brassicaceae,
+	eidods.prop_Autres_familles as diversite_prop_autres_familles,
+	eidods.saison_semis_richesse as diversite_saison_semis_richesse,
+	eidods.saison_semis_shannon as diversite_saison_semis_shannon,
+	eidods.prop_printemps as diversite_prop_printemps,
+	eidods.prop_ete as diversite_prop_ete,
+	eidods.prop_automne as diversite_prop_automne,
+	eidods.prop_hiver as diversite_prop_hiver,
+	----------------
 	-- SYNTHETISE --
 	----------------
 	synth.id as synthetise_id,
-    typorota.typocan_rotation as synthetise_rotation_typo_can,
-	typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
+    -- typorota.typocan_rotation as synthetise_rotation_typo_can, -- A SUPPR AVEC ARRIVER DES TYPO DIRODUR
+	-- typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
 	synth.nom as synthetise_nom,
 	synth.campagnes as synthetise_campagnes,
 	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
@@ -260,6 +290,7 @@ LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = ssp.synthetise_id
 LEFT JOIN entrepot_synthetise_filtre_outils_dirodur AS esfod on esfod.synthetise_id = synth.id
+LEFT JOIN entrepot_indicateur_diversite_outils_dirodur AS eidods on eidods.sdc_id = synthetise_id.id and eidods.synthetise_id is not null
 WHERE esfod.in_dirodur is true
 UNION
 -------------
@@ -354,6 +385,36 @@ SELECT
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
+	-----------------------
+	-- TYPOLOGIE DIRODUR --
+	-----------------------
+	eidodr.typodirodur_culture_richesse as diversite_typodirodur_culture_richesse,
+	eidodr.typodirodur_culture_shannon as diversite_typodirodur_culture_shannon,
+	eidodr.typodirodur_culture_evenness as diversite_typodirodur_culture_evenness,
+	eidodr.typodirodur_culture_simpson as diversite_typodirodur_culture_simpson,
+	eidodr.typodirodur_culture_inverse_simpson as diversite_typodirodur_culture_inverse_simpson,
+	eidodr.typodirodur_culture_proportion_max as diversite_typodirodur_culture_proportion_max,
+	eidodr.prop_association as diversite_prop_association,
+	eidodr.prop_culture_avec_compagne as diversite_prop_culture_avec_compagne,
+	eidodr.prop_prairie as diversite_prop_prairie,
+	eidodr.prop_culture_intermédiaire as prop_culture_intermédiaire,
+	eidodr.prop_culture_porte_graine as diversite_prop_culture_porte_graine,
+	eidodr.typodirodur_espece_richesse as diversite_typodirodur_espece_richesse,
+	eidodr.typodirodur_espece_shannon as diversite_typodirodur_espece_shannon,
+	eidodr.espece_bota_richesse as diversite_espece_bota_richesse,
+	eidodr.espece_bota_shannon as diversite_espece_bota_shannon,
+	eidodr.famille_bota_richesse as diversite_famille_bota_richesse,
+	eidodr.famille_bota_shannon as diversite_famille_bota_shannon,
+	eidodr.prop_Poaceae as diversite_prop_poaceae,
+	eidodr.prop_Fabaceae as diversite_prop_fabaceae,
+	eidodr.prop_Brassicaceae as diversite_prop_brassicaceae,
+	eidodr.prop_Autres_familles as diversite_prop_autres_familles,
+	eidodr.saison_semis_richesse as diversite_saison_semis_richesse,
+	eidodr.saison_semis_shannon as diversite_saison_semis_shannon,
+	eidodr.prop_printemps as diversite_prop_printemps,
+	eidodr.prop_ete as diversite_prop_ete,
+	eidodr.prop_automne as diversite_prop_automne,
+	eidodr.prop_hiver as diversite_prop_hiver,
     -----------------
 	-- SYNTHETISE --
 	----------------
@@ -522,6 +583,5 @@ LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.do
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
 LEFT JOIN entrepot_sdc_realise_filtre_outils_dirodur AS esrfod on esrfod.sdc_id = sdc.id
+LEFT JOIN entrepot_indicateur_diversite_outils_dirodur AS eidodr on eidodr.sdc_id = sdc.id and eidodr.synthetise_id is null
 WHERE esrfod.in_dirodur is true;
-
-
