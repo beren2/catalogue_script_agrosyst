@@ -11,7 +11,9 @@ SELECT
 	-- NOEUDS_REALISE --
 	--------------------
 	itkR.itk_realise_id as noeud_id,
-
+	poidsR.poids_surface_developpee_agreg as poids_itk_agregation,
+	poidsR.poids_surface_developpee_normalisee as poids_itk_desagregation_normalisee,
+	poidsR.poids_surface_ponderee as poids_itk_probabiliste,
 	-------------
 	-- CULTURE --
 	-------------
@@ -21,21 +23,37 @@ SELECT
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
 
-	-- culture_typocan_*
-	typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
-	typoc1.typocan_espece as culture_typo_can_espece,
-	typoc1.typocan_esp_sans_compagne as culture_typo_can_espece_sans_compagne,
-	typoc1.nb_composant_culture as culture_typo_can_nbre_composant,
-	typoc1.nb_typocan_esp as culture_typo_can_nbre_espece,
+	-- culture_typocan_* -- OSBSOLETE DEPUIS TYPO DIRODUR
+	-- typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
+	-- typoc1.typocan_espece as culture_typo_can_espece,
+	-- typoc1.typocan_esp_sans_compagne as culture_typo_can_espece_sans_compagne,
+	-- typoc1.nb_composant_culture as culture_typo_can_nbre_composant,
+	-- typoc1.nb_typocan_esp as culture_typo_can_nbre_espece,
+	-- typo culture principale
+	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
+	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
+	typoc1.typodirodur_espece_famille_bota as culture_typo_dirodur_liste_famille_bota,
+	typoc1.typodirodur_espece_periode_semis as culture_typo_dirodur_saison_semis,
+	typoc1.nb_composant_culture as culture_typo_dirodur_nb_composant_culture,
+	typoc1.nb_typodirodur_espece as culture_typo_dirodur_nb_typo_espece,
+	typoc1.culture_est_avec_compagne as culture_typo_dirodur_contient_compagne,
+	typoc1.culture_est_annuelle_asso as culture_typo_dirodur_est_association,
+	typoc1.culture_est_prairie as culture_typo_dirodur_est_prairie,
+	typoc1.typo_cpg as culture_typo_dirodur_culture_portegraine,
 
 	-- culture_intermediaire_*
 	culture_inter.id as culture_intermediaire_id,
 	culture_inter.nom as culture_intermediaire_nom,
 
-	-- culture_intermediaire_typocan_*
-	typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
-	typoci.typocan_espece as culture_intermerdiaire_typo_can_espece,
-	typoci.nb_composant_culture as culture_intermerdiaire_typo_can_nbre_composant,
+	-- culture_intermediaire_typocan_* -- OSBSOLETE DEPUIS TYPO DIRODUR
+	-- typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
+	-- typoci.typocan_espece as culture_intermerdiaire_typo_can_espece,
+	-- typoci.nb_composant_culture as culture_intermerdiaire_typo_can_nbre_composant,
+	-- typo culture interm
+	typoci.typodirodur_culture as culture_intermediaire_typo_dirodur_culture,
+	typoci.typodirodur_espece as culture_intermediaire_typo_dirodur_liste_espece,
+	typoci.typodirodur_espece_famille_bota as culture_intermediaire_typo_dirodur_liste_famille_bota,
+	typoci.nb_composant_culture as culture_intermediaire_typo_dirodur_nb_composant_culture,
 
     -- culture_precedente_*
     culture_prec.id as culture_precedente_id,
@@ -43,10 +61,15 @@ SELECT
 	culture_prec.melange_especes as culture_precedente_est_melange_especes,
 	culture_prec.melange_varietes as culture_precedente_est_melange_varietes,
 
-    -- culture_precedente_typocan_*
-	typocp.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
-	typocp.typocan_espece as culture_precedente_typo_can_espece,
-	typocp.nb_composant_culture as culture_precedente_typo_can_nbre_composant,
+    -- culture_precedente_typocan_* -- OSBSOLETE DEPUIS TYPO DIRODUR
+	-- typoc0.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
+	-- typoc0.typocan_espece as culture_precedente_typo_can_espece,
+	-- typoc0.nb_composant_culture as culture_precedente_typo_can_nbre_composant,
+	-- typo culture précédente
+	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
+	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
+	typoc0.typodirodur_espece_famille_bota as culture_precedente_typo_dirodur_liste_famille_bota,
+	typoc0.nb_composant_culture as culture_precedente_typo_dirodur_nb_composant_culture,
     
     ---------
 	-- SDC --
@@ -167,7 +190,6 @@ SELECT
 	----------------
     null as connexion_frequence, 
     null as connexion_est_culture_absente,
-    null as connexion_poids_agregation,
 
 	--------------------------------
 	-- NOEUDS_REALISE_PERFORMANCE --
@@ -352,13 +374,13 @@ LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_commune AS comm ON parcelle.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = parcelle.domaine_id
 LEFT JOIN entrepot_culture AS culture1 ON culture1.id = itkR.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoc1 ON typoc1.culture_id = itkR.culture_id 
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx.culture_intermediaire_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoci ON typoci.culture_id = cx.culture_intermediaire_id 
 LEFT JOIN entrepot_noeuds_realise AS noeud_prec ON node_res.precedent_noeuds_realise_id = noeud_prec.id
 LEFT JOIN entrepot_culture AS culture_prec ON culture_prec.id = noeud_prec.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typocp ON typocp.culture_id = culture_prec.id 
-LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc1 ON typoc1.culture_id = itkR.culture_id 
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoci ON typoci.culture_id = cx.culture_intermediaire_id 
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc0 ON typoc0.culture_id = culture_prec.id 
+LEFT JOIN entrepot_poids_noeuds_realise AS poidsR ON poidsR.noeuds_realise_id = itkR.itk_realise_id
 WHERE esrfod.in_dirodur is true
 UNION 
 SELECT 
@@ -368,7 +390,9 @@ SELECT
 	--------------------------
 	cx.id as connexion_id,
     cx.cible_noeuds_synthetise_id as noeud_id,
-
+	poidsS.poids_conx_agregation as poids_itk_agregation,
+	poidsS.poids_conx_agregation_norm_synth as poids_itk_desagregation_normalisee,
+	poidsS.proba_conx_spatiotemp as poids_itk_probabiliste,
     -------------
 	-- CULTURE --
 	-------------
@@ -378,21 +402,37 @@ SELECT
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
 
-	-- culture_typocan_*
-	typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
-	typoc1.typocan_espece as culture_typo_can_espece,
-	typoc1.typocan_esp_sans_compagne as culture_typo_can_espece_sans_compagne,
-	typoc1.nb_composant_culture as culture_typo_can_nbre_composant,
-	typoc1.nb_typocan_esp as culture_typo_can_nbre_espece,
+	-- -- culture_typocan_*
+	-- typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
+	-- typoc1.typocan_espece as culture_typo_can_espece,
+	-- typoc1.typocan_esp_sans_compagne as culture_typo_can_espece_sans_compagne,
+	-- typoc1.nb_composant_culture as culture_typo_can_nbre_composant,
+	-- typoc1.nb_typocan_esp as culture_typo_can_nbre_espece,
+	-- typo culture principale
+	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
+	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
+	typoc1.typodirodur_espece_famille_bota as culture_typo_dirodur_liste_famille_bota,
+	typoc1.typodirodur_espece_periode_semis as culture_typo_dirodur_saison_semis,
+	typoc1.nb_composant_culture as culture_typo_dirodur_nb_composant_culture,
+	typoc1.nb_typodirodur_espece as culture_typo_dirodur_nb_typo_espece,
+	typoc1.culture_est_avec_compagne as culture_typo_dirodur_contient_compagne,
+	typoc1.culture_est_annuelle_asso as culture_typo_dirodur_est_association,
+	typoc1.culture_est_prairie as culture_typo_dirodur_est_prairie,
+	typoc1.typo_cpg as culture_typo_dirodur_culture_portegraine,
 
 	-- culture_intermediaire_*
 	cx_rst.culture_intermediaire_id as culture_intermediaire_id,
 	culture_inter.nom as culture_intermediaire_nom,
 
-	-- culture_intermediaire_typocan_*
-	typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
-	typoci.typocan_espece as culture_intermerdiaire_typo_can_espece,
-	typoci.nb_composant_culture as culture_intermerdiaire_typo_can_nbre_composant,
+	-- -- culture_intermediaire_typocan_*
+	-- typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
+	-- typoci.typocan_espece as culture_intermerdiaire_typo_can_espece,
+	-- typoci.nb_composant_culture as culture_intermerdiaire_typo_can_nbre_composant,
+	-- typo culture interm
+	typoci.typodirodur_culture as culture_intermediaire_typo_dirodur_culture,
+	typoci.typodirodur_espece as culture_intermediaire_typo_dirodur_liste_espece,
+	typoci.typodirodur_espece_famille_bota as culture_intermediaire_typo_dirodur_liste_famille_bota,
+	typoci.nb_composant_culture as culture_intermediaire_typo_dirodur_nb_composant_culture,
 
 	-- culture_precedente_*
 	culture0.id as culture_precedente_id,
@@ -400,10 +440,15 @@ SELECT
 	culture0.melange_especes as culture_precedente_est_melange_especes,
 	culture0.melange_varietes as culture_precedente_est_melange_varietes,
 
-	-- culture_precedente_typocan_*
-	typoc0.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
-	typoc0.typocan_espece as culture_precedente_typo_can_espece,
-	typoc0.nb_composant_culture as culture_precedente_typo_can_nbre_composant,
+	-- -- culture_precedente_typocan_*
+	-- typoc0.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
+	-- typoc0.typocan_espece as culture_precedente_typo_can_espece,
+	-- typoc0.nb_composant_culture as culture_precedente_typo_can_nbre_composant,
+	-- typo culture précédente
+	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
+	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
+	typoc0.typodirodur_espece_famille_bota as culture_precedente_typo_dirodur_liste_famille_bota,
+	typoc0.nb_composant_culture as culture_precedente_typo_dirodur_nb_composant_culture,
 
 	---------
 	-- SDC --
@@ -498,13 +543,9 @@ SELECT
 	-- SYNTHETISE --
 	----------------
 	synth.id as synthetise_id, 
-    typorota.typocan_rotation as synthetise_rotation_typo_can,
-	typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
 	synth.nom as synthetise_nom,
 	synth.campagnes as synthetise_campagnes,
 	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
-
-	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
 
     -------------
 	-- REALISE --
@@ -524,7 +565,6 @@ SELECT
 	---------------
 	cx.frequence_source as connexion_frequence,
 	cx.culture_absente as connexion_est_culture_absente,
-	poidscx.poids_conx_agregation as connexion_poids_agregation,
 
 	-----------------------------------
 	-- NOEUDS_SYNTHETISE_PERFORMANCE --
@@ -705,7 +745,6 @@ LEFT JOIN entrepot_synthetise AS synth ON synth.id = nd_cible.synthetise_id
 LEFT JOIN entrepot_synthetise_filtre_outils_dirodur esfod ON esfod.synthetise_id = synth.id
 LEFT JOIN entrepot_sdc sdc ON sdc.id = synth.sdc_id
 LEFT JOIN entrepot_connection_synthetise_restructure AS cx_rst ON cx_rst.id = itkS.connection_synthetise_id 
-LEFT JOIN entrepot_poids_connexions_synthetise_rotation AS poidscx ON poidscx.connexion_id = itkS.connection_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise AS nd_source ON nd_source.id = cx.source_noeuds_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise_restructure AS nd_source_rst ON nd_source_rst.id = cx.source_noeuds_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise_restructure AS nd_cible_rst ON nd_cible_rst.id = cx.cible_noeuds_synthetise_id
@@ -714,14 +753,11 @@ LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_culture AS culture1 ON culture1.id = nd_cible_rst.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoc1 ON typoc1.culture_id = nd_cible_rst.culture_id
-LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_culture AS culture0 ON culture0.id = nd_source_rst.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoc0 ON typoc0.culture_id = nd_source_rst.culture_id 
-LEFT JOIN entrepot_culture AS culture_i ON culture_i.id = cx_rst.culture_intermediaire_id 
-LEFT JOIN entrepot_typologie_can_culture AS typo_ci ON typo_ci.culture_id = cx_rst.culture_intermediaire_id 
-LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
-LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id
+LEFT JOIN entrepot_poids_connexions_synthetise_rotation as poidsS on poidsS.connexion_id = itkS.connection_synthetise_id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc1 ON typoc1.culture_id = nd_cible_rst.culture_id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc0 ON typoc0.culture_id = nd_source_rst.culture_id 
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoci ON typoci.culture_id = culture_inter.id
 WHERE esfod.in_dirodur is true;
