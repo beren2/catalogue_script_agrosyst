@@ -417,6 +417,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         df_R[['sdc_id', 'sdc_code', 'code_dephy', 'type_agriculture', 'campagne', 'pz0']]
         ])
 
+    df.code_dephy = df.code_dephy.str.replace(' ','') # on enleve les ' ' espace blancs
     df.pz0 = df.pz0.fillna('non_DEPHY') # ceux dont la modalité de suivi est NA
 
     # On modifie les modalités incorrectes de pz0 pour qu'elles soient regroupées sous la modalité 'post'. Seulement pour celles qui ne détecte pas de pz0 fiable.
@@ -1108,7 +1109,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
                     "prop_culture_avec_compagne": sdc.loc[sdc["culture_est_avec_compagne"] == "oui", "poids_composant_dans_sdc"].sum(),
                     "prop_association": sdc.loc[sdc["culture_est_annuelle_asso"] == "oui", "poids_composant_dans_sdc"].sum(),
                     "prop_prairie": sdc.loc[sdc["culture_est_prairie"] == "oui", "poids_composant_dans_sdc"].sum(),
-                    "prop_culture_intermédiaire": sdc.loc[sdc["culture_intermediaire_id"].notna(), "poids_composant_dans_sdc"].sum(),
+                    "prop_culture_intermediaire": sdc.loc[sdc["culture_intermediaire_id"].notna(), "poids_composant_dans_sdc"].sum(),
                     "prop_culture_porte_graine": sdc.loc[sdc["typo_cpg"].notna(), "poids_composant_dans_sdc"].sum(),
                     # pour la CAN (pas dispo dans la doc datagrosyst)
                     **compute_typology_metrics(sdc, "typocan_culture_sans_compagne", "typocan_culture", (list_typo_can+['Autres_cultures_can'])),
@@ -1136,7 +1137,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         'prop_association',
         'prop_culture_avec_compagne',
         'prop_prairie',
-        'prop_culture_intermédiaire',
+        'prop_culture_intermediaire',
         'prop_culture_porte_graine',
         # Typo espece
         'typodirodur_espece_richesse',
