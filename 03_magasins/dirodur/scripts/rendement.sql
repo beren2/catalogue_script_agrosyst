@@ -81,4 +81,3 @@ select
 	unite_est_conforme,
 	espece_est_conforme
 from entrepot_rendement_synthetise_dirodur ersd;
-

@@ -3,11 +3,9 @@ WITH agregat AS (
         sdc_numero_dephy,
         sdc_etat_temporel,
         STRING_AGG(CAST(domaine_campagne AS TEXT), ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_campagne_domaine,
-        -- STRING_AGG(synthetise_campagnes, ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_campagnes_synthetise,
         COUNT(*) AS sdc_ag_temp_nb_sdc,
         STRING_AGG(DISTINCT(sdc_code), ', ') AS sdc_ag_temp_sdc_code,
         STRING_AGG(DISTINCT(sdc_filiere), ', ') AS sdc_ag_temp_filieres,
-        -- STRING_AGG(DISTINCT(sdc_type_production), ', ') AS sdc_ag_temp_types_production, -- VIDE
         STRING_AGG(sdc_type_agriculture, ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_types_agriculture,
         AVG(sdc_part_sau_domaine) AS sdc_ag_temp_part_sau_domaine_moy,
         AVG(sdc_typo_surface_totale_assol_dvlp) AS sdc_ag_temp_surface_dvlp_real_moy,
