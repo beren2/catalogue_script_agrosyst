@@ -1553,36 +1553,36 @@ test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.Growi
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.44521690767519384,,prop_prairie
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_prairie
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,0.0,,prop_prairie
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.39992423285768397,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,1.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.4080081094779522,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0625,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.2645593051402531,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.25,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.23888,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0428444794641977,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.3178904428904427,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.25,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0480786416443252,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.14286,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_culture_intermédiaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_culture_intermédiaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.39992423285768397,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,1.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.4080081094779522,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0625,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.2645593051402531,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.25,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.23888,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0428444794641977,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.3178904428904427,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.25,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0480786416443252,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.14286,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_culture_intermediaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_culture_intermediaire
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,0.0,,prop_culture_porte_graine
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_culture_porte_graine
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_culture_porte_graine
@@ -1723,126 +1723,126 @@ test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.Growi
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,1.2243554694562153,,famille_bota_shannon
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.8112781244591328,,famille_bota_shannon
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,1.4171351143993767,,famille_bota_shannon
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.75,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.49271726252700554,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.75,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.983272193690389,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.7591813111648954,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.4583312499791664,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,1.0,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.3130362000418498,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.6944444444444444,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.399332591768632,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.3333333333333333,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.3805552222088883,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.5251117068811438,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.6787241754258788,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.75,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.9064315965724415,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.5116279069767442,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.8,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_Poaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.5555555555555556,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.6194447777911117,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.3055555555555555,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.14285714285714285,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.19624664879356568,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.3333333333333333,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.25,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.041902468392534475,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.09406994424733908,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.392865,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.2725973935465884,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_Fabaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.32127582457412107,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.25,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.5,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.17227553984088903,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.5734365451212059,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.09216670151230053,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.15679259181311173,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.17998006549907442,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,1.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_Brassicaceae
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.25,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,1.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,1.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.040153780435711224,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.12500125001250012,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.035710000000000006,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,1.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0840260970219929,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,1.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.17890442890442895,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,1.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.6428571428571428,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.2,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_Autres_familles
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_Autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.75,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.49271726252700554,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.75,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.983272193690389,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.7591813111648954,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.4583312499791664,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,1.0,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.3130362000418498,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.6944444444444444,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.399332591768632,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.3333333333333333,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.3805552222088883,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.5251117068811438,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.6787241754258788,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.75,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.9064315965724415,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.5116279069767442,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.8,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_poaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.5555555555555556,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.6194447777911117,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.3055555555555555,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.14285714285714285,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.19624664879356568,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.3333333333333333,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.25,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.041902468392534475,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.09406994424733908,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.392865,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.2725973935465884,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_fabaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.32127582457412107,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.25,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.5,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.17227553984088903,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.5734365451212059,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.09216670151230053,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.15679259181311173,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.17998006549907442,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,1.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_brassicaceae
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.25,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,1.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,1.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.040153780435711224,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.12500125001250012,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.035710000000000006,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,1.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0840260970219929,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,1.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.17890442890442895,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,1.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.6428571428571428,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.2,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_autres_familles
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_autres_familles
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,1,,saison_semis_richesse
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,0,,saison_semis_richesse
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,1,,saison_semis_richesse
@@ -2068,423 +2068,423 @@ test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.Growi
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,1.0,,typocan_culture_inverse_simpson
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,2.5002534044101394,,typocan_culture_inverse_simpson
 test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,3.0,,typocan_culture_inverse_simpson
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.6787241754258788,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.2388895555822233,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.32339941911857545,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.125,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.983272193690389,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.27842540969758395,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.525111706881144,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.35122358175750856,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.3114687309024241,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.46947566803526963,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.3130362000418498,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,1.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.5227874774232393,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Céréales à paille hiver
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,1.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.5,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.027529110856835112,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.17936441123855637,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.21102093122597188,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.07612883804936774,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Céréales à paille printemps
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.5647913498901842,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.2,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.1002709211318481,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.125,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.37209302325581395,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.25,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.24130798778686086,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.04810901001112348,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.49679487179487175,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.18234625584038391,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.6000000000000001,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.07143000000000001,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Maïs
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.2,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.17998006549907444,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.32127582457412107,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.15679259181311173,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.15545050055617354,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.2589102950030105,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.25,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Colza
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.040153780435711224,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.25,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Tournesol
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Oléagineux (hors Colza et Tournesol)
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.12886230955432162,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.011800120409391823,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.2388895555822233,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.2,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.1111111111111111,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.26455360525318855,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.02708,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Protéagineux
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.3333333333333333,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.044441777671106845,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.07143000000000001,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.08376302220351463,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.15678324041223182,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,1.0,,prop_surface_can_Mélange fourrager
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Lin
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.5714285714285714,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Pomme de terre
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.2786416443252905,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.09356840342755836,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.09373475503519413,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_Betterave
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,1.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,1.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.42857142857142855,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.4044779242519355,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,1.0,,prop_surface_can_Légume
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.44521690767519445,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.358334333373335,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.4444444444444444,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.7143,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.030102347983142656,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.3333333333333333,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.75,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.6458364583645836,,prop_surface_can_Prairie temporaire
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,1.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,1.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_Autres_cultures_can
-test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_Autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.6787241754258788,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.2388895555822233,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.32339941911857545,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.125,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.983272193690389,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.27842540969758395,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.525111706881144,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.35122358175750856,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.3114687309024241,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.46947566803526963,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.3130362000418498,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,1.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.5227874774232393,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_cereales_à_paille_hiver
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,1.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.5,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.027529110856835112,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.17936441123855637,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.21102093122597188,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.07612883804936774,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_cereales_à_paille_printemps
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.5647913498901842,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.2,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.1002709211318481,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.125,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.37209302325581395,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.25,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.24130798778686086,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.04810901001112348,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.49679487179487175,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.18234625584038391,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.6000000000000001,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.07143000000000001,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_maïs
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.2,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.17998006549907444,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.32127582457412107,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.15679259181311173,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.15545050055617354,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.2589102950030105,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.25,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_colza
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.040153780435711224,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.25,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_tournesol
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_oleagineux_(hors_colza_et_tournesol)
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.12886230955432162,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.011800120409391823,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.2388895555822233,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.2,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.1111111111111111,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.26455360525318855,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.02708,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_proteagineux
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.3333333333333333,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.044441777671106845,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.07143000000000001,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.08376302220351463,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.15678324041223182,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c867ccc7-8202-479c-afd1-621656609b77,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,1.0,,prop_surface_can_melange_fourrager
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7c510471-e50b-41f7-848b-ebfa8de658e0,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2301ec91-4b68-4568-af57-2d9461472d1a,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_lin
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.5714285714285714,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_pomme_de_terre
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.2786416443252905,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e036bcff-f61e-40eb-8711-d150a44978fd,0.09356840342755836,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.09373475503519413,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_betterave
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,1.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,1.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.42857142857142855,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_842c77ab-7c51-4630-b9a9-6673c5631ee7,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1c09cbda-5170-432e-a33d-4c8afd72394c,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.4044779242519355,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,1.0,,prop_surface_can_legume
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7cf6977d-517c-4f84-b7fd-218f25d89eb3,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.44521690767519445,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_04763c0e-e164-40ba-a92e-bff96aac4722,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3797b3a0-13bc-4e6e-9149-5fe831bbdbab,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.358334333373335,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56d38a56-0267-42f7-b4fb-8983c4d1a8ab,0.4444444444444444,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_11641510-3173-4b73-aff7-e630f3c6ee9a,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4225da3c-3f9e-4863-a679-61a20592ecfb,0.7143,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_99fc62dc-d86d-4338-acdb-19d5064a7ad9,,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_070f42af-4d2b-4941-97f6-1348af08f06f,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c1cc6a21-c296-4fe8-b492-6a378d773643,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.030102347983142656,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_8feaff7d-bd3b-4864-8a10-c0aab0f98b76,0.3333333333333333,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5503b93d-e425-4257-ab2d-63dd11c84f23,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.75,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_0af10361-711b-4ae4-931a-68a4c1db80e5,,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_ed379c0c-856c-4e0c-9431-19433271f00c,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_49007430-fbbc-4ea9-937f-3d299e3639a2,0.6458364583645836,,prop_surface_can_prairie_temporaire
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_bea5e423-cb81-4da3-b671-2df8751994e2,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f06b26d0-6869-49bf-a9de-8b311407d25d,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f9aa1286-8ffe-4c27-8b2d-3f89c5cc7352,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4e1b1914-ff25-47fc-a489-357b3322a5f5,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_fafbe654-a14d-4d5e-ba77-99931fb0a57a,1.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b710fe92-ceb3-4cdb-8800-f21dcac0dcd0,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_4d935973-d54a-453f-b98c-8718fc106289,,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_57777c31-89f9-49a7-b955-41f809ccf23a,,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_444ccd62-0b8b-43f1-ae5b-faa858bc34e1,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6ceb0062-082d-43f2-9e91-659670199133,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_76c3e2c5-3413-4b0d-95c3-9ffcc189eee6,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b3d7d1b0-b9a7-4a77-bb5d-5b3d99fd7397,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_771347f3-7ed5-4f42-9573-89a9dee26285,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f6ad9e92-9fcc-41a8-9a03-61dce3d56640,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_cdbcef9e-5ca9-4395-98b1-6d7662a71a29,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_55010f09-75d6-4b89-a0ac-3fa7ed28ada8,,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_af7a4aac-a4c3-4791-b4bd-56ec7bf9ad6d,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a38a5e1c-0c41-4cc8-9580-50e99a5b567b,1.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_aabafa13-8276-4c93-bb32-9cfe2660fb2a,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_3c78223a-d104-4478-a28f-0674dd745b1b,,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_541d4f21-3864-4027-ae7d-b70164e9b002,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_895c52c4-1a3d-43a9-888b-7586e2d25862,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_d61e028b-35db-43df-ae96-951c4a6f8997,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_5b642c7a-248c-4573-bba4-226c7d57bffb,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f70ab690-cdb1-45eb-84c9-fb2d103fa98b,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_43eb3473-c114-4bfb-b45d-de18b26ea737,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1329127e-0c99-4a18-93f5-9b316bbc2c9f,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7dde8f3c-88a0-4d62-bedf-af4a8c522bc4,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_731d02c9-7679-4e8e-b60c-589af99cb958,0.0,,prop_surface_can_autres_cultures_can
+test_get_indicateur_diversite_outils_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_a3feaa6a-6e8b-4930-8e4f-eb00a4cfb827,0.0,,prop_surface_can_autres_cultures_can

@@ -910,7 +910,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         - 'prop_culture_avec_compagne'
         - 'prop_association'
         - 'prop_prairie'
-        - 'prop_culture_intermédiaire'
+        - 'prop_culture_intermediaire'
         - 'prop_culture_porte_graine'
 
     Pour toutes les typologies le shannon (diversité) et la richesse spécifique sont calculés. Pour la typologie de culture DIORDUR 'typodirodur_culture', on calcul plus d'indicateurs que les autres typologies.
@@ -1088,7 +1088,7 @@ def get_indicateur_diversite_outils_dirodur(donnees):
 
         if cols_needed_for_proportion is not None:
             for category in cols_needed_for_proportion:
-                metrics[f"{prefix_proportion}_{category}"] = proportions.get(category, 0)
+                metrics[f"{prefix_proportion}_{category.lower().replace('é', 'e').replace(' ', '_')}"] = proportions.get(category, 0)
 
         return metrics
 
@@ -1148,10 +1148,10 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         # Famille bota
         'famille_bota_richesse',
         'famille_bota_shannon',
-        'prop_Poaceae',
-        'prop_Fabaceae',
-        'prop_Brassicaceae',
-        'prop_Autres_familles',
+        'prop_poaceae',
+        'prop_fabaceae',
+        'prop_brassicaceae',
+        'prop_autres_familles',
         # Saison semis
         'saison_semis_richesse',
         'saison_semis_shannon',
@@ -1166,20 +1166,20 @@ def get_indicateur_diversite_outils_dirodur(donnees):
         'typocan_culture_simpson',
         'typocan_culture_inverse_simpson',
         # Proportion CAN
-        'prop_surface_can_Céréales à paille hiver',
-        'prop_surface_can_Céréales à paille printemps',
-        'prop_surface_can_Maïs',
-        'prop_surface_can_Colza',
-        'prop_surface_can_Tournesol',
-        'prop_surface_can_Oléagineux (hors Colza et Tournesol)',
-        'prop_surface_can_Protéagineux',
-        'prop_surface_can_Mélange fourrager',
-        'prop_surface_can_Lin',
-        'prop_surface_can_Pomme de terre',
-        'prop_surface_can_Betterave',
-        'prop_surface_can_Légume',
-        'prop_surface_can_Prairie temporaire',
-        'prop_surface_can_Autres_cultures_can'
+        'prop_surface_can_cereales_à_paille_hiver',
+        'prop_surface_can_cereales_à_paille_printemps',
+        'prop_surface_can_maïs',
+        'prop_surface_can_colza',
+        'prop_surface_can_tournesol',
+        'prop_surface_can_oleagineux_(hors_colza_et_tournesol)',
+        'prop_surface_can_proteagineux',
+        'prop_surface_can_melange_fourrager',
+        'prop_surface_can_lin',
+        'prop_surface_can_pomme_de_terre',
+        'prop_surface_can_betterave',
+        'prop_surface_can_legume',
+        'prop_surface_can_prairie_temporaire',
+        'prop_surface_can_autres_cultures_can'
         ]]
 
     return result#, composant_itk
