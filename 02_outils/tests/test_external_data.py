@@ -146,3 +146,53 @@ def typo_especes_typo_culture(donnees):
 
     return messages
 
+def pk_gcpe_ift_anciennes_regions(donnees):
+    """
+    Vérifie la tables `pk_gcpe_ift_anciennes_regions`
+
+    - Colonnes exactes attendues :
+        * pk_gcpe_ift_anciennes_regions : [TYPO_ESPECES, Typo_Culture]
+
+    - Que l'ensemble des colonnes d'espèces présentes en 2026 le sont encore : 
+        'Blé tendre', 'Blé dur', 'Triticale', 'Colza', 'Tournesol',
+       'Pois protéagineux', 'Maïs fourrage', 'Maïs grain',
+       'Betterave sucrière', 'Pomme de terre', 'Canne à sucre', 'Soja',
+       'Lin fibre', 'Orge de printemps', 'Orge d'hiver'
+    - qu'il n'y a pas de doublon dans la première colonne.
+    """
+    messages = []
+
+    spec_tables = {
+        "pk_gcpe_ift_anciennes_regions": ["region",  'Blé tendre', 'Blé dur', 'Triticale', 'Colza', 'Tournesol',
+       'Pois protéagineux', 'Maïs fourrage', 'Maïs grain',
+       'Betterave sucrière', 'Pomme de terre', 'Canne à sucre', 'Soja',
+       'Lin fibre', 'Orge de printemps', "Orge d'hiver"],
+    }
+
+    for table_name, expected_cols in spec_tables.items():
+        # Présence table 
+        if table_name not in donnees:
+            messages.append(f"❌ Table manquante : {table_name}")
+            continue
+
+        df = donnees[table_name]
+
+        # Colonnes 
+        if list(df.columns) != expected_cols:
+            messages.append(
+                f"❌ Colonnes incorrectes dans {table_name}.\n"
+                f"   Attendu : {expected_cols}\n"
+                f"   Trouvé : {list(df.columns)}"
+            )
+            continue
+
+        # Doublons sur la première colonne 
+        col_first = expected_cols[0]
+        if df[col_first].duplicated().any():
+            messages.append(f"⚠️ Doublons trouvés dans {table_name} sur la colonne {col_first}")
+
+        # OK si aucun problème 
+        if not any(msg for msg in messages if table_name in msg):
+            messages.append(f"✅ {table_name} conforme")
+
+    return messages
