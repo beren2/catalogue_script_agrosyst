@@ -837,11 +837,18 @@ def create_category_outils_tableau_de_bord_can():
         Execute les requêtes pour créer les outils nécessaires à la génération du magasin de données "tableau_de_bord_can"
     """
     # création de l'outil permettant de filtrer les entités (dispositifs)
-    sdc_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_sdc_outils_tableau_de_bord_can(donnees)
-    sdc_outils_tableau_de_bord_can.set_index('id', inplace=True)
-    export_to_db(sdc_outils_tableau_de_bord_can, 'entrepot_sdc_outils_tableau_de_bord_can')
-    #add_primary_key('entrepot_sdc_outils_tableau_de_bord_can', 'id')
-    sdc_outils_tableau_de_bord_can.to_csv('~/Bureau/entrepot_sdc_outils_tableau_de_bord_can.csv')
+    sdc_complet_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_sdc_realise_complet_outils_tableau_de_bord_can(donnees)
+    sdc_complet_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(sdc_complet_outils_tableau_de_bord_can, 'entrepot_sdc_complet_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_sdc_complet_outils_tableau_de_bord_can', 'id')
+
+    synthetise_complet_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_synthetise_complet_outils_tableau_de_bord_can(donnees)
+    synthetise_complet_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(synthetise_complet_outils_tableau_de_bord_can, 'entrepot_synthetise_complet_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_synthetise_complet_outils_tableau_de_bord_can', 'id')
+
+    sdc_complet_outils_tableau_de_bord_can.to_csv('~/Bureau/sdc_complet_outils_tableau_de_bord_can.csv')
+    synthetise_complet_outils_tableau_de_bord_can.to_csv('~/Bureau/synthetise_complet_outils_tableau_de_bord_can.csv')
 
 def create_category_outils_can():
     """

@@ -285,11 +285,11 @@ def test_get_gestion_enherbement_sdc_outils_tableau_de_bord_can():
 
     assert all(res)
 
-def test_get_sdc_realise_synthetise_outils_tableau_de_bord_can():
+def test_get_sdc_realise_complet_outils_tableau_de_bord_can():
     """
     """
     # TODO : modifier l'identifiant du test. 
-    identifiant_test = 'test_get_sdc_outils_tableau_de_bord_can'
+    identifiant_test = 'test_get_sdc_realise_complet_outils_tableau_de_bord_can'
 
     df_names = [
         'action_synthetise_agrege',
@@ -325,9 +325,56 @@ def test_get_sdc_realise_synthetise_outils_tableau_de_bord_can():
         'connection_synthetise_restructure'
     ]
 
-    path_data = '02_outils/tests/data/test_get_sdc_outils_tableau_de_bord_can/'
+    path_data = '02_outils/tests/data/test_get_sdc_realise_synthetise_complet_outils_tableau_de_bord_can/'
 
-    fonction_to_apply = outils_tableau_de_bord_can.get_sdc_realise_synthetise_outils_tableau_de_bord_can
+    fonction_to_apply = outils_tableau_de_bord_can.get_sdc_realise_complet_outils_tableau_de_bord_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)
+
+def test_get_synthetise_complet_outils_tableau_de_bord_can():
+    """
+    """
+    # TODO : modifier l'identifiant du test. 
+    identifiant_test = 'test_get_synthetise_complet_outils_tableau_de_bord_can'
+
+    df_names = [
+        'action_synthetise_agrege',
+        'itk_realise_agrege',
+        'plantation_perenne_synthetise_restructure',
+        'itk_synthetise_agrege',
+        'noeuds_realise',
+        'composant_culture',
+        'dispositif',
+        'noeuds_synthetise',
+        'liaison_sdc_reseau',
+        'typologie_can_culture',
+        'liaison_reseaux',
+        'reseau',
+        'connection_synthetise',
+        'plantation_perenne_realise',
+        'poids_connexions_synthetise_rotation',
+        'sdc',
+        'recolte_rendement_prix',
+        'espece',
+        'recolte_rendement_prix_restructure',
+        'action_synthetise',
+        'zone',
+        'plantation_perenne_phases_synthetise',
+        'plantation_perenne_synthetise',
+        'plantation_perenne_phases_realise',
+        'action_realise_agrege',
+        'action_realise',
+        'synthetise',
+        'domaine',
+        'parcelle',
+        'noeuds_synthetise_restructure',
+        'connection_synthetise_restructure'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_sdc_realise_synthetise_complet_outils_tableau_de_bord_can/'
+
+    fonction_to_apply = outils_tableau_de_bord_can.get_synthetise_complet_outils_tableau_de_bord_can
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)

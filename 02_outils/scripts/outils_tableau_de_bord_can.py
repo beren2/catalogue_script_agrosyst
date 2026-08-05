@@ -203,7 +203,6 @@ def get_surface_synthetise_outils_tableau_de_bord_can(
 
     df['synthetise_extanded'].loc[:, 'surface_synthetise'] = np.round(df['synthetise_extanded']['sau_totale'] * df['synthetise_extanded']['part_sau_domaine'] / 100, 2)
 
-    df['synthetise_extanded'].to_csv('synthetise_extanded.csv')
     return df['synthetise_extanded'][['surface_synthetise']].reset_index().rename(columns={'sdc_id' : 'id', 'surface_synthetise' : 'surface_sdc_synthetise'})
 
 
@@ -662,7 +661,6 @@ def get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(
         nb_rendements_unite_uniques=('rendement_unite_realise', lambda x: len(list(set().union(*x))))
     )
 
-    df['sdc_recolte_viti'][['rendement_moyen_realise', 'rendement_unite_realise']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
     return df['sdc_recolte_viti'][['rendement_moyen_realise', 'rendement_unite_realise']].reset_index().rename(columns={'sdc_id' : 'id'})
 
 def get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(
@@ -760,7 +758,6 @@ def get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(
         nb_rendements_unite_uniques=('rendement_unite_synthetise', lambda x: len(list(set().union(*x))))
     )
 
-    df['sdc_recolte_viti'][['rendement_moyen_synthetise', 'rendement_unite_synthetise']].reset_index().rename(columns={'sdc_id' : 'id'}).to_csv('~/Bureau/test.csv')
     return df['sdc_recolte_viti'][['rendement_moyen_synthetise', 'rendement_unite_synthetise']].reset_index().rename(columns={'sdc_id' : 'id'})
 
 def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
@@ -862,7 +859,7 @@ def get_gestion_enherbement_sdc_outils_tableau_de_bord_can(
 
     return res.reset_index().rename(columns={'sdc_id' : 'id'})
 
-def get_sdc_realise_synthetise_outils_tableau_de_bord_can(
+def get_sdc_realise_complet_outils_tableau_de_bord_can(
     donnees
 ):
     """
@@ -878,9 +875,7 @@ def get_sdc_realise_synthetise_outils_tableau_de_bord_can(
     reseaux_rattachement = get_reseaux_rattachement_sdc_outils_tableau_de_bord_can(donnees)
     surface_sdc_realise = get_surface_sdc_realise_outils_tableau_de_bord_can(donnees)
     surface_typo_culture_realise = get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees)
-    surface_synthetise = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
-    surface_typo_culture_synthetise = get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
-
+    
     # Liste des DataFrames à joindre
     dataframes_sdc_to_join = [
         gestion_enherbement,
@@ -891,20 +886,35 @@ def get_sdc_realise_synthetise_outils_tableau_de_bord_can(
         surface_typo_culture_realise,
     ]
 
-    dataframes_synthetise_to_join = [
-        surface_synthetise,
-        surface_typo_culture_synthetise
-    ]
-
-    # TODO : ici, on devra spliter les synthétisé et les réalisé 
-    # en effet, les 
-
     # Initialisation avec la colonne 'sdc'
     result_sdc = df['sdc'][['campagne']].reset_index()
 
     # Jointure successive de tous les DataFrames
     for right_df in dataframes_sdc_to_join:
         result_sdc = pd.merge(result_sdc, right_df, left_on='id', right_on='id', how='left')
+
+    result_sdc.to_csv('~/Bureau/result_sdc.csv')
+
+    return result_sdc
+
+
+def get_synthetise_complet_outils_tableau_de_bord_can(
+    donnees
+):
+    """
+       Permet de regrouper dans un seul dataframe les différentes données calculées à l'échelle du synthetise
+    """
+    df = copy.deepcopy(donnees)
+    df['sdc'].set_index('id', inplace=True)
+    df['synthetise'].set_index('id', inplace=True)
+
+    surface_synthetise = get_surface_synthetise_outils_tableau_de_bord_can(donnees)
+    surface_typo_culture_synthetise = get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees)
+
+    dataframes_synthetise_to_join = [
+        surface_synthetise,
+        surface_typo_culture_synthetise
+    ]
 
     # Initialisation avec la colonne 'sdc'
     result_synthetise = df['synthetise'][['campagnes']].reset_index()
@@ -913,7 +923,6 @@ def get_sdc_realise_synthetise_outils_tableau_de_bord_can(
     for right_df in dataframes_synthetise_to_join:
         result_synthetise = pd.merge(result_synthetise, right_df, left_on='id', right_on='id', how='left')
 
-    result_sdc.to_csv('~/Bureau/result_sdc.csv')
     result_synthetise.to_csv('~/Bureau/result_synthetise.csv')
 
-    return result_sdc, result_synthetise
+    return result_synthetise
