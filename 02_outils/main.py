@@ -878,9 +878,18 @@ def create_category_outils_tableau_de_bord_can():
     export_to_db(synthetise_complet_outils_tableau_de_bord_can, 'entrepot_synthetise_complet_outils_tableau_de_bord_can')
     add_primary_key('entrepot_synthetise_complet_outils_tableau_de_bord_can', 'id')
 
-    sdc_complet_outils_tableau_de_bord_can.to_csv('~/Bureau/sdc_complet_outils_tableau_de_bord_can.csv')
-    synthetise_complet_outils_tableau_de_bord_can.to_csv('~/Bureau/synthetise_complet_outils_tableau_de_bord_can.csv')
+    rendement_viti_realise = outils_tableau_de_bord_can.get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
+    rendement_viti_realise.set_index('id', inplace=True)
+    export_to_db(rendement_viti_realise, 'entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can', 'id')
 
+    rendement_viti_realise.to_csv('~/Bureau/rendement_viti_realise.csv')
+
+    rendement_viti_synthetise= outils_tableau_de_bord_can.get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(donnees)
+    rendement_viti_synthetise.set_index('id', inplace=True)
+    export_to_db(rendement_viti_synthetise, 'entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can', 'id')
+    
 def create_category_outils_can():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN

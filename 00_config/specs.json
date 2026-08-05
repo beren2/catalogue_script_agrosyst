@@ -747,12 +747,8 @@
                     "category": "indicateur_1"
                 }],
                 "generated" : [
-                    "reseaux_rattachement_sdc_outils_tableau_de_bord_can",
-					"sdc_realise_outils_tableau_de_bord_can",
-					"stc_sdc_realise_outils_tableau_de_bord_can",
-					"stc_synthetise_outils_tableau_de_bord_can",
-                    "rendement_viti_sdc_realise_outils_tableau_de_bord_can",
-					"gestion_enherbement_sdc_outils_tableau_de_bord_can"
+                    "sdc_complet_outils_tableau_de_bord_can",
+					"synthetise_complet_outils_tableau_de_bord_can"
                 ], 
 				"need_performance" : [
 				]
@@ -786,8 +782,7 @@
 					"rendement_synthetise_filtre_outils_dirodur", 
 					"sdc_realise_filtre_outils_dirodur",
 					"synthetise_filtre_outils_dirodur",
-					"sdc_statut_temporel_outils_dirodur", 
-
+					"sdc_statut_temporel_outils_dirodur",
 					"date_de_semis_outils_dirodur"
                 ], 
 				"need_performance" : [

@@ -1,15 +1,17 @@
 -- SCRIPT SQL POUR LE TRAITEMENT DES DONNÉES VITICOLES (viti.csv)
 -- Aligné sur le fichier viti_var.csv et inspiré de sdc_gcpe.sql
 
+
 SELECT
     -- Identification unique
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne AS ID_CODE_DEPHY_CAMPAGNE,
     sdc.code_dephy AS sdc_code_dephy,
     sdc.campagne AS campagne_donnees,
+    sdc.validite as sdc_valide,
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseau_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -31,9 +33,10 @@ SELECT
     null AS systeme_synthetise_id,      
     null AS systeme_synthetise_nom,  
     null AS systeme_synthetise_campagnes,
+    null as systeme_synthetise_validation,
     -- Rendement (spécifique viticulture)
-    ervsrotdbc.rendement_moyen AS rendement_moyen,  
-   	ervsrotdbc.rendement_unite AS unite_rendement,
+    escotdbc.rendement_moyen_realise AS rendement_moyen,  
+   	escotdbc.rendement_unite_realise AS unite_rendement,
     -- Données économiques et techniques
     esrp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
     esrp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
@@ -82,7 +85,7 @@ SELECT
     esrp.ferti_k2o_organique AS K_Orga_SDC,
     -- Eau et temps de travail
     esrp.conso_eau AS Qte_Eau_mm_ha_SDC,
-    egesotdbc.use_enherbement AS gestion_enherbement_SDC,  -- Spécifique viticulture
+    escotdbc.use_enherbement AS gestion_enherbement_SDC,  -- Spécifique viticulture
     esrp.tps_utilisation_materiel AS tps_util_materiel_SDC,
     -- Temps mensuels (exemple pour janvier à décembre)
     esrp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
@@ -118,7 +121,7 @@ SELECT
     null AS Alerte_Absence_unite_dose_SDC,
     null AS Alerte_rendement_SDC,
     null AS Synthese_alertes,
-    null AS surface_sdc_itk,
+    escotdbc.surface_sdc_realise AS surface_sdc_itk,
     null AS alerte_renseignement_donnees,
     null AS part_sole_sdc_sans_itk,
     null as alerte_sole_sdc,
@@ -158,24 +161,23 @@ LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id
-LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc ON sdc.id = escotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON esrp.sdc_id = sdc.id
 left join entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can ervsrotdbc on ervsrotdbc.id = sdc.id
-left join entrepot_gestion_enherbement_sdc_outils_tableau_de_bord_can egesotdbc on egesotdbc.id = sdc.id
 WHERE sdc.filiere = 'VITICULTURE'
 AND eeupsn.entite_retenue = 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY'
-UNION
+union
 SELECT
     -- Identification unique
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne AS ID_CODE_DEPHY_CAMPAGNE,
     sdc.code_dephy AS sdc_code_dephy,
     sdc.campagne AS campagne_donnees,
+    sdc.validite as sdc_valide,
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseau_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -197,9 +199,10 @@ SELECT
     synthetise.id AS systeme_synthetise_id,      
     synthetise.nom AS systeme_synthetise_nom,  
     synthetise.campagnes AS systeme_synthetise_campagnes,
+    synthetise.valide as systeme_synthetise_validation,
     -- Rendement (spécifique viticulture)
-	ervsrotdbc.rendement_moyen AS rendement_moyen,
-    ervsrotdbc.rendement_unite AS unite_rendement,
+	ervsotdbc.rendement_moyen_synthetise AS rendement_moyen,
+    ervsotdbc.rendement_unite_synthetise AS unite_rendement,
     -- Données économiques et techniques
     essp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
     essp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
@@ -248,7 +251,7 @@ SELECT
     essp.ferti_k2o_organique AS K_Orga_SDC,
     -- Eau et temps de travail
     essp.conso_eau AS Qte_Eau_mm_ha_SDC,
-    egesotdbc.use_enherbement AS gestion_enherbement_SDC,  -- Spécifique viticulture
+    escotdbc.use_enherbement AS gestion_enherbement_SDC,  -- Spécifique viticulture
     essp.tps_utilisation_materiel AS tps_util_materiel_SDC,
     -- Temps mensuels (exemple pour janvier à décembre)
     essp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
@@ -284,7 +287,7 @@ SELECT
     null AS Alerte_Absence_unite_dose_SDC,
     null AS Alerte_rendement_SDC,
     null AS Synthese_alertes,
-    null AS surface_sdc_itk,
+    escotdbc2.surface_sdc_synthetise AS surface_sdc_itk,
     null AS alerte_renseignement_donnees,
     null AS part_sole_sdc_sans_itk,
     null as alerte_sole_sdc,
@@ -325,14 +328,10 @@ LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
 left join entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc_id
-left join entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc on sdc.id = errsotdbc.id 
-left join entrepot_sdc_synthetise_outils_tableau_de_bord_can essotdbc on essotdbc.id = synthetise.id
-left join entrepot_surface_synthetise_outils_tableau_de_bord_can esusotdb on esusotdb.id = synthetise.id
-left join entrepot_typologie_can_rotation_synthetise etcrs on etcrs.synthetise_id = synthetise.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
 left join entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
-left join entrepot_gestion_enherbement_sdc_outils_tableau_de_bord_can egesotdbc on egesotdbc.id = sdc.id
-left join entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can ervsrotdbc on ervsrotdbc.id = sdc.id
+left join entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
+left join entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can ervsotdbc on ervsotdbc.id = eeupsn.sdc_id
 WHERE sdc.filiere = 'VITICULTURE'
 and eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY';
-
