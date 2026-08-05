@@ -1,0 +1,7 @@
+id,code,nom,campagne,surface,latitude,longitude,type,parcelle_id
+fr.inra.agrosyst.api.entities.Zone_d9278137-780a-4540-8b10-5fa04e5beb8c,8fefd48c-8c25-4281-bfb1-58b5d943fcff,Zone principale,2019,13.73,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_1a91c505-80ae-420d-849a-216f8e9bff0b
+fr.inra.agrosyst.api.entities.Zone_e64dc259-f99f-4e64-bedb-0622e42093b3,ca809b57-6071-4228-8aa4-a00bb38b111e,Zone principale,2022,4.8,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_4aa37d03-2c91-4b65-9bd6-ce635ebf46e0
+fr.inra.agrosyst.api.entities.Zone_d94f8b65-50bc-47de-bb22-c5e43ccd589f,3208e44f-36b6-4bb3-be32-e97d591ebc90,Zone principale,2021,1.98,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_79412400-4780-4fc3-a071-be8b86f5bf24
+fr.inra.agrosyst.api.entities.Zone_38745900-dc35-4642-97a9-8ba96c4a893c,812a1454-c9bf-4d44-8491-da8ca68bc087,2_ailrose,2013,2.0,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_aa0eaa30-7602-4165-8656-8b6fc9e81c9e
+fr.inra.agrosyst.api.entities.Zone_27d35fdc-7e37-4b04-8e8d-4809f4ddcd72,6f3ce083-1e8a-4919-b74e-bbf61bb72f6b,Zone principale,2022,6.72,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_ac120302-5470-40b8-8ac9-d6782159ee77
+fr.inra.agrosyst.api.entities.Zone_38457ae0-d864-43ac-b8f7-ce102badde02,b85c631d-aa4d-4e24-b775-8604173f22d7,Zone principale,2017,5.19,,,PRINCIPALE,fr.inra.agrosyst.api.entities.Plot_de978da3-2642-4334-bf06-dea5d40c4514

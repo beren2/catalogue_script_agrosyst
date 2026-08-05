@@ -1,53 +1,51 @@
 -- Le seul filtre appliqué est à présent la vérification que le sdc ou le synthétisé lié est bien retenu dans DiRoDur
 -- (à travers les outils sdc_realise_filtre_outils_dirodur et synthetise_filtre_outils_dirodur)
-
 -- 2min
 create temporary table if not exists entrepot_itk_filtre_final as
 SELECT
     'realise' as mode_saisie,
     null as connexion_id,
-
     --------------------
 	-- NOEUDS_REALISE --
 	--------------------
 	itkR.itk_realise_id as noeud_id,
-
-	-------------
-	-- CULTURE --
-	-------------
+	poidsR.poids_surface_developpee_agreg as poids_itk_agregation,
+	poidsR.poids_surface_developpee_normalisee as poids_itk_desagregation_normalisee,
+	poidsR.poids_surface_ponderee as poids_itk_probabiliste,
+	-----------------------------------
+	-- CULTURE et TYPOLOGIES DIRODUR --
+	-----------------------------------
 	-- culture_*
 	culture1.id as culture_id,
 	culture1.nom as culture_nom,
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
-
-	-- culture_typocan_*
-	typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
-	typoc1.typocan_espece as culture_typo_can_espece,
-	typoc1.typocan_esp_sans_compagne as culture_typo_can_espece_sans_compagne,
-	typoc1.nb_composant_culture as culture_typo_can_nbre_composant,
-	typoc1.nb_typocan_esp as culture_typo_can_nbre_espece,
-
+	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
+	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
+	typoc1.typodirodur_espece_famille_bota as culture_typo_dirodur_liste_famille_bota,
+	typoc1.typodirodur_espece_periode_semis as culture_typo_dirodur_saison_semis,
+	typoc1.nb_composant_culture as culture_typo_dirodur_nb_composant_culture,
+	typoc1.nb_typodirodur_espece as culture_typo_dirodur_nb_typo_espece,
+	typoc1.culture_est_avec_compagne as culture_typo_dirodur_contient_compagne,
+	typoc1.culture_est_annuelle_asso as culture_typo_dirodur_est_association,
+	typoc1.culture_est_prairie as culture_typo_dirodur_est_prairie,
+	typoc1.typo_cpg as culture_typo_dirodur_culture_portegraine,
 	-- culture_intermediaire_*
 	culture_inter.id as culture_intermediaire_id,
 	culture_inter.nom as culture_intermediaire_nom,
-
-	-- culture_intermediaire_typocan_*
-	typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
-	typoci.typocan_espece as culture_intermerdiaire_typo_can_espece,
-	typoci.nb_composant_culture as culture_intermerdiaire_typo_can_nbre_composant,
-
+	typoci.typodirodur_culture as culture_intermediaire_typo_dirodur_culture,
+	typoci.typodirodur_espece as culture_intermediaire_typo_dirodur_liste_espece,
+	typoci.typodirodur_espece_famille_bota as culture_intermediaire_typo_dirodur_liste_famille_bota,
+	typoci.nb_composant_culture as culture_intermediaire_typo_dirodur_nb_composant_culture,
     -- culture_precedente_*
     culture_prec.id as culture_precedente_id,
 	culture_prec.nom as culture_precedente_nom,
 	culture_prec.melange_especes as culture_precedente_est_melange_especes,
 	culture_prec.melange_varietes as culture_precedente_est_melange_varietes,
-
-    -- culture_precedente_typocan_*
-	typocp.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
-	typocp.typocan_espece as culture_precedente_typo_can_espece,
-	typocp.nb_composant_culture as culture_precedente_typo_can_nbre_composant,
-    
+	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
+	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
+	typoc0.typodirodur_espece_famille_bota as culture_precedente_typo_dirodur_liste_famille_bota,
+	typoc0.nb_composant_culture as culture_precedente_typo_dirodur_nb_composant_culture,
     ---------
 	-- SDC --
 	---------
@@ -59,7 +57,6 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
     ----------------
 	-- DISPOSITIF --
 	----------------
@@ -67,7 +64,6 @@ SELECT
 	dispo.code as dispositif_code,
 	dispo.nom as dispositif_nom,
 	dispo."type" as dispositif_type,
-
 	-------------
 	-- DOMAINE --
 	-------------
@@ -122,32 +118,25 @@ SELECT
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
 	dom.sau_totale as domaine_sau,
     interop.typo_ruralite as domaine_typologie_ruralite,
-
 	-----------------
 	-- DOMAINE_SOL --
 	-----------------
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-
-
     --------------------------------
 	-- NOEUDS_REALISE_RESTRUCTURE --
 	--------------------------------
     null as noeud_est_meme_campagne_noeud_precedent,
 	node_res.precedent_noeuds_realise_id as noeud_precedent_id,
     null as noeud_precedent_est_meme_campagne_noeud_precedent,
-
     ----------------
 	-- SYNTHETISE --
 	----------------
 	null as synthetise_id, 
-    null as synthetise_rotation_typo_can, 
-    null as synthetise_rotation_typo_liste_culture,
     null as synthetise_nom,
     null as synthetise_campagnes,
 	false as synthetise_est_pz0,
-
     -------------
 	-- REALISE --
 	-------------
@@ -160,15 +149,11 @@ SELECT
 	parcelle.commune_id as parcelle_commune_id,
 	parcelle.sol_nom_ref as parcelle_sol_nom_ref ,
 	CASE when parcelle.edaplos_utilisateur_id is not null THEN True ELSE False END AS parcelle_import_edaplos,
-
-
     ----------------
 	-- CONNEXION --
 	----------------
     null as connexion_frequence, 
     null as connexion_est_culture_absente,
-    null as connexion_poids_agregation,
-
 	--------------------------------
 	-- NOEUDS_REALISE_PERFORMANCE --
 	--------------------------------
@@ -182,19 +167,16 @@ SELECT
 	itkR.ift_cible_non_mil_a as itk_ift_cible_non_mil_a,
 	itkR.ift_cible_non_mil_hh as itk_ift_cible_non_mil_hh,
 	itkR.ift_cible_non_mil_biocontrole as itk_ift_cible_non_mil_biocontrole,
-
 	-- recours_*
 	itkR.recours_aux_moyens_biologiques as itk_recours_aux_moyens_biologiques,
 	itkR.recours_macroorganismes as itk_recours_macroorganismes,
 	itkR.recours_produits_biotiques_sansamm as itk_recours_produits_biotiques_sans_amm,
 	itkR.recours_produits_abiotiques_sansamm as itk_recours_produits_abiotiques_sans_amm,
-
 	-- tps_*
 	itkR.tps_utilisation_materiel as itk_tps_utilisation_materiel,
 	itkR.tps_travail_manuel as itk_tps_travail_manuel,
 	itkR.tps_travail_mecanise as itk_tps_travail_meca,
 	itkR.tps_travail_total as itk_tps_travail_total,
-
 	-- nbre_de_passages_*
 	itkR.nbre_de_passages as itk_nbre_de_passages,
 	itkR.nbre_de_passages_labour as itk_nbre_de_passages_labour,
@@ -202,7 +184,6 @@ SELECT
 	itkR.nbre_de_passages_desherbage_meca as itk_nbre_de_passages_desherbage_meca,
 	itkR.utili_desherbage_meca as itk_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
 	itkR.type_de_travail_du_sol as itk_type_de_travail_du_sol,
-	
 	-- co_std_mil_*
 	itkR.co_tot_std_mil as itk_co_std_mil_tot,
 	itkR.co_semis_std_mil as itk_co_std_mil_semis,
@@ -213,35 +194,27 @@ SELECT
 	itkR.co_trait_semence_std_mil as itk_co_std_mil_trait_semence,
 	itkR.co_irrigation_std_mil as itk_co_std_mil_irrigation,
 	itkR.co_intrants_autres_std_mil as itk_co_std_mil_intrants_autres,
-
 	-- cm_std_mil
 	itkR.cm_std_mil as itk_cm_std_mil,
-
 	-- c_main_oeuvre_std_mil_*
 	itkR.c_main_oeuvre_tot_std_mil as itk_c_main_oeuvre_std_mil_tot,
 	itkR.c_main_oeuvre_tractoriste_std_mil as itk_c_main_oeuvre_std_mil_tractoriste,
 	itkR.c_main_oeuvre_manuelle_std_mil as itk_c_main_oeuvre_std_mil_manuelle,
-
 	-- pb_std_mil_*
 	itkR.pb_std_mil_avec_autoconso as itk_pb_std_mil_avec_autoconso, -- Consigne pour ceux qui n'utilise pas les atelier d'élevage : avec auto
 	itkR.pb_std_mil_sans_autoconso as itk_pb_std_mil_sans_autoconso,
-
 	-- mb_std_mil_*
 	itkR.mb_std_mil_avec_autoconso as itk_mb_std_mil_avec_autoconso,
 	itkR.mb_std_mil_sans_autoconso as itk_mb_std_mil_sans_autoconso,
-
 	-- msn_std_mil_*
 	itkR.msn_std_mil_sans_autoconso as itk_msn_std_mil_sans_autoconso,
 	itkR.msn_std_mil_avec_autoconso as itk_msn_std_mil_avec_autoconso,
-
 	-- md_std_mil_*
 	itkR.md_std_mil_sans_autoconso as itk_md_std_mil_sans_autoconso,
 	itkR.md_std_mil_avec_autoconso as itk_md_std_mil_avec_autoconso,
-
 	-- conso_* 
 	itkR.conso_carburant as itk_conso_carburant,
 	itkR.conso_eau as itk_conso_eau,
-
 	-- ferti_*
 	itkR.ferti_n_mineral as itk_ferti_n_mineral,
 	itkR.ferti_n_organique as itk_ferti_n_organique,
@@ -249,7 +222,6 @@ SELECT
 	itkR.ferti_p2o5_organique as itk_ferti_p2o5_organique,
 	itkR.ferti_k2o_mineral as itk_ferti_k2o_mineral,
 	itkR.ferti_k2o_organique as itk_ferti_k2o_organique,
-
 	-- qsa_*
 	itkR.qsa_tot_hts as itk_qsa_tot_hts,
 	itkR.qsa_tot as itk_qsa_tot,
@@ -352,13 +324,13 @@ LEFT JOIN entrepot_dispositif AS dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_commune AS comm ON parcelle.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = parcelle.domaine_id
 LEFT JOIN entrepot_culture AS culture1 ON culture1.id = itkR.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoc1 ON typoc1.culture_id = itkR.culture_id 
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx.culture_intermediaire_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoci ON typoci.culture_id = cx.culture_intermediaire_id 
 LEFT JOIN entrepot_noeuds_realise AS noeud_prec ON node_res.precedent_noeuds_realise_id = noeud_prec.id
 LEFT JOIN entrepot_culture AS culture_prec ON culture_prec.id = noeud_prec.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typocp ON typocp.culture_id = culture_prec.id 
-LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc1 ON typoc1.culture_id = itkR.culture_id 
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoci ON typoci.culture_id = cx.culture_intermediaire_id 
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc0 ON typoc0.culture_id = culture_prec.id 
+LEFT JOIN entrepot_poids_noeuds_realise AS poidsR ON poidsR.noeuds_realise_id = itkR.itk_realise_id
 WHERE esrfod.in_dirodur is true
 UNION 
 SELECT 
@@ -368,43 +340,43 @@ SELECT
 	--------------------------
 	cx.id as connexion_id,
     cx.cible_noeuds_synthetise_id as noeud_id,
-
-    -------------
-	-- CULTURE --
-	-------------
+	poidsS.poids_conx_agregation as poids_itk_agregation,
+	poidsS.poids_conx_agregation_norm_synth as poids_itk_desagregation_normalisee,
+	poidsS.proba_conx_spatiotemp as poids_itk_probabiliste,
+	-----------------------------------
+	-- CULTURE et TYPOLOGIES DIRODUR --
+	-----------------------------------
 	-- culture_*
 	culture1.id as culture_id,
 	culture1.nom as culture_nom,
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
-
-	-- culture_typocan_*
-	typoc1.typocan_culture_sans_compagne as culture_typo_can_sans_compagne,
-	typoc1.typocan_espece as culture_typo_can_espece,
-	typoc1.typocan_esp_sans_compagne as culture_typo_can_espece_sans_compagne,
-	typoc1.nb_composant_culture as culture_typo_can_nbre_composant,
-	typoc1.nb_typocan_esp as culture_typo_can_nbre_espece,
-
+	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
+	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
+	typoc1.typodirodur_espece_famille_bota as culture_typo_dirodur_liste_famille_bota,
+	typoc1.typodirodur_espece_periode_semis as culture_typo_dirodur_saison_semis,
+	typoc1.nb_composant_culture as culture_typo_dirodur_nb_composant_culture,
+	typoc1.nb_typodirodur_espece as culture_typo_dirodur_nb_typo_espece,
+	typoc1.culture_est_avec_compagne as culture_typo_dirodur_contient_compagne,
+	typoc1.culture_est_annuelle_asso as culture_typo_dirodur_est_association,
+	typoc1.culture_est_prairie as culture_typo_dirodur_est_prairie,
+	typoc1.typo_cpg as culture_typo_dirodur_culture_portegraine,
 	-- culture_intermediaire_*
 	cx_rst.culture_intermediaire_id as culture_intermediaire_id,
 	culture_inter.nom as culture_intermediaire_nom,
-
-	-- culture_intermediaire_typocan_*
-	typoci.typocan_culture_sans_compagne as culture_intermerdiaire_typo_can_sans_compagne,
-	typoci.typocan_espece as culture_intermerdiaire_typo_can_espece,
-	typoci.nb_composant_culture as culture_intermerdiaire_typo_can_nbre_composant,
-
+	typoci.typodirodur_culture as culture_intermediaire_typo_dirodur_culture,
+	typoci.typodirodur_espece as culture_intermediaire_typo_dirodur_liste_espece,
+	typoci.typodirodur_espece_famille_bota as culture_intermediaire_typo_dirodur_liste_famille_bota,
+	typoci.nb_composant_culture as culture_intermediaire_typo_dirodur_nb_composant_culture,
 	-- culture_precedente_*
 	culture0.id as culture_precedente_id,
 	culture0.nom as culture_precedente_nom,
 	culture0.melange_especes as culture_precedente_est_melange_especes,
 	culture0.melange_varietes as culture_precedente_est_melange_varietes,
-
-	-- culture_precedente_typocan_*
-	typoc0.typocan_culture_sans_compagne as culture_precedente_typo_can_sans_compagne,
-	typoc0.typocan_espece as culture_precedente_typo_can_espece,
-	typoc0.nb_composant_culture as culture_precedente_typo_can_nbre_composant,
-
+	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
+	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
+	typoc0.typodirodur_espece_famille_bota as culture_precedente_typo_dirodur_liste_famille_bota,
+	typoc0.nb_composant_culture as culture_precedente_typo_dirodur_nb_composant_culture,
 	---------
 	-- SDC --
 	---------
@@ -416,7 +388,6 @@ SELECT
 	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
-
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -424,7 +395,6 @@ SELECT
 	dispo.code as dispositif_code,
 	dispo.nom as dispositif_nom,
 	dispo."type" as dispositif_type,
-
 	-------------
 	-- DOMAINE --
 	-------------
@@ -479,33 +449,25 @@ SELECT
 	dom.main_oeuvre_volontaire as domaine_main_oeuvre_volontaire,
 	dom.sau_totale as domaine_sau,
 	interop.typo_ruralite as domaine_typologie_ruralite,
-
     -----------------
 	-- DOMAINE_SOL --
 	-----------------
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-
     ------------
 	-- NOEUDS --
 	------------
 	nd_cible.memecampagne_noeudprecedent as noeud_est_meme_campagne_noeud_precedent,
     cx.source_noeuds_synthetise_id as noeud_precedent_id,
 	nd_source.memecampagne_noeudprecedent as noeud_precedent_est_meme_campagne_noeud_precedent,
-
     -----------------
 	-- SYNTHETISE --
 	----------------
 	synth.id as synthetise_id, 
-    typorota.typocan_rotation as synthetise_rotation_typo_can,
-	typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
 	synth.nom as synthetise_nom,
 	synth.campagnes as synthetise_campagnes,
 	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
-
-	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
-
     -------------
 	-- REALISE --
 	-------------
@@ -518,18 +480,14 @@ SELECT
     null as parcelle_commune_id,
     null as parcelle_sol_nom_ref,
     null as parcelle_import_edaplos,
-
     ---------------
 	-- CONNEXION --
 	---------------
 	cx.frequence_source as connexion_frequence,
 	cx.culture_absente as connexion_est_culture_absente,
-	poidscx.poids_conx_agregation as connexion_poids_agregation,
-
 	-----------------------------------
 	-- NOEUDS_SYNTHETISE_PERFORMANCE --
 	-----------------------------------
-
 	-- ift_cible_non_mil_*
 	itkS.ift_cible_non_mil_chimique_tot as itk_ift_cible_non_mil_chimique_tot,
 	itkS.ift_cible_non_mil_chim_tot_hts as itk_ift_cible_non_mil_chim_tot_hts,
@@ -540,19 +498,16 @@ SELECT
 	itkS.ift_cible_non_mil_a as itk_ift_cible_non_mil_a,
 	itkS.ift_cible_non_mil_hh as itk_ift_cible_non_mil_hh,
 	itkS.ift_cible_non_mil_biocontrole as itk_ift_cible_non_mil_biocontrole,
-
 	-- recours_*
 	itkS.recours_aux_moyens_biologiques as itk_recours_aux_moyens_biologiques,
 	itkS.recours_macroorganismes as itk_recours_macroorganismes,
 	itkS.recours_produits_biotiques_sansamm as itk_recours_produits_biotiques_sans_amm,
 	itkS.recours_produits_abiotiques_sansamm as itk_recours_produits_abiotiques_sans_amm,
-
 	-- tps_*
 	itkS.tps_utilisation_materiel as itk_tps_utilisation_materiel,
 	itkS.tps_travail_manuel as itk_tps_travail_manuel,
 	itkS.tps_travail_mecanise as itk_tps_travail_meca,
 	itkS.tps_travail_total as itk_tps_travail_total,
-
 	-- nbre_de_passages_*
 	itkS.nbre_de_passages as itk_nbre_de_passages,
 	itkS.nbre_de_passages_labour as itk_nbre_de_passages_labour,
@@ -560,7 +515,6 @@ SELECT
 	itkS.nbre_de_passages_desherbage_meca as itk_nbre_de_passages_desherbage_meca,
 	itkS.utili_desherbage_meca as itk_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
 	itkS.type_de_travail_du_sol as itk_type_de_travail_du_sol,
-	
 	-- co_std_mil_*
 	itkS.co_tot_std_mil as itk_co_std_mil_tot,
 	itkS.co_semis_std_mil as itk_co_std_mil_semis,
@@ -571,35 +525,27 @@ SELECT
 	itkS.co_trait_semence_std_mil as itk_co_std_mil_trait_semence,
 	itkS.co_irrigation_std_mil as itk_co_std_mil_irrigation,
 	itkS.co_intrants_autres_std_mil as itk_co_std_mil_intrants_autres,
-
 	-- cm_std_mil
 	itkS.cm_std_mil as itk_cm_std_mil,
-
 	-- c_main_oeuvre_std_mil_*
 	itkS.c_main_oeuvre_tot_std_mil as itk_c_main_oeuvre_std_mil_tot,
 	itkS.c_main_oeuvre_tractoriste_std_mil as itk_c_main_oeuvre_std_mil_tractoriste,
 	itkS.c_main_oeuvre_manuelle_std_mil as itk_c_main_oeuvre_std_mil_manuelle,
-
 	-- pb_std_mil_*
 	itkS.pb_std_mil_avec_autoconso as itk_pb_std_mil_avec_autoconso, -- Consigne pour ceux qui n'utilise pas les atelier d'élevage : avec auto
 	itkS.pb_std_mil_sans_autoconso as itk_pb_std_mil_sans_autoconso,
-
 	-- mb_std_mil_*
 	itkS.mb_std_mil_avec_autoconso as itk_mb_std_mil_avec_autoconso,
 	itkS.mb_std_mil_sans_autoconso as itk_mb_std_mil_sans_autoconso,
-
 	-- msn_std_mil_*
 	itkS.msn_std_mil_sans_autoconso as itk_msn_std_mil_sans_autoconso,
 	itkS.msn_std_mil_avec_autoconso as itk_msn_std_mil_avec_autoconso,
-
 	-- md_std_mil_*
 	itkS.md_std_mil_sans_autoconso as itk_md_std_mil_sans_autoconso,
 	itkS.md_std_mil_avec_autoconso as itk_md_std_mil_avec_autoconso,
-
 	-- conso_* 
 	itkS.conso_carburant as itk_conso_carburant,
 	itkS.conso_eau as itk_conso_eau,
-
 	-- ferti_*
 	itkS.ferti_n_mineral as itk_ferti_n_mineral,
 	itkS.ferti_n_organique as itk_ferti_n_organique,
@@ -607,7 +553,6 @@ SELECT
 	itkS.ferti_p2o5_organique as itk_ferti_p2o5_organique,
 	itkS.ferti_k2o_mineral as itk_ferti_k2o_mineral,
 	itkS.ferti_k2o_organique as itk_ferti_k2o_organique,
-
 	-- qsa_*
 	itkS.qsa_tot_hts as itk_qsa_tot_hts,
 	itkS.qsa_tot as itk_qsa_tot,
@@ -705,7 +650,6 @@ LEFT JOIN entrepot_synthetise AS synth ON synth.id = nd_cible.synthetise_id
 LEFT JOIN entrepot_synthetise_filtre_outils_dirodur esfod ON esfod.synthetise_id = synth.id
 LEFT JOIN entrepot_sdc sdc ON sdc.id = synth.sdc_id
 LEFT JOIN entrepot_connection_synthetise_restructure AS cx_rst ON cx_rst.id = itkS.connection_synthetise_id 
-LEFT JOIN entrepot_poids_connexions_synthetise_rotation AS poidscx ON poidscx.connexion_id = itkS.connection_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise AS nd_source ON nd_source.id = cx.source_noeuds_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise_restructure AS nd_source_rst ON nd_source_rst.id = cx.source_noeuds_synthetise_id
 LEFT JOIN entrepot_noeuds_synthetise_restructure AS nd_cible_rst ON nd_cible_rst.id = cx.cible_noeuds_synthetise_id
@@ -714,14 +658,11 @@ LEFT JOIN entrepot_domaine AS dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_culture AS culture1 ON culture1.id = nd_cible_rst.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoc1 ON typoc1.culture_id = nd_cible_rst.culture_id
-LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_culture AS culture0 ON culture0.id = nd_source_rst.culture_id 
-LEFT JOIN entrepot_typologie_can_culture AS typoc0 ON typoc0.culture_id = nd_source_rst.culture_id 
-LEFT JOIN entrepot_culture AS culture_i ON culture_i.id = cx_rst.culture_intermediaire_id 
-LEFT JOIN entrepot_typologie_can_culture AS typo_ci ON typo_ci.culture_id = cx_rst.culture_intermediaire_id 
-LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_culture AS culture_inter ON culture_inter.id = cx_rst.culture_intermediaire_id
-LEFT JOIN entrepot_typologie_can_culture AS typoci ON  culture_inter.id = typoc1.culture_id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = synth.id
+LEFT JOIN entrepot_poids_connexions_synthetise_rotation as poidsS on poidsS.connexion_id = itkS.connection_synthetise_id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc1 ON typoc1.culture_id = nd_cible_rst.culture_id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoc0 ON typoc0.culture_id = nd_source_rst.culture_id 
+LEFT JOIN entrepot_typologie_culture_outils_dirodur AS typoci ON typoci.culture_id = culture_inter.id
 WHERE esfod.in_dirodur is true;

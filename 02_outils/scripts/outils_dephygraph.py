@@ -767,7 +767,7 @@ def calcul_evolution_ift(group, col):
         result = np.where(
             mask_pz0 | group[col].isna(),
             np.nan,
-            group[col].astype(int) - pz0_val
+            group[col].astype(float).astype(int) - pz0_val
         )
         result2 = pd.Series(result, index=group.index)
         result3 = result2.map(lambda x: (

@@ -10,9 +10,8 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_numero_dephy,
+	REPLACE(sdc.code_dephy, ' ','') as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
-	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
@@ -132,7 +131,6 @@ SELECT
 	ssp.nbre_de_passages_desherbage_meca as sdc_nbre_de_passages_desherbage_meca,
 	ssp.utili_desherbage_meca as sdc_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
 	ssp.type_de_travail_du_sol as sdc_type_de_travail_du_sol,
-	
 	-- co_std_mil_*
 	ssp.co_tot_std_mil as sdc_co_std_mil_tot,
 	ssp.co_semis_std_mil as sdc_co_std_mil_semis,
@@ -272,9 +270,8 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_numero_dephy,
+	REPLACE(sdc.code_dephy, ' ','') as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
-	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
@@ -394,7 +391,6 @@ SELECT
 	srp.nbre_de_passages_desherbage_meca as sdc_nbre_de_passages_desherbage_meca,
 	srp.utili_desherbage_meca as noeud_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
 	srp.type_de_travail_du_sol as noeud_type_de_travail_du_sol,
-	
 	-- co_std_mil_*
 	srp.co_tot_std_mil as sdc_co_std_mil_tot,
 	srp.co_semis_std_mil as sdc_co_std_mil_semis,
@@ -521,5 +517,3 @@ LEFT JOIN entrepot_commune AS comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.domaine_id = dom.id
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id;
-
-
