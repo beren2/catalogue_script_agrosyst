@@ -1,0 +1,7 @@
+culture_id,dates_nbjr_triees,date_moyenne,saison_semis_detect_via_intv
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_140e02c4-4a90-4c88-9694-f3e644e1689e,[364],29/12,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_2fb18a07-d5a5-4b36-b453-03ff31fc36f0,[128],07/05,ete
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_508f5758-cca8-4ce7-beed-bd40751282bd,"[284, 284]",10/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_51bae500-cf3f-401d-a7f6-471009e79423,"[229, 301]",21/09,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_9dcc5df9-a496-4918-96a4-7306d3dafc26,"[288, 288]",14/10,hiver
+fr.inra.agrosyst.api.entities.CroppingPlanEntry_af889624-cb5b-4277-a068-e8e04ccd4795,"[129, 142, 144]",17/05,ete

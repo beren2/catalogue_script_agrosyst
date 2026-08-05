@@ -8,21 +8,47 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_numero_dephy,
+	REPLACE(sdc.code_dephy, ' ','') as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
-	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
-	-- sdc_typo_*
-	null as sdc_typo_surface_totale_assol_dvlp,
-	null as sdc_typo_surface_totale_assol,
-	-- sdc_typocan_*
-	null as sdc_typo_can_assol_dvlp,
-	null as sdc_typo_can_assol,
-	-- sdc_typoculture_*
-	null as sdc_typo_culture_liste_dvlp,
-	null as sdc_typo_culture_liste,
+	-- ------------------------------------------
+	-- -- TYPOLOGIE CAN SDC (ROTATION & ASSOL) --
+	-- ------------------------------------------
+	typorota.typocan_rotation as typologie_can_sdc,
+	typorota.frequence_total_rota  as typologie_can_sdc_proportion_developpee,
+	typorota.list_freq_typoculture as typologie_can_sdc_liste_culture,
+	-----------------------
+	-- DIVERSITE DIRODUR --
+	-----------------------
+	eidods.typodirodur_culture_richesse as diversite_typodirodur_culture_richesse,
+	eidods.typodirodur_culture_shannon as diversite_typodirodur_culture_shannon,
+	eidods.typodirodur_culture_evenness as diversite_typodirodur_culture_evenness,
+	eidods.typodirodur_culture_simpson as diversite_typodirodur_culture_simpson,
+	eidods.typodirodur_culture_inverse_simpson as diversite_typodirodur_culture_inverse_simpson,
+	eidods.typodirodur_culture_proportion_max as diversite_typodirodur_culture_proportion_max,
+	eidods.prop_association as diversite_prop_association,
+	eidods.prop_culture_avec_compagne as diversite_prop_culture_avec_compagne,
+	eidods.prop_prairie as diversite_prop_prairie,
+	eidods.prop_culture_intermediaire as diversite_prop_culture_intermediaire,
+	eidods.prop_culture_porte_graine as diversite_prop_culture_porte_graine,
+	eidods.typodirodur_espece_richesse as diversite_typodirodur_espece_richesse,
+	eidods.typodirodur_espece_shannon as diversite_typodirodur_espece_shannon,
+	eidods.espece_bota_richesse as diversite_espece_bota_richesse,
+	eidods.espece_bota_shannon as diversite_espece_bota_shannon,
+	eidods.famille_bota_richesse as diversite_famille_bota_richesse,
+	eidods.famille_bota_shannon as diversite_famille_bota_shannon,
+	eidods."prop_poaceae" as diversite_prop_poaceae,
+	eidods."prop_fabaceae" as diversite_prop_fabaceae,
+	eidods."prop_brassicaceae" as diversite_prop_brassicaceae,
+	eidods."prop_autres_familles" as diversite_prop_autres_familles,
+	eidods.saison_semis_richesse as diversite_saison_semis_richesse,
+	eidods.saison_semis_shannon as diversite_saison_semis_shannon,
+	eidods.prop_printemps as diversite_prop_printemps,
+	eidods.prop_ete as diversite_prop_ete,
+	eidods.prop_automne as diversite_prop_automne,
+	eidods.prop_hiver as diversite_prop_hiver,
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -90,16 +116,13 @@ SELECT
 	-- domsol.id as domaine_sol_id,
 	-- domsol.nom_local as domaine_sol_nom,
 	-- domsol.sol_arvalis_id as domaine_sol_arvalis_id,
-    -----------------
+	----------------
 	-- SYNTHETISE --
 	----------------
 	synth.id as synthetise_id,
-    typorota.typocan_rotation as synthetise_rotation_typo_can,
-	typorota.list_freq_typoculture as synthetise_rotation_typo_liste_culture,
 	synth.nom as synthetise_nom,
 	synth.campagnes as synthetise_campagnes,
 	case when pz0.pz0='pz0' then true else false end as synthetise_est_pz0,
-	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
 	---------------------------------------
 	-- SYNTHETISE_SYNTHETISE_PERFORMANCE --
 	---------------------------------------
@@ -130,7 +153,6 @@ SELECT
 	ssp.nbre_de_passages_desherbage_meca as sdc_nbre_de_passages_desherbage_meca,
 	ssp.utili_desherbage_meca as sdc_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
 	ssp.type_de_travail_du_sol as sdc_type_de_travail_du_sol,
-	
 	-- co_std_mil_*
 	ssp.co_tot_std_mil as sdc_co_std_mil_tot,
 	ssp.co_semis_std_mil as sdc_co_std_mil_semis,
@@ -260,6 +282,7 @@ LEFT JOIN entrepot_synthetise AS synth ON synth.id = sub_sdc.entite_retenue
 LEFT JOIN entrepot_typologie_can_rotation_synthetise AS typorota ON typorota.synthetise_id = synth.id
 LEFT JOIN entrepot_identification_pz0 pz0 on pz0.entite_id = ssp.synthetise_id
 LEFT JOIN entrepot_synthetise_filtre_outils_dirodur AS esfod on esfod.synthetise_id = synth.id
+LEFT JOIN entrepot_indicateur_diversite_outils_dirodur AS eidods on eidods.sdc_id = sdc.id and eidods.synthetise_id is not null
 WHERE esfod.in_dirodur is true
 UNION
 -------------
@@ -272,21 +295,47 @@ SELECT
 	sdc.id as sdc_id,
 	sdc.code as sdc_code,
 	sdc.nom as sdc_nom,
-	sdc.code_dephy as sdc_numero_dephy,
+	REPLACE(sdc.code_dephy, ' ','') as sdc_numero_dephy,
 	sdc.filiere as sdc_filiere,
-	sdc.type_production as sdc_type_production,
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
-	-- sdc_typo_*
-	typoassol.surface_totale_assol_dvlp as sdc_typo_surface_totale_assol_dvlp,
-	typoassol.surface_totale_assol as sdc_typo_surface_totale_assol,
-	-- sdc_typocan_*
-	typoassol.typocan_assol_dvlp  as sdc_typo_can_assol_dvlp,
-	typoassol.typocan_assol  as sdc_typo_can_assol,
-	-- sdc_typoculture_*
-	typoassol.list_freq_typoculture_dvlp  as sdc_typoculture_liste_dvlp,
-	typoassol.list_freq_typoculture as sdc_typoculture_liste,
+	-- ------------------------------------------
+	-- -- TYPOLOGIE CAN SDC (ROTATION & ASSOL) --
+	-- ------------------------------------------
+	typoassol.typocan_assol_dvlp as typologie_can_sdc,
+	typoassol.surface_totale_assol_dvlp/NULLIF(typoassol.surface_totale_assol, 0) as typologie_can_sdc_proportion_developpee,
+	typoassol.list_freq_typoculture_dvlp as typologie_can_sdc_liste_culture,
+	-----------------------
+	-- DIVERSITE DIRODUR --
+	-----------------------
+	eidodr.typodirodur_culture_richesse as diversite_typodirodur_culture_richesse,
+	eidodr.typodirodur_culture_shannon as diversite_typodirodur_culture_shannon,
+	eidodr.typodirodur_culture_evenness as diversite_typodirodur_culture_evenness,
+	eidodr.typodirodur_culture_simpson as diversite_typodirodur_culture_simpson,
+	eidodr.typodirodur_culture_inverse_simpson as diversite_typodirodur_culture_inverse_simpson,
+	eidodr.typodirodur_culture_proportion_max as diversite_typodirodur_culture_proportion_max,
+	eidodr.prop_association as diversite_prop_association,
+	eidodr.prop_culture_avec_compagne as diversite_prop_culture_avec_compagne,
+	eidodr.prop_prairie as diversite_prop_prairie,
+	eidodr.prop_culture_intermediaire as diversite_prop_culture_intermediaire,
+	eidodr.prop_culture_porte_graine as diversite_prop_culture_porte_graine,
+	eidodr.typodirodur_espece_richesse as diversite_typodirodur_espece_richesse,
+	eidodr.typodirodur_espece_shannon as diversite_typodirodur_espece_shannon,
+	eidodr.espece_bota_richesse as diversite_espece_bota_richesse,
+	eidodr.espece_bota_shannon as diversite_espece_bota_shannon,
+	eidodr.famille_bota_richesse as diversite_famille_bota_richesse,
+	eidodr.famille_bota_shannon as diversite_famille_bota_shannon,
+	eidodr."prop_poaceae" as diversite_prop_poaceae,
+	eidodr."prop_fabaceae" as diversite_prop_fabaceae,
+	eidodr."prop_brassicaceae" as diversite_prop_brassicaceae,
+	eidodr."prop_autres_familles" as diversite_prop_autres_familles,
+	eidodr.saison_semis_richesse as diversite_saison_semis_richesse,
+	eidodr.saison_semis_shannon as diversite_saison_semis_shannon,
+	eidodr.prop_printemps as diversite_prop_printemps,
+	eidodr.prop_ete as diversite_prop_ete,
+	eidodr.prop_automne as diversite_prop_automne,
+	eidodr.prop_hiver as diversite_prop_hiver,
 	----------------
 	-- DISPOSITIF --
 	----------------
@@ -358,12 +407,9 @@ SELECT
 	-- SYNTHETISE --
 	----------------
 	null as synthetise_id,
-    null as synthetise_rotation_typo_can,
-	null as synthetise_rotation_typo_liste_culture,
 	null as synthetise_nom,
 	null as synthetise_campagnes,
 	false as synthetise_est_pz0,
-	--typorota.frequence_total_rota as synthetise_rotation_frequence_totale,
 	---------------------------------------
 	-- SYNTHETISE_SYNTHETISE_PERFORMANCE --
 	---------------------------------------
@@ -394,7 +440,6 @@ SELECT
 	srp.nbre_de_passages_desherbage_meca as sdc_nbre_de_passages_desherbage_meca,
 	srp.utili_desherbage_meca as noeud_utili_desherbage_meca, -- TODO a suppr une fois que nbre_de_passages_desherbage_meca est débugué
 	srp.type_de_travail_du_sol as noeud_type_de_travail_du_sol,
-	
 	-- co_std_mil_*
 	srp.co_tot_std_mil as sdc_co_std_mil_tot,
 	srp.co_semis_std_mil as sdc_co_std_mil_semis,
@@ -522,6 +567,5 @@ LEFT JOIN entrepot_donnees_spatiales_commune_du_domaine AS interop ON interop.do
 LEFT JOIN entrepot_typologie_assol_can_realise AS typoassol ON typoassol.sdc_id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance AS srp ON sdc.id = srp.sdc_id
 LEFT JOIN entrepot_sdc_realise_filtre_outils_dirodur AS esrfod on esrfod.sdc_id = sdc.id
+LEFT JOIN entrepot_indicateur_diversite_outils_dirodur AS eidodr on eidodr.sdc_id = sdc.id and eidodr.synthetise_id is null
 WHERE esrfod.in_dirodur is true;
-
-
