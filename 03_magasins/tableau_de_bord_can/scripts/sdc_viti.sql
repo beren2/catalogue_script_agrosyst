@@ -23,7 +23,7 @@ SELECT
     dom.otex_70_nom AS otex_70_nom,       -- Idem
     dom.campagne AS domaine_campagne,
     -- SDC et approche
-    'VITICOLE' AS sdc_filiere,  -- Filière fixe pour ce script
+    'VITICULTURE' AS sdc_filiere,  -- Filière fixe pour ce script
     'réalisé' AS approche_de_calcul,
     sdc.id AS sdc_id,
     sdc.nom AS sdc_nom,
@@ -189,7 +189,7 @@ SELECT
     dom.otex_70_nom AS otex_70_nom,       -- Idem
     dom.campagne AS domaine_campagne,
     -- SDC et approche
-    'VITICOLE' AS sdc_filiere,  -- Filière fixe pour ce script
+    'VITICULTURE' AS sdc_filiere,  -- Filière fixe pour ce script
     'synthétisé' AS approche_de_calcul,
     sdc.id AS sdc_id,
     sdc.nom AS sdc_nom,
