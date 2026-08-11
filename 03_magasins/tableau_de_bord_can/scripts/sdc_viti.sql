@@ -96,14 +96,14 @@ SELECT
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
     -- ... (compléter pour tous les mois)
     -- GES et énergie
-    esrp.ges_carburants_total_ges_total AS GES_SDC,
-    esrp.ges_carburants_directes_ges_total AS GES_directes_SDC,
+    esrp.ges_totaux_total_ges_total AS GES_SDC,
+    esrp.ges_totaux_directes_ges_total AS GES_directes_SDC,
     esrp.ges_carburants_directes_co2 AS Emissions_directes_Fuel_SDC,
-    esrp.ges_ferti_min_directes_ges_total AS Emissions_directes_Ferti_SDC,
-    esrp.ges_carburants_indirectes_ges_total AS GES_indirectes_SDC,
-    esrp.ges_carburants_indirectes_co2 AS Emissions_indirectes_fuel_SDC,
+    esrp.ges_ferti_min_directes_ges_total + esrp.ges_ferti_orga_directes_ges_total AS Emissions_directes_Ferti_SDC,
+    esrp.ges_totaux_indirectes_ges_total AS GES_indirectes_SDC,
+    esrp.ges_carburants_indirectes_ges_total AS Emissions_indirectes_fuel_SDC,
     esrp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
-    esrp.ges_phyto_total_ges_total AS emissions_indirectes_phyto_SDC,
+    esrp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
     esrp.energie_totale_directes + esrp.energie_totale_indirectes AS NRJ_SDC,                     -- Énergie totale
     esrp.energie_carburants_directes + esrp.energie_carburants_indirectes AS Energie_Fuel_SDC,            -- Idem
     esrp.energie_ferti_min + esrp.energie_ferti_orga AS energie_indirecte_engrais_SDC,
@@ -262,14 +262,14 @@ SELECT
     essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
     -- ... (compléter pour tous les mois)
     -- GES et énergie
-    essp.ges_carburants_total_ges_total AS GES_SDC,
-    essp.ges_carburants_directes_ges_total AS GES_directes_SDC,
+    essp.ges_totaux_total_ges_total AS GES_SDC,
+    essp.ges_totaux_directes_ges_total AS GES_directes_SDC,
     essp.ges_carburants_directes_co2 AS Emissions_directes_Fuel_SDC,
-    essp.ges_ferti_min_directes_ges_total AS Emissions_directes_Ferti_SDC,
-    essp.ges_carburants_indirectes_ges_total AS GES_indirectes_SDC,
-    essp.ges_carburants_indirectes_co2 AS Emissions_indirectes_fuel_SDC,
+    essp.ges_ferti_min_directes_ges_total + essp.ges_ferti_orga_directes_ges_total AS Emissions_directes_Ferti_SDC,
+    essp.ges_totaux_indirectes_ges_total AS GES_indirectes_SDC,
+    essp.ges_carburants_indirectes_ges_total AS Emissions_indirectes_fuel_SDC,
     essp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
-    essp.ges_phyto_total_ges_total AS emissions_indirectes_phyto_SDC,
+    essp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
     essp.energie_totale_directes + essp.energie_totale_indirectes AS NRJ_SDC,
     essp.energie_carburants_directes + essp.energie_carburants_indirectes AS Energie_Fuel_SDC,
     essp.energie_ferti_min + essp.energie_ferti_orga AS energie_indirecte_engrais_SDC,
