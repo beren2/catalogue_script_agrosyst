@@ -748,7 +748,11 @@
                 }],
                 "generated" : [
                     "sdc_complet_outils_tableau_de_bord_can",
-					"synthetise_complet_outils_tableau_de_bord_can"
+					"synthetise_complet_outils_tableau_de_bord_can",
+					"itk_rendement_gcpe_outils_tableau_de_bord_can",
+					"rendement_viti_sdc_realise_outils_tableau_de_bord_can",
+					"rendement_viti_synthetise_outils_tableau_de_bord_can",
+					"itk_rendement_gcpe_outils_tableau_de_bord_can"
                 ], 
 				"need_performance" : [
 				]
