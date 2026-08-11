@@ -5,6 +5,120 @@ import pandas as pd
 import numpy as np
 import copy
 
+
+
+CATEGORIES_RENDEMENTS = {
+    'grain': [
+        'Grain (ethanol)',
+        'Grain (biscuiterie)',
+        'Grain (amidon)',
+        'Grain (alimentation humaine)',
+        'Grain (alimentation animale)',
+        'Grain',
+        'Grain (oléagineux)',
+        'Grain (semoule et pâtes alimentaires)',
+        'Grain (meunerie)',
+        'Grain (malterie)',
+        'Grain (industrie divers)'
+    ],
+
+    'paille': [
+        'Paille'
+    ],
+
+    'fourrage': [
+        'Fourrage (enrubannage)',
+        'Fourrage (ensilage)',
+        'Fourrage (distribution en frais)',
+        'Fourrage (foin)'
+    ],
+
+    'sucre': [
+        'Sucre et dérivés (t de sucre)',
+        'Sucre et dérivés (t de racines à 16% de richesse)',
+        'Sucre et dérivés (t de biomasse en matière sèche)'
+    ],
+
+    'fibre': [
+        'Fibre'
+    ],
+
+    'semences': [
+        'Production semences'
+    ],
+
+    'bioenergie': [
+        'Bioénergie'
+    ],
+
+    'ttes_categ': [
+        'A compléter',
+        'Toutes catégories - tous calibres',
+        'Toutes catégories',
+        'Tous conditionnements',
+        'Tous calibres',
+        'Toutes catégories - tous conditionnements',
+        'Tabac',
+        'Gros. 1/2 gros. producteurs. paysagistes – Tige gros calibre',
+        'Gros. 1/2 gros. producteurs. paysagistes – Tige standard',
+        'Sans label / Toutes catégories',
+        'Toutes catégories - tous calibres - tous conditionnements',
+        'Sans appellation / Tous modes de commercialisation',
+        'Vente directe - Pot 1l',
+        'Primeur / Toutes catégories - tous calibres',
+        'Fraiches / Toutes catégories - tous calibres',
+        'Vente directe  - Pot 3l',
+        'Frais / Tous conditionnements',
+        'Vente directe - Pleine terre',
+        'Toutes appellations / Tous modes de commercialisation',
+        'Alimentation humaine_tous calibres',
+        'Gros. 1/2 gros. producteurs. paysagistes - Pleine terre',
+        'Gros. 1/2 gros. producteurs. paysagistes – Pot 5l (Conteneur)',
+        'Gros. 1/2 gros. producteurs. paysagistes – Pot 1l',
+        'Gros. 1/2 gros. producteurs. paysagistes - Pot 3l',
+        'Vente directe - Godet (0.6l)',
+        'Vente directe – Suspension / Coupe / jardinière (7.5l)',
+        'Gros. 1/2 gros. producteurs. paysagistes - Conteneur 15l',
+        'Gros. 1/2 gros. producteurs. paysagistes - Godet (0.6l)',
+        'Gros. 1/2 gros. producteurs. paysagistes - Suspension / Coupe / jardinière (7.5l)',
+        'Vente directe – Pot 5l (conteneur)',
+        'Transformation / Toutes catégories - tous calibres',
+        'Distillerie',
+        'Olivier / Huile d\'olive AOP Provence',
+        'Olivier / Huile d\'olive de France',
+        "Olivier / Olives de Table",
+        'Circuit long / appellation Lorraine',
+        'Categ. I',
+        'Crue / Tous calibres',
+        'Categ. Extra',
+        'Circuit Long',
+        'Industrie',
+        'Circuit Court',
+        'NE PAS SAISIR - Toutes catégories - tous calibres',
+        'Olivier / Huile d\'olive aromatisée',
+        'Sucrerie',
+        'Fraiches / Categ. II - tous calibres',
+        'Fraiches / Categ. extra - tous calibres',
+        'Sans appellation / Vente directe (bouteille)',
+        'Epis',
+        'A écosser / Toutes catégories',
+        'Frais / Toutes catégories - tous calibres',
+        'Toutes formes/couleurs - toutes catégories',
+        'Feuilles / Toutes catégories',
+        'Sans label / Toutes catégories - tous calibres',
+        'Circuit Long / Frais',
+        'Circuit Long / Transformation',
+        'Circuit Court / Transformation',
+        'Eau-de-vie',
+        'Circuit Court / Frais',
+        'Compost',
+        'Sans appellation / Négoce (vente_vin)',
+        'Sans appellation / Cave coopérative (vente_ raisins)',
+        'Exportation / Frais',
+        'Exportation / Transformation'
+    ]
+}
+
 def get_percent_each_typo_culture(cgrp, freq_column='frequence', normalize=True):
     '''
     Permet de calculer le pourcentage de chaque typologie de culture dans un groupe de données.
@@ -926,3 +1040,95 @@ def get_synthetise_complet_outils_tableau_de_bord_can(
     result_synthetise.to_csv('~/Bureau/result_synthetise.csv')
 
     return result_synthetise
+
+
+
+
+def get_itk_rendement_gcpe_outils_tableau_de_bord_can(
+    donnees
+):
+    """
+        Permet d'obtenir des rendements agrégé au niveau de l'itinéraire techniques. 
+        Une colonne par typologie de rendement (+ colonne pour l'unité de rendement)
+
+        Les typologies de rendement retenues sont ici :
+        - 'paille', 'fourrage', 'sucre', 'fibre', 'semences', 'bioenergie', 'ttes_categ'
+    """
+    df = copy.deepcopy(donnees)
+
+    df['recolte_rendement_prix'].set_index('id', inplace=True)
+    df['destination_valorisation'].set_index('id', inplace=True)
+    df['action_realise_agrege'].set_index('id', inplace=True)
+    df['action_synthetise_agrege'].set_index('id', inplace=True)
+
+    left = df['recolte_rendement_prix']
+    right = df['destination_valorisation'][['libelle']]
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on = 'destination_id', right_index=True, how='left')
+
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_realise_agrege'][['noeuds_realise_id', 'plantation_perenne_phases_realise_id']]
+    df['recolte_rendement_prix_extanded_realise'] = pd.merge(left, right, left_on = 'action_id', right_index=True, how='inner')
+
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_synthetise_agrege'][['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
+    df['recolte_rendement_prix_extanded_synthetise'] = pd.merge(left, right, left_on = 'action_id', right_index=True, how='inner')
+
+    df['recolte_rendement_prix_extanded_realise']['itk_id'] = df['recolte_rendement_prix_extanded_realise']['noeuds_realise_id'].fillna(df['recolte_rendement_prix_extanded_realise']['plantation_perenne_phases_realise_id'])
+    df['recolte_rendement_prix_extanded_synthetise']['itk_id'] = df['recolte_rendement_prix_extanded_synthetise']['connection_synthetise_id'].fillna(df['recolte_rendement_prix_extanded_synthetise']['plantation_perenne_phases_synthetise_id'])
+
+    df['recolte_rendement_prix_extanded'] = pd.concat([
+        df['recolte_rendement_prix_extanded_synthetise'][['rendement_moy', 'rendement_unite', 'destination', 'itk_id']],
+        df['recolte_rendement_prix_extanded_realise'][['rendement_moy', 'rendement_unite', 'destination', 'itk_id']]
+    ])
+    
+    # 1. Mapper chaque destination vers sa catégorie globale
+    dest_to_cat = {lib: cat for cat, libelles in CATEGORIES_RENDEMENTS.items() for lib in libelles}
+
+    sub = df['recolte_rendement_prix_extanded'][
+        ['rendement_moy', 'rendement_unite', 'destination', 'itk_id']
+    ].copy()
+
+    # 2. Associer la catégorie directement dans le DataFrame
+    sub['category'] = sub['destination'].map(dest_to_cat)
+
+    # On conserve uniquement les lignes qui appartiennent à une catégorie connue
+    sub_filtered = sub.dropna(subset=['category'])
+
+    # 3. Agrégation par (itk_id, category) en une seule passe
+    grouped = sub_filtered.groupby(['itk_id', 'category']).agg(
+        rend_mean=('rendement_moy', 'mean'),
+        unit_unique=('rendement_unite', 'nunique'),
+        unit_first=('rendement_unite', 'first')
+    ).reset_index()
+
+    # 4. Gérer le cas des unités multiples
+    grouped['unit'] = np.where(
+        grouped['unit_unique'] == 1, 
+        grouped['unit_first'], 
+        'MULTIPLE'
+    )
+    grouped['rend_mean'] = np.where(
+        grouped['unit_unique'] == 1, 
+        grouped['rend_mean'], 
+        np.nan
+    )
+
+    # 5. Pivoter pour obtenir exactement le format d'origine (1 colonne par cat_rend_mean et cat_unit)
+    pivot_mean = grouped.pivot(index='itk_id', columns='category', values='rend_mean')
+    pivot_mean.columns = [f'{c}_rend_mean' for c in pivot_mean.columns]
+
+    pivot_unit = grouped.pivot(index='itk_id', columns='category', values='unit')
+    pivot_unit.columns = [f'{c}_unit' for c in pivot_unit.columns]
+
+    # 6. Combiner les résultats
+    result = pd.concat([pivot_mean, pivot_unit], axis=1)
+
+    # Réordonner les colonnes pour chaque catégorie comme dans votre code initial (optionnel)
+    cols_order = []
+    for cat in CATEGORIES_RENDEMENTS.keys():
+        if f'{cat}_rend_mean' in result.columns:
+            cols_order.extend([f'{cat}_rend_mean', f'{cat}_unit'])
+
+    result = result.reindex(columns=cols_order).reset_index()
+
+    return result.rename(columns={'itk_id' : 'id'})

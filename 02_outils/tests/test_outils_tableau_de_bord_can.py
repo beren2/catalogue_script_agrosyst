@@ -378,3 +378,23 @@ def test_get_synthetise_complet_outils_tableau_de_bord_can():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
+
+
+def test_get_itk_rendement_gcpe_outils_tableau_de_bord_can():
+    """
+    """
+    identifiant_test = 'test_get_itk_rendement_gcpe_outils_tableau_de_bord_can'
+
+    df_names = [
+        'recolte_rendement_prix', 
+        'destination_valorisation',
+        'action_realise_agrege', 
+        'action_synthetise_agrege'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_itk_rendement_gcpe_outils_tableau_de_bord_can/'
+
+    fonction_to_apply = outils_tableau_de_bord_can.get_itk_rendement_gcpe_outils_tableau_de_bord_can
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+
+    assert all(res)

@@ -1,4 +1,3 @@
-
 -- SYNTHETISE
 select
 	ecs.id as itk_id,
@@ -74,7 +73,7 @@ select
 	eisp.recours_produits_cmr as Nb_intrant_CMR_CP,
 	--
 	eisp.co_tot_reelles + eisp.cm_reelles as charges_totale_CP, 
-	null as nbre_uth_CP, -- à venir sur Agrosyst
+	eisp.nbre_uth_necessaires as nbre_uth_CP, -- à venir sur Agrosyst
 	--
 	null as IFT_h_smethola_CP, -- à venir sur Agrosyst
 	null as IFT_h_chlorto_CP, -- à venir sur Agrosyst
