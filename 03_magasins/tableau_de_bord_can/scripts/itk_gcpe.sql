@@ -29,9 +29,11 @@ SELECT
     null AS parcelle_id,
     null AS parcelle_surface,
     null AS zone_nom,
-    null AS zoe_id, 
+    null AS zone_id, 
     null AS zone_surface,
     ecs.id AS connexion_synthetise_id,
+    -- culture_precedent_rang_id --> supprimer
+    -- culture_rang --> supprimer
     ens.rang AS rang,
     ec.nom AS culture_nom,
     ec.code AS culture_code,
@@ -42,6 +44,7 @@ SELECT
     etcc.nb_typocan_esp, --nb composant culture ?
     etcc.typocan_espece AS typo_especes,
     etcc.nb_typocan_esp AS nb_typo_espece,
+    etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
     etcod.typodirodur_culture AS typo_culture,
     null AS typo_culture_2, --> de quoi s'agit-il ? 
     ec_intermediaire.id AS ci_id,
@@ -159,6 +162,7 @@ SELECT
     etcc.nb_typocan_esp, --nb composant culture ?
     etcc.typocan_espece AS typo_especes,
     etcc.nb_typocan_esp AS nb_typo_espece,
+ 	etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
     etcod.typodirodur_culture AS typo_culture,
     null AS typo_culture_2, --> de quoi s'agit-il ? 
     ec_intermediaire.id AS ci_id,

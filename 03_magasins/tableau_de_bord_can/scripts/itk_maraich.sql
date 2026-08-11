@@ -1,282 +1,547 @@
--- SCRIPT SQL POUR LE TRAITEMENT DES DONNÉES VITICOLES (viti.csv)
--- Aligné sur le fichier viti_var.csv et inspiré de sdc_gcpe.sql
+-- SYNTHETISE
 
+select type_production from entrepot_sdc where filiere = 'MARAICHAGE'
 
 SELECT
-    -- Identification unique
-    COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne AS ID_CODE_DEPHY_CAMPAGNE,
-    sdc.code_dephy AS sdc_code_dephy,
+	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne as identifiant_systeme_campagne,
+  	--etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
+	--sdc.code_dephy AS sdc_code_dephy,
+    null as identifiant_itk, -- exemple ???
+	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne  as identifiant_systeme_campagne, --concaténation des variables sdc_code_dephy + campagne
+	null AS identifiant_itk, -- exemple ???
+	null  AS identifiant_itk_sdc_camp,-- exemple ?
+	--
+    'synthetise' AS approche_de_calcul,
     sdc.campagne AS campagne_donnees,
-    -- Dispositif et réseaux
+    sdc.type_production as situation_production,
+    sdc.code_dephy as sdc_code_dephy,
+    --
     dispo."type" AS dispositif_type,
-    escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
-    -- Domaine et localisation
+    errsotdbc.reseaux_it AS reseaux_it,
+    errsotdbc.reseaux_ir AS reseaux_ir,
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
-    dom.departement as departement,
-    dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
-    comm.region AS Nom_Region,        -- Idem
+    dom.departement AS departement,
+    comm.departement AS Nom_Departement, 
+    comm.region AS Nom_Region,    
     comm.ancienne_region AS Nom_Ancienne_Region,
-    dom.otex_18_nom as otex_18_nom,
-    dom.sau_totale AS sau_domaine,
+    dom.otex_18_nom AS otex_18_nom, 
     dom.campagne AS domaine_campagne,
     sdc.filiere AS sdc_filiere,
-    -- SDC et approche
-    'réalisé' AS approche_de_calcul,
     sdc.id AS sdc_id,
     sdc.nom AS sdc_nom,
-    sdc.part_sau_domaine AS sdc_part_sau_domaine,
-    -- Type d'agriculture et système synthétisé
-    sdc.type_production as sdc_type_production,
-    sdc.type_agriculture AS sdc_type_agriculture,
-    null AS systeme_synthetise_id,      
-    null AS systeme_synthetise_nom,  
-    null AS systeme_synthetise_campagnes,
-    -- Données économiques et techniques
-    esrp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
-    esrp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
-    esrp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
-    esrp.co_tot_reelles AS CO_reelles_SDC,
-    esrp.cm_reelles AS CM_reelles_SDC,
-    esrp.conso_carburant AS conso_carburant_SDC,
-    esrp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
-    esrp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
-    esrp.nombre_uth_necessaires AS nbre_uth_sdc,
-    -- IFT et alertes (viticulture)
-    esrp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
-    esrp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_tot_hts_SDC, 
-    esrp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
-    esrp.ift_cible_non_mil_h AS ift_cible_non_mil_h_SDC,
-    esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_SDC,
-    esrp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
-    esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
-    esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
-    -- Interventions et produits
-    esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
-    esrp.qsa_boscalid as qte_mat_active_boscalid_SDC,
-    esrp.qsa_dicamba as qte_mat_active_dicamba_SDC,
-    esrp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
-	esrp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
-    esrp.qsa_tot AS quantite_mat_active_SDC,
-    esrp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
-    esrp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
-    esrp.qsa_glyphosate AS quantite_mat_active_glypho_SDC,
-    esrp.qsa_neonicotinoides AS quantite_mat_active_neonic_SDC,
-    esrp.qsa_cuivre_metal_tot AS qte_cuivre_SDC,
-    esrp.qsa_cuivre_metal_ferti AS qte_cuivre_engrais_SDC,
-    esrp.qsa_cuivre_metal_phyto AS qte_cuivre_phyto_SDC,
-    esrp.qsa_soufre_tot AS qte_soufre_SDC,
-    esrp.qsa_soufre_ferti AS qte_soufre_engrais_SDC,
-    esrp.qsa_soufre_phyto AS qte_soufre_phyto_SDC,
-    -- Fertilisation
-    esrp.ferti_n_tot AS N_SDC,
-    esrp.ferti_n_mineral AS N_Mineral_SDC,
-    esrp.ferti_n_organique AS N_Orga_SDC,
-    esrp.ferti_p2o5_tot AS P_SDC,
-    esrp.ferti_p2o5_mineral AS P_Mineral_SDC,
-    esrp.ferti_p2o5_organique AS P_Orga_SDC,
-    esrp.ferti_k2o_tot AS K_SDC,
-    esrp.ferti_k2o_mineral AS K_Mineral_SDC,
-    esrp.ferti_k2o_organique AS K_Orga_SDC,
-    -- Eau et temps de travail
-    esrp.conso_eau AS Qte_Eau_mm_ha_SDC,
-    esrp.tps_utilisation_materiel AS tps_util_materiel_SDC,
-    -- Temps mensuels (exemple pour janvier à décembre)
-    esrp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
-    esrp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
-    -- ... (compléter pour tous les mois)
-    esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
-    esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
-    -- GES et énergie
-    esrp.ges_carburants_total_ges_total AS GES_SDC,
-    esrp.ges_carburants_directes_ges_total AS GES_directes_SDC,
-    esrp.ges_carburants_directes_co2 AS Emissions_directes_Fuel_SDC,
-    esrp.ges_ferti_min_directes_ges_total AS Emissions_directes_Ferti_SDC,
-    esrp.ges_carburants_indirectes_ges_total AS GES_indirectes_SDC,
-    esrp.ges_carburants_indirectes_co2 AS Emissions_indirectes_fuel_SDC,
-    esrp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
-    esrp.ges_phyto_total_ges_total AS emissions_indirectes_phyto_SDC,
-    -- Alertes (viticulture)
-    null AS alerte_renseignement_donnees,
-    -- Situation de production et coûts
-    eevpp.espece_principale as situation_production,
-    esrp.co_tot_std_mil AS CO_std_mil_SDC,
-    esrp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
-    esrp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
-    esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
-    esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    esrp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,    -- À vérifier
-    esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
-    esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
-    esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
-    -- Coûts par poste
-    esrp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
-    esrp.co_fertimin_reel + esrp.co_epandage_orga_reelles  as CO_reelles_ferti_min_SDC,
-    esrp.co_irrigation_reelles AS CO_reelles_irrig_SDC,
-    esrp.co_semis_reel AS CO_reelles_semences_SDC,
-    esrp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
-    esrp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
-    -- Situation de production détaillée (millésime)
-    sdc.type_production as sdc_type_production,
-    sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
-    sdc.codes_convention_dephy AS codes_convention_dephy,
-    -- Recours aux moyens biologiques
-    esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
-    esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
-FROM entrepot_sdc sdc
-LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
-LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
-LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
-LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc ON sdc.id = escotdbc.id
-LEFT JOIN entrepot_sdc_realise_performance esrp ON esrp.sdc_id = sdc.id
-left join entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can ervsrotdbc on ervsrotdbc.id = sdc.id
-left join entrepot_espece_variete_perenne_principale eevpp on eevpp.entite_id = sdc.id
-WHERE sdc.filiere = 'ARBORICULTURE'
-AND eeupsn.entite_retenue = 'realise_retenu'
-AND NOT dispo.type = 'NOT_DEPHY'
-union
-SELECT
-    -- Identification unique
-    COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne AS ID_CODE_DEPHY_CAMPAGNE,
-    sdc.code_dephy AS sdc_code_dephy,
-    sdc.campagne AS campagne_donnees,
-    -- Dispositif et réseaux
-    dispo."type" AS dispositif_type,
-    escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
-    -- Domaine et localisation
-    dom.id AS domaine_id,
-    dom.nom AS domaine_nom,
-    dom.departement as departement,
-    dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
-    comm.region AS Nom_Region,        -- Idem
-    comm.ancienne_region AS Nom_Ancienne_Region,
-    dom.otex_18_nom as otex_18_nom,
-    dom.sau_totale AS sau_domaine,
-    dom.campagne AS domaine_campagne,
-    sdc.filiere AS sdc_filiere,
-    -- SDC et approche
-    'synthétisé' AS approche_de_calcul,
-    sdc.id AS sdc_id,
-    sdc.nom AS sdc_nom,
-    -- Type d'agriculture et système synthétisé
-    sdc.type_agriculture AS sdc_type_agriculture,
-    synthetise.id AS systeme_synthetise_id,      
-    synthetise.nom AS systeme_synthetise_nom,  
-    synthetise.campagnes AS systeme_synthetise_campagnes,
-    -- Données économiques et techniques
-    essp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
-    essp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
-    essp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
-    essp.co_tot_reelles AS CO_reelles_SDC,
-    essp.cm_reelles AS CM_reelles_SDC,
-    essp.conso_carburant AS conso_carburant_SDC,
-    essp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
-    essp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
-    essp.nombre_uth_necessaires AS nbre_uth_sdc,
-    -- IFT et alertes (viticulture)
-    essp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
-    essp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_tot_hts_SDC,
-    essp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
-    essp.ift_cible_non_mil_h AS ift_cible_non_mil_h_SDC,
-    essp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_SDC,
-    essp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
-    essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
-    essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
-    -- Interventions et produits
-    essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
-    essp.qsa_boscalid as qte_mat_active_boscalid_SDC,
-    essp.qsa_dicamba as qte_mat_active_dicamba_SDC,
-    essp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
-	essp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
-    essp.qsa_tot AS quantite_mat_active_SDC,
-    essp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
-    essp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
-    essp.qsa_glyphosate AS quantite_mat_active_glypho_SDC,
-    essp.qsa_neonicotinoides AS quantite_mat_active_neonic_SDC,
-    essp.qsa_cuivre_metal_tot AS qte_cuivre_SDC,
-    essp.qsa_cuivre_metal_ferti AS qte_cuivre_engrais_SDC,
-    essp.qsa_cuivre_metal_phyto AS qte_cuivre_phyto_SDC,
-    essp.qsa_soufre_tot AS qte_soufre_SDC,
-    essp.qsa_soufre_ferti AS qte_soufre_engrais_SDC,
-    essp.qsa_soufre_phyto AS qte_soufre_phyto_SDC,
-    -- Fertilisation
-    essp.ferti_n_tot AS N_SDC,
-    essp.ferti_n_mineral AS N_Mineral_SDC,
-    essp.ferti_n_organique AS N_Orga_SDC,
-    essp.ferti_p2o5_tot AS P_SDC,
-    essp.ferti_p2o5_mineral AS P_Mineral_SDC,
-    essp.ferti_p2o5_organique AS P_Orga_SDC,
-    essp.ferti_k2o_tot AS K_SDC,
-    essp.ferti_k2o_mineral AS K_Mineral_SDC,
-    essp.ferti_k2o_organique AS K_Orga_SDC,
-    -- Eau et temps de travail
-    essp.conso_eau AS Qte_Eau_mm_ha_SDC,
-    essp.tps_utilisation_materiel AS tps_util_materiel_SDC,
-    -- Temps mensuels (exemple pour janvier à décembre)
-    essp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
-    essp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
-    -- ... (compléter pour tous les mois)
-    essp.tps_travail_manuel AS tps_travail_manuel_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
-    essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
-    -- GES et énergie
-    essp.ges_carburants_total_ges_total AS GES_SDC,
-    essp.ges_carburants_directes_ges_total AS GES_directes_SDC,
-    essp.ges_carburants_directes_co2 AS Emissions_directes_Fuel_SDC,
-    essp.ges_ferti_min_directes_ges_total AS Emissions_directes_Ferti_SDC,
-    essp.ges_carburants_indirectes_ges_total AS GES_indirectes_SDC,
-    essp.ges_carburants_indirectes_co2 AS Emissions_indirectes_fuel_SDC,
-    essp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
-    essp.ges_phyto_total_ges_total AS emissions_indirectes_phyto_SDC,
-    -- Alertes (viticulture)
-    null AS alerte_renseignement_donnees,
-    -- Situation de production et coûts
-    eevpp.espece_principale AS situation_production,  -- Ex: "VITICOLE_Rouge" ou "VITICOLE_Champagne"
-    essp.co_tot_std_mil AS CO_std_mil_SDC,
-    essp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
-    essp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
-    essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
-    essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    essp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,    -- À vérifier
-    essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
-    essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
-    essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
-    -- Coûts par poste
-    essp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
-    essp.co_fertimin_reel + essp.co_epandage_orga_reelles as CO_reelles_ferti_min_SDC,
-    essp.co_irrigation_reelles AS CO_reelles_irrig_SDC,
-    essp.co_semis_reel AS CO_reelles_semences_SDC,
-    essp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
-    essp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
-    -- Situation de production détaillée (millésime)
-    sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
-    sdc.codes_convention_dephy AS codes_convention_dephy,
-    -- Recours aux moyens biologiques
-    essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
-    essp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
-FROM entrepot_synthetise synthetise 
-LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
-LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
-LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
+    sdc.type_production AS sdc_type_production, 
+    sdc.validite AS sdc_valide,
+    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente ?
+    es.id AS systeme_synthetise_id,
+    es.nom AS systeme_synthetise_nom,
+    es.campagnes AS systeme_synthetise_campagnes,
+    es.valide AS systeme_synthetise_validation,
+    epcsr.poids_conx_agregation AS assolement_culture_CP,
+    null AS parcelle_nom,
+    null AS parcelle_id,
+    null AS parcelle_surface,
+    null AS zone_nom,
+    null AS zone_id, 
+    null AS zone_surface,
+    -- culture_precedent_rang_id --> supprimer
+    -- culture_rang --> supprimer
+    ecs.id AS connexion_synthetise_id,
+    ens.rang AS rang,
+    ec.nom AS culture_nom,
+    ec.code AS culture_code,
+    ec.id AS culture_id,
+    ec.type AS culture_type,
+    etcod.typodirodur_espece AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
+    etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
+    etcc.typocan_espece AS typo_especes,
+    etcc.nb_typocan_esp as nb_typo_espece, --nb composant culture ?
+    etcod.typodirodur_culture AS typo_culture,
+    ec_intermediaire.id AS ci_id,
+    ec_intermediaire.nom AS ci_nom,
+    ec_intermediaire.code AS ci_code,
+    ec_prec.nom AS precedent_nom,
+    ec_prec.code AS precedent_code,
+    ec_prec.id AS precedent_id,
+    null as unite_rendement, -- que faire si il y a plusieurs opérations de récolte dans l'itk ? Quelle unité ?
+    null as Rdt_Toutes_catego_Tous_condition, -- idem ?
+    null as Rdt_Autre, -- idem ?
+    null as Rdt_Production_semences,-- idem ?
+    null as Rdt_Fraiches_Primeur,-- idem ?
+    null as Rdt_Exportation,-- idem ?
+    null as Rdt_Circuit_Long,-- idem ?
+    null as Rdt_Circuit_Court,-- idem ?
+    null as Rendement_total,-- idem ?
+    eisp.ift_histo_chimique_tot        AS ift_histo_chimique_tot_CP,
+    eisp.ift_histo_chim_tot_hts        AS ift_histo_chim_tot_hts_CP,
+    eisp.ift_histo_biocontrole         AS ift_histo_biocontrole_CP,
+    eisp.ift_histo_hh                  AS ift_histo_hh_CP,
+    eisp.ift_histo_f                   AS ift_histo_f_CP,
+    eisp.ift_histo_i                   AS ift_histo_i_CP,
+    eisp.ift_histo_a                   AS ift_histo_a_CP,
+    eisp.ift_histo_ts                  AS ift_histo_ts_CP,
+    eisp.ift_cible_mil_chimique_tot     AS ift_cible_mil_chimiq_tot_CP,
+    eisp.ift_cible_mil_biocontrole      AS ift_cible_mil_biocontrole_CP,
+    eisp.ift_cible_mil_h                 AS ift_cible_mil_h_CP,
+    eisp.ift_cible_mil_hh                AS ift_cible_mil_hh_CP,
+    eisp.ift_cible_mil_f                 AS ift_cible_mil_f_CP,
+    eisp.ift_cible_mil_i                 AS ift_cible_mil_i_CP,
+    eisp.ift_cible_mil_a                 AS ift_cible_mil_a_CP,
+    eisp.ift_cible_mil_ts                AS ift_cible_mil_ts_CP,
+    eisp.ift_cible_non_mil_chimique_tot  AS ift_cible_non_mil_chimiq_tot_CP,
+    eisp.ift_cible_non_mil_biocontrole   AS ift_cible_non_mil_biocontrole_CP,
+    eisp.ift_cible_non_mil_h              AS ift_cible_non_mil_h_CP,
+    eisp.ift_cible_non_mil_hh             AS ift_cible_non_mil_hh_CP,
+    eisp.ift_cible_non_mil_f              AS ift_cible_non_mil_f_CP,
+    eisp.ift_cible_non_mil_i              AS ift_cible_non_mil_i_CP,
+    eisp.ift_cible_non_mil_a              AS ift_cible_non_mil_a_CP,
+    eisp.ift_cible_non_mil_ts             AS ift_cible_non_mil_ts_CP,
+    eisp.ift_culture_mil_chim_tot_hts     AS ift_culture_mil_chim_tot_hts_CP,
+    eisp.ift_culture_mil_biocontrole      AS ift_culture_mil_biocontrole_CP,
+    eisp.ift_culture_mil_h                 AS ift_culture_mil_h_CP,
+    eisp.ift_culture_mil_hh                AS ift_culture_mil_hh_CP,
+    eisp.ift_culture_mil_f                 AS ift_culture_mil_f_CP,
+    eisp.ift_culture_mil_i                 AS ift_culture_mil_i_CP,
+    eisp.ift_culture_mil_ts                AS ift_culture_mil_ts_CP,
+    eisp.ift_culture_non_mil_chim_tot_hts  AS ift_culture_non_mil_chim_tot_hts_CP,
+    eisp.ift_culture_non_mil_biocontrole   AS ift_culture_non_mil_biocontrole_CP,
+    eisp.ift_culture_non_mil_h              AS ift_culture_non_mil_h_CP,
+    eisp.ift_culture_non_mil_hh             AS ift_culture_non_mil_hh_CP,
+    eisp.ift_culture_non_mil_f              AS ift_culture_non_mil_f_CP,
+    eisp.ift_culture_non_mil_i              AS ift_culture_non_mil_i_CP,
+    eisp.ift_culture_non_mil_ts             AS ift_culture_non_mil_ts_CP,
+    eisp.qsa_tot                            AS quantite_mat_active_CP,
+    eisp.qsa_danger_environnement          AS quantite_mat_active_danger_CP,
+    eisp.qsa_danger_environnement_hts      AS qte_mat_active_danger_env_CP,
+    eisp.qsa_cmr                            AS quantite_mat_active_CMR_CP,
+    eisp.qsa_cmr_hts                        AS quantite_mat_active_glypho_CP,
+    eisp.qsa_cuivre_phyto_hts               AS quantite_mat_active_neonic_CP,
+    eisp.qsa_cuivre_metal_tot                 AS quantite_cuivre_CP,
+    eisp.qsa_cuivre_metal_ferti               AS qte_cuivre_engrais_CP,
+    eisp.qsa_cuivre_metal_phyto               AS qte_cuivre_phyto_CP,
+    eisp.qsa_soufre_tot                      AS quantite_soufre_CP,
+    eisp.qsa_soufre_ferti                     AS qte_soufre_engrais_CP,
+    eisp.qsa_soufre_phyto_hts                 AS qte_soufre_phyto_CP,
+    null AS nb_intrants_verif_biocontrole, -- à venir sur Agrosyst
+	eisp.recours_produits_danger_environnement AS Nb_intrant_dang_env_CP,
+	eisp.recours_produits_toxiques_utilisateurs AS Nb_intrant_dang_CP,
+	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
+    eisp.c_main_oeuvre_manuelle_reelle      AS c_main_oeuvre_manuelle_reelle_CP,
+    eisp.c_main_oeuvre_manuelle_reelle_tx_comp  AS c_main_oeuvre_manuelle_reelle_tx_comp_CP,
+    eisp.c_main_oeuvre_tractoriste_reelle  AS c_main_oeuvre_tractoriste_reelle_CP,
+    eisp.c_main_oeuvre_tractoriste_reelle_tx_comp  AS c_main_oeuvre_tractoriste_reelle_tx_comp_CP,
+    eisp.c_main_oeuvre_tot_reelle          AS c_main_oeuvre_tot_reelle_CP,
+    eisp.c_main_oeuvre_tot_reelle_tx_comp  AS c_main_oeuvre_tot_reelle_tx_comp_CP,
+    eisp.c_main_oeuvre_manuelle_reelle      AS charges_totale_CP,
+    eisp.cm_reelles                           AS CM_reelles_CP,
+    eisp.co_tot_reelles                       AS CO_reelles_CP,
+    eisp.conso_carburant                      AS conso_carburant_CP,
+    eisp.conso_carburant_tx_comp              AS conso_carburant_tx_comp_CP,
+    eisp.energie_ferti_min                    AS energie_ferti_min_CP,
+    eisp.energie_ferti_orga                    AS energie_ferti_orga_CP,
+    eisp.energie_phyto                        AS energie_phyto_CP,
+    eisp.energie_ferti_min                   AS GES_CP,                     -- CO2 equivalente
+    eisp.energie_ferti_orga                   AS GES_directes_CP,           -- direct
+    eisp.energie_ferti_min                    AS GES_indirectes_CP,         -- indirect
+    eisp.tps_utilisation_materiel            AS tps_util_materiel_CP,
+    eisp.tps_utilisation_materiel_tx_comp    AS tps_util_materiel_tx_comp_CP,
+    eisp.tps_utilisation_materiel_janvier    AS tps_util_materiel_janvier_CP,
+    eisp.tps_utilisation_materiel_fevrier    AS tps_util_materiel_fevrier_CP,
+    eisp.tps_utilisation_materiel_mars       AS tps_util_materiel_mars_CP,
+    eisp.tps_utilisation_materiel_avril      AS tps_util_materiel_avril_CP,
+    eisp.tps_utilisation_materiel_mai        AS tps_util_materiel_mai_CP,
+    eisp.tps_utilisation_materiel_juin       AS tps_util_materiel_juin_CP,
+    eisp.tps_utilisation_materiel_juillet     AS tps_util_materiel_juillet_CP,
+    eisp.tps_utilisation_materiel_aout      AS tps_util_materiel_aout_CP,
+    eisp.tps_utilisation_materiel_sept       AS tps_util_materiel_sept_CP,
+    eisp.tps_utilisation_materiel_oct         AS tps_util_materiel_oct_CP,
+    eisp.tps_utilisation_materiel_nov         AS tps_util_materiel_nov_CP,
+    eisp.tps_utilisation_materiel_dec         AS tps_util_materiel_dec_CP,
+    eisp.tps_travail_manuel                  AS tps_travail_manuel_CP,
+    eisp.tps_travail_manuel_tx_comp          AS tps_travail_manuel_tx_comp_CP,
+    eisp.tps_travail_manuel_janvier          AS tps_travail_manuel_janvier_CP,
+    eisp.tps_travail_manuel_fevrier          AS tps_travail_manuel_fevrier_CP,
+    eisp.tps_travail_manuel_mars             AS tps_travail_manuel_mars_CP,
+    eisp.tps_travail_manuel_avril            AS tps_travail_manuel_avril_CP,
+    eisp.tps_travail_manuel_mai              AS tps_travail_manuel_mai_CP,
+    eisp.tps_travail_manuel_juin             AS tps_travail_manuel_juin_CP,
+    eisp.tps_travail_manuel_juillet           AS tps_travail_manuel_juillet_CP,
+    eisp.tps_travail_manuel_aout            AS tps_travail_manuel_aout_CP,
+    eisp.tps_travail_manuel_septembre        AS tps_travail_manuel_septembre_CP,
+    eisp.tps_travail_manuel_octobre          AS tps_travail_manuel_octobre_CP,
+    eisp.tps_travail_manuel_novembre         AS tps_travail_manuel_novembre_CP,
+    eisp.tps_travail_manuel_decembre        AS tps_travail_manuel_decembre_CP,
+    eisp.qsa_tot                   AS quantite_mat_active_CP,
+    eisp.ferti_n_tot                        AS N_CP,
+    eisp.ferti_n_mineral                    AS N_Mineral_CP,
+    eisp.ferti_n_organique                  AS N_Orga_CP,
+    eisp.ferti_p2o5_tot                     AS P_CP,
+    eisp.ferti_p2o5_mineral                 AS P_Mineral_CP,
+    eisp.ferti_p2o5_organique               AS P_Orga_CP,
+    eisp.ferti_k2o_tot                      AS K_CP,
+    eisp.ferti_k2o_mineral                  AS K_Mineral_CP,
+    eisp.ferti_k2o_organique                AS K_Orga_CP,
+    eisp.ges_carburants_directes_ch4        AS GES_CP,
+    eisp.ges_carburants_directes_co2        AS GES_directes_CP,
+    eisp.ges_carburants_directes_n2o        AS GES_indirectes_CP,
+    eisp.ges_carburants_indirectes_ch4      AS GES_CP,
+    eisp.ges_carburants_indirectes_co2      AS GES_directes_CP,
+    eisp.ges_carburants_indirectes_n2o      AS GES_indirectes_CP,
+    eisp.alertes_charges                 AS Alerte_Phyto_CP,
+    eisp.alerte_ferti_n_tot              AS Alerte_ferti_azotee_CP,
+    eisp.alerte_co_irrigation_std_mil    AS Alerte_semis_culture_principale,
+    eisp.alerte_msn_std_mil_avec_autoconso AS Alerte_recolte_cult_princi,
+    null AS Alerte_travail_sol, -- à venir sur Agrosyst
+    eisp.c_main_oeuvre_manuelle_reelle    AS cout_mo_manuelle_CP,
+    eisp.c_main_oeuvre_manuelle_reelle_tx_comp  AS cout_mo_manuelle_cp_tx_comp,
+    eisp.c_main_oeuvre_tractoriste_reelle    AS cout_mo_tractoriste_CP,
+    eisp.c_main_oeuvre_tractoriste_reelle_tx_comp  AS cout_mo_tractoriste_cp_tx_comp,
+    eisp.alerte_nombre_interventions_phyto  AS rec_moyens_biologiques_CP,
+    eisp.recours_macroorganismes          AS recours_macroorganismes_CP,
+    eisp.recours_produits_biotiques_sansamm  AS rec_pdts_biot_sansamm_CP,
+    eisp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_CP,
+    eisp.ift_cible_non_mil_chimique_tot     AS ift_cible_non_mil_chimiq_tot_CP,
+    eisp.ift_cible_non_mil_biocontrole     AS ift_cible_non_mil_biocontrole_CP,
+    eisp.ift_cible_non_mil_h                AS ift_cible_non_mil_h_CP,
+    eisp.ift_cible_non_mil_hh               AS ift_cible_non_mil_hh_CP,
+    eisp.ift_cible_non_mil_f                AS ift_cible_non_mil_f_CP,
+    eisp.ift_cible_non_mil_i                AS ift_cible_non_mil_i_CP,
+    eisp.ift_cible_non_mil_a                AS ift_cible_non_mil_a_CP,
+    eisp.ift_cible_non_mil_ts               AS ift_cible_non_mil_ts_CP,
+    null      								AS ift_cible_non_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
+    eisp.ift_cible_mil_chimique_tot         AS ift_cible_mil_chimiq_tot_CP,
+    eisp.ift_cible_mil_biocontrole          AS ift_cible_mil_biocontrole_CP,
+    eisp.ift_cible_mil_h                    AS ift_cible_mil_h_CP,
+    eisp.ift_cible_mil_hh                   AS ift_cible_mil_hh_CP,
+    eisp.ift_cible_mil_f                    AS ift_cible_mil_f_CP,
+    eisp.ift_cible_mil_i                    AS ift_cible_mil_i_CP,
+    eisp.ift_cible_mil_a                    AS ift_cible_mil_a_CP,
+    eisp.ift_cible_mil_ts                   AS ift_cible_mil_ts_CP,
+    null           							AS ift_cible_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
+    eisp.co_tot_reelles                      AS co_tot_reelles_CP,
+    eisp.co_tot_reelles_tx_comp              AS co_tot_reelles_tx_comp_CP,
+	--
+	eisp.recours_produits_toxiques_utilisateurs AS Nb_intrant_dang_CP,
+	eisp.recours_produits_danger_environnement AS Nb_intrant_dang_env_CP,
+	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
+	--
+	eisp.co_tot_reelles + eisp.cm_reelles AS charges_totale_CP, 
+	eisp.nbre_uth_necessaires AS nbre_uth_CP, 
+	--
+	null AS IFT_h_smethola_CP, -- à venir sur Agrosyst --> jugé non prioritaire.
+	null AS IFT_h_chlorto_CP, -- à venir sur Agrosyst
+	null AS IFT_h_diflufeni_CP, -- à venir sur Agrosyst
+	null AS IFT_h_dicamba_CP, -- à venir sur Agrosyst
+	null AS IFT_h_prosulfo_CP, -- à venir sur Agrosyst
+	null AS IFT_f_bixafen_CP, -- à venir sur Agrosyst
+	null AS IFT_f_boscalid_CP, -- à venir sur Agrosyst
+	null AS IFT_f_mancozebe_CP, -- à venir sur Agrosyst
+	null AS IFT_f_tebuco_CP, -- à venir sur Agrosyst
+	null AS IFT_i_phosmet_CP -- à venir sur Agrosyst
+FROM entrepot_connection_synthetise ecs
+LEFT JOIN entrepot_itk_synthetise_agrege eisa ON eisa.itk_id = ecs.id
+LEFT JOIN entrepot_itk_synthetise_performance eisp ON ecs.id = eisp.itk_synthetise_id
+LEFT JOIN entrepot_noeuds_synthetise ens ON ecs.cible_noeuds_synthetise_id = ens.id
+LEFT JOIN entrepot_noeuds_synthetise_restructure ensr ON ensr.id = ecs.cible_noeuds_synthetise_id
+LEFT JOIN entrepot_noeuds_synthetise_restructure ensr_prec ON ensr_prec.id = ecs.source_noeuds_synthetise_id 
+LEFT JOIN entrepot_noeuds_synthetise ens_prec ON ecs.source_noeuds_synthetise_id = ens_prec.id
+LEFT JOIN entrepot_connection_synthetise_restructure ecsr ON ecsr.id = ecs.id
+LEFT JOIN entrepot_culture ec ON ensr.culture_id = ec.id
+LEFT JOIN entrepot_culture ec_intermediaire ON  ec_intermediaire.id = ecsr.culture_intermediaire_id 
+LEFT JOIN entrepot_culture ec_prec ON ec_prec.id = ensr_prec.culture_id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur etcod ON ec.id = etcod.culture_id
+LEFT JOIN entrepot_typologie_can_culture etcc ON ec.id = etcc.culture_id 
+LEFT JOIN entrepot_sdc sdc ON sdc.id = eisa.sdc_id
+LEFT JOIN entrepot_dispositif  dispo ON dispo.id = eisa.dispositif_id
+LEFT JOIN entrepot_domaine     dom   ON dom.id   = eisa.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
-left join entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc_id
-left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
-left join entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
-left join entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
-left join entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can ervsotdbc on ervsotdbc.id = eeupsn.sdc_id
-left join entrepot_espece_variete_perenne_principale eevpp on eevpp.entite_id = sdc.id
-WHERE sdc.filiere = 'ARBORICULTURE'
-and eeupsn.entite_retenue != 'realise_retenu'
-AND NOT dispo.type = 'NOT_DEPHY';
+LEFT JOIN entrepot_synthetise es ON eisa.synthetise_id = es.id
+LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
+LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id 
+LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+LEFT JOIN entrepot_typologie_assol_can_realise etacr ON etacr.sdc_id = sdc.id
+LEFT JOIN entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc ON sdc.id = essrotdbc.id
+LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id 
+LEFT JOIN entrepot_poids_connexions_synthetise_rotation epcsr ON epcsr.connexion_id = ecs.id
+LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON eirgotdbc.id = ecs.id
+WHERE (sdc.filiere='MARAICHAGE')
+AND eeupsn.entite_retenue != 'realise_retenu'
+AND NOT dispo.type = 'NOT_DEPHY'
+union 
+SELECT
+	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne as identifiant_systeme_campagne,
+  	--etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
+	--sdc.code_dephy AS sdc_code_dephy,
+    null as identifiant_itk, -- exemple ???
+	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne  as identifiant_systeme_campagne, --concaténation des variables sdc_code_dephy + campagne
+	null AS identifiant_itk, -- exemple ???
+	null  AS identifiant_itk_sdc_camp,-- exemple ?
+	--
+    'synthetise' AS approche_de_calcul,
+    sdc.campagne AS campagne_donnees,
+    sdc.type_production as situation_production,
+    sdc.code_dephy as sdc_code_dephy,
+    --
+    dispo."type" AS dispositif_type,
+    errsotdbc.reseaux_it AS reseaux_it,
+    errsotdbc.reseaux_ir AS reseaux_ir,
+    dom.id AS domaine_id,
+    dom.nom AS domaine_nom,
+    dom.departement AS departement,
+    comm.departement AS Nom_Departement, 
+    comm.region AS Nom_Region,    
+    comm.ancienne_region AS Nom_Ancienne_Region,
+    dom.otex_18_nom AS otex_18_nom, 
+    dom.campagne AS domaine_campagne,
+    sdc.filiere AS sdc_filiere,
+    sdc.id AS sdc_id,
+    sdc.nom AS sdc_nom,
+    sdc.type_production AS sdc_type_production, 
+    sdc.validite AS sdc_valide,
+    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente ?
+    es.id AS systeme_synthetise_id,
+    es.nom AS systeme_synthetise_nom,
+    es.campagnes AS systeme_synthetise_campagnes,
+    es.valide AS systeme_synthetise_validation,
+    epcsr.poids_conx_agregation AS assolement_culture_CP,
+    null AS parcelle_nom,
+    null AS parcelle_id,
+    null AS parcelle_surface,
+    null AS zone_nom,
+    null AS zone_id, 
+    null AS zone_surface,
+    -- culture_precedent_rang_id --> supprimer
+    -- culture_rang --> supprimer
+    ecs.id AS connexion_synthetise_id,
+    ens.rang AS rang,
+    ec.nom AS culture_nom,
+    ec.code AS culture_code,
+    ec.id AS culture_id,
+    ec.type AS culture_type,
+    etcod.typodirodur_espece AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
+    etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
+    etcc.typocan_espece AS typo_especes,
+    etcc.nb_typocan_esp as nb_typo_espece, --nb composant culture ?
+    etcod.typodirodur_culture AS typo_culture,
+    ec_intermediaire.id AS ci_id,
+    ec_intermediaire.nom AS ci_nom,
+    ec_intermediaire.code AS ci_code,
+    ec_prec.nom AS precedent_nom,
+    ec_prec.code AS precedent_code,
+    ec_prec.id AS precedent_id,
+    null as unite_rendement, -- que faire si il y a plusieurs opérations de récolte dans l'itk ? Quelle unité ?
+    null as Rdt_Toutes_catego_Tous_condition, -- idem ?
+    null as Rdt_Autre, -- idem ?
+    null as Rdt_Production_semences,-- idem ?
+    null as Rdt_Fraiches_Primeur,-- idem ?
+    null as Rdt_Exportation,-- idem ?
+    null as Rdt_Circuit_Long,-- idem ?
+    null as Rdt_Circuit_Court,-- idem ?
+    null as Rendement_total,-- idem ?
+    eisp.ift_histo_chimique_tot        AS ift_histo_chimique_tot_CP,
+    eisp.ift_histo_chim_tot_hts        AS ift_histo_chim_tot_hts_CP,
+    eisp.ift_histo_biocontrole         AS ift_histo_biocontrole_CP,
+    eisp.ift_histo_hh                  AS ift_histo_hh_CP,
+    eisp.ift_histo_f                   AS ift_histo_f_CP,
+    eisp.ift_histo_i                   AS ift_histo_i_CP,
+    eisp.ift_histo_a                   AS ift_histo_a_CP,
+    eisp.ift_histo_ts                  AS ift_histo_ts_CP,
+    eisp.ift_cible_mil_chimique_tot     AS ift_cible_mil_chimiq_tot_CP,
+    eisp.ift_cible_mil_biocontrole      AS ift_cible_mil_biocontrole_CP,
+    eisp.ift_cible_mil_h                 AS ift_cible_mil_h_CP,
+    eisp.ift_cible_mil_hh                AS ift_cible_mil_hh_CP,
+    eisp.ift_cible_mil_f                 AS ift_cible_mil_f_CP,
+    eisp.ift_cible_mil_i                 AS ift_cible_mil_i_CP,
+    eisp.ift_cible_mil_a                 AS ift_cible_mil_a_CP,
+    eisp.ift_cible_mil_ts                AS ift_cible_mil_ts_CP,
+    eisp.ift_cible_non_mil_chimique_tot  AS ift_cible_non_mil_chimiq_tot_CP,
+    eisp.ift_cible_non_mil_biocontrole   AS ift_cible_non_mil_biocontrole_CP,
+    eisp.ift_cible_non_mil_h              AS ift_cible_non_mil_h_CP,
+    eisp.ift_cible_non_mil_hh             AS ift_cible_non_mil_hh_CP,
+    eisp.ift_cible_non_mil_f              AS ift_cible_non_mil_f_CP,
+    eisp.ift_cible_non_mil_i              AS ift_cible_non_mil_i_CP,
+    eisp.ift_cible_non_mil_a              AS ift_cible_non_mil_a_CP,
+    eisp.ift_cible_non_mil_ts             AS ift_cible_non_mil_ts_CP,
+    eisp.ift_culture_mil_chim_tot_hts     AS ift_culture_mil_chim_tot_hts_CP,
+    eisp.ift_culture_mil_biocontrole      AS ift_culture_mil_biocontrole_CP,
+    eisp.ift_culture_mil_h                 AS ift_culture_mil_h_CP,
+    eisp.ift_culture_mil_hh                AS ift_culture_mil_hh_CP,
+    eisp.ift_culture_mil_f                 AS ift_culture_mil_f_CP,
+    eisp.ift_culture_mil_i                 AS ift_culture_mil_i_CP,
+    eisp.ift_culture_mil_ts                AS ift_culture_mil_ts_CP,
+    eisp.ift_culture_non_mil_chim_tot_hts  AS ift_culture_non_mil_chim_tot_hts_CP,
+    eisp.ift_culture_non_mil_biocontrole   AS ift_culture_non_mil_biocontrole_CP,
+    eisp.ift_culture_non_mil_h              AS ift_culture_non_mil_h_CP,
+    eisp.ift_culture_non_mil_hh             AS ift_culture_non_mil_hh_CP,
+    eisp.ift_culture_non_mil_f              AS ift_culture_non_mil_f_CP,
+    eisp.ift_culture_non_mil_i              AS ift_culture_non_mil_i_CP,
+    eisp.ift_culture_non_mil_ts             AS ift_culture_non_mil_ts_CP,
+    eisp.qsa_tot                            AS quantite_mat_active_CP,
+    eisp.qsa_danger_environnement          AS quantite_mat_active_danger_CP,
+    eisp.qsa_danger_environnement_hts      AS qte_mat_active_danger_env_CP,
+    eisp.qsa_cmr                            AS quantite_mat_active_CMR_CP,
+    eisp.qsa_cmr_hts                        AS quantite_mat_active_glypho_CP,
+    eisp.qsa_cuivre_phyto_hts               AS quantite_mat_active_neonic_CP,
+    eisp.qsa_cuivre_metal_tot                 AS quantite_cuivre_CP,
+    eisp.qsa_cuivre_metal_ferti               AS qte_cuivre_engrais_CP,
+    eisp.qsa_cuivre_metal_phyto               AS qte_cuivre_phyto_CP,
+    eisp.qsa_soufre_tot                      AS quantite_soufre_CP,
+    eisp.qsa_soufre_ferti                     AS qte_soufre_engrais_CP,
+    eisp.qsa_soufre_phyto_hts                 AS qte_soufre_phyto_CP,
+    null AS nb_intrants_verif_biocontrole, -- à venir sur Agrosyst
+	eisp.recours_produits_danger_environnement AS Nb_intrant_dang_env_CP,
+	eisp.recours_produits_toxiques_utilisateurs AS Nb_intrant_dang_CP,
+	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
+    eisp.c_main_oeuvre_manuelle_reelle      AS c_main_oeuvre_manuelle_reelle_CP,
+    eisp.c_main_oeuvre_manuelle_reelle_tx_comp  AS c_main_oeuvre_manuelle_reelle_tx_comp_CP,
+    eisp.c_main_oeuvre_tractoriste_reelle  AS c_main_oeuvre_tractoriste_reelle_CP,
+    eisp.c_main_oeuvre_tractoriste_reelle_tx_comp  AS c_main_oeuvre_tractoriste_reelle_tx_comp_CP,
+    eisp.c_main_oeuvre_tot_reelle          AS c_main_oeuvre_tot_reelle_CP,
+    eisp.c_main_oeuvre_tot_reelle_tx_comp  AS c_main_oeuvre_tot_reelle_tx_comp_CP,
+    eisp.c_main_oeuvre_manuelle_reelle      AS charges_totale_CP,
+    eisp.cm_reelles                           AS CM_reelles_CP,
+    eisp.co_tot_reelles                       AS CO_reelles_CP,
+    eisp.conso_carburant                      AS conso_carburant_CP,
+    eisp.conso_carburant_tx_comp              AS conso_carburant_tx_comp_CP,
+    eisp.energie_ferti_min                    AS energie_ferti_min_CP,
+    eisp.energie_ferti_orga                    AS energie_ferti_orga_CP,
+    eisp.energie_phyto                        AS energie_phyto_CP,
+    eisp.energie_ferti_min                   AS GES_CP,                     -- CO2 equivalente
+    eisp.energie_ferti_orga                   AS GES_directes_CP,           -- direct
+    eisp.energie_ferti_min                    AS GES_indirectes_CP,         -- indirect
+    eisp.tps_utilisation_materiel            AS tps_util_materiel_CP,
+    eisp.tps_utilisation_materiel_tx_comp    AS tps_util_materiel_tx_comp_CP,
+    eisp.tps_utilisation_materiel_janvier    AS tps_util_materiel_janvier_CP,
+    eisp.tps_utilisation_materiel_fevrier    AS tps_util_materiel_fevrier_CP,
+    eisp.tps_utilisation_materiel_mars       AS tps_util_materiel_mars_CP,
+    eisp.tps_utilisation_materiel_avril      AS tps_util_materiel_avril_CP,
+    eisp.tps_utilisation_materiel_mai        AS tps_util_materiel_mai_CP,
+    eisp.tps_utilisation_materiel_juin       AS tps_util_materiel_juin_CP,
+    eisp.tps_utilisation_materiel_juillet     AS tps_util_materiel_juillet_CP,
+    eisp.tps_utilisation_materiel_aout      AS tps_util_materiel_aout_CP,
+    eisp.tps_utilisation_materiel_sept       AS tps_util_materiel_sept_CP,
+    eisp.tps_utilisation_materiel_oct         AS tps_util_materiel_oct_CP,
+    eisp.tps_utilisation_materiel_nov         AS tps_util_materiel_nov_CP,
+    eisp.tps_utilisation_materiel_dec         AS tps_util_materiel_dec_CP,
+    eisp.tps_travail_manuel                  AS tps_travail_manuel_CP,
+    eisp.tps_travail_manuel_tx_comp          AS tps_travail_manuel_tx_comp_CP,
+    eisp.tps_travail_manuel_janvier          AS tps_travail_manuel_janvier_CP,
+    eisp.tps_travail_manuel_fevrier          AS tps_travail_manuel_fevrier_CP,
+    eisp.tps_travail_manuel_mars             AS tps_travail_manuel_mars_CP,
+    eisp.tps_travail_manuel_avril            AS tps_travail_manuel_avril_CP,
+    eisp.tps_travail_manuel_mai              AS tps_travail_manuel_mai_CP,
+    eisp.tps_travail_manuel_juin             AS tps_travail_manuel_juin_CP,
+    eisp.tps_travail_manuel_juillet           AS tps_travail_manuel_juillet_CP,
+    eisp.tps_travail_manuel_aout            AS tps_travail_manuel_aout_CP,
+    eisp.tps_travail_manuel_septembre        AS tps_travail_manuel_septembre_CP,
+    eisp.tps_travail_manuel_octobre          AS tps_travail_manuel_octobre_CP,
+    eisp.tps_travail_manuel_novembre         AS tps_travail_manuel_novembre_CP,
+    eisp.tps_travail_manuel_decembre        AS tps_travail_manuel_decembre_CP,
+    eisp.qsa_tot                   AS quantite_mat_active_CP,
+    eisp.ferti_n_tot                        AS N_CP,
+    eisp.ferti_n_mineral                    AS N_Mineral_CP,
+    eisp.ferti_n_organique                  AS N_Orga_CP,
+    eisp.ferti_p2o5_tot                     AS P_CP,
+    eisp.ferti_p2o5_mineral                 AS P_Mineral_CP,
+    eisp.ferti_p2o5_organique               AS P_Orga_CP,
+    eisp.ferti_k2o_tot                      AS K_CP,
+    eisp.ferti_k2o_mineral                  AS K_Mineral_CP,
+    eisp.ferti_k2o_organique                AS K_Orga_CP,
+    eisp.ges_carburants_directes_ch4        AS GES_CP,
+    eisp.ges_carburants_directes_co2        AS GES_directes_CP,
+    eisp.ges_carburants_directes_n2o        AS GES_indirectes_CP,
+    eisp.ges_carburants_indirectes_ch4      AS GES_CP,
+    eisp.ges_carburants_indirectes_co2      AS GES_directes_CP,
+    eisp.ges_carburants_indirectes_n2o      AS GES_indirectes_CP,
+    eisp.alertes_charges                 AS Alerte_Phyto_CP,
+    eisp.alerte_ferti_n_tot              AS Alerte_ferti_azotee_CP,
+    eisp.alerte_co_irrigation_std_mil    AS Alerte_semis_culture_principale,
+    eisp.alerte_msn_std_mil_avec_autoconso AS Alerte_recolte_cult_princi,
+    null AS Alerte_travail_sol, -- à venir sur Agrosyst
+    eisp.c_main_oeuvre_manuelle_reelle    AS cout_mo_manuelle_CP,
+    eisp.c_main_oeuvre_manuelle_reelle_tx_comp  AS cout_mo_manuelle_cp_tx_comp,
+    eisp.c_main_oeuvre_tractoriste_reelle    AS cout_mo_tractoriste_CP,
+    eisp.c_main_oeuvre_tractoriste_reelle_tx_comp  AS cout_mo_tractoriste_cp_tx_comp,
+    eisp.alerte_nombre_interventions_phyto  AS rec_moyens_biologiques_CP,
+    eisp.recours_macroorganismes          AS recours_macroorganismes_CP,
+    eisp.recours_produits_biotiques_sansamm  AS rec_pdts_biot_sansamm_CP,
+    eisp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_CP,
+    eisp.ift_cible_non_mil_chimique_tot     AS ift_cible_non_mil_chimiq_tot_CP,
+    eisp.ift_cible_non_mil_biocontrole     AS ift_cible_non_mil_biocontrole_CP,
+    eisp.ift_cible_non_mil_h                AS ift_cible_non_mil_h_CP,
+    eisp.ift_cible_non_mil_hh               AS ift_cible_non_mil_hh_CP,
+    eisp.ift_cible_non_mil_f                AS ift_cible_non_mil_f_CP,
+    eisp.ift_cible_non_mil_i                AS ift_cible_non_mil_i_CP,
+    eisp.ift_cible_non_mil_a                AS ift_cible_non_mil_a_CP,
+    eisp.ift_cible_non_mil_ts               AS ift_cible_non_mil_ts_CP,
+    null      								AS ift_cible_non_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
+    eisp.ift_cible_mil_chimique_tot         AS ift_cible_mil_chimiq_tot_CP,
+    eisp.ift_cible_mil_biocontrole          AS ift_cible_mil_biocontrole_CP,
+    eisp.ift_cible_mil_h                    AS ift_cible_mil_h_CP,
+    eisp.ift_cible_mil_hh                   AS ift_cible_mil_hh_CP,
+    eisp.ift_cible_mil_f                    AS ift_cible_mil_f_CP,
+    eisp.ift_cible_mil_i                    AS ift_cible_mil_i_CP,
+    eisp.ift_cible_mil_a                    AS ift_cible_mil_a_CP,
+    eisp.ift_cible_mil_ts                   AS ift_cible_mil_ts_CP,
+    null           							AS ift_cible_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
+    eisp.co_tot_reelles                      AS co_tot_reelles_CP,
+    eisp.co_tot_reelles_tx_comp              AS co_tot_reelles_tx_comp_CP,
+	--
+	eisp.recours_produits_toxiques_utilisateurs AS Nb_intrant_dang_CP,
+	eisp.recours_produits_danger_environnement AS Nb_intrant_dang_env_CP,
+	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
+	--
+	eisp.co_tot_reelles + eisp.cm_reelles AS charges_totale_CP, 
+	eisp.nbre_uth_necessaires AS nbre_uth_CP, 
+	--
+	null AS IFT_h_smethola_CP, -- à venir sur Agrosyst --> jugé non prioritaire.
+	null AS IFT_h_chlorto_CP, -- à venir sur Agrosyst
+	null AS IFT_h_diflufeni_CP, -- à venir sur Agrosyst
+	null AS IFT_h_dicamba_CP, -- à venir sur Agrosyst
+	null AS IFT_h_prosulfo_CP, -- à venir sur Agrosyst
+	null AS IFT_f_bixafen_CP, -- à venir sur Agrosyst
+	null AS IFT_f_boscalid_CP, -- à venir sur Agrosyst
+	null AS IFT_f_mancozebe_CP, -- à venir sur Agrosyst
+	null AS IFT_f_tebuco_CP, -- à venir sur Agrosyst
+	null AS IFT_i_phosmet_CP -- à venir sur Agrosyst
+FROM entrepot_noeuds_realise enr
+LEFT JOIN entrepot_itk_realise_agrege eira ON eira.itk_id = enr.id
+LEFT JOIN entrepot_itk_realise_performance eirp ON eirp.itk_realise_id = enr.id
+LEFT JOIN entrepot_connection_realise ecr ON ecr.cible_noeuds_realise_id = enr.id
+LEFT JOIN entrepot_culture ec ON enr.culture_id = ec.id
+LEFT JOIN entrepot_culture ec_intermediaire ON  ec_intermediaire.id = ecr.culture_intermediaire_id 
+LEFT JOIN entrepot_noeuds_realise_restructure enrr ON enrr.id = enr.id
+LEFT JOIN entrepot_noeuds_realise enr_prec ON enrr.precedent_noeuds_realise_id = enr_prec.id
+LEFT JOIN entrepot_culture ec_prec ON ec_prec.id = enr_prec.culture_id
+LEFT JOIN entrepot_typologie_culture_outils_dirodur etcod ON ec.id = etcod.culture_id
+LEFT JOIN entrepot_typologie_can_culture etcc ON ec.id = etcc.culture_id 
+LEFT JOIN entrepot_sdc sdc ON sdc.id = eira.sdc_id
+LEFT JOIN entrepot_dispositif dispo ON dispo.id = eira.dispositif_id
+LEFT JOIN entrepot_domaine dom ON dom.id   = eira.domaine_id
+LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
+LEFT JOIN entrepot_parcelle ep ON eira.parcelle_id = ep.id
+LEFT JOIN entrepot_zone ez ON eira.zone_id = ez.id
+LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
+LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id 
+LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+LEFT JOIN entrepot_typologie_assol_can_realise etacr ON etacr.sdc_id = sdc.id
+LEFT JOIN entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc ON sdc.id = essrotdbc.id
+LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id 
+LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON eirgotdbc.id = enr.id
+WHERE (sdc.filiere = 'MARAICHAGE')
+AND eeupsn.entite_retenue = 'realise_retenu'
+AND not dispo.type = 'NOT_DEPHY';
+
+
+
+
+
+
+
+
+
+
+
+
