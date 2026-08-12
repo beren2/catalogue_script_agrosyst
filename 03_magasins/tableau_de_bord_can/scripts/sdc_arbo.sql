@@ -116,7 +116,6 @@ SELECT
     esrp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
     --sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
-    null AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
@@ -253,7 +252,6 @@ SELECT
     essp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
     --sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
-    null AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,

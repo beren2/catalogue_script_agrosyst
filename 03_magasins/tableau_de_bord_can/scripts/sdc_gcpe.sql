@@ -140,7 +140,6 @@ SELECT
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
     esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
-    --esrp.qsa_cmr AS nb_manip_produit_CMR_SDC, ???
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,

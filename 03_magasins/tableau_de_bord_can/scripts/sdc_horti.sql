@@ -26,6 +26,7 @@ SELECT
     sdc.part_sau_domaine AS sdc_part_sau_domaine,
     -- Type d'agriculture et système synthétisé
     sdc.type_agriculture AS sdc_type_agriculture,
+    sdc.type_production AS sdc_type_production,
     null AS systeme_synthetise_id,      
     null AS systeme_synthetise_nom,  
     null AS systeme_synthetise_campagnes,
@@ -137,6 +138,7 @@ SELECT
     sdc.part_sau_domaine AS sdc_part_sau_domaine,
     -- Type d'agriculture et système synthétisé
     sdc.type_agriculture AS sdc_type_agriculture,
+    sdc.type_production AS sdc_type_production,
     synthetise.id AS systeme_synthetise_id,      
     synthetise.nom AS systeme_synthetise_nom,  
     synthetise.campagnes AS systeme_synthetise_campagnes,

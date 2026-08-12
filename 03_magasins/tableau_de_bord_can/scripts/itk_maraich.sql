@@ -1,5 +1,6 @@
 -- SYNTHETISE
 SELECT
+    null as itk_id,
 	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne as identifiant_systeme_campagne,
   	--etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	--sdc.code_dephy AS sdc_code_dephy,
@@ -199,16 +200,14 @@ SELECT
     eisp.ift_cible_non_mil_i                AS ift_cible_non_mil_i_CP,
     eisp.ift_cible_non_mil_a                AS ift_cible_non_mil_a_CP,
     eisp.ift_cible_non_mil_ts               AS ift_cible_non_mil_ts_CP,
-    null      								AS ift_cible_non_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
+    eisp.recours_aux_moyens_biologiques_CP  AS recours_aux_moyens_biologiques_CP, -- anciennement ift_cible_non_mil_rec_moy_bio_CP
     eisp.ift_cible_mil_chimique_tot         AS ift_cible_mil_chimiq_tot_CP,
-    eisp.ift_cible_mil_biocontrole          AS ift_cible_mil_biocontrole_CP,
     eisp.ift_cible_mil_h                    AS ift_cible_mil_h_CP,
     eisp.ift_cible_mil_hh                   AS ift_cible_mil_hh_CP,
     eisp.ift_cible_mil_f                    AS ift_cible_mil_f_CP,
     eisp.ift_cible_mil_i                    AS ift_cible_mil_i_CP,
     eisp.ift_cible_mil_a                    AS ift_cible_mil_a_CP,
     eisp.ift_cible_mil_ts                   AS ift_cible_mil_ts_CP,
-    null           							AS ift_cible_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
     eisp.co_tot_reelles                      AS co_tot_reelles_CP,
     eisp.co_tot_reelles_tx_comp              AS co_tot_reelles_tx_comp_CP,
 	--
@@ -258,6 +257,7 @@ AND eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY'
 union
 SELECT
+    null as itk_id,
 	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne as identifiant_systeme_campagne,
   	--etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	--sdc.code_dephy AS sdc_code_dephy,
@@ -457,7 +457,7 @@ SELECT
     eirp.ift_cible_non_mil_i                AS ift_cible_non_mil_i_CP,
     eirp.ift_cible_non_mil_a                AS ift_cible_non_mil_a_CP,
     eirp.ift_cible_non_mil_ts               AS ift_cible_non_mil_ts_CP,
-    null      								AS ift_cible_non_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
+    eirp.recours_aux_moyens_biologiques_CP  AS recours_aux_moyens_biologiques_CP, -- anciennement ift_cible_non_mil_rec_moy_bio_CP
     eirp.ift_cible_mil_chimique_tot         AS ift_cible_mil_chimiq_tot_CP,
     eirp.ift_cible_mil_biocontrole          AS ift_cible_mil_biocontrole_CP,
     eirp.ift_cible_mil_h                    AS ift_cible_mil_h_CP,
@@ -466,7 +466,6 @@ SELECT
     eirp.ift_cible_mil_i                    AS ift_cible_mil_i_CP,
     eirp.ift_cible_mil_a                    AS ift_cible_mil_a_CP,
     eirp.ift_cible_mil_ts                   AS ift_cible_mil_ts_CP,
-    null           							AS ift_cible_mil_rec_moy_bio_CP, -- à venir sur Agrosyst ? 
     eirp.co_tot_reelles                      AS co_tot_reelles_CP,
     eirp.co_tot_reelles_tx_comp              AS co_tot_reelles_tx_comp_CP,
 	--

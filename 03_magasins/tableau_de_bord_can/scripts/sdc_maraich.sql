@@ -53,12 +53,12 @@ SELECT
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
     esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
-    null AS Alerte_IFT_total_SDC,   --pas d'alerte sur l'ift total    
+    esrp.alerte_ift_cible_mil_chim_tot_hts AS Alerte_IFT_total_SDC,   
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
     null AS alerte_nb_ITK_vide_SdC,
     null AS Alerte_Nb_ITK_sans_ferti,
-    null AS Alerte_Nb_ITK_sans_semis,
+    null AS Alerte_Nb_ITK_sans_semis
     null AS Alerte_Nb_ITK_sans_recolte,
     null AS Alerte_Nb_ITK_sans_w_sol,
     null AS Alerte_Nb_ITK_verif_biocontrole,
@@ -333,7 +333,7 @@ SELECT
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
     essp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
-    null AS Alerte_IFT_total_SDC,      
+    essp.alerte_ift_cible_mil_chim_tot_hts AS Alerte_IFT_total_SDC,  
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
     null AS alerte_nb_ITK_vide_SdC,

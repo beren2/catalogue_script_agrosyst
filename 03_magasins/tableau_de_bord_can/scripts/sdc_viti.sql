@@ -154,8 +154,7 @@ SELECT
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
     esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC,
-    null AS effectif_SP                  -- Spécifique viticulture
+    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
@@ -320,8 +319,7 @@ SELECT
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
     essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC,
-    null AS effectif_SP             
+    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise 
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id

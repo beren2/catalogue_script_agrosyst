@@ -75,18 +75,7 @@ SELECT
 	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
 	--
 	eisp.co_tot_reelles + eisp.cm_reelles AS charges_totale_CP, 
-	eisp.nbre_uth_necessaires AS nbre_uth_CP, 
-	--
-	null AS IFT_h_smethola_CP, -- à venir sur Agrosyst --> jugé non prioritaire.
-	null AS IFT_h_chlorto_CP, -- à venir sur Agrosyst
-	null AS IFT_h_diflufeni_CP, -- à venir sur Agrosyst
-	null AS IFT_h_dicamba_CP, -- à venir sur Agrosyst
-	null AS IFT_h_prosulfo_CP, -- à venir sur Agrosyst
-	null AS IFT_f_bixafen_CP, -- à venir sur Agrosyst
-	null AS IFT_f_boscalid_CP, -- à venir sur Agrosyst
-	null AS IFT_f_mancozebe_CP, -- à venir sur Agrosyst
-	null AS IFT_f_tebuco_CP, -- à venir sur Agrosyst
-	null AS IFT_i_phosmet_CP -- à venir sur Agrosyst
+	eisp.nbre_uth_necessaires AS nbre_uth_CP
 FROM entrepot_connection_synthetise ecs
 LEFT JOIN entrepot_itk_synthetise_agrege eisa ON eisa.itk_id = ecs.id
 LEFT JOIN entrepot_itk_synthetise_performance eisp ON ecs.id = eisp.itk_synthetise_id
@@ -192,18 +181,7 @@ SELECT
 	eirp.recours_produits_cmr AS Nb_intrant_CMR_CP,
 	--
 	eirp.co_tot_reelles + eirp.cm_reelles AS charges_totale_CP, 
-	eirp.nbre_uth_necessaires AS nbre_uth_CP, 
-	--
-	null AS IFT_h_smethola_CP, -- à venir sur Agrosyst --> jugé non prioritaire.
-	null AS IFT_h_chlorto_CP, -- à venir sur Agrosyst
-	null AS IFT_h_diflufeni_CP, -- à venir sur Agrosyst
-	null AS IFT_h_dicamba_CP, -- à venir sur Agrosyst
-	null AS IFT_h_prosulfo_CP, -- à venir sur Agrosyst
-	null AS IFT_f_bixafen_CP, -- à venir sur Agrosyst
-	null AS IFT_f_boscalid_CP, -- à venir sur Agrosyst
-	null AS IFT_f_mancozebe_CP, -- à venir sur Agrosyst
-	null AS IFT_f_tebuco_CP, -- à venir sur Agrosyst
-	null AS IFT_i_phosmet_CP -- à venir sur Agrosyst
+	eirp.nbre_uth_necessaires AS nbre_uth_CP
 FROM entrepot_noeuds_realise enr
 LEFT JOIN entrepot_itk_realise_agrege eira ON eira.itk_id = enr.id
 LEFT JOIN entrepot_itk_realise_performance eirp ON eirp.itk_realise_id = enr.id
