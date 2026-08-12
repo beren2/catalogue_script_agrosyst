@@ -101,7 +101,7 @@ SELECT
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
     esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
     esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC,
-    null AS effectif_SP                  -- Spécifique viticulture
+    null AS effectif_SP                 
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id

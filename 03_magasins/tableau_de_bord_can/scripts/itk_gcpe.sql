@@ -39,13 +39,12 @@ SELECT
     ec.code AS culture_code,
     ec.id AS culture_id,
     ec.type AS culture_type,
-   	etcod.typodirodur_espece_precise AS espece_destination,  -- (typologie d'espèce avec destination pour DiRoDur)
-    etcod.typodirodur_espece AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
-    etcc.nb_typocan_esp, --nb composant culture ?
+   	etcod.typodirodur_espece_precise AS especes_destination,  -- (typologie d'espèce avec destination pour DiRoDur)
+    null AS especes,  -- ???
+    etcc.nb_composant_culture AS nb_espece, 
     etcc.typocan_espece AS typo_especes,
-    etcc.nb_typocan_esp AS nb_typo_espece,
-    etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
-    etcod.typodirodur_culture AS typo_culture,
+    etcc.nb_typocan_esp as nb_typo_espece,
+    etcc.typocan_culture AS typo_culture
     null AS typo_culture_2, --> de quoi s'agit-il ? 
     ec_intermediaire.id AS ci_id,
     ec_intermediaire.nom AS ci_nom,
@@ -158,12 +157,11 @@ SELECT
     ec.id AS culture_id,
     ec.type AS culture_type,
    	etcod.typodirodur_espece_precise AS especes_destination,  -- (typologie d'espèce avec destination pour DiRoDur)
-    etcod.typodirodur_espece AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
-    etcc.nb_typocan_esp, --nb composant culture ?
+    null AS especes,  -- ???
+    etcc.nb_composant_culture AS nb_espece, 
     etcc.typocan_espece AS typo_especes,
-    etcc.nb_typocan_esp AS nb_typo_espece,
- 	etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
-    etcod.typodirodur_culture AS typo_culture,
+    etcc.nb_typocan_esp as nb_typo_espece,
+    etcc.typocan_culture AS typo_culture,
     null AS typo_culture_2, --> de quoi s'agit-il ? 
     ec_intermediaire.id AS ci_id,
     ec_intermediaire.nom AS ci_nom,

@@ -13,8 +13,8 @@ SELECT
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
     dom.departement as departement,
-    dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
-    comm.region AS Nom_Region,        -- Idem
+    dom.departement AS Nom_Departement,  
+    comm.region AS Nom_Region, 
     comm.ancienne_region AS Nom_Ancienne_Region,
     dom.sau_totale AS sau_domaine,
     dom.campagne AS domaine_campagne,
@@ -103,11 +103,10 @@ SELECT
     esrp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    esrp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,    -- À vérifier
+    esrp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,  
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
     -- Coûts par poste
     esrp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
     esrp.co_fertimin_reel + esrp.co_epandage_orga_reelles  as CO_reelles_ferti_min_SDC,
@@ -116,7 +115,8 @@ SELECT
     esrp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
     esrp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
-    sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
+    --sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
+    null AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
@@ -231,9 +231,9 @@ SELECT
     essp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
     essp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
     -- Alertes (viticulture)
-    null AS alerte_renseignement_donnees,
+    null AS alerte_renseignement_donnees, -- ?
     -- Situation de production et coûts
-    eevpp.espece_principale AS situation_production,  -- Ex: "VITICOLE_Rouge" ou "VITICOLE_Champagne"
+    eevpp.espece_principale AS situation_production,
     essp.co_tot_std_mil AS CO_std_mil_SDC,
     essp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     essp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
@@ -252,7 +252,8 @@ SELECT
     essp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
     essp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
-    sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
+    --sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
+    null AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,

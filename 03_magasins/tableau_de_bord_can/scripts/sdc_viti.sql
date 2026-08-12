@@ -15,15 +15,15 @@ SELECT
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
-    dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
-    comm.region AS Nom_Region,        -- Idem
+    dom.departement AS Nom_Departement, 
+    comm.region AS Nom_Region,        
     comm.ancienne_region AS Nom_Ancienne_Region,
     dom.sau_totale AS sau_domaine,
-    dom.otex_18_nom AS otex_18_nom,       -- Spécifique viticulture : à vérifier dans la base
-    dom.otex_70_nom AS otex_70_nom,       -- Idem
+    dom.otex_18_nom AS otex_18_nom,    
+    dom.otex_70_nom AS otex_70_nom,    
     dom.campagne AS domaine_campagne,
     -- SDC et approche
-    'VITICULTURE' AS sdc_filiere,  -- Filière fixe pour ce script
+    'VITICULTURE' AS sdc_filiere,
     'réalisé' AS approche_de_calcul,
     sdc.id AS sdc_id,
     sdc.nom AS sdc_nom,

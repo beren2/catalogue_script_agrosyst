@@ -1,3 +1,5 @@
+select * from entrepot_typologie_assol_can_realise;
+
 SELECT
     -- Identification unique du SDC et de la campagne
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne
@@ -18,19 +20,18 @@ SELECT
     dom.sau_totale AS sau_domaine,
     dom.campagne AS domaine_campagne,
     -- Filière et approche
-    'MARAICHAGE' AS sdc_filiere,  -- Filière fixe pour ce script
+    'MARAICHAGE' AS sdc_filiere,
     'realise' AS approche_de_calcul,
     sdc.id AS sdc_id,
     sdc.nom AS sdc_nom,
     sdc.part_sau_domaine AS sdc_part_sau_domaine,
-    null AS surface_theorique_SDC,
-    null AS sdc_valide,            
+    sdc.validite AS sdc_valide,            
     -- Type d'agriculture et système synthétisé
     sdc.type_agriculture AS sdc_type_agriculture,
-    null AS systeme_synthetise_id,      -- À remplir si applicable
-    null AS systeme_synthetise_nom,      -- Idem
+    null AS systeme_synthetise_id,     
+    null AS systeme_synthetise_nom,   
     null AS systeme_synthetise_campagnes,
-    null AS systeme_synthetise_validation,
+    etacr.nb_culture_sdc as nb_cultures_sdc,
     -- Données économiques et techniques
     esrp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
     esrp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
@@ -52,7 +53,7 @@ SELECT
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
     esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
-    null AS Alerte_IFT_total_SDC,         -- À vérifier dans les tables
+    null AS Alerte_IFT_total_SDC,   --pas d'alerte sur l'ift total    
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
     null AS alerte_nb_ITK_vide_SdC,
@@ -62,8 +63,8 @@ SELECT
     null AS Alerte_Nb_ITK_sans_w_sol,
     null AS Alerte_Nb_ITK_verif_biocontrole,
     null AS Synthese_alertes,
-    null AS surface_sdc_itk,
     null AS alerte_renseignement_donnees,
+    null AS surface_sdc_itk,
     sdc.type_agriculture AS AB_CONV,
     -- Quantités de matières actives (maraîchage)
     esrp.qsa_tot AS quantite_mat_active_SDC,
@@ -139,7 +140,7 @@ SELECT
     esrp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    null AS nb_manip_produit_CMR_SDC,
+    esrp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
@@ -164,7 +165,7 @@ SELECT
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
     esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
     esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC,
-    null AS MED_surface_sdc,             -- Si applicable
+    null AS MED_surface_sdc,            
     null AS MED_ift_histo_chimique_tot_SDC,
     null AS MED_ift_histo_h_SDC,
     null AS MED_ift_histo_f_SDC,
@@ -270,6 +271,7 @@ FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
+LEFT JOIN entrepot_typologie_assol_can_realise etacr on sdc.id = etacr.sdc_id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id
 LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
@@ -298,19 +300,18 @@ SELECT
     dom.sau_totale AS sau_domaine,
     dom.campagne AS domaine_campagne,
     -- Filière et approche
-    'MARAICHAGE' AS sdc_filiere,  -- Filière fixe pour ce script
+    'MARAICHAGE' AS sdc_filiere,
     'synthetise' AS approche_de_calcul,
     sdc.id AS sdc_id,
     sdc.nom AS sdc_nom,
     sdc.part_sau_domaine AS sdc_part_sau_domaine,
-    null AS surface_theorique_SDC,
-    null AS sdc_valide,            
+    sdc.validite AS sdc_valide,            
     -- Type d'agriculture et système synthétisé
     sdc.type_agriculture AS sdc_type_agriculture,
-    synthetise.id AS systeme_synthetise_id,      -- À remplir si applicable
-    synthetise.nom AS systeme_synthetise_nom,      -- Idem
+    synthetise.id AS systeme_synthetise_id, 
+    synthetise.nom AS systeme_synthetise_nom,     
     synthetise.campagnes AS systeme_synthetise_campagnes,
-    null AS systeme_synthetise_validation,
+    etacr.nb_culture_sdc as nb_cultures_sdc,
     -- Données économiques et techniques
     essp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
     essp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
@@ -332,7 +333,7 @@ SELECT
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
     essp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
-    null AS Alerte_IFT_total_SDC,         -- À vérifier dans les tables
+    null AS Alerte_IFT_total_SDC,      
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
     null AS alerte_nb_ITK_vide_SdC,
@@ -419,7 +420,7 @@ SELECT
     essp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
     essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    null AS nb_manip_produit_CMR_SDC,
+    essp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
@@ -444,7 +445,7 @@ SELECT
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
     essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
     essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC,
-    null AS MED_surface_sdc,             -- Si applicable
+        null AS MED_surface_sdc,            
     null AS MED_ift_histo_chimique_tot_SDC,
     null AS MED_ift_histo_h_SDC,
     null AS MED_ift_histo_f_SDC,
@@ -551,6 +552,7 @@ LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
+LEFT JOIN entrepot_typologie_assol_can_realise etacr on sdc.id = etacr.sdc_id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id

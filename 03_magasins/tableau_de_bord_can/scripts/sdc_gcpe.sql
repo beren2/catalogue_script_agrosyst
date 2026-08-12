@@ -13,7 +13,7 @@ SELECT
     dom.departement as departement,
     dom.sau_totale as sau_domaine,
     dom.campagne as domaine_campagne,
-    'réalisé' as approche_de_calcul,
+    'realise' as approche_de_calcul,
     sdc.id as sdc_id,
     sdc.nom as sdc_nom, 
     sdc.part_sau_domaine as sdc_part_sau_domaine, 
@@ -24,7 +24,7 @@ SELECT
     null as systeme_synthetise_nom,
     null as systeme_synthetise_campagnes,
     etacr.typocan_assol as typo_rotation,
-    null as nb_culture_sdc, -- qu'est-ce que le nombre de culture ?
+    etacr.nb_culture_sdc as nb_cultures_sdc, 
     essrotdbc.surface_betterave as surface_Betterave_SDC,
 	essrotdbc.surface_cereale_a_paille_printemps as surface_CaP_Printemps_SDC,
 	essrotdbc.surface_cereale_a_paille_hiver as surface_CaP_hiver_SDC,
@@ -139,6 +139,7 @@ SELECT
     esrp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
+    esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
     --esrp.qsa_cmr AS nb_manip_produit_CMR_SDC, ???
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
@@ -189,7 +190,7 @@ SELECT
     dom.departement as departement,
     dom.sau_totale as sau_domaine,
     dom.campagne as domaine_campagne,
-    'synthétisé' as approche_de_calcul,
+    'synthetise' as approche_de_calcul,
     sdc.id as sdc_id,
     sdc.nom as sdc_nom, 
     sdc.part_sau_domaine as sdc_part_sau_domaine, 
@@ -200,7 +201,7 @@ SELECT
     synthetise.nom as systeme_synthetise_nom,
     synthetise.campagnes as systeme_synthetise_campagnes,
     etcrs.typocan_rotation as typo_rotation,
-    null as nb_culture_sdc, -- qu'est-ce que le nombre de culture ?
+    etcrs.nb_culture_synthetise as nb_culture_sdc, 
     essotdbc.surface_betterave as surface_Betterave_SDC,
 	essotdbc.surface_cereale_a_paille_printemps as surface_CaP_Printemps_SDC,
 	essotdbc.surface_cereale_a_paille_hiver as surface_CaP_hiver_SDC,
@@ -315,7 +316,7 @@ SELECT
     essp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    --essp.qsa_cmr AS nb_manip_produit_CMR_SDC, ???
+    esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,

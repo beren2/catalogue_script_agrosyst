@@ -28,7 +28,7 @@ SELECT
     sdc.nom AS sdc_nom,
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
-    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS sdc_type_agriculture,
     sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente ?
     es.id AS systeme_synthetise_id,
     es.nom AS systeme_synthetise_nom,
@@ -49,11 +49,11 @@ SELECT
     ec.code AS culture_code,
     ec.id AS culture_id,
     ec.type AS culture_type,
-    etcod.typodirodur_espece AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
-    etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
+    null AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
+    etcc.nb_composant_culture AS nb_espece, -- Quelle différence avec nb_typo_espece ?
     etcc.typocan_espece AS typo_especes,
-    etcc.nb_typocan_esp as nb_typo_espece, --nb composant culture ?
-    etcod.typodirodur_culture AS typo_culture,
+    etcc.nb_typocan_esp_maraich as nb_typo_espece, --nb composant culture ?
+    etcc.typocan_culture AS typo_culture,
     ec_intermediaire.id AS ci_id,
     ec_intermediaire.nom AS ci_nom,
     ec_intermediaire.code AS ci_code,
@@ -137,9 +137,6 @@ SELECT
     eisp.energie_ferti_min                    AS energie_ferti_min_CP,
     eisp.energie_ferti_orga                    AS energie_ferti_orga_CP,
     eisp.energie_phyto                        AS energie_phyto_CP,
-    eisp.energie_ferti_min                   AS GES_CP,                     -- CO2 equivalente
-    eisp.energie_ferti_orga                   AS GES_directes_CP,           -- direct
-    eisp.energie_ferti_min                    AS GES_indirectes_CP,         -- indirect
     eisp.tps_utilisation_materiel            AS tps_util_materiel_CP,
     eisp.tps_utilisation_materiel_tx_comp    AS tps_util_materiel_tx_comp_CP,
     eisp.tps_utilisation_materiel_janvier    AS tps_util_materiel_janvier_CP,
@@ -178,12 +175,9 @@ SELECT
     eisp.ferti_k2o_tot                      AS K_CP,
     eisp.ferti_k2o_mineral                  AS K_Mineral_CP,
     eisp.ferti_k2o_organique                AS K_Orga_CP,
-    eisp.ges_carburants_directes_ch4        AS GES_CP,
-    eisp.ges_carburants_directes_co2        AS GES_directes_CP,
-    eisp.ges_carburants_directes_n2o        AS GES_indirectes_CP,
-    eisp.ges_carburants_indirectes_ch4      AS GES_CP,
-    eisp.ges_carburants_indirectes_co2      AS GES_directes_CP,
-    eisp.ges_carburants_indirectes_n2o      AS GES_indirectes_CP,
+    eisp.ges_totaux_total_ges_total         AS GES_CP,                    
+    eisp.ges_totaux_directes_ges_total      AS GES_directes_CP,           
+    eisp.ges_totaux_indirectes_ges_total    AS GES_indirectes_CP,   
     eisp.alertes_charges                 AS Alerte_Phyto_CP,
     eisp.alerte_ferti_n_tot              AS Alerte_ferti_azotee_CP,
     eisp.alerte_co_irrigation_std_mil    AS Alerte_semis_culture_principale,
@@ -225,16 +219,14 @@ SELECT
 	eisp.co_tot_reelles + eisp.cm_reelles AS charges_totale_CP, 
 	eisp.nbre_uth_necessaires AS nbre_uth_CP, 
 	--
-	null AS IFT_h_smethola_CP, -- à venir sur Agrosyst --> jugé non prioritaire.
-	null AS IFT_h_chlorto_CP, -- à venir sur Agrosyst
-	null AS IFT_h_diflufeni_CP, -- à venir sur Agrosyst
-	null AS IFT_h_dicamba_CP, -- à venir sur Agrosyst
-	null AS IFT_h_prosulfo_CP, -- à venir sur Agrosyst
-	null AS IFT_f_bixafen_CP, -- à venir sur Agrosyst
-	null AS IFT_f_boscalid_CP, -- à venir sur Agrosyst
-	null AS IFT_f_mancozebe_CP, -- à venir sur Agrosyst
-	null AS IFT_f_tebuco_CP, -- à venir sur Agrosyst
-	null AS IFT_i_phosmet_CP -- à venir sur Agrosyst
+    eisp.qsa_diflufenican AS qte_mat_active_diflufeni_CP,
+    eisp.qsa_mancozeb AS qte_mat_active_mancozebe_CP,
+    eisp.qsa_tebuconazole AS qte_mat_active_tebuco_CP,
+    eisp.qsa_bixafen AS qte_mat_active_bixafen_CP,
+    eisp.qsa_boscalid AS qte_mat_active_boscalid_CP,
+    eisp.qsa_dicamba AS qte_mat_active_dicamba_CP,
+    eisp.qsa_prosulfocarbe AS qte_mat_active_prosulfo_CP,
+    eisp.qsa_smetolachlore AS qte_mat_active_smethola_CP
 FROM entrepot_connection_synthetise ecs
 LEFT JOIN entrepot_itk_synthetise_agrege eisa ON eisa.itk_id = ecs.id
 LEFT JOIN entrepot_itk_synthetise_performance eisp ON ecs.id = eisp.itk_synthetise_id
@@ -264,12 +256,11 @@ LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON ei
 WHERE (sdc.filiere='MARAICHAGE')
 AND eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY'
-UNION
+union
 SELECT
 	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne as identifiant_systeme_campagne,
   	--etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	--sdc.code_dephy AS sdc_code_dephy,
-    null as identifiant_itk, -- exemple ???
 	COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne  as identifiant_systeme_campagne, --concaténation des variables sdc_code_dephy + campagne
 	null AS identifiant_itk, -- exemple ???
 	null  AS identifiant_itk_sdc_camp,-- exemple ?
@@ -295,7 +286,7 @@ SELECT
     sdc.nom AS sdc_nom,
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
-    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS sdc_type_agriculture,
     sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente ?
     null AS systeme_synthetise_id,
     null AS systeme_synthetise_nom,
@@ -316,11 +307,11 @@ SELECT
     ec.code AS culture_code,
     ec.id AS culture_id,
     ec.type AS culture_type,
-    etcod.typodirodur_espece AS especes,  -- (typologie d'espece utilisée pour DiRoDur)
-    etcc.nb_typocan_esp AS nb_espece, -- Quelle différence avec nb_typo_espece ?
+    null AS especes,  -- ???
+    etcc.nb_composant_culture AS nb_espece, 
     etcc.typocan_espece AS typo_especes,
-    etcc.nb_typocan_esp as nb_typo_espece, --nb composant culture ?
-    etcod.typodirodur_culture AS typo_culture,
+    etcc.nb_typocan_esp_maraich as nb_typo_espece,
+    etcc.typocan_culture AS typo_culture,
     ec_intermediaire.id AS ci_id,
     ec_intermediaire.nom AS ci_nom,
     ec_intermediaire.code AS ci_code,
@@ -396,17 +387,14 @@ SELECT
     eirp.c_main_oeuvre_tractoriste_reelle_tx_comp  AS c_main_oeuvre_tractoriste_reelle_tx_comp_CP,
     eirp.c_main_oeuvre_tot_reelle          AS c_main_oeuvre_tot_reelle_CP,
     eirp.c_main_oeuvre_tot_reelle_tx_comp  AS c_main_oeuvre_tot_reelle_tx_comp_CP,
-    eirp.c_main_oeuvre_manuelle_reelle      AS charges_totale_CP,
-    eirp.cm_reelles                           AS CM_reelles_CP,
-    eirp.co_tot_reelles                       AS CO_reelles_CP,
-    eirp.conso_carburant                      AS conso_carburant_CP,
-    eirp.conso_carburant_tx_comp              AS conso_carburant_tx_comp_CP,
-    eirp.energie_ferti_min                    AS energie_ferti_min_CP,
-    eirp.energie_ferti_orga                    AS energie_ferti_orga_CP,
-    eirp.energie_phyto                        AS energie_phyto_CP,
-    eirp.energie_ferti_min                   AS GES_CP,                     -- CO2 equivalente
-    eirp.energie_ferti_orga                   AS GES_directes_CP,           -- direct
-    eirp.energie_ferti_min                    AS GES_indirectes_CP,         -- indirect
+    eirp.c_main_oeuvre_manuelle_reelle       AS charges_totale_CP,
+    eirp.cm_reelles                          AS CM_reelles_CP,
+    eirp.co_tot_reelles                      AS CO_reelles_CP,
+    eirp.conso_carburant                     AS conso_carburant_CP,
+    eirp.conso_carburant_tx_comp             AS conso_carburant_tx_comp_CP,
+    eirp.energie_ferti_min                   AS energie_ferti_min_CP,
+    eirp.energie_ferti_orga                  AS energie_ferti_orga_CP,
+    eirp.energie_phyto                       AS energie_phyto_CP,
     eirp.tps_utilisation_materiel            AS tps_util_materiel_CP,
     eirp.tps_utilisation_materiel_tx_comp    AS tps_util_materiel_tx_comp_CP,
     eirp.tps_utilisation_materiel_janvier    AS tps_util_materiel_janvier_CP,
@@ -445,12 +433,9 @@ SELECT
     eirp.ferti_k2o_tot                      AS K_CP,
     eirp.ferti_k2o_mineral                  AS K_Mineral_CP,
     eirp.ferti_k2o_organique                AS K_Orga_CP,
-    eirp.ges_carburants_directes_ch4        AS GES_CP,
-    eirp.ges_carburants_directes_co2        AS GES_directes_CP,
-    eirp.ges_carburants_directes_n2o        AS GES_indirectes_CP,
-    eirp.ges_carburants_indirectes_ch4      AS GES_CP,
-    eirp.ges_carburants_indirectes_co2      AS GES_directes_CP,
-    eirp.ges_carburants_indirectes_n2o      AS GES_indirectes_CP,
+    eirp.ges_totaux_total_ges_total          AS GES_CP,                    
+    eirp.ges_totaux_directes_ges_total       AS GES_directes_CP,           
+    eirp.ges_totaux_indirectes_ges_total     AS GES_indirectes_CP,   
     eirp.alertes_charges                 AS Alerte_Phyto_CP,
     eirp.alerte_ferti_n_tot              AS Alerte_ferti_azotee_CP,
     eirp.alerte_co_irrigation_std_mil    AS Alerte_semis_culture_principale,
@@ -492,16 +477,14 @@ SELECT
 	eirp.co_tot_reelles + eirp.cm_reelles AS charges_totale_CP, 
 	eirp.nbre_uth_necessaires AS nbre_uth_CP, 
 	--
-	null AS IFT_h_smethola_CP, -- à venir sur Agrosyst --> jugé non prioritaire.
-	null AS IFT_h_chlorto_CP, -- à venir sur Agrosyst
-	null AS IFT_h_diflufeni_CP, -- à venir sur Agrosyst
-	null AS IFT_h_dicamba_CP, -- à venir sur Agrosyst
-	null AS IFT_h_prosulfo_CP, -- à venir sur Agrosyst
-	null AS IFT_f_bixafen_CP, -- à venir sur Agrosyst
-	null AS IFT_f_boscalid_CP, -- à venir sur Agrosyst
-	null AS IFT_f_mancozebe_CP, -- à venir sur Agrosyst
-	null AS IFT_f_tebuco_CP, -- à venir sur Agrosyst
-	null AS IFT_i_phosmet_CP -- à venir sur Agrosyst
+    eirp.qsa_diflufenican AS qte_mat_active_diflufeni_CP,
+    eirp.qsa_mancozeb AS qte_mat_active_mancozebe_CP,
+    eirp.qsa_tebuconazole AS qte_mat_active_tebuco_CP,
+    eirp.qsa_bixafen AS qte_mat_active_bixafen_CP,
+    eirp.qsa_boscalid AS qte_mat_active_boscalid_CP,
+    eirp.qsa_dicamba AS qte_mat_active_dicamba_CP,
+    eirp.qsa_prosulfocarbe AS qte_mat_active_prosulfo_CP,
+    eirp.qsa_smetolachlore AS qte_mat_active_smethola_CP
 FROM entrepot_noeuds_realise enr
 LEFT JOIN entrepot_itk_realise_agrege eira ON eira.itk_id = enr.id
 LEFT JOIN entrepot_itk_realise_performance eirp ON eirp.itk_realise_id = enr.id
