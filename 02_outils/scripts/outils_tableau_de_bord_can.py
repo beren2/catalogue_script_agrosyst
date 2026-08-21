@@ -119,6 +119,44 @@ CATEGORIES_RENDEMENTS = {
     ]
 }
 
+
+CATEGORIES_RENDEMENT_MARAICH = data = {
+    'Rdt_Toutes_catego_Tous_condition': [
+        'Toutes catégories - tous calibres',
+        'Toutes catégories',
+        'Tous conditionnements',
+        'Toutes catégories - tous conditionnements',
+        'Toutes catégories - tous calibres - tous conditionnements',
+        'Transformation / Toutes catégories - tous calibres',
+        'Paille'
+    ],
+
+    'Rdt_Autre': [
+        'Categ. Extra',
+        'Categ. I',
+        'Categ. II'
+    ],
+
+    'Rdt_Production_semences': [],
+
+    'Rdt_Fraiches_Primeur': [
+        'Fraiches / Toutes catégories - tous calibres',
+        'Primeur / Toutes catégories - tous calibres',
+        'Frais / Toutes catégories - tous calibres'
+    ],
+
+    'Rdt_Exportation': [
+        'Alimentation humaine_tous calibres',
+        'Crue / Tous calibres',
+        'Sans label / Toutes catégories',
+        'Sans label / Toutes catégories - tous calibres'
+    ],
+
+    'Rdt_Circuit_Long': [],
+
+    'Rdt_Circuit_Court': []
+}
+
 def get_percent_each_typo_culture(cgrp, freq_column='frequence', normalize=True):
     '''
     Permet de calculer le pourcentage de chaque typologie de culture dans un groupe de données.
@@ -1045,6 +1083,99 @@ def get_synthetise_complet_outils_tableau_de_bord_can(
 
 
 def get_itk_rendement_gcpe_outils_tableau_de_bord_can(
+    donnees
+):
+    """
+        Permet d'obtenir des rendements agrégé au niveau de l'itinéraire techniques. 
+        Une colonne par typologie de rendement (+ colonne pour l'unité de rendement)
+
+        Les typologies de rendement retenues sont ici :
+        - 'paille', 'fourrage', 'sucre', 'fibre', 'semences', 'bioenergie', 'ttes_categ'
+    """
+    df = copy.deepcopy(donnees)
+
+    df['recolte_rendement_prix'].set_index('id', inplace=True)
+    df['destination_valorisation'].set_index('id', inplace=True)
+    df['action_realise_agrege'].set_index('id', inplace=True)
+    df['action_synthetise_agrege'].set_index('id', inplace=True)
+
+    left = df['recolte_rendement_prix']
+    right = df['destination_valorisation'][['libelle']]
+    df['recolte_rendement_prix_extanded'] = pd.merge(left, right, left_on = 'destination_id', right_index=True, how='left')
+
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_realise_agrege'][['noeuds_realise_id', 'plantation_perenne_phases_realise_id']]
+    df['recolte_rendement_prix_extanded_realise'] = pd.merge(left, right, left_on = 'action_id', right_index=True, how='inner')
+
+    left = df['recolte_rendement_prix_extanded']
+    right = df['action_synthetise_agrege'][['connection_synthetise_id', 'plantation_perenne_phases_synthetise_id']]
+    df['recolte_rendement_prix_extanded_synthetise'] = pd.merge(left, right, left_on = 'action_id', right_index=True, how='inner')
+
+    df['recolte_rendement_prix_extanded_realise']['itk_id'] = df['recolte_rendement_prix_extanded_realise']['noeuds_realise_id'].fillna(df['recolte_rendement_prix_extanded_realise']['plantation_perenne_phases_realise_id'])
+    df['recolte_rendement_prix_extanded_synthetise']['itk_id'] = df['recolte_rendement_prix_extanded_synthetise']['connection_synthetise_id'].fillna(df['recolte_rendement_prix_extanded_synthetise']['plantation_perenne_phases_synthetise_id'])
+
+    df['recolte_rendement_prix_extanded'] = pd.concat([
+        df['recolte_rendement_prix_extanded_synthetise'][['rendement_moy', 'rendement_unite', 'destination', 'itk_id']],
+        df['recolte_rendement_prix_extanded_realise'][['rendement_moy', 'rendement_unite', 'destination', 'itk_id']]
+    ])
+    
+    # 1. Mapper chaque destination vers sa catégorie globale
+    dest_to_cat = {lib: cat for cat, libelles in CATEGORIES_RENDEMENTS.items() for lib in libelles}
+
+    sub = df['recolte_rendement_prix_extanded'][
+        ['rendement_moy', 'rendement_unite', 'destination', 'itk_id']
+    ].copy()
+
+    # 2. Associer la catégorie directement dans le DataFrame
+    sub['category'] = sub['destination'].map(dest_to_cat)
+
+    # On conserve uniquement les lignes qui appartiennent à une catégorie connue
+    sub_filtered = sub.dropna(subset=['category'])
+
+    # 3. Agrégation par (itk_id, category) en une seule passe
+    grouped = sub_filtered.groupby(['itk_id', 'category']).agg(
+        rend_mean=('rendement_moy', 'mean'),
+        unit_unique=('rendement_unite', 'nunique'),
+        unit_first=('rendement_unite', 'first')
+    ).reset_index()
+
+    # 4. Gérer le cas des unités multiples
+    grouped['unit'] = np.where(
+        grouped['unit_unique'] == 1, 
+        grouped['unit_first'], 
+        'MULTIPLE'
+    )
+    grouped['rend_mean'] = np.where(
+        grouped['unit_unique'] == 1, 
+        grouped['rend_mean'], 
+        np.nan
+    )
+
+    # 5. Pivoter pour obtenir exactement le format d'origine (1 colonne par cat_rend_mean et cat_unit)
+    pivot_mean = grouped.pivot(index='itk_id', columns='category', values='rend_mean')
+    pivot_mean.columns = [f'{c}_rend_mean' for c in pivot_mean.columns]
+
+    pivot_unit = grouped.pivot(index='itk_id', columns='category', values='unit')
+    pivot_unit.columns = [f'{c}_unit' for c in pivot_unit.columns]
+
+    # 6. Combiner les résultats
+    result = pd.concat([pivot_mean, pivot_unit], axis=1)
+
+    # Réordonner les colonnes pour chaque catégorie comme dans votre code initial (optionnel)
+    cols_order = []
+    for cat in CATEGORIES_RENDEMENTS.keys():
+        if f'{cat}_rend_mean' in result.columns:
+            cols_order.extend([f'{cat}_rend_mean', f'{cat}_unit'])
+
+    result = result.reindex(columns=cols_order).reset_index()
+
+    return result.rename(columns={'itk_id' : 'id'})
+
+
+
+
+
+def get_itk_rendement_maraich_outils_tableau_de_bord_can(
     donnees
 ):
     """
