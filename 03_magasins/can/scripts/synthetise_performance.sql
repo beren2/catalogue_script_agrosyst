@@ -306,4 +306,3 @@ left join entrepot_synthetise es on essp.synthetise_id = es.id
 left join entrepot_context_performance_sdc sdc_context on sdc_context.sdc_id = es.sdc_id;
 
 
-
