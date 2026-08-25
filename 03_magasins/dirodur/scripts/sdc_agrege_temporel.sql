@@ -2,6 +2,7 @@ WITH agregat AS (
     SELECT
         sdc_numero_dephy,
         sdc_etat_temporel,
+        STRING_AGG(DISTINCT(sdc_completion_serie_temporelle), ', ') AS sdc_ag_temp_completion_serie_temporelle,
         STRING_AGG(CAST(domaine_campagne AS TEXT), ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_campagne_domaine,
         COUNT(*) AS sdc_ag_temp_nb_sdc,
         STRING_AGG(DISTINCT(sdc_code), ', ') AS sdc_ag_temp_sdc_code,

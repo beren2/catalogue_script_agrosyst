@@ -15,6 +15,7 @@ SELECT
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
+	esstod.serie_tempo as sdc_completion_serie_temporelle,
 	-- sdc_typo_*
 	null as sdc_typo_surface_totale_assol_dvlp,
 	null as sdc_typo_surface_totale_assol,
@@ -275,6 +276,7 @@ SELECT
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
+	esstod.serie_tempo as sdc_completion_serie_temporelle,
 	-- sdc_typo_*
 	typoassol.surface_totale_assol_dvlp as sdc_typo_surface_totale_assol_dvlp,
 	typoassol.surface_totale_assol as sdc_typo_surface_totale_assol,

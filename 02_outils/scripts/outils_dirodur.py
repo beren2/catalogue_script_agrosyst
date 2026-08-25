@@ -334,13 +334,15 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
     Si un sdc autre qu'un pz0 a une campagne (ou une année parmis la liste de campagne, pour les synthétisé) comprise dans 
     les X dernières années consécutives, elle est tagué 'point_B'.
     
-    On tague ensuite en point_A tout les sdc avant les points B s'il n'y a pas de pz0. 
+    Pour 'etat_temporel':
+    On tague ensuite en point_A tout les sdc avant les points B s'il n'y a pas de pz0. Et inversement, tout les sdc après les pz0 s'il n'y a pas de point_B.
     S'il y a des points B et des pz0, on taguera ceux entre les deux comme point I.
     S'il y a des sdc arpès les points B, on les taguera comme point C (sdc non consécutifs).
 
-    On crée aussi derie_temporel, qui indique si l'ensemble des sdc d'un numéro DEPHY contiennent un pz0 ou non, un points_B ou non.
+    On crée aussi 'serie_temporel'
+    Elle indique si l'ensemble des sdc d'un numéro DEPHY contiennent un pz0 ou non, un points_B ou non.
     On fait une distinction entre les pz0 non présents et ceux qui ont été filtrés par la fonction util de filtration.
-    Les point_I (intermédiaires) sont les sdc entre les pz0 et les point_B
+    On spécifie également s'il reste un pz0 monoannuel seul (ni 2, ni 3) que le pz0 est incomplet, et ce même s'il existe dans le code dephy un pz0 et un point_B.
 
     Entree de la fonction util de filtration:
         'synthetise',
@@ -363,7 +365,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
 
     Retourne:
         Dataframe avec les colonnes suivantes :
-        ['sdc_id', 'sdc_code', 'code_dephy', 'campagne', 'synthetise_id', 'campagnes', 'etat_temporel']
+        ['sdc_id', 'sdc_code', 'type_agriculture', 'code_dephy', 'campagne', 'synthetise_id', 'campagnes', 'etat_temporel']
         Le sdc_id étant l'identifiant de base et l'etat_temporel la colonne importante
     """
 
@@ -448,8 +450,13 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
 
     def label_pz0_status(df):
         """ 
-        On modifie un peu les label de l'outil d'identification des pz0 pour crée le début de 'état_temporel'. 
+        On crée le début du label de 'serie_tempo' indiquant s'il y a des pz0 disponibles.
         Typiquement on check s'il y a bien au moins 2 pz0 tagué pour un numéro DEPHY, si ce n'est pas le cas on regarde si ils ont été filtré par la fonction util ou si l'outil était déjà sans pz0 pour ce code DEPHY.
+        On tague alors 
+            * 'sans_pz0' si l'outil ne détecte pas de pz0
+            * 'pz0_filtres' si l'outil détecte des pz0 mais qu'ils ont été filtrés par la fonction util
+            * 'pz0_incomplet' si l'outil détecte des pz0 mais qu'il n'y a qu'un seul pz0 pour ce code DEPHY
+            * 'pz0' si l'outil détecte des pz0 et qu'il y a au moins 2 pz0 pour ce code DEPHY
         """
         df_pz0 = df[df['pz0'] == 'pz0'].copy()
         df_pz0
@@ -457,12 +464,14 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         df_pz0['all_years'] = df_pz0.apply(extract_years, axis=1)
         grouped = df_pz0.groupby('code_dephy')['all_years'].agg(lambda x: set().union(*x))
         valid_groups = grouped[grouped.apply(len) >= 2].index.tolist()
-        not_incorrect_cd = df.loc[df['pz0'].isin(['pz0','post']),'code_dephy'].tolist()
+        incomplete_groups = grouped[grouped.apply(len) == 1].index.tolist()
+        correct_cd = df.loc[df['pz0'].isin(['pz0','post']),'code_dephy'].tolist()
 
         df['serie_tempo'] = df.apply(
             lambda row:
-                'sans_pz0' if row['code_dephy'] not in not_incorrect_cd and row['code_dephy'] not in valid_groups
-                else 'pz0_filtres' if row['code_dephy'] in not_incorrect_cd and row['code_dephy'] not in valid_groups
+                'sans_pz0' if row['code_dephy'] not in correct_cd and row['code_dephy'] not in valid_groups and row['code_dephy'] not in incomplete_groups
+                else 'pz0_filtres' if row['code_dephy'] in correct_cd and row['code_dephy'] not in valid_groups and row['code_dephy'] not in incomplete_groups
+                else 'pz0_incomplet' if row['code_dephy'] in correct_cd and row['code_dephy'] not in valid_groups and row['code_dephy'] in incomplete_groups
                 else 'pz0' if row['pz0'] == 'pz0' and row['code_dephy'] in valid_groups
                 else row['pz0'],
             axis=1
@@ -499,7 +508,7 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         """ 
         Dernière fonction a être appelé. 
         Permet de check s'il y a des points_B parmi chaque code DEPHY. 
-        Si ce n'est pas le cas, ajoute un message d'erreur qui correspond au cas. 
+        Si ce n'est pas le cas, modifie le label de la colonne 'serie_tempo' pour indiquer que le code_DEPHY ne ocntient pas de point_B
         """
 
         for code in list(df['code_dephy'].unique()):
@@ -507,6 +516,8 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
                 mask = df['code_dephy'] == code
                 if (df.loc[mask, 'serie_tempo'] == 'sans_pz0').any():
                     df.loc[mask, 'serie_tempo'] = 'ni_pz0_ni_point_B'
+                elif (df.loc[mask, 'serie_tempo'] == 'pz0_incomplet').any():
+                    df.loc[mask, 'serie_tempo'] = 'pz0_incomplet_et_sans_point_B'
                 elif (df.loc[mask, 'serie_tempo'] == 'pz0_filtres').any():
                     df.loc[mask, 'serie_tempo'] = 'pz0_filtres_et_sans_point_B'
                 else:
@@ -580,8 +591,9 @@ def get_temporal_status_for_each_sdc_dirodur(donnees):
         df.loc[(df["code_dephy"].isin(codes_complete_serie)) & (df['etat_temporel'] == 'post'), "etat_temporel"] = "point_I"
         df.loc[(~df["code_dephy"].isin(codes_complete_serie)) & (df['etat_temporel'] == 'post'), "etat_temporel"] = "point_A"
 
-
+        # Tous les états temporels qui n'ont pas encore été tagué de façon spécifique et continue d'être des 'post' sont des point_I
         df['etat_temporel'] = np.where(df['etat_temporel'] == 'post', 'point_I', df['etat_temporel'])
+        # Toutes les séries temporelles qui n'ont pas encore été tagué de façon spécifique sont des séries complètes
         df['serie_tempo'] = np.where(df['serie_tempo'].isin(['post','pz0']), 'serie_complete', df['serie_tempo'])
 
 

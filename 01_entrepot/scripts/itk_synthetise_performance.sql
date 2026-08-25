@@ -121,6 +121,7 @@ SELECT
     temps_travail_total_decembre AS tps_travail_total_decembre,
     temps_travail_total AS tps_travail_total,
     temps_travail_total_taux_de_completion AS tps_travail_total_tx_comp,
+    nombre_uth_necessaires AS nbre_uth_necessaires,
     nombre_de_passages_janvier AS nbre_de_passages_janvier,
     nombre_de_passages_fevrier AS nbre_de_passages_fevrier,
     nombre_de_passages_mars AS nbre_de_passages_mars,

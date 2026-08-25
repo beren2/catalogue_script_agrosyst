@@ -898,11 +898,11 @@ test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Doma
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,"['COMMUNE00000000000021857', 'COMMUNE00000000000000684']",,geofla_2015_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_2fc51943-5b3f-4f3e-befe-16c47d376ffa,10.0,,rmqs_dist_site
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_12c4938a-004b-4e0e-b17f-54d278ef1e69,"[ ""2006-04-06"", ""2017-01-16"" ]",,rmqs_date_sampl
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,"01025",,codeinsee
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,01025,,codeinsee
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,837,,rmqs_site_id
 test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_704b9c52-e73f-4e07-a435-1e3aaa5c3dc0,5631,,safran_cell_id
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,"06",,typo_ruralite
-test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,"05",,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_b1b6b972-adb0-4eda-ad6f-05619f5d2f66,06,,typo_ruralite
+test_get_donnees_spatiales_commune_du_domaine,fr.inra.agrosyst.api.entities.Domain_752196e9-df29-426a-a301-5ba106c9d3b3,05,,typo_ruralite
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_3059742b-3357-4e2a-bcb6-3d1af4636467,,,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_0445d8bc-7638-44c5-8068-f98484618d96,POINT (5.078887999999999 47.192313),,coord_gps
 test_get_donnees_spatiales_coord_gps_du_domaine,fr.inra.agrosyst.api.entities.GeoPoint_c9fd2d74-ba29-498d-94e9-0b3f4b68a2ce,4316,,safran_cell_id
@@ -1090,7 +1090,7 @@ test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.Growing
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_00e0ed65-a1f8-48ae-b1f5-ecb703099dd7,Merlot N,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1d4a9d61-1eb5-40f7-aa59-6d15bc82af3c,Alval,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,ERREUR_aucune_variete,,variete_principale
-test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,"[]",,liste_toutes_varietes
+test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_1f7f2dc5-b05c-47ec-bb0e-271c80bdc19c,[],,liste_toutes_varietes
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_2009e18f-9e69-4485-b8bd-82a3f1bcf166,ERREUR_aucune_des_especes_arbo_majoritaires,,espece_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,melange_egal_variete,,variete_principale
 test_get_espece_variete_perenne_principale,fr.inra.agrosyst.api.entities.GrowingSystem_253b46ab-8248-4132-9deb-b5b14bbf62c0,"['Cabernet franc N', 'Cabernet-Sauvignon N', 'Cot N', 'Merlot N', 'Muscadelle B', 'Sauvignon B', 'Semillon B']",,liste_toutes_varietes
@@ -1201,20 +1201,24 @@ test_get_rendement_synthetise_filtre_outils_dirodur,fr.inra.agrosyst.api.entitie
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_841ec372-e023-491c-8969-3b40bb7a6f65,,synthetise_id
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,"2009, 2010, 2011",,campagnes
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,pz0,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,serie_complete,,serie_tempo
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_90e5596c-ec9a-477e-af5c-00cbb2badd00,GCF10134,,code_dephy
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7df7b91b-a7ee-4a39-b178-55c7d028f40c,2018,,campagne
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_7df7b91b-a7ee-4a39-b178-55c7d028f40c,point_I,,etat_temporel
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_1d48c80c-b01c-49ea-8fd3-fd31a8691992,point_B,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b734af83-9a3f-43fe-89c6-c8fafc1e0c50,sans_pz0,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b9c498cf-5bba-46f3-9eb6-8f1f2579aa8e,incorrect : campagne non-attendue,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b734af83-9a3f-43fe-89c6-c8fafc1e0c50,point_A,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_b734af83-9a3f-43fe-89c6-c8fafc1e0c50,pz0_filtres,,serie_tempo
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_453832a6-64f6-4cbb-b369-3f89dc74952f,pz0,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_e5dfbb47-b4c6-43bc-9f3a-75ea67d27ae6,incorrect : campagne non-attendue,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f0999629-9f42-450d-8d46-d7f6f37cab29,sans_point_B,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_26fd5252-5b18-4913-806a-e9733c4c2acf,pz0_filtres,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56034341-216b-4b59-9512-05d022b1218d,pz0_filtres_et_sans_point_B,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_9bedb71e-9a8d-4e82-bbd2-3b77c04072b4,incorrect : chevauchement pz0,,etat_temporel
-test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2ae9d4c0-5c3e-4a66-a29d-a38a4cad0800,ni_pz0_ni_point_B,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f0999629-9f42-450d-8d46-d7f6f37cab29,pz0,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_f0999629-9f42-450d-8d46-d7f6f37cab29,sans_point_B,,serie_tempo
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_26fd5252-5b18-4913-806a-e9733c4c2acf,point_B,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_26fd5252-5b18-4913-806a-e9733c4c2acf,pz0_incomplet,,serie_tempo
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56034341-216b-4b59-9512-05d022b1218d,pz0_filtres_et_sans_point_B,,serie_tempo
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_56034341-216b-4b59-9512-05d022b1218d,point_A,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_9bedb71e-9a8d-4e82-bbd2-3b77c04072b4,point_I,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_2ae9d4c0-5c3e-4a66-a29d-a38a4cad0800,pz0_filtres_et_sans_point_B,,serie_tempo
 test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_6f683fc0-f21f-4e02-ab9c-1d476335e53c,point_C,,etat_temporel
+test_get_temporal_status_for_each_sdc_dirodur,fr.inra.agrosyst.api.entities.GrowingSystem_c65e781b-26ec-4166-865c-720ff30dac76,Agriculture conventionnelle,,type_agriculture
 test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,"[324, 56, 56, 59]",,dates_nbjr_triees
 test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,"[97, 118]",,dates_nbjr_triees
 test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,"[61, 61]",,dates_nbjr_triees
@@ -1223,25 +1227,25 @@ test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlan
 test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,"[85, 220]",,dates_nbjr_triees
 test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,"[315, 315, 61, 61]",,dates_nbjr_triees
 test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,"[103, 120]",,dates_nbjr_triees
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,"[228]",,dates_nbjr_triees
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,"31/12",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,"16/04",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,"01/03",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,"20/08",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,"19/05",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,"31/05",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,"10/12",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,"20/04",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,"15/08",,date_moyenne
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,"hiver",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,"ete",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,"printemps",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,"automne",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,"ete",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,"ete",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,"hiver",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,"ete",,saison_semis_detect_via_intv
-test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,"automne",,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,[228],,dates_nbjr_triees
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,31/12,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,16/04,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,01/03,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,20/08,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,19/05,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,31/05,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,10/12,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,20/04,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,15/08,,date_moyenne
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000269f5-e64c-40f1-a581-1177bd937c0a,hiver,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0002dbc4-5f42-445d-9944-b7a7f9c4a2e8,ete,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_0003adb6-89d8-4695-9546-2166614548a4,printemps,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_000a5487-1845-4753-b983-ae8e089f3590,automne,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_00450508-e65e-4577-bc54-83770e978308,ete,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_004b130e-ea96-4c2b-8406-1403467dc0e3,ete,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ff26f543-5df1-4774-bb0f-ce263c2fe111,hiver,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff60f2f-f1d4-47f6-8d3e-d86310d73235,ete,,saison_semis_detect_via_intv
+test_get_date_de_semis_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_fff7ec84-be83-4e51-8267-6882c22f129f,automne,,saison_semis_detect_via_intv
 test_get_typologie_culture_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_51bae500-cf3f-401d-a7f6-471009e79423,automne_hiver,,typodirodur_espece_periode_semis
 test_get_typologie_culture_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_375e215e-d98c-4245-bdc9-47519239fe50,automne_printemps,,typodirodur_espece_periode_semis
 test_get_typologie_culture_outils_dirodur,fr.inra.agrosyst.api.entities.CroppingPlanEntry_bc1478a1-cfb1-481f-a76b-7bfdf77746bf,pluriannuelle,,typodirodur_espece_periode_semis

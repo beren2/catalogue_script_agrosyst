@@ -126,6 +126,8 @@ def test_get_temporal_status_for_each_sdc_dirodur():
     fonction_to_apply = outils_dirodur.get_temporal_status_for_each_sdc_dirodur
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='sdc_id')
 
+    assert all(res)
+
 def test_get_intervention_realise_culture_outils_can():
     """
         Test de l'obtention des qualification de rendement pour le magasin DiRoDur
@@ -210,6 +212,7 @@ def test_get_itk_filtre_outils_dirodur():
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
+
 
 def test_get_date_de_semis_outils_dirodur():
     """

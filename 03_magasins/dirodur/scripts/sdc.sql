@@ -13,6 +13,7 @@ SELECT
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
+	esstod.serie_tempo as sdc_completion_serie_temporelle,
 	-- ------------------------------------------
 	-- -- TYPOLOGIE CAN SDC (ROTATION & ASSOL) --
 	-- ------------------------------------------
@@ -300,6 +301,7 @@ SELECT
 	sdc.type_agriculture as sdc_type_agriculture,
 	sdc.part_sau_domaine as sdc_part_sau_domaine,
 	esstod.etat_temporel as sdc_etat_temporel,
+	esstod.serie_tempo as sdc_completion_serie_temporelle,
 	-- ------------------------------------------
 	-- -- TYPOLOGIE CAN SDC (ROTATION & ASSOL) --
 	-- ------------------------------------------
