@@ -39,7 +39,16 @@ select
 	null as connexion_id,
 	errfod.destination_have_match_in_ref_dirodur as destination_est_conforme,
 	not errfod.unite_problematic as unite_est_conforme,
-	not errfod.espece_is_na as espece_est_conforme
+	not errfod.espece_is_na as espece_est_conforme,
+	ear.zone_id as zone_id,
+	ear.parcelle_id as parcelle_id,
+	ear.sdc_id as sdc_id,
+	ear.domaine_id as domaine_id,
+    ecom.codeinsee as domaine_position_code_insee,
+	ecom.commune as domaine_position_nom_commune,
+	ecom.departement as domaine_position_departement,
+	ecom.region as domaine_position_region,
+	ecom.ancienne_region as domaine_position_ancienne_region
 from entrepot_recolte_rendement_prix errp
 join entrepot_action_realise ear on errp.action_id = ear.id
 left join entrepot_recolte_rendement_prix_restructure errpr on errp.id = errpr.id
@@ -49,6 +58,8 @@ left join entrepot_variete ve on ecc.variete_id = ve.id
 left join entrepot_culture ec on ecc.culture_id = ec.id
 left join entrepot_typologie_can_culture etcc on etcc.culture_id = ec.id
 left join entrepot_action_realise_agrege eara on ear.id = eara.id
+left join entrepot_domaine edom on ear.domaine_id = edom.id
+left join entrepot_commune ecom on edom.commune_id = ecom.id
 left join entrepot_intervention_realise eir on eir.id = ear.intervention_realise_id
 left join entrepot_rendement_realise_filtre_outils_dirodur errfod on errp.id = errfod.id
 left join entrepot_sdc_realise_filtre_outils_dirodur esrfod on eara.sdc_id = esrfod.sdc_id

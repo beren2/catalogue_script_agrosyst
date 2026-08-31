@@ -37,7 +37,16 @@ select
     errd.connexion_id,
     destination_est_conforme,
 	unite_est_conforme,
-	espece_est_conforme
+	espece_est_conforme,
+    zone_id,
+	parcelle_id,
+	sdc_id,
+	domaine_id,
+    domaine_position_code_insee,
+	domaine_position_nom_commune,
+	domaine_position_departement,
+	domaine_position_region,
+	domaine_position_ancienne_region
 from entrepot_rendement_realise_dirodur errd
 union all
 -- En synthétisé
@@ -79,5 +88,14 @@ select
     ersd.connexion_id,
     destination_est_conforme,
 	unite_est_conforme,
-	espece_est_conforme
+	espece_est_conforme,
+    zone_id,
+	parcelle_id,
+	sdc_id,
+	domaine_id,
+    domaine_position_code_insee,
+	domaine_position_nom_commune,
+	domaine_position_departement,
+	domaine_position_region,
+	domaine_position_ancienne_region
 from entrepot_rendement_synthetise_dirodur ersd;
