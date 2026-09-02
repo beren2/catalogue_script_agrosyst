@@ -23,7 +23,7 @@ from scripts import interoperabilite
 from scripts import outils_can
 from scripts import outils_dirodur
 from scripts import outils_dephygraph
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import pandas as pd
 import geopandas as gpd
 from colorama import Fore, Style
@@ -116,8 +116,13 @@ def export_to_db(df, name):
             df.to_csv(DATA_PATH+name+'.csv')
             update_local_version_table(name)
     else :
-        df.to_sql(name=name, con=engine, if_exists='replace')
-        engine.dispose()
+        with engine.begin() as conn:
+            conn.execute(text(f'DROP TABLE IF EXISTS "{name}"'))
+        df.to_sql(
+            name=name,
+            con=engine,
+            if_exists='fail'
+        )
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def add_primary_key(table_name, pk_column):
@@ -239,6 +244,8 @@ def import_df(df_name, path_data, sep, file_format='csv') :
         # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
         donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
     if file_format == 'gpkg' :
+        donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'shp' :
         donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
 
@@ -938,15 +945,10 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    sdc_realise_filtre_outils_dirodur = outils_dirodur.get_sdc_realise_filtre_outils_dirodur(donnees)
-    sdc_realise_filtre_outils_dirodur.set_index('sdc_id', inplace=True)
-    export_to_db(sdc_realise_filtre_outils_dirodur, 'entrepot_sdc_realise_filtre_outils_dirodur')
-    add_primary_key('entrepot_sdc_realise_filtre_outils_dirodur','sdc_id')
-
-    synthetise_filtre_outils_dirodur = outils_dirodur.get_synthetise_filtre_outils_dirodur(donnees)
-    synthetise_filtre_outils_dirodur.set_index('synthetise_id', inplace=True)
-    export_to_db(synthetise_filtre_outils_dirodur, 'entrepot_synthetise_filtre_outils_dirodur')
-    add_primary_key('entrepot_synthetise_filtre_outils_dirodur','synthetise_id')
+    df_test = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
+    df_test.set_index('domaine_id', inplace=True)
+    export_to_db(df_test, 'entrepot_test_spatial_domaine')
+    add_primary_key('entrepot_test_spatial_domaine','domaine_id')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
@@ -1050,6 +1052,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
             print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
             load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
             load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
             load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
             print("* CHARGEMENT DES RÉFÉRENTIELS *")
@@ -1137,12 +1140,13 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
-                    load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
+                    # print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                    # load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
-                    #load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
-                    #load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
-                    #load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                     print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
                     print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")
@@ -1169,6 +1173,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                             load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                         print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                        load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False,path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                         print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
