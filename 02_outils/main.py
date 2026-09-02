@@ -945,10 +945,10 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_test = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
-    df_test.set_index('domaine_id', inplace=True)
-    export_to_db(df_test, 'entrepot_test_spatial_domaine')
-    add_primary_key('entrepot_test_spatial_domaine','domaine_id')
+    df_test = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
+    df_test.set_index('geopoint_id', inplace=True)
+    export_to_db(df_test, 'entrepot_test_spatial_gps')
+    add_primary_key('entrepot_test_spatial_gps','geopoint_id')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça

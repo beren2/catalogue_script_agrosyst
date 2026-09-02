@@ -570,13 +570,17 @@
 					"geoVec_rmqs",
 					"geoVec_viti"
 				],
+				"shapefile" : [
+					"geoShp_bdgsf"
+				],
 				"geopackage" : [
 					"safran"
 				],
 				"csv_geo" : [
 					"referentiel_geographique_fr_esr_unique",
 					"geofla",
-					"ruralite"
+					"ruralite",
+					"bdgsf_matrice_smu_stu"
 				]
 			},
 			"dephygraph_data" : {
@@ -842,25 +846,14 @@
             "test" : {
                 "function_name" : "create_category_test",
 				"entrepot_dependances" : [
-					"sdc", "synthetise_synthetise_performance",
-					"sdc_realise_performance",
-					"intervention_realise_agrege", "intervention_synthetise_agrege", 
-					"typologie_assol_can_realise", "typologie_can_rotation_synthetise", 
-					"synthetise", "entite_unique_par_sdc_nettoyage", "sdc_realise_performance",
-					"synthetise_synthetise_performance", "connection_synthetise", "noeuds_synthetise",
-					"noeuds_realise", "parcelle", "zone", "itk_synthetise_performance", "itk_realise_performance",
-					"typologie_can_culture"
+					"domaine", "commune","coordonnees_gps_domaine"
 				],
-                "dependances" : [{
-                    "source" : "outils", 
-                    "category": "restructuration"
-                }],
+                "dependances" : [
+				],
                 "generated" : [
-                    "donnees_dephyferme_pour_dephygraph"
+                    "test_spatial_gps"
                 ], 
 				"need_performance" : [
-					"sdc_realise_performance",
-					"synthetise_synthetise_performance"
 				]
             }
         }
