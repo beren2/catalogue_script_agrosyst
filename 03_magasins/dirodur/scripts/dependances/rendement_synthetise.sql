@@ -45,7 +45,27 @@ select
     ecom.codeinsee as domaine_position_code_insee,
 	ecom.commune as domaine_position_nom_commune,
 	ecom.departement as domaine_position_departement,
-	ecom.region as domaine_position_region,
+	CASE ecom.region
+		WHEN 11 THEN '11_Île-de-France'
+		WHEN 24 THEN '24_Centre-Val de Loire'
+		WHEN 27 THEN '27_Bourgogne-Franche-Comté'
+		WHEN 28 THEN '28_Normandie'
+		WHEN 32 THEN '32_Hauts-de-France'
+		WHEN 44 THEN '44_Grand Est'
+		WHEN 52 THEN '52_Pays de la Loire'
+		WHEN 53 THEN '53_Bretagne'
+		WHEN 75 THEN '75_Nouvelle-Aquitaine'
+		WHEN 76 THEN '76_Occitanie'
+		WHEN 84 THEN '84_Auvergne-Rhône-Alpes'
+		WHEN 93 THEN "93_Provence-Alpes-Côte d'Azur"
+		WHEN 94 THEN '94_Corse'
+		WHEN 1  THEN '01_Guadeloupe'
+		WHEN 2  THEN '02_Martinique'
+		WHEN 3  THEN '03_Guyane'
+		WHEN 4  THEN '04_La Réunion'
+		WHEN 6  THEN '06_Mayotte'
+		ELSE 'Inconnu'
+	END AS domaine_position_region,
 	ecom.ancienne_region as domaine_position_ancienne_region
 from entrepot_recolte_rendement_prix errp
 join entrepot_action_synthetise eas on errp.action_id = eas.id
