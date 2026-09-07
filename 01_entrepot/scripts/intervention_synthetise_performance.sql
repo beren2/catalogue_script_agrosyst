@@ -28,6 +28,7 @@ SELECT
     ift_a_la_cible_non_mil_ift_a AS ift_cible_non_mil_a,
     ift_a_la_cible_non_mil_ift_hh AS ift_cible_non_mil_hh,
     ift_a_la_cible_non_mil_ift_biocontrole AS ift_cible_non_mil_biocontrole,
+    ift_a_l_ancienne_ift_chimique_total + ift_a_la_cible_non_mil_ift_biocontrole AS ift_cible_non_mil_chimique_bioc_tot,
     ift_a_la_cible_non_mil_taux_de_completion AS ift_cible_non_mil_tx_comp,
     replace(replace(ift_a_la_cible_non_mil_detail_champs_non_renseig,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS ift_cible_non_mil_chmps_non_rens,
     ift_a_la_cible_mil_ift_chimique_total AS ift_cible_mil_chimique_tot,
