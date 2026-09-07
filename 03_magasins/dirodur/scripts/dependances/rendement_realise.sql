@@ -43,6 +43,7 @@ select
 	eara.parcelle_id as parcelle_id,
 	eara.sdc_id as sdc_id,
 	eara.domaine_id as domaine_id,
+	ecom.id as domaine_position_commune_id,
     ecom.codeinsee as domaine_position_code_insee,
 	ecom.commune as domaine_position_nom_commune,
 	ecom.departement as domaine_position_departement,
