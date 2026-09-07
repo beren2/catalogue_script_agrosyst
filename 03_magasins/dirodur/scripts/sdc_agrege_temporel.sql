@@ -191,7 +191,7 @@ WITH agregat AS (
         AVG(sdc_hri1_g3_hts) AS sdc_ag_temp_hri1_g3_tot_moy,
         AVG(sdc_hri1_g4_hts) AS sdc_ag_temp_hri1_g4_tot_moy,
         AVG(sdc_ges_total_co2eq) as sdc_ag_temp_ges_total_co2eq,
-        AVG(sdc_ges_directs_co2eq) as sdc_ag_temp_ges_indirects_co2eq,
+        AVG(sdc_ges_directs_co2eq) as sdc_ag_temp_ges_directs_co2eq,
         AVG(sdc_ges_indirects_co2eq) as sdc_ag_temp_ges_indirects_co2eq,
         AVG(sdc_ges_ferti_min_directes_co2eq) AS sdc_ag_temp_ges_ferti_min_directes_co2e_moy,
         AVG(sdc_ges_ferti_orga_directes_co2eq) AS sdc_ag_temp_ges_ferti_orga_directes_co2eq_moy,
