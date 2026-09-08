@@ -59,7 +59,7 @@ select
 		WHEN 75 THEN '75_Nouvelle-Aquitaine'
 		WHEN 76 THEN '76_Occitanie'
 		WHEN 84 THEN '84_Auvergne-Rhône-Alpes'
-		WHEN 93 THEN "93_Provence-Alpes-Côte d'Azur"
+		WHEN 93 THEN '93_Provence-Alpes-Côte d''Azur'
 		WHEN 94 THEN '94_Corse'
 		WHEN 1  THEN '01_Guadeloupe'
 		WHEN 2  THEN '02_Martinique'
