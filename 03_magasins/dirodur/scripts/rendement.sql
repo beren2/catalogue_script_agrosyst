@@ -42,6 +42,7 @@ select
 	parcelle_id,
 	sdc_id,
 	domaine_id,
+    domaine_position_commune_id,
     domaine_position_code_insee,
 	domaine_position_nom_commune,
 	domaine_position_departement,
