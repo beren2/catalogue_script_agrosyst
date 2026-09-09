@@ -1,0 +1,32 @@
+id,nom,description,code_convention_dephy,actif
+fr.inra.agrosyst.api.entities.Network_6dae20c1-fc67-491b-b4d3-1549b643b200,IT_MINETTE,,,t
+fr.inra.agrosyst.api.entities.Network_7cbb5352-26e9-449b-8b4b-b92f00f71a26,IT_BANCTEL,,,t
+fr.inra.agrosyst.api.entities.Network_cd4ae0db-5dfe-40f9-ad84-2f9379ef30ef,IR_LEFEVRE_Alexia,Filière GCPE,70CE14PY,t
+fr.inra.agrosyst.api.entities.Network_aa2492a7-bcb3-4f6d-a115-36fd48f72046,IT_LECARPENTIER,,,t
+fr.inra.agrosyst.api.entities.Network_ccac152c-f348-4b83-aa46-d6b103021e00,IT_GUIET,,,t
+fr.inra.agrosyst.api.entities.Network_d2dcae92-0fe0-42af-8fb6-128b8b8628ab,IT_PAMBOU,,,t
+fr.inra.agrosyst.api.entities.Network_89b2bd06-ce04-4d81-949c-30a52361a2b6,IT_MEROT,,,t
+fr.inra.agrosyst.api.entities.Network_b738151e-87f6-488c-8f51-6547fc81deac,IT_GUYOT,,,t
+fr.inra.agrosyst.api.entities.Network_e922b1c2-b424-444e-af79-88f13c0f464b,IT_POIROT,DEPHY Ferme viticole Arc Méditerranéen ,,t
+fr.inra.agrosyst.api.entities.Network_2f197d43-2007-4751-91ac-d833cdd95be8,IT_ALMOUSSAWI,,,t
+fr.inra.agrosyst.api.entities.Network_77d93c7d-fbec-416c-8fc8-258f81ec50cb,SdC DEPHY-Ferme Arrêtés,Ce réseau trace les systèmes de culture des fermes qui ont quitté le réseau DEPHY. Les IR des groupes de fermes correspondant doivent lier les systèmes de culture concernés à ce réseau,,t
+fr.inra.agrosyst.api.entities.Network_bd37734e-3e2b-41bc-938c-158de9b7ed97,IT_LACZ,,,t
+fr.inra.agrosyst.api.entities.Network_322206cb-a087-49d5-9852-c7a98e9c1f6f,IR_RAYNAUD,,87CA24PY,t
+fr.inra.agrosyst.api.entities.Network_c7e4d1f8-1691-4f2f-9291-57abeb5ef404,IR_MAGNON,Réseau DEPHY FERME Grandes cultures semences Drôme Ardèche,70CA26GC,t
+fr.inra.agrosyst.api.entities.Network_5e9c9dbf-f2d1-4fdb-885b-b7be38c9cff4,IR_TOMASZEWSKI,,87CA79PY,t
+fr.inra.agrosyst.api.entities.Network_ed0a0c7c-e7c6-4b49-a4cb-264d79d487f7,IR_QUEUNIET,,70CI53GC,t
+fr.inra.agrosyst.api.entities.Network_85df1080-c42b-43ea-835b-24df8c9d04a4,IR_GOMAR,,70CO84VI,t
+fr.inra.agrosyst.api.entities.Network_b48209bb-ff2a-49ba-9a91-8388b935051f,IR_MARAN,,70CO17VI,t
+fr.inra.agrosyst.api.entities.Network_ec1a8f4d-723e-4fcf-a45c-8f028c685aca,IR_GENDAUD,,16CA34VI,t
+fr.inra.agrosyst.api.entities.Network_0dbd161e-c1f5-4eb3-acce-0042fafd8b19,IR_AVALLONE,,70AS13VI,t
+fr.inra.agrosyst.api.entities.Network_b7b31597-b04e-43ae-be20-ac6ac4f84832,IR_BARRIERE,Filière maraîchage,70CA19LG,t
+fr.inra.agrosyst.api.entities.Network_0428fc5e-d4ae-41ea-a4f5-04dc947815f9,IR_DACHARY,,70CA45GC,t
+fr.inra.agrosyst.api.entities.Network_635afff5-590e-4704-953e-778c3e8d4812,IR_TOLLE_Maxime,,70FR54VI,t
+fr.inra.agrosyst.api.entities.Network_eac1185f-63c1-453b-bf34-879ab77ac531,IT_MARCANT,,,t
+fr.inra.agrosyst.api.entities.Network_ceb91dbb-8a31-4b62-98b8-abb1655697a9,IT_JUILLARD,,,t
+fr.inra.agrosyst.api.entities.Network_cc709b44-a42b-4809-98bc-120ee5f84340,IT_GAZUIT,"Marie-Noelle Bruère remplace Dominique Descoureaux
+Nicolas Roche-Bruyn remplace Marie-Noelle Bruère
+Elodie BETENCOURT remplace Nicolas Roche-Bruyn
+Laurine Gazuit remplace Elodie Betencourt",,t
+fr.inra.agrosyst.api.entities.Network_cf88d708-fe37-4e01-acf8-b2797fab5ec9,IR_RICHARD,,87OP80LG,t
+fr.inra.agrosyst.api.entities.Network_7142e367-d0f0-436b-ab3c-a30e5cc31804,IT_KEMPE(THILL),,,t

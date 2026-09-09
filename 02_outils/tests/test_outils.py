@@ -33,6 +33,8 @@ def import_df(df_name, path_data, sep, df, file_format='csv'):
         df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
     if file_format == 'gpkg' :
         df[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'shapefile' :
+        df[df_name] = gpd.read_file(path_data+df_name+'.'+'shp')
 
 def import_dfs(df_names, data_path, sep = ',', df=None, file_format='csv'):
     """
@@ -51,12 +53,12 @@ def import_dfs_withExtension(df_names_withExt:dict, data_path):
     """
     all_df = {}
     for x in df_names_withExt :
-        if isinstance(x, str) and x in {'json', 'gpkg', 'csv'}:
+        if isinstance(x, str) and x in {'json', 'gpkg', 'csv', 'shapefile'}:
             df_names = df_names_withExt[x]
             df_dict = import_dfs(df_names, data_path = data_path, file_format=x)
             all_df = {**all_df, **df_dict}
         else :
-            raise ValueError("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg'") 
+            raise ValueError("Les clefs du dictionnaire doivent être 'csv' ou 'json' ou 'gpkg' ou 'shapefile'") 
     return all_df
 
 def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
@@ -106,6 +108,7 @@ def fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, \
                 v_obs = output[colonne_to_test].values
                 v_att = expected_output[colonne_to_test].values
                 res.append(False)
+                print(f"\ncolonne testée : {colonne_to_test}\nvaleur observée : {v_obs}\nvaleur attendue : {v_att}")
             else:
                 res.append(True)
 
@@ -796,9 +799,10 @@ def test_get_donnees_spatiales_commune_du_domaine():
     identifiant_test = 'test_get_donnees_spatiales_commune_du_domaine'
 
     df_names_withExt = {
-        'csv' : ['commune','domaine','geofla','ruralite'],
+        'csv' : ['commune','domaine','geofla','ruralite','bdgsf_matrice_smu_stu'],
         'json' : ['geoVec_com2024','geoVec_rmqs'],
-        'gpkg' : ['safran']
+        'gpkg' : ['safran'],
+        'shapefile' : ['geoShp_bdgsf']
     }
 
     path_data = '02_outils/tests/data/test_get_donnees_spatiales_commune_du_domaine/'
@@ -816,9 +820,10 @@ def test_get_donnees_spatiales_coord_gps_du_domaine():
     identifiant_test = 'test_get_donnees_spatiales_coord_gps_du_domaine'
 
     df_names_withExt = {
-        'csv' : ['coordonnees_gps_domaine'],
+        'csv' : ['coordonnees_gps_domaine','bdgsf_matrice_smu_stu'],
         'json' : ['geoVec_com2024','geoVec_rmqs'],
-        'gpkg' : ['safran']
+        'gpkg' : ['safran'],
+        'shapefile' : ['geoShp_bdgsf']
     }
 
     path_data = '02_outils/tests/data/test_get_donnees_spatiales_coord_gps_du_domaine/'

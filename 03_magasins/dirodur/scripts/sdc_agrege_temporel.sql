@@ -8,20 +8,28 @@ WITH agregat AS (
         STRING_AGG(DISTINCT(sdc_code), ', ') AS sdc_ag_temp_sdc_code,
         STRING_AGG(DISTINCT(sdc_filiere), ', ') AS sdc_ag_temp_filieres,
         STRING_AGG(sdc_type_agriculture, ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_types_agriculture,
-        AVG(sdc_part_sau_domaine) AS sdc_ag_temp_part_sau_domaine_moy,
-        AVG(sdc_typo_surface_totale_assol_dvlp) AS sdc_ag_temp_surface_dvlp_real_moy,
-        AVG(sdc_typo_surface_totale_assol) AS sdc_ag_temp_surface_real_moy,
-        STRING_AGG(DISTINCT(sdc_typo_can_assol_dvlp), ', ') AS sdc_ag_temp_typologie_can_assol_dvlp,
-        STRING_AGG(DISTINCT(sdc_typo_can_assol), ', ') AS sdc_ag_temp_typologie_can_assol,
+        AVG(sdc_surface_theorique) AS sdc_ag_temp_sdc_surface_theorique_moy,
+        STRING_AGG(DISTINCT(typologie_can_sdc), ', ') AS sdc_ag_temp_typologie_can, 
+        AVG(typologie_can_sdc_proportion_developpee) AS sdc_ag_temp_typologie_can_proportion_developpee,
         STRING_AGG(DISTINCT(dispositif_code), ', ') AS sdc_ag_temp_dispositif_code,
         STRING_AGG(DISTINCT(domaine_code), ', ') AS sdc_ag_temp_domaine_code,
         STRING_AGG(DISTINCT(domaine_siret), ', ') AS sdc_ag_temp_siret,
         STRING_AGG(DISTINCT(domaine_type_ferme), ', ') AS sdc_ag_temp_types_ferme,
-        STRING_AGG(DISTINCT(domaine_position_departement), ', ') AS sdc_ag_temp_departement,
         STRING_AGG(DISTINCT(domaine_position_commune_id), ', ') AS sdc_ag_temp_commune_id,
         STRING_AGG(DISTINCT(CAST(domaine_position_code_insee AS TEXT)), ', ') AS sdc_ag_temp_code_insee,
+        STRING_AGG(DISTINCT(CAST(domaine_position_codepostal AS TEXT)), ', ') AS sdc_ag_temp_code_postal,
+        STRING_AGG(DISTINCT(domaine_position_nom_commune), ', ') AS sdc_ag_temp_nom_commune,
+        STRING_AGG(DISTINCT(domaine_position_departement), ', ') AS sdc_ag_temp_departement,
+        STRING_AGG(DISTINCT(CAST(domaine_position_region AS TEXT)), ', ') AS sdc_ag_temp_region,
+        STRING_AGG(DISTINCT(domaine_position_ancienne_region), ', ') AS sdc_ag_temp_ancienne_region,
+        STRING_AGG(DISTINCT(domaine_position_petiteregionagricolecode), ', ') AS sdc_ag_temp_petiteregionagricolecode,
         STRING_AGG(DISTINCT(CAST(domaine_position_cellule_safran AS TEXT)), ', ') AS sdc_ag_temp_cellule_safran_id,
         STRING_AGG(DISTINCT(CAST(domaine_position_rmqs_site_id AS TEXT)), ', ') AS sdc_ag_temp_rmqs_site_id,
+        STRING_AGG(DISTINCT(CAST(domaine_position_bdgsf_smu AS TEXT)), ', ') AS sdc_ag_temp_bdgsf_smu,
+        STRING_AGG(DISTINCT(CAST(domaine_position_bdgsf_stu_id_1 AS TEXT)), ', ') AS sdc_ag_temp_bdgsf_stu_id_1,
+        AVG(CAST(domaine_position_bdgsf_stu_pct_aire_1 AS NUMERIC)) AS sdc_ag_temp_bdgsf_stu_pct_aire_1,
+        STRING_AGG(DISTINCT(CAST(domaine_position_bdgsf_stu_id_2 AS TEXT)), ', ') AS sdc_ag_temp_bdgsf_stu_id_2,
+        AVG(CAST(domaine_position_bdgsf_stu_pct_aire_2 AS NUMERIC)) AS sdc_ag_temp_bdgsf_stu_pct_aire_2,
         STRING_AGG(DISTINCT(domaine_zonage), ', ') AS sdc_ag_temp_zonage,
         AVG(domaine_pct_sau_zone_vulnerable) AS sdc_ag_temp_pct_sau_zone_vulnerable_moy,
         AVG(domaine_pct_sau_zone_excedent_structurel) AS sdc_ag_temp_pct_sau_zone_excedent_structurel_moy,
@@ -52,7 +60,6 @@ WITH agregat AS (
         AVG(domaine_main_oeuvre_saisoniere) AS sdc_ag_temp_main_oeuvre_saisoniere_moy,
         AVG(domaine_main_oeuvre_volontaire) AS sdc_ag_temp_main_oeuvre_volontaire_moy,
         STRING_AGG(DISTINCT(CAST(domaine_typologie_ruralite AS TEXT)), ', ') AS sdc_ag_temp_typologie_ruralite,
-        STRING_AGG(DISTINCT(synthetise_rotation_typo_can), ', ') AS sdc_ag_temp_synthetise_rotation_typo_can,
         AVG(sdc_ift_cible_non_mil_chimique_tot) AS sdc_ag_temp_ift_cible_non_mil_chimique_tot_moy,
         AVG(sdc_ift_cible_non_mil_chim_tot_hts) AS sdc_ag_temp_ift_cible_non_mil_chim_tot_hts_moy,
         AVG(sdc_ift_cible_non_mil_h) AS sdc_ag_temp_ift_cible_non_mil_h_moy,
@@ -131,10 +138,10 @@ WITH agregat AS (
         AVG(sdc_qsa_boscalid_hts) AS sdc_ag_temp_qsa_boscalid_hts_moy,
         AVG(sdc_qsa_fluopyram_hts) AS sdc_ag_temp_qsa_fluopyram_hts_moy,
         AVG(sdc_qsa_lambda_cyhalothrine_hts) AS sdc_ag_temp_qsa_lambda_cyhalothrine_hts_moy,
-        AVG(sdc_qsa_cuivre_metal_tot_hts) AS sdc_ag_temp_qsa_cuivre_tot_hts_moy,
-        AVG(sdc_qsa_cuivre_metal_tot) AS sdc_ag_temp_qsa_cuivre_tot_moy,
-        AVG(sdc_qsa_cuivre_metal_phyto_hts) AS sdc_ag_temp_qsa_cuivre_phyto_hts_moy,
-        AVG(sdc_qsa_cuivre_metal_ferti) AS sdc_ag_temp_qsa_cuivre_ferti_moy,
+        AVG(sdc_qsa_cuivre_tot_hts) AS sdc_ag_temp_qsa_cuivre_tot_hts_moy,
+        AVG(sdc_qsa_cuivre_tot) AS sdc_ag_temp_qsa_cuivre_tot_moy,
+        AVG(sdc_qsa_cuivre_phyto_hts) AS sdc_ag_temp_qsa_cuivre_phyto_hts_moy,
+        AVG(sdc_qsa_cuivre_ferti) AS sdc_ag_temp_qsa_cuivre_ferti_moy,
         AVG(sdc_qsa_soufre_tot_hts) AS sdc_ag_temp_qsa_soufre_tot_hts_moy,
         AVG(sdc_qsa_soufre_phyto_hts) AS sdc_ag_temp_qsa_soufre_phyto_hts_moy,
         AVG(sdc_qsa_soufre_ferti) AS sdc_ag_temp_qsa_soufre_ferti_moy,
@@ -183,15 +190,17 @@ WITH agregat AS (
         AVG(sdc_hri1_g2_hts) AS sdc_ag_temp_hri1_g2_tot_moy,
         AVG(sdc_hri1_g3_hts) AS sdc_ag_temp_hri1_g3_tot_moy,
         AVG(sdc_hri1_g4_hts) AS sdc_ag_temp_hri1_g4_tot_moy,
-        AVG(sdc_ges_tot_directes_co2) AS sdc_ag_temp_ges_tot_directes_co2_moy,
-        AVG(sdc_ges_tot_directes_ch4) AS sdc_ag_temp_ges_tot_directes_ch4_moy,
-        AVG(sdc_ges_tot_directes_n2o) AS sdc_ag_temp_ges_tot_directes_n2o_moy,
-        AVG(sdc_ges_tot_directes) AS sdc_ag_temp_ges_tot_directes_moy,
-        AVG(sdc_ges_tot_indirectes_co2) AS sdc_ag_temp_ges_tot_indirectes_co2_moy,
-        AVG(sdc_ges_tot_indirectes_ch4) AS sdc_ag_temp_ges_tot_indirectes_ch4_moy,
-        AVG(sdc_ges_tot_indirectes_n2o) AS sdc_ag_temp_ges_tot_indirectes_n2o_moy,
-        AVG(sdc_ges_tot_indirectes) AS sdc_ag_temp_ges_tot_indirectes_moy
-    FROM entrepot_sdc_for_agregation_magasin_dirodur
+        AVG(sdc_ges_total_co2eq) as sdc_ag_temp_ges_total_co2eq,
+        AVG(sdc_ges_directs_co2eq) as sdc_ag_temp_ges_directs_co2eq,
+        AVG(sdc_ges_indirects_co2eq) as sdc_ag_temp_ges_indirects_co2eq,
+        AVG(sdc_ges_ferti_min_directes_co2eq) AS sdc_ag_temp_ges_ferti_min_directes_co2e_moy,
+        AVG(sdc_ges_ferti_orga_directes_co2eq) AS sdc_ag_temp_ges_ferti_orga_directes_co2eq_moy,
+        AVG(sdc_ges_carburants_directes_co2eq) AS sdc_ag_temp_ges_carburants_directes_co2eq_moy,
+        AVG(sdc_ges_ferti_min_indirectes_co2eq) AS sdc_ag_temp_ges_ferti_min_indirectes_co2eq_moy,
+        AVG(sdc_ges_phyto_indirectes_co2eq) AS sdc_ag_temp_ges_phyto_indirectes_co2eq_moy,
+        AVG(sdc_ges_semis_indirectes_co2eq) AS sdc_ag_temp_ges_semis_indirectes_co2eq_moy,
+        AVG(sdc_ges_carburants_indirectes_co2eq) AS sdc_ag_temp_ges_carburants_indirectes_co2eq_moy
+    FROM entrepot_sdc_filtre_final
     WHERE sdc_etat_temporel IN ('pz0','point_A','point_I','point_B','point_C')
     GROUP BY
         sdc_numero_dephy,
@@ -204,7 +213,7 @@ campagnes AS (
         COUNT(DISTINCT annee) AS sdc_ag_temp_nb_distinct_campagnes,
         STRING_AGG(annee, ', ' ORDER BY annee) AS sdc_ag_temp_liste_campagnes,
         STRING_AGG(DISTINCT annee, ', ' ORDER BY annee) AS sdc_ag_temp_liste_distinct_campagnes
-    FROM entrepot_sdc_for_agregation_magasin_dirodur
+    FROM entrepot_sdc_filtre_final
     CROSS JOIN LATERAL UNNEST(
         CASE
             WHEN synthetise_campagnes IS NOT NULL AND synthetise_campagnes <> ''
@@ -228,7 +237,7 @@ ecart_pz0_point_b AS (
                 WHEN sdc_etat_temporel in ('point_B', 'point_C')
                 THEN annee::int
             END) AS annee_min_point_b
-    FROM entrepot_sdc_for_agregation_magasin_dirodur
+    FROM entrepot_sdc_filtre_final
     CROSS JOIN LATERAL UNNEST(
         CASE
             WHEN synthetise_campagnes IS NOT NULL
