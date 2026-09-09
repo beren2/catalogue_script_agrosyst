@@ -8,7 +8,7 @@ WITH agregat AS (
         STRING_AGG(DISTINCT(sdc_code), ', ') AS sdc_ag_temp_sdc_code,
         STRING_AGG(DISTINCT(sdc_filiere), ', ') AS sdc_ag_temp_filieres,
         STRING_AGG(sdc_type_agriculture, ', ' ORDER BY domaine_campagne) AS sdc_ag_temp_types_agriculture,
-        AVG(sdc_surface_theorqiue) AS sdc_ag_temp_sdc_surface_theorqiue_moy,
+        AVG(sdc_surface_theorique) AS sdc_ag_temp_sdc_surface_theorique_moy,
         STRING_AGG(DISTINCT(typologie_can_sdc), ', ') AS sdc_ag_temp_typologie_can, 
         AVG(typologie_can_sdc_proportion_developpee) AS sdc_ag_temp_typologie_can_proportion_developpee,
         STRING_AGG(DISTINCT(dispositif_code), ', ') AS sdc_ag_temp_dispositif_code,
