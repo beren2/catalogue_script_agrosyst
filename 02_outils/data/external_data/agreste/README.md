@@ -47,7 +47,7 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 
 2021 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2407/detail/
 
-> [Voir la méthodologie de mise à jour](./surface/gcpe/README.md)
+> [Voir la méthodologie de mise à jour](./ift/gcpe/README.md)
 
 #### Maraîchage
 
@@ -74,60 +74,19 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 2024 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
 
 
-### Surface dévelppée par région, par année et par culture
+### Surface développée par région, par année et par culture
 
-
-
+#### GCPE
+- https://agreste.agriculture.gouv.fr/agreste-web/disaron/SAA-SeriesLongues/detail/ :
 
 > [Voir la méthodologie de mise à jour](./surface/gcpe/README.md)
 
 
+### Génération des fichiers finaux
 
-## Procédures de mise à jour
+Une fois l'intégralité des fichiers récupérés, on doit procéder à une étape supplémentaire. En effet, certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichier pour. 
 
-Les données doivent être mises à jour manuellement car Agreste n'expose pas d'API permettant d'envisager une automatisation. 
-De plus, les fichiers obtenus ont des structures complexes dont la stabilité dans le temps n'est pas assurée.
-> Il est donc important de vérifier, lors de toute mise à jour, que la structure des nouveaux fichiers est bien conforme aux anciens fichiers.
+> Cette étape ne **peut pas** être réalisée directement au moment de l'import du fichier car, pour rendre homogène les fichiers, on a besoin des autres fichiers. Par exemple, pour fusionner les colonnes "Orge de printemps" et "Orge d'hiver" de l'enquête PK sur les produits phytosanitaires, on a besoin des résultats de l'enquête sur les surface développées dans chacune de ces cultures...
 
-Le présent document fait l'inventaire des ressources nécessaires et des procédures nécessaires à l'actualisation. 
-
-> TODO : réfléchir à comment ancrer dans la routine de l'équipe la vérification de la disponibilité de ressources Agreste + à jour.
-
-## IFT : 
-Se rendre dans le dossier ift
-
-
-
-### Viticulture
-- Viticulture et arboriculture : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
-
-> TODO :
-
-
-### Maraîchage
-- Maraîchage : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2504/detail/
-
-> TODO
-
-
-### Cultures tropicales
-- Cultures tropicales ?
-> TODO
-
-### Horticulture
-- Horticulture ?
-> TODO
-
-## Surfaces
-Se rendre dans le dossier surface
-
-### GCPE
-- https://agreste.agriculture.gouv.fr/agreste-web/disaron/SAA-SeriesLongues/detail/ :
-
-**Procédure de mise à jour**
-1. Télécharger le fichier principal
-2. le décompresser
-3. ouvrir celui se terminant par "_provisoires_donnees_regionales"
-4. se placer sur la feuille "COP" et l'exporter en la nommant "surface_culture_regionales_agreste.csv"
-5. executer le jupyter notebook `./get_surface_espece_ancienne_region.ipynb`
-6. le script se chargera d'enregistrer un fichier `surface_espece_ancienne_region.csv`
+Les fichiers finaux sont stockés dans TODO. 
+C'est ceux-ci qui seront mobilisés par les outils Datagrosyst.
