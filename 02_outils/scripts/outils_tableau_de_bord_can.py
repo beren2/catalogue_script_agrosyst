@@ -1080,6 +1080,26 @@ def get_synthetise_complet_outils_tableau_de_bord_can(
     return result_synthetise
 
 
+def get_itk_ift_norme_gcpe_outils_tableau_de_bord_can(
+  donnees      
+):
+    """
+        La cellule référence souhaite disposer d'un "IFT_norme".
+        Celui-ci nécessite la construction d'un système de culture "moyen" pour la région (ancienne région).
+
+        Pour ça, on récupère un ensemble d'informations (cf 02/outil/data/external/data/agreste/README.md).
+        - la valeur de l'IFT moyen pour chaque culture et chaque région 
+        - les surfaces déployées pour chaque culture
+
+        On peut ensuite pondérer chaque IFT de culture par le poids relatif de la culture au sein de la région. 
+        On obtient bien ainsi l'IFT d'un sdc dont l'assolement serait représentatif de l'assolement moyen de la région. 
+    """
+    df = copy.deepcopy(donnees)
+    
+    df['ift_culture_ancienne_region_gcpe'].set_index(["nom_ancienne_region"], inplace=True)
+    df['surface_espece_ancienne_region'].set_index(["Espece_SSP", "Campagne", "Nom_Ancienne_Region"])
+
+    
 
 
 def get_itk_rendement_gcpe_outils_tableau_de_bord_can(
