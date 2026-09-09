@@ -1,0 +1,6 @@
+id,code,nom,type,code_site,campagne,domaine_id
+fr.inra.agrosyst.api.entities.GrowingPlan_494eb672-8b1c-4d9f-9347-d86b62f69e87,6bdf8fd4-a719-4fcf-b2cb-78fedef39b3e,Jean-François MENARD,DEPHY_FERME,,2025,fr.inra.agrosyst.api.entities.Domain_e493e076-9465-4e9f-bb8f-c94ecd076ef4
+fr.inra.agrosyst.api.entities.GrowingPlan_1e1b1318-5595-47ef-b4ac-67c2a0ce414b,98185048-096f-41f4-9f07-48968c8c9255,DISPOSITIF_Cor,DEPHY_FERME,,2022,fr.inra.agrosyst.api.entities.Domain_862779c0-c536-46d0-b7f8-ce5e887a1b65
+fr.inra.agrosyst.api.entities.GrowingPlan_e4e82e1d-ba08-4d1a-bd8a-0295f4afdaf0,598e743a-b812-4578-a09f-eff564efc441,EARL Franet,DEPHY_FERME,,2021,fr.inra.agrosyst.api.entities.Domain_d9f1574d-e314-4289-8726-3abb221b4d9f
+fr.inra.agrosyst.api.entities.GrowingPlan_ec1bca86-7e2e-408f-9247-70bf01311bad,42caab20-670a-4343-adce-e3972d883e1c,DISP_CRETE,DEPHY_FERME,,2024,fr.inra.agrosyst.api.entities.Domain_7177756b-2b98-4684-b760-297acd991c8c
+fr.inra.agrosyst.api.entities.GrowingPlan_55eb2fd0-897f-49e5-bca6-15cd6f53b132,83f9f2d0-f23f-40aa-bf92-8f60f5c2f974,DEPHY-Abeille CN,DEPHY_EXPE,,2015,fr.inra.agrosyst.api.entities.Domain_da6bc602-11c4-4386-be74-494c34c7fade

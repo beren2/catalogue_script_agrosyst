@@ -541,7 +541,8 @@
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai", 
 				"correspondance_destination_gcpe_dirodur",
-				"matrice_typologie_culture_dirodur"
+				"matrice_typologie_culture_dirodur",
+				"pk_gcpe_ift_anciennes_regions"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
@@ -555,6 +556,11 @@
 						"name" : "check_typo_especes_typo_culture", 
 						"table" : "typo_especes_typo_culture", 
 						"function_name" : "typo_especes_typo_culture"
+					},
+					{
+						"name" : "check_pk_gcpe_ift_anciennes_regions", 
+						"table" : "pk_gcpe_ift_anciennes_regions", 
+						"function_name" : "pk_gcpe_ift_anciennes_regions"
 					}
 				]
 			},
@@ -588,6 +594,12 @@
 				"tables" : [
 					"data_ipmgraph_for_dephygraph",
 					"data_culture_trop_for_dephygraph"
+				]
+			},
+			"pk_data" : {
+				"path" : "data/external_data/",
+				"tables" : [
+					"pk_gcpe_ift_anciennes_regions"
 				]
 			}
 		},
@@ -720,6 +732,35 @@
                 ], 
 				"need_performance" : []
             },
+			"outils_tableau_de_bord_can" : {
+                "function_name" : "create_category_outils_tableau_de_bord_can",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "agregation"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                }],
+                "generated" : [
+                    "sdc_complet_outils_tableau_de_bord_can",
+					"synthetise_complet_outils_tableau_de_bord_can",
+					"itk_rendement_gcpe_outils_tableau_de_bord_can",
+					"rendement_viti_sdc_realise_outils_tableau_de_bord_can",
+					"rendement_viti_synthetise_outils_tableau_de_bord_can",
+					"itk_rendement_gcpe_outils_tableau_de_bord_can"
+                ], 
+				"need_performance" : [
+				]
+            },
 			"outils_dirodur_0" : {
                 "function_name" : "create_category_dirodur_0",
                 "dependances" : [{
@@ -749,8 +790,7 @@
 					"rendement_synthetise_filtre_outils_dirodur", 
 					"sdc_realise_filtre_outils_dirodur",
 					"synthetise_filtre_outils_dirodur",
-					"sdc_statut_temporel_outils_dirodur", 
-
+					"sdc_statut_temporel_outils_dirodur",
 					"date_de_semis_outils_dirodur"
                 ], 
 				"need_performance" : [

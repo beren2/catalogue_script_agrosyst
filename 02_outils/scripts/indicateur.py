@@ -1044,19 +1044,33 @@ def get_typologie_rotation_CAN_synthetise(donnees):
     df = df.merge(con_frq, on = 'connexion_id')
     df = df.merge(typo_culture, on = 'culture_id')
 
-    # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ; et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion rien qu'à eux)
-    df = df[['connexion_id','synthetise_id','typocan_culture_sans_compagne','typo_cpg','poids_conx_agregation']].\
-        rename(columns={'poids_conx_agregation' : 'frequence'})
+    # ATTENTION on prends la typologie de culture SANS LES COMPAGNES. De plus on ne prend PAS en compte les 
+    # CULTURE INTERMEDIAIRE (les CI ça se fait automatiquement car on merge sur les culture_id des connexions ;
+    #  et pas sur les culture_id des culture intermédiaires ; de toute maniere les CI n'ont pas de fréquence de connexion
+    #  rien qu'à eux)
+    df = df[
+        [
+            'connexion_id',
+            'synthetise_id',
+            'culture_id',
+            'typocan_culture_sans_compagne',
+            'typo_cpg',
+            'poids_conx_agregation',
+        ]
+    ].rename(columns={'poids_conx_agregation' : 'frequence'})
 
     df = df.drop('connexion_id', axis=1)  
 
     df = df.groupby('synthetise_id').apply(
          lambda cgrp: pd.Series({
+            'culture_id' :  cgrp['culture_id'].nunique(),
             'typocan_rotation': get_rota_typo(cgrp),
             'frequence_total_rota': round(cgrp['frequence'].sum(),2),
             'list_freq_typoculture': '_'.join(  get_percent_each_typo_culture(cgrp)  )  
-        }))
-    
+        })).rename(columns={
+            'culture_id' : 'nb_culture_synthetise'
+        })
+        
     return df
 
 
@@ -1096,6 +1110,7 @@ def get_typologie_assol_CAN_realise(donnees):
     typo_culture = donnees['typologie_can_culture'][['culture_id','typocan_culture_sans_compagne','typo_cpg']].copy()
 
     # ENTREPOT
+    #culture = donnees['culture'][['id','nom']].rename(columns={'id':'culture_id'}).copy()
     noeuds = donnees['noeuds_realise'][['id','culture_id','zone_id']]\
         .rename(columns={'id':'noeuds_realise_id'}).copy()
     set_interventions_real = set(donnees['intervention_realise']['noeuds_realise_id'])
@@ -1104,7 +1119,7 @@ def get_typologie_assol_CAN_realise(donnees):
     # ATTENTION LES PARCELLES QUI NE SONT PAS RATTACHES A UN SDC SONT SUPPRIMES
     parcelle = donnees['parcelle'][['id','sdc_id']]\
         .rename(columns={'id':'parcelle_id'}).copy()
-
+    
     # On supprime les zones sans interventions
     noeuds = noeuds.loc[noeuds['noeuds_realise_id'].isin(set_interventions_real),]
 
@@ -1116,11 +1131,15 @@ def get_typologie_assol_CAN_realise(donnees):
     # Ajouter une transformation de la surface pour que ce soit la surface pondérée : diviser par le nombre de connexion dans une même zone_id
     df['surface_ponderee'] = df['surface'] / df.groupby('zone_id')['noeuds_realise_id'].transform('count')
 
+
+
     df_end = df.groupby(['sdc_id','typocan_culture_sans_compagne']).agg({
         'surface_ponderee': 'sum',
         'surface': 'sum',
         'typo_cpg': lambda x: 'Cultures porte graines' if 'Cultures porte graines' in x.values else 'Cultures porte graines et autres destinations' if 'Cultures porte graines et autres destinations' in x.values else None
     }).reset_index()
+
+    
 
     df_end['surface'] = df_end['surface'].round(2)
     df_end['surface_ponderee'] = df_end['surface_ponderee'].round(2)
@@ -1136,8 +1155,18 @@ def get_typologie_assol_CAN_realise(donnees):
     }), include_groups=False).reset_index()
 
     df_end = df_end.set_index('sdc_id')
+    
+    # ajout du nombre de culture unique (avec des itk déclarés) dans le sdc :
+    # ici, même si le culture_id est mobilisé sur plusieurs zones, il ne sera comptabilisé qu'une seule fois.
+    df_nombre_culture = df.groupby('sdc_id').agg({'culture_id' : lambda x : x.nunique()}).rename(columns={
+        'culture_id' : 'nb_culture_sdc'
+    })
 
-    return df_end
+    left = df_end
+    right = df_nombre_culture
+    merge = pd.merge(left, right, left_index=True, right_index=True, how='left')
+
+    return merge
 
 
 

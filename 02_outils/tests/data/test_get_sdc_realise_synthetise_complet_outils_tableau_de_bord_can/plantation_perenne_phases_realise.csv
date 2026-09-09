@@ -1,0 +1,8 @@
+id,duree,type,plantation_perenne_realise_id
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_b5b56dbb-43fc-48d7-bd9f-a69a7abd90f7,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_3247e319-a292-445a-bde8-ba6d4875773b
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_0e44c427-beaa-4c40-9401-3322caf36d0f,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_aa0d857d-445f-4148-8ed2-abd949ecc93a
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_e775349a-0b40-43fe-96e1-a4e88234bcd3,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_d283edca-1dd6-4e63-85c8-35a50aa9b269
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_a7723a1a-580f-40c7-8d38-9eab3a6ca17e,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_472cec5a-18c8-443a-9004-5830e3713111
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_77075d22-6dfd-4082-a2fe-e3f9be713f27,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_775d2f99-3304-4d74-b660-f29528ede997
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_3016c53f-6580-42a8-8fb3-b8d898113939,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_3b3ee2c9-2c0c-44ff-a978-d903e9504d02
+fr.inra.agrosyst.api.entities.effective.EffectiveCropCyclePhase_6166fc2c-d24e-48c6-bc61-aeded773661c,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.effective.EffectivePerennialCropCycle_79fdeedd-f3e6-4eac-ac4b-2f0d9e19b4e4

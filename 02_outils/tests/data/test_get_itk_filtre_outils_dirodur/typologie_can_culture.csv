@@ -1,0 +1,12 @@
+,index,culture_id,typocan_espece,typocan_espece_maraich,nb_composant_culture,nb_typocan_esp,nb_typocan_esp_maraich,typocan_esp_sans_compagne,type,is_any_compagne,typocan_culture,typocan_culture_maraich,typocan_culture_sans_compagne,typo_cpg
+17447,17433,fr.inra.agrosyst.api.entities.CroppingPlanEntry_1173ee8f-ea8c-4d2a-8ed6-b9bc84cd14e9,Maïs,Maïs,1,1,1,Maïs,PRINCIPALE,f,Maïs,Maïs,Maïs,
+55257,55247,fr.inra.agrosyst.api.entities.CroppingPlanEntry_37f95a50-e009-4806-85ca-e53094531c9f,Graminée fourragère_Légumineuse fourragère,Graminée fourragère_Légumineuse fourragère,5,2,2,Graminée fourragère_Légumineuse fourragère,PRINCIPALE,f,Prairie temporaire,Prairie temporaire,Prairie temporaire,
+88567,88563,fr.inra.agrosyst.api.entities.CroppingPlanEntry_59c268ef-f8c2-4736-b77a-245c7bf29bb9,Prairie temporaire,Prairie temporaire,1,1,1,Prairie temporaire,PRINCIPALE,f,Prairie temporaire,Prairie temporaire,Prairie temporaire,
+95826,95819,fr.inra.agrosyst.api.entities.CroppingPlanEntry_612e8bcb-6487-4c13-bfe6-66aa30f41792,Céréales à paille hiver,Céréales à paille hiver,1,1,1,Céréales à paille hiver,PRINCIPALE,f,Céréales à paille hiver,Céréales à paille hiver,Céréales à paille hiver,
+116375,116375,fr.inra.agrosyst.api.entities.CroppingPlanEntry_762ac6e2-f5fc-4841-b9c1-f38a0cb6793d,Maïs,Maïs,1,1,1,Maïs,PRINCIPALE,f,Maïs,Maïs,Maïs,
+119164,119164,fr.inra.agrosyst.api.entities.CroppingPlanEntry_78f54aae-a849-4080-9352-33032d3aed82,Céréales à paille hiver,Céréales à paille hiver,1,1,1,Céréales à paille hiver,PRINCIPALE,f,Céréales à paille hiver,Céréales à paille hiver,Céréales à paille hiver,
+154606,154600,fr.inra.agrosyst.api.entities.CroppingPlanEntry_9d1e7ecc-5357-48f6-bc3a-201ada30689f,Maïs,Maïs,1,1,1,Maïs,PRINCIPALE,f,Maïs,Maïs,Maïs,
+190817,190812,fr.inra.agrosyst.api.entities.CroppingPlanEntry_c19f2ac7-2077-47f3-b2a6-4a3a7195ca43,Maïs,Maïs,1,1,1,Maïs,PRINCIPALE,f,Maïs,Maïs,Maïs,
+210490,210486,fr.inra.agrosyst.api.entities.CroppingPlanEntry_d5a4c12e-fe7f-4dd2-bc96-6a978deae182,Autre_Culture ornementale,Autre_Culture ornementale,2,2,2,Autre_Culture ornementale,PRINCIPALE,f,Culture ornementale,Culture ornementale,Culture ornementale,
+241189,241189,fr.inra.agrosyst.api.entities.CroppingPlanEntry_f506c83e-089c-4057-8cdc-33108d6c3f7b,Protéagineux,Protéagineux,1,1,1,Protéagineux,PRINCIPALE,f,Protéagineux,Protéagineux,Protéagineux,
+251710,251710,fr.inra.agrosyst.api.entities.CroppingPlanEntry_ffdcc57b-ecc1-4bcb-8dbc-5c5a0d8ec5aa,Maïs,Maïs,1,1,1,Maïs,PRINCIPALE,f,Maïs,Maïs,Maïs,
