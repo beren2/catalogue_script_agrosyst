@@ -101,7 +101,7 @@ Une fois qu'on a obtenu tous les fichiers, on obtient les fichiers finaux qui do
 
 > Attention, pour certaines cultures, on a aucun IFT disponible dans les données Agreste. On recompile donc une surface virtuelle de la région comptabilisant uniquement les surfaces de cultures pour lesquelles on a un IFT de disponible. On effectue ensuite la moyenne pondérée par la surface occupée de l'IFT. 
 
-Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipnyb](./01_restructuration.ipnyb)
+Pour cette étape, il faut exécuter toutes les cellules du notebook [02_finalisation.ipnyb](./02_finalisation.ipnyb)
 
 Les fichiers restructurés sont stockés [ici](./final/). 
 
