@@ -88,7 +88,7 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 #### Restructuration
 Une fois l'intégralité des fichiers récupérés, on doit procéder à deux étapes supplémentaire. En effet, certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichiers.
 
-Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipnyb](./01_restructuration.ipnyb)
+Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipynb](./01_restructuration.ipynb)
 
 > Cette étape ne **peut pas** être réalisée directement au moment de l'import du fichier car, pour rendre homogène les fichiers, on a besoin des autres fichiers. Par exemple, pour fusionner les colonnes "Orge de printemps" et "Orge d'hiver" de l'enquête PK sur les produits phytosanitaires, on a besoin des résultats de l'enquête sur les surface développées dans chacune de ces cultures...
 
@@ -101,7 +101,7 @@ Une fois qu'on a obtenu tous les fichiers, on obtient les fichiers finaux qui do
 
 > Attention, pour certaines cultures, on a aucun IFT disponible dans les données Agreste. On recompile donc une surface virtuelle de la région comptabilisant uniquement les surfaces de cultures pour lesquelles on a un IFT de disponible. On effectue ensuite la moyenne pondérée par la surface occupée de l'IFT. 
 
-Pour cette étape, il faut exécuter toutes les cellules du notebook [02_finalisation.ipnyb](./02_finalisation.ipnyb)
+Pour cette étape, il faut exécuter toutes les cellules du notebook [02_finalisation.ipynb](./02_finalisation.ipynb)
 
 Les fichiers restructurés sont stockés [ici](./final/). 
 
