@@ -26,4 +26,3 @@
 5. Vérifier la cohérence des fichiers obtenus (pas de valeurs aberrantes)
 
 
-> TODO : comment gérer le cas où on a pas exactement les mêmes espèces en sorties ?

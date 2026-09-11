@@ -11,14 +11,14 @@ Plusieurs jeux de données produit par l'organisme sont mobilisés dans le cadre
 
 ## Objectifs
 
-Ce document a pour objectifs de 
-- décrire les spécificités de la source Agreste et de donner quelques clés de compréhension à l'utilisation des données
-- recenser les dépendances de Datagrosyst à Agreste
-- documenter les procédures de mise à jour des données
+Ce document a pour objectifs  
+- de décrire les spécificités de la source Agreste et de donner quelques clés de compréhension à l'utilisation des données
+- de recenser les dépendances de Datagrosyst à Agreste
+- de documenter les procédures de mise à jour des données
 
 ## Utiliser les données Agreste
 
-Les données sont disponibles sur le site internet d'Agreste  https://agreste.agriculture.gouv.fr/
+Les données sont disponibles sur le site internet d'Agreste : https://agreste.agriculture.gouv.fr/
 
 Dans l'onglet Chiffres et Analyse, trois items nous intéressent : 
 - [Tableaux interractifs](https://agreste.agriculture.gouv.fr/agreste-web/disaron/!searchurl/4b54e171-2bf3-4c8b-93b9-06e41472066c!cda8b080-3e9e-4368-b41d-7a29c1da0be6/search/)
@@ -77,16 +77,32 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 ### Surface développée par région, par année et par culture
 
 #### GCPE
-- https://agreste.agriculture.gouv.fr/agreste-web/disaron/SAA-SeriesLongues/detail/ :
+- https://agreste.agriculture.gouv.fr/agreste-web/disaron/SAA-SeriesLongues/detail/
+- https://agreste.agriculture.gouv.fr/agreste-saiku/?plugin=true&query=query/open/SAANR_FOURRAGE_2#query/open/SAANR_FOURRAGE_2
 
 > [Voir la méthodologie de mise à jour](./surface/gcpe/README.md)
 
 
 ### Génération des fichiers finaux
 
-Une fois l'intégralité des fichiers récupérés, on doit procéder à une étape supplémentaire. En effet, certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichier pour. 
+#### Restructuration
+Une fois l'intégralité des fichiers récupérés, on doit procéder à deux étapes supplémentaire. En effet, certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichiers.
+
+Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipnyb](./01_restructuration.ipnyb)
 
 > Cette étape ne **peut pas** être réalisée directement au moment de l'import du fichier car, pour rendre homogène les fichiers, on a besoin des autres fichiers. Par exemple, pour fusionner les colonnes "Orge de printemps" et "Orge d'hiver" de l'enquête PK sur les produits phytosanitaires, on a besoin des résultats de l'enquête sur les surface développées dans chacune de ces cultures...
 
-Les fichiers finaux sont stockés dans TODO. 
+Les fichiers restructurés sont stockés [ici](./restructure/). 
+> Attention, les fichiers qui ne nécessitent pas de restructuration ne sont pas stockés dans ce fichier (exemple : `ift_culture_ancienne_region_gcpe_2021_restructure`)
+
+#### Finalisation
+
+Une fois qu'on a obtenu tous les fichiers, on obtient les fichiers finaux qui donnent juste un IFT de référence à la région.
+
+> Attention, pour certaines cultures, on a aucun IFT disponible dans les données Agreste. On recompile donc une surface virtuelle de la région comptabilisant uniquement les surfaces de cultures pour lesquelles on a un IFT de disponible. On effectue ensuite la moyenne pondérée par la surface occupée de l'IFT. 
+
+Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipnyb](./01_restructuration.ipnyb)
+
+Les fichiers restructurés sont stockés [ici](./final/). 
+
 C'est ceux-ci qui seront mobilisés par les outils Datagrosyst.
