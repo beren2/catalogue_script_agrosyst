@@ -541,8 +541,7 @@
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai", 
 				"correspondance_destination_gcpe_dirodur",
-				"matrice_typologie_culture_dirodur",
-				"pk_gcpe_ift_anciennes_regions"
+				"matrice_typologie_culture_dirodur"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
@@ -556,11 +555,6 @@
 						"name" : "check_typo_especes_typo_culture", 
 						"table" : "typo_especes_typo_culture", 
 						"function_name" : "typo_especes_typo_culture"
-					},
-					{
-						"name" : "check_pk_gcpe_ift_anciennes_regions", 
-						"table" : "pk_gcpe_ift_anciennes_regions", 
-						"function_name" : "pk_gcpe_ift_anciennes_regions"
 					}
 				]
 			},
@@ -585,17 +579,20 @@
 					"ruralite"
 				]
 			},
+			"agreste_data" : {
+				"path" : "data/external_data/agreste/final/",
+				"tables" : [
+					"agreste_ift_gcpe_reference_region_2017",
+					"agreste_ift_gcpe_reference_region_2021"
+				],
+				"validation" : {
+				}
+			},
 			"dephygraph_data" : {
 				"path" : "data/external_data/dephygraph/",
 				"tables" : [
 					"data_ipmgraph_for_dephygraph",
 					"data_culture_trop_for_dephygraph"
-				]
-			},
-			"pk_data" : {
-				"path" : "data/external_data/",
-				"tables" : [
-					"pk_gcpe_ift_anciennes_regions"
 				]
 			}
 		},
@@ -882,12 +879,11 @@
             "test" : {
                 "function_name" : "create_category_test",
 				"entrepot_dependances" : [
-					"recolte_rendement_prix", "action_realise", "action_realise_agrege", "sdc", 
-					"recolte_rendement_prix_restructure", "composant_culture", "espece"
+					"espece"
 				],
                 "dependances" : [],
                 "generated" : [
-                    "rendement_viti_sdc_realise_outils_tableau_de_bord_can"
+                    "agreste_ift_gcpe_reference_region"
                 ], 
 				"need_performance" : [
 				]
