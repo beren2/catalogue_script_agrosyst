@@ -864,6 +864,10 @@ def create_category_interoperabilite():
     """
         Execute les requêtes pour créer les outils d'interopérabilité
     """
+    agreste_ift_gcpe_reference_region = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
+    agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
+
     df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
     add_primary_key('entrepot_donnees_spatiales_commune_du_domaine', 'domaine_id')
@@ -991,10 +995,9 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    df_test = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
-    df_test.set_index('geopoint_id', inplace=True)
-    export_to_db(df_test, 'entrepot_test_spatial_gps')
-    add_primary_key('entrepot_test_spatial_gps','geopoint_id')
+    res = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
+    res = res.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(res, 'entrepot_agreste_ift_gcpe_reference_region')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
@@ -1097,6 +1100,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             print("* CHARGEMENT DES DONNÉES EXTERNES *")
             load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
             load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
+            load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
             print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
             load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
             load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
@@ -1187,8 +1191,9 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                    # print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
-                    # load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
+                    load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
@@ -1215,6 +1220,8 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                        load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
+        
                         #print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
                         #load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                         print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
