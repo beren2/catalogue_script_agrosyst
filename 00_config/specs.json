@@ -541,8 +541,7 @@
 				"typo_especes_typo_culture",
 				"typo_especes_typo_culture_marai", 
 				"correspondance_destination_gcpe_dirodur",
-				"matrice_typologie_culture_dirodur",
-				"pk_gcpe_ift_anciennes_regions"
+				"matrice_typologie_culture_dirodur"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
@@ -556,11 +555,6 @@
 						"name" : "check_typo_especes_typo_culture", 
 						"table" : "typo_especes_typo_culture", 
 						"function_name" : "typo_especes_typo_culture"
-					},
-					{
-						"name" : "check_pk_gcpe_ift_anciennes_regions", 
-						"table" : "pk_gcpe_ift_anciennes_regions", 
-						"function_name" : "pk_gcpe_ift_anciennes_regions"
 					}
 				]
 			},
@@ -589,17 +583,29 @@
 					"bdgsf_matrice_smu_stu"
 				]
 			},
+			"agreste_data" : {
+				"path" : "data/external_data/agreste/final/",
+				"tables" : [
+					"agreste_ift_gcpe_reference_region_2017",
+					"agreste_ift_gcpe_reference_region_2021"
+				],
+				"validation" : {
+				}
+			},
+			"agreste_data" : {
+				"path" : "data/external_data/agreste/final/",
+				"tables" : [
+					"agreste_ift_gcpe_reference_region_2017",
+					"agreste_ift_gcpe_reference_region_2021"
+				],
+				"validation" : {
+				}
+			},
 			"dephygraph_data" : {
 				"path" : "data/external_data/dephygraph/",
 				"tables" : [
 					"data_ipmgraph_for_dephygraph",
 					"data_culture_trop_for_dephygraph"
-				]
-			},
-			"pk_data" : {
-				"path" : "data/external_data/",
-				"tables" : [
-					"pk_gcpe_ift_anciennes_regions"
 				]
 			}
 		},

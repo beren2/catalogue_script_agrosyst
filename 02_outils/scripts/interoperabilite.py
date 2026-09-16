@@ -263,8 +263,6 @@ def get_donnees_spatiales_commune_du_domaine(donnees):
 
     return df
 
-
-
 def get_donnees_spatiales_coord_gps_du_domaine(donnees):
     
     """
@@ -381,3 +379,37 @@ def get_donnees_spatiales_coord_gps_du_domaine(donnees):
     df = df.drop_duplicates(subset=['geopoint_id'], keep='first')
 
     return df
+
+
+
+def get_agreste_ift_gcpe_reference_region(donnees):
+    
+    """
+        Cet outil sert juste à rendre disponiblesur Datagrosyst les donnée obtenues dans 02_outils/data/external_data/agreste
+        Ici on fait le choix de stocker en base car : 
+        - les données traitées sont extrêmement petites 
+        - les données sont très utiles pour les utilisateurs
+        - les données sont mobilisées dans certains magasins (tdb_magasin_can)
+
+        On fusionne les dataframes pk pour n'en faire qu'un seul avec les colonnes suivantes : 
+        - campagne
+        - nom_ancienne_region
+        - ift_moyen_gcpe_can
+
+        > ATTENTION, en cas de mise à jour des données PK (exemple : nouvelle campagne) on doit bien penser à mettre à jour
+        > cet outil ou la nouvelle campagne ne sera pas disponible sous Datagrosyst.
+    """
+    df = donnees.copy()
+
+    agreste_2017 = df['agreste_ift_gcpe_reference_region_2017']
+    agreste_2017.loc[:, 'campagne'] = 2017
+
+    agreste_2021 = df['agreste_ift_gcpe_reference_region_2021']
+    agreste_2021.loc[:, 'campagne'] = 2021
+
+    res = pd.concat([
+        agreste_2017, 
+        agreste_2021
+    ])
+
+    return res
