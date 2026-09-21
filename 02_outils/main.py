@@ -995,9 +995,9 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    res = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
-    res = res.set_index(['nom_ancienne_region', 'campagne'])
-    export_to_db(res, 'entrepot_agreste_ift_gcpe_reference_region')
+    agreste_ift_gcpe_reference_region = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
+    agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
