@@ -592,15 +592,6 @@
 				"validation" : {
 				}
 			},
-			"agreste_data" : {
-				"path" : "data/external_data/agreste/final/",
-				"tables" : [
-					"agreste_ift_gcpe_reference_region_2017",
-					"agreste_ift_gcpe_reference_region_2021"
-				],
-				"validation" : {
-				}
-			},
 			"dephygraph_data" : {
 				"path" : "data/external_data/dephygraph/",
 				"tables" : [
