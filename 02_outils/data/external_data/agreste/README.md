@@ -55,7 +55,7 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 
 2022 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2504/detail/
 
-> Voir la méthodologie de mise à jour  : TODO
+> [Voir la méthodologie de mise à jour](./ift/maraichage/README.md)
 
 #### Viticulture
 
@@ -65,7 +65,7 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 
 2024 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
 
-> Voir la méthodologie de mise à jour  : TODO
+> [Voir la méthodologie de mise à jour](./ift/viticulture_arboriculture/README.md)
 
 #### Arboriculture 
 
