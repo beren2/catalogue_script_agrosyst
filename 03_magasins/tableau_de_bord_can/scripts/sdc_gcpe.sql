@@ -1,4 +1,5 @@
 -- REALISE
+create table sdc_gcpe_dirodur_test as
 SELECT
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne
         AS id_code_dephy_campagne,
@@ -63,8 +64,8 @@ SELECT
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    null as ift_norme_sdc, -- TODO
-    null as IFT_Hors_TS_Moy_Region, -- TODO
+    esrp.ift_cible_non_mil_chimique_tot / eaigrr.ift_moyen_gcpe_can as ift_norme_sdc,
+    eaigrr.ift_moyen_gcpe_can as IFT_Hors_TS_Moy_Region,
     esrp.qsa_tot AS quantite_mat_active_SDC,
     esrp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
     esrp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
@@ -112,7 +113,6 @@ SELECT
     esrp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
     esrp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
     esrp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
-    esrp.qsa_tot AS quantite_mat_active_SDC,
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.ges_totaux_total_ges_total AS GES_SDC,
     esrp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -139,7 +139,6 @@ SELECT
     esrp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
@@ -171,6 +170,7 @@ left join entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc on sdc.id = e
 left join entrepot_typologie_assol_can_realise etacr on etacr.sdc_id = sdc.id
 left join entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc on sdc.id = essrotdbc.id
 left join entrepot_sdc_realise_performance esrp on sdc.id = esrp.sdc_id 
+left join entrepot_agreste_ift_gcpe_reference_region eaigrr on (comm.ancienne_region = eaigrr.nom_ancienne_region) and (dom.campagne=eaigrr.campagne)
 WHERE (sdc.filiere = 'GRANDES_CULTURES' or sdc.filiere = 'POLYCULTURE_ELEVAGE')
 and eeupsn.entite_retenue = 'realise_retenu'
 and not dispo.type = 'NOT_DEPHY'
@@ -239,8 +239,8 @@ SELECT
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    null as ift_norme_sdc, -- TODO
-    null as IFT_Hors_TS_Moy_Region, -- TODO
+    essp.ift_cible_non_mil_chimique_tot / eaigrr.ift_moyen_gcpe_can as ift_norme_sdc,
+    eaigrr.ift_moyen_gcpe_can as IFT_Hors_TS_Moy_Region,
     essp.qsa_tot AS quantite_mat_active_SDC,
     essp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
     essp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
@@ -288,7 +288,6 @@ SELECT
     essp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
     essp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
     essp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
-    essp.qsa_tot AS quantite_mat_active_SDC,
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.ges_totaux_total_ges_total AS GES_SDC,
     essp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -315,7 +314,6 @@ SELECT
     essp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
@@ -347,8 +345,14 @@ left join entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc
 left join entrepot_stc_synthetise_outils_tableau_de_bord_can essotdbc on essotdbc.id = synthetise.id
 left join entrepot_surface_synthetise_outils_tableau_de_bord_can esusotdb on esusotdb.id = synthetise.id
 left join entrepot_typologie_can_rotation_synthetise etcrs on etcrs.synthetise_id = synthetise.id
+left join entrepot_agreste_ift_gcpe_reference_region eaigrr on (comm.ancienne_region = eaigrr.nom_ancienne_region) and (dom.campagne=eaigrr.campagne)
 --left join entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc on sdc.id = essrotdbc.id
 left join entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
 WHERE (sdc.filiere = 'GRANDES_CULTURES' or sdc.filiere = 'POLYCULTURE_ELEVAGE')
 and eeupsn.entite_retenue != 'realise_retenu'
 and not dispo.type = 'NOT_DEPHY';
+
+
+
+
+
