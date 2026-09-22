@@ -27,6 +27,7 @@ Certaines données ne sont pas disponibles dans le jeu de données principal, on
 Les données à obtenir via ce canal secondaires sont les surface développées pour les cultures suivantes :
 - Betterave sucrière (ressource 3)
 - Maïs fourrage (ressource 2)
+- Prairies non permanentes (ressource 2)
 - Pomme de terre (ressource 3)
 - Canne à sucre (ressource 3)
 - Soja (ressource 3)
