@@ -105,3 +105,27 @@ Veillez à :
 6. le script se chargera d'enregistrer un fichier `surface_espece_ancienne_region.csv`
 
 > Attention, il ne s'agit pas du fichier final mobilisé dans les outils Datagrosyst, on doit encore procéder à quelques modifications.
+
+
+## Récapitulatif de la disponibilité des surface en GCPE 
+Le tableau ci-dessous rappel que les surfaces déployées de certaines cultures ne sont pas disponibles pour les campagnes après 2020.
+Les pourcentages de surfaces pour l'année 2021 ne tiennent donc pas compte de ces cultures. Les IFT de références par région peuvent donc s'en trouver biaisés.
+
+| Culture | Disponibilité **avant 2020** | Disponibilité **2021‑2025** |
+|---------|------------------------------|-----------------------------|
+| Maïs fourrage | Oui | Non |
+| Prairie non permanente | Oui | Non |
+| Betterave sucrière | Oui | Non |
+| Canne à sucre | Oui | Non |
+| Lin fibre | Oui | Non |
+| Pomme de terre | Oui | Non |
+| Soja | Oui | Non |
+| Blé dur | Oui | Oui |
+| Blé tendre | Oui | Oui |
+| Colza | Oui | Oui |
+| Maïs grain | Oui | Oui |
+| Orge d’hiver | Oui | Oui |
+| Orge de printemps | Oui | Oui |
+| Pois protéagineux | Oui | Oui |
+| Tournesol | Oui | Oui |
+| Triticale | Oui | Oui |
