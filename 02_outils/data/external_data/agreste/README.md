@@ -9,12 +9,17 @@ Plusieurs jeux de données produit par l'organisme sont mobilisés dans le cadre
 - la surface dévelopée par région, par année et par culture
 - les rendement moyens par région, par année et par culture (**TODO**)
 
+La constitution des données est inspirée de la méthodologie mise au point par la cellule d'animation nationale du réseau DEPHY. Quelques différences sont néanmoins à prendre en compte.
+
+
 ## Objectifs
 
 Ce document a pour objectifs  
 - de décrire les spécificités de la source Agreste et de donner quelques clés de compréhension à l'utilisation des données
 - de recenser les dépendances de Datagrosyst à Agreste
 - de documenter les procédures de mise à jour des données
+
+
 
 ## Utiliser les données Agreste
 
@@ -41,6 +46,8 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 
 À intervalle régulier, Agreste publie les résultat de ses enquêtes sur le niveau de dépendance aux produits phytosanitaire des agriculteurs en France. Ces enquêtes sont spécifiques à une ou plusieurs filière.
 
+L'indicateur retenu pour l'étude via Agrosyst est l'IFT chimique total. On vient ensuite le corriger pour retirer la prise en compte des traitements de semences, mal renseignés historiquement sur Agrosyst.
+
 #### Grandes cultures et polyculture élevage
 
 2017 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd1903/detail/
@@ -65,7 +72,7 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 
 2024 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
 
-> [Voir la méthodologie de mise à jour](./ift/viticulture_arboriculture/README.md)
+> [Voir la méthodologie de mise à jour](./ift/viticulture/README.md)
 
 #### Arboriculture 
 
@@ -73,7 +80,8 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 
 2024 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
 
-
+> [Voir la méthodologie de mise à jour](./ift/arboriculture/README.md)
+---
 ### Surface développée par région, par année et par culture
 
 #### GCPE
@@ -86,23 +94,47 @@ Ce filtre permet d'accéder à toutes les données suivies sur le long terme par
 ### Génération des fichiers finaux
 
 #### Restructuration
-Une fois l'intégralité des fichiers récupérés, on doit procéder à deux étapes supplémentaire. En effet, certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichiers.
+Une fois l'intégralité des fichiers récupérés, on doit procéder à deux étapes supplémentaire. En effet : certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichiers.
 
 Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipynb](./01_restructuration.ipynb)
 
 > Cette étape ne **peut pas** être réalisée directement au moment de l'import du fichier car, pour rendre homogène les fichiers, on a besoin des autres fichiers. Par exemple, pour fusionner les colonnes "Orge de printemps" et "Orge d'hiver" de l'enquête PK sur les produits phytosanitaires, on a besoin des résultats de l'enquête sur les surface développées dans chacune de ces cultures...
 
 Les fichiers restructurés sont stockés [ici](./restructure/). 
-> Attention, les fichiers qui ne nécessitent pas de restructuration ne sont pas stockés dans ce fichier (exemple : `ift_culture_ancienne_region_gcpe_2021_restructure`)
+> Attention, les fichiers qui ne nécessitent pas de restructuration ne sont pas stockés dans ce dossier (exemple : `ift_culture_ancienne_region_gcpe_2017`)
+
 
 #### Finalisation
 
 Une fois qu'on a obtenu tous les fichiers, on obtient les fichiers finaux qui donnent juste un IFT de référence à la région.
 
-> Attention, pour certaines cultures, on a aucun IFT disponible dans les données Agreste. On recompile donc une surface virtuelle de la région comptabilisant uniquement les surfaces de cultures pour lesquelles on a un IFT de disponible. On effectue ensuite la moyenne pondérée par la surface occupée de l'IFT. 
+> Attention, on se rend compte que pour beaucoup de culture / région, on a aucun IFT de disponible dans Agreste. On recompile donc une surface totale qui correspond à l'ensemble des cultures pour lesquelles on a un ift > 0
+
+C'est à cette étape qu'on retranche les IFT traitements de semences aux données obtenues. 
+
+On effectue le retranchement avant renormalisation par les surfaces dont les IFT sont supérieurs à 0.
 
 Pour cette étape, il faut exécuter toutes les cellules du notebook [02_finalisation.ipynb](./02_finalisation.ipynb)
 
-Les fichiers restructurés sont stockés [ici](./final/). 
+Les fichiers finaux sont stockés [ici](./final/). 
 
 C'est ceux-ci qui seront mobilisés par les outils Datagrosyst.
+
+
+## Différences avec la méthodologie de la cellule référence du réseau DEPHY
+
+Plusieurs différences sont à observer par rapport à la méthodologie de constitution de la cellule référence du réseau DEPHY. 
+
+### Plus de cultures
+Les données de surfaces comptabilisent plus de cultures qu'initiallement :
+- Soja
+- Lin fibre
+- Prairie non permanente
+
+Les pourcentages des surfaces allouées aux autres cultures prennent donc en compte l'existence de ces cultures sur les différentes régions.
+
+> Attention même si on distingue certaines cultures au moment de la création du fichier [surface_espece_ancienne_region](surface/gcpe/surface_espece_ancienne_region.csv) (par exemple Orge hiver et Orge printemps), elles sont fusionnées par la suite lors de la restructuration et ne sont donc pas accessibles dans les fichiers finaux.
+
+
+### Prise en compte des traitements de semences
+Pour obtenir les IFT Agreste sans traitement de semence, on retranche, par culture, l'IFT traitement de semence obtenu sur Agreste. Attention, c'est le IFT traitement de semence pour toutes les régions. 

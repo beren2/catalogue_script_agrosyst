@@ -17,11 +17,11 @@
 
 
     2. 
-        **2019** :  Enregistrer la feuille "Tableau 2" sous le nom : `ift_culture_ancienne_region_viticulture_brut_2019.csv`
+        **2019** :  Enregistrer la feuille "Tableau 2" sous le nom : `ift_culture_bassin_viticulture_brut_2019.csv`
 
-        **2016** : Enregistrer la feuille "Traitements phytosanitaires" sous le nom : `ift_culture_ancienne_region_viticulture_brut_2016.csv`
+        **2016** : Enregistrer la feuille "Traitements phytosanitaires" sous le nom : `ift_culture_bassin_viticulture_brut_2016.csv`
 
-        **2024** : Enregistrer la feuille "IFT" sous le nom : `ift_culture_ancienne_region_viticulture_brut_2024.csv`
+        **2024** : Enregistrer la feuille "IFT" sous le nom : `ift_culture_bassin_viticulture_brut_2024.csv`
 
     3. Ajouter les informations relatives à l'étude de la campagne `YYYY`au paramètre STUDIES dans le notebook `./get_ift_anciennes_regions_maraichage.ipynb` 
 
@@ -31,8 +31,10 @@
 
 3. Exécuter l'ensemble du notebook `./get_ift_anciennes_regions_maraichage.ipynb`
 
-4.  le script se chargera d'enregistrer tous les fichiers `ift_culture_ancienne_region_maraichage_YYYY.csv` donnant, pour chaque région et chaque espèce étudiée, l'IFT moyen pour chaque région lors de la campagne `YYYY`. 
+4.  le script se chargera d'enregistrer tous les fichiers `ift_culture_bassin_maraichage_YYYY.csv` donnant, pour chaque région et chaque espèce étudiée, l'IFT moyen pour chaque région lors de la campagne `YYYY`. 
 
 5. Vérifier la cohérence des fichiers obtenus (pas de valeurs aberrantes)
+
+### Point d'attention
 
 

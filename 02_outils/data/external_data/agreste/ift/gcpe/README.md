@@ -11,13 +11,26 @@
 
 
 1. Pour chaque campagne `YYYY` étudiée :
+
+    **A.** *Obtention de l'IFT total par culture et par région*
+
     1. Télécharger les données diponibles aux liens ci-dessus (extention`xlsx` ou `ods`, dépendamment des annés)
 
     2. Enregistrer la feuille "IFT_ancienne_regions" sous le nom : `ift_culture_ancienne_region_gcpe_brut_YYYY.csv`
 
-    3. Ajouter les informations relatives à l'étude de la campagne `YYYY`au paramètre STUDIES dans le notebook `./get_ift_anciennes_regions_gcpe.ipynb` 
 
-    > Attention, il se peut que le formalisme d'Agreste évolue encore. On ne peut garantir que le script d'extraction des information fonctionne à chaque fois.
+
+    **B.** *Obtention de l'IFT traitement de semence par culture*
+
+    1. Réouvrir le fichier de l'étape **A**.
+
+    2. Enregistrer la feuille "IFT_ancienne_regions" sous le nom : `ift_hts_culture_ancienne_region_gcpe_brut_YYYY.csv`
+    
+    **C.** *Obtention des fichiers pré-traités*
+    1. Optionnel : Ajouter les informations relatives à l'étude de la campagne `YYYY` au paramètre STUDIES dans le notebook `./get_ift_anciennes_regions_gcpe.ipynb` 
+
+
+    > **Attention**, il se peut que le formalisme d'Agreste évolue encore. On ne peut garantir que le script d'extraction des information fonctionne à chaque fois.
 
 3. Exécuter l'ensemble du notebook `./get_ift_anciennes_regions_gcpe.ipynb`
 
