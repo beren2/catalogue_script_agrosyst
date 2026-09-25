@@ -965,7 +965,7 @@ def create_category_outils_dephygraph():
     """
         Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
     """
-    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = outils_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=False)
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = outils_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=True)
 
     # Exporte en DB la table principale
     df_main_dephygraph.set_index('id', inplace=True)
@@ -995,9 +995,31 @@ def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    res = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
-    res = res.set_index(['nom_ancienne_region', 'campagne'])
-    export_to_db(res, 'entrepot_agreste_ift_gcpe_reference_region')
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = outils_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=True)
+
+    # Exporte en DB la table principale
+    df_main_dephygraph.set_index('id', inplace=True)
+    export_to_db(df_main_dephygraph, 'entrepot_donnees_dephyferme_pour_dephygraph')
+    add_primary_key('entrepot_donnees_dephyferme_pour_dephygraph', 'id')
+
+    # Exporter les dictionnaires en JSON et le rapport en HTML
+    directory_export = "/home/tbadie/Bureau/data/temp/test_dg/"
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_outliers.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_iqr, f, indent=4, ensure_ascii=False)
+
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_alertes_can.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
+
+    if rapport :
+        rapport.show_html(directory_export + "dephygraph_rapport_variables.html")
+
+    # Exporter les tables à UNION pour faire le magasin 
+    # IPMGraph (pas d'id)
+    df_ipmgraph_for_dephygraph = outils_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
+    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_donnees_ipmgraph_pour_dephygraph')
+    # IPMGraph (pas d'id)
+    df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
+    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_donnees_culture_trop_pour_dephygraph')
 
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
@@ -1191,14 +1213,14 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                    load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
+                    # load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
-                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
-                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
-                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
+                    # load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
+                    # load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+                    # load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                     print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
 
                     print("* DÉBUT GÉNÉRATION ", choosen_source, choosen_category," *")

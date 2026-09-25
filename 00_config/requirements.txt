@@ -13,4 +13,4 @@ sqlalchemy==2.0.21
 tqdm==4.66.3
 geopandas==1.1.3
 shapely==2.1.2
-ydata_profiling==4.18.1
+sweetviz=2.3.3

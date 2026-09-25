@@ -62,7 +62,7 @@ select
 	---------
 	pb_std_mil_avec_autoconso as "c501_grossproceeds",
 	mb_std_mil_avec_autoconso as "c502_grossprofit",
-	msn_reelle_avec_autoconso as "c503_seminetmargin",
+	msn_std_mil_avec_autoconso as "c503_seminetmargin",
 	"c504_outlabourtotalexpenses",
 	co_tot_std_mil as "c505_operatingexpenses",
 	-- c_main_oeuvre_tractoriste_std_mil,

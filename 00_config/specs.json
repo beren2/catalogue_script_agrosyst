@@ -892,12 +892,24 @@
             "test" : {
                 "function_name" : "create_category_test",
 				"entrepot_dependances" : [
-					"domaine", "commune","coordonnees_gps_domaine"
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance",
+					"synthetise",
+					"sdc",
+					"dispositif",
+					"domaine",
+					"commune",
+					"identification_pz0",
+					"espece_variete_perenne_principale",
+					"entite_unique_par_sdc_nettoyage",
+					"itk_realise_agrege"
 				],
                 "dependances" : [
 				],
                 "generated" : [
-                    "test_spatial_gps"
+                    "donnees_dephyferme_pour_dephygraph",
+					"donnees_ipmgraph_pour_dephygraph",
+					"donnees_culture_trop_pour_dephygraph"
                 ], 
 				"need_performance" : [
 				]

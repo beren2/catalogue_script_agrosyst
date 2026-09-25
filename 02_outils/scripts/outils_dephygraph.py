@@ -4,13 +4,11 @@
 from datetime import datetime
 import pandas as pd
 import numpy as np
-from ydata_profiling import ProfileReport
+import sweetviz as sv
 
 GCPE = ['GRANDES_CULTURES','POLYCULTURE_ELEVAGE']
 
 PERFORMANCES_COLS = [
-    'approche_de_calcul',
-    'ift_cible_non_mil_tx_comp',
     # IFT
     'ift_cible_non_mil_chimique_tot',
     'ift_cible_non_mil_chim_tot_hts',
@@ -44,7 +42,7 @@ PERFORMANCES_COLS = [
     # Economique
     'pb_std_mil_avec_autoconso',
     'mb_std_mil_avec_autoconso',
-    'msn_reelle_avec_autoconso',
+    'msn_std_mil_avec_autoconso',
     'md_std_mil_avec_autoconso', # noneed
     # Fertilistation
     'ferti_n_tot',
@@ -106,23 +104,26 @@ DICT_VAR_IMPACTED = {
                 
 
 	'pb_std_mil_avec_autoconso': 
-				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'md_std_mil_avec_autoconso'],
+				['mb_std_mil_avec_autoconso', 'msn_std_mil_avec_autoconso', 'md_std_mil_avec_autoconso'],
 	'mb_std_mil_avec_autoconso': 
-				['msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses', 'md_std_mil_avec_autoconso'],
-	'msn_reelle_avec_autoconso': 
+				['msn_std_mil_avec_autoconso', 'c504_outLabourTotalExpenses', 'md_std_mil_avec_autoconso'],
+	'msn_std_mil_avec_autoconso': 
     			[None],
 	'c504_outLabourTotalExpenses': 
-				['msn_reelle_avec_autoconso','md_std_mil_avec_autoconso'],
+				['msn_std_mil_avec_autoconso','md_std_mil_avec_autoconso'],
 	'co_tot_std_mil': 
-				['mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+				['mb_std_mil_avec_autoconso', 'msn_std_mil_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
 	'c_main_oeuvre_tot_std_mil': 
 				['md_std_mil_avec_autoconso'],
 	'cm_std_mil': 
-				['msn_reelle_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
+				['msn_std_mil_avec_autoconso', 'c504_outLabourTotalExpenses','md_std_mil_avec_autoconso'],
     'md_std_mil_avec_autoconso':
 				[None], # si les indicateur éco sont mauvais, on passe la marge directe en NA. L'inverse, on verra plus tard, quand la marge directe sera validée par la CAN                
 
 
+    'ift_cible_non_mil_chimique_tot':
+                ['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
+                'qsa_tot_hts'],
 	'ift_cible_non_mil_chim_tot_hts': 
 				['hri1_hts','hri1_g1_hts','hri1_g2_hts','hri1_g3_hts','hri1_g4_hts',
      			'qsa_tot_hts'],
@@ -188,7 +189,7 @@ ALERTES_COLS_VAR = {
     'alerte_msn_std_mil_avec_autoconso' : "msn_std_mil_avec_autoconso",
     # 'alerte_nombre_interventions_phyto' : ["???"],
     'alerte_pb_std_mil_avec_autoconso' : "pb_std_mil_avec_autoconso",
-    # 'alerte_rendement' : ['pb_std_mil_avec_autoconso','mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso', 'md_std_mil_avec_autoconso'],
+    # 'alerte_rendement' : ['pb_std_mil_avec_autoconso','mb_std_mil_avec_autoconso', 'msn_std_mil_avec_autoconso', 'md_std_mil_avec_autoconso'],
     'alertes_charges' : ["co_tot_std_mil","cm_std_mil"],
     'alerte_cm_std_mil' : "cm_std_mil",
     'alerte_co_semis_std_mil' : "co_semis_std_mil"
@@ -551,6 +552,7 @@ def ajout_infos_geo(df, commune, arrond_data, dep_data):
 
     df = df.merge(commune[['commune_id','codeinsee', 'departement', 'region', 'bassin_viticole', 'ancienne_region','latitude', 'longitude','arrondissement']].rename(columns={'id':'commune_id'}), on='commune_id', how='left')
 
+# TODO : plus besoin de mapper, la table region de l'entrepo prend en compte ce mapping
     # Besoin de ce mapping car la colonne region n'est pas la bonne dans le referentiel commune
     mapping = {
         84: "Auvergne-Rhône-Alpes",
@@ -644,7 +646,7 @@ def filtre_5_disponibilite_par_filiere(df):
     df.loc[~df['filiere'].isin(GCPE), 
         ['type_de_travail_du_sol', 'utili_desherbage_meca']] = None
     df.loc[~df['filiere'].isin(GCPE), 
-        ['nbre_de_passages_desherbage_meca', 'pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'msn_reelle_avec_autoconso']] = np.nan
+        ['nbre_de_passages_desherbage_meca', 'pb_std_mil_avec_autoconso', 'mb_std_mil_avec_autoconso', 'msn_std_mil_avec_autoconso']] = np.nan
     
     # Variable de temps de travail manuel que pour ARBO, VITI, MARAICH et CULTURES_TROP
     df.loc[~df['filiere'].isin(['ARBORICULTURE','VITICULTURE','MARAICHAGE','CULTURES_TROPICALES']), 
@@ -684,17 +686,40 @@ def filtre_5_disponibilite_par_filiere(df):
 
 def detect_outliers_via_iqr(df, dict_var_impacted, coef=2):
     """
-    Détecte les outliers de chaque colonnes qui sont les keys de DICT_VAR_IMPACTED
-    renvoie un dictionnaire des index qui sont détectés outliers
+    Détecte les outliers des colonnes de dict_var_impacted séparément pour chaque useful_typo.
+    Renvoie un dictionnaire {colonne: liste des index outliers} lisible par apply_nan().
     """
     dict_index_outliers = {}
+
+    # On calcul les outliers pour chaque occurence de colonne dans dict_var_impacted
     for col in dict_var_impacted:
-        s = df[col]
-        q1, q3 = s.quantile([0.25, 0.75])
-        iqr = q3 - q1
-        low, high = q1 - coef * iqr, q3 + coef * iqr
-        dict_index_outliers[col] = s[(s < low) | (s > high)].index.tolist()
+        outliers = []
+
+        # On calcul les quantiles au seins de sous-ensembles : les useful_typo
+        for _, group in df.groupby("useful_typo"):
+            s = group[col].dropna()
+
+            q1, q3 = s.quantile([0.25, 0.75])
+            iqr = q3 - q1
+            low, high = q1 - coef * iqr, q3 + coef * iqr
+
+            # On crée ajoute les index qui sont en dehors des seuils à la variable 'outliers'
+            outliers.extend(
+                s[(s < low) | (s > high)].index.tolist()
+            )
+
+        dict_index_outliers[col] = outliers
+        
+    # Garde-fou : les colonnes traitées doivent être exactement celles demandées
+    if set(dict_var_impacted) != set(dict_index_outliers):
+        raise ValueError(
+            f"Désaccord entre les colonnes demandées et les colonnes traitées :\n"
+            f"Manquantes : {set(dict_var_impacted) - set(dict_index_outliers)}\n"
+            f"En trop : {set(dict_index_outliers) - set(dict_var_impacted)}"
+        )
+
     return dict_index_outliers
+
 
 def detect_outliers_via_alerte_can(df, alertes_cols_var):
     """
@@ -706,13 +731,12 @@ def detect_outliers_via_alerte_can(df, alertes_cols_var):
     for col_alerte, targets in alertes_cols_var.items():
         # Si pas de colonne dans le df
         if col_alerte not in df.columns:
-            print(f"Une alerte n'est pas dans le dataframe : {col_alerte}")
-            continue
-
-        # On en garde que les index avec des alertes
-        mask = (~df[col_alerte].isin(["Pas d'alerte", "Cette alerte n'existe pas encore dans cette filière"])) | (df[col_alerte].isna())
+            raise ValueError(f"Une alerte n'est pas dans le dataframe : {col_alerte}")
+        # On en garde que les index avec des alertes ou avec NA
+        mask = (~df[col_alerte].isin(["Pas d'alerte", 
+                                      "Cette alerte n'existe pas encore dans cette filière",
+                                      "Pas d'alerte calculée pour cette espèce"])) | (df[col_alerte].isna())
         idx = set(df.index[mask])
-
         # Si aucune alerte
         if not idx:
             continue
@@ -720,13 +744,12 @@ def detect_outliers_via_alerte_can(df, alertes_cols_var):
         # Les targets doivent être sous forme de liste
         if not isinstance(targets, list):
             targets = [targets]
-
         # Pour chaque target on 
         for t in targets:
             # si la target n'est pas dans le df, ou s'il n'y en a pas
             if t is None or t not in df.columns:
+                print(f"Une target d'alerte n'est pas dans le dataframe : {t}")
                 continue
-            
             # si la target n'existe pas dans le dictionnaire final, on le crée
             if t not in dict_idx_alerte_can:
                 dict_idx_alerte_can[t] = set()
@@ -734,6 +757,7 @@ def detect_outliers_via_alerte_can(df, alertes_cols_var):
 
     # conversion en list pour compatibilité avec apply_nan()
     return {k: list(v) for k, v in dict_idx_alerte_can.items()}
+
 
 def apply_nan(df, dict_var_impacted, dict_index_outliers, name='outlier'):
     """
@@ -885,8 +909,8 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     """
     # Chargement des données nécessaires
         ## Performances
-    sdc_realise_performance = donnees["sdc_realise_performance"][['sdc_id'] + PERFORMANCES_COLS + list(ALERTES_COLS_VAR.keys())]
-    synthetise_synthetise_performance = donnees["synthetise_synthetise_performance"][['synthetise_id'] + PERFORMANCES_COLS + list(ALERTES_COLS_VAR.keys())]
+    sdc_realise_performance = donnees["sdc_realise_performance"][['sdc_id'] + PERFORMANCES_COLS + ['approche_de_calcul', 'ift_cible_non_mil_tx_comp'] + list(ALERTES_COLS_VAR.keys())]
+    synthetise_synthetise_performance = donnees["synthetise_synthetise_performance"][['synthetise_id'] + PERFORMANCES_COLS + ['approche_de_calcul', 'ift_cible_non_mil_tx_comp'] + list(ALERTES_COLS_VAR.keys())]
         ## Entrepot
     synthetise = donnees["synthetise"][['id', 'nom', 'campagnes', 'sdc_id']].rename(columns={'id':'synthetise_id', 'campagnes':'synthetise_campagne'})
     sdc = donnees["sdc"][['id','code','nom','modalite_suivi_dephy','code_dephy','filiere','type_production','type_agriculture','part_sau_domaine','reseaux_ir','reseaux_it','dispositif_id','validite']].rename(columns={"id": "sdc_id"})
@@ -978,7 +1002,25 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     df["code_dephy_for_idx"] = df["code_dephy"].astype(str)
     df.set_index(['code_dephy_for_idx',"new_campagne_str"], inplace=True)
 
+    # On crée useful_typo pour faire des sous-ensembles dans les variables dont on pourra retirer les outliers indépendement des autre typo.
+    df['useful_typo'] = (
+        df[['filiere',
+        'c120_arboriculture_typo_sdc',
+        'c121_maraichage_typo_sdc',
+        'c122_horticulture_typo_sdc',
+        'c123_cult_tropicales_typo_sdc',
+        'c124_gcpe_typo_sdc']]
+        .fillna('')
+        .astype(str)
+        .agg(' '.join, axis=1)
+        .str.replace(r' +', ' ', regex=True)
+        .str.strip()
+    )
+
     # Filtre de valeurs outliers
+        ## L'ordre importe peu car les première fonction ne font que détecter les outliers, de façon indépendante l'une de l'autre.
+        ## Puis l'application des NaN va potentiellement être redondante sur certains index mais c'est pas important, la fonction le prend en charge
+
         ## On garde les index des lignes que l'on va supprimé, et on la save
     dict_idx_iqr = detect_outliers_via_iqr(df, DICT_VAR_IMPACTED, coef=2)
         ## On vire les outliers via les index de dict_idx_iqr
@@ -1075,7 +1117,7 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
 
         'pb_std_mil_avec_autoconso',
         'mb_std_mil_avec_autoconso',
-        'msn_reelle_avec_autoconso',
+        'msn_std_mil_avec_autoconso',
         'md_std_mil_avec_autoconso',
 
         'c504_outLabourTotalExpenses',
@@ -1103,7 +1145,9 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
         'c707_insecticideIFT_evol_ratio',
         'c708_fungicideIFT_evol_ratio',
         'c709_otherIFT_evol_ratio',
-        'c710_biologicalWaysSolution_evol_ratio'
+        'c710_biologicalWaysSolution_evol_ratio',
+
+        'useful_typo'
     ]
 
     df = df.reset_index(drop=True)
@@ -1115,8 +1159,7 @@ def all_steps_for_maj_dephygraph(donnees, demande_rapport=False):
     # Rapport sur le magasin DEPHYGraph
     report = None
     if demande_rapport :
-        report = ProfileReport(df[colonnes_to_keep], 
-                            title="DEPHYGraph, rapport sur les variables")
+        report = report = sv.analyze(df, pairwise_analysis="off")
 
     return df, dict_idx_iqr, dict_idx_alerte_can, (report if demande_rapport else None)
 
