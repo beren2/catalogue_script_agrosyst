@@ -36,7 +36,7 @@ Vous le trouverez dans [🔗 votre profil](https://agrosyst.fr/datagrosyst/profi
 
 
 ```{r}
-url <- "https://agrosyst.fr/datagrosyst/export"
+url <- "https://datagrosyst.agrosyst.fr/export"
 
 # La liste des tables à récupérer
 tables <- c("domaine", "parcelle") # À modifier
