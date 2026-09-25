@@ -592,15 +592,6 @@
 				"validation" : {
 				}
 			},
-			"agreste_data" : {
-				"path" : "data/external_data/agreste/final/",
-				"tables" : [
-					"agreste_ift_gcpe_reference_region_2017",
-					"agreste_ift_gcpe_reference_region_2021"
-				],
-				"validation" : {
-				}
-			},
 			"dephygraph_data" : {
 				"path" : "data/external_data/dephygraph/",
 				"tables" : [
@@ -647,7 +638,8 @@
                 "dependances" : [], 
                 "generated" : [
 					"donnees_spatiales_commune_du_domaine",
-                    "donnees_spatiales_coord_gps_du_domaine"
+                    "donnees_spatiales_coord_gps_du_domaine",
+					"agreste_ift_gcpe_reference_region"
                 ], 
 				"need_performance" : []
             },
