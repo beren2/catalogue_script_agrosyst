@@ -981,7 +981,7 @@ def create_category_outils_dephygraph():
         json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
 
     if rapport :
-        rapport.to_file(directory_export + "dephygraph_rapport_variables.html")
+        rapport.show_html(directory_export + "dephygraph_rapport_variables.html")
 
     # Exporter les tables à UNION pour faire le magasin 
     # IPMGraph (pas d'id)
