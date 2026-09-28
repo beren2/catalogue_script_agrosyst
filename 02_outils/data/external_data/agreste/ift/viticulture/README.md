@@ -25,16 +25,16 @@
 
     3. Ajouter les informations relatives à l'étude de la campagne `YYYY`au paramètre STUDIES dans le notebook `./get_ift_anciennes_regions_maraichage.ipynb` 
 
+    4. Vérifier que l'année en cours est bien une colonne du fichier [departement_bassin_viticole.csv](../../../departement_bassin_viticole.csv) car c'est le référentiel mobilisé pour l'affectation des IFT aux départements.  
+
     > Attention, il se peut que le formalisme d'Agreste évolue encore. On ne peut garantir que le script d'extraction des information fonctionne à chaque fois.
 
     > Attention, on ne prend que le mode de conduite "Ensemble", on ne tient pas compte donc de l'éventuel distinction d'ift entre Plein air, sous abri, sous serre...
 
 3. Exécuter l'ensemble du notebook `./get_ift_anciennes_regions_maraichage.ipynb`
 
-4.  le script se chargera d'enregistrer tous les fichiers `ift_culture_bassin_maraichage_YYYY.csv` donnant, pour chaque région et chaque espèce étudiée, l'IFT moyen pour chaque région lors de la campagne `YYYY`. 
+4.  le script se chargera d'enregistrer le fichier `ift_departement_viticulture.csv` donnant, pour chaque département et pour chaque campagne disponible, l'IFT de référence Agreste (simple affectation de l'IFT du bassin viticole auquel appartient le département). 
 
 5. Vérifier la cohérence des fichiers obtenus (pas de valeurs aberrantes)
-
-### Point d'attention
 
 
