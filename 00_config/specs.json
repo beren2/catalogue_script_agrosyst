@@ -587,7 +587,8 @@
 				"path" : "data/external_data/agreste/final/",
 				"tables" : [
 					"agreste_ift_gcpe_reference_region_2017",
-					"agreste_ift_gcpe_reference_region_2021"
+					"agreste_ift_gcpe_reference_region_2021",
+					"agreste_ift_viticulture_departement"
 				],
 				"validation" : {
 				}
@@ -758,6 +759,15 @@
                 ], 
 				"need_performance" : [
 				]
+            },
+			"outils_agreste" : {
+                "function_name" : "create_category_agreste",
+                "dependances" : [],
+                "generated" : [
+					"agreste_ift_viticulture_reference_departement",
+					"agreste_ift_gcpe_reference_region"
+                ], 
+				"need_performance" : []
             },
 			"outils_dirodur_0" : {
                 "function_name" : "create_category_dirodur_0",
