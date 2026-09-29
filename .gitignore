@@ -1,5 +1,6 @@
 *.ini
 *.dump
+*.png
 **/__pycache__/
 02_outils/data/referentiels/*
 02_outils/data/external_data/*
