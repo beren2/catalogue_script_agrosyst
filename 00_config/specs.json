@@ -813,6 +813,7 @@
 					"typologie_culture_outils_dirodur"
                 ], 
 				"need_performance" : [
+					"sdc_realise_performance"
 				]
             },
 			"outils_dirodur_2" : {
