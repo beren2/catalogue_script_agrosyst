@@ -586,8 +586,10 @@
 			"agreste_data" : {
 				"path" : "data/external_data/agreste/final/",
 				"tables" : [
-					"agreste_ift_gcpe_reference_region_2017",
-					"agreste_ift_gcpe_reference_region_2021",
+					"agreste_ift_culture_arboriculture_reference_region_2018",
+					"agreste_ift_culture_arboriculture_reference_region_2024",
+					"agreste_ift_culture_gcpe_reference_region_2017",
+					"agreste_ift_culture_gcpe_reference_region_2021",
 					"agreste_ift_viticulture_departement"
 				],
 				"validation" : {

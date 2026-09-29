@@ -57,9 +57,9 @@ SELECT
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    null AS IFT_norme,                     -- Norme IFT viticole si disponible
-    null AS IFT_chimique_moyen_SSP,       -- Idem
-    comm.bassin_viticole AS bassin_viticole_SSP,        
+    esrp.ift_cible_non_mil_chimique_tot / eaivrd.ift_total  AS IFT_norme,                     -- Norme IFT viticole si disponible
+    eaivrd.ift_total AS IFT_chimique_moyen_SSP,       -- Idem
+    eaivrd.nom_bassin_viticole as bassin_viticole_SSP,
     -- Interventions et produits
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.qsa_tot AS quantite_mat_active_SDC,
@@ -163,6 +163,7 @@ LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc
 LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc ON sdc.id = escotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON esrp.sdc_id = sdc.id
 left join entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can ervsrotdbc on ervsrotdbc.id = sdc.id
+left join entrepot_agreste_ift_viticulture_reference_departement eaivrd on eaivrd.campagne = sdc.campagne and eaivrd.departement = comm.departement
 WHERE sdc.filiere = 'VITICULTURE'
 AND eeupsn.entite_retenue = 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY'
@@ -222,9 +223,9 @@ SELECT
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    null AS IFT_norme,                     -- Norme IFT viticole si disponible
-    null AS IFT_chimique_moyen_SSP,       -- Idem
-    comm.bassin_viticole AS bassin_viticole_SSP,        
+    essp.ift_cible_non_mil_chimique_tot / eaivrd.ift_total  AS IFT_norme,                     -- Norme IFT viticole si disponible
+    eaivrd.ift_total AS IFT_chimique_moyen_SSP,       -- Idem
+    eaivrd.nom_bassin_viticole as bassin_viticole_SSP,    
     -- Interventions et produits
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.qsa_tot AS quantite_mat_active_SDC,
@@ -330,6 +331,7 @@ left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.i
 left join entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
 left join entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
 left join entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can ervsotdbc on ervsotdbc.id = eeupsn.sdc_id
+left join entrepot_agreste_ift_viticulture_reference_departement eaivrd on eaivrd.campagne = sdc.campagne and eaivrd.departement = comm.departement
 WHERE sdc.filiere = 'VITICULTURE'
 and eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY';
