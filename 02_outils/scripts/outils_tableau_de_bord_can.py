@@ -1264,17 +1264,3 @@ def get_itk_rendement_maraich_outils_tableau_de_bord_can(
     return result.rename(columns={'itk_id' : 'id'})
 
 
-def get_ift_agreste_viticulture(donnees):
-    
-    """
-        Cet outil sert juste à rendre disponiblesur Datagrosyst les donnée obtenues dans 02_outils/data/external_data/agreste/ift/viticulture
-        Ici on fait le choix de stocker en base car : 
-        - les données traitées sont extrêmement petites 
-        - les données sont très utiles pour les utilisateurs
-        - les données sont mobilisées dans certains magasins (tdb_magasin_can)
-    """
-    df = donnees.copy()
-
-    agreste_ift_viticulture_departement = df['agreste_ift_viticulture_departement']
-
-    return agreste_ift_viticulture_departement

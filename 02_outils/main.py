@@ -18,6 +18,7 @@ import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration
 from scripts import indicateur
+from scripts import agreste
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
@@ -864,10 +865,6 @@ def create_category_interoperabilite():
     """
         Execute les requêtes pour créer les outils d'interopérabilité
     """
-    agreste_ift_gcpe_reference_region = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
-    agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
-    export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
-
     df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
     add_primary_key('entrepot_donnees_spatiales_commune_du_domaine', 'domaine_id')
@@ -995,13 +992,16 @@ def create_category_agreste():
         Execute les requêtes pour créer les outils relatifs aux données issues d'Agreste.
         Attention, ces données ont été restructurées.
     """
-    ift_agreste_viticulture = outils_tableau_de_bord_can.get_ift_agreste_viticulture(donnees)
+    ift_agreste_viticulture = agreste.get_ift_agreste_viticulture(donnees)
     export_to_db(ift_agreste_viticulture, 'entrepot_agreste_ift_viticulture_reference_departement')
 
-    agreste_ift_gcpe_reference_region = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
+    agreste_ift_gcpe_reference_region = agreste.get_agreste_ift_gcpe_reference_region(donnees)
     agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
     export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
 
+    agreste_ift_arboriculture_reference_region = agreste.get_agreste_ift_arboriculture_reference_region(donnees)
+    agreste_ift_arboriculture_reference_region = agreste_ift_arboriculture_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_arboriculture_reference_region, 'entrepot_agreste_ift_arboriculture_reference_region')
 
 def create_category_test():
     """ 
