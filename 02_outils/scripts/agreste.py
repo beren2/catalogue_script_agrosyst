@@ -68,7 +68,9 @@ def get_agreste_ift_arboriculture_reference_region(donnees):
     res = pd.concat([
         agreste_2018, 
         agreste_2024
-    ])
+    ]).rename(columns={
+        'ift_total' : 'ift_moyen_arboriculture'
+    })
 
     return res
 
