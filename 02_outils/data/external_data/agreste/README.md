@@ -9,6 +9,9 @@ Plusieurs jeux de données produit par l'organisme sont mobilisés dans le cadre
 - la surface dévelopée par région, par année et par culture
 - les rendement moyens par région, par année et par culture (**TODO**)
 
+La constitution des données est inspirée de la méthodologie mise au point par la cellule d'animation nationale du réseau DEPHY. Quelques différences sont néanmoins à prendre en compte.
+
+
 ## Objectifs
 
 Ce document a pour objectifs  
@@ -30,79 +33,35 @@ Tous trois consistent en un filtre prédéfini de l'outil de parcours des donné
 ### Tableaux interractifs
 Pour certaines données, Agreste met à disposition un outil de manipulation de données. Par exemple, pour le jeu de donnés d'identifiant **saanr_fourrage_2**, on peut accéder à une interface de manipulation [ici]( https://agreste.agriculture.gouv.fr/agreste-saiku/?plugin=true&query=query/open/SAANR_FOURRAGE_2#query/open/SAANR_FOURRAGE_2).
 
-> Certaines données nécessaires à Datagrosyst seront obtenues via cette interface.
+> Cette modalité d'accès aux données est obsolète. On peut aujourd'hui trouver toutes les informations qui nous intéressent dans les séries longues.
 
 ### Séries longues
 Ce filtre permet d'accéder à toutes les données suivies sur le long terme par Agreste. Par exemple la [statistique agricole annuelle](https://agreste.agriculture.gouv.fr/agreste-web/disaron/SAA-SeriesLongues/detail/) qui donne le détail des surfaces développées par année depuis 2010 en France.
 
-## Dépendances
+## Traitement par filières
 
-### Niveau d'utilisation de traitement phytosanitaires
+À intervalle régulier, Agreste publie les résultat de ses enquêtes sur le niveau de dépendance aux produits phytosanitaire des agriculteurs en France. Ces enquêtes sont spécifiques à une ou plusieurs filière. Dans la suite, on distinguera donc les méthodologies en fonction des filières.
 
-À intervalle régulier, Agreste publie les résultat de ses enquêtes sur le niveau de dépendance aux produits phytosanitaire des agriculteurs en France. Ces enquêtes sont spécifiques à une ou plusieurs filière.
+L'indicateur retenu pour l'étude via Agrosyst est l'IFT chimique total sans traitement de semence. En effet, les traitements de semences sont historiquement mal déclarés sur Agrosyst et leur prise en compte peut introduire des biais importants. On préfère donc comparer les versions sans traitements de semences. Cette information est, on le verra, parfois plus complexe à obtenir.
 
 #### Grandes cultures et polyculture élevage
-
-2017 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd1903/detail/
-
-2021 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2407/detail/
-
-> [Voir la méthodologie de mise à jour](./ift/gcpe/README.md)
-
-#### Maraîchage
-
-2018 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2312/detail/
-
-2022 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2504/detail/
-
-> Voir la méthodologie de mise à jour  : TODO
+> [Voir la méthodologie de mise à jour](./gcpe/README.md)
 
 #### Viticulture
+> [Voir la méthodologie de mise à jour](./viticulture/README.md)
 
-2019 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2304/detail/
-
-2016 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2004/detail/
-
-2024 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
-
-> Voir la méthodologie de mise à jour  : TODO
-
+#### Maraîchage
+> [Voir la méthodologie de mise à jour](./maraichage/README.md)
 #### Arboriculture 
+> [Voir la méthodologie de mise à jour](./arboriculture/README.md)
 
-2018 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2108/detail/
-
-2024 : https://agreste.agriculture.gouv.fr/agreste-web/disaron/Chd2607/detail/
-
-
-### Surface développée par région, par année et par culture
-
-#### GCPE
-- https://agreste.agriculture.gouv.fr/agreste-web/disaron/SAA-SeriesLongues/detail/
-- https://agreste.agriculture.gouv.fr/agreste-saiku/?plugin=true&query=query/open/SAANR_FOURRAGE_2#query/open/SAANR_FOURRAGE_2
-
-> [Voir la méthodologie de mise à jour](./surface/gcpe/README.md)
-
-
-### Génération des fichiers finaux
-
-#### Restructuration
-Une fois l'intégralité des fichiers récupérés, on doit procéder à deux étapes supplémentaire. En effet, certaines enquêtes Agreste n'exposent pas les mêmes colonnes en sortie, il faut donc retravailler les fichiers.
-
-Pour cette étape, il faut exécuter toutes les cellules du notebook [01_restructuration.ipynb](./01_restructuration.ipynb)
-
-> Cette étape ne **peut pas** être réalisée directement au moment de l'import du fichier car, pour rendre homogène les fichiers, on a besoin des autres fichiers. Par exemple, pour fusionner les colonnes "Orge de printemps" et "Orge d'hiver" de l'enquête PK sur les produits phytosanitaires, on a besoin des résultats de l'enquête sur les surface développées dans chacune de ces cultures...
-
-Les fichiers restructurés sont stockés [ici](./restructure/). 
-> Attention, les fichiers qui ne nécessitent pas de restructuration ne sont pas stockés dans ce fichier (exemple : `ift_culture_ancienne_region_gcpe_2021_restructure`)
-
-#### Finalisation
-
-Une fois qu'on a obtenu tous les fichiers, on obtient les fichiers finaux qui donnent juste un IFT de référence à la région.
-
-> Attention, pour certaines cultures, on a aucun IFT disponible dans les données Agreste. On recompile donc une surface virtuelle de la région comptabilisant uniquement les surfaces de cultures pour lesquelles on a un IFT de disponible. On effectue ensuite la moyenne pondérée par la surface occupée de l'IFT. 
-
-Pour cette étape, il faut exécuter toutes les cellules du notebook [02_finalisation.ipynb](./02_finalisation.ipynb)
-
-Les fichiers restructurés sont stockés [ici](./final/). 
-
-C'est ceux-ci qui seront mobilisés par les outils Datagrosyst.
+## Constitution du dossier final
+Une fois toutes les données récupérées, veuillez placer tous ces fichiers dans le répertoire final : 
+- Arboricutlure
+    - `ift_culture_ancienne_region_arboriculture_2018.csv`
+    - `ift_culture_ancienne_region_arboriculture_2024.csv`
+- Viticulture
+    - `agreste_ift_viticulture_departement.csv`
+- GCPE
+    - `agreste_ift_gcpe_reference_region_2017.csv`
+    - `agreste_ift_gcpe_reference_region_2021.csv`

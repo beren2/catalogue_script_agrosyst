@@ -30,7 +30,14 @@ SELECT
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
     sdc.type_agriculture AS sdc_type_agriculture,
-    sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente ?
+    CASE
+        WHEN sdc.type_agriculture IN (
+            'Agriculture biologique',
+            'En conversion vers l''agriculture biologique'   -- échappe d’une apostrophe dans certains SGBD
+        )
+        THEN 'AB'
+        ELSE 'CONV'
+    END AS AB_CONV,
     es.id AS systeme_synthetise_id,
     es.nom AS systeme_synthetise_nom,
     es.campagnes AS systeme_synthetise_campagnes,
@@ -287,7 +294,14 @@ SELECT
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
     sdc.type_agriculture AS sdc_type_agriculture,
-    sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente ?
+    CASE
+        WHEN sdc.type_agriculture IN (
+            'Agriculture biologique',
+            'En conversion vers l''agriculture biologique'   -- échappe d’une apostrophe dans certains SGBD
+        )
+        THEN 'AB'
+        ELSE 'CONV'
+    END AS AB_CONV,    
     null AS systeme_synthetise_id,
     null AS systeme_synthetise_nom,
     null AS systeme_synthetise_campagnes,

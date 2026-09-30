@@ -6,8 +6,8 @@ SELECT
     sdc.campagne as campagne_donnees,
     sdc.filiere as filiere,
     dispo."type" as dispositif_type,
-    errsotdbc.reseaux_ir as reseaux_ir,
-    errsotdbc.reseaux_it as reseaux_it,
+    escotdbc.reseaux_ir as reseaux_ir,
+    escotdbc.reseaux_it as reseaux_it,
     dom.id as domaine_id,
     dom.nom as domaine_nom,
     dom.departement as departement,
@@ -17,29 +17,29 @@ SELECT
     sdc.id as sdc_id,
     sdc.nom as sdc_nom, 
     sdc.part_sau_domaine as sdc_part_sau_domaine, 
-    esrotdbc.surface_sdc as surface_sdc,
+    escotdbc.surface_sdc_realise as surface_sdc,
     sdc.type_agriculture as sdc_type_agriculture,
-    sdc.type_production as sdc_type_production,
     null as systeme_synthetise_id,
     null as systeme_synthetise_nom,
     null as systeme_synthetise_campagnes,
     etacr.typocan_assol as typo_rotation,
+    eidod.typodirodur_culture_richesse AS div_cult_sdc,
     etacr.nb_culture_sdc as nb_cultures_sdc, 
-    essrotdbc.surface_betterave as surface_Betterave_SDC,
-	essrotdbc.surface_cereale_a_paille_printemps as surface_CaP_Printemps_SDC,
-	essrotdbc.surface_cereale_a_paille_hiver as surface_CaP_hiver_SDC,
-	essrotdbc.surface_colza as surface_Colza_SDC,
-	essrotdbc.surface_legume as surface_Leg_plein_champ_SDC,
-	essrotdbc.surface_lin as surface_Lin_fibre_SDC,
-	essrotdbc.surface_mais as surface_Mais_Sorgho_SDC,
-	essrotdbc.surface_melange_fourrager as surface_Mel_Fourrage_SDC,
-	essrotdbc.surface_oleagineux as surface_Olea_SDC,
-	essrotdbc.surface_pomme_de_terre as surface_Pdt_SDC,
-	essrotdbc.surface_porte_graine as surface_porte_graine_SDC,
-	essrotdbc.surface_prairie_temporaire as surface_Prairie_Temp_SDC,
-	essrotdbc.surface_proteagineux as surface_Protea_SDC,
-	essrotdbc.surface_tournesol as surface_Tournesol_SDC,
-	essrotdbc.surface_autre as surface_autre_SDC, 
+    escotdbc.surface_betterave_realise as surface_Betterave_SDC,
+	escotdbc.surface_cereale_a_paille_printemps_realise as surface_CaP_Printemps_SDC,
+	escotdbc.surface_cereale_a_paille_hiver_realise as surface_CaP_hiver_SDC,
+	escotdbc.surface_colza_realise as surface_Colza_SDC,
+	escotdbc.surface_legume_realise as surface_Leg_plein_champ_SDC,
+	escotdbc.surface_lin_realise as surface_Lin_fibre_SDC,
+	escotdbc.surface_mais_realise as surface_Mais_Sorgho_SDC,
+	escotdbc.surface_melange_fourrager_realise as surface_Mel_Fourrage_SDC,
+	escotdbc.surface_oleagineux_realise as surface_Olea_SDC,
+	escotdbc.surface_pomme_de_terre_realise as surface_Pdt_SDC,
+	escotdbc.surface_porte_graine_realise as surface_porte_graine_SDC,
+	escotdbc.surface_prairie_temporaire_realise as surface_Prairie_Temp_SDC,
+	escotdbc.surface_proteagineux_realise as surface_Protea_SDC,
+	escotdbc.surface_tournesol_realise as surface_Tournesol_SDC,
+	escotdbc.surface_autre_realise as surface_autre_SDC, 
 	esrp.mb_reelle_avec_autoconso as MB_reelle_ac_auto_SDC,
 	esrp.msn_reelle_avec_autoconso as MSN_relle_ac_auto_SDC,
 	esrp.pb_reel_avec_autoconso as pb_reel_avec_autoconso,
@@ -63,8 +63,8 @@ SELECT
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    null as ift_norme_sdc, -- TODO
-    null as IFT_Hors_TS_Moy_Region, -- TODO
+    esrp.ift_cible_non_mil_chimique_tot / eaigrr.ift_moyen_gcpe_can as ift_norme_sdc,
+    eaigrr.ift_moyen_gcpe_can as IFT_Hors_TS_Moy_Region,
     esrp.qsa_tot AS quantite_mat_active_SDC,
     esrp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
     esrp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
@@ -112,7 +112,6 @@ SELECT
     esrp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
     esrp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
     esrp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
-    esrp.qsa_tot AS quantite_mat_active_SDC,
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.ges_totaux_total_ges_total AS GES_SDC,
     esrp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -139,7 +138,6 @@ SELECT
     esrp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
@@ -158,7 +156,7 @@ SELECT
     sdc.type_agriculture || '_' || etacr.typocan_assol || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) as situation_production_mill,
 	sdc.codes_convention_dephy as codes_convention_dephy,
 	esrp.recours_aux_moyens_biologiques as rec_moyens_biologiques_SDC,
-	esrp.recours_macroorganismes as recours_magroorganismes_SDC,
+	esrp.recours_macroorganismes as recours_macroorganismes_SDC,
 	esrp.recours_produits_biotiques_sansamm as recours_pdts_biot_sansamm_SDC,
 	esrp.recours_produits_abiotiques_sansamm as recours_ptds_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
@@ -166,11 +164,11 @@ LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
 left join entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc_id
-left join entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc on sdc.id = errsotdbc.id 
-left join entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc on sdc.id = esrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on sdc.id = escotdbc.id
 left join entrepot_typologie_assol_can_realise etacr on etacr.sdc_id = sdc.id
-left join entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc on sdc.id = essrotdbc.id
 left join entrepot_sdc_realise_performance esrp on sdc.id = esrp.sdc_id 
+left join entrepot_agreste_ift_gcpe_reference_region eaigrr on (comm.ancienne_region = eaigrr.nom_ancienne_region) and (dom.campagne=eaigrr.campagne)
+left join entrepot_indicateur_diversite_outils_dirodur eidod on sdc.id = eidod.sdc_id
 WHERE (sdc.filiere = 'GRANDES_CULTURES' or sdc.filiere = 'POLYCULTURE_ELEVAGE')
 and eeupsn.entite_retenue = 'realise_retenu'
 and not dispo.type = 'NOT_DEPHY'
@@ -182,8 +180,8 @@ SELECT
     sdc.campagne as campagne_donnees,
     sdc.filiere as filiere,
     dispo."type" as dispositif_type,
-    errsotdbc.reseaux_ir as reseaux_ir,
-    errsotdbc.reseaux_it as reseaux_it,
+    escotdbc2.reseaux_ir as reseaux_ir,
+    escotdbc2.reseaux_it as reseaux_it,
     dom.id as domaine_id,
     dom.nom as domaine_nom,
     dom.departement as departement,
@@ -193,29 +191,29 @@ SELECT
     sdc.id as sdc_id,
     sdc.nom as sdc_nom, 
     sdc.part_sau_domaine as sdc_part_sau_domaine, 
-    esusotdb.surface_synthetise as surface_sdc,
+    escotdbc.surface_sdc_synthetise as surface_sdc,
     sdc.type_agriculture as sdc_type_agriculture,
-    sdc.type_production as sdc_type_production,
     synthetise.id as systeme_synthetise_id,
     synthetise.nom as systeme_synthetise_nom,
     synthetise.campagnes as systeme_synthetise_campagnes,
     etcrs.typocan_rotation as typo_rotation,
-    etcrs.nb_culture_synthetise as nb_culture_sdc, 
-    essotdbc.surface_betterave as surface_Betterave_SDC,
-	essotdbc.surface_cereale_a_paille_printemps as surface_CaP_Printemps_SDC,
-	essotdbc.surface_cereale_a_paille_hiver as surface_CaP_hiver_SDC,
-	essotdbc.surface_colza as surface_Colza_SDC,
-	essotdbc.surface_legume as surface_Leg_plein_champ_SDC,
-	essotdbc.surface_lin as surface_Lin_fibre_SDC,
-	essotdbc.surface_mais as surface_Mais_Sorgho_SDC,
-	essotdbc.surface_melange_fourrager as surface_Mel_Fourrage_SDC,
-	essotdbc.surface_oleagineux as surface_Olea_SDC,
-	essotdbc.surface_pomme_de_terre as surface_Pdt_SDC,
-	essotdbc.surface_porte_graine as surface_porte_graine_SDC,
-	essotdbc.surface_prairie_temporaire as surface_Prairie_Temp_SDC,
-	essotdbc.surface_proteagineux as surface_Protea_SDC,
-	essotdbc.surface_tournesol as surface_Tournesol_SDC,
-	essotdbc.surface_autre as surface_autre_SDC, 
+    eidod.typodirodur_culture_richesse AS div_cult_sdc,
+    etcrs.nb_culture_synthetise as nb_cultures_sdc, 
+    escotdbc.surface_betterave_synthetise as surface_Betterave_SDC,
+	escotdbc.surface_cereale_a_paille_printemps_synthetise as surface_CaP_Printemps_SDC,
+	escotdbc.surface_cereale_a_paille_hiver_synthetise as surface_CaP_hiver_SDC,
+	escotdbc.surface_colza_synthetise as surface_Colza_SDC,
+	escotdbc.surface_legume_synthetise as surface_Leg_plein_champ_SDC,
+	escotdbc.surface_lin_synthetise as surface_Lin_fibre_SDC,
+	escotdbc.surface_mais_synthetise as surface_Mais_Sorgho_SDC,
+	escotdbc.surface_melange_fourrager_synthetise as surface_Mel_Fourrage_SDC,
+	escotdbc.surface_oleagineux_synthetise as surface_Olea_SDC,
+	escotdbc.surface_pomme_de_terre_synthetise as surface_Pdt_SDC,
+	escotdbc.surface_porte_graine_synthetise as surface_porte_graine_SDC,
+	escotdbc.surface_prairie_temporaire_synthetise as surface_Prairie_Temp_SDC,
+	escotdbc.surface_proteagineux_synthetise as surface_Protea_SDC,
+	escotdbc.surface_tournesol_synthetise as surface_Tournesol_SDC,
+	escotdbc.surface_autre_synthetise as surface_autre_SDC, 
 	essp.mb_reelle_avec_autoconso as MB_reelle_ac_auto_SDC,
 	essp.msn_reelle_avec_autoconso as MSN_relle_ac_auto_SDC,
 	essp.pb_reel_avec_autoconso as pb_reel_avec_autoconso,
@@ -239,8 +237,8 @@ SELECT
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    null as ift_norme_sdc, -- TODO
-    null as IFT_Hors_TS_Moy_Region, -- TODO
+    essp.ift_cible_non_mil_chimique_tot / eaigrr.ift_moyen_gcpe_can as ift_norme_sdc,
+    eaigrr.ift_moyen_gcpe_can as IFT_Hors_TS_Moy_Region,
     essp.qsa_tot AS quantite_mat_active_SDC,
     essp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
     essp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
@@ -288,7 +286,6 @@ SELECT
     essp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
     essp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
     essp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
-    essp.qsa_tot AS quantite_mat_active_SDC,
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.ges_totaux_total_ges_total AS GES_SDC,
     essp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -315,7 +312,6 @@ SELECT
     essp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
-    esrp.recours_produits_toxiques_utilisateurs_cmr AS nb_manip_produit_CMR_SDC,
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
@@ -334,7 +330,7 @@ SELECT
     sdc.type_agriculture || '_' || etcrs.typocan_rotation || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) as situation_production_mill,
 	sdc.codes_convention_dephy as codes_convention_dephy,
 	essp.recours_aux_moyens_biologiques as rec_moyens_biologiques_SDC,
-	essp.recours_macroorganismes as recours_magroorganismes_SDC,
+	essp.recours_macroorganismes as recours_macroorganismes_SDC,
 	essp.recours_produits_biotiques_sansamm as recours_pdts_biot_sansamm_SDC,
 	essp.recours_produits_abiotiques_sansamm as recours_ptds_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise 
@@ -343,12 +339,13 @@ LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
 left join entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc_id
-left join entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc on sdc.id = errsotdbc.id 
-left join entrepot_stc_synthetise_outils_tableau_de_bord_can essotdbc on essotdbc.id = synthetise.id
-left join entrepot_surface_synthetise_outils_tableau_de_bord_can esusotdb on esusotdb.id = synthetise.id
+left join entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = synthetise.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = sdc.id
 left join entrepot_typologie_can_rotation_synthetise etcrs on etcrs.synthetise_id = synthetise.id
+left join entrepot_agreste_ift_gcpe_reference_region eaigrr on (comm.ancienne_region = eaigrr.nom_ancienne_region) and (dom.campagne=eaigrr.campagne)
 --left join entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc on sdc.id = essrotdbc.id
 left join entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
+left join entrepot_indicateur_diversite_outils_dirodur eidod on sdc.id = eidod.sdc_id
 WHERE (sdc.filiere = 'GRANDES_CULTURES' or sdc.filiere = 'POLYCULTURE_ELEVAGE')
 and eeupsn.entite_retenue != 'realise_retenu'
 and not dispo.type = 'NOT_DEPHY';

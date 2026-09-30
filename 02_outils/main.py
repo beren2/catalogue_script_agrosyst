@@ -18,6 +18,7 @@ import psycopg2 as psycopg
 from scripts import nettoyage
 from scripts import restructuration
 from scripts import indicateur
+from scripts import agreste
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
@@ -864,10 +865,6 @@ def create_category_interoperabilite():
     """
         Execute les requêtes pour créer les outils d'interopérabilité
     """
-    agreste_ift_gcpe_reference_region = interoperabilite.get_agreste_ift_gcpe_reference_region(donnees)
-    agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
-    export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
-
     df_donnees_spatiales_commune_du_domaine = interoperabilite.get_donnees_spatiales_commune_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_commune_du_domaine, 'entrepot_donnees_spatiales_commune_du_domaine')
     add_primary_key('entrepot_donnees_spatiales_commune_du_domaine', 'domaine_id')
@@ -880,7 +877,6 @@ def create_category_outils_tableau_de_bord_can():
     """
         Execute les requêtes pour créer les outils nécessaires à la génération du magasin de données "tableau_de_bord_can"
     """
-    # création de l'outil permettant de filtrer les entités (dispositifs)
     sdc_complet_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_sdc_realise_complet_outils_tableau_de_bord_can(donnees)
     sdc_complet_outils_tableau_de_bord_can.set_index('id', inplace=True)
     export_to_db(sdc_complet_outils_tableau_de_bord_can, 'entrepot_sdc_complet_outils_tableau_de_bord_can')
@@ -991,6 +987,22 @@ def create_category_outils_dephygraph():
     df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
     export_to_db(df_culture_trop_for_dephygraph, 'entrepot_donnees_culture_trop_pour_dephygraph')
 
+def create_category_agreste():
+    """
+        Execute les requêtes pour créer les outils relatifs aux données issues d'Agreste.
+        Attention, ces données ont été restructurées.
+    """
+    ift_agreste_viticulture = agreste.get_ift_agreste_viticulture(donnees)
+    export_to_db(ift_agreste_viticulture, 'entrepot_agreste_ift_viticulture_reference_departement')
+
+    agreste_ift_gcpe_reference_region = agreste.get_agreste_ift_gcpe_reference_region(donnees)
+    agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
+
+    agreste_ift_arboriculture_reference_region = agreste.get_agreste_ift_arboriculture_reference_region(donnees)
+    agreste_ift_arboriculture_reference_region = agreste_ift_arboriculture_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_arboriculture_reference_region, 'entrepot_agreste_ift_arboriculture_reference_region')
+
 def create_category_test():
     """ 
         Execute les requêtes pour tester la génération d'outils spécifiques
@@ -1027,6 +1039,7 @@ steps = [
     {'source' : 'outils', 'category' : 'nettoyage'},
     {'source' : 'outils', 'category' : 'agregation'},
     {'source' : 'outils', 'category' : 'restructuration'},
+    {'source' : 'outils', 'category' : 'agreste'},
     {'source' : 'outils', 'category' : 'indicateur_0'},
     {'source' : 'outils', 'category' : 'indicateur_1'},
     {'source' : 'outils', 'category' : 'indicateur_2'},

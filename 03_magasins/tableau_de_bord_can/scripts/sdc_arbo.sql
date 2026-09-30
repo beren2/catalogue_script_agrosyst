@@ -1,5 +1,3 @@
--- SCRIPT SQL POUR LE TRAITEMENT DES DONNÉES VITICOLES (viti.csv)
--- Aligné sur le fichier viti_var.csv et inspiré de sdc_gcpe.sql
 SELECT
     -- Identification unique
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne AS ID_CODE_DEPHY_CAMPAGNE,
@@ -31,6 +29,8 @@ SELECT
     -- Données économiques et techniques
     esrp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
     esrp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
+    esrp.mb_std_mil_avec_autoconso AS MB_std_ac_auto_SDC,
+    esrp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     esrp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
     esrp.co_tot_reelles AS CO_reelles_SDC,
     esrp.cm_reelles AS CM_reelles_SDC,
@@ -38,7 +38,7 @@ SELECT
     esrp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
     esrp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
     esrp.nombre_uth_necessaires AS nbre_uth_sdc,
-    -- IFT et alertes (viticulture)
+    -- IFT et alertes
     esrp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
     esrp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_tot_hts_SDC, 
     esrp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
@@ -47,6 +47,8 @@ SELECT
     esrp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
+    eaiarr.ift_cible_non_mil_chimique_tot / eaiarr.ift_total AS IFT_norme,
+    eaiarr.ift_total AS IFT_chimique_moyen_SSP,
     -- Interventions et produits
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.qsa_boscalid as qte_mat_active_boscalid_SDC,
@@ -80,11 +82,30 @@ SELECT
     -- Temps mensuels (exemple pour janvier à décembre)
     esrp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
     esrp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
-    -- ... (compléter pour tous les mois)
+    esrp.tps_utilisation_materiel_mars AS tps_util_materiel_mars_SDC,
+    esrp.tps_utilisation_materiel_avril AS tps_util_materiel_avril_SDC,
+    esrp.tps_utilisation_materiel_mai AS tps_util_materiel_mai_SDC,
+    esrp.tps_utilisation_materiel_juin AS tps_util_materiel_juin_SDC,
+    esrp.tps_utilisation_materiel_juillet AS tps_util_materiel_juillet_SDC,
+    esrp.tps_utilisation_materiel_aout AS tps_util_materiel_aout_SDC,
+    esrp.tps_utilisation_materiel_septembre AS tps_util_materiel_septembre_SDC,
+    esrp.tps_utilisation_materiel_octobre AS tps_util_materiel_octobre_SDC,
+    esrp.tps_utilisation_materiel_novembre AS tps_util_materiel_novembre_SDC,
+    esrp.tps_utilisation_materiel_decembre AS tps_util_materiel_decembre_SDC,
     esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
     -- Temps manuel mensuel (exemple pour janvier à décembre)
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
+    esrp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
+    esrp.tps_travail_manuel_mars AS tps_travail_manuel_mars_SDC,
+    esrp.tps_travail_manuel_avril AS tps_travail_manuel_avril_SDC,
+    esrp.tps_travail_manuel_mai AS tps_travail_manuel_mai_SDC,
+    esrp.tps_travail_manuel_juin AS tps_travail_manuel_juin_SDC,
+    esrp.tps_travail_manuel_juillet AS tps_travail_manuel_juillet_SDC,
+    esrp.tps_travail_manuel_aout AS tps_travail_manuel_aout_SDC,
+    esrp.tps_travail_manuel_septembre AS tps_travail_manuel_septembre_SDC,
+    esrp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
+    esrp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
+    esrp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
     -- GES et énergie
     esrp.ges_totaux_total_ges_total AS GES_SDC,
     esrp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -94,7 +115,7 @@ SELECT
     esrp.ges_carburants_indirectes_ges_total AS Emissions_indirectes_fuel_SDC,
     esrp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
     esrp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
-    -- Alertes (viticulture)
+    -- Alertes
     null AS alerte_renseignement_donnees,
     -- Situation de production et coûts
     eevpp.espece_principale as situation_production,
@@ -115,7 +136,6 @@ SELECT
     esrp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
     esrp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
-    --sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
@@ -129,8 +149,8 @@ LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc ON sdc.id = escotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON esrp.sdc_id = sdc.id
-left join entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can ervsrotdbc on ervsrotdbc.id = sdc.id
 left join entrepot_espece_variete_perenne_principale eevpp on eevpp.entite_id = sdc.id
+left join entrepot_agreste_ift_arboriculture_reference_region eaiarr on (eaiarr.campagne = sdc.campagne) and (eaiarr.nom_ancienne_region = comm.ancienne_region) and (eaiarr.culture = eevpp.espece_principale)
 WHERE sdc.filiere = 'ARBORICULTURE'
 AND eeupsn.entite_retenue = 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY'
@@ -166,6 +186,8 @@ SELECT
     -- Données économiques et techniques
     essp.mb_reelle_avec_autoconso AS MB_reelle_ac_auto_SDC,
     essp.msn_reelle_avec_autoconso AS MSN_relle_ac_auto_SDC,
+    essp.mb_std_mil_avec_autoconso AS MB_std_ac_auto_SDC,
+    essp.msn_std_mil_avec_autoconso AS MSN_std_ac_auto_SDC,
     essp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
     essp.co_tot_reelles AS CO_reelles_SDC,
     essp.cm_reelles AS CM_reelles_SDC,
@@ -173,7 +195,7 @@ SELECT
     essp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
     essp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
     essp.nombre_uth_necessaires AS nbre_uth_sdc,
-    -- IFT et alertes (viticulture)
+    -- IFT et alertes (arboriculture)
     essp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
     essp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_tot_hts_SDC,
     essp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
@@ -182,6 +204,8 @@ SELECT
     essp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
+    eaiarr.ift_cible_non_mil_chimique_tot / eaiarr.ift_total AS IFT_norme,
+    eaiarr.ift_total AS IFT_chimique_moyen_SSP,
     -- Interventions et produits
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.qsa_boscalid as qte_mat_active_boscalid_SDC,
@@ -215,8 +239,30 @@ SELECT
     -- Temps mensuels (exemple pour janvier à décembre)
     essp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
     essp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
-    -- ... (compléter pour tous les mois)
+    essp.tps_utilisation_materiel_mars AS tps_util_materiel_mars_SDC,
+    essp.tps_utilisation_materiel_avril AS tps_util_materiel_avril_SDC,
+    essp.tps_utilisation_materiel_mai AS tps_util_materiel_mai_SDC,
+    essp.tps_utilisation_materiel_juin AS tps_util_materiel_juin_SDC,
+    essp.tps_utilisation_materiel_juillet AS tps_util_materiel_juillet_SDC,
+    essp.tps_utilisation_materiel_aout AS tps_util_materiel_aout_SDC,
+    essp.tps_utilisation_materiel_septembre AS tps_util_materiel_septembre_SDC,
+    essp.tps_utilisation_materiel_octobre AS tps_util_materiel_octobre_SDC,
+    essp.tps_utilisation_materiel_novembre AS tps_util_materiel_novembre_SDC,
+    essp.tps_utilisation_materiel_decembre AS tps_util_materiel_decembre_SDC,
     essp.tps_travail_manuel AS tps_travail_manuel_SDC,
+    -- Temps manuel mensuel (exemple pour janvier à décembre)
+    essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
+    essp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
+    essp.tps_travail_manuel_mars AS tps_travail_manuel_mars_SDC,
+    essp.tps_travail_manuel_avril AS tps_travail_manuel_avril_SDC,
+    essp.tps_travail_manuel_mai AS tps_travail_manuel_mai_SDC,
+    essp.tps_travail_manuel_juin AS tps_travail_manuel_juin_SDC,
+    essp.tps_travail_manuel_juillet AS tps_travail_manuel_juillet_SDC,
+    essp.tps_travail_manuel_aout AS tps_travail_manuel_aout_SDC,
+    essp.tps_travail_manuel_septembre AS tps_travail_manuel_septembre_SDC,
+    essp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
+    essp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
+    essp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
     -- Temps manuel mensuel (exemple pour janvier à décembre)
     essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
     -- ... (compléter pour tous les mois)
@@ -229,7 +275,6 @@ SELECT
     essp.ges_carburants_indirectes_ges_total AS Emissions_indirectes_fuel_SDC,
     essp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
     essp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
-    -- Alertes (viticulture)
     null AS alerte_renseignement_donnees, -- ?
     -- Situation de production et coûts
     eevpp.espece_principale AS situation_production,
@@ -251,14 +296,13 @@ SELECT
     essp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
     essp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
-    --sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
     essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
     essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
-FROM entrepot_synthetise synthetise 
+FROM entrepot_synthetise synthetise
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
@@ -267,8 +311,8 @@ left join entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc
 left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
 left join entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
 left join entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
-left join entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can ervsotdbc on ervsotdbc.id = eeupsn.sdc_id
-left join entrepot_espece_variete_perenne_principale eevpp on eevpp.entite_id = sdc.id
+left join entrepot_espece_variete_perenne_principale eevpp on eevpp.entite_id = synthetise.id
+left join entrepot_agreste_ift_arboriculture_reference_region eaiarr on (eaiarr.campagne = sdc.campagne) and (eaiarr.nom_ancienne_region = comm.ancienne_region) and (eaiarr.culture = eevpp.espece_principale)
 WHERE sdc.filiere = 'ARBORICULTURE'
 and eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY';

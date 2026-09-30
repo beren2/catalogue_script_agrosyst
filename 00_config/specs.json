@@ -586,8 +586,11 @@
 			"agreste_data" : {
 				"path" : "data/external_data/agreste/final/",
 				"tables" : [
-					"agreste_ift_gcpe_reference_region_2017",
-					"agreste_ift_gcpe_reference_region_2021"
+					"agreste_ift_culture_arboriculture_reference_region_2018",
+					"agreste_ift_culture_arboriculture_reference_region_2024",
+					"agreste_ift_culture_gcpe_reference_region_2017",
+					"agreste_ift_culture_gcpe_reference_region_2021",
+					"agreste_ift_viticulture_departement"
 				],
 				"validation" : {
 				}
@@ -754,10 +757,20 @@
 					"itk_rendement_gcpe_outils_tableau_de_bord_can",
 					"rendement_viti_sdc_realise_outils_tableau_de_bord_can",
 					"rendement_viti_synthetise_outils_tableau_de_bord_can",
-					"itk_rendement_gcpe_outils_tableau_de_bord_can"
+					"itk_rendement_gcpe_outils_tableau_de_bord_can", 
+					"reseaux_rattachement_sdc_outils_tableau_de_bord_can"
                 ], 
 				"need_performance" : [
 				]
+            },
+			"outils_agreste" : {
+                "function_name" : "create_category_agreste",
+                "dependances" : [],
+                "generated" : [
+					"agreste_ift_viticulture_reference_departement",
+					"agreste_ift_gcpe_reference_region"
+                ], 
+				"need_performance" : []
             },
 			"outils_dirodur_0" : {
                 "function_name" : "create_category_dirodur_0",
@@ -813,6 +826,7 @@
 					"typologie_culture_outils_dirodur"
                 ], 
 				"need_performance" : [
+					"sdc_realise_performance"
 				]
             },
 			"outils_dirodur_2" : {

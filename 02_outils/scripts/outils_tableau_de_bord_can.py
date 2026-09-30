@@ -1262,3 +1262,5 @@ def get_itk_rendement_maraich_outils_tableau_de_bord_can(
     result = result.reindex(columns=cols_order).reset_index()
 
     return result.rename(columns={'itk_id' : 'id'})
+
+
