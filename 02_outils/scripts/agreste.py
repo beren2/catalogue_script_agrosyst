@@ -26,10 +26,10 @@ def get_agreste_ift_gcpe_reference_region(donnees):
     """
     df = donnees.copy()
 
-    agreste_2017 = df['agreste_ift_gcpe_reference_region_2017']
+    agreste_2017 = df['agreste_ift_culture_gcpe_reference_region_2017']
     agreste_2017.loc[:, 'campagne'] = 2017
 
-    agreste_2021 = df['agreste_ift_gcpe_reference_region_2021']
+    agreste_2021 = df['agreste_ift_culture_gcpe_reference_region_2021']
     agreste_2021.loc[:, 'campagne'] = 2021
 
     res = pd.concat([
@@ -59,10 +59,10 @@ def get_agreste_ift_arboriculture_reference_region(donnees):
     """
     df = donnees.copy()
 
-    agreste_2018 = df['agreste_ift_gcpe_reference_region_2018']
+    agreste_2018 = df['agreste_ift_culture_arboriculture_reference_region_2018']
     agreste_2018.loc[:, 'campagne'] = 2018
 
-    agreste_2024 = df['agreste_ift_gcpe_reference_region_2024']
+    agreste_2024 = df['agreste_ift_culture_arboriculture_reference_region_2024']
     agreste_2024.loc[:, 'campagne'] = 2024
 
     res = pd.concat([
