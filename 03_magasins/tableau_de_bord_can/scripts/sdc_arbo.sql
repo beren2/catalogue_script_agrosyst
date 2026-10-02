@@ -6,7 +6,7 @@ SELECT
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
