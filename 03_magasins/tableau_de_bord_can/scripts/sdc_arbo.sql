@@ -47,8 +47,8 @@ SELECT
     esrp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
-    eaiarr.ift_cible_non_mil_chimique_tot / eaiarr.ift_total AS IFT_norme,
-    eaiarr.ift_total AS IFT_chimique_moyen_SSP,
+    esrp.ift_cible_non_mil_chimique_tot / eaiarr.ift_moyen_arboriculture AS IFT_norme,
+    eaiarr.ift_moyen_arboriculture AS IFT_chimique_moyen_SSP,
     -- Interventions et produits
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.qsa_boscalid as qte_mat_active_boscalid_SDC,
@@ -88,10 +88,10 @@ SELECT
     esrp.tps_utilisation_materiel_juin AS tps_util_materiel_juin_SDC,
     esrp.tps_utilisation_materiel_juillet AS tps_util_materiel_juillet_SDC,
     esrp.tps_utilisation_materiel_aout AS tps_util_materiel_aout_SDC,
-    esrp.tps_utilisation_materiel_septembre AS tps_util_materiel_septembre_SDC,
-    esrp.tps_utilisation_materiel_octobre AS tps_util_materiel_octobre_SDC,
-    esrp.tps_utilisation_materiel_novembre AS tps_util_materiel_novembre_SDC,
-    esrp.tps_utilisation_materiel_decembre AS tps_util_materiel_decembre_SDC,
+    esrp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
+    esrp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
+    esrp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    esrp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
     -- Temps manuel mensuel (exemple pour janvier à décembre)
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
@@ -115,8 +115,6 @@ SELECT
     esrp.ges_carburants_indirectes_ges_total AS Emissions_indirectes_fuel_SDC,
     esrp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
     esrp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
-    -- Alertes
-    null AS alerte_renseignement_donnees,
     -- Situation de production et coûts
     eevpp.espece_principale as situation_production,
     esrp.co_tot_std_mil AS CO_std_mil_SDC,
@@ -204,8 +202,8 @@ SELECT
     essp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
-    eaiarr.ift_cible_non_mil_chimique_tot / eaiarr.ift_total AS IFT_norme,
-    eaiarr.ift_total AS IFT_chimique_moyen_SSP,
+    essp.ift_cible_non_mil_chimique_tot / eaiarr.ift_moyen_arboriculture AS IFT_norme,
+    eaiarr.ift_moyen_arboriculture AS IFT_chimique_moyen_SSP,
     -- Interventions et produits
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.qsa_boscalid as qte_mat_active_boscalid_SDC,
@@ -245,10 +243,10 @@ SELECT
     essp.tps_utilisation_materiel_juin AS tps_util_materiel_juin_SDC,
     essp.tps_utilisation_materiel_juillet AS tps_util_materiel_juillet_SDC,
     essp.tps_utilisation_materiel_aout AS tps_util_materiel_aout_SDC,
-    essp.tps_utilisation_materiel_septembre AS tps_util_materiel_septembre_SDC,
-    essp.tps_utilisation_materiel_octobre AS tps_util_materiel_octobre_SDC,
-    essp.tps_utilisation_materiel_novembre AS tps_util_materiel_novembre_SDC,
-    essp.tps_utilisation_materiel_decembre AS tps_util_materiel_decembre_SDC,
+    essp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
+    essp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
+    essp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    essp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     essp.tps_travail_manuel AS tps_travail_manuel_SDC,
     -- Temps manuel mensuel (exemple pour janvier à décembre)
     essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
@@ -263,9 +261,6 @@ SELECT
     essp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
     essp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
     essp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
-    essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
     -- GES et énergie
     essp.ges_totaux_total_ges_total AS GES_SDC,
     essp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -275,7 +270,6 @@ SELECT
     essp.ges_carburants_indirectes_ges_total AS Emissions_indirectes_fuel_SDC,
     essp.ges_ferti_min_indirectes_ges_total AS emissions_indirectes_engrais_SDC,
     essp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
-    null AS alerte_renseignement_donnees, -- ?
     -- Situation de production et coûts
     eevpp.espece_principale AS situation_production,
     essp.co_tot_std_mil AS CO_std_mil_SDC,
