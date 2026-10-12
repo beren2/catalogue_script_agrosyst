@@ -65,8 +65,6 @@ SELECT
     -- Eau et temps de travail
     esrp.conso_eau AS Qte_Eau_mm_ha_SDC,
     esrp.tps_utilisation_materiel AS tps_util_materiel_SDC,
-    -- Temps mensuels (exemple pour janvier à décembre)
-    esrp.tps_utilisation_materiel AS tps_util_materiel_SDC,
     esrp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
     esrp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
     esrp.tps_utilisation_materiel_mars AS tps_util_materiel_mars_SDC,
@@ -79,7 +77,6 @@ SELECT
     esrp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
     esrp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
     esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
     esrp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
     esrp.tps_travail_manuel_mars AS tps_travail_manuel_mars_SDC,
@@ -198,7 +195,6 @@ SELECT
     -- Eau et temps de travail
     essp.conso_eau AS Qte_Eau_mm_ha_SDC,
     essp.tps_utilisation_materiel AS tps_util_materiel_SDC,
-    -- Temps mensuels (exemple pour janvier à décembre)
     essp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
     essp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
     essp.tps_utilisation_materiel_mars AS tps_util_materiel_mars_SDC,
@@ -212,7 +208,6 @@ SELECT
     essp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
     essp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     essp.tps_travail_manuel AS tps_travail_manuel_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
     essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
     essp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
     essp.tps_travail_manuel_mars AS tps_travail_manuel_mars_SDC,
