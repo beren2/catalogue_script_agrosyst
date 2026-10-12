@@ -14,6 +14,7 @@ SELECT
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
+    dom.departement AS departement,  -- À remplir via une jointure avec une table de référence géographique
     dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
     comm.region AS Nom_Region,        -- Idem
     comm.ancienne_region AS Nom_Ancienne_Region,
@@ -145,6 +146,7 @@ SELECT
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
+    dom.departement AS departement,  -- À remplir via une jointure avec une table de référence géographique
     dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
     comm.region AS Nom_Region,        -- Idem
     comm.ancienne_region AS Nom_Ancienne_Region,
