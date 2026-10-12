@@ -1,5 +1,3 @@
-select * from entrepot_typologie_assol_can_realise;
-
 SELECT
     -- Identification unique du SDC et de la campagne
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne
@@ -8,8 +6,8 @@ SELECT
     sdc.campagne AS campagne_donnees,
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
-    esrotdbc.reseaux_it AS reseaux_it,
-    esrotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseau_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -52,7 +50,7 @@ SELECT
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
+    esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC, -- TODO : retirer les traitements de semences.
     esrp.alerte_ift_cible_mil_chim_tot_hts AS Alerte_IFT_total_SDC,   
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
@@ -170,7 +168,7 @@ LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_typologie_assol_can_realise etacr on sdc.id = etacr.sdc_id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on sdc.id = escotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id
 WHERE sdc.filiere = 'MARAICHAGE'  -- Filtre spécifique à la filière maraîchage
 AND eeupsn.entite_retenue = 'realise_retenu'
@@ -184,8 +182,8 @@ SELECT
     sdc.campagne AS campagne_donnees,
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseau_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -228,7 +226,7 @@ SELECT
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    essp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
+    essp.ift_cible_non_mil_hh - essp.ift_cible_non_mil_ts AS ift_cible_non_mil_hh_hors_TS_SDC,
     essp.alerte_ift_cible_mil_chim_tot_hts AS Alerte_IFT_total_SDC,  
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
@@ -350,7 +348,7 @@ LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc
 LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
 LEFT JOIN entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id
+--LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id
 WHERE sdc.filiere = 'MARAICHAGE'
 and eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY';
