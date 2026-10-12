@@ -76,6 +76,7 @@ SELECT
     esrp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
     esrp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
     esrp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    esrp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
     esrp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
