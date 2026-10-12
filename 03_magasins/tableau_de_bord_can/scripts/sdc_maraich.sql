@@ -1,7 +1,7 @@
 SELECT
     -- Identification unique du SDC et de la campagne
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne
-        AS ID_CODE_DEPHY_CAMPAGNE,
+        AS id_code_dephy_campagne,
     sdc.code_dephy AS sdc_code_dephy,
     sdc.campagne AS campagne_donnees,
     -- Dispositif et réseaux
