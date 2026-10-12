@@ -261,9 +261,6 @@ SELECT
     essp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
     essp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
     essp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
-    essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
     -- GES et énergie
     essp.ges_totaux_total_ges_total AS GES_SDC,
     essp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -285,7 +282,6 @@ SELECT
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
     -- Coûts par poste
     essp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
     essp.co_fertimin_reel + essp.co_epandage_orga_reelles as CO_reelles_ferti_min_SDC,
