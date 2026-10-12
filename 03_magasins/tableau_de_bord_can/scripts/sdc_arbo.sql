@@ -47,8 +47,7 @@ SELECT
     esrp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
-    eaiarr.ift_cible_non_mil_chimique_tot / eaiarr.ift_total AS IFT_norme,
-    eaiarr.ift_total AS IFT_chimique_moyen_SSP,
+    eaiarr.ift_moyen_arboriculture AS IFT_chimique_moyen_SSP,
     -- Interventions et produits
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.qsa_boscalid as qte_mat_active_boscalid_SDC,
@@ -204,8 +203,7 @@ SELECT
     essp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
-    eaiarr.ift_cible_non_mil_chimique_tot / eaiarr.ift_total AS IFT_norme,
-    eaiarr.ift_total AS IFT_chimique_moyen_SSP,
+    eaiarr.ift_moyen_arboriculture AS IFT_chimique_moyen_SSP,
     -- Interventions et produits
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.qsa_boscalid as qte_mat_active_boscalid_SDC,
