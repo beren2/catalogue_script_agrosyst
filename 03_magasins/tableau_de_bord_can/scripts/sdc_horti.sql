@@ -92,7 +92,7 @@ SELECT
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
 	esrp.qsa_prosulfocarbe as qte_mat_active_prosulfo_sdc,
-    esrp.qsa_bixafen as qte_mat_active_bixafen_sdc,
+    esrp.qsa_bixafen_hts as qte_mat_active_bixafen_sdc,
     -- ... (autres substances)
     -- Situation de production détaillée (millésime)
     sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
@@ -204,7 +204,7 @@ SELECT
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
     essp.qsa_prosulfocarbe as qte_mat_active_prosulfo_sdc,
-    essp.qsa_bixafen as qte_mat_active_bixafen_sdc,
+    essp.qsa_bixafen_hts as qte_mat_active_bixafen_sdc,
     -- ... (autres substances)
     -- Situation de production détaillée (millésime)
     sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
