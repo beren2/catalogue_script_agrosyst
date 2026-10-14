@@ -767,7 +767,8 @@
                 "dependances" : [],
                 "generated" : [
 					"agreste_ift_viticulture_reference_departement",
-					"agreste_ift_gcpe_reference_region"
+					"agreste_ift_gcpe_reference_region",
+					"agreste_ift_arboriculture_reference_region"
                 ], 
 				"need_performance" : []
             },

@@ -983,9 +983,13 @@ def create_category_outils_dephygraph():
     # IPMGraph (pas d'id)
     df_ipmgraph_for_dephygraph = outils_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
     export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_donnees_ipmgraph_pour_dephygraph')
+    add_primary_key('entrepot_donnees_ipmgraph_pour_dephygraph', 'index')
+
     # IPMGraph (pas d'id)
     df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
     export_to_db(df_culture_trop_for_dephygraph, 'entrepot_donnees_culture_trop_pour_dephygraph')
+    add_primary_key('entrepot_donnees_culture_trop_pour_dephygraph', 'index')
+
 
 def create_category_agreste():
     """
@@ -994,14 +998,20 @@ def create_category_agreste():
     """
     ift_agreste_viticulture = agreste.get_ift_agreste_viticulture(donnees)
     export_to_db(ift_agreste_viticulture, 'entrepot_agreste_ift_viticulture_reference_departement')
+    add_primary_key('entrepot_agreste_ift_viticulture_reference_departement', 'index')
+
 
     agreste_ift_gcpe_reference_region = agreste.get_agreste_ift_gcpe_reference_region(donnees)
     agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
     export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
+    add_primary_key('entrepot_agreste_ift_gcpe_reference_region', 'nom_ancienne_region, campagne')
+
 
     agreste_ift_arboriculture_reference_region = agreste.get_agreste_ift_arboriculture_reference_region(donnees)
     agreste_ift_arboriculture_reference_region = agreste_ift_arboriculture_reference_region.set_index(['nom_ancienne_region', 'campagne'])
     export_to_db(agreste_ift_arboriculture_reference_region, 'entrepot_agreste_ift_arboriculture_reference_region')
+    add_primary_key('entrepot_agreste_ift_arboriculture_reference_region', 'nom_ancienne_region, campagne, culture')
+
 
 def create_category_test():
     """ 
