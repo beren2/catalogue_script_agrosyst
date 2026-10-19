@@ -143,9 +143,9 @@ SELECT
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    esrp.qsa_bixafen AS qte_mat_active_bixafen_SDC,
+    esrp.qsa_bixafen_hts AS qte_mat_active_bixafen_SDC,
     esrp.qsa_boscalid AS qte_mat_active_boscalid_SDC,
-    esrp.qsa_dicamba AS qte_mat_active_dicamba_SDC,
+    esrp.qsa_dicamba_hts AS qte_mat_active_dicamba_SDC,
     esrp.qsa_prosulfocarbe AS qte_mat_active_prosulfo_SDC,
     esrp.qsa_smetolachlore AS qte_mat_active_smethola_SDC,
     -- Coûts par poste
@@ -319,9 +319,9 @@ SELECT
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    essp.qsa_bixafen AS qte_mat_active_bixafen_SDC,
+    essp.qsa_bixafen_hts AS qte_mat_active_bixafen_SDC,
     essp.qsa_boscalid AS qte_mat_active_boscalid_SDC,
-    essp.qsa_dicamba AS qte_mat_active_dicamba_SDC,
+    essp.qsa_dicamba_hts AS qte_mat_active_dicamba_SDC,
     essp.qsa_prosulfocarbe AS qte_mat_active_prosulfo_SDC,
     essp.qsa_smetolachlore AS qte_mat_active_smethola_SDC,
     -- Coûts par poste

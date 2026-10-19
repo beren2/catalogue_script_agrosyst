@@ -228,9 +228,9 @@ SELECT
     eisp.qsa_diflufenican AS qte_mat_active_diflufeni_CP,
     eisp.qsa_mancozeb AS qte_mat_active_mancozebe_CP,
     eisp.qsa_tebuconazole AS qte_mat_active_tebuco_CP,
-    eisp.qsa_bixafen AS qte_mat_active_bixafen_CP,
+    eisp.qsa_bixafen_hts AS qte_mat_active_bixafen_CP,
     eisp.qsa_boscalid AS qte_mat_active_boscalid_CP,
-    eisp.qsa_dicamba AS qte_mat_active_dicamba_CP,
+    eisp.qsa_dicamba_hts AS qte_mat_active_dicamba_CP,
     eisp.qsa_prosulfocarbe AS qte_mat_active_prosulfo_CP,
     eisp.qsa_smetolachlore AS qte_mat_active_smethola_CP
 FROM entrepot_connection_synthetise ecs
@@ -493,9 +493,9 @@ SELECT
     eirp.qsa_diflufenican AS qte_mat_active_diflufeni_CP,
     eirp.qsa_mancozeb AS qte_mat_active_mancozebe_CP,
     eirp.qsa_tebuconazole AS qte_mat_active_tebuco_CP,
-    eirp.qsa_bixafen AS qte_mat_active_bixafen_CP,
+    eirp.qsa_bixafen_hts AS qte_mat_active_bixafen_CP,
     eirp.qsa_boscalid AS qte_mat_active_boscalid_CP,
-    eirp.qsa_dicamba AS qte_mat_active_dicamba_CP,
+    eirp.qsa_dicamba_hts AS qte_mat_active_dicamba_CP,
     eirp.qsa_prosulfocarbe AS qte_mat_active_prosulfo_CP,
     eirp.qsa_smetolachlore AS qte_mat_active_smethola_CP
 FROM entrepot_noeuds_realise enr
