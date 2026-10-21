@@ -6,8 +6,8 @@ SELECT
   	etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	sdc.code_dephy AS sdc_code_dephy,
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseaux_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseaux_ir,
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
     dom.departement AS departement,
@@ -44,7 +44,7 @@ SELECT
     etcc.nb_composant_culture AS nb_espece, 
     etcc.typocan_espece AS typo_especes,
     etcc.nb_typocan_esp as nb_typo_espece,
-    etcc.typocan_culture AS typo_culture
+    etcc.typocan_culture AS typo_culture,
     null AS typo_culture_2, --> de quoi s'agit-il ? 
     ec_intermediaire.id AS ci_id,
     ec_intermediaire.nom AS ci_nom,
@@ -95,10 +95,8 @@ LEFT JOIN entrepot_domaine     dom   ON dom.id   = eisa.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
 LEFT JOIN entrepot_synthetise es ON eisa.synthetise_id = es.id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id 
-LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on es.sdc_id = escotdbc.id
 LEFT JOIN entrepot_typologie_assol_can_realise etacr ON etacr.sdc_id = sdc.id
-LEFT JOIN entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc ON sdc.id = essrotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id 
 LEFT JOIN entrepot_poids_connexions_synthetise_rotation epcsr ON epcsr.connexion_id = ecs.id
 LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON eirgotdbc.id = ecs.id
@@ -114,8 +112,8 @@ SELECT
   	etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	sdc.code_dephy AS sdc_code_dephy,
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseaux_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseaux_ir,
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
     dom.departement AS departement,
@@ -200,10 +198,8 @@ LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_parcelle ep ON eira.parcelle_id = ep.id
 LEFT JOIN entrepot_zone ez ON eira.zone_id = ez.id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id 
-LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
 LEFT JOIN entrepot_typologie_assol_can_realise etacr ON etacr.sdc_id = sdc.id
-LEFT JOIN entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc ON sdc.id = essrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id 
 LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON eirgotdbc.id = enr.id
 WHERE (sdc.filiere = 'GRANDES_CULTURES' or sdc.filiere = 'POLYCULTURE_ELEVAGE')

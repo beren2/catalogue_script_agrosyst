@@ -11,10 +11,11 @@ SELECT
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
+    dom.departement AS departement, 
     dom.departement AS Nom_Departement, 
     comm.region AS Nom_Region,        
     comm.ancienne_region AS Nom_Ancienne_Region,
@@ -90,11 +91,29 @@ SELECT
     -- Temps mensuels (exemple pour janvier à décembre)
     esrp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
     esrp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
-    -- ... (compléter pour tous les mois)
+    esrp.tps_utilisation_materiel_mars AS tps_util_materiel_mars_SDC,
+    esrp.tps_utilisation_materiel_avril AS tps_util_materiel_avril_SDC,
+    esrp.tps_utilisation_materiel_mai AS tps_util_materiel_mai_SDC,
+    esrp.tps_utilisation_materiel_juin AS tps_util_materiel_juin_SDC,
+    esrp.tps_utilisation_materiel_juillet AS tps_util_materiel_juillet_SDC,
+    esrp.tps_utilisation_materiel_aout AS tps_util_materiel_aout_SDC,
+    esrp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
+    esrp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
+    esrp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    esrp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
+    esrp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
+    esrp.tps_travail_manuel_mars AS tps_travail_manuel_mars_SDC,
+    esrp.tps_travail_manuel_avril AS tps_travail_manuel_avril_SDC,
+    esrp.tps_travail_manuel_mai AS tps_travail_manuel_mai_SDC,
+    esrp.tps_travail_manuel_juin AS tps_travail_manuel_juin_SDC,
+    esrp.tps_travail_manuel_juillet AS tps_travail_manuel_juillet_SDC,
+    esrp.tps_travail_manuel_aout AS tps_travail_manuel_aout_SDC,
+    esrp.tps_travail_manuel_septembre AS tps_travail_manuel_septembre_SDC,
+    esrp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
+    esrp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
+    esrp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
     -- GES et énergie
     esrp.ges_totaux_total_ges_total AS GES_SDC,
     esrp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -122,6 +141,7 @@ SELECT
     null AS Alerte_rendement_SDC,
     null AS Synthese_alertes,
     escotdbc.surface_sdc_realise AS surface_sdc_itk,
+    null AS surface_theorique_sdc,
     null AS alerte_renseignement_donnees,
     null AS part_sole_sdc_sans_itk,
     null as alerte_sole_sdc,
@@ -151,6 +171,7 @@ SELECT
     sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
+    null AS ift_cible_nonmil_rec_moy_bio_sdc,
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
     esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
@@ -177,10 +198,11 @@ SELECT
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
+    dom.departement AS departement, 
     dom.departement AS Nom_Departement,  -- À remplir via une jointure avec une table de référence géographique
     comm.region AS Nom_Region,        -- Idem
     comm.ancienne_region AS Nom_Ancienne_Region,
@@ -253,14 +275,31 @@ SELECT
     essp.conso_eau AS Qte_Eau_mm_ha_SDC,
     escotdbc.use_enherbement AS gestion_enherbement_SDC,  -- Spécifique viticulture
     essp.tps_utilisation_materiel AS tps_util_materiel_SDC,
-    -- Temps mensuels (exemple pour janvier à décembre)
     essp.tps_utilisation_materiel_janvier AS tps_util_materiel_janvier_SDC,
     essp.tps_utilisation_materiel_fevrier AS tps_util_materiel_fevrier_SDC,
-    -- ... (compléter pour tous les mois)
+    essp.tps_utilisation_materiel_mars AS tps_util_materiel_mars_SDC,
+    essp.tps_utilisation_materiel_avril AS tps_util_materiel_avril_SDC,
+    essp.tps_utilisation_materiel_mai AS tps_util_materiel_mai_SDC,
+    essp.tps_utilisation_materiel_juin AS tps_util_materiel_juin_SDC,
+    essp.tps_utilisation_materiel_juillet AS tps_util_materiel_juillet_SDC,
+    essp.tps_utilisation_materiel_aout AS tps_util_materiel_aout_SDC,
+    essp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
+    essp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
+    essp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    essp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     essp.tps_travail_manuel AS tps_travail_manuel_SDC,
-    -- Temps manuel mensuel (exemple pour janvier à décembre)
     essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
-    -- ... (compléter pour tous les mois)
+    essp.tps_travail_manuel_fevrier AS tps_travail_manuel_fevrier_SDC,
+    essp.tps_travail_manuel_mars AS tps_travail_manuel_mars_SDC,
+    essp.tps_travail_manuel_avril AS tps_travail_manuel_avril_SDC,
+    essp.tps_travail_manuel_mai AS tps_travail_manuel_mai_SDC,
+    essp.tps_travail_manuel_juin AS tps_travail_manuel_juin_SDC,
+    essp.tps_travail_manuel_juillet AS tps_travail_manuel_juillet_SDC,
+    essp.tps_travail_manuel_aout AS tps_travail_manuel_aout_SDC,
+    essp.tps_travail_manuel_septembre AS tps_travail_manuel_septembre_SDC,
+    essp.tps_travail_manuel_octobre AS tps_travail_manuel_octobre_SDC,
+    essp.tps_travail_manuel_novembre AS tps_travail_manuel_novembre_SDC,
+    essp.tps_travail_manuel_decembre AS tps_travail_manuel_decembre_SDC,
     -- GES et énergie
     essp.ges_totaux_total_ges_total AS GES_SDC,
     essp.ges_totaux_directes_ges_total AS GES_directes_SDC,
@@ -288,6 +327,7 @@ SELECT
     null AS Alerte_rendement_SDC,
     null AS Synthese_alertes,
     escotdbc2.surface_sdc_synthetise AS surface_sdc_itk,
+    null AS surface_theorique_sdc,
     null AS alerte_renseignement_donnees,
     null AS part_sole_sdc_sans_itk,
     null as alerte_sole_sdc,
@@ -317,6 +357,7 @@ SELECT
     sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
     -- Recours aux moyens biologiques
+    null AS ift_cible_nonmil_rec_moy_bio_sdc,
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
     essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
