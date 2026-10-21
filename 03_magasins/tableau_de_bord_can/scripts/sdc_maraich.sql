@@ -7,7 +7,7 @@ SELECT
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -183,7 +183,7 @@ SELECT
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -348,7 +348,6 @@ LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc
 LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
 LEFT JOIN entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
---LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id
 WHERE sdc.filiere = 'MARAICHAGE'
 and eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY';
