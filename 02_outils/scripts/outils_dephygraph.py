@@ -735,6 +735,7 @@ def detect_outliers_via_alerte_can(df, alertes_cols_var):
         # On en garde que les index avec des alertes ou avec NA
         mask = (~df[col_alerte].isin(["Pas d'alerte", 
                                       "Cette alerte n'existe pas encore dans cette filière",
+                                      "Cette alerte n'existe pas dans cette filière",
                                       "Pas d'alerte calculée pour cette espèce"])) | (df[col_alerte].isna())
         idx = set(df.index[mask])
         # Si aucune alerte
