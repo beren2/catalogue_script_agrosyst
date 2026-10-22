@@ -4,6 +4,7 @@
 import geopandas as gpd
 import pandas as pd
 from scripts import outils_dirodur
+from scripts.utils import dirodur_utiles
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
@@ -187,28 +188,34 @@ def test_get_intervention_synthetise_culture_outils_can():
 
 def test_get_itk_filtre_outils_dirodur():
     """
-        Test de l'obtention des fomtres sur les itk pour le magasin DiRoDur
-        TODO : FINALISER CE TEST (normal si ne passe pas 24/06/2026) 
+        Test de l'obtention de la colonne 'in_dirodur' qui filtre les sdc
+        Test de l'obtention du nombre d'itk en alerte par sdc
     """
 
-    identifiant_test = 'test_get_itk_filtre_outils_dirodur'
-    df_names = [   
-        'sdc', 
-        'synthetise',
+    identifiant_test = 'test_get_filtre_and_number_of_itk_warnings_in_each_sdc'
+    df_names = [
+        # Pour les alertes
         'itk_realise_performance',
         'itk_synthetise_performance',
-        'connection_synthetise',
-        'noeuds_synthetise',
-        'noeuds_synthetise_restructure',
-        'noeuds_realise',
-        'parcelle',
-        'typologie_can_culture',
-        'zone'
+        'itk_realise_agrege',
+        'itk_synthetise_agrege',
+        # Pour 'filtered_entities_sdc_level'
+        'domaine',
+        'dispositif',
+        'synthetise',
+        'sdc',
+        'typologie_assol_can_realise',
+        'typologie_can_rotation_synthetise',
+        'entite_unique_par_sdc_nettoyage',
+        'sdc_realise_performance',
+        'synthetise_synthetise_performance',
+        'intervention_synthetise_agrege',
+        'intervention_realise_agrege'
     ]
 
-    path_data = '02_outils/tests/data/test_get_itk_filtre_outils_dirodur/'
+    path_data = '02_outils/tests/data/test_get_filtre_and_number_of_itk_warnings_in_each_sdc/'
 
-    fonction_to_apply = outils_dirodur.get_itk_filtre_outils_dirodur
+    fonction_to_apply = dirodur_utiles.get_filtre_and_number_of_itk_warnings_in_each_sdc
     res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
 
     assert all(res)
