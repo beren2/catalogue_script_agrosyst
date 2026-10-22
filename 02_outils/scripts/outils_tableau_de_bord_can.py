@@ -1045,7 +1045,7 @@ def get_sdc_realise_complet_outils_tableau_de_bord_can(
     for right_df in dataframes_sdc_to_join:
         result_sdc = pd.merge(result_sdc, right_df, left_on='id', right_on='id', how='left')
 
-    result_sdc.to_csv('~/Bureau/result_sdc.csv')
+    # result_sdc.to_csv('~/Bureau/result_sdc.csv')
 
     return result_sdc
 
@@ -1075,7 +1075,7 @@ def get_synthetise_complet_outils_tableau_de_bord_can(
     for right_df in dataframes_synthetise_to_join:
         result_synthetise = pd.merge(result_synthetise, right_df, left_on='id', right_on='id', how='left')
 
-    result_synthetise.to_csv('~/Bureau/result_synthetise.csv')
+    # result_synthetise.to_csv('~/Bureau/result_synthetise.csv')
 
     return result_synthetise
 
