@@ -133,10 +133,10 @@ def get_sdc_realise_filtre_outils_dirodur(
         Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
         On a également le nombre d'itk en alerte par sdc
     """
-    warn_r, _ = get_filtre_and_number_of_itk_warnings_in_each_sdc(donnees, mode_de_saisie='realise')
-    warn_r['nombre_itk_alerte'] = warn_r['nombre_itk_alerte'].fillna(0)
+    df = get_filtre_and_number_of_itk_warnings_in_each_sdc(donnees, mode_de_saisie='realise')
+    df['nombre_itk_alerte'] = df['nombre_itk_alerte'].fillna(0)
 
-    return warn_r
+    return df
 
 def get_synthetise_filtre_outils_dirodur(
         donnees
@@ -146,10 +146,10 @@ def get_synthetise_filtre_outils_dirodur(
         Les colonnes sont à "True" si il faut filtrer les lignes correspondante dans le contexte de DiRoDur.
         On a également le nombre d'itk en alerte par synthétisé
     """
-    _, warn_s = get_filtre_and_number_of_itk_warnings_in_each_sdc(donnees, mode_de_saisie='synthetise')
-    warn_s['nombre_itk_alerte'] = warn_s['nombre_itk_alerte'].fillna(0)
+    df = get_filtre_and_number_of_itk_warnings_in_each_sdc(donnees, mode_de_saisie='synthetise')
+    df['nombre_itk_alerte'] = df['nombre_itk_alerte'].fillna(0)
 
-    return warn_s
+    return df
 
 def get_temporal_status_for_each_sdc_dirodur(donnees):
     """

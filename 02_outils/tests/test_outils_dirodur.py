@@ -4,7 +4,6 @@
 import geopandas as gpd
 import pandas as pd
 from scripts import outils_dirodur
-from scripts.utils import dirodur_utiles
 
 def import_df(df_name, path_data, sep, df, file_format='csv'):
     """
@@ -186,13 +185,13 @@ def test_get_intervention_synthetise_culture_outils_can():
     assert all(res)
 
 
-def test_get_itk_filtre_outils_dirodur():
+def test_get_sdc_realise_filtre_outils_dirodur():
     """
         Test de l'obtention de la colonne 'in_dirodur' qui filtre les sdc
         Test de l'obtention du nombre d'itk en alerte par sdc
     """
 
-    identifiant_test = 'test_get_filtre_and_number_of_itk_warnings_in_each_sdc'
+    identifiant_test = 'test_get_sdc_realise_filtre_outils_dirodur'
     df_names = [
         # Pour les alertes
         'itk_realise_performance',
@@ -213,13 +212,46 @@ def test_get_itk_filtre_outils_dirodur():
         'intervention_realise_agrege'
     ]
 
-    path_data = '02_outils/tests/data/test_get_filtre_and_number_of_itk_warnings_in_each_sdc/'
+    path_data = '02_outils/tests/data/test_get_sdc_realise_filtre_outils_dirodur/'
 
-    fonction_to_apply = dirodur_utiles.get_filtre_and_number_of_itk_warnings_in_each_sdc
-    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply)
+    fonction_to_apply = outils_dirodur.get_sdc_realise_filtre_outils_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name = 'sdc_id')
 
     assert all(res)
 
+def test_get_synthetise_filtre_outils_dirodur():
+    """
+        Test de l'obtention de la colonne 'in_dirodur' qui filtre les sdc
+        Test de l'obtention du nombre d'itk en alerte par sdc
+    """
+
+    identifiant_test = 'test_get_synthetise_filtre_outils_dirodur'
+    df_names = [
+        # Pour les alertes
+        'itk_realise_performance',
+        'itk_synthetise_performance',
+        'itk_realise_agrege',
+        'itk_synthetise_agrege',
+        # Pour 'filtered_entities_sdc_level'
+        'domaine',
+        'dispositif',
+        'synthetise',
+        'sdc',
+        'typologie_assol_can_realise',
+        'typologie_can_rotation_synthetise',
+        'entite_unique_par_sdc_nettoyage',
+        'sdc_realise_performance',
+        'synthetise_synthetise_performance',
+        'intervention_synthetise_agrege',
+        'intervention_realise_agrege'
+    ]
+
+    path_data = '02_outils/tests/data/test_get_synthetise_filtre_outils_dirodur/'
+
+    fonction_to_apply = outils_dirodur.get_synthetise_filtre_outils_dirodur
+    res = fonction_test(identifiant_test, df_names, path_data, fonction_to_apply, key_name='synthetise_id')
+
+    assert all(res)
 
 def test_get_date_de_semis_outils_dirodur():
     """
