@@ -18,7 +18,7 @@ SELECT
     sdc.nom AS sdc_nom,
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
-    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS sdc_type_agriculture,
     sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente
     es.id AS systeme_synthetise_id,
     es.nom AS systeme_synthetise_nom,
@@ -75,7 +75,17 @@ SELECT
 	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
 	--
 	eisp.co_tot_reelles + eisp.cm_reelles AS charges_totale_CP, 
-	eisp.nbre_uth_necessaires AS nbre_uth_CP
+	eisp.nbre_uth_necessaires AS nbre_uth_CP,
+    null AS ift_h_smethola_cp,
+    null AS ift_h_chlorto_cp,
+    null AS ift_h_diflufeni_cp,
+    null AS ift_h_dicamba_cp,
+    null AS ift_h_prosulfo_cp,
+    null AS ift_f_bixafen_cp,
+    null AS ift_f_boscalid_cp,
+    null AS ift_f_mancozebe_cp,
+    null AS ift_f_tebuco_cp,
+    null AS ift_i_phosmet_cp
 FROM entrepot_connection_synthetise ecs
 LEFT JOIN entrepot_itk_synthetise_agrege eisa ON eisa.itk_id = ecs.id
 LEFT JOIN entrepot_itk_synthetise_performance eisp ON ecs.id = eisp.itk_synthetise_id
@@ -124,7 +134,7 @@ SELECT
     sdc.nom AS sdc_nom,
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
-    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS sdc_type_agriculture,
     sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente
     null AS systeme_synthetise_id,
     null AS systeme_synthetise_nom,
@@ -179,7 +189,17 @@ SELECT
 	eirp.recours_produits_cmr AS Nb_intrant_CMR_CP,
 	--
 	eirp.co_tot_reelles + eirp.cm_reelles AS charges_totale_CP, 
-	eirp.nbre_uth_necessaires AS nbre_uth_CP
+	eirp.nbre_uth_necessaires AS nbre_uth_CP,
+    null AS ift_h_smethola_cp,
+    null AS ift_h_chlorto_cp,
+    null AS ift_h_diflufeni_cp,
+    null AS ift_h_dicamba_cp,
+    null AS ift_h_prosulfo_cp,
+    null AS ift_f_bixafen_cp,
+    null AS ift_f_boscalid_cp,
+    null AS ift_f_mancozebe_cp,
+    null AS ift_f_tebuco_cp,
+    null AS ift_i_phosmet_cp
 FROM entrepot_noeuds_realise enr
 LEFT JOIN entrepot_itk_realise_agrege eira ON eira.itk_id = enr.id
 LEFT JOIN entrepot_itk_realise_performance eirp ON eirp.itk_realise_id = enr.id

@@ -36,6 +36,8 @@ SELECT
     esrp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
     esrp.co_tot_reelles AS CO_reelles_SDC,
     esrp.cm_reelles AS CM_reelles_SDC,
+    esrp.mb_std_mil_avec_autoconso AS mb_std_ac_auto_sdc,
+    esrp.mb_std_mil_avec_autoconso AS msn_std_ac_auto_sdc,
     esrp.conso_carburant AS conso_carburant_SDC,
     esrp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
     esrp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
@@ -160,8 +162,8 @@ SELECT
     -- Recours aux moyens biologiques
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    esrp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    esrp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
@@ -212,6 +214,8 @@ SELECT
     essp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
     essp.co_tot_reelles AS CO_reelles_SDC,
     essp.cm_reelles AS CM_reelles_SDC,
+    essp.mb_std_mil_avec_autoconso AS mb_std_ac_auto_sdc,
+    essp.msn_std_mil_avec_autoconso AS msn_std_ac_auto_sdc,
     essp.conso_carburant AS conso_carburant_SDC,
     essp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
     essp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
@@ -336,8 +340,8 @@ SELECT
     -- Recours aux moyens biologiques
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    essp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    essp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise 
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id

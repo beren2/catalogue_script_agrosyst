@@ -51,7 +51,8 @@ SELECT
     -- IFT et alertes (viticulture)
     esrp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
     esrp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_chim_tot_hts_SDC,
-    esrp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
+    null AS ift_cible_non_mil_tot_hts_SDC,
+    esrp.ift_cible_non_mil_biocontrole AS ift_cible_non_mil_biocontrole_SDC,
     esrp.ift_cible_non_mil_h AS ift_cible_non_mil_h_SDC,
     esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_SDC,
     esrp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
@@ -147,6 +148,7 @@ SELECT
     null as alerte_sole_sdc,
     esrp.recours_produits_danger_environnement AS Nb_intrant_dang_env_SDC,
     null AS Bassin_viticole_bilan_ferme,
+    null as alerte_intervention_taille,
     -- Situation de production et coûts
     sdc.type_agriculture || '_' || comm.bassin_viticole AS situation_production,  -- Ex: "VITICOLE_Rouge" ou "VITICOLE_Champagne"
     esrp.co_tot_std_mil AS CO_std_mil_SDC,
@@ -155,18 +157,24 @@ SELECT
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
     esrp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,    -- À vérifier
+    null as ift_chiq_bioc,
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
+    esrp.qsa_bixafen as qte_mat_active_bixafen_SDC,
+    esrp.qsa_boscalid as qte_mat_active_boscalid_SDC,
+    esrp.qsa_dicamba as qte_mat_active_dicamba_SDC,
+    esrp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
+    esrp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
     -- Coûts par poste
     esrp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
+    esrp.co_fertimin_reel + esrp.co_epandage_orga_reelles  AS CO_reelles_ferti_SDC,
     esrp.co_fertimin_reel AS CO_reelles_ferti_min_SDC,
     esrp.co_epandage_orga_reelles AS CO_reelles_ferti_orga_SDC,
     esrp.co_irrigation_reelles AS CO_reelles_irrig_SDC,
     esrp.co_semis_reel AS CO_reelles_semences_SDC,
     esrp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
-    esrp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
+    esrp.co_phyto_sans_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
     sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
@@ -174,8 +182,8 @@ SELECT
     null AS ift_cible_nonmil_rec_moy_bio_sdc,
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    esrp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    esrp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
@@ -238,7 +246,8 @@ SELECT
     -- IFT et alertes (viticulture)
     essp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
     essp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_chim_tot_hts_SDC,
-    essp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
+    null AS ift_cible_non_mil_tot_hts_SDC,
+    essp.ift_cible_non_mil_biocontrole AS ift_cible_non_mil_biocontrole_SDC,
     essp.ift_cible_non_mil_h AS ift_cible_non_mil_h_SDC,
     essp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_SDC,
     essp.ift_cible_non_mil_f AS ift_cible_non_mil_f_SDC,
@@ -332,6 +341,7 @@ SELECT
     null AS part_sole_sdc_sans_itk,
     null as alerte_sole_sdc,
     essp.recours_produits_danger_environnement AS Nb_intrant_dang_env_SDC,
+    null as alerte_intervention_taille,
     null AS Bassin_viticole_bilan_ferme,
     -- Situation de production et coûts
     sdc.type_agriculture || '_' || comm.bassin_viticole AS situation_production,  -- Ex: "VITICOLE_Rouge" ou "VITICOLE_Champagne"
@@ -341,18 +351,24 @@ SELECT
     essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
     essp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,    -- À vérifier
+    null as ift_chiq_bioc,
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
+    essp.qsa_bixafen as qte_mat_active_bixafen_SDC,
+    essp.qsa_boscalid as qte_mat_active_boscalid_SDC,
+    essp.qsa_dicamba as qte_mat_active_dicamba_SDC,
+    essp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
+    essp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
     -- Coûts par poste
     essp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
+    essp.co_fertimin_reel + essp.co_epandage_orga_reelles  AS CO_reelles_ferti_SDC,
     essp.co_fertimin_reel AS CO_reelles_ferti_min_SDC,
     essp.co_epandage_orga_reelles AS CO_reelles_ferti_orga_SDC,
     essp.co_irrigation_reelles AS CO_reelles_irrig_SDC,
     essp.co_semis_reel AS CO_reelles_semences_SDC,
     essp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
-    essp.co_phyto_avec_amm_reelles AS CO_reelles_lutte_bio_SDC,
+    essp.co_phyto_sans_amm_reelles AS CO_reelles_lutte_bio_SDC,
     -- Situation de production détaillée (millésime)
     sdc.type_agriculture || '_' || comm.bassin_viticole || '_' || COALESCE(TEXT(sdc.campagne), TEXT('sans_campagne')) AS situation_production_mill,
     sdc.codes_convention_dephy AS codes_convention_dephy,
@@ -360,8 +376,8 @@ SELECT
     null AS ift_cible_nonmil_rec_moy_bio_sdc,
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    essp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    essp.recours_produits_abiotiques_sansamm AS rec_ptds_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise 
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id

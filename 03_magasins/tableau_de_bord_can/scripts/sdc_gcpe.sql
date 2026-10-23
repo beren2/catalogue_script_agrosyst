@@ -40,6 +40,7 @@ SELECT
 	escotdbc.surface_proteagineux_realise as surface_Protea_SDC,
 	escotdbc.surface_tournesol_realise as surface_Tournesol_SDC,
 	escotdbc.surface_autre_realise as surface_autre_SDC, 
+    null as surface_sans_espece_sdc, 
 	esrp.mb_reelle_avec_autoconso as MB_reelle_ac_auto_SDC,
 	esrp.msn_reelle_avec_autoconso as MSN_relle_ac_auto_SDC,
 	esrp.pb_reel_avec_autoconso as pb_reel_avec_autoconso,
@@ -54,6 +55,7 @@ SELECT
 	esrp.type_de_travail_du_sol as type_travail_sol_SDC,
 	esrp.utili_desherbage_meca as desherbage_mecanique_SDC,
 	esrp.nbre_de_passages_desherbage_meca as freq_desh_meca_SDC,
+    null as ift_cible_non_mil_tot_hts_sdc,
     esrp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
     esrp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_chim_tot_hts_SDC,
     esrp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
@@ -129,7 +131,8 @@ SELECT
     esrp.alerte_ferti_n_tot as Alerte_ferti_azotee_SDC,
     esrp.alerte_co_irrigation_std_mil as Alerte_irrigation_SDC,
     esrp.recours_produits_toxiques_utilisateurs as nb_manip_produit_danger_SDC,
-    esrp.recours_produits_danger_environnement as nb_manip_produit_danger_enviro_SDC,
+    esrp.recours_produits_danger_environnement as nb_manip_prod_danger_enviro_sdc,
+    null as nb_manip_produit_cmr_sdc,
     sdc.type_agriculture || '_' || etacr.typocan_assol as situation_production,
     esrp.co_tot_std_mil AS CO_std_mil_SDC,
     esrp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
@@ -157,8 +160,8 @@ SELECT
 	sdc.codes_convention_dephy as codes_convention_dephy,
 	esrp.recours_aux_moyens_biologiques as rec_moyens_biologiques_SDC,
 	esrp.recours_macroorganismes as recours_macroorganismes_SDC,
-	esrp.recours_produits_biotiques_sansamm as recours_pdts_biot_sansamm_SDC,
-	esrp.recours_produits_abiotiques_sansamm as recours_ptds_abiot_sansamm_SDC
+	esrp.recours_produits_biotiques_sansamm as rec_pdts_biot_sansamm_SDC,
+	esrp.recours_produits_abiotiques_sansamm as rec_pdts_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine     dom   ON dom.id   = dispo.domaine_id
@@ -214,6 +217,7 @@ SELECT
 	escotdbc.surface_proteagineux_synthetise as surface_Protea_SDC,
 	escotdbc.surface_tournesol_synthetise as surface_Tournesol_SDC,
 	escotdbc.surface_autre_synthetise as surface_autre_SDC, 
+    null as surface_sans_espece_sdc, 
 	essp.mb_reelle_avec_autoconso as MB_reelle_ac_auto_SDC,
 	essp.msn_reelle_avec_autoconso as MSN_relle_ac_auto_SDC,
 	essp.pb_reel_avec_autoconso as pb_reel_avec_autoconso,
@@ -228,6 +232,7 @@ SELECT
 	essp.type_de_travail_du_sol as type_travail_sol_SDC,
 	essp.utili_desherbage_meca as desherbage_mecanique_SDC,
 	essp.nbre_de_passages_desherbage_meca as freq_desh_meca_SDC,
+    null as ift_cible_non_mil_tot_hts_sdc,
     essp.ift_cible_non_mil_chimique_tot AS ift_cible_non_mil_chim_tot_SDC,
     essp.ift_cible_non_mil_chim_tot_hts AS ift_cible_non_mil_chim_tot_hts_SDC,
     essp.ift_cible_non_mil_biocontrole AS ift_cible_nonmil_biocontrole_SDC,
@@ -303,7 +308,8 @@ SELECT
     essp.alerte_ferti_n_tot as Alerte_ferti_azotee_SDC,
     essp.alerte_co_irrigation_std_mil as Alerte_irrigation_SDC,
     essp.recours_produits_toxiques_utilisateurs as nb_manip_produit_danger_SDC,
-    essp.recours_produits_danger_environnement as nb_manip_produit_danger_enviro_SDC,
+    essp.recours_produits_danger_environnement as nb_manip_prod_danger_enviro_sdc, 
+    null as nb_manip_produit_cmr_sdc,
     sdc.type_agriculture || '_' || etcrs.typocan_rotation as situation_production,
     essp.co_tot_std_mil AS CO_std_mil_SDC,
     essp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
@@ -332,7 +338,7 @@ SELECT
 	essp.recours_aux_moyens_biologiques as rec_moyens_biologiques_SDC,
 	essp.recours_macroorganismes as recours_macroorganismes_SDC,
 	essp.recours_produits_biotiques_sansamm as recours_pdts_biot_sansamm_SDC,
-	essp.recours_produits_abiotiques_sansamm as recours_ptds_abiot_sansamm_SDC
+	essp.recours_produits_abiotiques_sansamm as recours_pdts_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise 
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
