@@ -4,11 +4,10 @@
 create temporary table if not exists entrepot_itk_filtre_final as
 SELECT
     'realise' as mode_saisie,
-    null as connexion_id,
+	itkR.itk_realise_id as itk_id,
     --------------------
 	-- NOEUDS_REALISE --
 	--------------------
-	itkR.itk_realise_id as noeud_id,
 	poidsR.poids_surface_developpee_agreg as poids_itk_agregation,
 	poidsR.poids_surface_developpee_normalisee as poids_itk_desagregation_normalisee,
 	poidsR.poids_surface_ponderee as poids_itk_probabiliste,
@@ -157,9 +156,8 @@ SELECT
     --------------------------------
 	-- NOEUDS_REALISE_RESTRUCTURE --
 	--------------------------------
-    null as noeud_est_meme_campagne_noeud_precedent,
+    COALESCE(noeud_prec.zone_id = zone.id, FALSE) as noeud_est_meme_campagne_noeud_precedent,
 	node_res.precedent_noeuds_realise_id as noeud_precedent_id,
-    null as noeud_precedent_est_meme_campagne_noeud_precedent,
     ----------------
 	-- SYNTHETISE --
 	----------------
@@ -295,23 +293,17 @@ SELECT
 	itkR.qsa_neonicotinoides as itk_qsa_neonicotinoides,
 	itkR.qsa_abamectine_hts as itk_qsa_abamectine_hts,
 	itkR.qsa_alpha_cypermethrine_hts as itk_qsa_alpha_cypermethrine_hts,
-	itkR.qsa_azadirachtine_hts as itk_qsa_azadirachtine_hts,
 	itkR.qsa_beta_cyfluthrine_hts as itk_qsa_beta_cyfluthrine_hts,
 	itkR.qsa_chlorpyrifos_methyl_hts as itk_qsa_chlorpyrifos_methyl_hts,
 	itkR.qsa_cyantraniliprole_hts as itk_qsa_cyantraniliprole_hts,
 	itkR.qsa_cypermethrine_hts as itk_qsa_cypermethrine_hts,
 	itkR.qsa_deltamethrine_hts as itk_qsa_deltamethrine_hts,
-	itkR.qsa_dimethoate_hts as itk_qsa_dimethoate_hts,
-	itkR.qsa_emamectine_hts as itk_qsa_emamectine_hts,
 	itkR.qsa_esfenvalerate_hts as itk_qsa_esfenvalerate_hts,
 	itkR.qsa_flonicamide_hts as itk_qsa_flonicamide_hts,
-	itkR.qsa_huile_de_colza_hts as itk_qsa_huile_de_colza_hts,
 	itkR.qsa_huile_de_paraffine_hts as itk_qsa_huile_de_paraffine_hts,
 	itkR.qsa_indoxacarbe_hts as itk_qsa_indoxacarbe_hts,
 	itkR.qsa_primicarbe_hts as itk_qsa_primicarbe_hts,
 	itkR.qsa_pymetrozine_hts as itk_qsa_pymetrozine_hts,
-	itkR.qsa_pyrethrine_hts as itk_qsa_pyrethrine_hts,
-	itkR.qsa_silicate_aluminium_hts as itk_qsa_silicate_aluminium_hts,
 	itkR.qsa_spinosad_hts as itk_qsa_spinosad_hts,
 	itkR.qsa_spirotetramate_hts as itk_qsa_spirotetramate_hts,
 	itkR.qsa_tau_fluvalinate_hts as itk_qsa_tau_fluvalinate_hts,
@@ -320,6 +312,9 @@ SELECT
 	itkR.hri1_g2_tot as itk_hri1_g2_hts,
 	itkR.hri1_g3_tot as itk_hri1_g3_hts,
 	itkR.hri1_g4_tot as itk_hri1_g4_hts,
+	itkR.ges_totaux_total_ges_total as sdc_ges_total_co2eq,
+	itkR.ges_totaux_directes_ges_total as sdc_ges_directs_co2eq,
+	itkR.ges_totaux_indirectes_ges_total as sdc_ges_indirects_co2eq,
 	itkR.ges_ferti_min_directes_ges_total as itk_ges_ferti_min_directes_co2eq,
 	itkR.ges_ferti_orga_directes_ges_total as itk_ges_ferti_orga_directes_co2eq,
 	itkR.ges_carburants_directes_ges_total as itk_ges_carburants_directes_co2eq,
@@ -337,7 +332,6 @@ SELECT
 	itkR.alerte_msn_std_mil_avec_autoconso as itk_alerte_msn_std_mil_avec_autoconso,
 	itkR.alerte_nombre_interventions_phyto as itk_alerte_nombre_interventions_phyto,
 	itkR.alerte_pb_std_mil_avec_autoconso as itk_alerte_pb_std_mil_avec_autoconso,
-	itkR.alerte_rendement as itk_alerte_rendement,
 	itkR.alerte_cm_std_mil as itk_alerte_cm_std_mil,
 	itkR.alerte_co_semis_std_mil as itk_alerte_co_semis_std_mil,
 	itkR.alertes_charges as itk_alertes_charges
@@ -365,11 +359,10 @@ WHERE esrfod.in_dirodur is true
 UNION 
 SELECT 
     'synthetise' as mode_saisie,
+	cx.id as itk_id,
     --------------------------
 	-- CONNEXION_SYNTHETISE --
 	--------------------------
-	cx.id as connexion_id,
-    cx.cible_noeuds_synthetise_id as noeud_id,
 	poidsS.poids_conx_agregation as poids_itk_agregation,
 	poidsS.poids_conx_agregation_norm_synth as poids_itk_desagregation_normalisee,
 	poidsS.proba_conx_spatiotemp as poids_itk_probabiliste,
@@ -520,7 +513,6 @@ SELECT
 	------------
 	nd_cible.memecampagne_noeudprecedent as noeud_est_meme_campagne_noeud_precedent,
     cx.source_noeuds_synthetise_id as noeud_precedent_id,
-	nd_source.memecampagne_noeudprecedent as noeud_precedent_est_meme_campagne_noeud_precedent,
     -----------------
 	-- SYNTHETISE --
 	----------------
@@ -656,23 +648,17 @@ SELECT
 	itkS.qsa_neonicotinoides as itk_qsa_neonicotinoides,
 	itkS.qsa_abamectine_hts as itk_qsa_abamectine_hts,
 	itkS.qsa_alpha_cypermethrine_hts as itk_qsa_alpha_cypermethrine_hts,
-	itkS.qsa_azadirachtine_hts as itk_qsa_azadirachtine_hts,
 	itkS.qsa_beta_cyfluthrine_hts as itk_qsa_beta_cyfluthrine_hts,
 	itkS.qsa_chlorpyrifos_methyl_hts as itk_qsa_chlorpyrifos_methyl_hts,
 	itkS.qsa_cyantraniliprole_hts as itk_qsa_cyantraniliprole_hts,
 	itkS.qsa_cypermethrine_hts as itk_qsa_cypermethrine_hts,
 	itkS.qsa_deltamethrine_hts as itk_qsa_deltamethrine_hts,
-	itkS.qsa_dimethoate_hts as itk_qsa_dimethoate_hts,
-	itkS.qsa_emamectine_hts as itk_qsa_emamectine_hts,
 	itkS.qsa_esfenvalerate_hts as itk_qsa_esfenvalerate_hts,
 	itkS.qsa_flonicamide_hts as itk_qsa_flonicamide_hts,
-	itkS.qsa_huile_de_colza_hts as itk_qsa_huile_de_colza_hts,
 	itkS.qsa_huile_de_paraffine_hts as itk_qsa_huile_de_paraffine_hts,
 	itkS.qsa_indoxacarbe_hts as itk_qsa_indoxacarbe_hts,
 	itkS.qsa_primicarbe_hts as itk_qsa_primicarbe_hts,
 	itkS.qsa_pymetrozine_hts as itk_qsa_pymetrozine_hts,
-	itkS.qsa_pyrethrine_hts as itk_qsa_pyrethrine_hts,
-	itkS.qsa_silicate_aluminium_hts as itk_qsa_silicate_aluminium_hts,
 	itkS.qsa_spinosad_hts as itk_qsa_spinosad_hts,
 	itkS.qsa_spirotetramate_hts as itk_qsa_spirotetramate_hts,
 	itkS.qsa_tau_fluvalinate_hts as itk_qsa_tau_fluvalinate_hts,
@@ -681,6 +667,9 @@ SELECT
 	itkS.hri1_g2_tot as itk_hri1_g2_hts,
 	itkS.hri1_g3_tot as itk_hri1_g3_hts,
 	itkS.hri1_g4_tot as itk_hri1_g4_hts,
+	itkR.ges_totaux_total_ges_total as sdc_ges_total_co2eq,
+	itkR.ges_totaux_directes_ges_total as sdc_ges_directs_co2eq,
+	itkR.ges_totaux_indirectes_ges_total as sdc_ges_indirects_co2eq,
 	itkS.ges_ferti_min_directes_ges_total as itk_ges_ferti_min_directes_co2eq,
 	itkS.ges_ferti_orga_directes_ges_total as itk_ges_ferti_orga_directes_co2eq,
 	itkS.ges_carburants_directes_ges_total as itk_ges_carburants_directes_co2eq,
@@ -698,7 +687,6 @@ SELECT
 	itkS.alerte_msn_std_mil_avec_autoconso as itk_alerte_msn_std_mil_avec_autoconso,
 	itkS.alerte_nombre_interventions_phyto as itk_alerte_nombre_interventions_phyto,
 	itkS.alerte_pb_std_mil_avec_autoconso as itk_alerte_pb_std_mil_avec_autoconso,
-	itkS.alerte_rendement as itk_alerte_rendement,
 	itkS.alerte_cm_std_mil as itk_alerte_cm_std_mil,
 	itkS.alerte_co_semis_std_mil as itk_alerte_co_semis_std_mil,
 	itkS.alertes_charges as itk_alertes_charges
