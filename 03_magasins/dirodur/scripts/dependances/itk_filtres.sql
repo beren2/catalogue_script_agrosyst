@@ -19,6 +19,12 @@ SELECT
 	culture1.nom as culture_nom,
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
+	CASE culture1.type
+		WHEN 'CATCH' THEN 'derobee'
+		WHEN 'MAIN' THEN 'principale'
+		WHEN 'INTERMEDIATE' THEN 'intermediaire'
+		THEN null
+	END AS culture_type,
 	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
 	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
 	typoc1.typodirodur_espece_famille_bota as culture_typo_dirodur_liste_famille_bota,
@@ -41,6 +47,12 @@ SELECT
 	culture_prec.nom as culture_precedente_nom,
 	culture_prec.melange_especes as culture_precedente_est_melange_especes,
 	culture_prec.melange_varietes as culture_precedente_est_melange_varietes,
+	CASE culture_prec.type
+		WHEN 'CATCH' THEN 'derobee'
+		WHEN 'MAIN' THEN 'principale'
+		WHEN 'INTERMEDIATE' THEN 'intermediaire'
+		THEN null
+	END AS culture_precedente_type,
 	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
 	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
 	typoc0.typodirodur_espece_famille_bota as culture_precedente_typo_dirodur_liste_famille_bota,
@@ -374,6 +386,12 @@ SELECT
 	culture1.nom as culture_nom,
 	culture1.melange_especes as culture_est_melange_especes,
 	culture1.melange_varietes as culture_est_melange_varietes,
+	CASE culture1.type
+		WHEN 'CATCH' THEN 'derobee'
+		WHEN 'MAIN' THEN 'principale'
+		WHEN 'INTERMEDIATE' THEN 'intermediaire'
+		THEN null
+	END AS culture_type,
 	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
 	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
 	typoc1.typodirodur_espece_famille_bota as culture_typo_dirodur_liste_famille_bota,
@@ -396,6 +414,12 @@ SELECT
 	culture0.nom as culture_precedente_nom,
 	culture0.melange_especes as culture_precedente_est_melange_especes,
 	culture0.melange_varietes as culture_precedente_est_melange_varietes,
+	CASE culture0.type
+		WHEN 'CATCH' THEN 'derobee'
+		WHEN 'MAIN' THEN 'principale'
+		WHEN 'INTERMEDIATE' THEN 'intermediaire'
+		THEN null
+	END AS culture_precedente_type,
 	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
 	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
 	typoc0.typodirodur_espece_famille_bota as culture_precedente_typo_dirodur_liste_famille_bota,
