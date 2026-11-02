@@ -23,7 +23,7 @@ SELECT
 		WHEN 'CATCH' THEN 'derobee'
 		WHEN 'MAIN' THEN 'principale'
 		WHEN 'INTERMEDIATE' THEN 'intermediaire'
-		THEN null
+		ELSE null
 	END AS culture_type,
 	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
 	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
@@ -51,7 +51,7 @@ SELECT
 		WHEN 'CATCH' THEN 'derobee'
 		WHEN 'MAIN' THEN 'principale'
 		WHEN 'INTERMEDIATE' THEN 'intermediaire'
-		THEN null
+		ELSE null
 	END AS culture_precedente_type,
 	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
 	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
@@ -390,7 +390,7 @@ SELECT
 		WHEN 'CATCH' THEN 'derobee'
 		WHEN 'MAIN' THEN 'principale'
 		WHEN 'INTERMEDIATE' THEN 'intermediaire'
-		THEN null
+		ELSE null
 	END AS culture_type,
 	typoc1.typodirodur_culture as culture_typo_dirodur_culture,
 	typoc1.typodirodur_espece as culture_typo_dirodur_liste_espece,
@@ -418,7 +418,7 @@ SELECT
 		WHEN 'CATCH' THEN 'derobee'
 		WHEN 'MAIN' THEN 'principale'
 		WHEN 'INTERMEDIATE' THEN 'intermediaire'
-		THEN null
+		ELSE null
 	END AS culture_precedente_type,
 	typoc0.typodirodur_culture as culture_precedente_typo_dirodur_culture,
 	typoc0.typodirodur_espece as culture_precedente_typo_dirodur_liste_espece,
