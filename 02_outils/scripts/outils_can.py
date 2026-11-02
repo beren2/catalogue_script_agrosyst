@@ -2554,6 +2554,9 @@ def get_recolte_rendement_prix_realise_outils_can(
     opération de récolte, il s'agit de l'encart à droite. La fonction get_recolte_realise_outils_can effectue l'étape d'après, c'est à dire,
     après corrections des problèmes historiques effectuées, fusion des informations par action_id, unité de rendement et destination. 
 
+    Il faut bien comprendre que lorsque "melange_especes" est coché, on somme les rendements pour chaque composants. 
+    Sinon, on fait juste la moyenne des rendements. À chaque fois, on pondère par la part dans le rendement (dans le cas d'un mélange d'espèce, c'est équirépartition).
+
     Args:
         donnees (dict): 
             Un dictionnaire contenant plusieurs DataFrames nécessaires à l'agrégation des informations sur les récoltes réalisées :

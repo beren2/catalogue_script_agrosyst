@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_commune CASCADE;
+
 CREATE TABLE entrepot_commune AS
 select 
 refl.topiaid id,

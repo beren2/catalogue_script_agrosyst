@@ -1,0 +1,153 @@
+---
+title: "utilisation_API_datagrosyst"
+author: "Thomas BADIE"
+date: "2025-12-08"
+output: html_document
+---
+
+# Utilisation de l'API Datagrosyst (R)
+
+Le but de ce code est d'utiliser l'API de Datagrosyst afin de générer une requète de téléchargement des tables que vous indiquerez au préalable. Celui-ci va permettre de recevoir le mail avec le lien Filesender de téléchargement. L'étape de téléchargement via le filesender n'est pas automatiser, il faudra aller manuellement dans votre boite et mail, cliquer sur le lien et télécharger.
+
+Nous allons également vous faire une code qui ira chercher dans votre dossier de téléchargement le fichier Filesender, pour le décompréssé et le stocker dans un autre dossier (votre dossier de travail).
+
+Ensuite, un dernier bout de code afin d'importer les tables que vous venez de télécharger.
+
+## Import des librairies
+
+```{r, include = FALSE}
+library(httr)
+library(dplyr)
+library(TAR)
+```
+
+## Initialisation de la requète et des chemins de dossier
+
+<font color="#900000">Attention</font>  aux noms des tables !  
+Les chaînes de caractères permettant d’identifier les tables dans le champ **"tables"** sont celles qui sont disponibles dans le volet à droite sur Datagrosyst. Celles-ci diffèrent parfois du nom disponible sur l’interface de sélection. Par exemple, dans le magasin_can, lorsqu’on sélectionne *“domaine”*, on voit apparaître à droite *“domaine_magasin_can”*. C’est ce dernier libellé qu’il faut saisir dans le champ **"tables"** pour obtenir table domaine du magasin_can, car saisir simplement *“domaine”* ferait référence à la table domaine de l’entrepôt.
+
+
+<font color="#900000">Attention</font> aux restrictions d'accès aux données !  
+Si vous saisissez dans **“tables”** des noms de tables pour lesquelles vous n’avez pas les droits, celles-ci ne seront pas ajoutées dans l’export obtenu.
+
+Le <font color="green">token de l'API</font> est en quelque sorte un mot de passe, ne pas le transmettre !  
+Vous le trouverez dans [🔗 votre profil](https://agrosyst.fr/datagrosyst/profil) sur Datagrosyst, au dessus des paramètres.
+
+
+
+```{r}
+url <- "https://datagrosyst.agrosyst.fr/export"
+
+# La liste des tables à récupérer
+tables <- c("domaine", "parcelle") # À modifier
+
+# La structure de la requête
+# Modifier "mail" et "token" avec vos informations personnelles disponibles dans le profil de votre compte Datagrosyst
+data_request <- list(
+  mail = "votreadressemail@exemple.fr",      # À modifier
+  token = "tokendiponiblesurDatagrosyst",    # À modifier
+  tables = tables
+)
+
+# Les chemins vers vos dossiers locaux
+path_download <- "/chemin/vers/ton/dossier/de/Téléchargements"       # Modifier ici le chemin vers votre dossier de téléchargements
+path_workdirectory <- "/chemin/vers/ton/Workdirectory"               # Modifier ici le chemin vers votre dossier de travail
+```
+
+## Envoyé la demande à Datagrosyst grace à `httr`
+
+```{r}
+# Envoi de la requête POST à l'API Datagrosyst
+response <- POST(url, body = data_request, encode = "json")
+
+# Code de vérification de la réponse de l'API
+if (http_status(response)$category == "Success") {
+  print("Requête réussie !")
+} else {
+  print(paste("Erreur lors de la requête. Code d'état :", http_status(response)$message))
+  print(paste("Réponse :", content(response, "text")))
+}
+```
+
+```{r}
+stop("Vous avez terminé la phase de demande des données via API, Félicitations !\nPour continuer, il vous faut désormais faire l'étape manuelle de téléchargement des données\n(lien Filesender dans votre boite mail ; voir 'Télécharger les données').")
+```
+
+## Télécharger les données
+
+**<font color="#900000">Attention cette étape est manuelle !</font>**  
+Vous aller recevoir un mail de la part de Filesender vous invitant à aller télécharger les données stockées pour vous via un lien. Cliquez sur ce lien, puis télécharger le fichier compréssé. Ce fichier va noramlement se retrouver directement dans votre dossier de téléchargement **path_download**.
+
+
+## Déplacer et décompréssé le fichier Filesender téléchargé
+
+Vous avez désormais le fichier compréssé dans votre dossier de téléchargement. Avec le code proposé ci-dessous, vous aller en plusieurs étapes : 
+- **Trouver le fichier .tar.gz** (extension des fichiers compréssés) *le plus récent* de votre dossier de téléchargement
+- **Copier** ce fichier vers votre dossier de travail
+- **Décompréssé** le fichier, ce qui va automatiquement écraser les anciennes tables pour mettre les nouvelles tables (celles présentes dans le fichier compréssé, que vous avez défini lors de l'initialisation)
+- **Supprimé** le fichier compréssé pour ne gardé que les tables
+
+```{r}
+# Trouver le fichier .tar.gz le plus récent du dossier de téléchargements
+tar_files <- list.files(path_download, pattern = ".tar.gz", full.names = TRUE)
+if (length(tar_files) == 0) {
+  stop("Aucun fichier .tar.gz trouvé.")
+}
+
+latest_file <- tar_files[which.max(file.info(tar_files)$mtime)]
+file_mtime <- as.Date(file.info(latest_file)$mtime)
+
+if (file_mtime != Sys.Date()) {
+  stop(paste("Le fichier le plus récent (", latest_file, ") n'a pas été modifié aujourd'hui.", sep = ""))
+}
+
+print(paste("Fichier le plus récent :", latest_file))
+
+# Copier le fichier compressé vers le dossier de travail
+if (!dir.exists(path_workdirectory)) {
+  dir.create(path_workdirectory, recursive = TRUE)
+}
+dest_tar_path <- file.path(path_workdirectory, basename(latest_file))
+invisible(file.copy(latest_file, dest_tar_path))
+
+# Décompresser (écrase automatiquement les fichiers existants, c'est-à-dire les plus anciens)
+untar(dest_tar_path, exdir = path_workdirectory)
+
+# Supprime le fichier compressé dans le dossier de travail après décompression
+invisible(file.remove(dest_tar_path))
+
+# Fin
+print(paste("Décompression terminée dans", path_workdirectory))
+```
+
+## Chargement des données dans le Notebook
+
+Vous voici avec les tables de données nouvellement acquise dans votre dossier de travail !  
+Maintenant nous allons les importer dans le Notebook. Pour cela nous allons définir un dictionnaire de table dont le nom sera le nom du fichier. Nous préparons aussi une fonction d'import d'une table qui sera reprise par la fonction d'import de plusieurs tables. Nous utilisons ensuite cette dernière fonction en spécifiant les **tables** que vous venez de téléchargées (pas toutes celle du dossier de travail !) et le chemin vers le dossier de travail.
+
+```{r}
+# Liste pour stocker les tables (nommée par le nom des fichiers)
+tables_list <- list()
+
+# Fonction d'import d'une table
+import_table <- function(name, path) {
+  file <- file.path(path, paste0(name, ".csv"))
+  if (file.exists(file)) {
+    tables_list[[name]] <<- read.csv(file, sep = ",", header = TRUE)
+  }
+}
+
+# Import des tables
+invisible(sapply(tables, import_table, path = path_workdirectory))
+# table générale contenant les tables domaine et parcelles : tables_list
+
+# Résumé des 5 premières tables
+for (name in names(tables_list)[1:min(5, length(tables_list))]) {
+  tbl <- tables_list[[name]]
+  cat("\n---", name, "---\n")
+  cat("Lignes:", nrow(tbl), "| Colonnes:", ncol(tbl), "\n")
+  cat("Colonnes :", paste(names(tbl), collapse = ", "), "\n")
+}
+```
+
+# Fin

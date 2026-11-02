@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_texture_sol CASCADE;
+
 CREATE TABLE entrepot_texture_sol AS
 SELECT
 	r.topiaid AS id,

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_station_meteo CASCADE;
+
 CREATE TABLE entrepot_station_meteo AS
 select 
 r.topiaid as id ,

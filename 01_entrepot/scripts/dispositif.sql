@@ -1,9 +1,12 @@
+DROP TABLE IF EXISTS entrepot_dispositif CASCADE;
+
 CREATE TABLE entrepot_dispositif AS
   select
     gp.topiaid id,
     gp.code code,
     gp.name nom,
     gp.type "type",
+    gp.codesite as code_site,
     d.campagne,
     d.id as domaine_id
   FROM growingplan gp

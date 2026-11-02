@@ -1,0 +1,7 @@
+id,nom,code_gnis,nom_groupe,nom_botanique,denomination,reference_provisoire,liste,rubrique,libelle_rubrique,type_varietal,libelle_type_varietal,ploidie,libelle_ploidie
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_fbf1011f-383e-4501-8314-d3c0cbfd5b45,Blé tendre d'hiver,512A084,Céréales à paille,Triticum aestivum L.,Apache,NSA 93-0211,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_06953412-0a13-47ea-aba2-47d174779bb7,Blé tendre d'hiver,512C678,Céréales à paille,Triticum aestivum L.,Fluor,UN 3039-34,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_fdbafa1b-3e58-43f1-a6c0-a54c0901add6,Colza oléagineux d'hiver,580E432,Colza et autres Crucifères,Brassica napus L.,MELODIE,E432,,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_a24aebfb-5d8f-4e63-9950-6f0324405a2f,Blé tendre d'hiver,512D168,Céréales à paille,Triticum aestivum L.,Auckland,NSA 10-8259,A,,,LI,lignée,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_12bc0432-e615-433c-9dd1-4233c0588576,Colza oléagineux d'hiver,580 E801,Colza et autres Crucifères,Brassica napus L.,ES Capello,ESC 16056,A,,,HS,hybride simple,,
+fr.inra.agrosyst.api.entities.referential.RefVarieteGeves_42c92960-0d21-4b87-99c1-40ab3b821e0f,Maïs,570 DP67,Maïs et Sorgho,Zea mays L.,Motivi CS,CSM17331,A,FRG,Fourrage,HS,hybride simple,,

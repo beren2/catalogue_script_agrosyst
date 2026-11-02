@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_composition_substance_active_numero_amm CASCADE;
+
 CREATE TABLE entrepot_composition_substance_active_numero_amm AS
 SELECT 
 	rcsapna.topiaid AS id,

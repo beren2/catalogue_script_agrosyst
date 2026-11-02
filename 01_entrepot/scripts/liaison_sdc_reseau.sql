@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_liaison_sdc_reseau CASCADE;
+
 CREATE TABLE entrepot_liaison_sdc_reseau AS
 select 
 	gn.growingsystem as sdc_id,

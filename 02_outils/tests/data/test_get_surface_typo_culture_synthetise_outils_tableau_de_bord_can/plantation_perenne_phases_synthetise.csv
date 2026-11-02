@@ -1,0 +1,11 @@
+id,duree,type,plantation_perenne_synthetise_id
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_bfa9f4ae-3eb0-493d-8a53-01390b1983c8,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_2324201f-b33f-4507-9f06-e569ab9e32e0
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_9b45bb72-7880-46de-8c45-9ad191dead47,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_cca4b5be-a4ac-4215-8637-fd9b6e3c3b5b
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_c2fb2578-a3d2-4d19-bc72-3e837731c0f6,0.0,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_90ff09a8-497a-4bc7-a8fa-4b96c45bafc2
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_1a6947f1-8935-4dda-a643-45bca7184414,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_627cdd64-e06b-4118-aeff-ffb6d856cd8e
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_da8661ba-697d-41cd-abf5-4244d235b52c,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_22839f40-8b59-4a20-9460-501ce32304c2
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_618bfac5-12c4-43db-9850-fd966c195d93,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_b40d2136-1760-4f1c-8a82-8a59d54f2c1c
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_cddc8c70-f537-427e-a86e-7c9b14e458f7,,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_e4635056-accf-4c86-b5b3-416977a365cd
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_4b7fb9be-bd95-4dae-91d4-4d3a5fe4e49a,0.0,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_c480ebd8-f3a9-43f1-9671-c079362ab1ca
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_2f7f64b1-d6b8-440e-a4b3-9cf4c96a25c8,0.0,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_1b431b84-e3d2-4c4c-8223-ffd13eba4828
+fr.inra.agrosyst.api.entities.practiced.PracticedCropCyclePhase_7a6249f1-fa14-4a0d-8d64-137b1165d3c2,0.0,PLEINE_PRODUCTION,fr.inra.agrosyst.api.entities.practiced.PracticedPerennialCropCycle_d47ff63b-daf5-4484-b776-448aea6386a5

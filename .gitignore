@@ -1,12 +1,15 @@
 *.ini
 *.dump
+*.png
 **/__pycache__/
 02_outils/data/referentiels/*
 02_outils/data/external_data/*
 !02_outils/data/external_data/BDD_donnees_attendues_CAN.csv
 !02_outils/data/external_data/typo_especes_typo_culture.csv
 !02_outils/data/external_data/typo_especes_typo_culture_marai.csv
+!02_outils/data/external_data/correspondance_destination_gcpe_dirodur.csv
 .vscode/settings.json
 01_entrepot/.Rhistory
 01_entrepot/documentation_manquante.csv
-05_tests_locaux/*
+10_tests_locaux/*
+02_outils/data/export_from_functions/*

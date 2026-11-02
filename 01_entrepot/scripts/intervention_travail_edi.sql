@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_intervention_travail_edi CASCADE;
+
 CREATE TABLE entrepot_intervention_travail_edi AS
 select topiaid id,
 reference_code code_reference,

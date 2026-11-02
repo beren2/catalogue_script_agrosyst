@@ -7,6 +7,7 @@
 -- Chaque ligne représente les informations pour la semence particulière d'une espèce 
 -- C'est à ce niveau là qu'on peut calculer des prix
 
+DROP TABLE IF EXISTS entrepot_semence CASCADE;
 
 create table entrepot_semence(
 	id character varying(255), 
@@ -57,7 +58,7 @@ join refactatraitementsproduit refacta on refacta.topiaid = dppi.refinput
 where dssi.topiaid = s.id ;
 
 -- on créé une table temporaire qui contient tous les doublons en fonction des différentes unités. 
-drop table if exists semence_all;
+drop table if exists semence_all cascade;
 create temporary table semence_all as 
 select
 	dssi.topiaid as id,

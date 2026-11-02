@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_coordonnees_gps_domaine CASCADE;
+
 CREATE TABLE entrepot_coordonnees_gps_domaine AS
   select
   	g.topiaid id,

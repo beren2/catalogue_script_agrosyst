@@ -12,16 +12,20 @@ import json
 import configparser
 import urllib
 import importlib
-import time
 import re
+import sys
 import psycopg2 as psycopg
 from scripts import nettoyage
-from scripts import restructuration 
+from scripts import restructuration
 from scripts import indicateur
+from scripts import agreste
 from scripts import agregation
 from scripts import interoperabilite
 from scripts import outils_can
-from sqlalchemy import create_engine
+from scripts import outils_dirodur
+from scripts import outils_dephygraph
+from scripts import outils_tableau_de_bord_can
+from sqlalchemy import create_engine, text
 import pandas as pd
 import geopandas as gpd
 from colorama import Fore, Style
@@ -55,14 +59,24 @@ if(TYPE == 'distant'):
     DB_NAME_ENTREPOT = config.get(BDD_ENTREPOT, 'database')
     DB_USER = config.get(BDD_ENTREPOT, 'user')
     DB_PASSWORD = urllib.parse.quote(config.get(BDD_ENTREPOT, 'password'))
+    TIMEOUT_CONN = 5
+
     DATABASE_URI_entrepot = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+    try:
+        
+        # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
+        engine = create_engine(
+            f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}',
+            connect_args={'connect_timeout': TIMEOUT_CONN}
+        )
 
-    # Créer la connexion pour sqlalchemy (pour executer des requetes : uniquement pour l'entrepot)
-    engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}')
-
-    # Connexion à PostgreSQL
-    conn = engine.raw_connection()
-    cur = conn.cursor()
+        # Connexion à PostgreSQL
+        conn = engine.raw_connection()
+        cur = conn.cursor()
+    except Exception as error_connexion: # pylint: disable=broad-exception-caught
+        print(f"Erreur de connexion à la base de données (timeout à {TIMEOUT_CONN}s) : \n{error_connexion}")
+        print("Essaye de mettre le VPN !\n")
+        sys.exit(1)
 
 def check_existing_files(file_names):
     """vérifie que toutes les tables sont présentes"""
@@ -104,8 +118,13 @@ def export_to_db(df, name):
             df.to_csv(DATA_PATH+name+'.csv')
             update_local_version_table(name)
     else :
-        df.to_sql(name=name, con=engine, if_exists='replace')
-        engine.dispose()
+        with engine.begin() as conn:
+            conn.execute(text(f'DROP TABLE IF EXISTS "{name}"'))
+        df.to_sql(
+            name=name,
+            con=engine,
+            if_exists='fail'
+        )
     print("* CRÉATION TABLE ",name, " TERMINEE *")
 
 def add_primary_key(table_name, pk_column):
@@ -130,7 +149,7 @@ def add_primary_key(table_name, pk_column):
         local_cur.execute(sql)
         local_conn.commit()
 
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-exception-caught
         print(f"⚠️ Impossible d'ajouter la clé primaire sur {table_name} : {e}")
 
     finally:
@@ -138,6 +157,54 @@ def add_primary_key(table_name, pk_column):
             local_cur.close()
         if local_conn is not None and not local_conn.closed:
             local_conn.close()
+
+# def add_primary_key(table_name, pk_column):
+#     """Ajoute une clé primaire avec reconnexion forcée.
+#     Lève une ValueError si la colonne pk_column n'existe pas dans la table.
+#     """
+#     if TYPE != "distant":
+#         print(f"ℹ️ Type {TYPE} : clé primaire ignorée pour {table_name}")
+#         return
+
+#     local_conn = None
+#     try:
+#         # Reconnexion à chaque appel
+#         local_engine = create_engine(
+#             f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME_ENTREPOT}'
+#         )
+#         local_conn = local_engine.raw_connection()
+
+#         # Vérifier si la colonne existe dans la table
+#         with local_conn.cursor() as local_cur:
+#             # Vérification de l'existence de la colonne
+#             check_query = sql.SQL("""
+#                 SELECT 1
+#                 FROM information_schema.columns
+#                 WHERE table_name = %s AND column_name = %s
+#             """)
+#             local_cur.execute(check_query, (table_name, pk_column))
+#             if not local_cur.fetchone():
+#                 raise ValueError(f"La colonne '{pk_column}' n'existe pas dans la table '{table_name}'")
+
+#             # Exécution de la requête ALTER TABLE
+#             local_cur.execute("SET statement_timeout = 0;")
+#             alter_query = sql.SQL("ALTER TABLE {} ADD PRIMARY KEY ({});").format(
+#                 sql.Identifier(table_name),
+#                 sql.Identifier(pk_column)
+#             )
+#             local_cur.execute(alter_query)
+#             local_conn.commit()
+
+#     except ValueError as e:
+#         print(f"⚠️ Erreur de validation : {e}")
+#     except (SQLAlchemyError, errors.Error) as e:
+#         print(f"⚠️ Erreur PostgreSQL lors de l'ajout de la clé primaire sur {table_name} : {e}")
+#     except Exception as e:  # pylint: disable=broad-exception-caught
+#         print(f"⚠️ Erreur inattendue lors de l'ajout de la clé primaire sur {table_name} : {e}")
+#     finally:
+#         # Fermeture propre de la connexion
+#         if local_conn is not None:
+#             local_conn.close()
 
 def convert_to_serializable(obj):
     """ Permet de convertir un objet pandas en list ou dictionnaire """
@@ -174,11 +241,26 @@ def import_df(df_name, path_data, sep, file_format='csv') :
         if(DEBUG):
             donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, nrows=NROWS).replace({'\r\n': '\n'}, regex=True)
         else:
-            donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
+            if(df_name == 'utilisation_intrant_performance'):
+                # Pour cette table, on ne garde que les colonnes utiles pour l'outil de performance
+                cols_to_keep = ['utilisation_intrant_id']
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, usecols=cols_to_keep)
+            elif(df_name == 'intervention_realise_performance'):
+                # Pour cette table, on ne garde que les colonnes utiles pour l'outil de performance
+                cols_to_keep = ['intervention_realise_id']
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, usecols=cols_to_keep)
+            elif(df_name == 'intervention_synthetise_performance'):
+                # Pour cette table, on ne garde que les colonnes utiles pour l'outil de performance
+                cols_to_keep = ['intervention_synthetise_id']
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False, usecols=cols_to_keep)
+            else:
+                donnees[df_name] = pd.read_csv(path_data+df_name+'.'+file_format, sep = sep, low_memory=False).replace({'\r\n': '\n'}, regex=True)
     if file_format == 'json' and df_name.startswith('geoVec') :
         # Utilise geopandas pour les json formater en geojson. Le nom du fichier json doit alors commencer par geoVec
         donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
     if file_format == 'gpkg' :
+        donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
+    if file_format == 'shp' :
         donnees[df_name] = gpd.read_file(path_data+df_name+'.'+file_format)
 
 
@@ -231,15 +313,19 @@ def load_datas(desired_tables, verbose=True, path_data=DATA_PATH, file_format='c
     global donnees
     import_dfs(desired_tables, path_data, verbose=verbose, file_format=file_format)
 
-def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', need_perf=False):
+def load_datas_entrepot(desired_tables, verbose=True, path_data=DATA_PATH, file_format='csv', needed_perfs=None):
     """permet de charger les tables de l'entrepôt dans la variable globale donnée"""
+    if needed_perfs is None:
+        needed_perfs = []
+
     filtered_tables = []
     for desired_table in desired_tables:
-        if(not need_perf) :
-            # si on a pas besoin des performances, alors on enlève les tables de cette catégorie
-            if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] != "performance"):
+        if(SOURCE_SPECS['entrepot']['tables'][desired_table]['category'] == "performance"):
+            # si il s'agit d'une table de performance, on doit vérifier que l'utilisateur en veut
+            if(desired_table in needed_perfs):
                 filtered_tables.append(desired_table)
         else :
+            # sinon, on l'ajoute d'office.
             filtered_tables.append(desired_table)
     load_datas(filtered_tables, verbose=verbose, path_data=DATA_PATH, file_format=file_format)
 
@@ -388,7 +474,7 @@ def clean_BDD_donnees_attendues_CAN(path_file):
         try:
             df.to_csv(path_file, index=False, encoding="utf-8", sep=",")
             messages.append(f"✅ Fichier corrigé et anonymisé sauvegardé en UTF-8 avec séparateur ',' : {path_file}")
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-exception-caught
             messages.append(f"❌ Impossible de sauvegarder le fichier corrigé et anonymisé : {e}")
 
     return df, messages
@@ -471,39 +557,6 @@ def generate_leaking_df(df1, df2, id_name, columns_difference):
     df2 = df2.set_index('id')
     return pd.concat([df1, df2], axis=0)
 
-def generate_data_agreged(verbose=False):
-    """
-        génère l'ensemble des données agrégées
-        utile car on ne stocke pas en base les jeux de données agrégés
-        on ne stock que les différences à chaque étape pour limiter 
-        la redondance d'informations
-    """
-    global donnees
-
-    # Génération de action_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
-    df2 = donnees['action_realise_manquant_agrege'].copy()
-    donnees['action_realise_agrege'] = generate_leaking_df(df1, df2, 'action_realise_id', columns_difference = ['id'])
-    donnees['action_realise_agrege'] = donnees['action_realise_agrege'].reset_index()
-
-    # Génération de action_synthétisé_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
-    df2 = donnees['action_synthetise_manquant_agrege'].copy()
-    donnees['action_synthetise_agrege'] = generate_leaking_df(df1, df2, 'action_synthetise_id', columns_difference = ['id'])
-    donnees['action_synthetise_agrege'] = donnees['action_synthetise_agrege'].reset_index()
-
-    # Génération de intervention_realise_agrege
-    df1 = donnees['utilisation_intrant_realise_agrege'].copy()
-    df2 = donnees['intervention_realise_manquant_agrege'].copy()
-    donnees['intervention_realise_agrege'] = generate_leaking_df(df1, df2, 'intervention_realise_id', columns_difference = ['id', 'action_realise_id'])
-    donnees['intervention_realise_agrege'] = donnees['intervention_realise_agrege'].reset_index()
-
-    # Génération de intervention_synthetise_agrege
-    df1 = donnees['utilisation_intrant_synthetise_agrege'].copy()
-    df2 = donnees['intervention_synthetise_manquant_agrege'].copy()
-    donnees['intervention_synthetise_agrege'] = generate_leaking_df(df1, df2, 'intervention_synthetise_id', columns_difference = ['id', 'action_synthetise_id'])
-    donnees['intervention_synthetise_agrege'] = donnees['intervention_synthetise_agrege'].reset_index()
-
 def download_data_agreged(verbose=False):
     """
         permet de télécharger en csv les jeux de données agrégés complets
@@ -513,6 +566,8 @@ def download_data_agreged(verbose=False):
     donnees['action_synthetise_agrege'].to_csv(DATA_PATH+'action_synthetise_agrege.csv')
     donnees['intervention_realise_agrege'].to_csv(DATA_PATH+'intervention_realise_agrege.csv')
     donnees['intervention_synthetise_agrege'].to_csv(DATA_PATH+'intervention_synthetise_agrege.csv')
+    donnees['itk_realise_agrege'].to_csv(DATA_PATH+'itk_realise_agrege.csv')
+    donnees['itk_synthetise_agrege'].to_csv(DATA_PATH+'itk_synthetise_agrege.csv')
 
 
 def load_ref(verbose=False):
@@ -565,6 +620,13 @@ def create_category_nettoyage():
     add_primary_key('entrepot_'+name_table+'_nettoyage', 'id')
     #df_nettoyage_utilisation_intrant_synthetise.to_csv(prefixe_source+suffixe_table+'_synthetise.csv')
 
+    # entite_unique_par_sdc
+    name_table = 'entite_unique_par_sdc'
+    df_entite_unique_par_sdc = nettoyage.entite_unique_par_sdc(donnees)
+    export_to_db(df_entite_unique_par_sdc, 'entrepot_'+name_table+'_nettoyage')
+    add_primary_key('entrepot_'+name_table+'_nettoyage', 'sdc_id')
+
+
 def create_category_agregation():
     """
         Execute les requêtes pour créer les outils d'agregation
@@ -585,32 +647,44 @@ def create_category_agregation():
     add_primary_key('entrepot_utilisation_intrant_realise_agrege', 'id')
     
     # toutes les infos manquantes agrégées depuis l'action
-    aggreged_leaking_action_realise = agregation.get_leaking_aggreged_from_action_realise(
-        aggreged_utilisation_intrant_realise, donnees
+    aggreged_action_realise = agregation.get_aggreged_from_action_realise(
+        donnees
     )
-    export_to_db(aggreged_leaking_action_realise, 'entrepot_action_realise_manquant_agrege')
-    add_primary_key('entrepot_action_realise_manquant_agrege', 'id')
+    export_to_db(aggreged_action_realise, 'entrepot_action_realise_agrege')
+    add_primary_key('entrepot_action_realise_agrege', 'id')
 
-    aggreged_leaking_action_synthetise = agregation.get_leaking_aggreged_from_action_synthetise(
-        aggreged_utilisation_intrant_synthetise, donnees
+    aggreged_action_synthetise = agregation.get_aggreged_from_action_synthetise(
+        donnees
     )
-    export_to_db(aggreged_leaking_action_synthetise, 'entrepot_action_synthetise_manquant_agrege')
-    add_primary_key('entrepot_action_synthetise_manquant_agrege', 'id')
+    export_to_db(aggreged_action_synthetise, 'entrepot_action_synthetise_agrege')
+    add_primary_key('entrepot_action_synthetise_agrege', 'id')
     
-
     # toutes les infos manquantes agrégées depuis l'intervention 
-    aggreged_leaking_intervention_realise = agregation.get_leaking_aggreged_from_intervention_realise(
-        aggreged_utilisation_intrant_realise, donnees
+    aggreged_intervention_realise = agregation.get_aggreged_from_intervention_realise(
+        donnees
     )
-    export_to_db(aggreged_leaking_intervention_realise, 'entrepot_intervention_realise_manquant_agrege')
-    add_primary_key('entrepot_intervention_realise_manquant_agrege', 'id')
+    export_to_db(aggreged_intervention_realise, 'entrepot_intervention_realise_agrege')
+    add_primary_key('entrepot_intervention_realise_agrege', 'id')
     
-    aggreged_leaking_intervention_synthetise = agregation.get_leaking_aggreged_from_intervention_synthetise(
-        aggreged_utilisation_intrant_synthetise, donnees
+    aggreged_intervention_synthetise = agregation.get_aggreged_from_intervention_synthetise(
+        donnees
     )
-    export_to_db(aggreged_leaking_intervention_synthetise, 'entrepot_intervention_synthetise_manquant_agrege')
-    add_primary_key('entrepot_intervention_synthetise_manquant_agrege', 'id')
+    export_to_db(aggreged_intervention_synthetise, 'entrepot_intervention_synthetise_agrege')
+    add_primary_key('entrepot_intervention_synthetise_agrege', 'id')
+
+    # toutes les infos manquantes agrégées depuis l'itk 
+    aggreged_itk_realise = agregation.get_aggreged_from_itk_realise(
+        donnees
+    )
+    export_to_db(aggreged_itk_realise, 'entrepot_itk_realise_agrege')
+    add_primary_key('entrepot_itk_realise_agrege', 'itk_id')
     
+    aggreged_itk_synthetise = agregation.get_aggreged_from_itk_synthetise(
+        donnees
+    )
+    export_to_db(aggreged_itk_synthetise, 'entrepot_itk_synthetise_agrege')
+    add_primary_key('entrepot_itk_synthetise_agrege', 'itk_id')
+
 def create_category_restructuration():
     """
         Execute les requêtes pour créer les outils de restructuration
@@ -667,6 +741,11 @@ def create_category_indicateur_0():
     export_to_db(df_get_connexion_weight_in_synth_rotation, 'entrepot_poids_connexions_synthetise_rotation')
     add_primary_key('entrepot_poids_connexions_synthetise_rotation', 'connexion_id')
 
+    df_poids_noeuds_realise = indicateur.get_poids_noeuds_realise(donnees)
+    df_poids_noeuds_realise.set_index('noeuds_realise_id', inplace=True)
+    export_to_db(df_poids_noeuds_realise, 'entrepot_poids_noeuds_realise')
+    add_primary_key('entrepot_poids_noeuds_realise', 'noeuds_realise_id')
+    
 def create_category_indicateur_1():
     """
         Crée les typologies de culture de base pour les autres indicateurs. 
@@ -713,6 +792,68 @@ def create_category_indicateur_2():
     export_to_db(df_action_synthetise_rendement_total, 'entrepot_action_synthetise_rendement_total')
     add_primary_key('entrepot_action_synthetise_rendement_total', 'index')
 
+    df_espece_variete_perenne_principale = indicateur.get_espece_variete_perenne_principale(donnees)
+    export_to_db(df_espece_variete_perenne_principale, 'entrepot_espece_variete_perenne_principale')
+    add_primary_key('entrepot_espece_variete_perenne_principale', 'entite_id')
+
+
+def create_category_dirodur_0():
+    """
+        Execute les requêtes pour créer la première salve d'outils DiRoDur
+    """
+    df_rendement_realise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_realise_outils_dirodur(donnees)
+    df_rendement_realise_filtre_outils_dirodur.set_index('id', inplace=True)
+    export_to_db(df_rendement_realise_filtre_outils_dirodur, 'entrepot_rendement_realise_filtre_outils_dirodur')
+    add_primary_key('entrepot_rendement_realise_filtre_outils_dirodur', 'id')
+
+    df_rendement_synthetise_filtre_outils_dirodur = outils_dirodur.get_rendement_filtre_synthetise_outils_dirodur(donnees)
+    df_rendement_synthetise_filtre_outils_dirodur.set_index('id', inplace=True)
+    export_to_db(df_rendement_synthetise_filtre_outils_dirodur, 'entrepot_rendement_synthetise_filtre_outils_dirodur')
+    add_primary_key('entrepot_rendement_synthetise_filtre_outils_dirodur', 'id')
+
+    sdc_realise_filtre_outils_dirodur = outils_dirodur.get_sdc_realise_filtre_outils_dirodur(donnees)
+    sdc_realise_filtre_outils_dirodur.set_index('sdc_id', inplace=True)
+    export_to_db(sdc_realise_filtre_outils_dirodur, 'entrepot_sdc_realise_filtre_outils_dirodur')
+    add_primary_key('entrepot_sdc_realise_filtre_outils_dirodur','sdc_id')
+
+    synthetise_filtre_outils_dirodur = outils_dirodur.get_synthetise_filtre_outils_dirodur(donnees)
+    synthetise_filtre_outils_dirodur.set_index('synthetise_id', inplace=True)
+    export_to_db(synthetise_filtre_outils_dirodur, 'entrepot_synthetise_filtre_outils_dirodur')
+    add_primary_key('entrepot_synthetise_filtre_outils_dirodur','synthetise_id')
+
+    df_sdc_statut_temporel = outils_dirodur.get_temporal_status_for_each_sdc_dirodur(donnees)
+    df_sdc_statut_temporel.set_index('sdc_id', inplace=True)
+    export_to_db(df_sdc_statut_temporel, 'entrepot_sdc_statut_temporel_outils_dirodur')
+    add_primary_key('entrepot_sdc_statut_temporel_outils_dirodur', 'sdc_id')
+
+    df_date_de_semis = outils_dirodur.get_date_de_semis_outils_dirodur(donnees)
+    df_date_de_semis.set_index('culture_id', inplace=True)
+    export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')
+    add_primary_key('entrepot_date_de_semis_outils_dirodur', 'culture_id')
+
+
+def create_category_dirodur_1():
+    """
+        Execute les requêtes pour créer la seconde salve d'outils DiRoDur
+    """
+
+    df_typologie_culture_dirodur = outils_dirodur.get_typologie_culture_outils_dirodur(donnees)
+    df_typologie_culture_dirodur.set_index('culture_id', inplace=True)
+    export_to_db(df_typologie_culture_dirodur, 'entrepot_typologie_culture_outils_dirodur')
+    add_primary_key('entrepot_typologie_culture_outils_dirodur', 'culture_id')
+
+    
+
+def create_category_dirodur_2():
+    """
+        Execute les requêtes pour créer la troisieme salve d'outils DiRoDur
+    """
+
+    df_typologie_culture_dirodur = outils_dirodur.get_indicateur_diversite_outils_dirodur(donnees)
+    df_typologie_culture_dirodur.set_index('sdc_id', inplace=True)
+    export_to_db(df_typologie_culture_dirodur, 'entrepot_indicateur_diversite_outils_dirodur')
+    add_primary_key('entrepot_indicateur_diversite_outils_dirodur', 'sdc_id')
+    
 
 def create_category_interoperabilite():
     """
@@ -725,6 +866,35 @@ def create_category_interoperabilite():
     df_donnees_spatiales_coord_gps_du_domaine = interoperabilite.get_donnees_spatiales_coord_gps_du_domaine(donnees)
     export_to_db(df_donnees_spatiales_coord_gps_du_domaine, 'entrepot_donnees_spatiales_coord_gps_du_domaine')
     add_primary_key('entrepot_donnees_spatiales_coord_gps_du_domaine', 'geopoint_id')
+
+def create_category_outils_tableau_de_bord_can():
+    """
+        Execute les requêtes pour créer les outils nécessaires à la génération du magasin de données "tableau_de_bord_can"
+    """
+    sdc_complet_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_sdc_realise_complet_outils_tableau_de_bord_can(donnees)
+    sdc_complet_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(sdc_complet_outils_tableau_de_bord_can, 'entrepot_sdc_complet_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_sdc_complet_outils_tableau_de_bord_can', 'id')
+
+    synthetise_complet_outils_tableau_de_bord_can = outils_tableau_de_bord_can.get_synthetise_complet_outils_tableau_de_bord_can(donnees)
+    synthetise_complet_outils_tableau_de_bord_can.set_index('id', inplace=True)
+    export_to_db(synthetise_complet_outils_tableau_de_bord_can, 'entrepot_synthetise_complet_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_synthetise_complet_outils_tableau_de_bord_can', 'id')
+
+    rendement_viti_realise = outils_tableau_de_bord_can.get_rendement_viti_sdc_realise_outils_tableau_de_bord_can(donnees)
+    rendement_viti_realise.set_index('id', inplace=True)
+    export_to_db(rendement_viti_realise, 'entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_rendement_viti_sdc_realise_outils_tableau_de_bord_can', 'id')
+
+    rendement_viti_synthetise = outils_tableau_de_bord_can.get_rendement_viti_sdc_synthetise_outils_tableau_de_bord_can(donnees)
+    rendement_viti_synthetise.set_index('id', inplace=True)
+    export_to_db(rendement_viti_synthetise, 'entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_rendement_viti_synthetise_outils_tableau_de_bord_can', 'id')
+
+    rendement_gcpe = outils_tableau_de_bord_can.get_itk_rendement_gcpe_outils_tableau_de_bord_can(donnees)
+    rendement_gcpe.set_index('id', inplace=True)
+    export_to_db(rendement_gcpe, 'entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can')
+    add_primary_key('entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can', 'id')
 
 def create_category_outils_can():
     """
@@ -781,28 +951,108 @@ def create_category_outils_can():
     export_to_db(df_parcelle_realise_outils_can, 'entrepot_parcelle_realise_outils_can')
     add_primary_key('entrepot_parcelle_realise_outils_can', 'id')
 
+def create_category_outils_dephygraph():
+    """
+        Execute les requêtes pour créer le source des outils utiles pour la génération des csv CAN
+    """
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = outils_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=True)
+
+    # Exporte en DB la table principale
+    df_main_dephygraph.set_index('id', inplace=True)
+    export_to_db(df_main_dephygraph, 'entrepot_donnees_dephyferme_pour_dephygraph')
+    add_primary_key('entrepot_donnees_dephyferme_pour_dephygraph', 'id')
+
+    # Exporter les dictionnaires en JSON et le rapport en HTML
+    directory_export = "./data/export_from_functions/"
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_outliers.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_iqr, f, indent=4, ensure_ascii=False)
+
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_alertes_can.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
+
+    if rapport :
+        rapport.show_html(directory_export + "dephygraph_rapport_variables.html")
+
+    # Exporter les tables à UNION pour faire le magasin 
+    # IPMGraph (pas d'id)
+    df_ipmgraph_for_dephygraph = outils_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
+    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_donnees_ipmgraph_pour_dephygraph')
+    add_primary_key('entrepot_donnees_ipmgraph_pour_dephygraph', 'index')
+
+    # IPMGraph (pas d'id)
+    df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
+    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_donnees_culture_trop_pour_dephygraph')
+    add_primary_key('entrepot_donnees_culture_trop_pour_dephygraph', 'index')
+
+
+def create_category_agreste():
+    """
+        Execute les requêtes pour créer les outils relatifs aux données issues d'Agreste.
+        Attention, ces données ont été restructurées.
+    """
+    ift_agreste_viticulture = agreste.get_ift_agreste_viticulture(donnees)
+    export_to_db(ift_agreste_viticulture, 'entrepot_agreste_ift_viticulture_reference_departement')
+    add_primary_key('entrepot_agreste_ift_viticulture_reference_departement', 'index')
+
+
+    agreste_ift_gcpe_reference_region = agreste.get_agreste_ift_gcpe_reference_region(donnees)
+    agreste_ift_gcpe_reference_region = agreste_ift_gcpe_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_gcpe_reference_region, 'entrepot_agreste_ift_gcpe_reference_region')
+    add_primary_key('entrepot_agreste_ift_gcpe_reference_region', 'nom_ancienne_region, campagne')
+
+
+    agreste_ift_arboriculture_reference_region = agreste.get_agreste_ift_arboriculture_reference_region(donnees)
+    agreste_ift_arboriculture_reference_region = agreste_ift_arboriculture_reference_region.set_index(['nom_ancienne_region', 'campagne'])
+    export_to_db(agreste_ift_arboriculture_reference_region, 'entrepot_agreste_ift_arboriculture_reference_region')
+    add_primary_key('entrepot_agreste_ift_arboriculture_reference_region', 'nom_ancienne_region, campagne, culture')
+
 
 def create_category_test():
     """ 
-            Execute les requêtes pour tester la génération d'outils spécifiques
+        Execute les requêtes pour tester la génération d'outils spécifiques
     """
-    # df_identification_pz0 = indicateur.identification_pz0(donnees)
-    # export_to_db(df_identification_pz0, 'entrepot_identification_pz0')
-    # add_primary_key('entrepot_identification_pz0', 'entite_id')
+    df_main_dephygraph, dict_idx_iqr, dict_idx_alerte_can, rapport = outils_dephygraph.all_steps_for_maj_dephygraph(donnees, demande_rapport=True)
 
-    # print('Fin du test de entrepot_identification_pz0')
+    # Exporte en DB la table principale
+    df_main_dephygraph.set_index('id', inplace=True)
+    export_to_db(df_main_dephygraph, 'entrepot_donnees_dephyferme_pour_dephygraph')
+    add_primary_key('entrepot_donnees_dephyferme_pour_dephygraph', 'id')
+
+    # Exporter les dictionnaires en JSON et le rapport en HTML
+    directory_export = "/home/tbadie/Bureau/data/temp/test_dg/"
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_outliers.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_iqr, f, indent=4, ensure_ascii=False)
+
+    with open(directory_export + "dephygraph_dict_valeur_retiree_par_alertes_can.json", "w", encoding="utf-8") as f:
+        json.dump(dict_idx_alerte_can, f, indent=4, ensure_ascii=False)
+
+    if rapport :
+        rapport.show_html(directory_export + "dephygraph_rapport_variables.html")
+
+    # Exporter les tables à UNION pour faire le magasin 
+    # IPMGraph (pas d'id)
+    df_ipmgraph_for_dephygraph = outils_dephygraph.get_ipm_works_data_for_dephygraph(donnees)
+    export_to_db(df_ipmgraph_for_dephygraph, 'entrepot_donnees_ipmgraph_pour_dephygraph')
+    # IPMGraph (pas d'id)
+    df_culture_trop_for_dephygraph = outils_dephygraph.get_culture_trop_data_for_dephygraph(donnees)
+    export_to_db(df_culture_trop_for_dephygraph, 'entrepot_donnees_culture_trop_pour_dephygraph')
+
 
 # à terme, cet ordre devra être généré automatiquement à partir des dépendances --> mais pour l'instant plus simple comme ça
 steps = [
     {'source' : 'outils', 'category' : 'nettoyage'},
     {'source' : 'outils', 'category' : 'agregation'},
-    {'source' : 'outils', 'category' : 'agregation_complet'},
     {'source' : 'outils', 'category' : 'restructuration'},
+    {'source' : 'outils', 'category' : 'agreste'},
     {'source' : 'outils', 'category' : 'indicateur_0'},
     {'source' : 'outils', 'category' : 'indicateur_1'},
     {'source' : 'outils', 'category' : 'indicateur_2'},
     {'source' : 'outils', 'category' : 'interoperabilite'},
-    {'source' : 'outils', 'category' : 'outils_can'}
+    {'source' : 'outils', 'category' : 'outils_can'},
+    {'source' : 'outils', 'category' : 'outils_dirodur_0'},
+    {'source' : 'outils', 'category' : 'outils_dirodur_1'},
+    {'source' : 'outils', 'category' : 'outils_tableau_de_bord_can'},
+    {'source' : 'outils', 'category' : 'outils_dephygraph'}
 ]
 
 options_categories = {}
@@ -830,6 +1080,7 @@ options = {
         "Générer une catégorie" : [],  
         "Tester la cohérence des données externes": [],
         "Télécharger les outils" : [],
+        "Test" : [],
         "Quitter" : []
     }
 }
@@ -873,53 +1124,48 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
         if(TYPE == 'distant'):
             print("* TÉLÉCHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
             download_datas(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False)
-        # Vérification que toutes les données sont présentes pour la première catégorie
-        error_code_findable, error_message_findable = test_all_findable_for_category(steps[0]['category'])
-        print(error_message_findable)
 
-        
-        # Si toutes les données nécessaires sont disponibles, on peut les charger
-        if(error_code_findable == 0):
-            # Vérification que les données externes vérifient le format attendu
-            error_code_check, error_message_check = test_check_external_data(leaking_tables=[])
-            print(error_message_check)
-            if(error_code_check == 0):
+        # Vérification que les données externes vérifient le format attendu
+        error_code_check, error_message_check = test_check_external_data(leaking_tables=[])
+        print(error_message_check)
+        if(error_code_check == 0):
 
-                # Chargement des données
-                print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
-                load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, need_perf=False)
-                print("* CHARGEMENT DES DONNÉES EXTERNES *")
-                load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
-                print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
-                load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
-                print("* CHARGEMENT DES RÉFÉRENTIELS *")
-                print("Attention, penser à les mettre à jour manuellement.")
-                load_ref()
+            # Chargement des données
+            print("* CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
+            needed_perfs_tables = []
+            for category in SOURCE_SPECS['outils']['categories'].values():
+                needed_perfs_tables += category.get('need_performance', [])
+            load_datas_entrepot(list(SOURCE_SPECS['entrepot']['tables'].keys()), verbose=False, needed_perfs=needed_perfs_tables)
+            print("* CHARGEMENT DES DONNÉES EXTERNES *")
+            load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+            load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
+            load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
+            print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
+            load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
+            print("* CHARGEMENT DES RÉFÉRENTIELS *")
+            print("Attention, penser à les mettre à jour manuellement.")
+            load_ref()
 
-                for step in steps :
-                    CURRENT_SOURCE = step['source']
-                    CURRENT_CATEGORY = step['category']
+            for step in steps :
+                CURRENT_SOURCE = step['source']
+                CURRENT_CATEGORY = step['category']
 
-                    # Vérification que toutes les données sont présentes pour la catégorie courante
-                    error_code_findable, error_message_findable = test_all_findable_for_category(step['category'])
-                    print(error_message_findable)
-                    if(error_code_findable == 0):
-                        print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
-                        choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
-
-                        if(CURRENT_CATEGORY == 'agregation_complet'):
-                            # Lors de la génération de agregation_complet, il faut aussi créer les dataframes.
-                            generate_data_agreged(verbose=False)
-                            download_data_agreged(verbose=False)
-                        else :
-                            choosen_function()
-                            if(TYPE == 'distant'):
-                                download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
-                            load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
-        else:
-            time.sleep(1)
+                # Vérification que toutes les données sont présentes pour la catégorie courante
+                error_code_findable, error_message_findable = test_all_findable_for_category(step['category'])
+                print(error_message_findable)
+                if(error_code_findable == 0):
+                    print("* GÉNÉRATION ", CURRENT_SOURCE, CURRENT_CATEGORY," *")
+                    choosen_function = eval(str(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['function_name']))
+                    choosen_function()
+                    if(TYPE == 'distant'):
+                        download_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                    load_datas(SOURCE_SPECS[CURRENT_SOURCE]['categories'][CURRENT_CATEGORY]['generated'])
+                else :
+                    print("Données manquantes pour la catégorie "+step['category'])
+                    
     elif choice_key == 'Télécharger les outils':
         print("")
         print("Veuillez choisir la catégorie à télécharger")
@@ -939,28 +1185,7 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
             choosen_category = categorie_step['category']
             choosen_function = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['function_name']
             choosen_generated = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['generated']
-
-            if choosen_category == 'agregation_complet':
-                print("* DÉBUT DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES *")             
-                choosen_dependances = SOURCE_SPECS[choosen_source]['categories'][choosen_category]['dependances']
-                for choosen_dependance in choosen_dependances:
-                    categorie_dependance = SOURCE_SPECS[choosen_dependance['source']]['categories'][choosen_dependance['category']]
-                    if(len(categorie_dependance['generated']) != 0):
-                        if(categorie_dependance['generated'][0] not in donnees):
-                            print("* DÉBUT DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-                            load_datas(categorie_dependance['generated'], verbose=False)
-                            print("* FIN DU CHARGEMENT DES DONNÉES DES OUTILS NÉCESSAIRES *")
-
-                print("* FIN DU CHARGEMENT DES DONNÉES AGREGATION PARTIELLES*")
-                print("* DÉBUT GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
-                generate_data_agreged(verbose=False)
-                print("* FIN GÉNÉRATION DES DONNÉES AGREGATION PARTIELLES *")
-                print("* DÉBUT DU TÉLÉCHARGEMENT DES DONNÉES AGREGATION TOTAL *")
-                download_data_agreged(verbose=False)
-                print("* FIN DU TÉLÉCHARGEMENT DES DONNÉES AGREGATION TOTAL *")
-
-            else:
-                download_datas(choosen_generated, verbose=False, categ_name=choosen_category)
+            download_datas(choosen_generated, verbose=False, categ_name=choosen_category)
             
     elif choice_key == "Générer une catégorie":
         print("")
@@ -998,19 +1223,19 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                             load_datas(categorie_dependance['generated'], verbose=False)
                             print("* FIN DU CHARGEMENT DES OUTILS DE LA CATÉGORIE", choosen_dependance['category']," *")
                 
-                if(choosen_category == 'agregation_complet'):
-                    # Si on a choisi de générer agregation_complet, il faut aussi load les données agrégées complètes
-                    generate_data_agreged(verbose=False)
-                    download_data_agreged(verbose=False)
-                elif(choosen_category == 'test'):
+                if(choosen_category == 'test'):
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     load_datas(SOURCE_SPECS['outils']['categories'][choosen_category]['entrepot_dependances'], verbose=False)
                     load_ref()
                     print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                     print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                    load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
+                    print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                    load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                     print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                    load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
                     load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                     print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
@@ -1023,18 +1248,24 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
                 else :
                     # on vérifie que les données n'ont pas été déjà chargées
                     if('domaine' not in donnees):
+
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         load_datas_entrepot(
                             list(SOURCE_SPECS['entrepot']['tables'].keys()), 
                             verbose=False,
-                            need_perf=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance']=="True")
+                            needed_perfs=(SOURCE_SPECS[choosen_source]['categories'][choosen_category]['need_performance'])
                         )
                         load_ref()
                         print("* FIN DU CHARGEMENT DES DONNÉES DE L'ENTREPÔT *")
                         print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['path'])
+                        load_datas(SOURCE_SPECS['outils']['external_data']['agreste_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['agreste_data']['path'])
+        
+                        print("* DÉBUT DU CHARGEMENT DES DONNÉES EXTERNES POUR DEPHYGRAPH *")
+                        load_datas(SOURCE_SPECS['outils']['external_data']['dephygraph_data']['tables'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['dephygraph_data']['path'])
                         print("* CHARGEMENT DES DONNÉES SPATIALES EXTERNES *")
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geojson'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='json')
+                        load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['shapefile'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='shp')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['geopackage'], verbose=False, path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='gpkg')
                         load_datas(SOURCE_SPECS['outils']['external_data']['geospatial_data']['csv_geo'], verbose=False,path_data=SOURCE_SPECS['outils']['external_data']['geospatial_data']['geodata_path'], file_format='csv')
                         print("* FIN DU CHARGEMENT DES DONNÉES EXTERNES*")
@@ -1048,6 +1279,9 @@ En revanche, dans tous les cas, il faut disposer des csv de l'entrepôt à jour 
     elif choice_key == 'Tester la cohérence des données externes':
         print("* DÉBUT DU TEST DE COHÉRENCE DES DONNÉES EXTERNES *")
         tables_to_check = SOURCE_SPECS['outils']['external_data']['tables']
+
+        print(tables_to_check)
+        print(SOURCE_SPECS['outils']['external_data']['path'])
         leaking_tables_ext = check_files_exist(
             tables_to_check, 
             path_data=SOURCE_SPECS['outils']['external_data']['path']

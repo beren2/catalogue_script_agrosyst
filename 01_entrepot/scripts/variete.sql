@@ -1,4 +1,4 @@
-drop table if exists entrepot_variete;
+drop table if exists entrepot_variete cascade;
 CREATE TABLE entrepot_variete AS
 (SELECT 
 	rvg.topiaid AS id,

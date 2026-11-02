@@ -1,0 +1,1 @@
+select * from entrepot_itk_filtre_final;

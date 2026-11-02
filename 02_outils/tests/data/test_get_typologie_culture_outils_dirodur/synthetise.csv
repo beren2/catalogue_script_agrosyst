@@ -1,0 +1,4 @@
+id,nom,campagnes,source,commentaire,parcelle_type_id,sdc_id,derniere_maj,valide
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_94a7f368-a7c7-4b56-a0be-cb0c46be7d0e,PPZ_GCF11201,"2007, 2008, 2009",,,,fr.inra.agrosyst.api.entities.GrowingSystem_63f598ec-e797-4e25-8f36-1b33527d8f4a,2016-08-10 11:11:43.242,t
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b67e83e5-8a02-4987-80d6-c64d96f435c4,GCF36443_2020,2020,ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_3165afa3-a8ad-4f78-a97c-3c57ef0e1e90,2021-03-09 13:28:48.085,t
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c5e1162f-1206-4f5b-af96-b7e4e1872772,Colin PZ0,"2020, 2021, 2022",ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_779c32e1-2c06-469b-b4bd-e934940e771c,2022-08-30 10:19:24.854216,t

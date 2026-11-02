@@ -1,5 +1,5 @@
 -- Zonage de la parcelle
-drop table if exists entrepot_parcelle_zonage;
+drop table if exists entrepot_parcelle_zonage cascade;
 
 CREATE TABLE entrepot_parcelle_zonage AS
 select

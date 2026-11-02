@@ -140,10 +140,8 @@ null groupe_cible,
 pm.agressor as adventice_id,
 null as nuisible_edi_id,
 trad1.traduction_interface echelle_pression,
-pm.pressurescaleint echelle_pression_marhorti_EXPE,
 replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
-pm.masterscaleint echelle_maitrise_marhorti_EXPE,
 pm.qualifier maitrise_qualifiant,
 replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
@@ -164,10 +162,8 @@ pm.codegroupeciblemaa groupe_cible_code,
 null as adventice_id,
 pm.agressor nuisible_edi_id,
 trad1.traduction_interface echelle_pression,
-pm.pressurescaleint echelle_pression_marhorti_EXPE,
 replace(replace(pm.pressurefarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS pression_commentaire_agri,
 trad2.traduction_interface echelle_maitrise,
-pm.masterscaleint echelle_maitrise_marhorti_EXPE,
 pm.qualifier maitrise_qualifiant,
 replace(replace(pm.resultfarmercomment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS maitrise_commentaire_agri,
 bcsama.id as BC_sdc_assolee_maitrise_agresseur_id
@@ -387,8 +383,8 @@ BEGIN
     END;
 END $$;
 
-alter table entrepot_BC_sdc_arbo_ravageur_maladie
-ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
+-- alter table entrepot_BC_sdc_arbo_ravageur_maladie
+-- ADD FOREIGN KEY (nuisible_edi_id) REFERENCES entrepot_nuisible_edi(id);
 
 alter table entrepot_BC_sdc_arbo_ravageur_maladie
 ADD FOREIGN KEY (BC_sdc_arbo_maitrise_agresseur_id) REFERENCES entrepot_BC_sdc_arbo_maitrise_agresseur(id);
@@ -548,11 +544,10 @@ select
 	yl.topiaid id,
 case 
 	when yl.yieldobjective is not null then trad1.traduction_interface
-	when yl.yieldobjectiveint is not null then trad2.traduction_interface
 end objectif_rendement_atteint,
-yl.cause1 as cause_1,
-yl.cause2 as cause_2,
-yl.cause3 as cause_3,
+rpr1.cause_perte_rendement as cause_1,
+rpr2.cause_perte_rendement as cause_2,
+rpr3.cause_perte_rendement as cause_3,
 replace(replace(yl.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 null as rendement_qualite_commentaire_global,
 --replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
@@ -561,10 +556,12 @@ from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
 --left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem
 left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
+left join refperterendement rpr1 on rpr1.topiaid = yl.cause1
+left join refperterendement rpr2 on rpr2.topiaid = yl.cause2
+left join refperterendement rpr3 on rpr3.topiaid = yl.cause3
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
-left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
 where gs.sector <> 'VITICULTURE' and yl.topiaid is not null
 union
 -- dans le cas où il n'y a pas de yieldloss mais uniquement un yield_info, on recréer un yieldlos à partir du yieldinfo.
@@ -584,21 +581,23 @@ left join yieldloss yl on rgs.topiaid = yl.reportgrowingsystem
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on yl.yieldobjective = trad1.nom_base 
-left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif expe') trad2 on yl.yieldobjectiveint::text = trad1.nom_base 
 where gs.sector <> 'VITICULTURE' and (yi.topiaid is not null and yl.topiaid is null)
 union 
 select 
 'fr.inra.agrosyst.api.entities.report.YieldLoss_' || SUBSTR(rgs.topiaid,58), -- les infos de la viti sont dans rgs mais sont les memes donc on attribut un id
 trad1.traduction_interface as objectif_rendement_atteint,
-rgs.vitilosscause1 as cause_1,
-rgs.vitilosscause2 as cause_2,
-rgs.vitilosscause3 as cause_3,
+rpr1.cause_perte_rendement as cause_1,
+rpr2.cause_perte_rendement as cause_2,
+rpr3.cause_perte_rendement as cause_3,
 replace(replace(rgs.vitiyieldquality,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS qualite_commentaire,
 replace(replace(yi.comment,CHR(13)||CHR(10),'<br>'),CHR(10),'<br>') AS rendement_qualite_commentaire_global,
 rgs.topiaid BC_sdc_generalites_id
 from reportgrowingsystem rgs
 join growingsystem gs on gs.topiaid = rgs.growingsystem
 left join yieldinfo yi on rgs.topiaid = yi.reportgrowingsystem and yi.sector = 'VITICULTURE'
+left join refperterendement rpr1 on rpr1.topiaid = rgs.vitilosscause1
+left join refperterendement rpr2 on rpr2.topiaid = rgs.vitilosscause2
+left join refperterendement rpr3 on rpr3.topiaid = rgs.vitilosscause3
 join entrepot_BC_sdc_generalites ebcsg on ebcsg.id = rgs.topiaid
 -- traductions des libelles
 left join (select * from entrepot_bc_sdc_traduction where nom_rubrique = 'rendement echelle objectif') trad1 on rgs.vitiyieldobjective = trad1.nom_base 

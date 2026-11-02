@@ -1,0 +1,2 @@
+id,nom,campagnes,source,commentaire,parcelle_type_id,sdc_id,derniere_maj,valide
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_c7f5d445-ba14-4e12-b494-d6b1dfffa621,Synthétisé_GAEC des Genêts _2014,2014,ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_d29365e0-7c3a-42c4-a71e-40134bdea390,2021-09-15 12:21:23.788767,t

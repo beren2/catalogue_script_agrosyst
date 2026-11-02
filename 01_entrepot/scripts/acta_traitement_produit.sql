@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_acta_traitement_produit CASCADE;
+
 CREATE TABLE entrepot_acta_traitement_produit AS
 SELECT 
 	ratp.topiaid AS id,
@@ -6,7 +8,6 @@ SELECT
 	ratp.nom_produit,
 	ratp.code_traitement,
 	ratp.nom_traitement,
-	ratp.nodu,
 	ratp.source,
 	ratp.code_amm, 
 	ratp.code_traitement_maa, 

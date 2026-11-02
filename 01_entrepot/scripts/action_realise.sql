@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_action_realise CASCADE;
+
 CREATE TABLE entrepot_action_realise AS
 select 
 aa.topiaid id,

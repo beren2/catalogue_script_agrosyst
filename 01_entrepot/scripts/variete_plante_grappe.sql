@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_variete_plante_grappe cascade;
+
 CREATE TABLE entrepot_variete_plante_grappe AS
 select 
 r.topiaid as id ,

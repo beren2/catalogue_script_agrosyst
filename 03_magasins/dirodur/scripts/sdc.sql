@@ -1,0 +1,1 @@
+select * from entrepot_sdc_filtre_final;

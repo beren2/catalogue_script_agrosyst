@@ -1,0 +1,73 @@
+sdc_id,sdc_code,code_dephy,campagne,synthetise_id,campagnes,etat_temporel
+fr.inra.agrosyst.api.entities.GrowingSystem_e9ece6ba-2f31-48c5-98d3-d7a8fbd045a4,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2011,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_841ec372-e023-491c-8969-3b40bb7a6f65,"2009, 2010, 2011",pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_71364379-4d8c-4cd8-b772-a620c4db5b39,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2012,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_90e5596c-ec9a-477e-af5c-00cbb2badd00,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2013,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_bd941867-1590-490e-9eb3-3c1cd8993a0c,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2014,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_63481dc2-05c5-4fef-9833-56125340d021,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2015,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_55a47c28-d76c-4104-95b6-9487c1f0f62c,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2017,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_7df7b91b-a7ee-4a39-b178-55c7d028f40c,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2018,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_71d2d9d7-2d1a-442c-861b-803561e244b0,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2021,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_750ae3d2-450a-48b2-877b-eb4bfd1a3a47,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2023,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_e53c9db8-acc1-4f17-8277-476f17600d95,2023,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_1d48c80c-b01c-49ea-8fd3-fd31a8691992,bdc40214-c99c-4fe2-a476-a60bc5289329,GCF10134,2024,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3b3a5387-9c83-4231-9fbc-15b65153eb2d,2024,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_2b8ba0f7-d312-4599-88c9-a6986ffff033,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2012,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_751a1685-1c93-4ea4-b235-f1b05cdf7ad7,"2010, 2011, 2012",pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_5506f300-9900-4d71-a0e0-b5d2b652da6e,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2013,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_c0047868-ef13-4223-93d2-9a53d8ffb2db,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2014,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_72bb4354-7d3e-4797-9754-51cef941af8d,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2015,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_69b4ed7b-1385-42ad-9ff8-6e9b2a650a9a,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2016,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_2ca31134-4e4b-4266-9732-9ebdc3099190,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2017,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_4c89b158-4fbf-4eb5-b8af-190e0b8fa537,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2018,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_56e3a99e-62be-4132-a44c-22c0e7d164fd,2018,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_6849a55a-ada6-4fa0-808e-95234952f04b,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2019,,,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_12c0c5df-9141-47ee-a91e-85d6d71536e8,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2020,,,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_0ce4d7e5-fe26-46c0-b9bd-4fa4f865fb37,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2021,,,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_ddf4a71e-20ef-4019-ae87-26ed1805e50e,77687c89-9b69-4ba7-b0b4-4fbbc7137fcb,GCF10355,2022,,,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_c65e781b-26ec-4166-865c-720ff30dac76,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2013,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_8d2b64cc-f945-48b4-a6de-7673c44480d3,2013,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_1bf44dc0-a655-4f9a-9355-5c4eba706cd0,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2014,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f3ed8856-a2d6-47c1-8f8d-6f4cf34669f0,2014,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_b734af83-9a3f-43fe-89c6-c8fafc1e0c50,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2017,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_b4c6e087-05d3-4aab-8014-e8f85686324b,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2018,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_ea53ed79-5ca7-4c41-b86b-4ebfcca38e12,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2020,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_25d281c7-2bd1-4b24-a430-98b4e0bec4cf,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2021,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_a2ff675d-684d-4f55-96ce-1678df54562b,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2022,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_56d49a39-d5d6-4d73-9418-33f45c2f3f9f,b0712e47-9ba9-4fba-883d-e09f4dd260d4,GCF10360,2023,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_f2277bd8-5b36-4720-b3a2-23c386f6b33e,6dc94de8-f794-4dab-93cf-6bba908b07c4,GCF10360,2023,,,sans_pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_6ce9465a-4fdb-4035-a182-6a0a1d3a259d,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2011,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5ed9987d-dcd7-49c7-8fff-a3ccd443f35e,"2009, 2010, 2011",incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_b9c498cf-5bba-46f3-9eb6-8f1f2579aa8e,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2012,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_050bf4e3-dad5-49f0-9a22-df4a8542f89c,2012,incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_c19db630-e35f-4cad-97fe-de96ab9d0fd4,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2013,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_19853172-4577-43a5-b5e5-98c9a98b73b1,2013,incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_c5efb5a6-7ebe-4da9-80ad-86ff8526dc89,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2015,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_db176384-dac6-40d5-95e6-b25f957b5eb0,2015,pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_7442881f-e088-450b-b9b3-676e791fdeb8,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2016,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_754c251b-0ecd-4fbf-a73c-4a282002f680,2016,pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_453832a6-64f6-4cbb-b369-3f89dc74952f,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2017,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2f880889-4dac-4707-99f2-c9034ba55b20,2017,pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_935b490f-469c-46c7-977a-04fb27410dd3,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2018,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ec1be0af-94b5-4176-a17e-57894c5c1594,2018,point_I
+fr.inra.agrosyst.api.entities.GrowingSystem_1aad6bd1-5dd0-4412-b8a1-70ec05800bb3,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2019,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_210a5a49-b4b9-4737-932c-aa224786b322,2019,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_0beed472-5316-487b-8df5-305bd1ba1a04,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2020,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_77da5ab5-da9d-4356-b4e8-ea5438e5c190,2020,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_e0839850-4eeb-4c84-bcd9-9da8333e1b85,0556a5ab-c0ab-4267-8847-a52141254451,GCF10713,2021,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_bb7ff385-8dc1-4897-8746-efe0a7ed9c07,2021,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_e5dfbb47-b4c6-43bc-9f3a-75ea67d27ae6,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2010,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a0d5eb78-822a-4295-891c-53b1b74ffa27,"2008, 2009, 2010",incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_4430c4e1-3aba-4b58-bad2-03d830e596fa,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2011,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0c242798-53fb-4c78-81ab-e577113fa34c,2011,incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_cd48d37c-5096-4dad-bbaf-cd63634b80b1,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2012,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a46f04e1-556b-44ce-89f5-39d1654280b0,2012,incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_cf73650b-66fa-492d-82d4-17cf6de2d4d2,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2013,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_98bcbd3b-48b2-47dc-abcc-322fafbfd836,2013,incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_72dca6d9-a966-4365-991a-8f8e1b2e64c3,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2014,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f885dfac-a2d0-448b-a12f-5ae15f085499,2014,incorrect : campagne non-attendue
+fr.inra.agrosyst.api.entities.GrowingSystem_b3ce67cb-398f-4b99-959a-c1cf9e84a847,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2015,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3b38a92a-2b7e-4b61-83fe-bcdc8ccf0fbf,2015,pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_b80da7ca-b0e5-48d4-89e9-be8ba7cfa32b,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2016,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5a036b8a-7f87-43e4-90c0-78fa8003de65,2016,pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_ca007fae-8c47-4bac-accb-4cb500135d01,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2017,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b6250ce3-133d-4b68-a8df-23458a872116,2017,pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_e286877a-65a2-4110-826e-226b3b9d49bf,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2018,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_5f2b7113-69d0-4fbb-9ac6-4584db8e41fe,2018,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_13085150-c0ac-4fb6-966f-8379dd2bb1e2,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2019,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_b5a31c35-5ce4-41f9-a09f-b899374dd3b7,2019,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_b0a9e7db-f0b4-4d55-ae46-a7e54ba3a4bf,ded81cd1-68dd-48df-af35-8e6da1456bc3,GCF10718,2020,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_ee471f42-e65e-4836-840d-c3894ef7b8b1,2020,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_f0999629-9f42-450d-8d46-d7f6f37cab29,2b45f957-8249-48cd-89bd-c28aea800b69,GCF10964,2011,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_e086c280-8e17-4abb-92f3-2209d9fae6ce,"2009, 2010, 2011",sans_point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_5cfac506-ecde-4758-9782-9db136f5319a,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2016,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_67caaa13-b630-418b-be2e-976055d0ddcd,2016,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_b39b6d86-f542-4eee-9858-6ce2a6f5cef5,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2018,,,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_6eb66ac6-3563-4fd2-b1cf-a926b00ef186,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2019,,,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_26fd5252-5b18-4913-806a-e9733c4c2acf,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2020,,,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_9ce773c4-28de-4f8c-8ff0-a332442c90a5,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2021,,,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_dbfd4211-8d4b-4021-8b02-5a09c06aad43,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2022,,,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_3c6d0f96-a10a-4660-bb7c-f0131d8e5739,66e9940e-cc45-4207-a8c4-6c9eea1f020d,GCF31510,2024,,,pz0_filtres
+fr.inra.agrosyst.api.entities.GrowingSystem_be9ff495-5e3a-40bf-ac5e-784b51cd3e8b,9cded317-c309-4a9a-8d8e-732de39c4dd4,GCF33085,2020,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_6c4e123a-2d32-492b-a14c-9ace54d27eb1,2020,pz0_filtres_et_sans_point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_56034341-216b-4b59-9512-05d022b1218d,9cded317-c309-4a9a-8d8e-732de39c4dd4,GCF33085,2022,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_75f98e1d-d1b2-40ca-a5b3-ffbd8e1e23cf,2022,pz0_filtres_et_sans_point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_7127c1f8-0336-4185-b630-93368b7c0aaa,9cded317-c309-4a9a-8d8e-732de39c4dd4,GCF33085,2024,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_93f2b3ad-d566-41bb-a71c-177decd423e1,2024,pz0_filtres_et_sans_point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_c7f1c618-4930-46d9-9b49-1b3f56467d84,89921622-05dc-4d0e-a206-1201153456d1,GCF33119,2017,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_4f62123c-4cd3-4bf7-b57a-ea6bc1c6b5f6,"2016, 2017, 2018",pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_9bedb71e-9a8d-4e82-bbd2-3b77c04072b4,89921622-05dc-4d0e-a206-1201153456d1,GCF33119,2018,,,incorrect : chevauchement pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_2742fc93-b9da-4859-ad0d-d6f58f3d71ac,89921622-05dc-4d0e-a206-1201153456d1,GCF33119,2019,,,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_56da2369-d34c-47be-bb5a-b8ccfbf549ad,89921622-05dc-4d0e-a206-1201153456d1,GCF33119,2020,,,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_a6a135ec-be01-4724-a6f6-1a5d777fd939,89921622-05dc-4d0e-a206-1201153456d1,GCF33119,2021,,,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_2ae9d4c0-5c3e-4a66-a29d-a38a4cad0800,13bbda64-359a-4fb3-ba1c-cfc9d6ab0bcb,GCF35429,2017,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0061eb17-cf9e-4a53-ada9-e423b2203ef7,2017,ni_pz0_ni_point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_d81e7700-c4db-421a-aaf5-9b24ea48c281,6b03491e-6243-4a00-bb93-0a921cc85167,GCF38068,2016,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f86e39e6-4404-4fbe-94e9-ddc2dd41b72a,"2014, 2015, 2016",pz0
+fr.inra.agrosyst.api.entities.GrowingSystem_4e05dd53-7573-4377-9674-f845d03e6bc4,6b03491e-6243-4a00-bb93-0a921cc85167,GCF38068,2017,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_595843c2-8ca4-4319-993b-2e239109ad1e,2017,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_ed243c93-e5b0-4176-a46c-a6ae0ea7126f,6b03491e-6243-4a00-bb93-0a921cc85167,GCF38068,2018,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_da201c80-5d0c-4b8b-a77b-68a20ce4af02,2018,point_B
+fr.inra.agrosyst.api.entities.GrowingSystem_6f683fc0-f21f-4e02-ab9c-1d476335e53c,6b03491e-6243-4a00-bb93-0a921cc85167,GCF38068,2021,fr.inra.agrosyst.api.entities.practiced.PracticedSystem_0a07727a-9905-4aca-bf0e-5134e6b278ee,2021,point_C

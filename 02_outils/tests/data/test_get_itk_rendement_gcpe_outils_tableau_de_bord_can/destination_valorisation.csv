@@ -1,0 +1,6 @@
+id,code_destination_a,libelle,code_espece_botanique,code_qualifiant_aee,libelle_espece,valorisation_vin,filiere,rendement_unite,source
+fr.inra.agrosyst.api.entities.referential.RefDestination_463b62e8-4372-4df3-95ab-2c55e8bb629e,GCPE_00022,Paille,,,Toutes,,GRANDES_CULTURES,TONNE_MS_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_772ee1d0-2b7e-42ec-a0a6-2b275a528c18,MARA_00077,Toutes catégories - tous calibres,ZCW,,Melon,,MARAICHAGE,TONNE_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_82764c30-5288-4b8e-a32f-d76c4c76b230,MARA_00054,Toutes catégories - tous calibres,ZBI,,Courgette,,MARAICHAGE,TONNE_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_80c25edd-89b8-4d4a-b381-626a08754929,GCPE_00010,Grain,,,Toutes,,GRANDES_CULTURES,Q_HA_TO_STANDARD_HUMIDITY,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_4a4ab39f-ca68-44c1-b449-668362b95bd3,GCPE_00002,A compléter,,,Toutes,,GRANDES_CULTURES,TONNE_HA,Agrosyst_2016

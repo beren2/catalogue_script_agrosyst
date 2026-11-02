@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_acta_substance_active CASCADE;
+
 CREATE TABLE entrepot_acta_substance_active AS
 SELECT 
 	rasa.topiaid AS id,

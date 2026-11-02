@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_acta_dosage_spc CASCADE;
+
 CREATE TABLE entrepot_acta_dosage_spc AS
 SELECT 
 r.topiaid as id, 

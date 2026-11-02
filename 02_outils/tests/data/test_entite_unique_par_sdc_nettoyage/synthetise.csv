@@ -1,0 +1,6 @@
+id,valide,derniere_maj,sdc_id,campagnes
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_6012145d-74bb-40a9-b37d-d33c817773a7,t,2017-05-19 15:51:16.401,fr.inra.agrosyst.api.entities.GrowingSystem_9ba92d21-f43b-4d8e-9f44-2dad120f7f5d,2015
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_82a090cf-ddee-4443-86ed-6bd4643806a7,t,2020-11-30 12:28:10.109,fr.inra.agrosyst.api.entities.GrowingSystem_bfd3ba79-d77c-4708-b7a4-021a9d354137,2019
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_a86abe25-b9d1-479d-ba18-4a8b235ea7fa,f,2021-10-14 11:12:03.193113,fr.inra.agrosyst.api.entities.GrowingSystem_c57a89fe-9d1a-4a53-ae1a-613c822d7fa0,2021
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_01c64002-fb89-4035-8e6d-98d40a6bf689,f,2025-08-19 14:47:38.424752,fr.inra.agrosyst.api.entities.GrowingSystem_1ba3ab09-f3c4-4989-96f4-17c5f59d0463,2020
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3360f58f-213e-4687-8ef7-1ca376152020,f,2025-08-19 14:49:02.990523,fr.inra.agrosyst.api.entities.GrowingSystem_1ba3ab09-f3c4-4989-96f4-17c5f59d0463,2020

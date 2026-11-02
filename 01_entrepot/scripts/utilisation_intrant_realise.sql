@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS exports_agronomes_context_input_usages; -- rattachement dispositif DEPHY actif
-
+DROP TABLE IF EXISTS exports_agronomes_context_input_usages cascade; -- rattachement dispositif DEPHY actif
 
 -- Table usage_id + action_id
 create temporary table exports_agronomes_context_input_usages as 
@@ -50,6 +49,8 @@ CREATE INDEX if not exists exports_agronomes_context_input_usages_idx2 ON export
 -------------------------------
 -- Intrants_Realise
 ------------------------------- 
+DROP TABLE IF EXISTS entrepot_utilisation_intrant_realise CASCADE;
+
 CREATE TABLE entrepot_utilisation_intrant_realise (
 	id character varying(255),
 	campagne text,

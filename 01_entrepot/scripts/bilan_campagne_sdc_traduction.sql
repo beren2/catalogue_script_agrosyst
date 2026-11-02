@@ -1,4 +1,4 @@
-DROP TABLE if exists entrepot_bc_sdc_traduction;
+DROP TABLE if exists entrepot_bc_sdc_traduction CASCADE;
 CREATE TABLE entrepot_bc_sdc_traduction(
 	nom_rubrique text, 
 	nom_base text,

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_sdc CASCADE;
+
 CREATE TABLE entrepot_sdc AS
 WITH sdc AS (
   SELECT
@@ -5,8 +7,9 @@ WITH sdc AS (
     gs.code AS code,
     gs.name AS nom,
     edo.campagne,
-    gs.modality AS modalite_suivi_dephy,
-    gs.dephynumber AS code_dephy,
+    gs.modalitydephyferme AS modalite_suivi_dephy,
+    gs.modalitydephyexpe AS modalite_experimentation,
+    COALESCE(gs.dephynumber, gs.codedephyexpe) AS code_dephy,
     gs.description AS commentaire,
     CASE gs.validated
       WHEN true then 'oui'

@@ -1,0 +1,6 @@
+id,nom,campagnes,source,commentaire,parcelle_type_id,sdc_id,derniere_maj,valide
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_377ad3d1-4ec1-4087-96f3-4a3e7d298a3a,SdC_CN_TEMOIN_2015,2015,ENTRETIEN,,,fr.inra.agrosyst.api.entities.GrowingSystem_0750656f-27a2-48aa-92ed-fa2f1fabb988,2015-10-28 10:32:22.5,f
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_f12e148a-cdd9-4f20-9116-a392f8f2cc3e,Synthétisé GCF56478_PZ,"2019, 2020, 2021",ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_431f0ed8-b860-41d5-babe-417af8ec724b,2024-07-29 16:16:51.685071,f
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3fd558d4-6e3d-4369-a9ea-d16e54dcb5f1,2025_8,2025,ENTRETIEN,,,fr.inra.agrosyst.api.entities.GrowingSystem_c05ca4f6-2584-47a5-a1c4-1e4604c761fa,2026-03-30 09:11:23.333519,f
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_3616a4fd-f052-4fe8-9aab-a14edcfe511c,SYNTH_COR_2022,2022,ENTRETIEN,,,fr.inra.agrosyst.api.entities.GrowingSystem_540b90aa-9593-4f39-a14f-5222d132f48c,2024-03-21 15:53:38.920947,f
+fr.inra.agrosyst.api.entities.practiced.PracticedSystem_2874e33e-6365-4dfc-bf34-84c97cbaa545,GCF57585_2024,2024,ENTRETIEN_ENREGISTREMENT,,,fr.inra.agrosyst.api.entities.GrowingSystem_e758428c-702e-470e-a1de-c0c9b33c31e2,2024-09-19 16:53:49.19985,f

@@ -2,6 +2,7 @@
     Fonctions permettant de se connecter à une base de données
 """
 import psycopg2
+from psycopg2 import OperationalError, InterfaceError, DatabaseError
 from utils.config import config
 
 def connect(file_name='database_source.ini'):
@@ -27,8 +28,21 @@ def connect(file_name='database_source.ini'):
         print(db_version)
 
         return conn
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+    except OperationalError as e:
+        # Erreur liée à l'opération (ex: serveur inaccessible, identifiants incorrects)
+        print(f"Erreur de connexion à la base de données: {e}")
+        return None
+    except InterfaceError as e:
+        # Erreur liée à l'interface (ex: problème avec le curseur)
+        print(f"Erreur d'interface avec la base de données: {e}")
+        return None
+    except DatabaseError as e:
+        # Erreur générale liée à la base de données (ex: requête invalide)
+        print(f"Erreur de base de données: {e}")
+        return None
+    except Exception as error: # pylint: disable=broad-exception-caught
+        # Filet de sécurité pour les erreurs non anticipées
+        print(f"Erreur inattendue: {e}")
         return None
 
 if __name__ == '__main__':

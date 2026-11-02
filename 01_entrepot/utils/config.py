@@ -21,6 +21,6 @@ def config(file_name='database.ini', section='postgresql'):
         for param in params:
             db[param[0]] = param[1]
     else:
-        raise Exception(f'Section {0} not found in the {1} file'.format(section, file_name))
+        raise KeyError(f'Section {0} not found in the {1} file'.format(section, file_name))
 
     return db

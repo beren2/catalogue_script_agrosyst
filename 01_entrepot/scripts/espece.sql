@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_espece CASCADE;
+
 CREATE TABLE entrepot_espece AS
 SELECT 
 	re.topiaid AS id,
@@ -22,10 +24,15 @@ SELECT
 	re.num_groupe_gnis,
 	re.nom_gnis, 
 	re.nom_latin_gnis,
+	re.id_culture_acta,
 	re.nom_culture_acta, 
 	re.remarque_culture_acta,
 	re.typocan_espece,
-	re.typocan_espece_maraich
+	re.typocan_espece_maraich,
+	re.typodirodur_espece,
+	re.typodirodur_espece_precise,
+	re.typodirodur_espece_famille_bota,
+	re.typodirodur_espece_periode_semis
 FROM refespece re;
 
 DO $$

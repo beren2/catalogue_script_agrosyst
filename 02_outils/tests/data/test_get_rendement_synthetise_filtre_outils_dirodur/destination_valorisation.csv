@@ -1,0 +1,7 @@
+id,code_destination_a,libelle,code_espece_botanique,code_qualifiant_aee,libelle_espece,valorisation_vin,filiere,rendement_unite,source
+fr.inra.agrosyst.api.entities.referential.RefDestination_98191d2f-c6df-4780-aa65-55e7e14e692f,MARA_00067,Toutes catégories - tous conditionnements,ZCJ,,Laitue,,MARAICHAGE,UNITE_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_348dc21a-6c40-4fb3-b8e8-445288df94b1,GCPE_00027,Sucre et dérivés (t de sucre),ZAP,ZAN,Betterave,,GRANDES_CULTURES,TONNE_SUGAR_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_a40db663-3c53-41ea-be4e-fdc5e8f65e0f,GCPE_00007,Fourrage (ensilage),,,Toutes,,GRANDES_CULTURES,TONNE_MS_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_16a0740c-44bf-4d44-8cb0-d135bfc98c30,GCPE_00008,Fourrage (foin),,,Toutes,,GRANDES_CULTURES,TONNE_MS_HA,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_0697c967-4c08-4553-a72d-64c290fee238,GCPE_00011,Grain (alimentation animale),,,Toutes,,GRANDES_CULTURES,Q_HA_TO_STANDARD_HUMIDITY,Agrosyst_2016
+fr.inra.agrosyst.api.entities.referential.RefDestination_6cfcc6ac-4eb0-41ba-9a54-dc3db1710c61,GCPE_00023,Pâturage,,,Toutes,,GRANDES_CULTURES,TONNE_MS_HA,Agrosyst_2016

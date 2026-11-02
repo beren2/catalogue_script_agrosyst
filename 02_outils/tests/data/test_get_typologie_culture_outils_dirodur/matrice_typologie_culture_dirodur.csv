@@ -1,0 +1,1386 @@
+typodirodur_espece,besoin_saison,typodirodur_culture,culture_est_avec_compagne,culture_est_annuelle_asso,culture_est_prairie
+Ble tendre,,Ble tendre,non,non,non
+Mais,,Mais,non,non,non
+Orge,,Orge,non,non,non
+Colza,,Colza,non,non,non
+Prairie,,PT,non,non,oui
+Tournesol,,Tournesol,non,non,non
+Pois,,Pois,non,non,non
+Betterave,,Betterave,non,non,non
+Luzerne,,Luzerne,non,non,oui
+Feverole,,Feverole,non,non,non
+Moutarde,,Moutarde,non,non,non
+Avoine,,Avoine,non,non,non
+Soja,,Soja,non,non,non
+Divers,,Divers,,,
+Triticale,,Triticale,non,non,non
+Lin,,Lin,non,non,non
+Pomme de terre,,Pomme de terre,non,non,non
+Ble dur,,Ble dur,non,non,non
+Ray grass_Trefle,pluriannuelle,PT_cer_leg,non,non,oui
+Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Ray grass,,Ray-grass,non,non,non
+Ray grass,pluriannuelle,PT_Ray-grass,non,non,oui
+Trefle,pluriannuelle,PT_trefle,non,non,oui
+Trefle,,Trefle,non,non,non
+Sorgho,,Sorgho,non,non,non
+Phacelie,,Phacelie,non,non,non
+Lentille,,Lentille,non,non,non
+Sarrasin,,Sarrasin,non,non,non
+Seigle,,Seigle,non,non,non
+Chanvre,,Chanvre,non,non,non
+Avoine_Vesce,,asso_cer_leg,non,oui,non
+Oignon,,Oignon,non,non,non
+Haricot,,Haricot,non,non,non
+Avoine_Phacelie,,asso_divers,non,oui,non
+Millet,,Millet,non,non,non
+Pois_Triticale,,asso_cer_leg,non,oui,non
+Epeautre,,Epeautre,non,non,non
+Moutarde_Phacelie,,asso_divers,non,oui,non
+Vesce,,Vesce,non,non,non
+Avoine_Feverole,,asso_cer_leg,non,oui,non
+Pois chiche,,Pois chiche,non,non,non
+Avoine_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Pois,,asso_cer_leg,non,oui,non
+Ble tendre_Feverole,,asso_cer_leg,non,oui,non
+Lupin,,Lupin,non,non,non
+Ornementale,,Ornementale,non,non,non
+Fetuque_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Moutarde,,,,,
+Orge_Pois,,asso_cer_leg,non,oui,non
+Crucifere,,Crucifere,non,non,non
+Graminee,,Graminee,,,
+Dactyle,,Dactyle,non,non,oui
+Avoine_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Médicinale,,Médicinale,non,non,non
+Crucifere_Moutarde_Phacelie,,asso_multi_fam,non,oui,non
+Chicoree,,Chicoree,non,non,non
+Feverole_Phacelie,,asso_divers,non,oui,non
+Avoine_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Phacelie_Trefle_Vesce,,,,,
+Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Phacelie_Trefle_Vesce,,,,,
+Colza_Feverole,,Colza,oui,oui,non
+Feverole_Triticale,,asso_cer_leg,non,oui,non
+Phacelie_Trefle,,,,,
+Crucifere_Phacelie_Trefle,,,,,
+Avoine_Crucifere_Phacelie,,,,,
+Avoine_Phacelie_Vesce,,,,,
+Moutarde_Phacelie_Trefle,,,,,
+Avoine_Moutarde_Phacelie,,,,,
+Crucifere_Phacelie,,,,,
+Carotte,,Carotte,non,non,non
+Luzerne_Trefle,,PT_leg,non,non,oui
+Moutarde_Trefle,,asso_cruc_leg,non,oui,non
+Moutarde_Phacelie_Vesce,,,,,
+Seigle_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Millet_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Moutarde,,asso_cruc,non,oui,non
+Fetuque,,Fetuque,non,non,oui
+Cameline,,Cameline,non,non,non
+Colza_Trefle,,Colza,oui,oui,non
+Sainfoin,,Sainfoin,non,non,oui
+Avoine_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Dactyle_Luzerne,,PT_cer_leg,non,non,oui
+Avoine_Feverole_Phacelie,,asso_multi_fam,non,oui,non
+Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Dactyle_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Aromatique,,Aromatique,non,non,non
+Feverole_Moutarde,,,,,
+Avoine_Moutarde_Vesce,,,,,
+Fenugrec,,Fenugrec,non,non,non
+Potagere,,Potagere,non,non,non
+Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Phacelie_Sarrasin_Vesce,,,,,
+Miscanthus,,Miscanthus,non,non,non
+Crucifere_Moutarde_Phacelie_Trefle,,,,,
+Radis,,Radis,non,non,non
+Ble tendre_Triticale,,asso_cer,non,oui,non
+Feverole_Vesce,,asso_leg,non,oui,non
+Moutarde_Vesce,,,,,
+Ble tendre_Pois,,asso_cer_leg,non,oui,non
+Avoine_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Moutarde_Phacelie_Trefle,,,,,
+Avoine_Phacelie_Trefle,,asso_multi_fam,non,oui,non
+Crucifere_Phacelie_Vesce,,,,,
+Avoine_Phacelie_Seigle,,,,,
+Cameline_Lentille,,asso_cruc_leg,non,oui,non
+Avoine_Phacelie_Trefle_Vesce,,asso_multi_fam,non,oui,non
+Seigle_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Pois_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Moutarde_Phacelie,,asso_multi_fam,non,oui,non
+Avoine_Colza,,asso_cruc_cer,non,oui,non
+Avoine_Moutarde_Phacelie_Vesce,,,,,
+Avoine_Crucifere_Phacelie_Tournesol_Vesce,,,,,
+Luzerne_Orge,,Orge,oui,oui,non
+Ble tendre_Trefle,,Ble tendre,oui,oui,non
+Moutarde_Sarrasin,,,,,
+Legumineuse,,Legumineuse,,,
+Avoine_Phacelie_Pois,,,,,
+Phacelie_Vesce,,,,,
+Feverole_Moutarde_Phacelie,,,,,
+Dactyle_Fetuque_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Luzerne_Tournesol,,Tournesol,oui,oui,non
+Crucifere_Moutarde_Phacelie_Vesce,,,,,
+Avoine_Seigle,,asso_cer,non,oui,non
+Avoine_Feverole_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Trefle,,,,,
+Fetuque_Fleole_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Fetuque_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Feverole_Pois,,asso_leg,non,oui,non
+Avoine_Crucifere_Phacelie_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Feverole_Phacelie,,,,,
+Petit epeautre,,Petit epeautre,non,non,non
+Avoine_Crucifere_Vesce,,,,,
+Feverole_Phacelie_Tournesol,,,,,
+Quinoa,,Quinoa,non,non,non
+Nyger,,Nyger,non,non,non
+Dactyle_Fetuque_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Crucifere_Feverole_Phacelie_Pois_Vesce,,,,,
+Epinard,,Epinard,non,non,non
+Moutarde_Phacelie_Tournesol_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Feverole_Phacelie_Vesce,,,,,
+Crucifere_Sorgho,,,,,
+Crucifere_Feverole_Phacelie,,asso_multi_fam,non,oui,non
+Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Colza_Feverole_Trefle,,Colza,oui,oui,non
+Ble tendre_Pois_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Phacelie_Sarrasin,,,,,
+Chou,,Chou,non,non,non
+Chia,,Chia,non,non,non
+Avoine_Pois_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Lotier,,Lotier,non,non,oui
+Dactyle_Fetuque_Lotier_Ray grass_Sainfoin_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Moutarde_Nyger_Phacelie_Trefle,,,,,
+Crucifere_Moutarde_Phacelie_Sarrasin,,,,,
+Seigle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Trefle,,,,,
+Avoine_Crucifere,,,,,
+Moutarde_Phacelie_Trefle_Vesce,,,,,
+Crucifere_Nyger_Phacelie,,,,,
+Lupin_Orge,,asso_cer_leg,non,oui,non
+Crucifere_Phacelie_Sorgho_Tournesol_Vesce,,,,,
+Feverole_Pois_Vesce,,asso_leg,non,oui,non
+Crucifere_Vesce,,,,,
+Colza_Fenugrec_Trefle,,Colza,oui,oui,non
+Colza_Crucifere_Phacelie_Trefle,,,,,
+Colza_Crucifere,,asso_cruc,non,oui,non
+Sarrasin_Trefle,,Sarrasin,oui,oui,non
+Fetuque_Luzerne,,PT_cer_leg,non,non,oui
+Dactyle_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Courge,,Courge,non,non,non
+Avoine_Moutarde_Trefle,,,,,
+Colza_Sarrasin_Trefle,,Colza,oui,oui,non
+Feverole_Phacelie_Trefle,,asso_divers,non,oui,non
+Avoine_Phacelie_Seigle_Trefle,,,,,
+Colza_Ray grass,,asso_cruc_cer,non,oui,non
+Avoine_Moutarde_Phacelie_Trefle_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Feverole_Phacelie_Vesce,,,,,
+Fraisier,,Fraisier,non,non,non
+Trefle_Vesce,,asso_leg,non,oui,non
+Avoine_Ble tendre_Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Colza_Soja,,,,,
+Avoine_Luzerne,,Avoine,oui,oui,non
+Avoine_Crucifere_Phacelie_Trefle,,,,,
+Dactyle_Fetuque_Ray grass,,PT_cer,non,non,oui
+Feverole_Seigle,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Moutarde,,,,,
+Avoine_Crucifere_Feverole_Moutarde,,,,,
+Feverole_Phacelie_Vesce,,,,,
+Colza_Sarrasin,,Colza,oui,oui,non
+Crucifere_Phacelie_Trefle_Vesce,,,,,
+Colza_Millet,,asso_cruc_cer,non,oui,non
+Crucifere_Moutarde_Vesce,,,,,
+Dactyle_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Ble tendre_Feverole_Pois,,asso_cer_leg,non,oui,non
+Avoine_Orge_Pois,,asso_cer_leg,non,oui,non
+Avoine_Orge_Pois_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Trefle,,asso_cer_leg,non,oui,non
+Dactyle_Fetuque_Lotier_Luzerne_Ray grass_Sainfoin_Trefle,,PT_cer_leg,non,non,oui
+Phacelie_Seigle,,,,,
+Avoine_Lentille,,,,,
+Fenouil,,Fenouil,non,non,non
+Crucifere_Feverole_Moutarde_Phacelie,,,,,
+Crucifere_Feverole_Phacelie_Vesce,,,,,
+Avoine_Ble tendre_Feverole_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Ray grass_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Moutarde_Phacelie_Sarrasin_Trefle,,,,,
+Fenugrec_Phacelie_Vesce,,,,,
+Colza_Fenugrec_Vesce,,Colza,oui,oui,non
+Pois_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Lin_Phacelie_Tournesol_Trefle,,,,,
+Avoine_Ble tendre_Orge,,asso_cer,non,oui,non
+Feverole_Orge_Pois,,asso_cer_leg,non,oui,non
+Dactyle_Fetuque_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Sorgho_Trefle,,asso_cer_leg,non,oui,non
+Orge_Trefle,,Orge,oui,oui,non
+Graminee_Potagere,,,,,
+Crucifere_Feverole_Trefle,,,,,
+Crucifere_Feverole,,asso_cruc_leg,non,oui,non
+Fleole_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Moutarde_Phacelie_Tournesol,,,,,
+Asperge,,Asperge,non,non,non
+Avoine_Crucifere_Lin_Moutarde_Phacelie_Seigle_Trefle_Vesce,,,,,
+Pois_Vesce,,asso_leg,non,oui,non
+Avoine_Feverole_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Feverole_Sarrasin,,asso_divers,non,oui,non
+Avoine_Feverole_Pois,,asso_cer_leg,non,oui,non
+Colza_Feverole_Lentille,,Colza,oui,oui,non
+Colza_Crucifere_Trefle,,,,,
+Fetuque_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Moutarde_Phacelie_Tournesol,,,,,
+Avoine_Orge_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Phacelie_Seigle,,,,,
+Avoine_Ble tendre_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Sarrasin_Trefle_Vesce,,,,,
+Avoine_Crucifere_Moutarde_Phacelie_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Avoine_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Sarrasin_Tournesol,,asso_divers,non,oui,non
+Dactyle_Fetuque_Fleole_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Fetuque_Fleole_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Gesse_Seigle,,,,,
+Crucifere_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Avoine_Millet_Phacelie_Trefle,,,,,
+Avoine_Pois_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Triticale,,asso_cer_leg,non,oui,non
+Mais_Ray grass,,asso_cer,non,oui,non
+Avoine_Feverole_Orge_Pois,,asso_cer_leg,non,oui,non
+Ble tendre_Dactyle,,asso_cer,non,oui,non
+Artichaut,,Artichaut,non,non,non
+Fetuque_Trefle,,PT_cer_leg,non,non,oui
+Phacelie_Seigle_Trefle,,,,,
+Ble tendre_Pois_Triticale,,asso_cer_leg,non,oui,non
+Crucifere_Millet_Trefle,,asso_multi_fam,non,oui,non
+Trefle_Triticale,,asso_cer_leg,non,oui,non
+Pois_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Moutarde_Phacelie_Sarrasin,,asso_multi_fam,non,oui,non
+Pois_Trefle,,asso_leg,non,oui,non
+Riz,,Riz,non,non,non
+Colza_Lentille,,Colza,oui,oui,non
+Brome_Dactyle_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Seigle_Trefle_Triticale,,,,,
+Avoine_Orge_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Gesse_Phacelie_Trefle,,,,,
+Avoine_Fetuque_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Colza_Vesce,,Colza,oui,oui,non
+Avoine_Orge,,asso_cer,non,oui,non
+Orge_Pois_Triticale,,asso_cer_leg,non,oui,non
+Epeautre_Lentille,,asso_cer_leg,non,oui,non
+Colza_Ray grass_Trefle,,asso_multi_fam,non,oui,non
+Dactyle_Fetuque_Fleole_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Feverole_Moutarde_Phacelie,,,,,
+Avoine_Feverole_Orge,,asso_cer_leg,non,oui,non
+Colza_Fenugrec_Feverole,,Colza,oui,oui,non
+Panic erigee,,Panic erigee,non,non,non
+Avoine_Feverole_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Colza_Fenugrec_Feverole_Lentille_Sarrasin,,Colza,oui,oui,non
+Crucifere_Seigle,,,,,
+Gesse,,Gesse,non,non,non
+Lin_Orge,,asso_cer_olea,non,oui,non
+Chardon,,Chardon,non,non,non
+Ble tendre_Mais,,Divers,non,non,non
+Millet_Sorgho,,,,,
+Dactyle_Fetuque_Fleole_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Triticale,,asso_cer,non,oui,non
+Colza_Fenugrec,,Colza,oui,oui,non
+Millet_Moutarde,,,,,
+Epeautre_Pois_Triticale,,asso_cer_leg,non,oui,non
+Colza_Fenugrec_Feverole_Trefle,,Colza,oui,oui,non
+Colza_Fenugrec_Lentille,,Colza,oui,oui,non
+Avoine_Phacelie_Tournesol,,,,,
+Avoine_Sorgho_Tournesol_Vesce,,,,,
+Avoine_Phacelie_Tournesol_Triticale_Vesce,,,,,
+Prairie_Ray grass,,PT_cer,non,non,oui
+Colza_Crucifere_Sorgho_Tournesol,,,,,
+Avoine_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Dactyle_Fetuque_Fleole_Paturin_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Dactyle_Fetuque_Fleole_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Phacelie_Seigle_Vesce,,,,,
+Colza_Crucifere_Feverole_Millet_Pois_Sarrasin_Sorgho_Tournesol,,,,,
+Phacelie_Sarrasin_Trefle,,,,,
+Avoine_Feverole_Phacelie_Trefle,,,,,
+Feverole_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Moutarde_Nyger_Phacelie,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Vesce,,,,,
+Phacelie_Sarrasin,,,,,
+Avoine_Feverole_Orge_Pois_Seigle_Triticale_Vesce,,,,,
+Dactyle_Fleole_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Moutarde_Pois,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Pois_Tournesol,,,,,
+Feverole_Moutarde_Phacelie_Vesce,,,,,
+Poireau,,Poireau,non,non,non
+Dactyle_Ray grass,,PT_cer,non,non,oui
+Dactyle_Luzerne_Prairie,,PT_cer_leg,non,non,oui
+Colza_Trefle_Vesce,,Colza,oui,oui,non
+Sarrasin_Soja,,,,,
+Avoine_Feverole_Lentille_Minette_Moutarde_Sorgho_Tournesol,,,,,
+Fetuque_Moutarde_Trefle,,,,,
+Feverole_Sorgho,,,,,
+Feverole_Phacelie_Pois,,,,,
+Phacelie_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Moutarde_Trefle,,,,,
+Epeautre_Feverole,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Seigle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Fenugrec_Phacelie_Vesce,,,,,
+Avoine_Ble tendre_Pois_Triticale,,asso_cer_leg,non,oui,non
+Feverole_Lin_Pois_Tournesol,,,,,
+Ble tendre_Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Crucifere_Feverole_Moutarde,,asso_cruc_leg,non,oui,non
+Legumineuse_Moutarde,,,,,
+Crucifere_Phacelie_Sarrasin_Trefle,,,,,
+Crucifere_Feverole_Moutarde_Nyger_Phacelie_Tournesol_Trefle,,,,,
+Avoine_Divers_Pois_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Feverole_Gesse_Phacelie,,,,,
+Crucifere_Fenugrec_Tournesol_Trefle,,,,,
+Chicoree_Ray grass_Trefle,,PT_multi_fam,non,non,oui
+Feverole_Nyger_Phacelie_Vesce,,,,,
+Crucifere_Lentille_Moutarde_Pois,,,,,
+Crucifere_Fenugrec_Moutarde_Radis_Sarrasin_Trefle,,,,,
+Avoine_Crucifere_Phacelie_Sarrasin,,,,,
+Crucifere_Sarrasin_Trefle_Vesce,,,,,
+Avoine_Crucifere_Phacelie_Sarrasin_Tournesol,,,,,
+Lotier_Luzerne,,,,,
+Fenugrec_Feverole_Vesce,,,,,
+Feverole_Orge_Triticale,,,,,
+Millet_Phacelie_Trefle_Vesce,,,,,
+Crucifere_Fenugrec_Lentille_Phacelie_Pois_Vesce,,,,,
+Lentille_Moutarde,,,,,
+Lupin_Triticale,,asso_cer_leg,non,oui,non
+Crucifere_Tournesol,,,,,
+Lin_Moutarde_Phacelie_Trefle,,,,,
+Ble tendre_Orge,,asso_cer,non,oui,non
+Ble dur_Ble tendre,,asso_cer,non,oui,non
+Lin_Moutarde,,,,,
+Avoine_Colza_Sarrasin_Sorgho,,,,,
+Avoine_Crucifere_Trefle_Vesce,,,,,
+Crucifere_Trefle_Vesce,,,,,
+Ble tendre_Lentille_Orge_Triticale,,asso_cer_leg,non,oui,non
+Crucifere_Phacelie_Tournesol_Trefle,,,,,
+Avoine_Tournesol_Trefle_Vesce,,,,,
+Avoine_Crucifere_Fenugrec_Lin_Moutarde_Phacelie_Tournesol,,,,,
+Fenugrec_Lentille_Trefle,,,,,
+Crucifere_Millet_Pois_Sorgho_Tournesol_Vesce,,,,,
+Ble tendre_Feverole_Trefle,,asso_cer_leg,non,oui,non
+Crucifere_Millet_Pois_Sorgho_Tournesol,,,,,
+Ble tendre_Trefle_Vesce,,,,,
+Avoine_Seigle_Trefle,,,,,
+Ble tendre_Crucifere_Feverole_Phacelie_Seigle_Vesce,,,,,
+Avoine_Seigle_Tournesol,,,,,
+Brome_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Lentille_Phacelie_Pois,,,,,
+Avoine_Ray grass_Trefle_Vesce,,,,,
+Avoine_Ray grass_Seigle_Trefle_Vesce,,,,,
+Pommier,,Pommier,non,non,non
+Feverole_Prairie_Tournesol,,,,,
+Ray grass_Vesce,,,,,
+Avoine_Moutarde_Sarrasin,,,,,
+Colza_Fenugrec_Lentille_Trefle,,Colza,oui,oui,non
+Chicoree_Trefle,,PT_divers,non,non,oui
+Crucifere_Moutarde_Seigle_Trefle_Vesce,,,,,
+Feverole_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Colza_Tournesol,,Colza,oui,oui,non
+Colza_Feverole_Lentille_Luzerne,,Colza,oui,oui,non
+Feverole_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Lin_Phacelie_Trefle_Vesce,,,,,
+Avoine_Lin_Moutarde_Phacelie_Trefle,,,,,
+Avoine_Crucifere_Luzerne,,,,,
+Avoine_Lin_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Avoine_Millet_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Moutarde_Phacelie_Pois_Triticale_Vesce,,,,,
+Colza_Lentille_Trefle,,Colza,oui,oui,non
+Colza_Moutarde,,Colza,non,non,non
+Avoine_Feverole_Moutarde_Phacelie_Trefle,,,,,
+Gesse_Lentille_Trefle,,,,,
+Avoine_Millet_Phacelie_Trefle_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Orge_Pois_Prairie_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Dactyle_Fetuque_Lotier_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Feverole_Seigle,,asso_cer_leg,non,oui,non
+Feverole_Pois_Seigle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Sarrasin,,,,,
+Avoine_Feverole_Tournesol_Trefle,,,,,
+Feverole_Seigle_Tournesol_Trefle,,,,,
+Gesse_Pois_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Feverole_Pois_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Dactyle_Luzerne_Prairie_Ray grass,,PT_cer_leg,non,non,oui
+Feverole_Phacelie_Sarrasin,,,,,
+Avoine_Gesse_Pois_Triticale,,,,,
+Moutarde_Phacelie_Seigle,,,,,
+Crucifere_Moutarde_Tournesol_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Legumineuse,,,,,
+Colza_Gesse_Lentille_Trefle,,Colza,oui,oui,non
+Moutarde_Seigle,,,,,
+Crucifere_Feverole_Moutarde_Seigle_Vesce,,,,,
+Avoine_Colza_Fenugrec_Feverole_Moutarde_Phacelie_Sarrasin_Tournesol_Trefle,,,,,
+Crucifere_Feverole_Phacelie_Pois_Vesce,,,,,
+Fleole_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Colza_Feverole_Moutarde_Phacelie,,,,,
+Ble tendre_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Feverole_Phacelie_Sarrasin_Soja,,,,,
+Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Feverole_Phacelie_Trefle,,,,,
+Fleole,,Fleole,non,non,oui
+Lin_Moutarde_Phacelie_Sarrasin_Tournesol_Trefle_Vesce,,,,,
+Feverole_Prairie,,,,,
+Crucifere_Feverole_Seigle_Vesce,,,,,
+Ble tendre_Luzerne_Trefle,,Ble tendre,oui,oui,non
+Feverole_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Sorgho_Vesce,,asso_cer_leg,non,oui,non
+Colza_Feverole_Lotier,,Colza,oui,oui,non
+Avoine_Colza_Feverole_Sarrasin_Tournesol,,,,,
+Crucifere_Pois_Vesce,,,,,
+Colza_Feverole_Phacelie,,asso_multi_fam,non,oui,non
+Feverole_Luzerne,,Feverole,oui,oui,non
+Crucifere_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Chia_Fenugrec_Phacelie_Vesce,,,,,
+Crucifere_Feverole_Lin_Moutarde_Phacelie_Pois_Tournesol,,,,,
+Crucifere_Moutarde_Orge_Phacelie,,,,,
+Feverole_Moutarde_Vesce,,,,,
+Graminee_Sainfoin,,PT_cer_leg,non,non,oui
+Graminee_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Moutarde_Trefle,,,,,
+Chicoree_Luzerne_Trefle,,PT_divers,non,non,oui
+Triticale_Vesce,,asso_cer_leg,non,oui,non
+Feverole_Pois_Sarrasin_Vesce,,,,,
+Crucifere_Moutarde_Paturin_Phacelie,,asso_multi_fam,non,oui,non
+Seigle_Triticale,,asso_cer,non,oui,non
+Feverole_Orge,,asso_cer_leg,non,oui,non
+Colza_Crucifere_Phacelie,,,,,
+Fenugrec_Feverole_Seigle_Tournesol_Vesce,,,,,
+Crucifere_Fenugrec_Moutarde,,,,,
+Crucifere_Moutarde_Phacelie_Pois_Sarrasin_Tournesol_Trefle,,,,,
+Crucifere_Fenugrec_Lin_Nyger_Phacelie,,,,,
+Colza_Crucifere_Feverole_Pois_Sarrasin_Sorgho_Tournesol,,,,,
+Salsifis,,Salsifis,non,non,non
+Avoine_Colza_Crucifere_Phacelie_Trefle_Vesce,,Colza,oui,oui,non
+Colza_Fenugrec_Gesse_Lentille,,Colza,oui,oui,non
+Colza_Mais_Ray grass,,Divers,non,non,non
+Colza_Millet_Pois_Sorgho_Tournesol_Vesce,,,,,
+Brome_Dactyle_Luzerne,,PT_cer_leg,non,non,oui
+Crucifere_Moutarde_Nyger_Phacelie_Sorgho_Tournesol,,,,,
+Avoine_Chou_Colza,,,,,
+Crucifere_Moutarde_Seigle,,,,,
+Lentille_Orge,,asso_cer_leg,non,oui,non
+Crucifere_Nyger_Phacelie_Trefle,,,,,
+Colza_Moutarde_Phacelie,,,,,
+Feverole_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Feverole_Gesse_Pois_Vesce,,asso_leg,non,oui,non
+Colza_Phacelie,,Colza,oui,oui,non
+Cameline_Crucifere_Moutarde_Phacelie_Sarrasin_Trefle,,,,,
+Colza_Phacelie_Pois_Sorgho_Tournesol_Vesce,,,,,
+Feverole_Lentille_Moutarde_Phacelie,,,,,
+Prairie_Trefle,,PT_leg,non,non,oui
+Sorgho_Tournesol_Trefle,,,,,
+Ray grass_Sainfoin_Trefle,,PT_cer_leg,non,non,oui
+Cameline_Colza_Feverole_Lin_Moutarde_Nyger_Pois_Tournesol_Vesce,,,,,
+Avoine_Lin_Phacelie_Vesce,,,,,
+Moutarde_Phacelie_Pois,,,,,
+Avoine_Crucifere_Feverole_Phacelie_Trefle_Vesce,,,,,
+Minette,,Minette,non,non,oui
+Avoine_Moutarde_Phacelie_Sarrasin,,,,,
+Millet_Vesce,,,,,
+Avoine_Moutarde_Sarrasin_Trefle,,,,,
+Avoine_Crucifere_Feverole_Moutarde_Pois_Vesce,,,,,
+Fetuque_Ray grass,,PT_cer,non,non,oui
+Avoine_Orge_Pois_Prairie_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Sarrasin_Trefle_Vesce,,,,,
+Avoine_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Ble tendre_Crucifere_Lin_Moutarde_Phacelie_Ray grass_Seigle_Trefle_Vesce,,,,,
+Millet_Moutarde_Phacelie_Trefle,,,,,
+Avoine_Pois_Seigle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Pois_Tournesol,,,,,
+Fenugrec_Feverole,,asso_leg,non,oui,non
+Avoine_Crucifere_Feverole,,,,,
+Avoine_Ble tendre_Epeautre_Orge_Pois_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Ray grass,,asso_cer,non,oui,non
+Avoine_Crucifere_Fenugrec_Lin_Phacelie_Vesce,,,,,
+Avoine_Sarrasin_Trefle,,,,,
+Avoine_Crucifere_Feverole_Moutarde_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Dactyle_Fetuque_Luzerne_Ray grass_Trefle_Vesce,,,,,
+Avoine_Dactyle_Fetuque_Pois_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Peuplier,,Peuplier,non,non,non
+Avoine_Crucifere_Moutarde_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Dactyle_Trefle,,PT_cer_leg,non,non,oui
+Fetuque_Luzerne_Orge,,asso_cer_leg,non,oui,non
+Orge_Seigle,,asso_cer,non,oui,non
+Avoine_Fenugrec_Seigle,,,,,
+Avoine_Fetuque_Fleole_Paturin_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Fetuque_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Phacelie_Sarrasin_Vesce,,,,,
+Avoine_Lin_Moutarde_Nyger_Phacelie_Trefle_Vesce,,,,,
+Nyger_Phacelie,,,,,
+Avoine_Feverole_Lin_Phacelie_Tournesol_Vesce,,,,,
+Navet,,Navet,non,non,non
+Pois_Ray grass_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Lotier_Moutarde_Phacelie_Vesce,,,,,
+Pois_Seigle,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Phacelie_Sarrasin,,,,,
+Avoine_Crucifere_Nyger_Seigle_Trefle,,,,,
+Fetuque_Fleole_Paturin_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Feverole_Pois_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Lentille_Vesce,,,,,
+Avoine_Feverole_Lentille_Moutarde_Phacelie_Vesce,,,,,
+Crucifere_Seigle_Vesce,,,,,
+Avoine_Colza_Sorgho_Tournesol,,,,,
+Crucifere_Sorgho_Tournesol_Vesce,,,,,
+Lotier_Luzerne_Trefle,,PT_leg,non,non,oui
+Ble tendre_Epeautre_Orge_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Colza_Moutarde_Nyger_Trefle,,,,,
+Avoine_Feverole_Moutarde_Phacelie_Tournesol,,,,,
+Crucifere_Lin_Moutarde_Phacelie,,,,,
+Colza_Orge,,Colza,non,non,non
+Avoine_Feverole_Moutarde_Pois_Triticale_Vesce,,,,,
+Feverole_Lotier,,,,,
+Crucifere_Moutarde_Phacelie_Sorgho_Tournesol,,,,,
+Moutarde_Trefle_Vesce,,,,,
+Ble tendre_Lotier,,Ble tendre,oui,oui,non
+Lin_Phacelie,,,,,
+Colza_Pois,automne_printemps,Colza,oui,oui,non
+Colza_Pois,,Colza,oui,oui,non
+Colza_Pois,automne_hiver,asso_cruc_leg,non,oui,non
+Avoine_Feverole_Luzerne_Pois_Vesce,,asso_cer_leg,non,oui,non
+Colza_Pois_Tournesol,,,,,
+Avoine_Crucifere_Sarrasin_Sorgho_Vesce,,asso_multi_fam,non,oui,non
+Niebe_Sorgho,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Lin_Tournesol,,,,,
+Avoine_Feverole_Lin_Sorgho,,,,,
+Colza_Sarrasin_Tournesol,,Colza,oui,oui,non
+Ble dur_Trefle,,Ble dur,oui,oui,non
+Avoine_Feverole_Lin_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Colza_Seigle_Trefle,,asso_multi_fam,non,oui,non
+Sorgho_Tournesol,,Divers,non,non,non
+Avoine_Crucifere_Seigle,,,,,
+Avoine_Crucifere_Millet_Moutarde_Pois_Tournesol_Trefle_Vesce,,,,,
+Nyger_Phacelie_Trefle_Vesce,,,,,
+Avoine_Feverole_Moutarde_Phacelie_Vesce,,,,,
+Feverole_Seigle_Triticale_Vesce,,,,,
+Colza_Feverole_Prairie,,Colza,oui,oui,non
+Colza_Feverole_Sarrasin,,Colza,oui,oui,non
+Avoine_Feverole_Ray grass_Trefle_Vesce,,,,,
+Crucifere_Legumineuse_Phacelie,,asso_multi_fam,non,oui,non
+Crucifere_Tournesol_Trefle,,,,,
+Avoine_Feverole_Pois_Trefle,,,,,
+Avoine_Feverole_Pois_Tournesol_Trefle,,,,,
+Feverole_Ray grass,,,,,
+Feverole_Luzerne_Vesce,,asso_leg,non,oui,non
+Lin_Moutarde_Tournesol,,,,,
+Ble dur_Luzerne,,Ble dur,oui,oui,non
+Avoine_Feverole_Phacelie_Trefle_Vesce,,,,,
+Avoine_Crucifere_Millet_Phacelie_Pois_Sorgho_Trefle_Vesce,,,,,
+Fenugrec_Nyger_Phacelie_Trefle,,,,,
+Fenugrec_Millet_Nyger_Sarrasin_Tournesol,,,,,
+Divers_Pois_Triticale,,asso_multi_fam,non,oui,non
+Avoine_Feverole_Orge_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Feverole_Pois_Tournesol,,,,,
+Feverole_Pois_Sorgho,,,,,
+Feverole_Pois_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Lin_Nyger_Phacelie,,,,,
+Avoine_Feverole_Moutarde_Vesce,,,,,
+Moutarde_Seigle_Vesce,,,,,
+Colza_Millet_Moutarde_Trefle,,,,,
+Dactyle_Graminee_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Phacelie_Tournesol,,,,,
+Moutarde_Radis,,,,,
+Crucifere_Fenugrec_Vesce,,,,,
+Avoine_Fenugrec_Moutarde_Nyger_Phacelie,,,,,
+Avoine_Crucifere_Moutarde_Sarrasin,,,,,
+Avoine_Fenugrec_Lentille_Moutarde,,,,,
+Crucifere_Feverole_Gesse_Lin_Moutarde_Nyger_Phacelie_Tournesol_Trefle,,,,,
+Feverole_Moutarde_Trefle,,,,,
+Crucifere_Feverole_Lentille_Lotier_Phacelie,,,,,
+Lotier_Orge,,Orge,oui,oui,non
+Avoine_Epeautre_Pois_Triticale,,asso_cer_leg,non,oui,non
+Feverole_Moutarde_Sarrasin,,,,,
+Crucifere_Moutarde_Nyger_Phacelie_Trefle_Vesce,,,,,
+Dactyle_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Phacelie_Tournesol,,,,,
+Nyger_Phacelie_Vesce,,,,,
+Ble tendre_Feverole_Luzerne_Pois,,asso_cer_leg,non,oui,non
+Feverole_Moutarde_Phacelie_Trefle,,,,,
+Dactyle_Triticale,,asso_cer,non,oui,non
+Avoine_Divers_Feverole_Pois_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Sauge,,Sauge,non,non,non
+Avoine_Crucifere_Moutarde_Phacelie_Vesce,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Pois_Triticale,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Sarrasin_Tournesol_Vesce,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Avoine_Dactyle_Luzerne,,asso_cer_leg,non,oui,non
+Avoine_Dactyle_Fetuque_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Crucifere_Feverole_Nyger_Phacelie_Vesce,,,,,
+Fetuque_Luzerne_Orge_Trefle,,asso_cer_leg,non,oui,non
+Feverole_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Avoine_Crucifere_Feverole_Pois_Vesce,,,,,
+Feverole_Millet,,,,,
+Ble tendre_Colza_Luzerne,,Divers,non,non,non
+Avoine_Feverole_Lentille_Moutarde_Phacelie_Pois_Vesce,,,,,
+Feverole_Phacelie_Seigle,,,,,
+Nyger_Pois_Trefle_Vesce,,,,,
+Crucifere_Lin_Moutarde_Phacelie_Sarrasin,,,,,
+Pois_Ray grass,,,,,
+Feverole_Phacelie_Pois_Trefle_Vesce,,,,,
+Avoine_Crucifere_Moutarde_Médicinale_Phacelie_Pois_Trefle,,,,,
+Crucifere_Fenugrec_Feverole_Nyger_Phacelie_Trefle,,,,,
+Seigle_Sorgho,,asso_cer,non,oui,non
+Avoine_Crucifere_Moutarde_Phacelie_Pois_Vesce,,,,,
+Pois_Prairie_Ray grass_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Fenugrec_Feverole_Moutarde,,,,,
+Avoine_Crucifere_Tournesol,,,,,
+Avoine_Crucifere_Moutarde_Phacelie_Sarrasin_Tournesol,,,,,
+Crucifere_Fenugrec_Moutarde_Nyger_Phacelie,,,,,
+Feverole_Orge_Pois_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Fenugrec_Moutarde_Phacelie,,,,,
+Crucifere_Feverole_Phacelie_Seigle_Tournesol_Vesce,,,,,
+Orge_Sarrasin,,asso_divers,non,oui,non
+Avoine_Fenugrec_Tournesol,,,,,
+Avoine_Colza_Phacelie,,,,,
+Avoine_Fenugrec_Sarrasin_Vesce,,,,,
+Lotier_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Fenugrec_Phacelie_Trefle_Vesce,,,,,
+Orge_Triticale,,asso_cer,non,oui,non
+Ble tendre_Feverole_Pois_Vesce,,asso_cer_leg,non,oui,non
+Cameline_Sarrasin,,asso_divers,non,oui,non
+Haricot_Niebe_Sorgho,,asso_cer_leg,non,oui,non
+Prairie_Tournesol,,Tournesol,oui,oui,non
+Haricot_Mais_Tournesol,,Divers,non,non,non
+Avoine_Colza_Crucifere_Feverole_Lupin_Sarrasin_Tournesol_Vesce,,,,,
+Prairie_Triticale,,,,,
+Luzerne_Sarrasin,,Sarrasin,oui,oui,non
+Avoine_Pois_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Haricot_Mais,,asso_cer_leg,non,oui,non
+Mais_Tournesol,,Divers,non,non,non
+Chia_Crucifere_Phacelie_Vesce,,,,,
+Avoine_Seigle_Triticale,,asso_cer,non,oui,non
+Avoine_Pois_Seigle_Vesce,,,,,
+Graminee_Legumineuse,,,,,
+Crucifere_Phacelie_Tournesol,,,,,
+Chicoree_Dactyle_Ray grass_Trefle,,PT_multi_fam,non,non,oui
+Dactyle_Fetuque_Fleole_Paturin_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Crucifere_Feverole_Lin_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Avoine_Ble tendre_Crucifere_Moutarde_Phacelie_Ray grass_Seigle_Trefle,,,,,
+Lentille_Sarrasin,,,,,
+Avoine_Ble tendre_Feverole_Pois,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Pois_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Chou_Colza,,,,,
+Millet_Nyger_Pois_Sorgho_Tournesol_Vesce,,,,,
+Epeautre_Trefle,,Epeautre,oui,oui,non
+Colza_Feverole_Phacelie_Pois_Sorgho_Tournesol,,,,,
+Avoine_Sorgho,,,,,
+Crucifere_Nyger_Phacelie_Prairie,,,,,
+Fenugrec_Feverole_Gesse_Sarrasin_Trefle,,,,,
+Cameline_Colza_Feverole,,,,,
+Cameline_Colza_Feverole_Lentille_Lin_Moutarde_Nyger_Pois_Tournesol,,,,,
+Avoine_Ble tendre_Epeautre_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Ray grass_Vesce,,,,,
+Avoine_Crucifere_Fenugrec_Lin_Nyger_Phacelie,,asso_multi_fam,non,oui,non
+Cameline_Colza_Feverole_Lin_Moutarde_Pois_Sarrasin_Tournesol_Vesce,,,,,
+Prairie_Seigle,,,,,
+Cameline_Colza_Feverole_Prairie_Sarrasin_Tournesol,,Colza,oui,oui,non
+Lentille_Moutarde_Phacelie_Vesce,,,,,
+Fenugrec_Feverole_Lentille_Moutarde_Phacelie_Sarrasin,,,,,
+Cameline_Crucifere_Fenugrec_Lotier_Nyger,,,,,
+Lentille_Phacelie_Pois_Vesce,,,,,
+Crucifere_Phacelie_Pois,,,,,
+Avoine_Prairie_Seigle_Triticale,,asso_cer,non,oui,non
+Cameline_Crucifere_Feverole_Phacelie_Pois_Tournesol_Trefle_Vesce,,,,,
+Mais_Seigle,,asso_cer_leg,non,oui,non
+Avoine_Chicoree_Fetuque_Fleole_Lotier_Luzerne_Prairie_Ray grass_Trefle,,asso_multi_fam,non,oui,non
+Cameline_Crucifere_Moutarde_Phacelie_Pois_Sarrasin_Vesce,,,,,
+Mais_Soja,,asso_cer_leg,non,oui,non
+Feverole_Graminee_Vesce,,,,,
+Avoine_Chicoree_Dactyle_Prairie_Ray grass_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Fenugrec_Nyger_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Chicoree_Crucifere_Phacelie,,,,,
+Cameline_Lotier_Minette_Ray grass_Trefle,,,,,
+Feverole_Lentille_Moutarde_Nyger_Tournesol,,,,,
+Crucifere_Lentille_Phacelie_Trefle_Vesce,,,,,
+Avoine_Ble tendre_Epeautre_Orge_Pois_Seigle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Ble tendre_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Nyger_Phacelie_Pois_Seigle_Sorgho_Tournesol,,,,,
+Moutarde_Nyger_Phacelie_Vesce,,,,,
+Avoine_Lupin_Seigle,,,,,
+Avoine_Lupin,,asso_cer_leg,non,oui,non
+Colza_Fenugrec_Lentille_Lotier_Sarrasin_Trefle,,Colza,oui,oui,non
+Colza_Fenugrec_Lentille_Nyger_Sarrasin_Tournesol_Trefle,,Colza,oui,oui,non
+Avoine_Colza_Ray grass_Trefle,,asso_multi_fam,non,oui,non
+Lin_Moutarde_Nyger_Phacelie_Tournesol,,,,,
+Moutarde_Phacelie_Pois_Tournesol,,,,,
+Avoine_Lin_Phacelie_Seigle_Trefle_Vesce,,,,,
+Feverole_Gesse,,,,,
+Avoine_Lin_Mais_Sarrasin_Tournesol,,,,,
+Avoine_Lin,,asso_cer_olea,non,oui,non
+Colza_Fenugrec_Gesse_Lentille_Trefle,,Colza,oui,oui,non
+Colza_Feverole_Lentille_Lin_Sarrasin_Tournesol_Trefle,,Colza,oui,oui,non
+Avoine_Colza_Pois_Vesce,,,,,
+Dactyle_Fetuque_Luzerne_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Lentille_Phacelie,,,,,
+Avoine_Lentille_Millet_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Dactyle_Fetuque_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Avoine_Gesse_Phacelie_Trefle_Vesce,,,,,
+Feverole_Trefle,,Feverole,oui,oui,non
+Avoine_Crucifere_Feverole_Pois_Soja_Trefle_Vesce,,,,,
+Avoine_Feverole_Tournesol,,,,,
+Tomate,,Tomate,non,non,non
+Avoine_Feverole_Sorgho,,,,,
+Feverole_Seigle_Vesce,,,,,
+Colza_Feverole_Lentille_Lin_Luzerne_Sarrasin_Trefle,,Colza,oui,oui,non
+Colza_Crucifere_Feverole_Moutarde_Pois,,,,,
+Crucifere_Mais_Phacelie_Sarrasin_Tournesol,,,,,
+Avoine_Crucifere_Feverole_Moutarde_Phacelie_Vesce,,,,,
+Avoine_Ble tendre_Phacelie_Seigle_Triticale,,,,,
+Avoine_Orge_Vesce,,asso_cer_leg,non,oui,non
+Gesse_Pois_Vesce,,asso_leg,non,oui,non
+Luzerne_Prairie_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Nyger,,,,,
+Avoine_Crucifere_Feverole_Moutarde_Pois,,,,,
+Ble tendre_Pois_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Dactyle_Fetuque_Luzerne_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Lentille_Sarrasin_Trefle_Vesce,,,,,
+Ble tendre_Pois_Seigle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Moutarde_Pois,,,,,
+Colza_Fenugrec_Gesse_Trefle,,Colza,oui,oui,non
+Avoine_Luzerne_Triticale,,asso_cer_leg,non,oui,non
+Moutarde_Nyger_Phacelie_Trefle,,,,,
+Feverole_Gesse_Lin_Vesce,,,,,
+Avoine_Millet_Pois_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Lentille_Lin_Phacelie_Sorgho_Tournesol_Trefle,,,,,
+Avoine_Luzerne_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Colza_Tournesol,,,,,
+Avoine_Moutarde_Phacelie_Sarrasin_Vesce,,,,,
+Feverole_Luzerne_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Phacelie_Pois_Trefle_Vesce,,,,,
+Colza_Fenugrec_Feverole_Lentille,,Colza,oui,oui,non
+Feverole_Lupin_Phacelie,,,,,
+Fenugrec_Lentille_Phacelie_Trefle,,,,,
+Fetuque_Luzerne_Orge_Sainfoin,,asso_cer_leg,non,oui,non
+Feverole_Lotier_Ornementale_Trefle,,,,,
+Feverole_Lotier_Sarrasin_Tournesol_Trefle,,,,,
+Fenugrec_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Feverole_Gesse_Lentille_Lin_Nyger_Tournesol,,,,,
+Fenugrec_Moutarde_Tournesol,,,,,
+Feverole_Gesse_Lentille_Lin_Millet_Nyger_Pois_Tournesol,,,,,
+Feverole_Gesse_Moutarde_Pois_Vesce,,asso_multi_fam,non,oui,non
+Fenugrec_Moutarde_Phacelie_Tournesol,,,,,
+Fenugrec_Pois_Sarrasin_Vesce,,,,,
+Fenugrec_Pois_Trefle_Vesce,,,,,
+Feverole_Lentille_Moutarde_Vesce,,,,,
+Feverole_Lentille_Nyger_Phacelie_Pois,,,,,
+Fenugrec_Trefle,,,,,
+Feverole_Lentille_Orge,,asso_cer_leg,non,oui,non
+Fetuque_Fleole_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Feverole_Lupin_Mais_Tournesol,,,,,
+Fetuque_Fleole_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Feverole_Lentille_Tournesol,,,,,
+Feverole_Lentille_Trefle,,,,,
+Feverole_Lin_Lotier_Tournesol,,,,,
+Feverole_Lin_Moutarde_Nyger_Pois_Sarrasin_Trefle_Vesce,,,,,
+Feverole_Lin_Phacelie,,,,,
+Feverole_Lin_Phacelie_Soja_Trefle_Vesce,,,,,
+Fetuque_Luzerne_Sainfoin,,PT_cer_leg,non,non,oui
+Fenugrec_Lin_Nyger_Phacelie_Trefle,,,,,
+Feverole_Lin_Phacelie_Trefle,,,,,
+Fetuque_Luzerne_Ray grass_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Fetuque_Luzerne_Prairie_Trefle,,PT_cer_leg,non,non,oui
+Feverole_Lin_Tournesol,,,,,
+Fetuque_Orge_Pois_Trefle,,asso_cer_leg,non,oui,non
+Moutarde_Pois_Tournesol,,,,,
+Moutarde_Sarrasin_Sorgho,,,,,
+Moutarde_Sarrasin_Tournesol,,,,,
+Moutarde_Seigle_Trefle,,,,,
+Moutarde_Sorgho,,,,,
+Nyger_Phacelie_Pois,,,,,
+Nyger_Phacelie_Sorgho_Tournesol,,,,,
+Nyger_Pois_Trefle_Triticale_Vesce,,,,,
+Fenugrec_Lentille_Phacelie_Trefle_Vesce,,,,,
+Orge_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Orge_Pois_Vesce,,,,,
+Orge_Prairie,,asso_cer,non,oui,non
+Orge_Sainfoin,,Orge,oui,oui,non
+Orge_Sainfoin_Trefle,,Orge,oui,oui,non
+Panais,,Panais,non,non,non
+Paturin_Phacelie,,asso_divers,non,oui,non
+Pecher,,Pecher,non,non,non
+Phacelie_Pois,,,,,
+Nyger_Trefle,,,,,
+Luzerne_Seigle,,asso_cer_leg,non,oui,non
+Luzerne_Soja,,,,,
+Mais_Pois,,asso_cer_leg,non,oui,non
+Mais_Prairie,,asso_divers,non,oui,non
+Mais_Trefle,,Mais,oui,oui,non
+Millet_Moutarde_Sarrasin_Vesce,,,,,
+Millet_Moutarde_Sorgho_Trefle_Vesce,,asso_multi_fam,non,oui,non
+Millet_Moutarde_Trefle,,asso_multi_fam,non,oui,non
+Millet_Nyger_Pois_Vesce,,,,,
+Moutarde_Phacelie_Trefle_Triticale_Vesce,,,,,
+Millet_Phacelie_Sarrasin_Sorgho,,,,,
+Millet_Sorgho_Tournesol,,asso_cer_olea,non,oui,non
+Millet_Sorgho_Tournesol_Trefle,,,,,
+Millet_Tournesol_Trefle_Vesce,,,,,
+Minette_Orge,,Orge,oui,oui,non
+Moutarde_Nyger_Phacelie_Pois_Trefle_Triticale,,,,,
+Moutarde_Phacelie_Ray grass,,,,,
+Moutarde_Phacelie_Sarrasin_Vesce,,,,,
+Moutarde_Phacelie_Sorgho_Trefle,,,,,
+Millet_Phacelie_Ray grass_Tournesol,,,,,
+Avoine_Ble tendre_Divers_Feverole_Pois_Triticale,,asso_multi_fam,non,oui,non
+Avoine_Ble tendre_Divers_Pois_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Ble tendre_Divers_Seigle_Trefle_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Ble tendre_Epeautre_Feverole_Orge_Pois_Pois chiche_Seigle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Feverole_Orge,,,,,
+Avoine_Ble tendre_Feverole_Orge_Pois,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Feverole_Pois_Seigle_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Feverole_Pois_Vesce,,asso_cer_leg,non,oui,non
+Phacelie_Pois_Seigle_Triticale,,,,,
+Avoine_Ble tendre_Orge_Pois_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Orge_Triticale,,asso_cer,non,oui,non
+Seigle_Trefle_Triticale_Vesce,,,,,
+Ray grass_Seigle_Trefle,,asso_cer_leg,non,oui,non
+Ray grass_Tournesol,,asso_cer_olea,non,oui,non
+Sainfoin_Trefle,,PT_leg,non,non,oui
+Sarrasin_Sorgho,,asso_divers,non,oui,non
+Sarrasin_Sorgho_Tournesol,,asso_multi_fam,non,oui,non
+Sarrasin_Tournesol_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Ble tendre_Orge_Pois_Seigle_Triticale_Vesce,,,,,
+Phacelie_Pois_Trefle,,,,,
+Phacelie_Pois_Trefle_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Phacelie_Sarrasin_Tournesol,,,,,
+Pois_Pois chiche,,asso_leg,non,oui,non
+Pois_Prairie,,,,,
+Pois_Prairie_Triticale,,asso_cer_leg,non,oui,non
+Pois_Prairie_Vesce,,asso_cer_leg,non,oui,non
+Pois_Seigle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Pois_Sorgho_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Crucifere_Feverole_Pois_Trefle,,asso_multi_fam,non,oui,non
+Pois_Tournesol,,,,,
+Pois_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Aromatique_Fetuque_Sarrasin_Trefle,,,,,
+Asperge_Courge,,asso_divers,non,oui,non
+Aulne,,Aulne,non,non,non
+Avoine_Ble dur_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Prairie_Seigle_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Colza_Orge,,,,,
+Avoine_Ble tendre_Colza_Phacelie_Triticale_Vesce,,,,,
+Pois_Sorgho_Vesce,,asso_cer_leg,non,oui,non
+Feverole_Phacelie_Sarrasin_Tournesol,,,,,
+Feverole_Phacelie_Seigle_Sorgho,,,,,
+Feverole_Phacelie_Sorgho,,,,,
+Feverole_Phacelie_Tournesol_Trefle,,,,,
+Feverole_Phacelie_Trefle_Vesce,,,,,
+Feverole_Pois_Prairie,,,,,
+Feverole_Pois_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Feverole_Pois_Sarrasin,,,,,
+Luzerne_Ray grass,,PT_cer_leg,non,non,oui
+Feverole_Pois_Trefle,,,,,
+Feverole_Sorgho_Trefle,,,,,
+Feverole_Tournesol,,asso_olea_leg,non,oui,non
+Feverole_Trefle_Vesce,,,,,
+Fleole_Lotier,,PT_cer_leg,non,non,oui
+Gesse_Lentille_Sarrasin_Trefle,,,,,
+Gesse_Millet_Moutarde_Nyger_Phacelie_Pois_Seigle_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Gesse_Millet_Moutarde_Nyger_Phacelie_Pois_Seigle_Sorgho_Tournesol_Vesce,,,,,
+Gesse_Millet_Moutarde_Nyger_Phacelie_Pois_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Feverole_Pois_Seigle,,asso_cer_leg,non,oui,non
+Feverole_Lupin_Pois,,asso_leg,non,oui,non
+Feverole_Luzerne_Moutarde,,,,,
+Feverole_Luzerne_Pois,,asso_leg,non,oui,non
+Feverole_Luzerne_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Feverole_Luzerne_Prairie_Seigle_Tournesol,,,,,
+Feverole_Mais,,asso_cer_leg,non,oui,non
+Feverole_Mais_Millet,,asso_cer_leg,non,oui,non
+Feverole_Millet_Sarrasin_Sorgho,,,,,
+Feverole_Moutarde_Nyger_Pois_Sarrasin_Trefle,,,,,
+Feverole_Ornementale,,,,,
+Feverole_Moutarde_Phacelie_Pois,,,,,
+Feverole_Moutarde_Phacelie_Pois_Vesce,,,,,
+Feverole_Moutarde_Phacelie_Tournesol,,,,,
+Feverole_Moutarde_Pois,,,,,
+Feverole_Moutarde_Pois_Vesce,,,,,
+Feverole_Moutarde_Tournesol_Vesce,,,,,
+Feverole_Nyger_Phacelie_Sarrasin_Tournesol_Trefle,,,,,
+Feverole_Nyger_Pois_Sarrasin_Trefle,,,,,
+Feverole_Orge_Pois_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Feverole_Moutarde_Nyger_Tournesol,,,,,
+Lentille_Trefle_Vesce,,,,,
+Lin_Luzerne_Phacelie_Pois_Vesce,,,,,
+Lin_Phacelie_Pois,,,,,
+Lin_Phacelie_Trefle_Vesce,,,,,
+Lin_Pomme de terre,,Divers,non,non,non
+Lin_Sarrasin,,,,,
+Lin_Sarrasin_Tournesol,,,,,
+Lin_Seigle_Triticale,,,,,
+Lotier_Luzerne_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Gesse_Moutarde_Phacelie_Pois_Tournesol_Trefle_Vesce,,,,,
+Lotier_Sarrasin_Trefle,,,,,
+Lupin_Phacelie,,,,,
+Lupin_Pois,,asso_leg,non,oui,non
+Luzerne_Mais,,Mais,oui,oui,non
+Luzerne_Moutarde_Phacelie,,,,,
+Luzerne_Orge_Pois,,asso_cer_leg,non,oui,non
+Luzerne_Phacelie_Trefle_Vesce,,,,,
+Luzerne_Prairie,,PT_leg,non,non,oui
+Luzerne_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Lotier_Minette_Trefle,,,,,
+Gesse_Moutarde_Sarrasin,,,,,
+Gesse_Pois_Seigle_Sorgho_Tournesol_Vesce,,,,,
+Gesse_Pois_Sorgho_Tournesol,,,,,
+Gesse_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Graminee_Phacelie_Vesce,,,,,
+Graminee_Trefle,,PT_cer_leg,non,non,oui
+Graminee_Trefle_Vesce,,,,,
+Haricot_Mais_Niebe,,asso_cer_leg,non,oui,non
+Haricot_Pois,,asso_leg,non,oui,non
+Lentille_Pois_Triticale,,asso_cer_leg,non,oui,non
+Legumineuse_Lupin,,asso_leg,non,oui,non
+Legumineuse_Moutarde_Phacelie,,,,,
+Legumineuse_Prairie,,PT,non,non,oui
+Lentille_Lotier,,,,,
+Lentille_Millet_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Lentille_Millet_Sorgho,,,,,
+Lentille_Moutarde_Phacelie,,,,,
+Lentille_Moutarde_Pois,,,,,
+Lentille_Phacelie_Sarrasin_Tournesol,,,,,
+Laitue,,Laitue,non,non,non
+Avoine_Feverole_Moutarde_Soja_Vesce,,,,,
+Avoine_Feverole_Moutarde_Tournesol,,,,,
+Avoine_Feverole_Orge_Phacelie_Vesce,,,,,
+Avoine_Feverole_Orge_Pois_Seigle,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Orge_Pois_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Phacelie_Pois_Tournesol,,,,,
+Avoine_Feverole_Phacelie_Sarrasin_Tournesol,,,,,
+Avoine_Feverole_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Feverole_Pois_Prairie_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Ray grass_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Seigle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Seigle_Vesce,,,,,
+Colza_Soja,,Divers,non,non,non
+Avoine_Feverole_Seigle_Vesce,,,,,
+Avoine_Gesse,,,,,
+Avoine_Gesse_Lentille_Vesce,,,,,
+Avoine_Gesse_Pois_Vesce,,,,,
+Avoine_Legumineuse_Moutarde_Phacelie,,,,,
+Avoine_Legumineuse_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Lentille_Millet_Moutarde_Trefle_Vesce,,,,,
+Avoine_Lentille_Pois_Vesce,,,,,
+Avoine_Lin_Phacelie_Trefle,,,,,
+Avoine_Lin_Sarrasin_Sorgho_Trefle,,,,,
+Avoine_Lupin_Orge_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Luzerne_Trefle,,Avoine,oui,oui,non
+Avoine_Mais_Niebe_Sorgho,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Pois_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Fenugrec_Phacelie_Sarrasin_Vesce,,,,,
+Avoine_Fenugrec_Vesce,,,,,
+Avoine_Fetuque_Fleole_Lotier_Luzerne_Prairie_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Fleole_Luzerne_Paturin_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Fleole_Luzerne_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Luzerne_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Pois_Ray grass_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Pois_Ray grass_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Pois_Ray grass_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Ray grass_Seigle_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Fetuque_Ray grass_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Gesse_Lentille_Lin_Nyger_Phacelie_Pois_Seigle_Sorgho_Tournesol_Vesce,,,,,
+Avoine_Feverole_Moutarde_Pois_Vesce,,,,,
+Avoine_Feverole_Gesse_Vesce,,,,,
+Avoine_Feverole_Lentille_Moutarde_Pois_Tournesol,,,,,
+Avoine_Feverole_Lentille_Nyger_Phacelie_Vesce,,,,,
+Avoine_Feverole_Lentille_Orge,,,,,
+Avoine_Feverole_Lentille_Phacelie_Pois_Tournesol_Vesce,,,,,
+Avoine_Feverole_Lin_Mais_Sarrasin_Tournesol_Vesce,,,,,
+Avoine_Feverole_Lin_Moutarde_Phacelie_Sorgho_Vesce,,,,,
+Avoine_Feverole_Luzerne_Pois,,asso_cer_leg,non,oui,non
+Avoine_Feverole_Mais_Moutarde_Phacelie_Vesce,,,,,
+Avoine_Feverole_Millet_Moutarde_Phacelie_Pois_Trefle_Vesce,,,,,
+Avoine_Feverole_Millet_Nyger_Phacelie_Pois_Sorgho,,,,,
+Avoine_Feverole_Moutarde_Phacelie_Pois_Trefle_Vesce,,,,,
+Avoine_Feverole_Moutarde_Phacelie_Seigle_Vesce,,,,,
+Avoine_Feverole_Gesse_Soja_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Ray grass_Seigle_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Sarrasin,,,,,
+Avoine_Sarrasin_Seigle_Tournesol,,,,,
+Avoine_Sarrasin_Tournesol_Vesce,,,,,
+Avoine_Sarrasin_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Seigle_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Soja_Vesce,,,,,
+Avoine_Sorgho_Trefle_Vesce,,,,,
+Avoine_Sorgho_Triticale,,asso_cer,non,oui,non
+Avoine_Tournesol,,,,,
+Avoine_Trefle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Trefle_Triticale_Vesce,,,,,
+Avoine_Mais_Pois_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Ble dur_Ble tendre_Colza_Orge_Pois_Triticale,,Divers,non,non,non
+Ble dur_Colza_Sarrasin_Trefle,,asso_multi_fam,non,oui,non
+Ble dur_Feverole,,asso_cer_leg,non,oui,non
+Ble dur_Soja,,asso_cer_leg,non,oui,non
+Ble dur_Sorgho,,asso_cer,non,oui,non
+Ble dur_Sorgho_Tournesol,,Divers,non,non,non
+Ble tendre_Colza,,asso_cruc_cer,non,oui,non
+Ble tendre_Colza_Mais_Orge_Tournesol,,Divers,non,non,non
+Ble tendre_Colza_Orge,,,,,
+Ble tendre_Crucifere_Orge_Sarrasin,,,,,
+Ble tendre_Crucifere_Phacelie_Trefle,,,,,
+Ble tendre_Dactyle_Fetuque_Feverole_Luzerne_Orge_Pois_Trefle,,asso_cer_leg,non,oui,non
+Ble tendre_Divers_Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Ble dur_Ble tendre_Colza_Mais_Orge_Tournesol_Trefle,,Divers,non,non,non
+Avoine_Millet,,,,,
+Avoine_Millet_Moutarde,,,,,
+Avoine_Millet_Moutarde_Trefle_Vesce,,,,,
+Avoine_Moutarde_Nyger_Sarrasin_Trefle,,,,,
+Avoine_Moutarde_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Moutarde_Sarrasin_Vesce,,,,,
+Avoine_Moutarde_Soja_Vesce,,,,,
+Avoine_Moutarde_Tournesol_Vesce,,,,,
+Avoine_Nyger_Sarrasin_Vesce,,,,,
+Avoine_Orge_Phacelie_Trefle,,,,,
+Avoine_Phacelie_Pois_Trefle,,,,,
+Avoine_Phacelie_Radis_Vesce,,,,,
+Avoine_Phacelie_Sarrasin,,,,,
+Avoine_Prairie_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Phacelie_Sorgho_Tournesol_Vesce,,,,,
+Avoine_Phacelie_Sorgho_Trefle,,,,,
+Avoine_Pois chiche_Seigle_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Pois_Prairie_Sarrasin,,,,,
+Avoine_Pois_Ray grass,,,,,
+Avoine_Pois_Ray grass_Trefle_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Pois_Sarrasin_Tournesol,,,,,
+Avoine_Pois_Sarrasin_Tournesol_Vesce,,,,,
+Avoine_Pois_Tournesol_Trefle_Vesce,,,,,
+Avoine_Prairie,,,,,
+Avoine_Prairie_Ray grass,,asso_cer_leg,non,oui,non
+Avoine_Prairie_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Prairie_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Phacelie_Seigle_Tournesol,,,,,
+Avoine_Colza_Divers_Feverole_Phacelie_Triticale,,,,,
+Avoine_Colza_Feverole_Pois_Tournesol_Vesce,,,,,
+Avoine_Colza_Lin_Mais_Sarrasin_Tournesol_Trefle_Triticale_Vesce,,,,,
+Avoine_Colza_Millet_Nyger_Pois_Vesce,,,,,
+Avoine_Colza_Millet_Tournesol,,asso_multi_fam,non,oui,non
+Avoine_Colza_Phacelie_Sarrasin,,,,,
+Avoine_Colza_Pois_Tournesol,,,,,
+Avoine_Colza_Pois_Trefle,,,,,
+Avoine_Colza_Pois_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Colza_Sorgho_Trefle_Vesce,,,,,
+Avoine_Colza_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Colza_Trefle_Vesce,,,,,
+Avoine_Fenugrec_Phacelie_Sarrasin_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Fenugrec_Feverole_Lin_Phacelie_Trefle,,,,,
+Avoine_Crucifere_Fenugrec_Feverole_Sarrasin,,,,,
+Avoine_Crucifere_Fenugrec_Gesse_Moutarde_Phacelie_Pois_Sarrasin_Vesce,,,,,
+Avoine_Crucifere_Fenugrec_Moutarde_Phacelie_Pois,,,,,
+Avoine_Crucifere_Fenugrec_Trefle_Vesce,,,,,
+Avoine_Crucifere_Feverole_Gesse_Lentille_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Crucifere_Feverole_Gesse_Nyger_Phacelie_Sorgho_Trefle_Vesce,,,,,
+Avoine_Crucifere_Feverole_Lentille_Lin_Phacelie_Sorgho_Tournesol,,,,,
+Avoine_Crucifere_Feverole_Lin_Moutarde_Phacelie_Pois_Sarrasin_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Avoine_Crucifere_Feverole_Mais_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Feverole_Mais_Phacelie_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Feverole_Moutarde_Phacelie_Pois_Sarrasin_Trefle,,,,,
+Avoine_Crucifere_Feverole_Moutarde_Phacelie_Sorgho,,,,,
+Avoine_Crucifere_Fenugrec_Feverole_Lin_Nyger_Phacelie_Sorgho,,,,,
+Amaranthe,,Amaranthe,non,non,non
+Aromatique_Chia_Crucifere_Fenugrec_Lin_Nyger_Phacelie_Vesce,,,,,
+Aromatique_Fetuque_Lotier_Paturin_Sainfoin_Salsifis_Vesce,,asso_multi_fam,non,oui,non
+Sarrasin_Vesce,,,,,
+Saule,,Saule,non,non,non
+Avoine_Ble tendre_Colza,,,,,
+Silphe,,Silphe,non,non,non
+Soja_Tournesol,,asso_olea_leg,non,oui,non
+Sorgho_Tournesol_Vesce,,,,,
+Sorgho_Trefle_Vesce,,asso_cer_leg,non,oui,non
+Tournesol_Trefle,,Tournesol,oui,oui,non
+Tournesol_Trefle_Vesce,,,,,
+Avoine_Ble tendre_Pois,,asso_cer_leg,non,oui,non
+Avoine_Colza_Crucifere_Phacelie,,,,,
+Avoine_Ble tendre_Pois_Sarrasin,,,,,
+Avoine_Ble tendre_Pois_Seigle,,asso_cer_leg,non,oui,non
+Avoine_Ble tendre_Seigle,,asso_cer,non,oui,non
+Avoine_Ble tendre_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Cameline_Colza_Crucifere_Feverole_Lin_Moutarde_Orge_Phacelie_Pois_Tournesol_Trefle_Vesce,,,,,
+Avoine_Cameline_Colza_Crucifere_Lin_Mais_Moutarde_Phacelie_Sarrasin_Sorgho_Tournesol_Trefle_Triticale_Vesce,,,,,
+Avoine_Cameline_Feverole_Moutarde_Seigle_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Avoine_Cameline_Phacelie_Pois,,,,,
+Avoine_Cameline_Sarrasin_Trefle_Vesce,,,,,
+Avoine_Chia_Crucifere_Nyger_Phacelie_Trefle_Vesce,,,,,
+Avoine_Chicoree_Ray grass_Trefle_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Colza_Crucifere,,,,,
+Avoine_Colza_Crucifere_Moutarde_Pois_Vesce,,,,,
+Avoine_Ble tendre_Pois_Prairie_Sarrasin,,,,,
+Avoine_Crucifere_Phacelie_Sarrasin_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Phacelie_Sorgho_Tournesol,,,,,
+Avoine_Crucifere_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Crucifere_Pois,,,,,
+Avoine_Crucifere_Pois_Sarrasin,,,,,
+Avoine_Crucifere_Pois_Tournesol_Trefle,,,,,
+Avoine_Crucifere_Pois_Triticale_Vesce,,,,,
+Avoine_Crucifere_Pois_Vesce,,,,,
+Avoine_Crucifere_Sarrasin_Trefle,,,,,
+Avoine_Crucifere_Seigle_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Tournesol_Vesce,,,,,
+Avoine_Dactyle_Fetuque_Luzerne,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Feverole_Moutarde_Phacelie_Tournesol_Vesce,,,,,
+Avoine_Divers,,asso_divers,non,oui,non
+Avoine_Divers_Feverole,,asso_multi_fam,non,oui,non
+Avoine_Divers_Pois_Seigle_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Divers_Pois_Triticale,,asso_multi_fam,non,oui,non
+Avoine_Epeautre_Feverole_Lin_Orge_Pois_Seigle_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Epeautre_Feverole_Orge_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Epeautre_Feverole_Pois,,asso_cer_leg,non,oui,non
+Avoine_Epeautre_Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Avoine_Epeautre_Feverole_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Avoine_Epeautre_Lupin,,asso_cer_leg,non,oui,non
+Avoine_Fenugrec_Feverole_Moutarde_Phacelie_Sarrasin_Tournesol_Trefle,,,,,
+Avoine_Fenugrec_Nyger_Vesce,,,,,
+Avoine_Fenugrec_Phacelie_Pois_Vesce,,,,,
+Avoine_Dactyle_Luzerne_Ray grass_Trefle,,asso_cer_leg,non,oui,non
+Avoine_Crucifere_Feverole_Moutarde_Tournesol_Trefle,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Feverole_Moutarde_Trefle_Vesce,,,,,
+Avoine_Crucifere_Feverole_Phacelie_Sarrasin_Vesce,,,,,
+Avoine_Crucifere_Feverole_Phacelie_Tournesol,,,,,
+Avoine_Crucifere_Feverole_Phacelie_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Feverole_Phacelie_Trefle,,,,,
+Avoine_Crucifere_Feverole_Pois_Sarrasin_Tournesol_Trefle,,,,,
+Avoine_Crucifere_Feverole_Trefle,,,,,
+Avoine_Crucifere_Feverole_Vesce,,,,,
+Avoine_Crucifere_Gesse_Lentille_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Avoine_Crucifere_Haricot_Mais_Niebe_Sorgho_Tournesol_Trefle_Vesce,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Legumineuse_Vesce,,,,,
+Avoine_Crucifere_Lentille_Moutarde_Phacelie_Vesce,,,,,
+Avoine_Crucifere_Orge,,,,,
+Avoine_Crucifere_Lentille_Pois_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Lentille_Tournesol_Vesce,,,,,
+Avoine_Crucifere_Lin_Moutarde,,,,,
+Avoine_Crucifere_Lin_Moutarde_Nyger_Phacelie_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Avoine_Crucifere_Lin_Moutarde_Phacelie,,,,,
+Avoine_Crucifere_Lin_Moutarde_Phacelie_Sorgho,,,,,
+Avoine_Crucifere_Luzerne_Phacelie_Seigle_Vesce,,,,,
+Avoine_Crucifere_Moutarde,,,,,
+Avoine_Crucifere_Moutarde_Nyger_Phacelie_Vesce,,,,,
+Avoine_Crucifere_Moutarde_Orge_Pois_Seigle_Triticale,,,,,
+Avoine_Crucifere_Moutarde_Phacelie_Soja_Trefle_Vesce,,,,,
+Avoine_Crucifere_Moutarde_Pois_Trefle_Triticale_Vesce,,,,,
+Avoine_Crucifere_Nyger_Teff grass,,asso_multi_fam,non,oui,non
+Avoine_Crucifere_Lentille_Phacelie_Sarrasin_Soja,,,,,
+Crucifere_Feverole_Moutarde_Nyger_Phacelie_Tournesol_Trefle_Triticale,,,,,
+Crucifere_Feverole_Moutarde_Nyger_Phacelie_Trefle,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Pois_Sarrasin_Seigle,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Sorgho,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Tournesol,,,,,
+Crucifere_Feverole_Moutarde_Phacelie_Trefle,,,,,
+Crucifere_Feverole_Orge_Vesce,,,,,
+Crucifere_Feverole_Phacelie_Pois_Sarrasin_Seigle_Tournesol,,,,,
+Crucifere_Feverole_Phacelie_Pois_Sorgho_Tournesol_Trefle_Vesce,,,,,
+Crucifere_Feverole_Phacelie_Tournesol,,,,,
+Crucifere_Feverole_Phacelie_Trefle_Vesce,,,,,
+Crucifere_Feverole_Tournesol_Trefle,,,,,
+Ble tendre_Epeautre,,asso_cer,non,oui,non
+Crucifere_Gesse_Moutarde_Vesce,,,,,
+Crucifere_Lentille,,,,,
+Crucifere_Lentille_Moutarde_Phacelie,,,,,
+Crucifere_Lentille_Moutarde_Phacelie_Pois_Vesce,,,,,
+Crucifere_Lentille_Petit epeautre_Phacelie_Sarrasin,,,,,
+Crucifere_Lentille_Vesce,,,,,
+Crucifere_Lin_Moutarde_Phacelie_Trefle,,,,,
+Crucifere_Lin_Moutarde_Phacelie_Trefle_Vesce,,,,,
+Crucifere_Lin_Nyger_Phacelie_Sarrasin_Sorgho_Tournesol,,,,,
+Crucifere_Lotier_Luzerne_Moutarde_Phacelie_Sainfoin_Trefle,,asso_multi_fam,non,oui,non
+Crucifere_Lupin_Phacelie,,,,,
+Crucifere_Millet_Nyger_Phacelie_Ray grass_Tournesol_Trefle,,,,,
+Crucifere_Millet_Sorgho,,,,,
+Crucifere_Feverole_Vesce,,,,,
+Colza_Sarrasin_Tournesol_Trefle_Vesce,,Colza,oui,oui,non
+Colza_Sorgho_Trefle,,,,,
+Colza_Tournesol_Trefle,,Colza,oui,oui,non
+Concombre,,Concombre,non,non,non
+Courge_Haricot_Quinoa,,asso_divers,non,oui,non
+Courge_Luzerne,,Courgette,oui,oui,non
+Crucifere_Divers_Fenugrec_Lentille_Nyger_Phacelie_Pois_Sarrasin_Vesce,,,,,
+Crucifere_Divers_Moutarde_Phacelie,,asso_divers,non,oui,non
+Crucifere_Divers_Phacelie_Trefle,,,,,
+Crucifere_Fenugrec_Feverole_Lin_Nyger_Phacelie_Tournesol_Vesce,,,,,
+Crucifere_Fenugrec_Gesse_Phacelie_Trefle_Vesce,,,,,
+Crucifere_Fenugrec_Lin_Nyger_Phacelie_Sorgho_Tournesol,,,,,
+Crucifere_Fenugrec_Lin_Phacelie,,,,,
+Crucifere_Feverole_Moutarde_Nyger_Orge_Phacelie_Tournesol_Trefle,,,,,
+Crucifere_Fenugrec_Moutarde_Phacelie_Vesce,,,,,
+Crucifere_Fenugrec_Nyger_Phacelie_Sarrasin_Trefle,,,,,
+Crucifere_Fenugrec_Ornementale,,,,,
+Crucifere_Fenugrec_Ornementale_Phacelie,,,,,
+Crucifere_Fenugrec_Phacelie,,,,,
+Crucifere_Feverole_Gesse_Lentille_Moutarde_Nyger_Phacelie_Tournesol_Trefle,,,,,
+Crucifere_Feverole_Gesse_Lin_Millet_Moutarde_Nyger_Phacelie_Tournesol_Trefle,,,,,
+Crucifere_Feverole_Gesse_Orge_Pois,,,,,
+Crucifere_Feverole_Lentille_Pois_Prairie_Sorgho_Tournesol_Trefle,,,,,
+Crucifere_Feverole_Lin_Phacelie_Sarrasin_Sorgho_Tournesol_Vesce,,,,,
+Crucifere_Feverole_Lin_Phacelie_Sarrasin_Sorgho_Trefle,,,,,
+Crucifere_Feverole_Lin_Trefle,,,,,
+Crucifere_Feverole_Millet_Phacelie_Seigle,,,,,
+Crucifere_Fenugrec_Moutarde_Nyger_Phacelie_Tournesol,,,,,
+Dactyle_Orge,,asso_cer,non,oui,non
+Dactyle_Prairie_Trefle,,PT_cer_leg,non,non,oui
+Dactyle_Seigle,,asso_cer,non,oui,non
+Divers_Feverole,,,,,
+Divers_Feverole_Orge,,asso_multi_fam,non,oui,non
+Divers_Feverole_Pois_Trefle_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Divers_Feverole_Pois_Triticale,,asso_multi_fam,non,oui,non
+Divers_Feverole_Trefle,,,,,
+Divers_Feverole_Triticale,,asso_multi_fam,non,oui,non
+Divers_Nyger_Sarrasin,,,,,
+Divers_Pois_Triticale_Vesce,,asso_multi_fam,non,oui,non
+Divers_Seigle_Triticale,,asso_cer,non,oui,non
+Crucifere_Moutarde_Nyger_Phacelie_Sarrasin,,,,,
+Epeautre_Feverole_Pois,,asso_cer_leg,non,oui,non
+Epeautre_Feverole_Pois_Vesce,,,,,
+Epeautre_Feverole_Trefle,,asso_cer_leg,non,oui,non
+Epeautre_Pois,,asso_cer_leg,non,oui,non
+Fenugrec_Feverole_Lentille_Phacelie,,,,,
+Fenugrec_Feverole_Lin_Millet,,,,,
+Fenugrec_Feverole_Lin_Millet_Phacelie_Trefle,,,,,
+Fenugrec_Feverole_Phacelie,,,,,
+Fenugrec_Feverole_Pois_Tournesol_Vesce,,,,,
+Fenugrec_Gesse,,,,,
+Fenugrec_Gesse_Lentille,,,,,
+Fenugrec_Gesse_Lentille_Vesce,,,,,
+Fenugrec_Gesse_Trefle,,,,,
+Epeautre_Feverole_Orge_Pois_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Crucifere_Moutarde_Nyger_Trefle,,,,,
+Crucifere_Moutarde_Orge_Phacelie_Tournesol_Vesce,,,,,
+Crucifere_Moutarde_Phacelie_Radis_Sarrasin_Trefle,,,,,
+Crucifere_Moutarde_Phacelie_Sarrasin_Trefle_Vesce,,,,,
+Crucifere_Moutarde_Phacelie_Seigle_Sorgho_Tournesol,,,,,
+Crucifere_Moutarde_Phacelie_Seigle_Sorgho_Trefle_Vesce,,,,,
+Crucifere_Moutarde_Phacelie_Sorgho_Trefle,,,,,
+Crucifere_Moutarde_Phacelie_Tournesol_Trefle,,,,,
+Crucifere_Moutarde_Sarrasin_Trefle,,,,,
+Crucifere_Moutarde_Seigle_Sorgho_Tournesol_Vesce,,,,,
+Crucifere_Moutarde_Seigle_Trefle,,,,,
+Crucifere_Phacelie_Pois_Sarrasin,,,,,
+Crucifere_Phacelie_Ray grass_Trefle,,,,,
+Dactyle_Fleole_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Crucifere_Phacelie_Sarrasin_Vesce,,asso_multi_fam,non,oui,non
+Crucifere_Phacelie_Sorgho_Tournesol,,,,,
+Crucifere_Phacelie_Sorgho_Vesce,,,,,
+Crucifere_Phacelie_Tournesol_Vesce,,,,,
+Crucifere_Ray grass_Seigle,,,,,
+Crucifere_Sorgho_Trefle,,,,,
+Crucifere_Tournesol_Trefle_Vesce,,,,,
+Dactyle_Fetuque,,PT_cer,non,non,oui
+Dactyle_Fetuque_Fleole_Lotier_Paturin_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Dactyle_Fetuque_Fleole_Luzerne_Prairie_Ray grass_Trefle,,PT_cer_leg,non,non,oui
+Dactyle_Fetuque_Luzerne,,PT_cer_leg,non,non,oui
+Dactyle_Fetuque_Luzerne_Ray grass_Sorgho_Trefle,,asso_cer_leg,non,oui,non
+Dactyle_Fetuque_Ray grass_Sorgho_Trefle,,asso_cer_leg,non,oui,non
+Crucifere_Phacelie_Sarrasin_Sorgho_Trefle,,asso_multi_fam,non,oui,non
+Cameline_Colza_Feverole_Prairie_Sarrasin_Sorgho_Tournesol,,Colza,oui,oui,non
+Cameline_Colza_Lin_Moutarde_Sarrasin,,,,,
+Cameline_Colza_Lotier_Minette_Ray grass_Trefle,,asso_multi_fam,non,oui,non
+Cameline_Crucifere_Feverole_Lentille_Sorgho_Tournesol_Trefle,,,,,
+Cameline_Crucifere_Feverole_Millet_Moutarde_Nyger_Phacelie_Sarrasin_Tournesol_Trefle_Vesce,,,,,
+Cameline_Crucifere_Feverole_Phacelie,,,,,
+Cameline_Crucifere_Lentille_Lotier_Phacelie,,,,,
+Cameline_Crucifere_Lentille_Phacelie,,,,,
+Cameline_Feverole_Lentille_Lin_Moutarde_Nyger_Pois_Tournesol,,,,,
+Cameline_Feverole_Lin_Moutarde_Pois_Sarrasin_Tournesol,,,,,
+Cameline_Feverole_Phacelie,,,,,
+Cameline_Luzerne,,Cameline,oui,oui,non
+Colza_Prairie_Triticale,,asso_cruc_cer,non,oui,non
+Cameline_Moutarde_Phacelie_Prairie_Sarrasin_Trefle,,,,,
+Cameline_Phacelie,,,,,
+Cameline_Trefle,,,,,
+Carotte_Nyger_Sorgho,,Divers,non,non,non
+Chanvre_Luzerne,,Chanvre,oui,oui,non
+Chia_Crucifere_Phacelie_Tournesol_Trefle_Vesce,,,,,
+Chia_Crucifere_Phacelie_Tournesol_Vesce,,,,,
+Chia_Fenugrec_Phacelie,,,,,
+Chia_Millet_Nyger,,,,,
+Chicoree_Colza_Ray grass,,asso_cruc_cer,non,oui,non
+Chicoree_Fetuque_Fleole_Paturin_Prairie_Ray grass_Trefle,,PT_multi_fam,non,non,oui
+Chicoree_Fetuque_Fleole_Paturin_Ray grass_Trefle,,PT_multi_fam,non,non,oui
+Colza_Crucifere_Feverole_Lin_Moutarde_Phacelie_Sarrasin_Sorgho_Tournesol_Trefle,,,,,
+Cameline_Moutarde,,,,,
+Ble tendre_Epeautre_Feverole_Pois_Triticale,,asso_cer_leg,non,oui,non
+Ble tendre_Epeautre_Orge_Pois_Seigle,,asso_cer_leg,non,oui,non
+Ble tendre_Fetuque_Luzerne_Prairie_Trefle,,asso_multi_fam,non,oui,non
+Ble tendre_Feverole_Lin,,asso_multi_fam,non,oui,non
+Ble tendre_Feverole_Orge_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Ble tendre_Feverole_Orge_Triticale,,asso_cer_leg,non,oui,non
+Ble tendre_Feverole_Pois_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Ble tendre_Feverole_Pois_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Ble tendre_Feverole_Triticale,,asso_cer_leg,non,oui,non
+Ble tendre_Haricot_Mais_Niebe_Soja,,Divers,non,non,non
+Ble tendre_Lin,,asso_cer_olea,non,oui,non
+Ble tendre_Lupin,,asso_cer_leg,non,oui,non
+Ble tendre_Luzerne,,Ble tendre,oui,oui,non
+Cameline_Colza_Feverole_Lentille_Lin_Nyger_Sarrasin_Tournesol,,,,,
+Ble tendre_Moutarde,,,,,
+Ble tendre_Orge_Pois,,,,,
+Ble tendre_Orge_Pois_Ray grass_Triticale_Vesce,,asso_cer_leg,non,oui,non
+Ble tendre_Orge_Seigle,,,,,
+Ble tendre_Orge_Triticale,,asso_cer,non,oui,non
+Ble tendre_Phacelie_Trefle,,,,,
+Ble tendre_Pois_Prairie_Triticale,,asso_cer_leg,non,oui,non
+Ble tendre_Pois_Seigle_Vesce,,asso_cer_leg,non,oui,non
+Ble tendre_Ray grass,,asso_cer,non,oui,non
+Ble tendre_Sainfoin,,Ble tendre,oui,oui,non
+Ble tendre_Sorgho,,asso_cer,non,oui,non
+Brome,,PT_cer,non,non,oui
+Cameline_Colza_Feverole_Lentille_Lin_Moutarde_Pois_Tournesol,,,,,
+Ble tendre_Minette,,Ble tendre,oui,oui,non
+Colza_Feverole_Lotier_Sarrasin,,Colza,oui,oui,non
+Colza_Feverole_Luzerne_Sarrasin,,Colza,oui,oui,non
+Colza_Feverole_Nyger_Vesce,,Colza,oui,oui,non
+Colza_Feverole_Pois,,Colza,oui,oui,non
+Colza_Feverole_Tournesol,,Colza,oui,oui,non
+Colza_Feverole_Tournesol_Trefle,,Colza,oui,oui,non
+Colza_Feverole_Vesce,,Colza,oui,oui,non
+Colza_Gesse_Trefle,,Colza,oui,oui,non
+Colza_Lentille_Millet,,,,,
+Colza_Lentille_Pois,,Colza,oui,oui,non
+Colza_Lin,,Colza,oui,oui,non
+Colza_Lin_Phacelie_Trefle,,,,,
+Colza_Crucifere_Feverole_Moutarde_Phacelie_Pois_Tournesol_Vesce,,,,,
+Colza_Lotier,,Colza,oui,oui,non
+Colza_Lupin,,Colza,oui,oui,non
+Colza_Luzerne,,,,,
+Colza_Luzerne_Millet_Sarrasin,,Colza,oui,oui,non
+Colza_Luzerne_Orge,,asso_multi_fam,non,oui,non
+Colza_Luzerne_Pois,,Colza,oui,oui,non
+Colza_Millet_Sorgho,,asso_cruc_cer,non,oui,non
+Colza_Millet_Trefle,,asso_multi_fam,non,oui,non
+Colza_Moutarde_Sarrasin,,,,,
+Colza_Orge_Soja,,,,,
+Colza_Orge_Soja_Tournesol,,,,,
+Colza_Phacelie_Sarrasin_Sorgho_Tournesol,,,,,
+Colza_Phacelie_Sorgho_Trefle,,,,,
+Colza_Lin_Pois,,,,,
+Colza_Crucifere_Feverole_Phacelie_Pois_Sorgho_Tournesol_Vesce,,,,,
+Colza_Crucifere_Lin_Phacelie_Pois,,,,,
+Colza_Crucifere_Millet,,,,,
+Colza_Crucifere_Moutarde_Nyger_Phacelie_Trefle_Vesce,,,,,
+Colza_Crucifere_Moutarde_Pois_Tournesol,,,,,
+Colza_Crucifere_Moutarde_Vesce,,,,,
+Colza_Crucifere_Phacelie_Sorgho_Vesce,,,,,
+Colza_Crucifere_Pois_Trefle_Triticale_Vesce,,,,,
+Colza_Crucifere_Ray grass_Trefle,,asso_multi_fam,non,oui,non
+Colza_Crucifere_Sarrasin_Trefle,,,,,
+Colza_Epeautre_Feverole_Sarrasin_Soja,,,,,
+Colza_Epeautre_Lentille_Moutarde_Phacelie,,,,,
+Colza_Fenugrec_Feverole_Lentille_Tournesol,,Colza,oui,oui,non
+Colza_Feverole_Lotier_Luzerne_Trefle,,Colza,oui,oui,non
+Colza_Fenugrec_Feverole_Luzerne,,Colza,oui,oui,non
+Colza_Fenugrec_Feverole_Sarrasin_Trefle,,Colza,oui,oui,non
+Colza_Fenugrec_Lentille_Lin_Trefle,,,,,
+Colza_Fenugrec_Lentille_Lotier,,Colza,oui,oui,non
+Colza_Fenugrec_Trefle_Vesce,,Colza,oui,oui,non
+Colza_Feverole_Gesse_Lentille_Lin_Nyger_Tournesol,,,,,
+Colza_Feverole_Lentille_Lin,,Colza,oui,oui,non
+Colza_Feverole_Lentille_Millet,,Colza,oui,oui,non
+Colza_Feverole_Lentille_Moutarde_Phacelie,,,,,
+Colza_Feverole_Lentille_Tournesol_Trefle,,Colza,oui,oui,non
+Colza_Feverole_Lentille_Trefle,,Colza,oui,oui,non
+Colza_Feverole_Lentille_Trefle_Vesce,,Colza,oui,oui,non
+Colza_Feverole_Lin_Phacelie_Trefle,,,,,
+Colza_Fenugrec_Feverole_Lentille_Trefle,,Colza,oui,oui,non

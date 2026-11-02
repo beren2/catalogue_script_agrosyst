@@ -6,6 +6,7 @@
 -- 	- le psci_phyto_sans_amm (dans le cas des interventions contenant une action de type "LUTTE_BIOLOGIQUE"), le psci pondéré par la proportion de surface traitée
 -- c'est une entorse au principe de l'entrepôt qui est censé uniquement sélectionner les informations présentes dans la base, au bénéfice du confort de l'utilisateur historique. 
 
+DROP TABLE IF EXISTS action_realise_phyto_avec_amm CASCADE;
 CREATE TEMPORARY table action_realise_phyto_avec_amm AS 
 SELECT DISTINCT ON (aa.effectiveintervention)
 	aa.topiaid,
@@ -15,6 +16,7 @@ FROM abstractaction aa
 JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.topiaid
 where refintrav.intervention_agrosyst = 'APPLICATION_DE_PRODUITS_PHYTOSANITAIRES';
 
+DROP TABLE IF EXISTS action_realise_phyto_sans_amm CASCADE;
 CREATE TEMPORARY table action_realise_phyto_sans_amm AS 
 SELECT DISTINCT ON (aa.effectiveintervention)
 	aa.topiaid,
@@ -24,7 +26,7 @@ FROM abstractaction aa
 JOIN refinterventionagrosysttravailedi refintrav ON aa.mainaction = refintrav.topiaid
 where refintrav.intervention_agrosyst = 'LUTTE_BIOLOGIQUE';
 
-
+DROP TABLE IF EXISTS entrepot_intervention_realise CASCADE;
 CREATE TABLE entrepot_intervention_realise AS
 ---------------------------
 -- Interventions Assolees

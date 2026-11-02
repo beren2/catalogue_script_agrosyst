@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_sole_synthetise CASCADE;
+
 create table entrepot_sole_synthetise(
 	id character varying(255), 
 	rang integer, 

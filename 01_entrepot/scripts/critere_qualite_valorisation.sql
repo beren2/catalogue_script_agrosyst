@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_critere_qualite_valorisation CASCADE;
+
 CREATE TABLE entrepot_critere_qualite_valorisation AS
 select
 r.topiaid as id,

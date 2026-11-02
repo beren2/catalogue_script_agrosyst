@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_atelier_elevage CASCADE;
+
 CREATE TABLE entrepot_atelier_elevage AS
   SELECT
   l.topiaid as id,

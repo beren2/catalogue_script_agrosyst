@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_criteres_selection CASCADE;
+
 create table entrepot_criteres_selection as 
 select 
 d.topiaid domaine_id,

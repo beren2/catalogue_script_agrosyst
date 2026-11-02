@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_composant_parc_materiel CASCADE;
+
 CREATE TABLE entrepot_composant_parc_materiel AS
 SELECT 
 e.topiaid as id,

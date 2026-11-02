@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_parcelle CASCADE;
+
 CREATE TABLE entrepot_parcelle AS
   WITH plot_zone AS (
     SELECT z.plot, count(*) nombre_de_zones
@@ -20,7 +22,7 @@ CREATE TABLE entrepot_parcelle AS
   p.waterflowdistance distance_cours_eau,
   p.bufferstrip bande_enherbee,
   ------ Informations sur le zonage de la parcelle
-  p.outofzoning hors_zonage,
+  p.inzoning dans_zonage,
   p.zoningcomment commentaire_zonage,
  ------ onglet equipements
   p.equipmentcomment equip_commentaire,

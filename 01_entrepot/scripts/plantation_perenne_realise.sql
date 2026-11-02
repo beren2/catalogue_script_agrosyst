@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_plantation_perenne_realise CASCADE;
+
 CREATE TABLE entrepot_plantation_perenne_realise AS
 select
 epc.topiaid id,
@@ -41,7 +43,7 @@ ADD FOREIGN KEY (zone_id) REFERENCES entrepot_zone(id);
 alter table entrepot_plantation_perenne_realise
 ADD FOREIGN KEY (culture_id) REFERENCES entrepot_culture(id);
 
-drop table if exists entrepot_plantation_perenne_phases_realise;
+drop table if exists entrepot_plantation_perenne_phases_realise cascade;
 CREATE TABLE entrepot_plantation_perenne_phases_realise AS
 select
 ecp.topiaid id,
@@ -67,7 +69,7 @@ END $$;
 alter table entrepot_plantation_perenne_phases_realise
 ADD FOREIGN KEY (plantation_perenne_realise_id) REFERENCES entrepot_plantation_perenne_realise(id);
 
-drop table if exists entrepot_plantation_perenne_especes_realise;
+drop table if exists entrepot_plantation_perenne_especes_realise cascade;
 CREATE TABLE entrepot_plantation_perenne_especes_realise AS
 select
 ecs.topiaid id,

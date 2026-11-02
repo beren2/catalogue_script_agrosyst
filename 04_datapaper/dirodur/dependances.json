@@ -1,0 +1,15 @@
+{
+    "itk_datapaper":{
+        "0":"03_magasins/dirodur/scripts/dependances/itk_filtres.sql",
+        "1":"03_magasins/dirodur/scripts/itk.sql"
+    },
+    "sdc_datapaper":{
+        "0":"03_magasins/dirodur/scripts/dependances/sdc_filtres.sql",
+        "1":"03_magasins/dirodur/scripts/sdc.sql"
+    },
+    "rendement_datapaper":{
+        "0":"03_magasins/dirodur/scripts/dependances/rendement_realise.sql",
+        "1":"03_magasins/dirodur/scripts/dependances/rendement_synthetise.sql",
+        "2":"03_magasins/dirodur/scripts/rendement.sql"
+    }
+}

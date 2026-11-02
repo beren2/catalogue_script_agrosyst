@@ -1,4 +1,4 @@
-DROP TABLE if exists MD_traduction;
+DROP TABLE if exists MD_traduction cascade;
 CREATE TABLE MD_traduction(
 	nom_rubrique text, 
 	nom_base text,
@@ -128,7 +128,7 @@ alter table entrepot_modele_decisionnel_strategie
 ADD FOREIGN KEY (modele_decisionnel_maitrise_id) REFERENCES entrepot_modele_decisionnel_maitrise(id);
 
 -- entrepot_modeles_decisionnels_strategies_cultures : pour un meme levier, plusieurs cultures peuvent etre associees
-DROP TABLE IF EXISTS entrepot_modele_decisionnel_strategie_culture;
+DROP TABLE IF EXISTS entrepot_modele_decisionnel_strategie_culture cascade;
 CREATE TABLE entrepot_modele_decisionnel_strategie_culture AS
 select 
 cs.strategy modele_decisionnel_strategie_id,

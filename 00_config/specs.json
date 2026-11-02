@@ -24,6 +24,7 @@
 			"atelier_elevage",
 			"bilan_campagne_regional",
 			"levier",
+			"levier_filiere",
 			"modele_decisionnel",
 			"sole_realise",
 			"cycle_culture_realise",
@@ -31,8 +32,8 @@
 			"plantation_perenne_realise",
 			"plantation_perenne_synthetise",
 			"intervention_realise",
-			"composant_culture_concerne_intervention",
 			"intervention_synthetise",
+			"composant_culture_concerne_intervention",
 			"action_realise",
 			"action_synthetise",
 			"intrant",
@@ -69,9 +70,9 @@
 			"critere_qualite_valorisation",
 			"destination_valorisation",
 			"dose_ref_par_groupe_cible",
-			"substances_actives_europeennes",
-			"phrases_de_risque_numero_amm",
-			"prix_intrant_produit_phyto_sanitaire",
+			"substance_active_europeenne",
+			"phrases_risque_classes_mention_danger_numero_amm",
+			"prix_produit_phyto_sanitaire",
 			"prix_carburant",
 			"prix_recolte",
 			"otex",
@@ -80,8 +81,9 @@
 			"texture_sol",
 			"fertilisation_organique",
 			"fertilisation_minerale",
+			"troupeau",
 			"aliment_ration",
-			"troupeau"
+			"alerte"
 		],
 		"tables": {
 			"semence" : {
@@ -181,15 +183,15 @@
 				"category" : "autre"
 			},
 			"noeuds_realise":{
-				"file_name" : "noeuds_realise",
+				"file_name" : "cycle_culture_realise",
 				"category" : "autre"
 			},
 			"noeuds_synthetise":{
-				"file_name" : "noeuds_synthetise",
+				"file_name" : "cycle_culture_synthetise",
 				"category" : "autre"
 			},
 			"connection_synthetise":{
-				"file_name" : "connection_synthetise",
+				"file_name" : "cycle_culture_synthetise",
 				"category" : "autre"
 			},
 			"intervention_realise":{
@@ -197,7 +199,7 @@
 				"category" : "autre"
 			},
 			"combinaison_outil_action":{
-				"file_name" : "combinaison_outils",
+				"file_name" : "combinaison_outil",
 				"category" : "autre"
 			},
 			"domaine_sol":{
@@ -249,7 +251,7 @@
 				"category" : "autre"
 			},
 			"connection_realise":{
-				"file_name" : "connection_realise",
+				"file_name" : "cycle_culture_realise",
 				"category" : "autre"
 			},
 			"composition_substance_active_numero_amm":{
@@ -309,7 +311,7 @@
 				"category" : "autre"
 			},
 			"recolte_rendement_prix":{
-				"file_name" : "recolte_rendement_prix",
+				"file_name" : "recolte",
 				"category" : "autre"
 			},
 			"itk_realise_performance":{
@@ -421,7 +423,7 @@
 				"category" : "autre"
 			},
 			"liaison_reseaux":{
-				"file_name" : "liaison_reseau",
+				"file_name" : "liaison_reseaux",
 				"category" : "autre"
 			},
 			"nuisible_edi":{
@@ -442,6 +444,10 @@
 			},
 			"levier":{
 				"file_name" : "levier",
+				"category" : "autre"
+      		},
+			"levier_filiere":{
+				"file_name" : "levier_filiere",
 				"category" : "autre"
       		},
 			"criteres_selection":{
@@ -479,6 +485,50 @@
 			"troupeau":{
 				"file_name" : "troupeau",
 				"category" : "autre"
+			},
+			"alerte":{
+				"file_name" : "alerte",
+        "category" : "autre"
+			},
+			"acta_dosage_spc":{
+				"file_name" : "acta_dosage_spc",
+				"category" : "autre"
+			},
+			"critere_qualite_valorisation":{
+				"file_name" : "critere_qualite_valorisation",
+				"category" : "autre"
+			},
+			"otex":{
+				"file_name" : "otex",
+				"category" : "autre"
+			},
+			"phrases_risque_classes_mention_danger_numero_amm":{
+				"file_name" : "phrases_risque_classes_mention_danger_numero_amm",
+				"category" : "autre"
+			},
+			"precision_espece_semis":{
+				"file_name" : "precision_espece_semis",
+				"category" : "autre"
+			},
+			"prix_carburant":{
+				"file_name" : "prix_carburant",
+				"category" : "autre"
+			},
+			"prix_produit_phyto_sanitaire":{
+				"file_name" : "prix_produit_phyto_sanitaire",
+				"category" : "autre"
+			},
+			"station_meteo":{
+				"file_name" : "station_meteo",
+				"category" : "autre"
+			},
+			"substance_active_europeenne":{
+				"file_name" : "substance_active_europeenne",
+				"category" : "autre"
+			},
+			"variete_plante_grappe":{
+				"file_name" : "variete_plante_grappe",
+				"category" : "autre"
 			}
 		}
 	},
@@ -489,7 +539,9 @@
 			"tables" : [
 				"BDD_donnees_attendues_CAN", 
 				"typo_especes_typo_culture",
-				"typo_especes_typo_culture_marai"
+				"typo_especes_typo_culture_marai", 
+				"correspondance_destination_gcpe_dirodur",
+				"matrice_typologie_culture_dirodur"
 			],
 			"validation" : {
 				"path" : "tests.test_external_data",
@@ -518,13 +570,36 @@
 					"geoVec_rmqs",
 					"geoVec_viti"
 				],
+				"shapefile" : [
+					"geoShp_bdgsf"
+				],
 				"geopackage" : [
 					"safran"
 				],
 				"csv_geo" : [
 					"referentiel_geographique_fr_esr_unique",
 					"geofla",
-					"ruralite"
+					"ruralite",
+					"bdgsf_matrice_smu_stu"
+				]
+			},
+			"agreste_data" : {
+				"path" : "data/external_data/agreste/final/",
+				"tables" : [
+					"agreste_ift_culture_arboriculture_reference_region_2018",
+					"agreste_ift_culture_arboriculture_reference_region_2024",
+					"agreste_ift_culture_gcpe_reference_region_2017",
+					"agreste_ift_culture_gcpe_reference_region_2021",
+					"agreste_ift_viticulture_departement"
+				],
+				"validation" : {
+				}
+			},
+			"dephygraph_data" : {
+				"path" : "data/external_data/dephygraph/",
+				"tables" : [
+					"data_ipmgraph_for_dephygraph",
+					"data_culture_trop_for_dephygraph"
 				]
 			}
 		},
@@ -535,9 +610,16 @@
                 "generated" : [
                     "intervention_realise_nettoyage", 
                     "utilisation_intrant_realise_nettoyage",
-                    "utilisation_intrant_synthetise_nettoyage"
+                    "utilisation_intrant_synthetise_nettoyage",
+					"entite_unique_par_sdc_nettoyage"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : [
+					"utilisation_intrant_performance", 
+					"intervention_realise_performance", 
+					"intervention_synthetise_performance", 
+					"sdc_realise_performance", 
+					"synthetise_synthetise_performance"
+				]
             },
             "agregation" : {
                 "function_name" : "create_category_agregation",
@@ -545,44 +627,30 @@
                 "generated" : [
                     "utilisation_intrant_realise_agrege",
                     "utilisation_intrant_synthetise_agrege", 
-                    "intervention_synthetise_manquant_agrege", 
-                    "intervention_realise_manquant_agrege",
-                    "action_realise_manquant_agrege", 
-                    "action_synthetise_manquant_agrege"
-                ], 
-				"need_performance" : "False"
-            },
-            "agregation_complet" : {
-                "function_name" : "None",
-                "dependances" : [{
-                    "source" : "outils", 
-                    "category": "agregation"
-                }
-                ],
-                "generated" : [
-                    "utilisation_intrant_realise_agrege", 
-                    "utilisation_intrant_synthetise_agrege",
                     "intervention_synthetise_agrege", 
                     "intervention_realise_agrege",
                     "action_realise_agrege", 
-                    "action_synthetise_agrege"
+                    "action_synthetise_agrege",
+					"itk_realise_agrege",
+					"itk_synthetise_agrege"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"interoperabilite" : {
                 "function_name" : "create_category_interoperabilite",
                 "dependances" : [], 
                 "generated" : [
 					"donnees_spatiales_commune_du_domaine",
-                    "donnees_spatiales_coord_gps_du_domaine"
+                    "donnees_spatiales_coord_gps_du_domaine",
+					"agreste_ift_gcpe_reference_region"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "restructuration" : {
                 "function_name" : "create_category_restructuration",
                 "dependances" : [{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 }],
                 "generated" : [
                     "noeuds_synthetise_restructure", 
@@ -593,7 +661,7 @@
                     "ccc_intervention_synthetise_restructure", 
                     "intervention_synthetise_restructure"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "indicateur_0" : {
                 "function_name" : "create_category_indicateur_0",
@@ -601,9 +669,10 @@
                 "generated" : [
 					"mauvaise_structure_de_rotation",
 					"couple_connexions_chemins_synthetise_rotation",
-					"poids_connexions_synthetise_rotation"
+					"poids_connexions_synthetise_rotation",
+					"poids_noeuds_realise"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"indicateur_1" : {
                 "function_name" : "create_category_indicateur_1",
@@ -614,7 +683,7 @@
                 "generated" : [
 					"typologie_can_culture"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
 			"indicateur_2" : {
                 "function_name" : "create_category_indicateur_2",
@@ -623,7 +692,7 @@
 						"category": "restructuration"
 					},{
 						"source" : "outils", 
-						"category": "agregation_complet"
+						"category": "agregation"
 					},{
 						"source" : "outils", 
 						"category": "indicateur_0"
@@ -637,9 +706,10 @@
                     "typologie_can_rotation_synthetise",
                     "typologie_assol_can_realise",
                     "action_realise_rendement_total", 
-                    "action_synthetise_rendement_total"
+                    "action_synthetise_rendement_total",
+					"espece_variete_perenne_principale"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
             },
             "outils_can" : {
                 "function_name" : "create_category_outils_can",
@@ -648,7 +718,7 @@
                     "category": "restructuration"
                 },{
                     "source" : "outils", 
-                    "category": "agregation_complet"
+                    "category": "agregation"
                 }],
                 "generated" : [
                     "dispositif_filtres_outils_can",
@@ -661,27 +731,194 @@
                     "sdc_realise_outils_can",
                     "parcelle_realise_outils_can"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : []
+            },
+			"outils_tableau_de_bord_can" : {
+                "function_name" : "create_category_outils_tableau_de_bord_can",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "agregation"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                }],
+                "generated" : [
+                    "sdc_complet_outils_tableau_de_bord_can",
+					"synthetise_complet_outils_tableau_de_bord_can",
+					"itk_rendement_gcpe_outils_tableau_de_bord_can",
+					"rendement_viti_sdc_realise_outils_tableau_de_bord_can",
+					"rendement_viti_synthetise_outils_tableau_de_bord_can",
+					"itk_rendement_gcpe_outils_tableau_de_bord_can"
+                ], 
+				"need_performance" : [
+				]
+            },
+			"agreste" : {
+                "function_name" : "create_category_agreste",
+                "dependances" : [],
+                "generated" : [
+					"agreste_ift_viticulture_reference_departement",
+					"agreste_ift_gcpe_reference_region",
+					"agreste_ift_arboriculture_reference_region"
+                ], 
+				"need_performance" : []
+            },
+			"outils_dirodur_0" : {
+                "function_name" : "create_category_dirodur_0",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation"
+                },{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_2"
+                }],
+                "generated" : [
+                    "rendement_realise_filtre_outils_dirodur", 
+					"rendement_synthetise_filtre_outils_dirodur", 
+					"sdc_realise_filtre_outils_dirodur",
+					"synthetise_filtre_outils_dirodur",
+					"sdc_statut_temporel_outils_dirodur",
+					"date_de_semis_outils_dirodur"
+                ], 
+				"need_performance" : [
+					"synthetise_synthetise_performance",
+					"sdc_realise_performance", 
+					"itk_realise_performance", 
+					"itk_synthetise_performance"
+				]
+            },
+			"outils_dirodur_1" : {
+                "function_name" : "create_category_dirodur_1",
+                "dependances" : [
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_0"
+                }],
+                "generated" : [
+					"typologie_culture_outils_dirodur"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance"
+				]
+            },
+			"outils_dirodur_2" : {
+                "function_name" : "create_category_dirodur_2",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "outils_dirodur_1"
+                }],
+                "generated" : [
+					"indicateur_diversite_outils_dirodur"
+                ], 
+				"need_performance" : [
+				]
+            },
+			"outils_dephygraph" : {
+                "function_name" : "create_category_outils_dephygraph",
+                "dependances" : [{
+                    "source" : "outils", 
+                    "category": "restructuration"
+                },{
+                    "source" : "outils", 
+                    "category": "agregation"
+                },{
+                    "source" : "outils", 
+                    "category": "nettoyage"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_0"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_1"
+                },
+				{
+                    "source" : "outils", 
+                    "category": "indicateur_2"
+                }],
+                "generated" : [
+                    "donnees_dephyferme_pour_dephygraph",
+					"donnees_ipmgraph_pour_dephygraph",
+					"donnees_culture_trop_pour_dephygraph"
+                ], 
+				"need_performance" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance"
+				]
             },
             "test" : {
                 "function_name" : "create_category_test",
-                "dependances" : [{
-						"source" : "outils", 
-						"category": "agregation_complet"
-					}],
-                "generated" : [
-                ],
-                "entrepot_dependances" : [
-					"connection_synthetise",
-                    "noeuds_synthetise",
-					"domaine",
-					"dispositif", 
-					"sdc", 
+				"entrepot_dependances" : [
+					"sdc_realise_performance",
+					"synthetise_synthetise_performance",
 					"synthetise",
-					"parcelle",
-					"zone"
+					"sdc",
+					"dispositif",
+					"domaine",
+					"commune",
+					"identification_pz0",
+					"espece_variete_perenne_principale",
+					"entite_unique_par_sdc_nettoyage",
+					"itk_realise_agrege"
+				],
+                "dependances" : [
+				],
+                "generated" : [
+                    "donnees_dephyferme_pour_dephygraph",
+					"donnees_ipmgraph_pour_dephygraph",
+					"donnees_culture_trop_pour_dephygraph"
                 ], 
-				"need_performance" : "False"
+				"need_performance" : [
+				]
             }
         }
     },

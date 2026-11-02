@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS entrepot_domaine CASCADE;
+
 CREATE TABLE entrepot_domaine AS
   WITH domainresponsibles as (
     SELECT domaincode, string_agg(au.lastname||' '||au.firstname, ', ') AS responsibles
@@ -146,7 +148,7 @@ add FOREIGN KEY (sol_arvalis_id) REFERENCES entrepot_sol_arvalis(id);
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-drop table if exists entrepot_speciestoarea;
+drop table if exists entrepot_speciestoarea cascade;
 CREATE TABLE entrepot_speciestoarea(
   id uuid DEFAULT uuid_generate_v4(), -- v4 pour que la génération se base juste sur des nombres aleatoires
   campagne integer,
@@ -190,7 +192,7 @@ update entrepot_speciestoarea set code_qualifiant = coalesce(split_part(code_esp
 update entrepot_speciestoarea set code_type_saisonnier = coalesce(split_part(code_espece, '_', 3),null);
 update entrepot_speciestoarea set code_espece = coalesce(split_part(code_espece, '_', 1),null);
 
-drop table if exists entrepot_domaine_surface_especes_cultivees;
+drop table if exists entrepot_domaine_surface_especes_cultivees cascade;
 CREATE TABLE entrepot_domaine_surface_especes_cultivees as 
 select 
 sp.id,
