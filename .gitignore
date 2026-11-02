@@ -11,5 +11,5 @@
 .vscode/settings.json
 01_entrepot/.Rhistory
 01_entrepot/documentation_manquante.csv
-05_tests_locaux/*
+10_tests_locaux/*
 02_outils/data/export_from_functions/*
