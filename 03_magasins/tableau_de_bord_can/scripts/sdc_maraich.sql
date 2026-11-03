@@ -1,15 +1,13 @@
-select * from entrepot_typologie_assol_can_realise;
-
 SELECT
     -- Identification unique du SDC et de la campagne
     COALESCE(sdc.code_dephy, 'CODE_DEPHY_ABSENT') || '_' || sdc.campagne
-        AS ID_CODE_DEPHY_CAMPAGNE,
+        AS id_code_dephy_campagne,
     sdc.code_dephy AS sdc_code_dephy,
     sdc.campagne AS campagne_donnees,
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
-    esrotdbc.reseaux_it AS reseaux_it,
-    esrotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -38,6 +36,8 @@ SELECT
     esrp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
     esrp.co_tot_reelles AS CO_reelles_SDC,
     esrp.cm_reelles AS CM_reelles_SDC,
+    esrp.mb_std_mil_avec_autoconso AS mb_std_ac_auto_sdc,
+    esrp.mb_std_mil_avec_autoconso AS msn_std_ac_auto_sdc,
     esrp.conso_carburant AS conso_carburant_SDC,
     esrp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
     esrp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
@@ -52,7 +52,7 @@ SELECT
     esrp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     esrp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     esrp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
+    esrp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC, -- TODO : retirer les traitements de semences.
     esrp.alerte_ift_cible_mil_chim_tot_hts AS Alerte_IFT_total_SDC,   
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
@@ -134,6 +134,7 @@ SELECT
     -- Variables spécifiques au maraîchage
    	esrp.recours_produits_danger_environnement AS Nb_intrant_dang_env_SDC,
     sdc.type_production AS situation_production,
+    sdc.type_production AS sdc_type_production,
     esrp.co_tot_std_mil AS CO_std_mil_SDC,
     esrp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     esrp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
@@ -162,15 +163,15 @@ SELECT
     -- Recours aux moyens biologiques
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    esrp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    esrp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
 LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_typologie_assol_can_realise etacr on sdc.id = etacr.sdc_id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on sdc.id = escotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id
 WHERE sdc.filiere = 'MARAICHAGE'  -- Filtre spécifique à la filière maraîchage
 AND eeupsn.entite_retenue = 'realise_retenu'
@@ -184,8 +185,8 @@ SELECT
     sdc.campagne AS campagne_donnees,
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -214,6 +215,8 @@ SELECT
     essp.pb_reel_avec_autoconso AS pb_reel_avec_autoconso,
     essp.co_tot_reelles AS CO_reelles_SDC,
     essp.cm_reelles AS CM_reelles_SDC,
+    essp.mb_std_mil_avec_autoconso AS mb_std_ac_auto_sdc,
+    essp.msn_std_mil_avec_autoconso AS msn_std_ac_auto_sdc,
     essp.conso_carburant AS conso_carburant_SDC,
     essp.c_main_oeuvre_tractoriste_std_mil AS cout_mo_tractoriste,
     essp.c_main_oeuvre_manuelle_std_mil AS cout_mo_manuelle,
@@ -228,7 +231,7 @@ SELECT
     essp.ift_cible_non_mil_i AS ift_cible_non_mil_i_SDC,
     essp.ift_cible_non_mil_a AS ift_cible_non_mil_a_SDC,
     essp.ift_cible_non_mil_ts AS ift_cible_non_mil_ts_SDC,
-    essp.ift_cible_non_mil_hh AS ift_cible_non_mil_hh_hors_TS_SDC,
+    essp.ift_cible_non_mil_hh - essp.ift_cible_non_mil_ts AS ift_cible_non_mil_hh_hors_TS_SDC,
     essp.alerte_ift_cible_mil_chim_tot_hts AS Alerte_IFT_total_SDC,  
     null AS Alerte_Absence_unite_dose_SDC,
     null AS alerte_description_rotation,
@@ -310,6 +313,7 @@ SELECT
     -- Variables spécifiques au maraîchage
    	essp.recours_produits_danger_environnement AS Nb_intrant_dang_env_SDC,
     sdc.type_production AS situation_production,
+    sdc.type_production AS sdc_type_production,
     essp.co_tot_std_mil AS CO_std_mil_SDC,
     essp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     essp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
@@ -338,8 +342,8 @@ SELECT
     -- Recours aux moyens biologiques
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    essp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    essp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise 
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
@@ -350,7 +354,6 @@ LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn on sdc.id = eeupsn.sdc
 LEFT JOIN entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = eeupsn.sdc_id
 LEFT JOIN entrepot_synthetise_synthetise_performance essp on synthetise.id = essp.synthetise_id
 LEFT JOIN entrepot_synthetise_complet_outils_tableau_de_bord_can escotdbc2 on escotdbc2.id = essp.synthetise_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id
 WHERE sdc.filiere = 'MARAICHAGE'
 and eeupsn.entite_retenue != 'realise_retenu'
 AND NOT dispo.type = 'NOT_DEPHY';

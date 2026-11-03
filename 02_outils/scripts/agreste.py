@@ -43,7 +43,7 @@ def get_agreste_ift_gcpe_reference_region(donnees):
 def get_agreste_ift_arboriculture_reference_region(donnees):
     
     """
-        Cet outil sert juste à rendre disponiblesur Datagrosyst les donnée obtenues dans 02_outils/data/external_data/agreste
+        Cet outil sert juste à rendre disponible sur Datagrosyst les donnée obtenues dans 02_outils/data/external_data/agreste
         Ici on fait le choix de stocker en base car : 
         - les données traitées sont extrêmement petites 
         - les données sont très utiles pour les utilisateurs

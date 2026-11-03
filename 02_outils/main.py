@@ -826,12 +826,6 @@ def create_category_dirodur_0():
     export_to_db(synthetise_filtre_outils_dirodur, 'entrepot_synthetise_filtre_outils_dirodur')
     add_primary_key('entrepot_synthetise_filtre_outils_dirodur','synthetise_id')
 
-    # itk_filtre_outils_dirodur = outils_dirodur.get_itk_filtre_outils_dirodur(donnees)
-    # itk_filtre_outils_dirodur['itk_id'] = itk_filtre_outils_dirodur['noeuds_realise_id'].fillna(itk_filtre_outils_dirodur['connection_synthetise_id'])
-    # itk_filtre_outils_dirodur.set_index('itk_id', inplace=True)
-    # export_to_db(itk_filtre_outils_dirodur, 'entrepot_itk_filtres_outils_dirodur')
-    # add_primary_key('entrepot_itk_filtres_outils_dirodur','itk_id')
-
     df_date_de_semis = outils_dirodur.get_date_de_semis_outils_dirodur(donnees)
     df_date_de_semis.set_index('culture_id', inplace=True)
     export_to_db(df_date_de_semis, 'entrepot_date_de_semis_outils_dirodur')

@@ -6,8 +6,8 @@ SELECT
   	etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	sdc.code_dephy AS sdc_code_dephy,
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseaux_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseaux_ir,
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
     dom.departement AS departement,
@@ -18,7 +18,7 @@ SELECT
     sdc.nom AS sdc_nom,
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
-    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS sdc_type_agriculture,
     sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente
     es.id AS systeme_synthetise_id,
     es.nom AS systeme_synthetise_nom,
@@ -44,7 +44,7 @@ SELECT
     etcc.nb_composant_culture AS nb_espece, 
     etcc.typocan_espece AS typo_especes,
     etcc.nb_typocan_esp as nb_typo_espece,
-    etcc.typocan_culture AS typo_culture
+    etcc.typocan_culture AS typo_culture,
     null AS typo_culture_2, --> de quoi s'agit-il ? 
     ec_intermediaire.id AS ci_id,
     ec_intermediaire.nom AS ci_nom,
@@ -75,7 +75,17 @@ SELECT
 	eisp.recours_produits_cmr AS Nb_intrant_CMR_CP,
 	--
 	eisp.co_tot_reelles + eisp.cm_reelles AS charges_totale_CP, 
-	eisp.nbre_uth_necessaires AS nbre_uth_CP
+	eisp.nbre_uth_necessaires AS nbre_uth_CP,
+    null AS ift_h_smethola_cp,
+    null AS ift_h_chlorto_cp,
+    null AS ift_h_diflufeni_cp,
+    null AS ift_h_dicamba_cp,
+    null AS ift_h_prosulfo_cp,
+    null AS ift_f_bixafen_cp,
+    null AS ift_f_boscalid_cp,
+    null AS ift_f_mancozebe_cp,
+    null AS ift_f_tebuco_cp,
+    null AS ift_i_phosmet_cp
 FROM entrepot_connection_synthetise ecs
 LEFT JOIN entrepot_itk_synthetise_agrege eisa ON eisa.itk_id = ecs.id
 LEFT JOIN entrepot_itk_synthetise_performance eisp ON ecs.id = eisp.itk_synthetise_id
@@ -95,10 +105,8 @@ LEFT JOIN entrepot_domaine     dom   ON dom.id   = eisa.domaine_id
 LEFT JOIN entrepot_commune    comm   ON dom.commune_id = comm.id
 LEFT JOIN entrepot_synthetise es ON eisa.synthetise_id = es.id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id 
-LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on es.sdc_id = escotdbc.id
 LEFT JOIN entrepot_typologie_assol_can_realise etacr ON etacr.sdc_id = sdc.id
-LEFT JOIN entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc ON sdc.id = essrotdbc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id 
 LEFT JOIN entrepot_poids_connexions_synthetise_rotation epcsr ON epcsr.connexion_id = ecs.id
 LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON eirgotdbc.id = ecs.id
@@ -114,8 +122,8 @@ SELECT
   	etcc.typocan_espece || ' ; ' || sdc.type_agriculture AS groupe_typologique_de_la_culture, -- Concaténation situation de production et typologiqe culture
 	sdc.code_dephy AS sdc_code_dephy,
     dispo."type" AS dispositif_type,
-    errsotdbc.reseaux_it AS reseaux_it,
-    errsotdbc.reseaux_ir AS reseaux_ir,
+    escotdbc.reseaux_it AS reseaux_it,
+    escotdbc.reseaux_ir AS reseaux_ir,
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
     dom.departement AS departement,
@@ -126,7 +134,7 @@ SELECT
     sdc.nom AS sdc_nom,
     sdc.type_production AS sdc_type_production, 
     sdc.validite AS sdc_valide,
-    sdc.type_agriculture AS sdc_type_agricutlure,
+    sdc.type_agriculture AS sdc_type_agriculture,
     sdc.type_agriculture AS ab_conv, --doublon avec la variable précédente
     null AS systeme_synthetise_id,
     null AS systeme_synthetise_nom,
@@ -181,7 +189,17 @@ SELECT
 	eirp.recours_produits_cmr AS Nb_intrant_CMR_CP,
 	--
 	eirp.co_tot_reelles + eirp.cm_reelles AS charges_totale_CP, 
-	eirp.nbre_uth_necessaires AS nbre_uth_CP
+	eirp.nbre_uth_necessaires AS nbre_uth_CP,
+    null AS ift_h_smethola_cp,
+    null AS ift_h_chlorto_cp,
+    null AS ift_h_diflufeni_cp,
+    null AS ift_h_dicamba_cp,
+    null AS ift_h_prosulfo_cp,
+    null AS ift_f_bixafen_cp,
+    null AS ift_f_boscalid_cp,
+    null AS ift_f_mancozebe_cp,
+    null AS ift_f_tebuco_cp,
+    null AS ift_i_phosmet_cp
 FROM entrepot_noeuds_realise enr
 LEFT JOIN entrepot_itk_realise_agrege eira ON eira.itk_id = enr.id
 LEFT JOIN entrepot_itk_realise_performance eirp ON eirp.itk_realise_id = enr.id
@@ -200,10 +218,8 @@ LEFT JOIN entrepot_commune comm ON dom.commune_id = comm.id
 LEFT JOIN entrepot_parcelle ep ON eira.parcelle_id = ep.id
 LEFT JOIN entrepot_zone ez ON eira.zone_id = ez.id
 LEFT JOIN entrepot_entite_unique_par_sdc_nettoyage eeupsn ON sdc.id = eeupsn.sdc_id
-LEFT JOIN entrepot_reseaux_rattachement_sdc_outils_tableau_de_bord_can errsotdbc ON sdc.id = errsotdbc.id 
-LEFT JOIN entrepot_sdc_realise_outils_tableau_de_bord_can esrotdbc ON sdc.id = esrotdbc.id
 LEFT JOIN entrepot_typologie_assol_can_realise etacr ON etacr.sdc_id = sdc.id
-LEFT JOIN entrepot_stc_sdc_realise_outils_tableau_de_bord_can essrotdbc ON sdc.id = essrotdbc.id
+left join entrepot_sdc_complet_outils_tableau_de_bord_can escotdbc on escotdbc.id = sdc.id
 LEFT JOIN entrepot_sdc_realise_performance esrp ON sdc.id = esrp.sdc_id 
 LEFT JOIN entrepot_itk_rendement_gcpe_outils_tableau_de_bord_can eirgotdbc ON eirgotdbc.id = enr.id
 WHERE (sdc.filiere = 'GRANDES_CULTURES' or sdc.filiere = 'POLYCULTURE_ELEVAGE')
