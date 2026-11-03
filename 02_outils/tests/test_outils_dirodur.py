@@ -128,7 +128,7 @@ def test_get_temporal_status_for_each_sdc_dirodur():
 
     assert all(res)
 
-def test_get_intervention_realise_culture_outils_can():
+def test_get_rendement_realise_filtre_outils_dirodur():
     """
         Test de l'obtention des qualification de rendement pour le magasin DiRoDur
     """
@@ -156,7 +156,7 @@ def test_get_intervention_realise_culture_outils_can():
 
     assert all(res)
 
-def test_get_intervention_synthetise_culture_outils_can():
+def test_get_rendement_synthetise_filtre_outils_dirodur():
     """
         Test de l'obtention des qualification de rendement pour le magasin DiRoDur
     """
