@@ -378,7 +378,7 @@ def get_surface_typo_culture_sdc_realise_outils_tableau_de_bord_can(donnees):
     #    COMMUN    #
     #--------------#
     # On créé une nouvelle colonne "typocan_culture_corrige" qui réaffecte les culture porte graine à une typologie dédiée (volonté Cellule Ref)
-    df['typologie_can_culture']['typocan_culture_sans_compagne_corrige'] = df['typologie_can_culture']['typocan_culture']
+    df['typologie_can_culture']['typocan_culture_sans_compagne_corrige'] = df['typologie_can_culture']['typocan_culture_sans_compagne']
     df['typologie_can_culture'].loc[
         df['typologie_can_culture']['typo_cpg'].isin(
             ['Cultures porte graines', 'Cultures porte graines et autres destinations']
@@ -540,7 +540,7 @@ def get_surface_typo_culture_synthetise_outils_tableau_de_bord_can(donnees):
     df = copy.deepcopy(donnees)
 
     # On créé une nouvelle colonne "typocan_culture_corrige" qui réaffecte les culture porte graine à une typologie dédiée (volonté Cellule Ref)
-    df['typologie_can_culture']['typocan_culture_sans_compagne_corrige'] = df['typologie_can_culture']['typocan_culture']
+    df['typologie_can_culture']['typocan_culture_sans_compagne_corrige'] = df['typologie_can_culture']['typocan_culture_sans_compagne']
     df['typologie_can_culture'].loc[
         df['typologie_can_culture']['typo_cpg'].isin(
             ['Cultures porte graines', 'Cultures porte graines et autres destinations']

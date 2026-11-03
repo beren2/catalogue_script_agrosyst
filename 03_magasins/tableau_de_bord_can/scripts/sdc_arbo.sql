@@ -7,6 +7,7 @@ SELECT
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
     escotdbc.reseaux_ir AS reseaux_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -55,6 +56,7 @@ SELECT
     esrp.qsa_dicamba_hts as qte_mat_active_dicamba_SDC,
     esrp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
 	esrp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
+    esrp.qsa_bixafen as qte_mat_active_bixafen_SDC,
     esrp.qsa_tot AS quantite_mat_active_SDC,
     esrp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
     esrp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
@@ -92,6 +94,10 @@ SELECT
     esrp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
     esrp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
     esrp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
+    esrp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
+    esrp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
+    esrp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    esrp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     esrp.tps_travail_manuel AS tps_travail_manuel_SDC,
     -- Temps manuel mensuel (exemple pour janvier à décembre)
     esrp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
@@ -117,18 +123,23 @@ SELECT
     esrp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
     -- Situation de production et coûts
     eevpp.espece_principale as situation_production,
+    eevpp.espece_principale || '_' || sdc.campagne as situation_production_mill,
     esrp.co_tot_std_mil AS CO_std_mil_SDC,
     esrp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     esrp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
     esrp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     esrp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
     esrp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,  
+    esrp.recours_produits_toxiques_utilisateurs as nb_manip_produit_danger_SDC,
+    esrp.recours_produits_danger_environnement as nb_manip_prod_danger_enviro_sdc,
     esrp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     esrp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     esrp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
     -- Coûts par poste
     esrp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
-    esrp.co_fertimin_reel + esrp.co_epandage_orga_reelles  as CO_reelles_ferti_min_SDC,
+    esrp.co_epandage_orga_reelles  as co_reelles_ferti_orga_sdc,
+    esrp.co_fertimin_reel  as co_reelles_ferti_min_sdc,
+    esrp.co_fertimin_reel + esrp.co_epandage_orga_reelles  as CO_reelles_ferti_SDC,
     esrp.co_irrigation_reelles AS CO_reelles_irrig_SDC,
     esrp.co_semis_reel AS CO_reelles_semences_SDC,
     esrp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
@@ -138,8 +149,8 @@ SELECT
     -- Recours aux moyens biologiques
     esrp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     esrp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    esrp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    esrp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    esrp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    esrp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_sdc sdc
 LEFT JOIN entrepot_dispositif dispo ON dispo.id = sdc.dispositif_id
 LEFT JOIN entrepot_domaine dom ON dom.id = dispo.domaine_id
@@ -161,7 +172,7 @@ SELECT
     -- Dispositif et réseaux
     dispo."type" AS dispositif_type,
     escotdbc.reseaux_it AS reseaux_it,
-    escotdbc.reseaux_ir AS reseau_ir,
+    escotdbc.reseaux_ir AS reseaux_ir,
     -- Domaine et localisation
     dom.id AS domaine_id,
     dom.nom AS domaine_nom,
@@ -210,6 +221,7 @@ SELECT
     essp.qsa_dicamba_hts as qte_mat_active_dicamba_SDC,
     essp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
 	essp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
+    essp.qsa_bixafen as qte_mat_active_bixafen_SDC,
     essp.qsa_tot AS quantite_mat_active_SDC,
     essp.qsa_toxique_utilisateur AS quantite_mat_active_danger_SDC,
     essp.qsa_danger_environnement AS qte_mat_active_danger_env_SDC,
@@ -247,6 +259,10 @@ SELECT
     essp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
     essp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
     essp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
+    essp.tps_utilisation_materiel_sept AS tps_util_materiel_sept_SDC,
+    essp.tps_utilisation_materiel_oct AS tps_util_materiel_oct_SDC,
+    essp.tps_utilisation_materiel_nov AS tps_util_materiel_nov_SDC,
+    essp.tps_utilisation_materiel_dec AS tps_util_materiel_dec_SDC,
     essp.tps_travail_manuel AS tps_travail_manuel_SDC,
     -- Temps manuel mensuel (exemple pour janvier à décembre)
     essp.tps_travail_manuel_janvier AS tps_travail_manuel_janvier_SDC,
@@ -272,19 +288,23 @@ SELECT
     essp.ges_phyto_indirectes_ges_total AS emissions_indirectes_phyto_SDC,
     -- Situation de production et coûts
     eevpp.espece_principale AS situation_production,
+    eevpp.espece_principale || '_' || sdc.campagne as situation_production_mill,
     essp.co_tot_std_mil AS CO_std_mil_SDC,
     essp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     essp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
     essp.qsa_cmr AS quantite_mat_active_CMR_SDC,
     essp.recours_produits_cmr AS Nb_intrant_CMR_SDC,
     essp.recours_produits_toxiques_utilisateurs AS nb_manip_produit_CMR_SDC,    -- À vérifier
+    essp.recours_produits_toxiques_utilisateurs as nb_manip_produit_danger_SDC,
+    essp.recours_produits_danger_environnement as nb_manip_produit_danger_enviro_SDC,
     essp.qsa_diflufenican AS qte_mat_active_diflufeni_SDC,
     essp.qsa_mancozeb AS qte_mat_active_mancozebe_SDC,
     essp.qsa_tebuconazole AS qte_mat_active_tebuco_SDC,
-    -- ... (autres substances)
     -- Coûts par poste
     essp.co_phyto_sans_amm_reelles AS CO_reelles_phytos_SDC,
-    essp.co_fertimin_reel + essp.co_epandage_orga_reelles as CO_reelles_ferti_min_SDC,
+    essp.co_epandage_orga_reelles  as co_reelles_ferti_orga_sdc,
+    essp.co_fertimin_reel  as co_reelles_ferti_min_sdc,
+    essp.co_fertimin_reel + essp.co_epandage_orga_reelles as CO_reelles_ferti_SDC,
     essp.co_irrigation_reelles AS CO_reelles_irrig_SDC,
     essp.co_semis_reel AS CO_reelles_semences_SDC,
     essp.co_intrants_autres_reelles AS CO_reelles_autres_SDC,
@@ -294,8 +314,8 @@ SELECT
     -- Recours aux moyens biologiques
     essp.recours_aux_moyens_biologiques AS rec_moyens_biologiques_SDC,
     essp.recours_macroorganismes AS recours_macroorganismes_SDC,
-    essp.recours_produits_biotiques_sansamm AS recours_pdts_biot_sansamm_SDC,
-    essp.recours_produits_abiotiques_sansamm AS recours_ptds_abiot_sansamm_SDC
+    essp.recours_produits_biotiques_sansamm AS rec_pdts_biot_sansamm_SDC,
+    essp.recours_produits_abiotiques_sansamm AS rec_pdts_abiot_sansamm_SDC
 FROM entrepot_synthetise synthetise
 LEFT JOIN entrepot_sdc sdc on synthetise.sdc_id = sdc.id
 LEFT JOIN entrepot_dispositif  dispo ON dispo.id = sdc.dispositif_id
