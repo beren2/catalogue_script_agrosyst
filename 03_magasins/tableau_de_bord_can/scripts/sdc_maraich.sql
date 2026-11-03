@@ -134,6 +134,7 @@ SELECT
     -- Variables spécifiques au maraîchage
    	esrp.recours_produits_danger_environnement AS Nb_intrant_dang_env_SDC,
     sdc.type_production AS situation_production,
+    sdc.type_production AS sdc_type_production,
     esrp.co_tot_std_mil AS CO_std_mil_SDC,
     esrp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     esrp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
@@ -312,6 +313,7 @@ SELECT
     -- Variables spécifiques au maraîchage
    	essp.recours_produits_danger_environnement AS Nb_intrant_dang_env_SDC,
     sdc.type_production AS situation_production,
+    sdc.type_production AS sdc_type_production,
     essp.co_tot_std_mil AS CO_std_mil_SDC,
     essp.mb_reelle_sans_autoconso AS MB_reelle_sans_autoconso,
     essp.msn_reelle_sans_autoconso AS MSN_reelle_sans_autoconso,
