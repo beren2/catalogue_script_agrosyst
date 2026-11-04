@@ -53,7 +53,7 @@ SELECT
     -- Interventions et produits
     esrp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     esrp.qsa_boscalid as qte_mat_active_boscalid_SDC,
-    esrp.qsa_dicamba_hts as qte_mat_active_dicamba_SDC,
+    esrp.qsa_dicamba as qte_mat_active_dicamba_SDC,
     esrp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
 	esrp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
     esrp.qsa_bixafen as qte_mat_active_bixafen_SDC,
@@ -218,7 +218,7 @@ SELECT
     -- Interventions et produits
     essp.nbre_de_passages AS Nbre_inter_phyto_SDC,
     essp.qsa_boscalid as qte_mat_active_boscalid_SDC,
-    essp.qsa_dicamba_hts as qte_mat_active_dicamba_SDC,
+    essp.qsa_dicamba as qte_mat_active_dicamba_SDC,
     essp.qsa_prosulfocarbe as qte_mat_active_prosulfo_SDC,
 	essp.qsa_smetolachlore as qte_mat_active_smethola_SDC,
     essp.qsa_bixafen as qte_mat_active_bixafen_SDC,
