@@ -13,7 +13,6 @@ create table entrepot_semence(
 	id character varying(255), 
 	inoculation_biologique boolean default false,
 	traitement_chimique boolean default false,
-	bio boolean default false, 
 	traitement_semence_id character varying(255), 
 	inoculation_biologique_id character varying(255), 
 	composant_culture_id character varying(255), 
@@ -26,7 +25,7 @@ create table entrepot_semence(
 );
 
 -- on insère d'abord sans les prix
-insert into entrepot_semence(id, inoculation_biologique, traitement_chimique, bio, composant_culture_id, type_semence, prix_saisi, prix_saisi_unite, prix_ref, prix_ref_unite, lot_semence_id)
+insert into entrepot_semence(id, inoculation_biologique, traitement_chimique, composant_culture_id, type_semence, prix_saisi, prix_saisi_unite, prix_ref, prix_ref_unite, lot_semence_id)
 	select
 		dssi.topiaid as id,
 		dssi.biologicalseedinoculation  as inoculation_biologique,
@@ -94,7 +93,7 @@ set prix_ref = sc.prix_ref,
 	prix_ref_unite = sc.prix_ref_unite
 from 
 	(select 
-		distinct on (id) id, inoculation_biologique, traitement_chimique, bio, composant_culture_id, type_semence, prix_saisi, prix_saisi_unite, prix_ref, prix_ref_unite, lot_semence_id from semence_all
+		distinct on (id) id, inoculation_biologique, traitement_chimique, composant_culture_id, type_semence, prix_saisi, prix_saisi_unite, prix_ref, prix_ref_unite, lot_semence_id from semence_all
 		where prix_ref is not null
 	) sc
 where es.id = sc.id;
