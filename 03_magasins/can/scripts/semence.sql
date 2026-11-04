@@ -2,7 +2,6 @@ select
 	es.id as semence_id, 
 	es.inoculation_biologique,
 	es.traitement_chimique,
-	es.bio,
 	es.traitement_semence_id,
 	es.composant_culture_id,
 	es.type_semence,

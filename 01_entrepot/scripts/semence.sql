@@ -31,7 +31,6 @@ insert into entrepot_semence(id, inoculation_biologique, traitement_chimique, bi
 		dssi.topiaid as id,
 		dssi.biologicalseedinoculation  as inoculation_biologique,
 		dssi.chemicaltreatment  as traitement_chimique,
-		dssi.organic  as bio,
 		dssi.speciesseed  as composant_culture_id,
 		dssi.seedtype as type_semence,
 		ip.price as prix_saisi,
@@ -64,7 +63,6 @@ select
 	dssi.topiaid as id,
 	dssi.biologicalseedinoculation  as inoculation_biologique,
 	dssi.chemicaltreatment  as traitement_chimique,
-	dssi.organic  as bio,
 	dssi.speciesseed  as composant_culture_id,
 	dssi.seedtype as type_semence,
 	ip.price as prix_saisi,
@@ -87,8 +85,7 @@ left join refprixespece rpe on (rpe.campaign = d.campaign and
 	riupuc.priceunit = rpe.unit and 
 	rpe.active = true and 
 	rpe.seedtype = dssi.seedtype and
-	rpe.treatment = dssi.chemicaltreatment and 
-	rpe.organic = dssi.organic);
+	rpe.treatment = dssi.chemicaltreatment);
 	
 
 -- on met à jours les lignes qui ne posent pas de problème (prix de référence bien trouvé, et on en garde qu'un par id.)
