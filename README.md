@@ -1,6 +1,28 @@
-## Catalogue_script_agrosyst
 
-Catalogue des pré-traitements des données issues du système d'information Agrosyst (https://agrosyst.fr). Les données sont disponibles au téléchargement sur (https://agrosyst.fr/datagrosyst/) sous réserve d'avoir déposé une demande d'accès et que celle-ci ait été approuvée par l'intégralité du comité des partenaires.
+
+# catalogue_script_agrosyst [<img src="" align="right" width=100 height=30 alt=""/>](https://datagrosyst.agrosyst.fr)
+
+<!-- badges: start -->
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green)](https://lifecycle.r-lib.org/articles/stages.html)
+![](https://img.shields.io/github/last-commit/beren2/catalogue_script_agrosyst)
+<!-- badges: end -->
+
+
+Inventaire des scripts mobilisés pour le traitement des données issues du système d'information [Agrosyst](https://agrosyst.fr). 
+
+Les données sont disponibles au téléchargement sur [Datagrosyst](https://datagrosyst.agrosyst.fr). 
+
+
+## Objectifs
+
+Ce répertoire a été créé avec l'objectif principal d'augmenter la transparence des traitements effectués sur Datagrosyst.
+
+Ce répertoire permet aussi aux personnes qui le souhaitent de partager leur travail aux autres utilisateurs des données.
+
+> La plupart des scripts disponibles sur ce répertoire (entrepôt, outils, magasin) sont automatiquement mobilisés dans Datagrosyst. Il ne sera donc, à priori, pas utile à l'utilisateur de les faire tourner.
+
+Pour un utilisateur désireux de mieux comprendre les données, d'autres ressources plus accessibles existent, [voir notre inventaire de ressources liées à Datagrosyst](https://nextcloud.inrae.fr/s/3oZbgECQebej2Js).
+
 
 ## Organisation du répertoire
 
@@ -10,27 +32,36 @@ Contient :
 - un fichier config.ini listant les connexions aux bases de données ou le chemin de données: 
 
 ### 01_entrepot
-Permet la génération de l'entrepot de données d'agrosyst. <br> 
-Les données issues de cette source correspondent à un remaniement des tables de la base de données opérationnelle d'Agrosyst. Elles n'ont pas été corrigées ou modifiées.
+Permet la génération de l'entrepot de données d'agrosyst. 
+Les données issues de cette source correspondent à un remaniement des tables de la base de données opérationnelle d'Agrosyst, elles n'ont pas été corrigées ou modifiées.
 
 ### 02_outils
-Permet la génération des outils d'aide à la valorisation. <br> 
-Ces outils sont produits à partir des données de l'entrepot, ou bien font intervenir des données extérieures. <br> 
-Ces outils correspondent à des tables stockées avec les données de l'entrepot.
+Permet la génération des outils d'aide à la valorisation.
+Ces outils sont produits à partir des données de l'entrepot, ou font intervenir des données externes (données spatiales par exemple). 
 
-Plus d'informations sont disponibles dans le README.md du répertoire.
+Plus d'informations sont disponibles dans le [README.md](./02_outils/README.md) du répertoire.
 
 ### 03_magasins
-Permet la génération de magasins de données. <br>
-Chaque repertoire correspond à un magasin. <br>
-Les scripts générant un magasin se basent sur l'entrepot et les outils.
+Permet la génération de magasins de données. 
+Chaque sous-repertoire correspond à un magasin conçu pour un usage spécifique.Les scripts générant un magasin se basent sur l'entrepot et les outils.
 
-### 04_prise_en_main
-Contient des exemples de script de prise en main des données. 
+Plus d'informations sont disponibles dans le [README.md](./03_magasins/README.md) du répertoire.
+
+### 04_datapaper
+Permet la génération d'un datapaper. 
+Un datapaper consiste en un remaniement d'un magasin de données (sélection et renommage des colonnes). Un utilisateur ne peut pas télécharger un datapaper directement sur Datagrosyst, il est redirigé vers la publication officielle (datagouv, hal...). 
+
+Plus d'informations sont disponibles dans le [README.md](./04_datapaper/README.md) du répertoire.
+
+### 05_prise_en_main
+Contient des exemples de script de prise en main des données. Seul répertoire vraiment utile si vous ne souhaitez pas consulter les hypothèses de traitement de Datagrosyst. 
+
+Plus d'informations sont disponibles dans le [README.md](./05_prise_en_main/README.md) du répertoire.
 
 ## Contribuer
-Le catalogue des scripts d'agrosyst est libre et collaboratif. Si vous souhaitez participer en ajoutant des scripts générant des outils de prétraitements ou des scripts générant un magasin, il vous suffit d'effectuer les étapes suivantes. 
-Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d'entrer dans les scripts d'outils' officiels.
+Le catalogue des scripts d'agrosyst est libre et collaboratif. Si vous souhaitez participer en ajoutant des scripts générant des outils de prétraitements ou des scripts générant un magasin, il vous suffit d'effectuer les étapes décrites ci-dessous.
+
+Les scripts ajoutés seront étudiés et modifiés par l'équipe Agrosyst afin d'entrer dans les scripts d'outils officiels.
 
 > [!NOTE]  
 > Pour permettre d'intégrer les nouveaux scripts dans le processus automatisé, ceux-ci doivent être **rédigés en python**.  
@@ -38,10 +69,10 @@ Pour les utilisateurs d'autres langages simplement désireux d'archiver leur cod
 
 ### Télécharger les données de l'entrepot sur datagrosyst et indiquer le chemin des données
 
-Modifier le chemin de localisation des données data_path.
-Garder la configuration type=local.
+Modifier le chemin de localisation des données **data_path**.
+Garder la configuration **type=local**.
 
-Cela signifie que l'ensemble des scripts utilisent les données en .csv téléchargées sur la machine dans data_path et les sorties de scripts sont des .csv
+>Cela signifie que l'ensemble des scripts utilisent les données en .csv téléchargées sur la machine dans data_path et les sorties de scripts sont des .csv
 Le mode distant utilise et crée les données stockées en base de données.
 
 ### Créer une branche
@@ -86,7 +117,7 @@ Les tests unitaires nécessitent :
 > [!CAUTION]  
 > Si votre fonction integre des données de référentiels (catégorie reférentiel sur datagrosyst), s'en référer à la [documentation](02_outils/tests/README.md).
 
-### Push les changement
+### Pousser les changement
 
 1. `git add -A && git commit -m "Mon message"` (en remplaçant Mon message par un message de commit, tel que "Ajout du script de filtration des mélanges d'espèce réel.") pour ajouter et valider vos modifications.
 1. `git push nom-de-ma-branche`
