@@ -1,6 +1,6 @@
 
 
-# catalogue_script_agrosyst [<img src="" align="right" width=100 height=30 alt=""/>](https://datagrosyst.agrosyst.fr)
+# catalogue_script_agrosyst [<img src="./images/datagrosyst.png" align="right" width=200 height=30 alt=""/>](https://datagrosyst.agrosyst.fr)
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green)](https://lifecycle.r-lib.org/articles/stages.html)
